@@ -1187,4 +1187,203 @@ var AbstractTimeGridView = /** @class */ (function (_super) {
     };
     // given a desired total height of the view, returns what the height of the scroller should be
     AbstractTimeGridView.prototype.computeScrollerHeight = function (viewHeight) {
-   
+        return viewHeight -
+            subtractInnerElHeight(this.el, this.scroller.el); // everything that's NOT the scroller
+    };
+    /* Scroll
+    ------------------------------------------------------------------------------------------------------------------*/
+    // Computes the initial pre-configured scroll state prior to allowing the user to change it
+    AbstractTimeGridView.prototype.computeDateScroll = function (duration) {
+        var top = this.timeGrid.computeTimeTop(duration);
+        // zoom can give weird floating-point values. rather scroll a little bit further
+        top = Math.ceil(top);
+        if (top) {
+            top++; // to overcome top border that slots beyond the first have. looks better
+        }
+        return { top: top };
+    };
+    AbstractTimeGridView.prototype.queryDateScroll = function () {
+        return { top: this.scroller.getScrollTop() };
+    };
+    AbstractTimeGridView.prototype.applyDateScroll = function (scroll) {
+        if (scroll.top !== undefined) {
+            this.scroller.setScrollTop(scroll.top);
+        }
+    };
+    // Generates an HTML attribute string for setting the width of the axis, if it is known
+    AbstractTimeGridView.prototype.axisStyleAttr = function () {
+        if (this.axisWidth != null) {
+            return 'style="width:' + this.axisWidth + 'px"';
+        }
+        return '';
+    };
+    return AbstractTimeGridView;
+}(View));
+AbstractTimeGridView.prototype.usesMinMaxTime = true; // indicates that minTime/maxTime affects rendering
+
+var SimpleTimeGrid = /** @class */ (function (_super) {
+    __extends(SimpleTimeGrid, _super);
+    function SimpleTimeGrid(timeGrid) {
+        var _this = _super.call(this, timeGrid.el) || this;
+        _this.buildDayRanges = memoize(buildDayRanges);
+        _this.slicer = new TimeGridSlicer();
+        _this.timeGrid = timeGrid;
+        return _this;
+    }
+    SimpleTimeGrid.prototype.firstContext = function (context) {
+        context.calendar.registerInteractiveComponent(this, {
+            el: this.timeGrid.el
+        });
+    };
+    SimpleTimeGrid.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        this.context.calendar.unregisterInteractiveComponent(this);
+    };
+    SimpleTimeGrid.prototype.render = function (props, context) {
+        var dateEnv = this.context.dateEnv;
+        var dateProfile = props.dateProfile, dayTable = props.dayTable;
+        var dayRanges = this.dayRanges = this.buildDayRanges(dayTable, dateProfile, dateEnv);
+        this.timeGrid.receiveProps(__assign({}, this.slicer.sliceProps(props, dateProfile, null, context.calendar, this.timeGrid, dayRanges), { dateProfile: dateProfile, cells: dayTable.cells[0] }), context);
+    };
+    SimpleTimeGrid.prototype.renderNowIndicator = function (date) {
+        this.timeGrid.renderNowIndicator(this.slicer.sliceNowDate(date, this.timeGrid, this.dayRanges), date);
+    };
+    SimpleTimeGrid.prototype.buildPositionCaches = function () {
+        this.timeGrid.buildPositionCaches();
+    };
+    SimpleTimeGrid.prototype.queryHit = function (positionLeft, positionTop) {
+        var rawHit = this.timeGrid.positionToHit(positionLeft, positionTop);
+        if (rawHit) {
+            return {
+                component: this.timeGrid,
+                dateSpan: rawHit.dateSpan,
+                dayEl: rawHit.dayEl,
+                rect: {
+                    left: rawHit.relativeRect.left,
+                    right: rawHit.relativeRect.right,
+                    top: rawHit.relativeRect.top,
+                    bottom: rawHit.relativeRect.bottom
+                },
+                layer: 0
+            };
+        }
+    };
+    return SimpleTimeGrid;
+}(DateComponent));
+function buildDayRanges(dayTable, dateProfile, dateEnv) {
+    var ranges = [];
+    for (var _i = 0, _a = dayTable.headerDates; _i < _a.length; _i++) {
+        var date = _a[_i];
+        ranges.push({
+            start: dateEnv.add(date, dateProfile.minTime),
+            end: dateEnv.add(date, dateProfile.maxTime)
+        });
+    }
+    return ranges;
+}
+var TimeGridSlicer = /** @class */ (function (_super) {
+    __extends(TimeGridSlicer, _super);
+    function TimeGridSlicer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TimeGridSlicer.prototype.sliceRange = function (range, dayRanges) {
+        var segs = [];
+        for (var col = 0; col < dayRanges.length; col++) {
+            var segRange = intersectRanges(range, dayRanges[col]);
+            if (segRange) {
+                segs.push({
+                    start: segRange.start,
+                    end: segRange.end,
+                    isStart: segRange.start.valueOf() === range.start.valueOf(),
+                    isEnd: segRange.end.valueOf() === range.end.valueOf(),
+                    col: col
+                });
+            }
+        }
+        return segs;
+    };
+    return TimeGridSlicer;
+}(Slicer));
+
+var TimeGridView = /** @class */ (function (_super) {
+    __extends(TimeGridView, _super);
+    function TimeGridView() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.buildDayTable = memoize(buildDayTable);
+        return _this;
+    }
+    TimeGridView.prototype.render = function (props, context) {
+        _super.prototype.render.call(this, props, context); // for flags for updateSize. also _renderSkeleton/_unrenderSkeleton
+        var _a = this.props, dateProfile = _a.dateProfile, dateProfileGenerator = _a.dateProfileGenerator;
+        var nextDayThreshold = context.nextDayThreshold;
+        var dayTable = this.buildDayTable(dateProfile, dateProfileGenerator);
+        var splitProps = this.splitter.splitProps(props);
+        if (this.header) {
+            this.header.receiveProps({
+                dateProfile: dateProfile,
+                dates: dayTable.headerDates,
+                datesRepDistinctDays: true,
+                renderIntroHtml: this.renderHeadIntroHtml
+            }, context);
+        }
+        this.simpleTimeGrid.receiveProps(__assign({}, splitProps['timed'], { dateProfile: dateProfile,
+            dayTable: dayTable }), context);
+        if (this.simpleDayGrid) {
+            this.simpleDayGrid.receiveProps(__assign({}, splitProps['allDay'], { dateProfile: dateProfile,
+                dayTable: dayTable,
+                nextDayThreshold: nextDayThreshold, isRigid: false }), context);
+        }
+        this.startNowIndicator(dateProfile, dateProfileGenerator);
+    };
+    TimeGridView.prototype._renderSkeleton = function (context) {
+        _super.prototype._renderSkeleton.call(this, context);
+        if (context.options.columnHeader) {
+            this.header = new DayHeader(this.el.querySelector('.fc-head-container'));
+        }
+        this.simpleTimeGrid = new SimpleTimeGrid(this.timeGrid);
+        if (this.dayGrid) {
+            this.simpleDayGrid = new SimpleDayGrid(this.dayGrid);
+        }
+    };
+    TimeGridView.prototype._unrenderSkeleton = function () {
+        _super.prototype._unrenderSkeleton.call(this);
+        if (this.header) {
+            this.header.destroy();
+        }
+        this.simpleTimeGrid.destroy();
+        if (this.simpleDayGrid) {
+            this.simpleDayGrid.destroy();
+        }
+    };
+    TimeGridView.prototype.renderNowIndicator = function (date) {
+        this.simpleTimeGrid.renderNowIndicator(date);
+    };
+    return TimeGridView;
+}(AbstractTimeGridView));
+function buildDayTable(dateProfile, dateProfileGenerator) {
+    var daySeries = new DaySeries(dateProfile.renderRange, dateProfileGenerator);
+    return new DayTable(daySeries, false);
+}
+
+var main = createPlugin({
+    defaultView: 'timeGridWeek',
+    views: {
+        timeGrid: {
+            class: TimeGridView,
+            allDaySlot: true,
+            slotDuration: '00:30:00',
+            slotEventOverlap: true // a bad name. confused with overlap/constraint system
+        },
+        timeGridDay: {
+            type: 'timeGrid',
+            duration: { days: 1 }
+        },
+        timeGridWeek: {
+            type: 'timeGrid',
+            duration: { weeks: 1 }
+        }
+    }
+});
+
+export default main;
+export { AbstractTimeGridView, TimeGrid, TimeGridSlicer, TimeGridView, buildDayRanges, buildDayTable };
