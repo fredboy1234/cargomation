@@ -1,0 +1,14 @@
+{
+  "name": "hub",
+  "version": "1.0.0",
+  "main": "path/to/main.css",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "font-awesome": "^5.13.0"
+  },
+  "devDependencies": {}
+}

@@ -1,12 +1,22 @@
 {
+    "name": "a2b/hub",
+    "description": "This is a simple MVC framework for building web applications in PHP",
+    "minimum-stability": "dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "John Alex",
+            "email": "johnalexladra@gmail.com"
+        }
+    ],
     "require": {
-        "twig/twig": "~3.0"
+        "twig/twig": "~3.0",
+        "symfony/translation": "^5.2@dev",
+        "symfony/config": "^5.2@dev"
     },
     "autoload": {
         "psr-4": {
-            "Core\\": "Core/",
-            "App\\": "App/",
-            "Utility\\": "Utility/"
+            "App\\": "www/app"
         }
     }
 }
