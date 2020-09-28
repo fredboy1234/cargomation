@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}A2B HUB{% endblock %}
+
+{% block body %}
+
+  <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+      <!-- Navbar -->
+      {% include ('Menu/Client/navbar.html') %}
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      {% include ('Menu/Client/menu_sidebar.html') %}
+      <!-- /.Main Sidebar Container -->
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+
+        {% include ('Content/Client/search_filter.html') %}
+        {% include ('Content/Client/datatable.html') %}
+        {% include ('Content/Client/add_form.html') %}
+        
+      </div>
+      <!-- /.Content Wrapper. Contains page content -->
+    </div>
+  </body>
+
+{% endblock %}

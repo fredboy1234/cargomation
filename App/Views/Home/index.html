@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}A2B HUB{% endblock %}
 
 {% block body %}
 
-<h1>Welcome to A2B Hub</h1>
+  <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+      <!-- Navbar -->
+      {% include ('Menu/Admin/navbar.html') %}
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      {% include ('Menu/Admin/menu_sidebar.html') %}
+      <!-- /.Main Sidebar Container -->
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+
+        {% include ('Content/Admin/search_result.html') %}
+        {% include ('Content/Admin/datatable.html') %}
+        {% include ('Content/Admin/add_form.html') %}
+        {% include ('Content/Admin/profile.html') %}
+      </div>
+      <!-- /.Content Wrapper. Contains page content -->
+    </div>
+  </body>
 
 {% endblock %}
