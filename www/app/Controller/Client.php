@@ -65,13 +65,12 @@ class Client extends Core\Controller {
         $this->View->addJS("bower_components/admin-lte/plugins/jquery-mapael/maps/usa_states.min.js");
         $this->View->addJS("bower_components/admin-lte/plugins/jquery-mapael/maps/usa_states.min.js");
         $this->View->addJS("js/custom.js");
-        
-        // $this->View->render("index/index", [
-        //     "title" => "Index",
-        //     "user" => $User->data()
-        // ]);
 
-        View::renderTemplate('client/index.php');
+        $this->View->render("client/index.php", [
+            "title" => "Index"
+        ]);
+
+        // View::renderTemplate('client/index.php');
     }
 
 }

@@ -66,7 +66,7 @@ class Admin extends Core\Controller {
         $this->View->addJS("bower_components/admin-lte/plugins/jquery-mapael/maps/usa_states.min.js");
         $this->View->addJS("js/custom.js");
 
-        $this->View->render("index/index", [
+        $this->View->render("admin/index", [
             "title" => "Admin",
         ]);
 

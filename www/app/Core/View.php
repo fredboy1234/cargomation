@@ -66,16 +66,16 @@ class View {
      * @since 1.0
      */
     public function addJS($files) {
-
+        
         // Cast the value of $files to type array if it is not already.
         if (!is_array($files)) {
             $files = (array) $files;
         }
         foreach ($files as $file) {
-
+            
             // Check that the file exists in the public directory, creating the
             // <script> tag if it true.
-            if (file_exists(PUBLIC_ROOT . $file)) {
+            if (file_exists(PUBLIC_ROOT . "/" . $file)) {
                 $this->_scriptTags .= '<script type="text/javascript" src="' . $this->makeURL($file) . '"></script>' . "\n";
             }
         }
