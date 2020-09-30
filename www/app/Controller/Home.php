@@ -36,8 +36,8 @@ class Home extends Core\Controller {
         // }
 
         // // Set any dependencies, data and render the view.
-        // $this->View->addCSS("css/index.css");
-        // $this->View->addJS("js/index.jquery.js");
+        $this->View->addCSS("bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css");
+        $this->View->addJS("js/index.jquery.js");
         // $this->View->render("index/index", [
         //     "title" => "Index",
         //     "user" => $User->data()
