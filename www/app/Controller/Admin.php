@@ -12,7 +12,7 @@ use App\Utility;
  * @author John Alex
  * @since 1.0
  */
-class Index extends Core\Controller {
+class Admin extends Core\Controller {
 
     /**
      * Index: Renders the index view. NOTE: This controller can only be accessed
@@ -23,9 +23,9 @@ class Index extends Core\Controller {
      * @since 1.0
      */
     public function index() {
-        
+
         // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
+        Utility\Auth::checkAuthenticated('admin');
 
         // Get an instance of the user model using the ID stored in the session. 
         $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
@@ -34,18 +34,26 @@ class Index extends Core\Controller {
         }
 
         if(Model\Role::isAdmin($User)) {
-            Utility\Redirect::to(APP_URL . "admin");
+            // Set any dependencies, data and render the view.
+            $this->View->addCSS("dist/css/index.css");
+            $this->View->addJS("dist/js/index.jquery.js");
+            $this->View->render("admin/index", [
+                "title" => "Admin",
+                "user" => $User->data()
+            ]);
+        } else {
+            Utility\Redirect::to(APP_URL);
         }
-
-        Utility\Redirect::to(APP_URL . "client");
-
-        // Set any dependencies, data and render the view.
-        // $this->View->addCSS("dist/css/index.css");
-        // $this->View->addJS("dist/js/index.jquery.js");
-        // $this->View->render("index/index", [
-        //     "title" => "Index",
-        //     "user" => $User->data()
-        // ]);
     }
+
+    // public function isAuthorized($User){
+    //     $id = $User->data()->role;
+    //     $role = Model\Role::getRole($id);
+
+    //     if(isset($role) && $role == 'admin'){
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
 }

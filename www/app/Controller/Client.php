@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core;
 use App\Model;
 use App\Utility;
+// use App\Core\View;
 
 /**
  * Index Controller:
@@ -12,7 +13,7 @@ use App\Utility;
  * @author John Alex
  * @since 1.0
  */
-class Index extends Core\Controller {
+class Client extends Core\Controller {
 
     /**
      * Index: Renders the index view. NOTE: This controller can only be accessed
@@ -23,9 +24,9 @@ class Index extends Core\Controller {
      * @since 1.0
      */
     public function index() {
-        
+
         // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
+        Utility\Auth::checkAuthenticated('client');
 
         // Get an instance of the user model using the ID stored in the session. 
         $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
@@ -33,19 +34,15 @@ class Index extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        if(Model\Role::isAdmin($User)) {
-            Utility\Redirect::to(APP_URL . "admin");
-        }
-
-        Utility\Redirect::to(APP_URL . "client");
-
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("dist/css/index.css");
         // $this->View->addJS("dist/js/index.jquery.js");
-        // $this->View->render("index/index", [
-        //     "title" => "Index",
+        // $this->View->render("client/index", [
+        //     "title" => "Client",
         //     "user" => $User->data()
         // ]);
+
+        Core\View::renderTemplate('client/index.html');
     }
 
 }
