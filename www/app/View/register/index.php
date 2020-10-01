@@ -8,12 +8,12 @@
                 <div class="panel-body">
                     <form action="<?= $this->makeUrl("register/_register"); ?>" method="post">
                         <div class="form-group">
-                            <label for="forename-input">Forename <span class="text-danger">*</span></label>
-                            <input type="text" id="forename-input" class="form-control" name="forename" />
+                            <label for="forename-input">First Name <span class="text-danger">*</span></label>
+                            <input type="text" id="forename-input" class="form-control" name="first-name" />
                         </div>
                         <div class="form-group">
-                            <label for="surname-input">Surname <span class="text-danger">*</span></label>
-                            <input type="text" id="surname-input" class="form-control" name="surname" />
+                            <label for="first-name-input">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" id="last-name-input" class="form-control" name="last-name" />
                         </div>                        
                         <div class="form-group">
                             <label for="email-input">Email <span class="text-danger">*</span></label>
