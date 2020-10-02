@@ -6,6 +6,8 @@ use App\Core;
 use App\Model;
 use App\Utility;
 
+use App\Core\View;
+
 /**
  * Index Controller:
  *
@@ -25,7 +27,7 @@ class Admin extends Core\Controller {
     public function index() {
 
         // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated('admin');
+        Utility\Auth::checkAuthenticated();
 
         // Get an instance of the user model using the ID stored in the session. 
         $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
@@ -34,10 +36,14 @@ class Admin extends Core\Controller {
         }
 
         if(Model\Role::isAdmin($User)) {
+            
             // Set any dependencies, data and render the view.
-            $this->View->addCSS("dist/css/index.css");
-            $this->View->addJS("dist/js/index.jquery.js");
-            $this->View->render("admin/index", [
+            $this->View->addCSS("css/google_font.css");
+            $this->View->addCSS("css/custom.css");
+            $this->View->addJS("js/custom.js");
+        
+            // Render admin view
+            $this->View->renderTemplate("admin", "admin/index", [
                 "title" => "Admin",
                 "user" => $User->data()
             ]);
@@ -55,5 +61,4 @@ class Admin extends Core\Controller {
     //     }
     //     return false;
     // }
-
 }

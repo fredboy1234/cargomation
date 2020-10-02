@@ -56,7 +56,6 @@ class Controller {
     public function __call($name, $args)
     {
 
-        var_dump("TEST"); exit;
         $method = $name . 'Action';
 
         if (method_exists($this, $method)) {

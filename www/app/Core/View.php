@@ -28,16 +28,16 @@ class View {
      * @since 1.0
      */
     public function addCSS($files) {
-
+        
         // Cast the value of $files to type array if it is not already.
         if (!is_array($files)) {
             $files = (array) $files;
         }
         foreach ($files as $file) {
-
             // Check that the file exists in the public directory, creating the
             // <link> tag if it true.
-            if (file_exists(PUBLIC_ROOT . $file)) {
+            
+            if (file_exists(PUBLIC_ROOT . "/" . $file)) {
                 $this->_linkTags .= '<link type="text/css" rel="stylesheet" href="' . $this->makeURL($file) . '" />' . "\n";
             }
         }
@@ -66,16 +66,16 @@ class View {
      * @since 1.0
      */
     public function addJS($files) {
-
+        
         // Cast the value of $files to type array if it is not already.
         if (!is_array($files)) {
             $files = (array) $files;
         }
         foreach ($files as $file) {
-
+            
             // Check that the file exists in the public directory, creating the
             // <script> tag if it true.
-            if (file_exists(PUBLIC_ROOT . $file)) {
+            if (file_exists(PUBLIC_ROOT . "/" . $file)) {
                 $this->_scriptTags .= '<script type="text/javascript" src="' . $this->makeURL($file) . '"></script>' . "\n";
             }
         }
@@ -182,6 +182,21 @@ class View {
     }
 
     /**
+     * Render Template: Requires in a view file and sets any view data if specified.
+     * @access public
+     * @param string $filepath
+     * @param array $data [optional]
+     * @return void
+     * @since 1.0
+     */
+    public function renderTemplate($template, $filepath, array $data = []) {
+        $this->addData($data);
+        $this->getFile('_template/' . $template . '/header');
+        $this->getFile($filepath);
+        $this->getFile('_template/' . $template . '/footer');
+    } 
+
+    /**
      * Render a view template using Twig
      * @access public
      * @param string $template  The template file
@@ -189,7 +204,7 @@ class View {
      * @return void
      * @since 1.0
      */
-    public static function renderTemplate($template, array $args = [])
+    public static function renderTemplateTwig($template, array $args = [])
     {
         static $twig = null;
 
