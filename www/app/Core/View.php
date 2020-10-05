@@ -182,6 +182,21 @@ class View {
     }
 
     /**
+     * Render Template: Requires in a view file and sets any view data if specified.
+     * @access public
+     * @param string $filepath
+     * @param array $data [optional]
+     * @return void
+     * @since 1.0
+     */
+    public function renderTemplate($template, $filepath, array $data = []) {
+        $this->addData($data);
+        $this->getFile('_template/' . $template . '/header');
+        $this->getFile($filepath);
+        $this->getFile('_template/' . $template . '/footer');
+    } 
+
+    /**
      * Render a view template using Twig
      * @access public
      * @param string $template  The template file
@@ -189,7 +204,7 @@ class View {
      * @return void
      * @since 1.0
      */
-    public static function renderTemplate($template, array $args = [])
+    public static function renderTemplateTwig($template, array $args = [])
     {
         static $twig = null;
 

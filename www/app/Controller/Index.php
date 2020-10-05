@@ -23,7 +23,7 @@ class Index extends Core\Controller {
      * @since 1.0
      */
     public function index() {
-
+        
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
@@ -33,13 +33,19 @@ class Index extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
+        if(Model\Role::isAdmin($User)) {
+            Utility\Redirect::to(APP_URL . "admin");
+        }
+
+        Utility\Redirect::to(APP_URL . "client");
+
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("dist/css/index.css");
         // $this->View->addJS("dist/js/index.jquery.js");
-        $this->View->render("index/index", [
-            "title" => "Index",
-            "user" => $User->data()
-        ]);
+        // $this->View->render("index/index", [
+        //     "title" => "Index",
+        //     "user" => $User->data()
+        // ]);
     }
 
 }

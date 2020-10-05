@@ -1,7 +1,7 @@
 <div class="container">
     <?php if (isset($this->user)) : ?>
         <div class="jumbotron">
-            <h1>Hello, <?= $this->escapeHTML($this->user->forename . " " . $this->user->surname); ?>!</h1>
+            <h1>Hello, <?= $this->escapeHTML($this->user->first_name . " " . $this->user->last_name); ?>!</h1>
             <p>...</p>
             <p>
                 <a class="btn btn-default btn-lg" href="<?= $this->makeURL("profile"); ?>" role="button">Profile</a>

@@ -1,3 +1,4 @@
+
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
   <!-- Navbar -->
@@ -128,7 +129,7 @@
     <a href="index3.html" class="brand-link">
       <img src="bower_components/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">A2B Hub</span>
+      <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
     <!-- Sidebar -->
@@ -148,26 +149,40 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
+          <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Dashboard</p>
-            </a>
-
-          </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
               <p>
-                Profile
+                Dashboard
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v1</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index2.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-user-plus"></i>
+              <i class="nav-icon fas fa-th"></i>
               <p>
-                Add Client
+                Widgets
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
@@ -176,7 +191,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                User Logs
+                Layout Options
                 <i class="fas fa-angle-left right"></i>
                 <span class="badge badge-info right">6</span>
               </p>
@@ -185,56 +200,47 @@
               <li class="nav-item">
                 <a href="pages/layout/top-nav.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 1</p>
+                  <p>Top Navigation</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 2</p>
+                  <p>Top Navigation + Sidebar</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/boxed.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 3</p>
+                  <p>Boxed</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/fixed-sidebar.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 4</p>
+                  <p>Fixed Sidebar</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/fixed-topnav.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 5</p>
+                  <p>Fixed Navbar</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/fixed-footer.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 6</p>
+                  <p>Fixed Footer</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Menu 7</p>
+                  <p>Collapsed Sidebar</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                System Setting
-              </p>
-            </a>
-          </li>
-<?php if(false): ?>        
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -578,7 +584,7 @@
           </li>
           <li class="nav-header">MISCELLANEOUS</li>
           <li class="nav-item">
-            <a href="https://a2bfreighthub.com/docs/3.0" class="nav-link">
+            <a href="https://adminlte.io/docs/3.0" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>Documentation</p>
             </a>
@@ -667,7 +673,6 @@
               <p>Informational</p>
             </a>
           </li>
-<?php endif; ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -1535,10 +1540,10 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://a2bfreighthub.com">A2BFreightHub.com</a>.</strong>
+    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 2.0.0
+      <b>Version</b> 3.0.5
     </div>
   </footer>
 </div>
@@ -1555,9 +1560,7 @@
 <script src="bower_components/admin-lte/dist/js/adminlte.js"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<!--
 <script src="bower_components/admin-lte/dist/js/demo.js"></script>
--->
 
 <!-- PAGE bower_components/admin-lte/plugins -->
 <!-- jQuery Mapael -->

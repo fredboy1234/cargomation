@@ -11,27 +11,19 @@
   <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
       <!-- Navbar -->
-      {% include ('_template/client/navbar.php') %}
+      {% include ('_template/admin/navbar.php') %}
       <!-- /.navbar -->
-
       <!-- Main Sidebar Container -->
-      {% include ('_template/client/menu_sidebar.php') %}
+      {% include ('_template/admin/menu_sidebar.php') %}
       <!-- /.Main Sidebar Container -->
-
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-
-        {% include ('client/search_filter.php') %}
-        {% include ('client/datatable.php') %}
-        {% include ('client/add_form.php') %}
-        
+        {% include ('admin/search_result.php') %}
+        {% include ('admin/datatable.php') %}
+        {% include ('admin/add_form.php') %}
+        {% include ('admin/profile.php') %}
       </div>
       <!-- /.Content Wrapper. Contains page content -->
     </div>
   </body>
-
-{% endblock %}
-
-{% block js %}
-
 {% endblock %}

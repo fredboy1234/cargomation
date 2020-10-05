@@ -15,10 +15,10 @@ class UserRegister {
 
     /** @var array The register form inputs. */
     private static $_inputs = [
-        "forename" => [
+        "first_name" => [
             "required" => true
         ],
-        "surname" => [
+        "last_name" => [
             "required" => true
         ],
         "email" => [
@@ -62,10 +62,11 @@ class UserRegister {
             $User = new User;
             $userID = $User->createUser([
                 "email" => Utility\Input::post("email"),
-                "forename" => Utility\Input::post("forename"),
+                "first_name" => Utility\Input::post("first-name"),
+                "last_name" => Utility\Input::post("last-name"),
                 "password" => Utility\Hash::generate(Utility\Input::post("password"), $salt),
-                "salt" => $salt,
-                "surname" => Utility\Input::post("surname")
+                "salt" => $salt
+                
             ]);
 
             // Write all necessary data into the session as the user has been

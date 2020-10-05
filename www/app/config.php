@@ -7,7 +7,7 @@ return [
     "DATABASE_HOST" => "localhost",
     "DATABASE_NAME" => "hub",
     "DATABASE_USERNAME" => "root",
-    "DATABASE_PASSWORD" => "root",
+    "DATABASE_PASSWORD" => "",
     // 
     // Error Config
     // =========================================================================
