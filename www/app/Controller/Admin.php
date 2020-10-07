@@ -38,7 +38,7 @@ class Admin extends Core\Controller {
         if(Model\Role::isAdmin($User)) {
             
             // Set any dependencies, data and render the view.
-            $this->initVar();
+            $this->initExternals();
             $this->View->addCSS("css/google_font.css");
             $this->View->addCSS("css/custom.css");
             $this->View->addJS("js/custom.js");
@@ -59,7 +59,7 @@ class Admin extends Core\Controller {
 
     public function profile(){
 
-        $this->initVar();
+        $this->initExternals();
         $this->View->addCSS("css/google_font.css");
         $this->View->addCSS("css/custom.css");
         $this->View->addJS("js/custom.js");
