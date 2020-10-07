@@ -58,15 +58,35 @@ class Admin extends Core\Controller {
         ]);
     }
 
-    public function profile(){
+    public function profile($user = "") {
 
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        // Set any dependencies, data and render the view.
         $this->initExternals();
         $this->View->addCSS("css/google_font.css");
         $this->View->addCSS("css/custom.css");
         $this->View->addJS("js/custom.js");
 
-        $this->View->renderTemplateTwig("/admin/index2.php", [
-            "title" => "Admin"
+        $this->View->render("/admin/profile/index", [
+            "title" => "Profile",
+            "data" => (new Presenter\Profile($User->data()))->present()
         ]);
     }
 
@@ -113,31 +133,4 @@ class Admin extends Core\Controller {
     //     return false;
     // }
 
-    public function profile() {
-        // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
-
-        // Get an instance of the user model using the ID stored in the session. 
-        $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
-        if (!$User = Model\User::getInstance($userID)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        if(Model\Role::isAdmin($User)) {
-            
-            // Set any dependencies, data and render the view.
-            $this->View->addCSS("css/google_font.css");
-            $this->View->addCSS("css/custom.css");
-            $this->View->addJS("js/custom.js");
-        
-            // Render admin view
-            $this->View->renderTemplate("admin", "admin/profile/index", [
-                "title" => "Admin",
-                "data" => (new Presenter\Profile($User->data()))->present(),
-                "user" => $User->data()
-            ]);
-        } else {
-            Utility\Redirect::to(APP_URL);
-        }
-    }
 }
