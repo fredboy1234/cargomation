@@ -73,8 +73,8 @@ class Model {
      */
     protected function find($table, array $where = []) {
         $data = $this->Db->select($table, $where);
-        if ($data->count()) {
-            $this->data = $data->first();
+       if ($data->count()) {
+           $this->data = $data->first();
         }
         return $this;
     }

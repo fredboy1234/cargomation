@@ -2,6 +2,7 @@
 
 use App\Utility\Config;
 use App\Utility\Flash;
+
 ?>
 <body class="hold-transition login-page">
 <div id="feedback" class="container">
@@ -45,7 +46,7 @@ if (($errors = Flash::session(Config::get("SESSION_ERRORS")))):
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign in to start your session.</p>
 
       <form action="<?= $this->makeUrl("login/_login"); ?>" method="post">
         <div class="input-group mb-3">

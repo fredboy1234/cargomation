@@ -1,11 +1,11 @@
 $(function () {
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000
-    });
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     timer: 3000
+    // });
 
     //dataTables
     $("#admin_datable").DataTable({
@@ -30,18 +30,11 @@ $(function () {
 
     //Toast success
     $(document).on( "click", ".toastsSuccess", function() {
-        Toast.fire({
-            icon: 'success',
-            title: 'Successfully added new client. '
-        })
+        toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
     });
-
     //Toast error
     $(document).on( "click", ".toastError", function() {
-        Toast.fire({
-          icon: 'error',
-          title: 'Failed to add new client. '
-        })
+        toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
     });
 
     // $(".datepicker").datetimepicker({
