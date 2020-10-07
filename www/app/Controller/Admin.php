@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core;
 use App\Model;
 use App\Utility;
+use App\Presenter;
 
 use App\Core\View;
 
@@ -61,4 +62,32 @@ class Admin extends Core\Controller {
     //     }
     //     return false;
     // }
+
+    public function profile() {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // Get an instance of the user model using the ID stored in the session. 
+        $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
+        if (!$User = Model\User::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        if(Model\Role::isAdmin($User)) {
+            
+            // Set any dependencies, data and render the view.
+            $this->View->addCSS("css/google_font.css");
+            $this->View->addCSS("css/custom.css");
+            $this->View->addJS("js/custom.js");
+        
+            // Render admin view
+            $this->View->renderTemplate("admin", "admin/profile/index", [
+                "title" => "Admin",
+                "data" => (new Presenter\Profile($User->data()))->present(),
+                "user" => $User->data()
+            ]);
+        } else {
+            Utility\Redirect::to(APP_URL);
+        }
+    }
 }
