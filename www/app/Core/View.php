@@ -15,9 +15,16 @@ class View {
 
     /** @var string The HTML used to load in external style sheets. */
     private $_linkTags = "";
+    private static $_staticLinkTags = "";
 
     /** @var string The HTML used to load in external script files. */
     private $_scriptTags = "";
+    private static $_staticScriptTags = "";
+
+    public function __construct(){
+        View::$_staticLinkTags = $this;
+        View::$_staticScriptTags = $this;
+    }
 
     /**
      * Add CSS: Creates the <link> tags, which defines a link between the view
@@ -36,7 +43,6 @@ class View {
         foreach ($files as $file) {
             // Check that the file exists in the public directory, creating the
             // <link> tag if it true.
-            
             if (file_exists(PUBLIC_ROOT . "/" . $file)) {
                 $this->_linkTags .= '<link type="text/css" rel="stylesheet" href="' . $this->makeURL($file) . '" />' . "\n";
             }
@@ -212,8 +218,29 @@ class View {
             $loader = new \Twig\Loader\Filesystemloader(VIEW_PATH);
             $twig = new \Twig\Environment($loader);
         }
+       
+        $cssLinks = new \Twig\TwigFunction("getCss", function () {
+            return View::$_staticLinkTags->_linkTags;
+        });
+
+        $jsLinks = new \Twig\TwigFunction("getJs", function () {
+            return View::$_staticScriptTags->_scriptTags;
+        });
+
+        $currentPage = new \Twig\TwigFunction("getCurrentPage", function () {
+            return $_SERVER['REQUEST_URI'];
+            // return View::displayCurrentPage($url);
+        });
+
+        $twig->addFunction($cssLinks);
+        $twig->addFunction($jsLinks);
+        $twig->addFunction($currentPage);
 
         echo $twig->render($template, $args);
+    }
+
+    public static function displayCurrentPage($dir){
+        echo VIEW_PATH . $dir; die;
     }
 
 }

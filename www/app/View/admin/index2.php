@@ -3,11 +3,11 @@
 {% block title %}A2B HUB{% endblock %}
 
 {% block css %}
-  <?= $this->getCSS(); ?>
+  {{ getCss()|raw }}
 {% endblock %}
 
-{% block body %}
 
+{% block body %}
   <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
       <!-- Navbar -->
@@ -18,12 +18,35 @@
       <!-- /.Main Sidebar Container -->
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        {% include ('admin/search_result.php') %}
-        {% include ('admin/datatable.php') %}
+        {% set url = getCurrentPage() %}
+
+        {% if '/admin' in url %}
+
+          {% include ('admin/search_result.php') %}
+          {% include ('admin/datatable.php') %}
+
+        {% elseif '/admin/profile' in url %}
+
+          {% include ('admin/profile.php') %}
+
+        {% elseif '/admin/userLogs' in url %}
+
+          {% include ('admin/user_logs.php') %}
+
+        {% else %}
+
+          {% include ('_template/404.php') %}
+
+        {% endif %}
+
         {% include ('admin/add_form.php') %}
-        {% include ('admin/profile.php') %}
+        
       </div>
       <!-- /.Content Wrapper. Contains page content -->
     </div>
   </body>
+{% endblock %}
+
+{% block js %}
+  {{ getJs()|raw }}
 {% endblock %}
