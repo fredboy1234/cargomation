@@ -42,7 +42,12 @@ class Database {
             $name = Config::get("DATABASE_NAME");
             $username = Config::get("DATABASE_USERNAME");
             $password = Config::get("DATABASE_PASSWORD");
-            $this->_PDO = new PDO("mysql:host={$host};dbname={$name}", $username, $password);
+			
+			/*Conn String for MySQL*/
+            /*$this->_PDO = new PDO("mysql:host={$host};dbname={$name}", $username, $password);*/
+			
+			/*Conn String for MsSQL*/
+			$this->_PDO = new PDO("sqlsrv:Server={$host};Database={$name}", $username, $password);
         } catch (PDOException $e) {
             die($e->getMessage());
         }
@@ -65,12 +70,12 @@ class Database {
                 $field = $where[0];
                 $value = $where[2];
                 $params = [":value" => $value];
-                if (!$this->query("{$action} FROM `{$table}` WHERE `{$field}` {$operator} :value", $params)->error()) {
+                if (!$this->query("{$action} FROM {$table} WHERE {$field} {$operator} :value", $params)->error()) {
                     return $this;
                 }
             }
         } else {
-            if (!$this->query("{$action} FROM `{$table}`")->error()) {
+            if (!$this->query("{$action} FROM {$table}")->error()) {
                 return $this;
             }
         }
@@ -146,9 +151,9 @@ class Database {
             foreach ($fields as $key => $value) {
                 $params[":{$key}"] = $value;
             }
-            $columns = implode("`, `", array_keys($fields));
+            $columns = implode(", ", array_keys($fields));
             $values = implode(", ", array_keys($params));
-            if (!$this->query("INSERT INTO `{$table}` (`{$columns}`) VALUES({$values})", $params)->error()) {
+            if (!$this->query("INSERT INTO {$table} ({$columns}) VALUES({$values})", $params)->error()) {
                 return($this->_PDO->lastInsertId());
             }
         }
@@ -221,13 +226,13 @@ class Database {
             $params = [];
             foreach ($fields as $key => $value) {
                 $params[":{$key}"] = $value;
-                $set .= "`{$key}` = :$key";
+                $set .= "{$key} = :$key";
                 if ($x < count($fields)) {
                     $set .= ", ";
                 }
                 $x ++;
             }
-            if (!$this->query("UPDATE `{$table}` SET {$set} WHERE `id` = {$id}", $params)->error()) {
+            if (!$this->query("UPDATE {$table} SET {$set} WHERE id = {$id}", $params)->error()) {
                 return true;
             }
         }

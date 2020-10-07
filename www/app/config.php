@@ -4,10 +4,10 @@ return [
     // 
     // Core Config
     // =========================================================================
-    "DATABASE_HOST" => "localhost",
-    "DATABASE_NAME" => "hub",
-    "DATABASE_USERNAME" => "root",
-    "DATABASE_PASSWORD" => "root",
+    "DATABASE_HOST" => "a2bserver.database.windows.net",
+    "DATABASE_NAME" => "a2bfreighthub_db",
+    "DATABASE_USERNAME" => "A2B_Admin",
+    "DATABASE_PASSWORD" => "v9jn9cQ9dF7W",
     // 
     // Error Config
     // =========================================================================
