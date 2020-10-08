@@ -56,7 +56,7 @@ class Admin extends Core\Controller {
             // Render view template
             // Usage renderTemplate(string|$template, string|$filepath, array|$data)
             $this->View->renderTemplate("admin", "admin/index", [
-                "title" => "Admin",
+                "title" => "Dashboard",
                 "data" => (new Presenter\Profile($User->data()))->present()
             ]);
         } else {

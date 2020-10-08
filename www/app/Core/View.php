@@ -198,6 +198,9 @@ class View {
     public function renderTemplate($template, $filepath, array $data = []) {
         $this->addData($data);
         $this->getFile('_template/' . $template . '/header');
+        $this->getFile('_template/' . $template . '/navbar');
+        $this->getFile('_template/' . $template . '/sidebar');
+        $this->getFile('_template/' . $template . '/breadcrumb');
         $this->getFile($filepath);
         $this->getFile('_template/' . $template . '/footer');
     } 

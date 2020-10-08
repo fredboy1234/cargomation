@@ -6,6 +6,8 @@ use App\Core;
 use App\Model;
 use App\Utility;
 
+use App\Core\View;
+
 /**
  * Register Controller:
  *
@@ -25,10 +27,10 @@ class Register extends Core\Controller {
     public function index() {
         
         // Check that the user is unauthenticated.
-        Utility\Auth::checkUnauthenticated();
+        Utility\Auth::checkAuthenticated();
 
         // Set any dependencies, data and render the view.
-        $this->View->render("register/index", [
+        $this->View->renderTemplate("admin", "register/index", [
             "title" => "Register"
         ]);
     }
