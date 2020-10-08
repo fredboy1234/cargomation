@@ -38,24 +38,34 @@ class Admin extends Core\Controller {
 
         if(Model\Role::isAdmin($User)) {
             
-            // Set any dependencies, data and render the view.
-            $this->initExternals();
-            $this->View->addCSS("css/google_font.css");
-            $this->View->addCSS("css/custom.css");
-            $this->View->addJS("js/custom.js");
+            // $arr = $this->View->loadResouces(PUBLIC_ROOT . "/" . "/bower_components/");
+            // var_dump($arr);
 
-            // Render admin view
-            // $this->View->renderTemplate("admin", "admin/index2", [
-            //     "title" => "Admin"
-            //     // "user" => $User->data()
-            // ]);
+            // Set any dependencies, data and render the view.
+            // $dir = PUBLIC_ROOT . "/bower_components/";
+
+            // $css_files = Utility\Scan::scanDIR($dir, ["css", "min.css"], true); 
+            // $this->View->loadCSS($css_files);
+
+            // $js_files = Utility\Scan::scanDIR($dir, ["js", "min.js"], true); 
+            // $this->View->loadCSS($js_files);
+            // $this->View->addCSS("css/google_font.css");
+            // $this->View->addCSS("css/custom.css");
+            // $this->View->addJS("js/custom.js");
+
+            // Render view template
+            // Usage renderTemplate(string|$template, string|$filepath, array|$data)
+            $this->View->renderTemplate("admin", "admin/index", [
+                "title" => "Admin",
+                "data" => (new Presenter\Profile($User->data()))->present()
+            ]);
         } else {
             Utility\Redirect::to(APP_URL);
         }
 
-        $this->View->renderTemplateTwig("/admin/index2.php", [
-            "title" => "Admin"
-        ]);
+        // $this->View->renderTemplateTwig("/admin/index.php", [
+        //     "title" => "Admin"
+        // ]);
     }
 
     public function profile($user = "") {
@@ -79,7 +89,7 @@ class Admin extends Core\Controller {
         }
 
         // Set any dependencies, data and render the view.
-        $this->initExternals();
+        // $this->initExternals();
         $this->View->addCSS("css/google_font.css");
         $this->View->addCSS("css/custom.css");
         $this->View->addJS("js/custom.js");
@@ -90,37 +100,16 @@ class Admin extends Core\Controller {
         ]);
     }
 
-    public function userLogs(){
+    public function logs(){
 
-        $this->initExternals();
+        // $this->initExternals();
         $this->View->addCSS("css/google_font.css");
         $this->View->addCSS("css/custom.css");
         $this->View->addJS("js/custom.js");
 
-        $this->View->renderTemplateTwig("/admin/index2.php", [
-            "title" => "Admin"
+        $this->View->render("/admin/logs/index", [
+            "title" => "Logs"
         ]);
-    }
-
-    public function initExternals() {
-        $this->View->addCSS("bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css");
-        $this->View->addCSS("bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css");
-        $this->View->addCSS("bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css");
-        $this->View->addCSS("bower_components/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css");
-        // $this->View->addCSS("bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.css");
-        $this->View->addCSS("bower_components/admin-lte/plugins/toastr/toastr.min.css");
-        $this->View->addCSS("bower_components/admin-lte/dist/css/adminlte.css");
-
-        $this->View->addJS("bower_components/admin-lte/plugins/jquery/jquery.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js");
-        // $this->View->addJS("bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js");
-        $this->View->addJS("bower_components/admin-lte/plugins/toastr/toastr.min.js");
-        $this->View->addJS("bower_components/admin-lte/dist/js/adminlte.js");
     }
 
     // public function isAuthorized($User){
