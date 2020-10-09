@@ -518,6 +518,14 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">
+                <i class="fas fa-plus"> </i>
+                  Add New User
+                </a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
+              </div>
+              <!-- /.card-footer -->
             </div>
             <!-- /.card -->
             <!-- Map card -->

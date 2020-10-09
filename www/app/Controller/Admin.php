@@ -90,11 +90,11 @@ class Admin extends Core\Controller {
 
         // Set any dependencies, data and render the view.
         // $this->initExternals();
-        $this->View->addCSS("css/google_font.css");
-        $this->View->addCSS("css/custom.css");
-        $this->View->addJS("js/custom.js");
+        // $this->View->addCSS("css/google_font.css");
+        // $this->View->addCSS("css/custom.css");
+        // $this->View->addJS("js/custom.js");
 
-        $this->View->render("/admin/profile/index", [
+        $this->View->renderTemplate("admin", "/admin/profile/index", [
             "title" => "Profile",
             "data" => (new Presenter\Profile($User->data()))->present()
         ]);

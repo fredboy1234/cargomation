@@ -35,7 +35,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="admin/profile" class="nav-link">
+            <a href="/admin/profile" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Profile
@@ -44,7 +44,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="admin/shipment" class="nav-link">
+            <a href="/admin/shipment" class="nav-link">
               <i class="nav-icon fas fa-ship"></i>
               <p>
                 Shipment
@@ -53,7 +53,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="admin/transport" class="nav-link">
+            <a href="/admin/transport" class="nav-link">
               <i class="nav-icon fas fa-truck"></i>
               <p>
                 Transport
@@ -62,7 +62,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="admin/logs" class="nav-link">
+            <a href="/admin/logs" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 User Logs
@@ -71,7 +71,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="login/logout" class="nav-link">
+            <a href="/login/logout" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
               <p>
                 Log Out

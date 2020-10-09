@@ -20,7 +20,8 @@ class Profile extends Core\Presenter {
      */
     public function format() {
         return [
-            "name" => $this->data->first_name . " " . $this->data->last_name
+            "name" => $this->data->first_name . " " . $this->data->last_name,
+            "email" => $this->data->email
         ];
     }
 
