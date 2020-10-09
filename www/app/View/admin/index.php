@@ -432,69 +432,92 @@
             <!-- /.card -->  
             <!-- TABLE: LATEST ORDERS -->
             <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">Curret User</h3>
+              <div class="card-header">
+                <h3 class="card-title">Client List</h3>
 
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table m-0">
-                    <thead>
+              <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed table-hover text-nowrap">
+                  <thead>
                     <tr>
-                      <th>User ID</th>
+                      <th>ID</th>
                       <th>Name</th>
-                      <th>Role</th>
-                      <th>Action</th>
+                      <th>Email</th>
+                      <th>Subcription</th>
+                      <th>Status</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                  </thead>
+                  <tbody>
                     <tr>
-                      <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                      <td>Rey</td>
-                      <td><span class="badge badge-success">Client</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR9843</a></td>
-                      <td>Freid</td>
-                      <td><span class="badge badge-info">Admin</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
+                      <td>183</td>
+                      <td>John Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-success">Approved</span></td>
                     </tr>
                     <tr>
-                      <td><a href="pages/examples/invoice.html">OR9845</a></td>
-                      <td>John</td>
-                      <td><span class="badge badge-danger">Unverified</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
+                      <td>219</td>
+                      <td>Alexander Pierce</td> 
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-warning">Pending</span></td>
                     </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.table-responsive -->
+                    <tr>
+                      <td>657</td>
+                      <td>Bob Doe</td> 
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-primary">Approved</span></td>
+                    </tr>
+                    <tr>
+                      <td>175</td>
+                      <td>Mike Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-danger">Denied</span></td>
+                    </tr>
+                    <tr>
+                      <td>134</td>
+                      <td>Jim Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-success">Approved</span></td>
+                    </tr>
+                    <tr>
+                      <td>494</td>
+                      <td>Victoria Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-warning">Pending</span></td>
+                    </tr>
+                    <tr>
+                      <td>832</td>
+                      <td>Michael Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-primary">Approved</span></td>
+                    </tr>
+                    <tr>
+                      <td>982</td>
+                      <td>Rocky Doe</td>
+                      <td>client@mail.com</td>
+                      <td>Basic</td>
+                      <td><span class="badge badge-danger">Denied</span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">
-                <i class="fas fa-plus"> </i>
-                  Add New User
-                </a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
-              </div>
-              <!-- /.card-footer -->
             </div>
             <!-- /.card -->
             <!-- Map card -->
