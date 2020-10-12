@@ -49,5 +49,12 @@
 <script src="/bower_components/admin-lte/dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
+
+<!-- AdminLTE App -->
+<script src="/bower_components/admin-lte/dist/js/adminlte.min.js"></script>
+
+<script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
+
+
 </body>
 </html>
