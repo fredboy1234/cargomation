@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core;
 use App\Model;
 use App\Utility;
+use App\Presenter;
 
 use App\Core\View;
 
@@ -38,17 +39,18 @@ class Client extends Core\Controller {
         $this->initExternals();
  
         // Set any dependencies, data and render the view.
-        $this->View->addCSS("css/google_font.css");
-        $this->View->addCSS("css/custom.css");
-        $this->View->addJS("js/custom.js");
+        // $this->View->addCSS("css/google_font.css");
+        // $this->View->addCSS("css/custom.css");
+        // $this->View->addJS("js/custom.js");
 
         // $this->View->render("client/index", [
         //     "title" => "Index",
         //     "user" => $User->data()
         // ]);
 
-        $this->View->renderTemplateTwig("/client/index.php", [
-            "title" => "Client"
+        $this->View->renderTemplate("client", "/client/index", [
+            "title" => "Dashboard",
+            "data" => (new Presenter\Profile($User->data()))->present()
         ]);
 
         //Core\View::renderTemplate('client/index.html');
