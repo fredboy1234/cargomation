@@ -2,6 +2,9 @@
 
 namespace App\Core;
 
+
+use App\Utility\Html;
+
 /**
  * Core View:
  *
@@ -213,8 +216,7 @@ class View {
      * @return void
      * @since 1.0
      */
-    public static function renderTemplateTwig($template, array $args = [])
-    {
+    public static function renderTemplateTwig($template, array $args = []) {
         static $twig = null;
 
         if ($twig === null) {
@@ -242,8 +244,12 @@ class View {
         echo $twig->render($template, $args);
     }
 
-    public static function displayCurrentPage($dir){
+    public static function displayCurrentPage($dir) {
         echo VIEW_PATH . $dir; die;
+    }
+
+    public static function anchor($href, $text = null, $attr = array(), $secure = null) {
+        Html::anchor($href, $text, $attr, $secure);
     }
 
 }

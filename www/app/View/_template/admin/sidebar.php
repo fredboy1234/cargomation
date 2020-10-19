@@ -27,18 +27,17 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="/" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
+          <?php
+              $menu_1 = '<i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard
+                        </p>';
+            ?>
+            <?php echo $this->anchor('/', $menu_1, array('class' => 'nav-link active')); ?>
           </li>
           <li class="nav-item">
             <a href="/admin/profile" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
-              <p>
-                Profile
+              <p>Profile
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
