@@ -176,6 +176,38 @@ class Admin extends Core\Controller {
         ]);
     }
 
+    public function document($user = "") {
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        // Set any dependencies, data and render the view.
+        // $this->initExternals();
+        // $this->View->addCSS("css/google_font.css");
+        // $this->View->addCSS("css/custom.css");
+        // $this->View->addJS("js/custom.js");
+
+        $this->View->renderWithoutHeaderAndFooter("/admin/document", [
+            "title" => "Document",
+            // "data" => (new Presenter\Profile($User->data()))->present()
+        ]);
+    }
+
     // public function isAuthorized($User){
     //     $id = $User->data()->role;
     //     $role = Model\Role::getRole($id);

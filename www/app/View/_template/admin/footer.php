@@ -51,6 +51,13 @@
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
 
+<script>
+  //JS script
+  $('.badge').on('click', function(e){
+    e.preventDefault();
 
+    $('#myModal').modal('show').find('.modal-body').load("/admin/document");
+  });
+</script>
 </body>
 </html>
