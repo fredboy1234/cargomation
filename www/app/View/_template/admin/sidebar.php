@@ -32,7 +32,7 @@
                         <p>Dashboard
                         </p>';
             ?>
-            <?php echo $this->anchor('/', $menu_1, array('class' => 'nav-link active')); ?>
+            <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
           </li>
           <li class="nav-item">
             <a href="/admin/profile" class="nav-link">

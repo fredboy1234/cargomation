@@ -186,88 +186,88 @@
                       <td>183</td>
                       <td>John Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-success" load="23">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>219</td>
                       <td>Alexander Pierce</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>657</td>
                       <td>Bob Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>175</td>
                       <td>Mike Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>134</td>
                       <td>Jim Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>494</td>
                       <td>Victoria Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>832</td>
                       <td>Michael Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>982</td>
                       <td>Rocky Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-danger">Missing</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                   </tbody>
@@ -287,24 +287,24 @@
 </div>
 
 <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Shipment</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Shipment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <!-- /.modal -->
+      <div class="modal-body">
+        <p>Loading&hellip;</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
