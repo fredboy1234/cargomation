@@ -96,4 +96,17 @@ class Model {
         return(!$this->Db->update($table, $recordID, $fields));
     }
 
+    /**
+     * Query: Execute a specified queries in the database.
+     * @access protected
+     * @param string $sql
+     * @param array $params
+     * @return \App\Core\Model
+     * @since 1.0.7
+     * @throws Exception
+     */
+    protected function query($sql, array $params = []) {
+        return($this->Db->query($sql, $params));
+    }
+
 }
