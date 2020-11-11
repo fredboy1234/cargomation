@@ -179,7 +179,7 @@ class Admin extends Core\Controller {
 
     public function document($shipment_id = "") {
 
-        $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
+        $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
         $this->View->render("admin/document", [
             "title" => "Shipment API",
