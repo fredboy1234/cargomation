@@ -172,7 +172,7 @@
                     <tr>
                       <th>Shipment ID</th>
                       <th>Client Name</th>
-                      <th>Date</th>
+                      <th>ETD</th>
                       <th>HBL</th>
                       <th>CIV</th>
                       <th>PKL</th>
@@ -182,33 +182,34 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <?php if(empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
                     <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
-                      <td><span class="doc badge badge-warning" data-id="S00001012">Pending</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                      <td><?= $value->shipment_num; ?></td>
+                      <td><?= $value->first_name . " " . $value->last_name; ?></td>
+                      <td><?= date_format(date_create($value->etd), "Y/m/d H:i:s"); ?></td>
+                      <td><span class="doc badge badge-success" data-type="HBL" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-type="CIV" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
+                      <td><span class="doc badge badge-warning" data-type="PKL" data-id="<?= $value->shipment_num; ?>">Pending</span></td>
+                      <td><span class="doc badge badge-success" data-type="PKD" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
+                      <td><?= (isset($value->comment)) ?: "<em>No comment</em>"; ?></td>
                     </tr>
+                  <?php endforeach; ?>
                     <tr>
-                      <td>219</td>
+                      <td>S00000000</td>
                       <td>Alexander Pierce</td>
-                      <td>11-7-2014</td>
-                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
-                      <td><span class="doc badge badge-warning" data-id="S00001055">Pending</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
-                      <td><span class="doc badge badge-warning" data-id="S00001055">Pending</span></td>
-                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
+                      <td>2020/04/02 10:30:10</td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-warning">Pending</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>657</td>
+                      <td>S00000000</td>
                       <td>Bob Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
@@ -217,9 +218,9 @@
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>175</td>
+                      <td>S00000000</td>
                       <td>Mike Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-danger">Missing</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-danger">Missing</span></td>
@@ -228,9 +229,9 @@
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>134</td>
+                      <td>S00000000</td>
                       <td>Jim Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-warning">Pending</span></td>
                       <td><span class="doc badge badge-warning">Pending</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
@@ -239,9 +240,9 @@
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>494</td>
+                      <td>S00000000</td>
                       <td>Victoria Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-warning">Pending</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-danger">Missing</span></td>
@@ -250,9 +251,9 @@
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>832</td>
+                      <td>S00000000</td>
                       <td>Michael Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-warning">Pending</span></td>
                       <td><span class="doc badge badge-danger">Missing</span></td>
@@ -261,9 +262,9 @@
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
-                      <td>982</td>
+                      <td>S00000000</td>
                       <td>Rocky Doe</td>
-                      <td>11-7-2014</td>
+                      <td>2020/04/02 10:30:10</td>
                       <td><span class="doc badge badge-danger">Missing</span></td>
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td><span class="doc badge badge-warning">Pending</span></td>
@@ -271,6 +272,12 @@
                       <td><span class="doc badge badge-success">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
+                  <?php else : ?>
+                    <tr>
+                    <td colspan="9" align="center">No shipment data available
+                    <td>
+                    </tr>
+                  <?php endif; ?>
                   </tbody>
                 </table>
               </div>
@@ -291,7 +298,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Shipment</h4>
+        <h4 class="modal-title">Document</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -1,4 +1,3 @@
-<?php echo $this->data; ?>
 <style>
 body{
     background:#eee;
@@ -196,12 +195,13 @@ text-decoration:none;
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h1>Shipment ID: S00001012</h1>
-                        <span>Document Type: Commencial Invoice (CIV)</span><br>
+                        <h1>Shipment ID: <?= $this->data['shipment_id'] ?></h1>
+                        <span>Document Type: <?= $this->data['type']; ?></span><br>
                         <span>File Count: 5</span><br><br>
                         <div class="col-md-12 animated fadeInRight">
                             <div class="row">
                                 <div class="col-lg-12">
+                                <?php foreach ($this->document as $key => $file) : ?>
                                     <div class="file-box">
                                         <div class="file">
                                             <a href="#">
@@ -210,74 +210,14 @@ text-decoration:none;
                                                     <i class="fas fa-file-pdf"></i>
                                                 </div>
                                                 <div class="file-name">
-                                                    Document_2020.pdf
+                                                    <?= $file->name; ?>
                                                     <br>
-                                                    <small>Added: Jan 11, 2020</small>
+                                                    <small>Added: <?= date_format(date_create($file->saved_date), "M d, Y"); ?></small>
                                                 </div>
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="file-box">
-                                        <div class="file">
-                                            <a href="#">
-                                                <span class="corner"></span>
-                                                <div class="icon">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    Document_2020.pdf
-                                                    <br>
-                                                    <small>Added: Jan 11, 2020</small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="file-box">
-                                        <div class="file">
-                                            <a href="#">
-                                                <span class="corner"></span>
-                                                <div class="icon">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    Document_2020.pdf
-                                                    <br>
-                                                    <small>Added: Jan 11, 2020</small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="file-box">
-                                        <div class="file">
-                                            <a href="#">
-                                                <span class="corner"></span>
-                                                <div class="icon">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    Document_2020.pdf
-                                                    <br>
-                                                    <small>Added: Jan 11, 2020</small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="file-box">
-                                        <div class="file">
-                                            <a href="#">
-                                                <span class="corner"></span>
-                                                <div class="icon">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    Document_2020.pdf
-                                                    <br>
-                                                    <small>Added: Jan 11, 2020</small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-
+                                <?php endforeach; ?>
                                 </div>
                             </div>
                         <div>
