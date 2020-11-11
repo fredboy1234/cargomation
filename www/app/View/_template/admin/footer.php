@@ -54,9 +54,12 @@
 <script>
   //JS script
   $('.doc').on('click', function(e){
-    e.preventDefault();
-    
-    $('#myModal').modal('show').find('.modal-body').load("/admin/document/" + $(this).data('id'));
+    e.preventDefault(); var type = "";
+    if ($(this).data('type')) { type = "/" + $(this).data('type'); }
+    $('#myModal').modal('show').find('.modal-body').load("/admin/document/" + $(this).data('id') + type);
+  });
+  $('#myModal').on('hidden.bs.modal', function (e){ 
+    $('#myModal .modal-body').empty().append('Loading...');
   });
 </script>
 </body>
