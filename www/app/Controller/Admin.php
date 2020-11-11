@@ -115,11 +115,19 @@ class Admin extends Core\Controller {
             }
         }
 
-        // Get an instance of the user model using the user ID passed to the
-        // controll action. 
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
+
+        if (!$Shipment = Model\Shipment::getInstance()) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $shipment_id = $Shipment->getShipment($user, "shipment_num");
+
+        $Document = Model\Document::getInstance();
 
         // Set any dependencies, data and render the view.
         // $this->initExternals();
@@ -129,11 +137,12 @@ class Admin extends Core\Controller {
 
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
-            // "data" => (new Presenter\Profile($User->data()))->present()
+            "shipment" => $Shipment->getShipment($user),
+            "document" => $Document->getDocument($shipment_id)
         ]);
     }
 
-    public function transport($user = "") {
+    public function transport($shipment_id = "") {
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -177,13 +186,39 @@ class Admin extends Core\Controller {
         ]);
     }
 
-    public function document($shipment_id = "") {
+    public function document($shipment_id = "", $type = "", $user = "") {
 
-        $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+
+        //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        
+        // if (!$Shipment = Model\Shipment::getInstance()) {
+        //     Utility\Redirect::to(APP_URL);
+        // }
+
+        $Document = Model\Document::getInstance();
 
         $this->View->render("admin/document", [
             "title" => "Shipment API",
-            "data" => file_get_contents($api_url)
+            "data" => ["shipment_id" => $shipment_id, "type" => $type], 
+            "document" => $Document->getDocument($shipment_id, $type)
         ]);
     }
 
