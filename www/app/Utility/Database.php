@@ -39,15 +39,23 @@ class Database {
     private function __construct() {
         try {
             $host = Config::get("DATABASE_HOST");
-            $name = Config::get("DATABASE_NAME");
+            $dbname = Config::get("DATABASE_NAME");
             $username = Config::get("DATABASE_USERNAME");
             $password = Config::get("DATABASE_PASSWORD");
-			
-			/*Conn String for MySQL*/
-            /*$this->_PDO = new PDO("mysql:host={$host};dbname={$name}", $username, $password);*/
-			
-			/*Conn String for MsSQL*/
-			$this->_PDO = new PDO("sqlsrv:Server={$host};Database={$name}", $username, $password);
+
+            # MS SQL Server PDO
+            $this->_PDO  = new PDO("sqlsrv:server={$host};database={$dbname}", $username, $password);  
+        
+            # MS SQL Server and Sybase with PDO_DBLIB  
+            # $this->_PDO  = new PDO("mssql:host={$host};dbname={$dbname}", $username, $password);  
+            # $this->_PDO  = new PDO("sybase:host={$host};dbname={$dbname}", $username, $password);  
+        
+            # MySQL with PDO_MYSQL  
+            # $this->_PDO  = new PDO("mysql:host={$host};dbname={$dbname}", $username, $password);  
+        
+            # SQLite Database  
+            # $this->_PDO  = new PDO("sqlite:my/database/path/database.db");  
+
         } catch (PDOException $e) {
             die($e->getMessage());
         }
