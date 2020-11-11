@@ -57,7 +57,8 @@ class Admin extends Core\Controller {
             // Usage renderTemplate(string|$template, string|$filepath, array|$data)
             $this->View->renderTemplate("admin", "admin/index", [
                 "title" => "Dashboard",
-                "data" => (new Presenter\Profile($User->data()))->present()
+                "data" => (new Presenter\Profile($User->data()))->present(),
+                "users" => Model\User::getUsersInstance()
             ]);
         } else {
             Utility\Redirect::to(APP_URL);
@@ -176,35 +177,13 @@ class Admin extends Core\Controller {
         ]);
     }
 
-    public function document($user = "") {
+    public function document($shipment_id = "") {
 
-        // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
+        $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
 
-        // If no user ID has been passed, and a user session exists, display
-        // the authenticated users profile.
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
-
-        // Get an instance of the user model using the user ID passed to the
-        // controll action. 
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        // Set any dependencies, data and render the view.
-        // $this->initExternals();
-        // $this->View->addCSS("css/google_font.css");
-        // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
-
-        $this->View->renderWithoutHeaderAndFooter("/admin/document", [
-            "title" => "Document",
-            // "data" => (new Presenter\Profile($User->data()))->present()
+        $this->View->render("admin/document", [
+            "title" => "Shipment API",
+            "data" => file_get_contents($api_url)
         ]);
     }
 

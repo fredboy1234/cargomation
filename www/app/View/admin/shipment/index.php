@@ -186,22 +186,23 @@
                       <td>183</td>
                       <td>John Doe</td>
                       <td>11-7-2014</td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
+                      <td><span class="doc badge badge-warning" data-id="S00001012">Pending</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001012">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>
                       <td>219</td>
                       <td>Alexander Pierce</td>
                       <td>11-7-2014</td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
+                      <td><span class="doc badge badge-warning" data-id="S00001055">Pending</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
+                      <td><span class="doc badge badge-warning" data-id="S00001055">Pending</span></td>
+                      <td><span class="doc badge badge-success" data-id="S00001055">Approved</span></td>
                       <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                     </tr>
                     <tr>

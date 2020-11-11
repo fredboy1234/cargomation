@@ -1,5 +1,6 @@
+<?php echo $this->data; ?>
 <style>
-body{margin-top:20px;
+body{
     background:#eee;
 }
 
@@ -197,7 +198,7 @@ text-decoration:none;
                     <div class="card-body">
                         <h1>Shipment ID: S00001012</h1>
                         <span>Document Type: Commencial Invoice (CIV)</span><br>
-                        <span>File Count: 5</span><br>
+                        <span>File Count: 5</span><br><br>
                         <div class="col-md-12 animated fadeInRight">
                             <div class="row">
                                 <div class="col-lg-12">

@@ -457,69 +457,21 @@
                       <th>Status</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>219</td>
-                      <td>Alexander Pierce</td> 
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>657</td>
-                      <td>Bob Doe</td> 
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-primary">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>175</td>
-                      <td>Mike Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-danger">Denied</span></td>
-                    </tr>
-                    <tr>
-                      <td>134</td>
-                      <td>Jim Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>494</td>
-                      <td>Victoria Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>832</td>
-                      <td>Michael Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-primary">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>982</td>
-                      <td>Rocky Doe</td>
-                      <td>client@mail.com</td>
-                      <td>Basic</td>
-                      <td><span class="badge badge-danger">Denied</span></td>
-                    </tr>
+                  <?php foreach ($this->users as $key => $value) { ?>
+                  <tr>
+                    <td><?php echo $value->id; ?></td>
+                    <td><?php echo $value->first_name . " " . $value->last_name; ?></td>
+                    <td><?php echo $value->email; ?></td>
+                    <td>Basic</td>
+                    <td><span class="badge badge-success">Approved</span></td>
+                  </tr>
+                  <?php } ?>
                   </tbody>
                 </table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
-                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">
+                <a href="/register" class="btn btn-sm btn-info float-left">
                 <i class="fas fa-plus"> </i>
                   Add New User
                 </a>

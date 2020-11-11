@@ -59,8 +59,6 @@ class User extends Core\Model {
         $field = filter_var($user, FILTER_VALIDATE_EMAIL) ? "email" : (is_numeric($user) ? "id" : "username");
         return($this->find("users", [$field, "=", $user]));
     }
-    
-    
 
     /**
      * Update User: Updates a specified user record in the database.
@@ -75,6 +73,11 @@ class User extends Core\Model {
         if (!$this->update("users", $fields, $userID)) {
             throw new Exception(Utility\Text::get("USER_UPDATE_EXCEPTION"));
         }
+    }
+
+    public static function getUsersInstance() {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT id, first_name, last_name, email FROM users")->results();
     }
 
 }

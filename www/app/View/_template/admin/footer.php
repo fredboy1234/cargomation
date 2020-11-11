@@ -53,10 +53,10 @@
 
 <script>
   //JS script
-  $('.badge').on('click', function(e){
+  $('.doc').on('click', function(e){
     e.preventDefault();
-
-    $('#myModal').modal('show').find('.modal-body').load("/admin/document");
+    
+    $('#myModal').modal('show').find('.modal-body').load("/admin/document/" + $(this).data('id'));
   });
 </script>
 </body>
