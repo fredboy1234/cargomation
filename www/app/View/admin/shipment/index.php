@@ -182,7 +182,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <?php if(empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
+                  <?php if(!empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
                     <tr>
                       <td><?= $value->shipment_num; ?></td>
                       <td><?= $value->first_name . " " . $value->last_name; ?></td>
@@ -274,8 +274,7 @@
                     </tr>
                   <?php else : ?>
                     <tr>
-                    <td colspan="9" align="center">No shipment data available
-                    <td>
+                      <td colspan="9" align="center">No shipment data available<td>
                     </tr>
                   <?php endif; ?>
                   </tbody>
