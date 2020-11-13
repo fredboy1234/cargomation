@@ -462,8 +462,24 @@
                     <td><?php echo $value->id; ?></td>
                     <td><?php echo $value->first_name . " " . $value->last_name; ?></td>
                     <td><?php echo $value->email; ?></td>
-                    <td>Basic</td>
-                    <td><span class="badge badge-success">Approved</span></td>
+                    <td><?php echo $value->plan; ?></td>
+                    <td><?php switch ($value->status) {
+                                case 1:
+                                    $status = "Verified";
+                                    $badge = 'success';
+                                  break;
+                                case 2:
+                                    $status = "Pending";
+                                    $badge = 'warning';
+                                  break;
+                                
+                                default:
+                                  # code...
+                                  break;
+                              } 
+                          echo '<span class="badge badge-' . $badge . '">' . $status . '</span>'
+                        ?>
+                    </td>
                   </tr>
                   <?php } ?>
                   </tbody>

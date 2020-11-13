@@ -20,19 +20,38 @@
 
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                        <b>Account Type</b> <a class="float-right">Premium</a>
+                        <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
                         </li>
                         <li class="list-group-item">
-                        <b>Users</b> <a class="float-right">10/<b>25</b></a>
+                        <b>Users</b> <a class="float-right"><?= $this->user->account_info[0]->user_count; ?>/<b>
+                        <?= $this->user->account_info[0]->max_users; ?></b></a>
                         </li>
                         <li class="list-group-item">
-                        <b>Status</b> <a class="float-right">Verified</a>
+                        <?php switch ($this->user->account_info[0]->status) {
+                            case 1:
+                                $status = "Verified";
+                                $badge = 'success';
+                                $attr = 'disabled';
+                            break;
+                            case 2:
+                                $status = "Pending";
+                                $badge = 'warning';
+                                $attr = '';
+                            break;
+                            
+                            default:
+                            # code...
+                            break;
+                        } ?>
+                        <b>Status</b> <a class="float-right"><?= $status ?></a>
                         </li>
                     </ul>
 
-                    <a href="#" class="btn btn-success btn-block disabled">
-                        <i class="fas fa-user-check mr-1"></i><b>Verified</b>
-                    </a>
+                    <?php
+                        echo '<a href="/register" class="btn btn-' . $badge . ' btn-block ' . $attr . '">';
+                        echo '    <i class="fas fa-user-check mr-1"></i><b>' . $status . '</b>';
+                        echo '</a>';
+                    ?>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -45,15 +64,15 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                <strong><i class="fas fa-book mr-1"></i> Contact No.</strong>
+                <strong><i class="fas fa-phone mr-1"></i> </strong>
 
-                <p class="text-muted float-right">0491 570 159</p>
+                <p class="text-muted float-right"><?= $this->user->user_info[0]->phone; ?></p>
 
                 <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i></strong>
 
-                <p class="text-muted float-right">Sydney, Australia</p>
+                <p class="text-muted float-right"><?= $this->user->user_addr[0]->address; ?></p>
 
                 <hr>
 

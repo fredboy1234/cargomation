@@ -43,11 +43,10 @@ class Admin extends Core\Controller {
 
             // Set any dependencies, data and render the view.
             // $dir = PUBLIC_ROOT . "/bower_components/";
-
             // $css_files = Utility\Scan::scanDIR($dir, ["css", "min.css"], true); 
             // $this->View->loadCSS($css_files);
-
             // $js_files = Utility\Scan::scanDIR($dir, ["js", "min.js"], true); 
+            // Set any dependencies, data and render the view.
             // $this->View->loadCSS($js_files);
             // $this->View->addCSS("css/google_font.css");
             // $this->View->addCSS("css/custom.css");
@@ -98,14 +97,12 @@ class Admin extends Core\Controller {
         }
 
         // Set any dependencies, data and render the view.
-        // $this->initExternals();
-        // $this->View->addCSS("css/google_font.css");
         // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
 
         $this->View->renderTemplate("admin", "/admin/profile/index", [
             "title" => "Profile",
-            "data" => (new Presenter\Profile($User->data()))->present()
+            "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($user)
         ]);
     }
 
