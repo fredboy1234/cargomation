@@ -134,6 +134,7 @@ class Admin extends Core\Controller {
         // $this->View->addCSS("css/google_font.css");
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
+        $this->View->addCSS("css/shipment.css");
 
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
