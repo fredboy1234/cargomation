@@ -210,6 +210,8 @@ text-decoration:none;
                                                 <div class="file-name">
                                                     <?= $file->name; ?>
                                                     <br>
+                                                    <small>Upload Source: <?=$file->upload_src;?></small>
+                                                    <br>
                                                     <small>Added: <?= date_format(date_create($file->saved_date), "M d, Y"); ?></small>
                                                 </div>
                                             </a>
