@@ -50,7 +50,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
-
+<!-- Data Table -->
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script>
   //JS script
   $('.doc').on('click', function(e){
@@ -60,6 +61,17 @@
   });
   $('#myModal').on('hidden.bs.modal', function (e){ 
     $('#myModal .modal-body').empty().append('Loading...');
+  });
+  var table = $('.table').DataTable({
+    searching: true, 
+    paging: false, 
+    info: false,
+    bFilter: false,
+    sDom: 'lrtip'
+  });
+
+  $('#doc_search').on( 'keyup', function () {
+    table.search( this.value ).draw();
   });
 </script>
 </body>
