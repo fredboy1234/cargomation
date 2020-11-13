@@ -187,8 +187,6 @@ a:hover{
 text-decoration:none;    
 }
 </style>
-
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -197,7 +195,7 @@ text-decoration:none;
                     <div class="card-body">
                         <h1>Shipment ID: <?= $this->data['shipment_id'] ?></h1>
                         <span>Document Type: <?= $this->data['type']; ?></span><br>
-                        <span>File Count: 5</span><br><br>
+                        <span>File Count: <?= count($this->document)?></span><br><br>
                         <div class="col-md-12 animated fadeInRight">
                             <div class="row">
                                 <div class="col-lg-12">
