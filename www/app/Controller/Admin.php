@@ -69,6 +69,14 @@ class Admin extends Core\Controller {
         // ]);
     }
 
+    /**
+     * Profile: Renders the profile view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
     public function profile($user = "") {
 
         // Check that the user is authenticated.
@@ -101,6 +109,14 @@ class Admin extends Core\Controller {
         ]);
     }
 
+    /**
+     * Shipment: Renders the shipment view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
     public function shipment($user = "") {
 
         // Check that the user is authenticated.
@@ -142,6 +158,14 @@ class Admin extends Core\Controller {
         ]);
     }
 
+    /**
+     * Transport: Renders the transport view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
     public function transport($shipment_id = "") {
 
         // Check that the user is authenticated.
@@ -174,7 +198,15 @@ class Admin extends Core\Controller {
         ]);
     }
 
-    public function logs(){
+    /**
+     * Log: Renders the log view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
+    public function log(){
 
         // $this->initExternals();
         // $this->View->addCSS("css/google_font.css");
@@ -186,6 +218,14 @@ class Admin extends Core\Controller {
         ]);
     }
 
+    /**
+     * Document: Renders the document view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
     public function document($shipment_id = "", $type = "", $user = "") {
 
 
