@@ -77,7 +77,38 @@ class User extends Core\Model {
 
     public static function getUsersInstance() {
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT id, first_name, last_name, email FROM users")->results();
+        return $Db->query("SELECT users.id, 
+                                user_info.first_name, 
+                                user_info.last_name, 
+                                user_info.email,
+                                user_info.account_status AS 'status',
+                                subscription.name AS 'plan' FROM users
+                                LEFT JOIN user_info ON  users.id = user_info.user_id
+                                LEFT JOIN subscription ON  user_info.account_type = subscription.id")->results();
+    }
+
+    public static function getProfile($user) {
+        $Db = Utility\Database::getInstance();
+        $user_info = $Db->query("SELECT * FROM user_info WHERE user_id = '{$user}'")->results();
+        $user_addr = $Db->query("SELECT CONCAT(user_info.address,' ',user_info.city,', ',countries.countryname) AS 'address' 
+                                    FROM user_info
+                                    LEFT JOIN countries ON user_info.country_id = countries.idcountry 
+                                    WHERE user_info.id = '{$user}'")->results();
+        $account_info = $Db->query("SELECT users.id,
+                                user_info.account_users AS 'user_count',
+                                user_info.account_type AS 'type',
+                                user_info.account_status AS 'status',
+                                subscription.name AS 'plan',
+                                subscription.max_users AS 'max_users' FROM users
+                                LEFT JOIN user_info ON  users.id = user_info.user_id
+                                LEFT JOIN subscription ON  user_info.account_type = subscription.id
+                                WHERE users.id = '{$user}'")->results();
+
+        return [
+            "user_info" => $user_info,
+            "user_addr" => $user_addr,
+            "account_info" => $account_info
+        ];
     }
 
 }
