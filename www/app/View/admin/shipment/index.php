@@ -186,7 +186,7 @@
                     <tr>
                       <td><?= $value->shipment_num; ?></td>
                       <td><?= $value->first_name . " " . $value->last_name; ?></td>
-                      <td><?= date_format(date_create($value->etd), "Y/m/d H:i:s"); ?></td>
+                      <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
                       <td><span class="doc badge badge-success" data-type="HBL" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
                       <td><span class="doc badge badge-success" data-type="CIV" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
                       <td><span class="doc badge badge-warning" data-type="PKL" data-id="<?= $value->shipment_num; ?>">Pending</span></td>
@@ -195,83 +195,6 @@
                       <td><?= (isset($value->comment)) ?: "<em>No comment</em>"; ?></td>
                     </tr>
                   <?php endforeach; ?>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Alexander Pierce</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Bob Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Mike Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Jim Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Victoria Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Michael Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>S00000000</td>
-                      <td>Rocky Doe</td>
-                      <td>2020/04/02 10:30:10</td>
-                      <td><span class="doc badge badge-danger">Missing</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-warning">Pending</span></td>
-                      <td><span class="doc badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
                   <?php else : ?>
                     <tr>
                       <td colspan="9" align="center">No shipment data available<td>
