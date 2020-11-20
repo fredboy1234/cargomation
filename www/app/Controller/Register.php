@@ -46,11 +46,11 @@ class Register extends Core\Controller {
     public function _register() {
         
         // Check that the user is unauthenticated.
-        Utility\Auth::checkUnauthenticated();
-        
+        //Utility\Auth::checkUnauthenticated();
+
         // Process the register request, redirecting to the login controller if
         // successful or back to the register controller if not.
-        if (Model\UserRegister::register()) {
+        if (Model\UserRegister::register()) { 
             Utility\Redirect::to(APP_URL . "login");
         }
         Utility\Redirect::to(APP_URL . "register");

@@ -15,10 +15,10 @@ class UserRegister {
 
     /** @var array The register form inputs. */
     private static $_inputs = [
-        "first_name" => [
+        "first-name" => [
             "required" => true
         ],
-        "last_name" => [
+        "last-name" => [
             "required" => true
         ],
         "email" => [
@@ -26,14 +26,14 @@ class UserRegister {
             "required" => true,
             "unique" => "users"
         ],
-        "password" => [
-            "min_characters" => 6,
-            "required" => true
-        ],
-        "password_repeat" => [
-            "matches" => "password",
-            "required" => true
-        ],
+        // "password" => [
+        //     "min_characters" => 6,
+        //     "required" => true
+        // ],
+        // "password_repeat" => [
+        //     "matches" => "password",
+        //     "required" => true
+        // ],
     ];
 
     /**
@@ -46,7 +46,7 @@ class UserRegister {
      * @since 1.0.2
      */
     public static function register() {
-
+        
         // Validate the register form inputs.
         if (!Utility\Input::check($_POST, self::$_inputs)) {
             return false;
@@ -65,9 +65,35 @@ class UserRegister {
                 "first_name" => Utility\Input::post("first-name"),
                 "last_name" => Utility\Input::post("last-name"),
                 "password" => Utility\Hash::generate(Utility\Input::post("password"), $salt),
-                "salt" => $salt
-                
+                "salt" => $salt    
             ]);
+
+            //insert user info
+            $User->insertUserInfo([
+                "user_id" => $userID,
+                "first_name" => Utility\Input::post("first-name"),
+                "last_name" => Utility\Input::post("last-name"),
+                "email" => Utility\Input::post("email"),
+                "phone" =>"",
+                "address"=>"",
+                "city" => "",
+                "postcode" =>"",
+                "country_id" =>"",
+                "account_id" =>"",
+                "account_users" => "",
+                "account_type" => "",
+                "account_status" => "",    
+            ]);
+
+            //insert user role
+            $User->insertUserRole([
+                "user_id" => $userID,
+                "role_id" => "1", //since we dont know how to determine if user if admin or client we just set this to 1.
+            ]);
+            
+            
+            //create ftp for user
+            self::addFTP(Utility\Input::post("email"));
 
             // Write all necessary data into the session as the user has been
             // successfully registered and return the user's unique ID.
@@ -77,6 +103,36 @@ class UserRegister {
             Utility\Flash::danger($ex->getMessage());
         }
         return false;
+    }
+
+    /**
+     * Request.
+     * @access public
+     * @since 1.0.2
+     */
+    public static function addFTP($email){
+        $curl = curl_init();
+ 
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "http://a2bfreighthub.com/ftp_msc/",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "ftuser=".$email,
+        CURLOPT_HTTPHEADER => array(
+        "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
+        "Content-Type: application/x-www-form-urlencoded"
+        ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        echo $response;
     }
 
 }

@@ -25,9 +25,9 @@
                                 <label>Subscription <span class="text-danger">*</span></label>
                                 <select class="form-control" id="subcription-input"  name="subcription">
                                     <option> </option>
-                                    <option>Basic</option>
-                                    <option>Standard</option>
-                                    <option>Premium</option>
+                                    <option value="1">Basic</option>
+                                    <option value="2">Standard</option>
+                                    <option value="3">Premium</option>
                                 </select>
                             </div>
                             <?php if(false): ?>

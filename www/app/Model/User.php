@@ -31,6 +31,36 @@ class User extends Core\Model {
     }
 
     /**
+     * Create User Info: Inserts a new user info into the database.
+     * @access public
+     * @param array $fields
+     * @return null
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function insertUserInfo(array $fields) {
+        if (!$userID = $this->create("user_info", $fields)) {
+            throw new Exception(Utility\Text::get("USER_CREATE_EXCEPTION"));
+        }
+        return null;
+    }
+
+    /**
+     * Create User Role: Inserts a new user Role into the database.
+     * @access public
+     * @param array $fields
+     * @return null
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function insertUserRole(array $fields) {
+        if (!$userID = $this->create("user_role", $fields)) {
+            throw new Exception(Utility\Text::get("USER_CREATE_EXCEPTION"));
+        }
+        return null;
+    }
+
+    /**
      * Get Instance: Returns an instance of the User model if the specified user
      * exists in the database. 
      * @access public
