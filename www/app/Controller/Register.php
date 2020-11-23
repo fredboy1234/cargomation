@@ -48,9 +48,11 @@ class Register extends Core\Controller {
         // Check that the user is unauthenticated.
         //Utility\Auth::checkUnauthenticated();
 
+        $accId = Utility\Session::get(Utility\Config::get("SESSION_USER"));
+
         // Process the register request, redirecting to the login controller if
         // successful or back to the register controller if not.
-        if (Model\UserRegister::register()) { 
+        if (Model\UserRegister::register($accId)) { 
             Utility\Redirect::to(APP_URL . "login");
         }
         Utility\Redirect::to(APP_URL . "register");

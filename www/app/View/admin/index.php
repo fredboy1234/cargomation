@@ -464,6 +464,10 @@
                     <td><?php echo $value->email; ?></td>
                     <td><?php echo $value->plan; ?></td>
                     <td><?php switch ($value->status) {
+                                case 0:
+                                  $status = "Pending";
+                                  $badge = 'warning';
+                                break;
                                 case 1:
                                     $status = "Verified";
                                     $badge = 'success';

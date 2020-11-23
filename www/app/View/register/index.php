@@ -30,7 +30,6 @@
                                     <option value="3">Premium</option>
                                 </select>
                             </div>
-                            <?php if(false): ?>
                             <div class="form-group">
                                 <label for="password-input">Password <span class="text-danger">*</span></label>
                                 <input type="password" id="password-input" class="form-control" name="password" />
@@ -39,7 +38,6 @@
                                 <label for="password-repeat-input">Password (Repeat) <span class="text-danger">*</span></label>
                                 <input type="password" id="password-repeat-input" class="form-control" name="password_repeat" />
                             </div>
-                            <?php endif; ?>
                             <input type="hidden" name="csrf_token" value="<?php echo App\Utility\Token::generate(); ?>" />
                             <button type="submit" class="btn btn-primary">Register</button>
                             <a href="<?= $this->makeURL("login"); ?>" class="btn btn-link">Cancel</a>

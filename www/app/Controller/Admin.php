@@ -57,7 +57,7 @@ class Admin extends Core\Controller {
             $this->View->renderTemplate("admin", "admin/index", [
                 "title" => "Dashboard",
                 "data" => (new Presenter\Profile($User->data()))->present(),
-                "users" => Model\User::getUsersInstance()
+                "users" => Model\User::getUsersInstance($userID)
             ]);
         } else {
             Utility\Redirect::to(APP_URL);

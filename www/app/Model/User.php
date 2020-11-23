@@ -108,11 +108,12 @@ class User extends Core\Model {
     /**
      * Get User Instance: Get instance of a specified user record in the database.
      * @access public
+     * @param int $userID
      * @return Db
      * @since 1.0.3
      * @throws Exception
      */
-    public static function getUsersInstance() {
+    public static function getUsersInstance($userID) {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT users.id, 
                                 user_info.first_name, 
@@ -121,7 +122,8 @@ class User extends Core\Model {
                                 user_info.status AS 'status',
                                 subscription.name AS 'plan' FROM users
                                 LEFT JOIN user_info ON  users.id = user_info.user_id
-                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id")->results();
+                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                                WHERE user_info.account_id = {$userID}")->results();
     }
 
     /**

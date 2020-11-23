@@ -26,14 +26,14 @@ class UserRegister {
             "required" => true,
             "unique" => "users"
         ],
-        // "password" => [
-        //     "min_characters" => 6,
-        //     "required" => true
-        // ],
-        // "password_repeat" => [
-        //     "matches" => "password",
-        //     "required" => true
-        // ],
+        "password" => [
+            "min_characters" => 6,
+            "required" => true
+        ],
+        "password_repeat" => [
+            "matches" => "password",
+            "required" => true
+        ],
     ];
 
     /**
@@ -45,7 +45,7 @@ class UserRegister {
      * @return boolean
      * @since 1.0.2
      */
-    public static function register() {
+    public static function register($accId) {
         
         // Validate the register form inputs.
         if (!Utility\Input::check($_POST, self::$_inputs)) {
@@ -79,21 +79,21 @@ class UserRegister {
                 "city" => "",
                 "postcode" =>"",
                 "country_id" =>"",
-                "account_id" =>"",
+                "account_id" => $accId,
                 "account_users" => "",
-                "account_type" => "",
-                "account_status" => "",    
+                "subscription_id" => Utility\Input::post("subcription"),
+                "status" => "",    
             ]);
 
             //insert user role
             $User->insertUserRole([
                 "user_id" => $userID,
-                "role_id" => "1", //since we dont know how to determine if user if admin or client we just set this to 1.
+                "role_id" => "3", //since we dont know how to determine if user if admin or client we just set this to 3.
             ]);
             
             
             //create ftp for user
-            self::addFTP(Utility\Input::post("email"));
+            self::createFTP(Utility\Input::post("email"));
 
             // Write all necessary data into the session as the user has been
             // successfully registered and return the user's unique ID.
@@ -110,23 +110,23 @@ class UserRegister {
      * @access public
      * @since 1.0.2
      */
-    public static function addFTP($email){
+    public static function createFTP($email){
         $curl = curl_init();
  
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "http://a2bfreighthub.com/ftp_msc/",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "ftuser=".$email,
-        CURLOPT_HTTPHEADER => array(
-        "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
-        "Content-Type: application/x-www-form-urlencoded"
-        ),
+            CURLOPT_URL => "http://a2bfreighthub.com/ftp_msc/",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "ftuser=".$email,
+            CURLOPT_HTTPHEADER => array(
+            "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
+            "Content-Type: application/x-www-form-urlencoded"
+            ),
         ));
         
         $response = curl_exec($curl);

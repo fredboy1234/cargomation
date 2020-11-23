@@ -92,7 +92,7 @@ class Role extends Core\Model {
     public static function isAdmin($User) {
         $user_id = $User->data()->id;
         $role = new Role;
-        if($role->getRole($user_id) == 'admin') {
+        if($role->getRole($user_id) == 'admin' || $role->getRole($user_id) == 'client') {
             return true;
         }
         return false;
