@@ -26,14 +26,14 @@ class UserRegister {
             "required" => true,
             "unique" => "users"
         ],
-        // "password" => [
-        //     "min_characters" => 6,
-        //     "required" => true
-        // ],
-        // "password_repeat" => [
-        //     "matches" => "password",
-        //     "required" => true
-        // ],
+        "password" => [
+            "min_characters" => 6,
+            "required" => true
+        ],
+        "password_repeat" => [
+            "matches" => "password",
+            "required" => true
+        ],
     ];
 
     /**
@@ -81,7 +81,7 @@ class UserRegister {
                 "country_id" =>"",
                 "account_id" =>"",
                 "account_users" => "",
-                "account_type" => "",
+                "account_type" => Utility\Input::post("subcription"),
                 "account_status" => "",    
             ]);
 

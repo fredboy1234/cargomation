@@ -30,7 +30,7 @@
                                     <option value="3">Premium</option>
                                 </select>
                             </div>
-                            <?php if(false): ?>
+                            <?php if(true): ?>
                             <div class="form-group">
                                 <label for="password-input">Password <span class="text-danger">*</span></label>
                                 <input type="password" id="password-input" class="form-control" name="password" />

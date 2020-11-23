@@ -44,7 +44,7 @@ class Register extends Core\Controller {
      * @since 1.0.2
      */
     public function _register() {
-        
+       
         // Check that the user is unauthenticated.
         //Utility\Auth::checkUnauthenticated();
 
