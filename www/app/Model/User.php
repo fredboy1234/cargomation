@@ -105,18 +105,33 @@ class User extends Core\Model {
         }
     }
 
+    /**
+     * Get User Instance: Get instance of a specified user record in the database.
+     * @access public
+     * @return Db
+     * @since 1.0.3
+     * @throws Exception
+     */
     public static function getUsersInstance() {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT users.id, 
                                 user_info.first_name, 
                                 user_info.last_name, 
                                 user_info.email,
-                                user_info.account_status AS 'status',
+                                user_info.status AS 'status',
                                 subscription.name AS 'plan' FROM users
                                 LEFT JOIN user_info ON  users.id = user_info.user_id
-                                LEFT JOIN subscription ON  user_info.account_type = subscription.id")->results();
+                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id")->results();
     }
 
+    /**
+     * Get Profile: Get a specified user info in the database.
+     * @access public
+     * @param int $user
+     * @return array|object
+     * @since 1.0.3
+     * @throws Exception
+     */
     public static function getProfile($user) {
         $Db = Utility\Database::getInstance();
         $user_info = $Db->query("SELECT * FROM user_info WHERE user_id = '{$user}'")->results();
@@ -126,12 +141,12 @@ class User extends Core\Model {
                                     WHERE user_info.id = '{$user}'")->results();
         $account_info = $Db->query("SELECT users.id,
                                 user_info.account_users AS 'user_count',
-                                user_info.account_type AS 'type',
-                                user_info.account_status AS 'status',
+                                user_info.subscription_id AS 'type',
+                                user_info.status AS 'status',
                                 subscription.name AS 'plan',
                                 subscription.max_users AS 'max_users' FROM users
                                 LEFT JOIN user_info ON  users.id = user_info.user_id
-                                LEFT JOIN subscription ON  user_info.account_type = subscription.id
+                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
                                 WHERE users.id = '{$user}'")->results();
 
         return [
