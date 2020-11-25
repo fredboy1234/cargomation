@@ -2,7 +2,6 @@
 body{
     background:#eee;
 }
-
 .file-box {
   float: left;
   width: 220px;
@@ -108,6 +107,7 @@ body{
   padding: 10px;
   background-color: #f8f8f8;
   border-top: 1px solid #e7eaec;
+  min-height: 125px;
 }
 .file-name small {
   color: #676a6c;

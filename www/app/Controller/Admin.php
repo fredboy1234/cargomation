@@ -151,6 +151,7 @@ class Admin extends Core\Controller {
 
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
+            "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
             "document" => $Document->getDocument($shipment_id)
         ]);
