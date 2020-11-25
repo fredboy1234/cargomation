@@ -13,96 +13,102 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body" style="display: none;">
-            <div class="row">
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Shipment ID</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="Ex.: SHP001">
-                    </div>
+            <form id="addvance-search-form">
+              <div class="row">
+                <div class="col-md-4" data-select2-id="29">
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">Shipment ID</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="ETA" placeholder="">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="client_name" placeholder="">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
                 </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-                    </div>
+                <!-- /.col -->
+                <div class="col-md-4" data-select2-id="29">
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="consignee" placeholder="">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="consignor" placeholder="">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
+                      </div>
+                  </div>
+                  <!-- /.form-group -->
                 </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    
-                    <div class="col-sm-6">
-                      <!-- checkbox -->
-                      <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
-                      <div class="form-group">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <label class="form-check-label">Approved</label>
+                <!-- /.col -->
+                <div class="col-md-4" data-select2-id="29">
+                  <div class="form-group row">
+                      
+                      <div class="col-sm-6">
+                        <!-- checkbox -->
+                        <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
+                        <div class="form-group">
+                          <div class="form-check">
+                            <input class="form-check-input" name="status" type="checkbox" checked value="approved">
+                            <label class="form-check-label">Approved</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" name="status" type="checkbox" value="approval">
+                            <label class="form-check-label">For Approval</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" name="status" type="checkbox" value="missing">
+                            <label class="form-check-label">Missing</label>
+                          </div>
                         </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <label class="form-check-label">For Approval</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <label class="form-check-label">Missing</label>
+                      </div> 
+                      <div class="col-sm-6">
+                        <!-- radio -->
+                        <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
+                        <div class="form-group">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="origin" value="cargowise">
+                            <label class="form-check-label">Cargowise</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="origin" value="hub" checked>
+                            <label class="form-check-label">Hub</label>
+                          </div>
                         </div>
                       </div>
-                    </div> 
-                    <div class="col-sm-6">
-                      <!-- radio -->
-                      <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
-                      <div class="form-group">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="radio1">
-                          <label class="form-check-label">Cargowise</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="radio1" checked>
-                          <label class="form-check-label">Hub</label>
-                        </div>
-                      </div>
-                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                  </div>
+                  <!-- /.form-group -->
                 </div>
-                <!-- /.form-group -->
+                <!-- /.col -->
               </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
+              <!-- /.row -->
+            </form>
+            <!-- /.form -->
             <?php if(false): ?>
             <h5>Custom Color Variants</h5>
             <div class="row">
