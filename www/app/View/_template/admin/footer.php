@@ -56,7 +56,7 @@
   //JS script
   var _url = document.domain;
 
-  $('.doc').on('click', function(e){
+  $(document).on('click','.doc', function(e){
     e.preventDefault(); var type = "";
     if ($(this).data('type')) { type = "/" + $(this).data('type'); }
     $('#myModal').modal('show').find('.modal-body').load("/admin/document/" + $(this).data('id') + type);
