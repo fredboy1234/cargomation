@@ -54,7 +54,9 @@
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script>
   //JS script
-  $('.doc').on('click', function(e){
+  var _url = document.domain;
+
+  $(document).on('click','.doc', function(e){
     e.preventDefault(); var type = "";
     if ($(this).data('type')) { type = "/" + $(this).data('type'); }
     $('#myModal').modal('show').find('.modal-body').load("/admin/document/" + $(this).data('id') + type);
@@ -72,6 +74,66 @@
 
   $('#doc_search').on( 'keyup', function () {
     table.search( this.value ).draw();
+  });
+  
+  $('input[name="ETA"]').daterangepicker({
+    //timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    autoUpdateInput: false,
+    locale: {
+      //format: 'M/DD hh:mm A'
+      format: 'M/DD/YYYY'
+    }
+  });
+
+  $('input[name="ETA"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  //for advance search.
+  $("#advance-search-btn").on("click",function(){
+    var data = $("#addvance-search-form").serializeArray();
+    var query_data = {};
+    var html="";
+    $.each(data,function(key,value){
+      var index = value.name;
+      var val = value.value;
+      query_data[index] = val;
+    });
+    console.log(query_data);
+    $.ajax({
+      type: "POST",
+      url: "/admin/advanceSearch/",
+      ContentType: 'application/json',
+      data: query_data,
+      beforeSend: function(){
+        $("table tbody").html('<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty">Loading...</td></tr>');
+      },
+      success: function(response){
+        console.log(response);
+       if(response.length > 2){
+          $.each(JSON.parse(response),function(key,val){
+          var date = new Date(val.etd);
+          var newdate= (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear(); 
+          html += `<tr>
+                    <td>${val.shipment_num}</td>
+                    <td>${val.first_name +" "+ val.last_name }</td>
+                    <td>${newdate}</td>
+                    <td><span class="doc badge badge-success" data-type="HBL" data-id="${val.shipment_num}">Approved</span></td>
+                    <td><span class="doc badge badge-success" data-type="CIV" data-id="${val.shipment_num}">Approved</span></td>
+                    <td><span class="doc badge badge-warning" data-type="PKL" data-id="${val.shipment_num}">Pending</span></td>
+                    <td><span class="doc badge badge-success" data-type="PKD" data-id="${val.shipment_num}">Approved</span></td>
+                    <td><span class="doc badge badge-success" data-id="${val.shipment_num}">Approved</span></td>
+                    <td>${typeof(val.comment)!="undefined" ? val.comment : "<em>No comment</em>"}</td>
+                  </tr>`;
+        });
+       }else{
+         html ='<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty">No matching records found</td></tr>';
+       }
+       $("table tbody").html(html);
+      }
+    });
   });
 </script>
 </body>

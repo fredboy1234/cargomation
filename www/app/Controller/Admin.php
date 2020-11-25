@@ -148,12 +148,13 @@ class Admin extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addCSS("css/shipment.css");
-
+        
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
-            "document" => $Document->getDocument($shipment_id)
+            "document" => $Document->getDocument($shipment_id),
+            //"doc_search" => $Shipment->getDocumentBySearch($_POST),
         ]);
     }
 
@@ -257,7 +258,7 @@ class Admin extends Core\Controller {
         $this->View->render("admin/document", [
             "title" => "Shipment API",
             "data" => ["shipment_id" => $shipment_id, "type" => $type], 
-            "document" => $Document->getDocument($shipment_id, $type)
+            "document" => $Document->getDocument($shipment_id, $type),
         ]);
     }
 
@@ -270,5 +271,11 @@ class Admin extends Core\Controller {
     //     }
     //     return false;
     // }
+
+    public function advanceSearch(){
+        
+        $Shipment = Model\Shipment::getInstance();
+        echo json_encode($Shipment->getDocumentBySearch($_POST));
+    }
 
 }

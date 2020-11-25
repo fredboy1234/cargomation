@@ -47,4 +47,46 @@ class Shipment extends Core\Model {
 
     }
 
+    public static function getDocumentBySearch($data){
+        
+        $Db = Utility\Database::getInstance();
+        $where = "WHERE shipment.id is not null ";
+
+        if($data['shipment_id'] !="" ){
+            $where .= " and shipment.shipment_num = '{$data['shipment_id']}'";
+        }
+        if($data['ETA'] != ""){
+            $date =  explode(" - ",$data['ETA']);
+            $start_date = date_format(date_create($date[0]), "Y-m-d");
+            $end_date = date_format(date_create($date[1]), "Y-m-d");
+            $where .= " and shipment.eta between cast('{$start_date}' as date) and cast('{$end_date}' as date)";
+        }
+        if($data['client_name'] != ""){
+            $where .= " and concat_ws('',users.first_name,' ',users.last_name) like '%{$data['client_name']}%'";
+        }
+
+        if($data['consignee'] !=""){
+            $where .= " and shipment.consignee like '%{$data['consignee']}%'";
+        }
+
+        if($data['consignor'] !=""){
+            $where .= " and shipment.consignor like '%{$data['consignor']}%'";
+        }
+
+        if($data['container'] != ""){
+            $where .= " and shipcontainer.containershipnumber = '{$data['container']}'";
+        }
+        if($data['origin'] != ""){
+            $where .= " and document.upload_src = '{$data['origin']}'";
+        }
+       
+        return $Db->query("SELECT *
+                            FROM shipment 
+                            LEFT JOIN users ON users.id = shipment.user_id
+                            LEFT JOIN document ON document.shipment_id = shipment.id
+                            LEFT JOIN shipcontainer ON shipcontainer.shipment_id = shipment.id
+                           {$where}")->results();
+       
+    }
+
 }
