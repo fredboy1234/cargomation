@@ -254,6 +254,8 @@ class Admin extends Core\Controller {
 
         $Document = Model\Document::getInstance();
 
+        $this->View->addJS("js/document.js");
+
         $this->View->render("admin/document", [
             "title" => "Shipment API",
             "data" => ["shipment_id" => $shipment_id, "type" => $type], 
@@ -275,6 +277,11 @@ class Admin extends Core\Controller {
         
         $Shipment = Model\Shipment::getInstance();
         echo json_encode($Shipment->getDocumentBySearch($_POST));
+    }
+
+    public function addDocumentStatus(){
+        $Document = Model\Document::getInstance();
+        echo json_encode($Document->addDocumentStatus($_POST));
     }
 
 }

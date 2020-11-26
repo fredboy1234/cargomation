@@ -186,6 +186,18 @@ a.compose-mail {
 a:hover{
 text-decoration:none;    
 }
+.icon #approved,
+.icon #dis-approved{
+  font-size: 2em;
+  display: inline-block;
+  cursor: pointer;
+}
+.icon #approved{
+  color: rgb(28,150, 12);
+}
+.icon #dis-approved{
+  color: rgb(252,0, 5);
+}
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -216,6 +228,10 @@ text-decoration:none;
                                                 </div>
                                             </a>
                                         </div>
+                                        <div class="icon mt-n4" data-id="<?=$file->id?>">
+                                            <div id="approved" data-type="approved" class="col-md-4 offset-md-1 stat"><i class="fas fa-thumbs-up"></i></div>
+                                            <div id="dis-approved" data-type="pending" class="col-md-3 offset-md-1 stat"><i class="fas fa-thumbs-down"></i></div>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                                 </div>
@@ -234,3 +250,4 @@ text-decoration:none;
     </div>
 <!-- /.container-fluid -->
 </section>
+<?= $this->getJS(); ?>

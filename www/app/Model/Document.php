@@ -39,6 +39,14 @@ class Document extends Core\Model {
                                 FROM document 
                                 WHERE shipment_num IN ('" . $shipment_id . "') " . $type)->results();
     }
+
+    public static function addDocumentStatus($data){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("if exists(select * from document_status where document_id='{$data['doc_id']}')
+                            update document_status set status='{$data['doc_status']}' where document_id='{$data['doc_id']}'
+                           else
+                            insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
+    }
 }
 
 
