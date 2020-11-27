@@ -177,7 +177,9 @@
                   <thead>
                     <tr>
                       <th>Shipment ID</th>
-                      <th>Client Name</th>
+                      <!-- <th class="d-none">Client Name</th> -->
+                      <th>Console ID</th>
+                      <th>ETA</th>
                       <th>ETD</th>
                       <th>HBL</th>
                       <th>CIV</th>
@@ -191,7 +193,9 @@
                   <?php if(!empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
                     <tr>
                       <td><?= $value->shipment_num; ?></td>
-                      <td><?= $value->first_name . " " . $value->last_name; ?></td>
+                      <!-- <td class="d-none"><?= $value->first_name . " " . $value->last_name; ?></td> -->
+                      <td><?= $value->console_id?></td>
+                      <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>
                       <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
                       <td><span class="doc badge badge-success" data-type="HBL" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
                       <td><span class="doc badge badge-success" data-type="CIV" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
