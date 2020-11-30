@@ -111,6 +111,7 @@
         $("table tbody").html('<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty">Loading...</td></tr>');
       },
       success: function(response){
+        console.log(response);
        if(response.length > 2){
           $.each(JSON.parse(response),function(key,val){
           var date_etd = new Date(val.etd);

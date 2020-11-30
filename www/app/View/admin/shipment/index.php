@@ -190,18 +190,75 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <?php $stats = $this->document_per_type; ?>
+                  <?php $doc_type = array('HBL','CIV','PKL','PKD');?>
+                  <?php $all_count = 0;?>
                   <?php if(!empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
+                    <?php foreach($doc_type as $doc){
+                          if(isset($stats[$value->shipment_num])){
+                            if(isset($stats[$value->shipment_num][$doc]['pending'])){
+                              $status_arr[$doc]['color'] = "badge-warning";
+                              $status_arr[$doc]['text'] = "Pending";
+                              $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['pending']); 
+                              
+                              $status_arr['All']['color'] = 'badge-warning';
+                              $status_arr['All']['text'] = 'Pending';
+                              $status_arr['All']['count'] += $status_arr[$doc]['count'];
+                            }else if(isset($stats[$value->shipment_num][$doc]['approved'])){
+                              $status_arr[$doc]['color'] = "badge-success";
+                              $status_arr[$doc]['text'] = "Approved";
+                              $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['approved']);
+
+                              $status_arr['All']['color'] = 'badge-success';
+                              $status_arr['All']['text'] = 'Approved';
+                              $status_arr['All']['count'] += $status_arr[$doc]['count'];
+                            }else{
+                              $status_arr[$doc]['color'] = "badge-danger";
+                              $status_arr[$doc]['text'] = "Missing";
+                              $status_arr[$doc]['count'] = 0;
+                            }
+                        }else{
+                          $status_arr[$doc]['color'] = "badge-danger";
+                          $status_arr[$doc]['text'] = "Missing";
+                          $status_arr[$doc]['count'] = 0;
+
+                          $status_arr['All']['color'] = 'badge-danger';
+                          $status_arr['All']['text'] = 'Missing';
+                          $status_arr['All']['count'] = 0;
+                        }
+                     }?>
                     <tr>
                       <td><?= $value->shipment_num; ?></td>
                       <!-- <td class="d-none"><?= $value->first_name . " " . $value->last_name; ?></td> -->
                       <td><?= $value->console_id?></td>
                       <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>
                       <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
-                      <td><span class="doc badge badge-success" data-type="HBL" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
-                      <td><span class="doc badge badge-success" data-type="CIV" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
-                      <td><span class="doc badge badge-warning" data-type="PKL" data-id="<?= $value->shipment_num; ?>">Pending</span></td>
-                      <td><span class="doc badge badge-success" data-type="PKD" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
-                      <td><span class="doc badge badge-success" data-id="<?= $value->shipment_num; ?>">Approved</span></td>
+                      <td>
+                        <span class="doc badge <?=isset($status_arr['HBL']['color'])?$status_arr['HBL']['color']:'badge-danger'?>" data-type="HBL" data-id="<?= $value->shipment_num; ?>">
+                          <?=isset($status_arr['HBL']['text'])?$status_arr['HBL']['text']:'missing'?>
+                        </span>
+                      </td>
+                      <td>
+                        <span class="doc badge <?=isset($status_arr['CIV']['color'])?$status_arr['CIV']['color']:'badge-danger'?>" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
+                          <?=isset($status_arr['CIV']['text'])?$status_arr['CIV']['text']:'missing'?>
+                        </span>
+                      </td>
+                      <td>
+                        <span class="doc badge <?=isset($status_arr['PKL']['color'])?$status_arr['PKL']['color']:'badge-danger'?>" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
+                          <?=isset($status_arr['PKL']['text'])?$status_arr['PKL']['text']:'missing'?>
+                        </span>
+                      </td>
+                      <td>
+                        <span class="doc badge <?=isset($status_arr['PKD']['color'])?$status_arr['PKD']['color']:'badge-danger'?>" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
+                        <?=isset($status_arr['PKD']['text'])?$status_arr['PKD']['text']:'missing'?>
+                        </span>
+                      </td>
+                     
+                      <td>
+                        <span class="doc badge <?=isset($status_arr['All']['color'])?$status_arr['All']['color']:'badge-danger'?>" data-id="<?= $value->shipment_num; ?>">
+                          <?=isset($status_arr['All']['text'])?$status_arr['All']['text']:'missing'?>
+                        </span>
+                      </td>
                       <td><?= (isset($value->comment)) ?: "<em>No comment</em>"; ?></td>
                     </tr>
                   <?php endforeach; ?>

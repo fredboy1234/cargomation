@@ -149,12 +149,17 @@ class Admin extends Core\Controller {
         // $this->View->addJS("js/custom.js");
         $this->View->addCSS("css/shipment.css");
         
+        $docsCollection =array();
+        foreach($Document->getDocument($shipment_id) as $key=>$value){
+            $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
+        }
+       
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
             "document" => $Document->getDocument($shipment_id),
-            //"doc_search" => $Shipment->getDocumentBySearch($_POST),
+            "document_per_type" => $docsCollection,
         ]);
     }
 

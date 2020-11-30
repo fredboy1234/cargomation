@@ -86,7 +86,6 @@ class Shipment extends Core\Model {
                             LEFT JOIN document ON document.shipment_id = shipment.id
                             LEFT JOIN shipcontainer ON shipcontainer.shipment_id = shipment.id
                            {$where}")->results();
-       
     }
-
+    
 }
