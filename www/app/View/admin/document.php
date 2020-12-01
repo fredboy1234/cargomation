@@ -186,8 +186,8 @@ a.compose-mail {
 a:hover{
 text-decoration:none;    
 }
-.icon #status,
-.icon #comment {
+.icon .status,
+.icon .comment {
   font-size: 1.5em;
   display: inline-block;
   cursor: pointer;
@@ -216,7 +216,7 @@ text-decoration:none;
                         <div class="col-md-12 animated fadeInRight">
                             <div class="row">
                                 <div class="col-lg-12">
-                                <?php foreach ($this->document as $key => $file) : var_dump($file); ?>
+                                <?php foreach ($this->document as $key => $file) : ?>
                                     <div class="file-box">
                                         <div class="file">
                                             <a href="#">
@@ -233,9 +233,9 @@ text-decoration:none;
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="icon mt-n4" data-doc_id="<?=$file->document_id?>">
-                                            <div id="status" data-doc_status="<?= $file->status ?>"><i class="fas <?php echo ($file->status == 'approved') ? 'fa-thumbs-up' : 'fa-thumbs-down'; ?>"></i></div>
-                                            <div id="comment" data-type="<?= $file->status ?>" class=""><i class="fas fa-comment"></i></div>
+                                        <div class="icon mt-n4">
+                                            <div class="status" data-doc_id="<?=$file->document_id?>" data-doc_status="<?= $file->status ?>"><i class="fas <?php echo ($file->status == 'approved') ? 'fa-thumbs-up' : 'fa-thumbs-down'; ?>"></i></div>
+                                            <div class="comment" data-type="" class=""><i class="fas fa-comment"></i></div>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
