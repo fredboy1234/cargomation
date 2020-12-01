@@ -186,19 +186,24 @@ a.compose-mail {
 a:hover{
 text-decoration:none;    
 }
-.icon #approved,
-.icon #dis-approved{
-  font-size: 2em;
+.icon #status,
+.icon #comment {
+  font-size: 1.5em;
   display: inline-block;
   cursor: pointer;
+  margin: 5px;
 }
-.icon #approved{
+.fa-thumbs-up {
   color: rgb(28,150, 12);
 }
-.icon #dis-approved{
+.fa-thumbs-down {
   color: rgb(252,0, 5);
 }
+.fa-comment {
+  color: rgb(0, 0, 255)
+}
 </style>
+<?= $this->getCSS(); ?>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -211,7 +216,7 @@ text-decoration:none;
                         <div class="col-md-12 animated fadeInRight">
                             <div class="row">
                                 <div class="col-lg-12">
-                                <?php foreach ($this->document as $key => $file) : ?>
+                                <?php foreach ($this->document as $key => $file) : var_dump($file); ?>
                                     <div class="file-box">
                                         <div class="file">
                                             <a href="#">
@@ -228,9 +233,9 @@ text-decoration:none;
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="icon mt-n4" data-id="<?=$file->id?>">
-                                            <div id="approved" data-type="approved" class="col-md-4 offset-md-1 stat"><i class="fas fa-thumbs-up"></i></div>
-                                            <div id="dis-approved" data-type="pending" class="col-md-3 offset-md-1 stat"><i class="fas fa-thumbs-down"></i></div>
+                                        <div class="icon mt-n4" data-doc_id="<?=$file->document_id?>">
+                                            <div id="status" data-doc_status="<?= $file->status ?>"><i class="fas <?php echo ($file->status == 'approved') ? 'fa-thumbs-up' : 'fa-thumbs-down'; ?>"></i></div>
+                                            <div id="comment" data-type="<?= $file->status ?>" class=""><i class="fas fa-comment"></i></div>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
