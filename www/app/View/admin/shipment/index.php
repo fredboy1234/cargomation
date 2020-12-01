@@ -8,7 +8,6 @@
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
             </div>
           </div>
           <!-- /.card-header -->
@@ -197,11 +196,11 @@
                     <?php foreach($doc_type as $doc){
                           if(isset($stats[$value->shipment_num])){
                             if(isset($stats[$value->shipment_num][$doc]['pending'])){
-                              $status_arr[$doc]['color'] = "badge-warning";
+                              $status_arr[$doc]['color'] = "badge-danger";
                               $status_arr[$doc]['text'] = "Pending";
                               $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['pending']); 
                               
-                              $status_arr['All']['color'] = 'badge-warning';
+                              $status_arr['All']['color'] = 'badge-danger';
                               $status_arr['All']['text'] = 'Pending';
                               $status_arr['All']['count'] += $status_arr[$doc]['count'];
                             }else if(isset($stats[$value->shipment_num][$doc]['approved'])){
@@ -213,16 +212,16 @@
                               $status_arr['All']['text'] = 'Approved';
                               $status_arr['All']['count'] += $status_arr[$doc]['count'];
                             }else{
-                              $status_arr[$doc]['color'] = "badge-danger";
+                              $status_arr[$doc]['color'] = "badge-warning";
                               $status_arr[$doc]['text'] = "Missing";
                               $status_arr[$doc]['count'] = 0;
                             }
                         }else{
-                          $status_arr[$doc]['color'] = "badge-danger";
+                          $status_arr[$doc]['color'] = "badge-warning";
                           $status_arr[$doc]['text'] = "Missing";
                           $status_arr[$doc]['count'] = 0;
 
-                          $status_arr['All']['color'] = 'badge-danger';
+                          $status_arr['All']['color'] = 'badge-warning';
                           $status_arr['All']['text'] = 'Missing';
                           $status_arr['All']['count'] = 0;
                         }

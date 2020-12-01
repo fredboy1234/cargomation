@@ -1,2 +1,6 @@
 .dataTables_empty{
-    text-align: center;}
+    text-align: center;
+}
+.badge {
+    cursor: pointer;
+}
