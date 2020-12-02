@@ -4,3 +4,7 @@
 .badge {
     cursor: pointer;
 }
+.ship-badge{
+    position: relative;
+    top: -13px;
+}
