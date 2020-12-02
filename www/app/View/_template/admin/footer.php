@@ -111,7 +111,7 @@
         $("table tbody").html('<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty">Loading...</td></tr>');
       },
       success: function(response){
-        console.log(response);
+        console.log($.parseJSON(response));
        if(response.length > 2){
           $.each(JSON.parse(response),function(key,val){
           var date_etd = new Date(val.etd);
@@ -119,7 +119,7 @@
           var date_eta = new Date(val.eta);
           var eta_date= (date_eta.getMonth() + 1) + '/' + date_eta.getDate() + '/' +  date_eta.getFullYear(); 
           html += `<tr>
-                    <td>${val.shipment_num}</td>
+                    <td>${val.ex_shipment_num}</td>
                     <td>${(val.console_id != "" ? val.console_id : "No Console ID") }</td>
                     <td>${eta_date}</td>
                     <td>${etd_date}</td>

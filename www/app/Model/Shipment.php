@@ -47,10 +47,11 @@ class Shipment extends Core\Model {
 
     }
 
-    public static function getDocumentBySearch($data){
+    public static function getDocumentBySearch($data,$user){
         
         $Db = Utility\Database::getInstance();
-        $where = "WHERE shipment.id is not null ";
+        //$where = "WHERE shipment.id is not null ";
+        $where = "WHERE users.id = '{$user}' and shipment.shipment_num is not null";
 
         if($data['shipment_id'] !="" ){
             $where .= " and shipment.shipment_num = '{$data['shipment_id']}'";
@@ -59,7 +60,7 @@ class Shipment extends Core\Model {
             $date =  explode(" - ",$data['ETA']);
             $start_date = date_format(date_create($date[0]), "Y-m-d");
             $end_date = date_format(date_create($date[1]), "Y-m-d");
-            $where .= " and shipment.eta between cast('{$start_date}' as date) and cast('{$end_date}' as date)";
+            $where .= " and shipment.eta between '{$start_date}' and '{$end_date}'";
         }
         if($data['client_name'] != ""){
             $where .= " and concat_ws('',users.first_name,' ',users.last_name) like '%{$data['client_name']}%'";
@@ -77,15 +78,31 @@ class Shipment extends Core\Model {
             $where .= " and shipcontainer.containershipnumber = '{$data['container']}'";
         }
         if($data['origin'] != ""){
-            $where .= " and document.upload_src = '{$data['origin']}'";
+           // $where .= " and document.upload_src = '{$data['origin']}'";
         }
-       
-        return $Db->query("SELECT *
-                            FROM shipment 
-                            LEFT JOIN users ON users.id = shipment.user_id
-                            LEFT JOIN document ON document.shipment_id = shipment.id
-                            LEFT JOIN shipcontainer ON shipcontainer.shipment_id = shipment.id
+       //$results = array();
+        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num,*
+                            FROM dbo.users
+                                INNER JOIN dbo.shipment ON dbo.users.id = dbo.shipment.user_id
+                                FULL OUTER JOIN dbo.document ON dbo.shipment.id = dbo.document.shipment_id
+                                FULL OUTER JOIN dbo.Merge_Container ON dbo.shipment.id = dbo.Merge_Container.[SHIPMENT ID]
+                            -- FROM shipment    
+                            -- LEFT JOIN users ON users.id = shipment.user_id
+                            -- LEFT JOIN document ON document.shipment_id = shipment.id
+                            -- LEFT JOIN shipcontainer ON shipcontainer.shipment_id = shipment.id
                            {$where}")->results();
-    }
-    
+                           
+        // if($data['ETA'] == ""){                   
+        //     foreach($query as $value){
+        //         if($value->upload_src == $data['origin']){
+        //             $results[]=$value;
+        //         }
+        //     }
+        // }else{
+        //     $results = $query;
+        // }
+
+        //return $results;
+    }  
+
 }

@@ -153,7 +153,7 @@ class Admin extends Core\Controller {
         foreach($Document->getDocument($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
-       
+
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -279,10 +279,21 @@ class Admin extends Core\Controller {
     //     return false;
     // }
 
-    public function advanceSearch(){
+    public function advanceSearch($user =''){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
         
         $Shipment = Model\Shipment::getInstance();
-        echo json_encode($Shipment->getDocumentBySearch($_POST));
+        echo json_encode($Shipment->getDocumentBySearch($_POST,$user));
     }
 
     public function addDocumentStatus(){
