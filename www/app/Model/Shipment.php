@@ -105,4 +105,11 @@ class Shipment extends Core\Model {
         //return $results;
     }  
 
+    public static function shipmentAssign($data){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("INSERT
+                           INTO shipment_assigned (user_id,shipment_id)
+                           VALUES('{$data['user_id']}','{$data['shipment_id']}')");
+    }
+
 }

@@ -227,7 +227,23 @@
                         }
                      }?>
                     <tr>
-                      <td><?= $value->shipment_num; ?></td>
+                      <td>
+                        <?= $value->shipment_num; ?>
+                        <div class="dropdown d-inline-block">
+                          <a class="col-md-1 col-sm-1" href="#!" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-fw fa-share-square"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-primary" aria-labelledby="dropdownMenuLink">
+                            <?php foreach($this->child_user as $user){?>
+                              <a class="dropdown-item" href="#!">
+                              <button type="button" class="assign d-inline-block btn btn-success btn-xs" data-userid="<?=$user->id?>" data-shipid="<?= $value->shipment_num; ?>">Assign </button>
+                                <span class="d-inline-block"><?=$user->first_name.' '.$user->last_name?></span>
+                              </a>
+                            <?php }?>
+                          </div>
+                        </div>
+                      </td>
                       <!-- <td class="d-none"><?= $value->first_name . " " . $value->last_name; ?></td> -->
                       <td><?= $value->console_id?></td>
                       <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>

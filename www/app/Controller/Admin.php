@@ -137,7 +137,7 @@ class Admin extends Core\Controller {
         if (!$Shipment = Model\Shipment::getInstance()) {
             Utility\Redirect::to(APP_URL);
         }
-
+       
         $shipment_id = $Shipment->getShipment($user, "shipment_num");
 
         $Document = Model\Document::getInstance();
@@ -148,6 +148,7 @@ class Admin extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addCSS("css/shipment.css");
+        $this->View->addJS("js/shipment.js");
         
         $docsCollection =array();
         foreach($Document->getDocument($shipment_id) as $key=>$value){
@@ -160,6 +161,7 @@ class Admin extends Core\Controller {
             "shipment" => $Shipment->getShipment($user),
             "document" => $Document->getDocument($shipment_id),
             "document_per_type" => $docsCollection,
+            "child_user" => Model\User::getUsersInstance($user),
         ]);
     }
 
@@ -291,7 +293,7 @@ class Admin extends Core\Controller {
                 $user = Utility\Session::get($userSession);
             }
         }
-        
+
         $Shipment = Model\Shipment::getInstance();
         echo json_encode($Shipment->getDocumentBySearch($_POST,$user));
     }
@@ -299,6 +301,11 @@ class Admin extends Core\Controller {
     public function addDocumentStatus(){
         $Document = Model\Document::getInstance();
         echo json_encode($Document->addDocumentStatus($_POST));
+    }
+
+    public function shipmentAssign(){
+        $Shipment = Model\Shipment::getInstance();
+        echo json_encode($Shipment->shipmentAssign($_POST));
     }
 
 }
