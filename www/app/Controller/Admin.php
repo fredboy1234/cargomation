@@ -263,10 +263,11 @@ class Admin extends Core\Controller {
         $Document = Model\Document::getInstance();
 
         $this->View->addJS("js/document.js");
+        $this->View->addCSS("css/document.css");
 
-        $this->View->render("admin/document", [
+        $this->View->render("admin/document/index", [
             "title" => "Shipment API",
-            "data" => ["shipment_id" => $shipment_id, "type" => $type], 
+            "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "document" => $Document->getDocument($shipment_id, $type),
         ]);
     }
