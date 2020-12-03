@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
-  $('.fas').hover(function() {
+  $('.fa-thumbs-up, .fa-thumbs-down').hover( function() {
      $(this).toggleClass("fa-thumbs-up fa-thumbs-down");
   });
 
-  $(".status").on("click",function() {
+  $(".status").click( function() {
       var doc_status = $(this).data("doc_status");
       var doc_id = $(this).data("doc_id");
 
