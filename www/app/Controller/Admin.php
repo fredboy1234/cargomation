@@ -304,9 +304,20 @@ class Admin extends Core\Controller {
         echo json_encode($Document->addDocumentStatus($_POST));
     }
 
-    public function shipmentAssign(){
+    public function shipmentAssign($user=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
         $Shipment = Model\Shipment::getInstance();
-        echo json_encode($Shipment->shipmentAssign($_POST));
+        echo json_encode($Shipment->shipmentAssign($_POST,$user));
     }
 
 }
