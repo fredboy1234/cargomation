@@ -7,7 +7,8 @@
     "**/*.txt"
   ],
   "dependencies": {
-    "admin-lte": "^3.0"
+    "admin-lte": "^3.0",
+    "bootstrap-fileinput": "^5.0"
   },
   "devDependencies": {}
 }
