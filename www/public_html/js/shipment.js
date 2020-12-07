@@ -17,7 +17,13 @@ $(document).on("click",".assign",function(){
         type:"POST",
         data:{"user_id":userId,"shipment_id":shipId},
         success: function(res){
-            console.log("success");
+          $(document).Toasts('create', {
+            title: 'Success',
+            body: 'Shipment was successfully assigned',
+            autohide: true,
+            close: false,
+            class:'bg-success'
+          })
         }
     });
 });

@@ -244,7 +244,7 @@
                           <div class="dropdown-menu dropdown-primary" aria-labelledby="dropdownMenuLink">
                             <?php foreach($this->child_user as $user){?>
                               <a class="dropdown-item" href="#!">
-                              <button type="button" class="assign d-inline-block btn btn-success btn-xs" data-userid="<?=$user->id?>" data-shipid="<?= $value->shipment_num; ?>">Assign </button>
+                              <button type="button" class="assign d-inline-block btn btn-success btn-xs" data-userid="<?=$user->id?>" data-shipid="<?= $value->shipment_id; ?>">Assign </button>
                                 <span class="d-inline-block"><?=$user->first_name.' '.$user->last_name?></span>
                               </a>
                             <?php }?>

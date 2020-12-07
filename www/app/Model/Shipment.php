@@ -29,7 +29,7 @@ class Shipment extends Core\Model {
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT {$arg} 
+        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
                                 FROM shipment 
                                 LEFT JOIN users ON users.id = shipment.user_id
                                 WHERE user_id = '{$user_id}' ")->results();
@@ -105,11 +105,11 @@ class Shipment extends Core\Model {
         //return $results;
     }  
 
-    public static function shipmentAssign($data){
+    public static function shipmentAssign($data,$user){
         $Db = Utility\Database::getInstance();
         return $Db->query("INSERT
-                           INTO shipment_assigned (user_id,shipment_id)
-                           VALUES('{$data['user_id']}','{$data['shipment_id']}')");
+                           INTO shipment_assigned (id,user_id,shipment_id)
+                           VALUES('{$data['user_id']}','{$user}','{$data['shipment_id']}')");
     }
 
 }
