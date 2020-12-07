@@ -1,10 +1,18 @@
 $(document).ready(function() {
 
-  $('.fa-thumbs-up, .fa-thumbs-down').hover( function() {
-     $(this).toggleClass("fa-thumbs-up fa-thumbs-down");
+  // button can't be hover
+  // $('button.kv-file-status').hover( function() {
+  //   console.log($(this));
+  //    $(this).children().toggleClass("fa-thumbs-up fa-thumbs-down");
+  // });
+  
+  $('.kv-file-status').each(function() {
+    if($(this).children().hasClass('approved')) {
+      $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
+    }
   });
 
-  $(".status").click( function() {
+  $("button.kv-file-status").click( function() {
       var doc_status = $(this).data("doc_status");
       var doc_id = $(this).data("doc_id");
 
@@ -24,6 +32,7 @@ $(document).ready(function() {
           success: function(response) {
             alert('Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1));
             $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("fa-thumbs-up fa-thumbs-down");
+            $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("approved pending");
             $('*[data-doc_id="' + doc_id + '"]').data("doc_status", doc_status);
           }
         });
