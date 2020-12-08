@@ -4,6 +4,10 @@ define('ENV', 'dev');
 
 if (file_exists( dirname(__FILE__) . '/config.' . ENV . '.php')) {
     include_once 'config.' . ENV . '.php';
+} else {
+    // If no [env] config file. You can manully configure
+    // core configuration below.
+    echo 'Environment Configuration File was not found.'; exit;
 }
 
 return [
