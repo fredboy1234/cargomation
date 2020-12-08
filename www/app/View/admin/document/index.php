@@ -51,18 +51,18 @@
 </head>
 <body>
 
-<?php foreach ($this->document as $key => $file) {
-    $initialPreviewData[] = ['caption' => $file->name,
-                            'width' => '200px',
-                            'type' => 'pdf',
-                            'extra' => ['status' => $file->status]];
-    $initialPreview[] = $file->name;
-    $initialPreviewThumbTags[] = ['{status}' => $file->status, '{id}' => $file->document_id];
-
-
-
-        // data-doc_id="<?=$file->document_id
-        // data-doc_status="<?= $file->status
+<?php if(!empty($this->document)) {
+    foreach ($this->document as $key => $file) {
+        $initialPreviewData[] = ['caption' => $file->name,
+                                   'width' => '200px',
+                                    'type' => 'pdf',
+                                   'extra' => ['status' => $file->status]];
+        $initialPreview[] = $file->name;
+        $initialPreviewThumbTags[] = ['{status}' => $file->status, 
+                                          '{id}' => $file->document_id, 
+                                        '{date}' => $file->saved_date,
+                                      '{origin}' => $file->upload_src];
+    }
 } ?>
     <div>
         <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
@@ -83,11 +83,13 @@
             uploadUrl: "uploads.php",
             uploadAsync: true,
             deleteUrl: "delete.php",
+        <?php if(!empty($this->document)): ?>
             initialPreview: <?php echo json_encode($initialPreview); ?>,
             initialPreviewAsData: true,
             initialPreviewFileType: 'pdf',
             initialPreviewConfig: <?php echo json_encode($initialPreviewData); ?>,
             initialPreviewThumbTags: <?php echo json_encode($initialPreviewThumbTags); ?>,
+        <?php endif; ?>
             showPreview: true,
             initialPreviewDownloadUrl: false,
             actionDownload: false,
@@ -137,7 +139,7 @@
                     '    </div>\n' +
                     '    <div class="clearfix"></div>' +
                     '    <div class="file-preview-status text-center text-success"></div>\n' +
-                    '    <div class="kv-fileinput-error"></div>\n' +
+                    // '    <div class="kv-fileinput-error"></div>\n' +
                     '    </div>\n' +
                     '</div>',
                 icon: '<span class="glyphicon glyphicon-file kv-caption-icon"></span>',
