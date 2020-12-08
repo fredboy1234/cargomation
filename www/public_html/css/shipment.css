@@ -8,3 +8,7 @@
     position: relative;
     top: -13px;
 }
+
+.stats:hover {
+    background-color: #c3c3c36c;
+}

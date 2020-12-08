@@ -1,7 +1,3 @@
-
-
-
-
 <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -196,43 +192,65 @@
                   <?php $stats = $this->document_per_type; ?>
                   <?php $doc_type = array('HBL','CIV','PKL','PKD');?>
                   <?php $all_count = 0;?>
-                  <?php if(!empty($this->shipment)) : foreach ($this->shipment as $key => $value) : ?>
-                    <?php foreach($doc_type as $doc) {
-                            if(isset($stats[$value->shipment_num])){ 
+                  <?php if(!empty($this->shipment)) : foreach ($this->shipment as $key => $value) : 
+                          $status_arr['all']['pending'] = 0;
+                          $status_arr['all']['approved'] = 0;
+                          if(isset($stats[$value->shipment_num])) {
+                            foreach ($stats[$value->shipment_num] as $key2 => $value2) {
+                                if(isset($value2['pending'])) {
+                                    $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
+                                    $status_arr['all']['pending'] += count($value2['pending']);
+                                }  
+                                if(isset($value2['approved'])) {
+                                    $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
+                                    $status_arr['all']['approved'] += count($value2['approved']);
+                                }
+                            }
+                          } else {
+                            $status_arr['HBL']['approved2'] = 0;
+                            $status_arr['HBL']['pending2'] = 0;
+                            $status_arr['CIV']['approved2'] = 0;
+                            $status_arr['CIV']['pending2'] = 0;
+                            $status_arr['PKL']['approved2'] = 0;
+                            $status_arr['PKL']['pending2'] = 0;
+                            $status_arr['PKD']['approved2'] = 0;
+                            $status_arr['PKD']['pending2'] = 0;
+                          }
+                  ?>
+                    <?php foreach($doc_type as $doc){
+                            if(isset($stats[$value->shipment_num])){
                               if(isset($stats[$value->shipment_num][$doc]['pending'])){
-                                $status_arr[$doc]['color'] = "badge-danger";
+                                $status_arr[$doc]['color'] = "badge-warning";
                                 $status_arr[$doc]['text'] = "Pending";
-                                $status_arr[$doc]['pending']++;
-                                
-                                $status_arr['All']['color'] = 'badge-danger';
+                                $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['pending']); 
+
+                                $status_arr['All']['color'] = 'badge-warning';
                                 $status_arr['All']['text'] = 'Pending';
                                 $status_arr['All']['count'] += $status_arr[$doc]['count'];
-                              } else if(isset($stats[$value->shipment_num][$doc]['approved'])){
+                              }else if(isset($stats[$value->shipment_num][$doc]['approved'])){
                                 $status_arr[$doc]['color'] = "badge-success";
                                 $status_arr[$doc]['text'] = "Approved";
-                                $status_arr[$doc]['count'] = 0; //count($stats[$value->shipment_num][$doc]['approved']);
-                                $status_arr[$doc]['approved']++;
+                                $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['approved']);
 
                                 $status_arr['All']['color'] = 'badge-success';
                                 $status_arr['All']['text'] = 'Approved';
                                 $status_arr['All']['count'] += $status_arr[$doc]['count'];
                               }else{
-                                $status_arr[$doc]['color'] = "badge-warning";
+                                $status_arr[$doc]['color'] = "badge-danger";
                                 $status_arr[$doc]['text'] = "Missing";
                                 $status_arr[$doc]['count'] = 0;
                               }
                             }else{
-                              $status_arr[$doc]['color'] = "badge-warning";
+                              $status_arr[$doc]['color'] = "badge-danger";
                               $status_arr[$doc]['text'] = "Missing";
-                              $status_arr[$doc]['approved'] = 0;
-                              $status_arr[$doc]['pending'] = 0;
                               $status_arr[$doc]['count'] = 0;
 
-                              $status_arr['All']['color'] = 'badge-warning';
+                              $status_arr['All']['color'] = 'badge-danger';
                               $status_arr['All']['text'] = 'Missing';
                               $status_arr['All']['count'] = 0;
                             }
-                      }?>
+                          }
+                      ?>
                     <tr>
                       <td>
                         <?= $value->shipment_num; ?>
@@ -255,12 +273,12 @@
                       <td><?= $value->console_id?></td>
                       <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>
                       <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
-                      <td>
+                      <td class="stats">
                         <?php $view = true; if($view): ?>
                           <span class="doc" data-type="HBL" data-id="<?= $value->shipment_num; ?>">
-                            <?=$status_arr['HBL']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                            <?=$status_arr['HBL']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                            <?=$status_arr['HBL']['count']?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                            <?=(isset($status_arr['HBL']['approved2'])) ? $status_arr['HBL']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            <?=(isset($status_arr['HBL']['pending2'])) ? $status_arr['HBL']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                            <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                           </span>
                         <?php else: ?>
                           <span class="doc badge <?=isset($status_arr['HBL']['color'])?$status_arr['HBL']['color']:'badge-danger'?>" data-type="HBL" data-id="<?= $value->shipment_num; ?>">
@@ -271,12 +289,12 @@
                           <?php }?>  
                         <?php endif; ?>
                       </td>
-                      <td>
+                      <td class="stats">
                       <?php $view = true; if($view): ?>
                         <span class="doc" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
-                          <?=$status_arr['CIV']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=$status_arr['CIV']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=$status_arr['CIV']['count']?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          <?=(isset($status_arr['CIV']['approved2'])) ? $status_arr['CIV']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                          <?=(isset($status_arr['CIV']['pending2'])) ? $status_arr['CIV']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                         </span>
                       <?php else: ?>
                         <span class="doc badge <?=isset($status_arr['CIV']['color'])?$status_arr['CIV']['color']:'badge-danger'?>" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
@@ -287,12 +305,12 @@
                         <?php }?> 
                       <?php endif; ?>
                       </td>
-                      <td>
+                      <td class="stats">
                       <?php $view = true; if($view): ?>
                         <span class="doc" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
-                          <?=$status_arr['PKL']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=$status_arr['PKL']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=$status_arr['PKL']['count']?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          <?=(isset($status_arr['PKL']['approved2'])) ? $status_arr['PKL']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                          <?=(isset($status_arr['PKL']['pending2'])) ? $status_arr['PKL']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                         </span>
                       <?php else: ?>
                         <span class="doc badge <?=isset($status_arr['PKL']['color'])?$status_arr['PKL']['color']:'badge-danger'?>" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
@@ -303,12 +321,12 @@
                         <?php }?> 
                       <?php endif; ?>
                       </td>
-                      <td>
+                      <td class="stats">
                       <?php $view = true; if($view): ?>
                         <span class="doc" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
-                          <?=$status_arr['PKD']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=$status_arr['PKD']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=$status_arr['PKD']['count']?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          <?=(isset($status_arr['PKD']['approved2'])) ? $status_arr['PKD']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                          <?=(isset($status_arr['PKD']['pending2'])) ? $status_arr['PKD']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                         </span>
                         </span>
                       <?php else: ?>
@@ -321,12 +339,12 @@
                       <?php endif; ?>
                       </td>
                      
-                      <td>
+                      <td class="stats">
                       <?php $view = true; if($view): ?>
                         <span class="doc" data-id="<?= $value->shipment_num; ?>">
-                          <?=$status_arr['All']['count']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=$status_arr['All']['count']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=$status_arr['All']['count']?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          <?=$status_arr['all']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                          <?=$status_arr['all']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                         </span>
                       <?php else: ?>
                         <span class="doc badge <?=isset($status_arr['All']['color'])?$status_arr['All']['color']:'badge-danger'?>" data-id="<?= $value->shipment_num; ?>">

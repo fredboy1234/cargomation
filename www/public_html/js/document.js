@@ -1,18 +1,20 @@
 $(document).ready(function() {
-
-  // button can't be hover
-  // $('button.kv-file-status').hover( function() {
-  //   console.log($(this));
-  //    $(this).children().toggleClass("fa-thumbs-up fa-thumbs-down");
-  // });
   
   $('.kv-file-status').each(function() {
     if($(this).children().hasClass('approved')) {
       $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
     }
+
   });
 
-  $("button.kv-file-status").click( function() {
+  $('.kv-file-status').mouseenter(function() {
+      console.log('test');
+      $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
+  }).mouseleave(function(){
+      $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
+  });
+
+  $("button.kv-file-status").click(function() {
       var doc_status = $(this).data("doc_status");
       var doc_id = $(this).data("doc_id");
 
@@ -37,7 +39,7 @@ $(document).ready(function() {
               autohide: true,
               close: false,
               class:'bg-success'
-            })
+            });
             $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("fa-thumbs-up fa-thumbs-down");
             $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("approved pending");
             $('*[data-doc_id="' + doc_id + '"]').data("doc_status", doc_status);
