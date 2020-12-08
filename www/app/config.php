@@ -1,13 +1,19 @@
 <?php
 
+define('ENV', 'dev');
+
+if (file_exists( dirname(__FILE__) . '/config.' . ENV . '.php')) {
+    include_once 'config.' . ENV . '.php';
+}
+
 return [
     // 
     // Core Config
     // =========================================================================
-    "DATABASE_HOST" => "localhost",
-    "DATABASE_NAME" => "hub",
-    "DATABASE_USERNAME" => "root",
-    "DATABASE_PASSWORD" => "",
+    "DATABASE_HOST" => DATABASE_HOST,
+    "DATABASE_NAME" => DATABASE_NAME,
+    "DATABASE_USERNAME" => DATABASE_USERNAME,
+    "DATABASE_PASSWORD" => DATABASE_PASSWORD,
     // 
     // Error Config
     // =========================================================================
