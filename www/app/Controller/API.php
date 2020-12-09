@@ -13,13 +13,14 @@ use App\Core\View;
  * API Controller:
  *
  * @author John Alex
- * @since 1.0
+ * @since 1.0.8
  */
 
 class Api extends Core\Controller {
 
     public function index() {
-        Utility\Redirect::to('404.html');
+        echo "Invalid Request";
+        // Utility\Redirect::to('404.html');
     }
 
     private function header() {
@@ -30,8 +31,8 @@ class Api extends Core\Controller {
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     }
 
-    public function checkRequestMethod($uri = "") {
-        if(isset($_SERVER['REQUEST_METHOD']) == $uri) {
+    public function checkRequestMethod($uri) {
+        if($_SERVER['REQUEST_METHOD'] == strtoupper($uri)) {
             $requestMethod = $_SERVER['REQUEST_METHOD'];
         } else {
             echo "Invalid Request Method";
@@ -41,6 +42,10 @@ class Api extends Core\Controller {
         return $requestMethod;
     }
 
+    // CREATE
+    public function post() { } 
+
+    // READ
     public function get() { 
 
         $this->header();
@@ -55,7 +60,7 @@ class Api extends Core\Controller {
         // everything else results in a 404 Not Found
         if (!isset($uri[3]) || empty($uri[3])) {
             // header("HTTP/1.1 404 Not Found");
-            Utility\Redirect::to('/404.html');
+            Utility\Redirect::to('/api');
             exit();
         }
 
@@ -63,22 +68,22 @@ class Api extends Core\Controller {
         // also check if id is a user id
         $param = null;
         if (isset($uri[4])) {
-                $param = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
+            $param = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
         }
 
         // Pass the request method, user id and extra arg to the specific controller and process the HTTP request:
-        // $controller = new ProcessController($requestMethod, $userId);
+        // $controller = new ProcessController($requestMethod, $param);
         // $controller->processRequest();
 
-        switch ($uri[3]) {
-            case 'shipment':
+        switch ($uri[3]) { // Processing collection
+            case 'shipment': // Ex. 3 (user_id)
                 $shipment = new Shipment($requestMethod, $param);
                 $results = $shipment->processShipment();
                 break;
-            case 'document': //S00001055
-                    $document = new Document($requestMethod, $param);
-                    $results = $document->processDocument();
-                    break;
+            case 'document': // Ex. S00001055 (shipment_id)
+                $document = new Document($requestMethod, $param);
+                $results = $document->processDocument();
+                break;
 
             default:
                 $message = "Unable to fetch request.";
@@ -87,8 +92,10 @@ class Api extends Core\Controller {
         }
     }
 
-    public function post() { }
-    public function put() { }
-    public function delete() { }
+    // UPDATE
+    public function put() { } 
+
+    // DELETE
+    public function delete() { } 
 
 }

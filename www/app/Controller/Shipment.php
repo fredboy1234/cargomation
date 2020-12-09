@@ -7,10 +7,10 @@ use App\Model;
 use App\Utility;
 
 /**
- * API Controller:
+ * Shipment Controller:
  *
  * @author John Alex
- * @since 1.0
+ * @since 1.0.8
  */
 
 class Shipment extends Core\Controller {
@@ -29,6 +29,9 @@ class Shipment extends Core\Controller {
     public function processShipment() {
         // Processing request.. 
         switch ($this->requestMethod) {
+            case 'POST':
+                // $response = $this->createShipmentFromRequest();
+                // break;
             case 'GET':
                 if ($this->user_id) {
                     $response = $this->getShipment($this->user_id);
@@ -36,9 +39,6 @@ class Shipment extends Core\Controller {
                     $response = $this->getAllShipment();
                 };
                 break;
-            case 'POST':
-                // $response = $this->createShipmentFromRequest();
-                // break;
             case 'PUT':
                 // $response = $this->updateShipmentFromRequest($this->userId);
                 // break;

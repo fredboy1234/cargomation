@@ -7,10 +7,10 @@ use App\Model;
 use App\Utility;
 
 /**
- * API Controller:
+ * Document Controller:
  *
  * @author John Alex
- * @since 1.0
+ * @since 1.0.8
  */
 
 class Document extends Core\Controller {
@@ -27,6 +27,9 @@ class Document extends Core\Controller {
     public function processDocument() {
         // Processing request.. 
         switch ($this->requestMethod) {
+            case 'POST':
+                // $response = $this->createDocumentFromRequest();
+                // break;
             case 'GET':
                 if ($this->shipment_id) {
                     $response = $this->getDocument($this->shipment_id);
@@ -34,14 +37,11 @@ class Document extends Core\Controller {
                     $response = $this->getAllDocument();
                 };
                 break;
-            case 'POST':
-                // $response = $this->createShipmentFromRequest();
-                // break;
             case 'PUT':
-                // $response = $this->updateShipmentFromRequest($this->userId);
+                // $response = $this->updateDocumentFromRequest($this->userId);
                 // break;
             case 'DELETE':
-                // $response = $this->deleteShipment($this->userId);
+                // $response = $this->deleteDocument($this->userId);
                 // break;
 
             default:
