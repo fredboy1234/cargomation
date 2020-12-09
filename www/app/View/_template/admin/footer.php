@@ -52,6 +52,15 @@
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
 <!-- Data Table -->
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap File Input -->
+<script src="/bower_components/bootstrap-fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/js/locales/fr.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/js/locales/es.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/themes/fas/theme.js" type="text/javascript"></script>
+<script src="/bower_components/bootstrap-fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>
+<!-- Custome JS -->
 <?= $this->getJS(); ?>
 </body>
 </html>
