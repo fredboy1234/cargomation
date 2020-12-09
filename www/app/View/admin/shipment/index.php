@@ -270,7 +270,7 @@
                         </div>
                       </td>
                       <!-- <td class="d-none"><?= $value->first_name . " " . $value->last_name; ?></td> -->
-                      <td><?= $value->console_id?></td>
+                      <td><?= !empty($value->console_id) ? $value->console_id : '<center>-</center>';?></td>
                       <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>
                       <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
                       <td class="stats">
