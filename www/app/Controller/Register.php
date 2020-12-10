@@ -6,8 +6,6 @@ use App\Core;
 use App\Model;
 use App\Utility;
 
-use App\Core\View;
-
 /**
  * Register Controller:
  *

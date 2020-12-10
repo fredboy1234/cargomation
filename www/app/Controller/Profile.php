@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Core;
 use App\Model;
-use App\Presenter;
 use App\Utility;
+use App\Presenter;
 
 /**
  * Profile Controller:
@@ -45,9 +45,13 @@ class Profile extends Core\Controller {
         }
 
         // Set any dependencies, data and render the view.
-        $this->View->render("profile/index", [
+        // $this->View->render("profile/index", [
+        //     "title" => "Profile",
+        //     "data" => (new Presenter\Profile($User->data()))->present()
+        // ]);
+
+        $this->View->renderTemplate("admin", "/profile/index", [
             "title" => "Profile",
-            "data" => (new Presenter\Profile($User->data()))->present()
         ]);
     }
 

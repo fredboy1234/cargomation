@@ -7,8 +7,6 @@ use App\Model;
 use App\Utility;
 use App\Presenter;
 
-use App\Core\View;
-
 /**
  * Index Controller:
  *
