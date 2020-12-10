@@ -318,6 +318,18 @@ class Admin extends Core\Controller {
         echo json_encode($Shipment->shipmentAssign($_POST,$user));
     }
 
+    public function curl_get_contents($url) {
+        $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+        $ch = curl_init($protocol . $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+
     public function shipmentSSR($user=''){
         $data = array();
         $docsCollection = array();
@@ -329,7 +341,8 @@ class Admin extends Core\Controller {
                  $user = Utility\Session::get($userSession);
              }
          }
-        $api = json_decode(file_get_contents('http://a2bhub.local/api/get/shipment/'.$user)); 
+        $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/'.$user)); 
         $Shipment = Model\Shipment::getInstance();
         $shipment_id = $Shipment->getShipment($user, "shipment_num");
         $Document = Model\Document::getInstance();
@@ -404,7 +417,7 @@ class Admin extends Core\Controller {
             $hblF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["HBL"]["approved2"]) ? $status_arr["HBL"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["HBL"]["pending2"]) ? $status_arr["HBL"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
             $civF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="CIV" data-id="'.$value->shipment_num.'">'.(isset($status_arr["CIV"]["approved2"]) ? $status_arr["CIV"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["CIV"]["pending2"]) ? $status_arr["CIV"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
             $pklF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="PKL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKL"]["approved2"]) ? $status_arr["PKL"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["PKL"]["pending2"]) ? $status_arr["PKL"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-            $pkdF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="PKL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKD"]["approved2"]) ? $status_arr["PKD"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["PKD"]["pending2"]) ? $status_arr["PKD"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+            $pkdF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="PKD" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKD"]["approved2"]) ? $status_arr["PKD"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["PKD"]["pending2"]) ? $status_arr["PKD"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
             $allF = '<div class="doc-stats" style="display: none;"><span class="doc"  data-id="'.$value->shipment_num.'">'.(isset($status_arr["all"]["approved"]) ? $status_arr["all"]["approved"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["all"]["pending"]) ? $status_arr["all"]["pending"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
             
             $hbl = '<span class="doc badge '.(isset($status_arr["HBL"]["color"])?$status_arr["HBL"]["color"]:"badge-danger").'" data-type="HBL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["HBL"]["text"])?$status_arr["HBL"]["text"]:"missing").'</span>';

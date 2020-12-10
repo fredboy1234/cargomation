@@ -1,5 +1,8 @@
 //JS script
 var _url = document.domain;
+// if (!window.location.origin) {
+//   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+// }
 
 //show documents modal
 $(document).on('click','.doc', function(e){
@@ -28,13 +31,8 @@ $(document).on("click",".assign",function(){
     });
 });
 
-//append loading
-$('#myModal').on('hidden.bs.modal', function (e){ 
-  $('#myModal .modal-body').empty().append('Loading...');
-});
-
 //initialize data table
-$(document).ready(function() {
+//$(document).ready(function() {
   var table = $('.table').DataTable({
     searching: true, 
     paging: false, 
@@ -42,13 +40,15 @@ $(document).ready(function() {
     bFilter: false,
     sDom: 'lrtip',
     processing: true,
+    "language": {
+      processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
     serverSide: true,
-    ajax: "http://a2bhub.local/admin/shipmentSSR",
+    ajax: "/admin/shipmentSSR",
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ]
   });
-} );
+//});
 
 //on search data table
 $('#doc_search').on( 'keyup', function () {
@@ -120,7 +120,13 @@ $("#advance-search-btn").on("click",function(){
   });
 });
 
-
+// Toggle document stats view 
 $(document).on('mouseenter mouseleave','.stats',function() {
   $( this ).children().toggle( );
+});
+
+// Append loading and redraw datatable
+$('#myModal').on('hidden.bs.modal', function (e){ 
+  $('#myModal .modal-body').empty().append('Loading...');
+  table.draw();
 });
