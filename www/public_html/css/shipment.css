@@ -16,3 +16,7 @@
 .stats .doc-stats:first-child > span {
     font-size: 14px;
 }
+#DataTables_Table_0_processing{
+    position: fixed;
+    left: 50%;
+}

@@ -34,13 +34,21 @@ $('#myModal').on('hidden.bs.modal', function (e){
 });
 
 //initialize data table
-var table = $('.table').DataTable({
-  searching: true, 
-  paging: false, 
-  info: false,
-  bFilter: false,
-  sDom: 'lrtip'
-});
+$(document).ready(function() {
+  var table = $('.table').DataTable({
+    searching: true, 
+    paging: false, 
+    info: false,
+    bFilter: false,
+    sDom: 'lrtip',
+    processing: true,
+    serverSide: true,
+    ajax: "http://a2bhub.local/admin/shipmentSSR",
+    columnDefs: [
+      { className: "stats", targets: [4,5,6,7,8] } 
+    ]
+  });
+} );
 
 //on search data table
 $('#doc_search').on( 'keyup', function () {
@@ -113,6 +121,6 @@ $("#advance-search-btn").on("click",function(){
 });
 
 
-$( ".stats" ).hover(function() {
+$(document).on('mouseenter mouseleave','.stats',function() {
   $( this ).children().toggle( );
 });
