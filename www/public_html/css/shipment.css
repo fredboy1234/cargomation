@@ -12,3 +12,7 @@
     background-color: #c3c3c36c;
     cursor: pointer;
 }
+
+.stats .doc-stats:first-child > span {
+    font-size: 14px;
+}

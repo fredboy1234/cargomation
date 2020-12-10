@@ -111,3 +111,8 @@ $("#advance-search-btn").on("click",function(){
     }
   });
 });
+
+
+$( ".stats" ).hover(function() {
+  $( this ).children().toggle( );
+});

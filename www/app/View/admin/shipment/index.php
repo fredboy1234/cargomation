@@ -222,19 +222,19 @@
                               if(isset($stats[$value->shipment_num][$doc]['pending'])){
                                 $status_arr[$doc]['color'] = "badge-warning";
                                 $status_arr[$doc]['text'] = "Pending";
-                                $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['pending']); 
+                                $status_arr[$doc]['count'] = $status_arr[$doc]['pending2'];
 
                                 $status_arr['All']['color'] = 'badge-warning';
                                 $status_arr['All']['text'] = 'Pending';
-                                $status_arr['All']['count'] += $status_arr[$doc]['count'];
+                                $status_arr['All']['count'] = $status_arr['all']['pending'];
                               }else if(isset($stats[$value->shipment_num][$doc]['approved'])){
                                 $status_arr[$doc]['color'] = "badge-success";
                                 $status_arr[$doc]['text'] = "Approved";
-                                $status_arr[$doc]['count'] = count($stats[$value->shipment_num][$doc]['approved']);
+                                $status_arr[$doc]['count'] = $status_arr[$doc]['approved2'];
 
                                 $status_arr['All']['color'] = 'badge-success';
                                 $status_arr['All']['text'] = 'Approved';
-                                $status_arr['All']['count'] += $status_arr[$doc]['count'];
+                                $status_arr['All']['count'] = $status_arr['all']['approved'];
                               }else{
                                 $status_arr[$doc]['color'] = "badge-danger";
                                 $status_arr[$doc]['text'] = "Missing";
@@ -274,86 +274,91 @@
                       <td><?= date_format(date_create($value->eta), "m/d/Y H:i:s");?></td>
                       <td><?= date_format(date_create($value->etd), "m/d/Y H:i:s"); ?></td>
                       <td class="stats">
-                        <?php $view = true; if($view): ?>
+                        <div class="doc-stats" style="display: none;">
                           <span class="doc" data-type="HBL" data-id="<?= $value->shipment_num; ?>">
                             <?=(isset($status_arr['HBL']['approved2'])) ? $status_arr['HBL']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
                             <?=(isset($status_arr['HBL']['pending2'])) ? $status_arr['HBL']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
                             <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
                           </span>
-                        <?php else: ?>
+                        </div>
+                        <div class="doc-stats">
                           <span class="doc badge <?=isset($status_arr['HBL']['color'])?$status_arr['HBL']['color']:'badge-danger'?>" data-type="HBL" data-id="<?= $value->shipment_num; ?>">
                             <?=isset($status_arr['HBL']['text'])?$status_arr['HBL']['text']:'missing'?>
                           </span>
                           <?php if(isset($status_arr) && $status_arr['HBL']['count'] > 0){?>
                             <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['HBL']['count']?></span>
                           <?php }?>  
-                        <?php endif; ?>
+                        </div>
                       </td>
                       <td class="stats">
-                      <?php $view = true; if($view): ?>
-                        <span class="doc" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
-                          <?=(isset($status_arr['CIV']['approved2'])) ? $status_arr['CIV']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=(isset($status_arr['CIV']['pending2'])) ? $status_arr['CIV']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
-                        </span>
-                      <?php else: ?>
-                        <span class="doc badge <?=isset($status_arr['CIV']['color'])?$status_arr['CIV']['color']:'badge-danger'?>" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
-                          <?=isset($status_arr['CIV']['text'])?$status_arr['CIV']['text']:'missing'?>
-                        </span>
-                        <?php if(isset($status_arr) && $status_arr['CIV']['count'] > 0){?>
-                          <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['CIV']['count']?></span>
-                        <?php }?> 
-                      <?php endif; ?>
+                        <div class="doc-stats" style="display: none;">
+                          <span class="doc" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
+                            <?=(isset($status_arr['CIV']['approved2'])) ? $status_arr['CIV']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            <?=(isset($status_arr['CIV']['pending2'])) ? $status_arr['CIV']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                            <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          </span>
+                        </div>
+                        <div class="doc-stats">
+                          <span class="doc badge <?=isset($status_arr['CIV']['color'])?$status_arr['CIV']['color']:'badge-danger'?>" data-type="CIV" data-id="<?= $value->shipment_num; ?>">
+                            <?=isset($status_arr['CIV']['text'])?$status_arr['CIV']['text']:'missing'?>
+                          </span>
+                          <?php if(isset($status_arr) && $status_arr['CIV']['count'] > 0){?>
+                            <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['CIV']['count']?></span>
+                          <?php }?> 
+                        </div>
                       </td>
                       <td class="stats">
-                      <?php $view = true; if($view): ?>
-                        <span class="doc" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
-                          <?=(isset($status_arr['PKL']['approved2'])) ? $status_arr['PKL']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=(isset($status_arr['PKL']['pending2'])) ? $status_arr['PKL']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
-                        </span>
-                      <?php else: ?>
-                        <span class="doc badge <?=isset($status_arr['PKL']['color'])?$status_arr['PKL']['color']:'badge-danger'?>" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
-                          <?=isset($status_arr['PKL']['text'])?$status_arr['PKL']['text']:'missing'?>
-                        </span>
-                        <?php if(isset($status_arr) && $status_arr['PKL']['count'] > 0){?>
-                          <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['PKL']['count']?></span>
-                        <?php }?> 
-                      <?php endif; ?>
+                        <div class="doc-stats" style="display: none;">
+                          <span class="doc" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
+                            <?=(isset($status_arr['PKL']['approved2'])) ? $status_arr['PKL']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            <?=(isset($status_arr['PKL']['pending2'])) ? $status_arr['PKL']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                            <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          </span>
+                        </div>
+                        <div class="doc-stats">
+                          <span class="doc badge <?=isset($status_arr['PKL']['color'])?$status_arr['PKL']['color']:'badge-danger'?>" data-type="PKL" data-id="<?= $value->shipment_num; ?>">
+                            <?=isset($status_arr['PKL']['text'])?$status_arr['PKL']['text']:'missing'?>
+                          </span>
+                          <?php if(isset($status_arr) && $status_arr['PKL']['count'] > 0){?>
+                            <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['PKL']['count']?></span>
+                          <?php }?> 
+                        </div>
                       </td>
                       <td class="stats">
-                      <?php $view = true; if($view): ?>
-                        <span class="doc" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
-                          <?=(isset($status_arr['PKD']['approved2'])) ? $status_arr['PKD']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=(isset($status_arr['PKD']['pending2'])) ? $status_arr['PKD']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
-                        </span>
-                        </span>
-                      <?php else: ?>
-                        <span class="doc badge <?=isset($status_arr['PKD']['color'])?$status_arr['PKD']['color']:'badge-danger'?>" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
-                        <?=isset($status_arr['PKD']['text'])?$status_arr['PKD']['text']:'missing'?>
-                        </span>
-                        <?php if(isset($status_arr) && $status_arr['PKD']['count'] > 0){?>
-                          <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['PKD']['count']?></span>
-                        <?php }?> 
-                      <?php endif; ?>
+                        <div class="doc-stats" style="display: none;">
+                          <span class="doc" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
+                            <?=(isset($status_arr['PKD']['approved2'])) ? $status_arr['PKD']['approved2'] : 0?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            <?=(isset($status_arr['PKD']['pending2'])) ? $status_arr['PKD']['pending2'] : 0?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                            <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          </span>
+                          </span>
+                        </div>
+                        <div class="doc-stats">
+                          <span class="doc badge <?=isset($status_arr['PKD']['color'])?$status_arr['PKD']['color']:'badge-danger'?>" data-type="PKD" data-id="<?= $value->shipment_num; ?>">
+                          <?=isset($status_arr['PKD']['text'])?$status_arr['PKD']['text']:'missing'?>
+                          </span>
+                          <?php if(isset($status_arr) && $status_arr['PKD']['count'] > 0){?>
+                            <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['PKD']['count']?></span>
+                          <?php }?> 
+                        </div>
                       </td>
                      
                       <td class="stats">
-                      <?php $view = true; if($view): ?>
-                        <span class="doc" data-id="<?= $value->shipment_num; ?>">
-                          <?=$status_arr['all']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                          <?=$status_arr['all']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
-                          <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
-                        </span>
-                      <?php else: ?>
-                        <span class="doc badge <?=isset($status_arr['All']['color'])?$status_arr['All']['color']:'badge-danger'?>" data-id="<?= $value->shipment_num; ?>">
-                          <?=isset($status_arr['All']['text'])?$status_arr['All']['text']:'missing'?>
-                        </span>
-                        <?php if(isset($status_arr) && $status_arr['All']['count'] > 0){?>
-                          <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['All']['count']?></span>
-                        <?php }?> 
-                      <?php endif; ?>
+                        <div class="doc-stats" style="display: none;">
+                          <span class="doc" data-id="<?= $value->shipment_num; ?>">
+                            <?=$status_arr['all']['approved']?> <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            <?=$status_arr['all']['pending']?> <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>
+                            <?=0?> <i class="fa fa-eye text-warning" aria-hidden="true"></i> 
+                          </span>
+                        </div>
+                        <div class="doc-stats">
+                          <span class="doc badge <?=isset($status_arr['All']['color'])?$status_arr['All']['color']:'badge-danger'?>" data-id="<?= $value->shipment_num; ?>">
+                            <?=isset($status_arr['All']['text'])?$status_arr['All']['text']:'missing'?>
+                          </span>
+                          <?php if(isset($status_arr) && $status_arr['All']['count'] > 0){?>
+                            <span class="badge badge-info navbar-badge ship-badge"><?=$status_arr['All']['count']?></span>
+                          <?php }?> 
+                        </div>
                       </td>
                       <td><?= (isset($value->comment)) ?: "<em>No comment</em>"; ?></td>
                     </tr>
