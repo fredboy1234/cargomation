@@ -17,7 +17,12 @@
 }
 #DataTables_Table_0_processing{
     position: fixed;
+    top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
+}
+.dataTables_wrapper {
+    position: relative;
 }
 .fa-spinner {
     color: #2962ff;
