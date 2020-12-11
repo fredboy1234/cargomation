@@ -1,5 +1,6 @@
 //JS script
 var _url = document.domain;
+var _origin = document.location.origin;
 // if (!window.location.origin) {
 //   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 // }
@@ -43,7 +44,7 @@ $(document).on("click",".assign",function(){
     "language": {
       processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
     serverSide: true,
-    ajax: "/admin/shipmentSSR/",
+    ajax: _origin+"/admin/shipmentSSR/",
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ]
