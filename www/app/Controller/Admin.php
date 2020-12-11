@@ -457,7 +457,10 @@ class Admin extends Core\Controller {
         }
         
         $json_data=array(
-            "data"              =>  $data
+            "data"              =>  $data,
+            "api"               => $api,
+            "protocol"          => $protocol,
+            "server"            => $_SERVER['HTTP_HOST']
         );
 
         echo json_encode($json_data);

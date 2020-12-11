@@ -43,7 +43,7 @@ $(document).on("click",".assign",function(){
     "language": {
       processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
     serverSide: true,
-    ajax: "/admin/shipmentSSR",
+    ajax: "/admin/shipmentSSR/",
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ]
