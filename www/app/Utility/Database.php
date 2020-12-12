@@ -42,19 +42,34 @@ class Database {
             $dbname = Config::get("DATABASE_NAME");
             $username = Config::get("DATABASE_USERNAME");
             $password = Config::get("DATABASE_PASSWORD");
+            $dbengine = Config::get("DATABASE_ENGINE");
 
-            # MS SQL Server PDO
-            $this->_PDO  = new PDO("sqlsrv:server={$host};database={$dbname}", $username, $password);  
-        
-            # MS SQL Server and Sybase with PDO_DBLIB  
-            # $this->_PDO  = new PDO("mssql:host={$host};dbname={$dbname}", $username, $password);  
-            # $this->_PDO  = new PDO("sybase:host={$host};dbname={$dbname}", $username, $password);  
-        
-            # MySQL with PDO_MYSQL  
-            # $this->_PDO  = new PDO("mysql:host={$host};dbname={$dbname}", $username, $password);  
-        
-            # SQLite Database  
-            # $this->_PDO  = new PDO("sqlite:my/database/path/database.db");  
+            switch (strtolower($dbengine)) {
+                case 'sqlsrv':
+                    # MS SQL Server PDO
+                    $this->_PDO  = new PDO("sqlsrv:server={$host};database={$dbname}", $username, $password);  
+                    break;
+                case 'mysql':
+                    # MySQL with PDO_MYSQL  
+                    $this->_PDO  = new PDO("mysql:host={$host};dbname={$dbname}", $username, $password);  
+                    break;
+                case 'mssql':
+                    # MS SQL Server with PDO_DBLIB  
+                    $this->_PDO  = new PDO("mssql:host={$host};dbname={$dbname}", $username, $password); 
+                    break;
+                case 'sybase':
+                    # Sybase with PDO_DBLIB  
+                    $this->_PDO  = new PDO("sybase:host={$host};dbname={$dbname}", $username, $password);  
+                    break;
+                case 'sqlite':
+                    # SQLite Database  
+                    # $this->_PDO  = new PDO("sqlite:my/database/path/database.db");  
+                    break;
+
+                default:
+                    echo "Please configure the database engine."; exit;
+                    break;
+            }
 
         } catch (PDOException $e) {
             die($e->getMessage());

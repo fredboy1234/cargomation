@@ -18,6 +18,7 @@ return [
     "DATABASE_NAME" => DATABASE_NAME,
     "DATABASE_USERNAME" => DATABASE_USERNAME,
     "DATABASE_PASSWORD" => DATABASE_PASSWORD,
+    "DATABASE_ENGINE" => DATABASE_ENGINE,
     // 
     // Error Config
     // =========================================================================
