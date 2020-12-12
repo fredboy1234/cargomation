@@ -39,5 +39,5 @@
   <?= $this->getCSS(); ?>
 </head>
 
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini sidebar-collapse text-sm">
   <div class="wrapper">

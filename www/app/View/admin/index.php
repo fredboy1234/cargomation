@@ -74,6 +74,49 @@
           <!-- Left col -->
           <section class="col-lg-4 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
+
+            <?php if(true): ?>
+            <!-- Calendar -->
+            <div class="card bg-gradient-success">
+              <div class="card-header border-0">
+
+                <h3 class="card-title">
+                  <i class="far fa-calendar-alt"></i>
+                  Calendar
+                </h3>
+                <!-- tools card -->
+                <div class="card-tools">
+                  <!-- button with a dropdown -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                      <i class="fas fa-bars"></i></button>
+                    <div class="dropdown-menu" role="menu">
+                      <a href="#" class="dropdown-item">Add new event</a>
+                      <a href="#" class="dropdown-item">Clear events</a>
+                      <div class="dropdown-divider"></div>
+                      <a href="#" class="dropdown-item">View calendar</a>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <!-- /. tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body pt-0">
+                <!--The calendar -->
+                <div id="calendar" style="width: 100%"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card --> 
+            <?php endif; ?>
+
+            <?php if(true): ?>
             <!-- File -->
             <div class="card">
               <div class="card-header">
@@ -135,7 +178,9 @@
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->
+            <?php endif; ?>
 
+            <?php if(false): ?>
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary">
               <div class="card-header">
@@ -337,6 +382,9 @@
               <!-- /.card-footer-->
             </div>
             <!--/.direct-chat -->
+            <?php endif; ?>
+
+            <?php if(false): ?>
             <!-- solid sales graph -->
             <div class="card bg-gradient-info">
               <div class="card-header border-0">
@@ -387,50 +435,16 @@
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->
+            <?php endif; ?>
 
           </section>
           <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-8 connectedSortable">
-            <!-- Calendar -->
-            <div class="card bg-gradient-success">
-              <div class="card-header border-0">
 
-                <h3 class="card-title">
-                  <i class="far fa-calendar-alt"></i>
-                  Calendar
-                </h3>
-                <!-- tools card -->
-                <div class="card-tools">
-                  <!-- button with a dropdown -->
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
-                      <i class="fas fa-bars"></i></button>
-                    <div class="dropdown-menu" role="menu">
-                      <a href="#" class="dropdown-item">Add new event</a>
-                      <a href="#" class="dropdown-item">Clear events</a>
-                      <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">View calendar</a>
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-                <!-- /. tools -->
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body pt-0">
-                <!--The calendar -->
-                <div id="calendar" style="width: 100%"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->  
-            <!-- TABLE: LATEST ORDERS -->
+          <!-- Right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-8 connectedSortable">
+
+            <?php if(true): ?>
+            <!-- TABLE: Client List -->
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Client List</h3>
@@ -495,13 +509,18 @@
                 <i class="fas fa-plus"> </i>
                   Add New User
                 </a>
+                <?php if(false): ?>
                 <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
+                <?php endif; ?>
               </div>
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->
+            <?php endif; ?>
+
+            <?php if(true): ?>
             <!-- Map card -->
-            <div class="card bg-gradient-primary">
+            <div class="card bg-gradient-primary" style="display: none">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
@@ -551,7 +570,9 @@
               </div>
             </div>
             <!-- /.card -->
+            <?php endif; ?>
 
+            <?php if(false): ?>
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
@@ -583,6 +604,9 @@
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->
+            <?php endif; ?>
+
+            <?php if(false): ?>
             <!-- TO DO List -->
             <div class="card">
               <div class="card-header">
@@ -713,11 +737,10 @@
               </div>
             </div>
             <!-- /.card -->
-
-
+            <?php endif; ?>
 
           </section>
-          <!-- right col -->
+          <!-- Right col -->
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
