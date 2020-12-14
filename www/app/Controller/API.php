@@ -41,7 +41,52 @@ class Api extends Core\Controller {
     }
 
     // CREATE
-    public function post() { } 
+    public function post() { 
+
+        $this->header();
+
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = explode( '/', $uri );
+
+        // Checking the request method
+        $requestMethod = self::checkRequestMethod($uri[2]);
+
+        // All of our endpoints start with /get
+        // everything else results in a 404 Not Found
+        if (!isset($uri[3]) || empty($uri[3])) {
+            // header("HTTP/1.1 404 Not Found");
+            Utility\Redirect::to('/api');
+            exit();
+        }
+
+        // Second parameter can be any id (user, shipment, document) and
+        // also check if id is a user id
+        $param = null;
+        if (isset($uri[4])) {
+            $param = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
+        }
+
+        // Pass the request method, user id and extra arg to the specific controller and process the HTTP request:
+        // $controller = new ProcessController($requestMethod, $param);
+        // $controller->processRequest();
+
+        switch ($uri[3]) { // Processing collection
+            case 'shipment': // Ex. 3 (user_id)
+                $shipment = new Shipment($requestMethod, $param);
+                $results = $shipment->processShipment();
+                break;
+            case 'document': // Ex. S00001055 (shipment_id)
+                $document = new Document($requestMethod, $param);
+                $results = $document->processDocument();
+                break;
+
+            default:
+                $message = "Unable to fetch request.";
+                echo json_encode(array("message" => $message)); exit;
+                break;
+        }
+
+    } 
 
     // READ
     public function get() { 

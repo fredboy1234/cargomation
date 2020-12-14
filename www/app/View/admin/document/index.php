@@ -29,16 +29,26 @@
 
 <?php if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
-        $initialPreviewData[] = ['caption' => $file->name,
+        $initialPreview[] = "/uploads/" . $file->name;
+        $initialPreviewConfig[] = ['caption' => $file->name,
                                    'width' => '200px',
                                     'type' => 'pdf',
+                                    'size' => 202334,
                                    'extra' => ['status' => $file->status]];
-        $initialPreview[] = $file->name;
         $initialPreviewThumbTags[] = ['{status}' => $file->status, 
                                           '{id}' => $file->document_id, 
                                         '{date}' => $file->saved_date,
                                       '{origin}' => $file->upload_src];
     }
+
+    // $docsCollection =array();
+    // foreach($Document->getDocument($shipment_id) as $key=>$value){
+    //     $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
+    // }
+
+
+
+
 } ?>
     <div>
         <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
@@ -53,7 +63,7 @@
         var initialPreview = <?= (empty($this->document)) ? "''" : json_encode($initialPreview); ?>;
         var initialPreviewAsData = true;
         var initialPreviewFileType = 'pdf';
-        var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewData); ?>;
+        var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
         var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
     </script>
     <?= $this->getJS(); ?>
