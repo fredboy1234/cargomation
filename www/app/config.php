@@ -1,6 +1,6 @@
 <?php
 
-define('ENV', 'dev');
+define('ENV', 'server');
 
 if (file_exists( dirname(__FILE__) . '/config.' . ENV . '.php')) {
     include_once 'config.' . ENV . '.php';
