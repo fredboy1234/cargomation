@@ -48,6 +48,13 @@ class Document extends Core\Model {
                            else
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
+
+    public static function getDocumentBase64($document_id) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT img_data 
+                            FROM document_base64
+                            WHERE document_id = '" . $document_id . "'")->results();
+    }
 }
 
 
