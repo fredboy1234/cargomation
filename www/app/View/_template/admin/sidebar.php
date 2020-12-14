@@ -51,6 +51,7 @@
               </p>
             </a>
           </li>
+          <?php if(false): ?>
           <li class="nav-item">
             <a href="/admin/transport" class="nav-link">
               <i class="nav-icon fas fa-truck"></i>
@@ -69,6 +70,7 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
           <li class="nav-item">
             <a href="/login/logout" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
