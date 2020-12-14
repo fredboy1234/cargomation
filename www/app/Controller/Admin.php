@@ -379,6 +379,8 @@ class Admin extends Core\Controller {
                 $status_arr['PKD']['approved2'] = 0;
                 $status_arr['PKD']['pending2'] = 0;
             }
+
+            $status_arr['All']['count'] = 0;
        
             foreach($doc_type as $doc){
                 if(isset($stats[$value->shipment_num])){
