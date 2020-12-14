@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 .stats .doc-stats:first-child > span {
-    font-size: 14px;
+    font-size: .8rem;
 }
 #DataTables_Table_0_processing{
     position: fixed;
