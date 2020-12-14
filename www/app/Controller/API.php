@@ -96,7 +96,7 @@ class Api extends Core\Controller {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = explode( '/', $uri );
 
-        // Checking the request method
+        // Sanitize the request method
         $requestMethod = self::checkRequestMethod($uri[2]);
 
         // All of our endpoints start with /get
@@ -107,24 +107,30 @@ class Api extends Core\Controller {
             exit();
         }
 
-        // Second parameter can be any id (user, shipment, document) and
+        $collection = $uri[3];
+
+        // REQUESTMETHOD/COLLECTION/KEY/VALUE
+        // get/document/sid/S00000001
+
+        // Key can be any id (user, shipment, document) and
         // also check if id is a user id
-        $param = null;
-        if (isset($uri[4])) {
-            $param = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
+        $key = null; $value = null;
+        if (isset($uri[4]) && isset($uri[5])) {
+            $key = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
+            $value = !is_numeric($uri[5]) ? $uri[5] : (int) $uri[5];
         }
 
         // Pass the request method, user id and extra arg to the specific controller and process the HTTP request:
         // $controller = new ProcessController($requestMethod, $param);
         // $controller->processRequest();
 
-        switch ($uri[3]) { // Processing collection
+        switch ($collection) { // Processing collection
             case 'shipment': // Ex. 3 (user_id)
-                $shipment = new Shipment($requestMethod, $param);
+                $shipment = new Shipment($requestMethod, $key, $value, $uri);
                 $results = $shipment->processShipment();
                 break;
             case 'document': // Ex. S00001055 (shipment_id)
-                $document = new Document($requestMethod, $param);
+                $document = new Document($requestMethod, $key, $value , $uri);
                 $results = $document->processDocument();
                 break;
 

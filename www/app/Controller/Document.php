@@ -17,11 +17,15 @@ class Document extends Core\Controller {
 
     private $requestMethod;
     private $param;
+    private $value;
+    private $key;
 
-    public function __construct($requestMethod, $param = "") {
-        $this->param = $param;
-        $this->requestMethod = $requestMethod;
+    public function __construct($requestMethod, $key, $value, $param = []) {
         $this->document = Model\Document::getInstance();
+        $this->requestMethod = $requestMethod;
+        $this->param = $param;
+        $this->value = $value;
+        $this->key = $key;
     }
 
     public function processDocument() {
@@ -41,11 +45,22 @@ class Document extends Core\Controller {
                 }
                 break;
             case 'GET':
-                if ($this->param) {
-                    $response = $this->getDocument($this->param);
-                } else {
-                    $response = $this->getAllDocument();
-                };
+                switch ($this->key) {
+                    case 'sid': 
+                        $response = $this->getDocumentByShipment($this->value);
+                        break;
+                    case 'did':
+                        if($this->param[6] == 'base64') {
+                            $response = $this->getDocumentBase64($this->value);
+                        } 
+                        break;
+                    case 'all':
+                        $response = $this->getAllDocument();
+                        break;
+                    default:
+                        $response = $this->unprocessableEntityResponse();
+                        break;
+                }
                 break;
             case 'PUT':
                 // $response = $this->updateDocumentFromRequest($this->userId);
@@ -65,7 +80,7 @@ class Document extends Core\Controller {
         }
     }
 
-    private function getDocument($param) {
+    private function getDocumentByShipment($param) {
         $result = $this->document->getDocument($param);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
@@ -73,9 +88,23 @@ class Document extends Core\Controller {
 
     }
 
-    private function getAllDocument() {
+    private function getDocumentBase64($param) {
+        $result = $this->document->getDocumentBase64($param);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode("Stop! Higher clearance is needed to access this data.");
+        $response['body'] = json_encode($result);
+        return $response;
+
+    }
+
+    private function getAllDocument() {
+        $this->unauthorizedAccess();
+    }
+
+    private function unauthorizedAccess() {
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode([
+            'error' => 'Stop! Higher clearance is needed to access this data.'
+        ]);
         return $response;
     }
 

@@ -16,14 +16,16 @@ use App\Utility;
 class Shipment extends Core\Controller {
 
     private $requestMethod;
-    private $user_id;
-    private $shipment;
+    private $param;
+    private $value;
+    private $key;
 
-    public function __construct($requestMethod, $user_id = "", $shipment = " ") {
-        $this->user_id = $user_id;
-        $this->shipment = $shipment;
-        $this->requestMethod = $requestMethod;
+    public function __construct($requestMethod, $key, $value, $param = []) {
         $this->shipment = Model\Shipment::getInstance();
+        $this->requestMethod = $requestMethod;
+        $this->param = $param;
+        $this->value = $value;
+        $this->key = $key;
     }
 
     public function processShipment() {
@@ -33,11 +35,20 @@ class Shipment extends Core\Controller {
                 // $response = $this->createShipmentFromRequest();
                 // break;
             case 'GET':
-                if ($this->user_id) {
-                    $response = $this->getShipment($this->user_id);
-                } else {
-                    $response = $this->getAllShipment();
-                };
+                switch ($this->key) {
+                    case 'sid': 
+                        $response = $this->getShipment($this->value);
+                        break;
+                    case 'did':
+                        # code... 
+                        break;
+                    case 'all':
+                        $response = $this->getAllShipment();
+                        break;
+                    default:
+                        $response = $this->unprocessableEntityResponse();
+                        break;
+                }
                 break;
             case 'PUT':
                 // $response = $this->updateShipmentFromRequest($this->userId);
@@ -66,8 +77,14 @@ class Shipment extends Core\Controller {
     }
 
     private function getAllShipment() {
+        $this->unauthorizedAccess();
+    }
+
+    private function unauthorizedAccess() {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode("Stop! Higher clearance is needed to access this data.");
+        $response['body'] = json_encode([
+            'error' => 'Stop! Higher clearance is needed to access this data.'
+        ]);
         return $response;
     }
 
