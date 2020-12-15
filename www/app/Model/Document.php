@@ -52,11 +52,12 @@ class Document extends Core\Model {
 
         $Db = Utility\Database::getInstance();
         // echo "INSERT INTO document (" . $column . ") VALUES ('" . $value . "')";
-        $current_id = $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src)
-        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "'); 
-        SELECT SCOPE_IDENTITY()");
+        $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src)
+        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "') ");
 
-        return $Db->query("INSERT INT document_status (document_id, status) VALUES ('" . $current_id . "', 'pending')");
+        $last_inserted = $Db->query("SELECT @@IDENTITY AS id")->results();
+
+        return $Db->query("INSERT INTO document_status (document_id, status) VALUES ('" . $last_inserted[0]->id . "', 'pending')");
     }
 
     public static function getDocumentByShipment($shipment_id, $type = "") {
@@ -84,8 +85,4 @@ class Document extends Core\Model {
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
 
-
-
 }
-
-
