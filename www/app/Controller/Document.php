@@ -135,7 +135,7 @@ class Document extends Core\Controller {
      */
     private function uploadDocument($param) {
 
-        $User = Model\User::getInstance($param[5]);
+        $User = Model\User::getInstance(Utility\Config::get("SESSION_USER"));
         $email = $User->data()->email;
         $shipment_num = $param[6];
         $type = $param[7];
