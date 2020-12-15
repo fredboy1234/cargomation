@@ -335,7 +335,7 @@ class Admin extends Core\Controller {
 
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
-        if (!$User = Model\User::getInstance($user_id)) {
+        if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
 

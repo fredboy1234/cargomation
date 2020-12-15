@@ -34,10 +34,10 @@
         // $initialPreview[] = base$file->img_data;
         // $path = "E:/A2BFREIGHT_MANAGER/CLIENT_$id/CW_FILE/$shipkey/$pathName/";
         if(false) {
-            $server_file = '/filemanager/' . $this->user_email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
+            $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
         }
 
-        $server_file = "./admin/fileviewer/" . $this->id . "/"  . $file->document_id;
+        $server_file = "http://a2bfreighthub.com/admin/fileviewer/" . $this->id . "/"  . $file->document_id;
 
         $initialPreview[] = $server_file;
         $initialPreviewConfig[] = ['caption' => $file->name,
