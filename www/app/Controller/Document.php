@@ -50,9 +50,7 @@ class Document extends Core\Controller {
                         $response = $this->getDocumentByShipment($this->value);
                         break;
                     case 'did':
-                        if($this->param[6] == 'base64') {
-                            $response = $this->getDocumentBase64($this->value);
-                        } 
+                        $response = $this->getDocument($this->value);
                         break;
                     case 'all':
                         $response = $this->getAllDocument();
