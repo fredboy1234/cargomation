@@ -41,7 +41,7 @@ class Api extends Core\Controller {
     }
 
     // CREATE
-    public function post() { 
+    public function post($collection, $key, $value) { 
 
         $this->header();
 
@@ -53,7 +53,7 @@ class Api extends Core\Controller {
 
         // All of our endpoints start with /get
         // everything else results in a 404 Not Found
-        if (!isset($uri[3]) || empty($uri[3])) {
+        if (!isset($collection) || empty($collection)) {
             // header("HTTP/1.1 404 Not Found");
             Utility\Redirect::to('/api');
             exit();
@@ -61,22 +61,22 @@ class Api extends Core\Controller {
 
         // Second parameter can be any id (user, shipment, document) and
         // also check if id is a user id
-        $param = null;
-        if (isset($uri[4])) {
-            $param = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
-        }
+        // $param = null;
+        // if (isset($key)) {
+        //     $param = !is_numeric($key) ? $key : (int) $key;
+        // }
 
         // Pass the request method, user id and extra arg to the specific controller and process the HTTP request:
         // $controller = new ProcessController($requestMethod, $param);
         // $controller->processRequest();
 
-        switch ($uri[3]) { // Processing collection
+        switch ($collection) { // Processing collection
             case 'shipment': // Ex. 3 (user_id)
-                $shipment = new Shipment($requestMethod, $param);
+                $shipment = new Shipment($requestMethod, $key, $value, $uri);
                 $results = $shipment->processShipment();
                 break;
             case 'document': // Ex. S00001055 (shipment_id)
-                $document = new Document($requestMethod, $param);
+                $document = new Document($requestMethod, $key, $value , $uri);
                 $results = $document->processDocument();
                 break;
 
@@ -89,7 +89,7 @@ class Api extends Core\Controller {
     } 
 
     // READ
-    public function get() { 
+    public function get($collection, $key, $value) { 
 
         $this->header();
 
@@ -101,24 +101,22 @@ class Api extends Core\Controller {
 
         // All of our endpoints start with /get
         // everything else results in a 404 Not Found
-        if (!isset($uri[3]) || empty($uri[3])) {
+        if (!isset($collection) || empty($collection)) {
             // header("HTTP/1.1 404 Not Found");
             Utility\Redirect::to('/api');
             exit();
         }
-
-        $collection = $uri[3];
 
         // REQUESTMETHOD/COLLECTION/KEY/VALUE
         // get/document/sid/S00000001
 
         // Key can be any id (user, shipment, document) and
         // also check if id is a user id
-        $key = null; $value = null;
-        if (isset($uri[4]) && isset($uri[5])) {
-            $key = !is_numeric($uri[4]) ? $uri[4] : (int) $uri[4];
-            $value = !is_numeric($uri[5]) ? $uri[5] : (int) $uri[5];
-        }
+        // $key = null; $value = null;
+        // if (isset($key) && isset($value)) {
+        //     $key = !is_numeric($key) ? $key : (int) $key;
+        //     $value = !is_numeric($value) ? $value : (int) $value;
+        // }
 
         // Pass the request method, user id and extra arg to the specific controller and process the HTTP request:
         // $controller = new ProcessController($requestMethod, $param);

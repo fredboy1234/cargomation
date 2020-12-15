@@ -50,7 +50,7 @@ class Document extends Core\Controller {
                         $response = $this->getDocumentByShipment($this->value);
                         break;
                     case 'did':
-                        $response = $this->getDocument($this->value);
+                        $response = $this->getDocument($this->value, $this->param);
                         break;
                     case 'all':
                         $response = $this->getAllDocument();
@@ -78,16 +78,18 @@ class Document extends Core\Controller {
         }
     }
 
-    private function getDocumentByShipment($param) {
-        $result = $this->document->getDocument($param);
+    // Get document by document_id
+    private function getDocument($document_id, $param) {
+        $result = $this->document->getDocument($document_id, $param);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
 
     }
 
-    private function getDocumentBase64($param) {
-        $result = $this->document->getDocumentBase64($param);
+    // Get document by shipment_id
+    private function getDocumentByShipment($param) {
+        $result = $this->document->getDocumentByShipment($param);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
