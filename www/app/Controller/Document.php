@@ -34,8 +34,8 @@ class Document extends Core\Controller {
             case 'POST': 
                 switch ($this->key) {
                     case 'upload':
-                        if(isset($this->value) && !empty($this->value))
-                            $response = $this->upload($this->param);
+                        if(isset($this->value) && !empty($this->value)) 
+                            $response = $this->uploadDocument($this->value);
                         else 
                             $response = $this->unauthorizedAccess();
                         break;
@@ -91,8 +91,8 @@ class Document extends Core\Controller {
     }
 
     // Get document by shipment_id
-    private function getDocumentByShipment($param) {
-        $result = $this->document->getDocumentByShipment($param);
+    private function getDocumentByShipment($shipment_num) {
+        $result = $this->document->getDocumentByShipment($shipment_num);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -133,15 +133,16 @@ class Document extends Core\Controller {
      * @return array
      * @since 1.0.8
      */
-    private function upload($param) {
+    private function uploadDocument($param) {
 
         $User = Model\User::getInstance($param[5]);
         $email = $User->data()->email;
         $shipment_num = $param[6];
         $type = $param[7];
         $domain = "http://a2bfreighthub.com";
+        $physical_path = "E:/A2BFREIGHT_MANAGER";
 
-        $server_path = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
+        $server_path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
         
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
@@ -162,7 +163,7 @@ class Document extends Core\Controller {
             if ($tmpFilePath != ""){
                 //Setup our new file path
                 $newFilePath = $path . $fileName;
-                $newFileUrl = $domain . $path . $fileName;
+                $newFileUrl = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
                 
                 //Upload the file into the new path
                 if(move_uploaded_file($tmpFilePath, $newFilePath)) {
@@ -176,6 +177,8 @@ class Document extends Core\Controller {
                         'url' => '/delete.php', // server api to delete the file based on key
                         'type' => $fileExtn
                     ];
+                    // save to database
+                    $this->putDocumentByShipment($shipment_num, $type, $fileName);
                 } else {
                     $errors[] = $fileName;
                 }
@@ -307,4 +310,29 @@ class Document extends Core\Controller {
             return 'http://localhost/uploads/' . $fileName; // return the original file
         }
     }
+
+    // Put document by shipment_id
+    private function putDocumentByShipment($shipment_num, $type, $fileName) {
+
+        $document = $this->document->getDocumentByShipment($shipment_num);
+
+        $data = [];
+        $data['shipment_id'] = $document[0]->shipment_id;
+        $data['shipment_num'] = $document[0]->shipment_num;
+        $data['type'] = $type;
+        $data['name'] = $fileName;
+        $data['saved_by'] = "";
+        $data['saved_date'] = "";
+        $data['event_date'] = "";
+        $data['path'] = "";
+        $data['upload_src'] = "hub";
+
+        $result = $this->document->putDocument($data);
+
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+
+    }
+
 }

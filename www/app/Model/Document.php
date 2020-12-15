@@ -42,6 +42,23 @@ class Document extends Core\Model {
                                 WHERE document.id IN ('" . $document_id . "') ")->results();
     }
 
+    public static function putDocument($data) {
+
+        // Sanitize array and implode
+        if(is_array($data)) {
+            $value = implode("','", array_values($data));
+            $column = implode(", ", array_keys($data));
+        }
+
+        $Db = Utility\Database::getInstance();
+        // echo "INSERT INTO document (" . $column . ") VALUES ('" . $value . "')";
+        $current_id = $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src)
+        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "'); 
+        SELECT SCOPE_IDENTITY()");
+
+        return $Db->query("INSERT INT document_status (document_id, status) VALUES ('" . $current_id . "', 'pending')");
+    }
+
     public static function getDocumentByShipment($shipment_id, $type = "") {
 
         if(is_array($shipment_id)) {
@@ -66,6 +83,8 @@ class Document extends Core\Model {
                            else
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
+
+
 
 }
 
