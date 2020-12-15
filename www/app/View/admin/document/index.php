@@ -53,8 +53,15 @@
     }
 
 } ?>
-    <div>
-        <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
+            <h5>Type: <?= $this->shipment['type']; ?></h4>
+        </div>
+        <div class="col-md-6">
+            <h5>No. of Files: <?= count($this->document); ?></h4>
+        </div>
     </div>
     <div class="file-loading" style="display: none;">
         <input id="input" name="input[]" type="file" accept="application/*" multiple>
@@ -68,6 +75,7 @@
         var initialPreviewFileType = 'pdf';
         var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
         var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
+        var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $this->shipment['type']; ?>";
     </script>
     <?= $this->getJS(); ?>
 </body>

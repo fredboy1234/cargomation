@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('.file-loading').show();
     $el1.fileinput({
         theme: 'fas',
-        uploadUrl: document.location.origin + "/api/post/document/upload",
+        uploadUrl: document.location.origin + "/api/post/document/upload" + param,
         deleteUrl: "delete.php",
         uploadAsync: false,
         allowedPreviewMimeTypes: null,

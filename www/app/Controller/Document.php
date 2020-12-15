@@ -32,9 +32,12 @@ class Document extends Core\Controller {
         // Processing request.. 
         switch (strtoupper($this->requestMethod)) {
             case 'POST': 
-                switch ($this->param) {
+                switch ($this->key) {
                     case 'upload':
-                        $response = $this->upload();
+                        if(isset($this->value) && !empty($this->value))
+                            $response = $this->upload($this->param);
+                        else 
+                            $response = $this->unauthorizedAccess();
                         break;
                     case 'uploadchunk':
                         $response = $this->uploadChunk();
@@ -130,14 +133,24 @@ class Document extends Core\Controller {
      * @return array
      * @since 1.0.8
      */
-    private function upload() {
+    private function upload($param) {
+
+        $User = Model\User::getInstance($param[5]);
+        $email = $User->data()->email;
+        $shipment_num = $param[6];
+        $type = $param[7];
+        $domain = "http://a2bfreighthub.com";
+
+        $server_path = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
+        
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
         if (empty($_FILES[$input])) {
             return [];
         }
         $total = count($_FILES[$input]['name']); // multiple files
-        $path = './uploads/'; // your upload path
+        // $path = './uploads/'; // your upload path
+        $path = $server_path;
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
             $fileName = $_FILES[$input]['name'][$i]; // the file name
@@ -149,7 +162,7 @@ class Document extends Core\Controller {
             if ($tmpFilePath != ""){
                 //Setup our new file path
                 $newFilePath = $path . $fileName;
-                $newFileUrl = 'http://basin.con/uploads/' . $fileName;
+                $newFileUrl = $domain . $path . $fileName;
                 
                 //Upload the file into the new path
                 if(move_uploaded_file($tmpFilePath, $newFilePath)) {
@@ -160,7 +173,7 @@ class Document extends Core\Controller {
                         'caption' => $fileName,
                         'size' => $fileSize,
                         'downloadUrl' => $newFileUrl, // the url to download the file
-                        'url' => 'http://superhero.con/delete.php', // server api to delete the file based on key
+                        'url' => '/delete.php', // server api to delete the file based on key
                         'type' => $fileExtn
                     ];
                 } else {
