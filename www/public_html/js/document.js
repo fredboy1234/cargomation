@@ -1,16 +1,18 @@
 
 $(document).ready(function() {
     var $el1 = $("#input");
+    $('.file-loading').show();
     $el1.fileinput({
         theme: 'fas',
         uploadUrl: document.location.origin + "/api/post/document/upload",
-        uploadAsync: true,
         deleteUrl: "delete.php",
-        initialPreviewAsData: false,
+        uploadAsync: false,
+        allowedPreviewMimeTypes: null,
+        initialPreviewAsData: true,
         initialPreviewFileType: ['pdf', 'office', 'gdocs', 'other'],
         initialPreview: initialPreview,
         initialPreviewAsData: initialPreviewAsData,
-        //initialPreviewFileType: initialPreviewFileType,
+        initialPreviewFileType: initialPreviewFileType,
         initialPreviewConfig: initialPreviewConfig,
         initialPreviewThumbTags: initialPreviewThumbTags,
         previewFileIcon: '<i class="fas fa-file"></i>',
@@ -40,6 +42,7 @@ $(document).ready(function() {
         //         _token: '<?php echo csrf_token() ?>',
         //     };
         // },
+        showPreview: true,
         showUpload: true, // hide upload button
         showRemove: false, // hide remove button
         showDownload: false,
@@ -191,7 +194,6 @@ $(document).ready(function() {
     });
 
     $('.kv-file-status').mouseenter(function() {
-        console.log('test');
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
     }).mouseleave(function(){
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");

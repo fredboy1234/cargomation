@@ -29,11 +29,22 @@
 
 <?php if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
-        $initialPreview[] = "/uploads/" . $file->name;
+        
+        // $initialPreview[] = "<object data='data:application/pdf;base64," . $file->img_data . "' type='text/plain' class='' alt='" . $file->name . "' ><div class='file - preview - other'> <span class='file - icon - 4x'><i class='glyphicon glyphicon-file'></i></span> </div></object>";
+        // $initialPreview[] = base$file->img_data;
+        // $path = "E:/A2BFREIGHT_MANAGER/CLIENT_$id/CW_FILE/$shipkey/$pathName/";
+        if(false) {
+            $server_file = '/filemanager/' . $this->user_email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
+        }
+
+        $server_file = "./admin/fileviewer/" . $this->id . "/"  . $file->document_id;
+
+        $initialPreview[] = $server_file;
         $initialPreviewConfig[] = ['caption' => $file->name,
                                    'width' => '200px',
                                     'type' => 'pdf',
-                                    'size' => 202334,
+                                    'size' => " ",
+                                    'previewAsData' => true,
                                    'extra' => ['status' => $file->status]];
         $initialPreviewThumbTags[] = ['{status}' => $file->status, 
                                           '{id}' => $file->document_id, 
@@ -41,19 +52,11 @@
                                       '{origin}' => $file->upload_src];
     }
 
-    // $docsCollection =array();
-    // foreach($Document->getDocument($shipment_id) as $key=>$value){
-    //     $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
-    // }
-
-
-
-
 } ?>
     <div>
         <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
     </div>
-    <div class="file-loading">
+    <div class="file-loading" style="display: none;">
         <input id="input" name="input[]" type="file" accept="application/*" multiple>
     </div>
     <div id="kv-error-1" style="margin-top:10px; display:none"></div>

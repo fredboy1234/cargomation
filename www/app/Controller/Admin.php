@@ -149,7 +149,7 @@ class Admin extends Core\Controller {
         $this->View->addJS("js/shipment.js");
         
         $docsCollection =array();
-        foreach($Document->getDocument($shipment_id) as $key=>$value){
+        foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
@@ -157,7 +157,7 @@ class Admin extends Core\Controller {
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
-            "document" => $Document->getDocument($shipment_id),
+            "document" => $Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user),
         ]);
@@ -231,8 +231,7 @@ class Admin extends Core\Controller {
      * @return void
      * @since 1.0
      */
-    public function document($shipment_id = "", $type = "", $user = "") {
-
+    public function document($shipment_id = "", $type = "", $user_id = "") {
 
         //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
@@ -241,16 +240,16 @@ class Admin extends Core\Controller {
 
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
-        if (!$user) {
+        if (!$user_id) {
             $userSession = Utility\Config::get("SESSION_USER");
             if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
+                $user_id = Utility\Session::get($userSession);
             }
         }
 
         // // Get an instance of the user model using the user ID passed to the
         // // controll action. 
-        if (!$User = Model\User::getInstance($user)) {
+        if (!$User = Model\User::getInstance($user_id)) {
             Utility\Redirect::to(APP_URL);
         }
         
@@ -265,8 +264,10 @@ class Admin extends Core\Controller {
 
         $this->View->render("admin/document/index", [
             "title" => "Shipment API",
+            "id" => $User->data()->id,
+            "email" => $User->data()->email,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
-            "document" => $Document->getDocument($shipment_id, $type),
+            "document" => $Document->getDocumentByShipment($shipment_id, $type),
         ]);
     }
 
@@ -318,6 +319,32 @@ class Admin extends Core\Controller {
         echo json_encode($Shipment->shipmentAssign($_POST,$user));
     }
 
+    public function fileviewer($user = "", $document_id){ 
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $this->View->render("admin/document/fileviewer", [
+            "email" => $User->data()->email,
+            "document_id" => $document_id,
+        ]);
+    }
+
     public function curl_get_contents($url) {
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
         $ch = curl_init($protocol . $url);
@@ -342,11 +369,11 @@ class Admin extends Core\Controller {
              }
          }
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/'.$user)); 
+        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/sid/'.$user)); 
         $Shipment = Model\Shipment::getInstance();
         $shipment_id = $Shipment->getShipment($user, "shipment_num");
         $Document = Model\Document::getInstance();
-        foreach($Document->getDocument($shipment_id) as $key=>$value){
+        foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
         $stats = $docsCollection;

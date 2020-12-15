@@ -24,7 +24,25 @@ class Document extends Core\Model {
         return(self::$_Document);
     }
 
-    public static function getDocument($shipment_id, $type = "") {
+    public static function getDocument($document_id, $arg) {
+
+        $column = "*";
+        if(isset($arg[6]) || !empty($arg[6])) {
+            $column = $arg[6];
+        }
+
+        if(is_array($document_id)) {
+            $document_id = implode("','", array_column($document_id, 'shipment_num'));
+        }
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT " . $column . "
+                                FROM document 
+                                LEFT JOIN document_status ON document.id = document_status.document_id
+                                WHERE document.id IN ('" . $document_id . "') ")->results();
+    }
+
+    public static function getDocumentByShipment($shipment_id, $type = "") {
 
         if(is_array($shipment_id)) {
             $shipment_id = implode("','", array_column($shipment_id, 'shipment_num'));
