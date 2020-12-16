@@ -483,16 +483,16 @@ class Admin extends Core\Controller {
             }
 
             $subdata =array();
-            $subdata[] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
-            $subdata[] = ($value->console_id==""?"No Console ID":$value->console_id);
-            $subdata[] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
-            $subdata[] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
-            $subdata[] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
-            $subdata[] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
-            $subdata[] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
-            $subdata[] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
-            $subdata[] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
-            $subdata[] = 'No Comment';
+            $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
+            $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
+            $subdata['eta'] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
+            $subdata['eda'] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
+            $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
+            $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
+            $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
+            $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
+            $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
+            $subdata['comment'] = 'No Comment';
             $data[] = $subdata;
         }
        

@@ -33,54 +33,94 @@ $(document).on("click",".assign",function(){
 
 //initialize data table
 //$(document).ready(function() {
+  // var table = $('.table').DataTable({
+  //   searching: false, 
+  //   paging: false, 
+  //   info: false,
+  //   bFilter: true,
+  //   //deferRender: true,
+  //   sDom: 'lrtip',
+  //   sEcho: true,
+  //   processing: true,
+  //   //stateSave: true,
+  //   cache:true,
+  //   destroy: true,
+  //   "language": {
+  //     processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
+  //   serverSide: true,
+  //   ajax: {
+  //     type: "POST",
+  //     url: document.location.origin + "/admin/shipmentSSR/" || window.location.href,
+  //     data:function(d){
+  //       d.shipment_id = $("input[name='shipment_id']").val();
+  //       d.ETA = $("input[name='ETA']").val();
+  //       d.client_name = $("input[name='client_name']").val();
+  //       d.consignee = $("input[name='consignee']").val();
+  //       d.consignor = $("input[name='consignor']").val();
+  //       d.container = $("input[name='container']").val();
+  //       d.origin = $("input[name='origin']").val();
+  //       d.status = $("input[name='status']").val();
+  //       d.post_trigger = $("input[name='post_trigger']").val();
+  //     },
+  //     error: function (xhr) {
+  //         if (xhr.status === 401) {
+  //             window.location.assign(window.location.href);
+  //         }
+  //         else if (xhr.status !== 0){
+  //             alert("Ajax request failed.");
+  //         }
+  //     },
+  // },
+  //   columnDefs: [
+  //     { className: "stats", targets: [4,5,6,7,8] } 
+  //   ]
+  // });
+//});
+
+$(document).ready(function(){
   var table = $('.table').DataTable({
-    searching: false, 
+    searching: true, 
     paging: false, 
-    info: false,
-    bFilter: true,
-    //deferRender: true,
-    sDom: 'lrtip',
-    sEcho: true,
+    info: true,
+    bSort: true,
+    // bFilter: true,
+    // //deferRender: true,
+    // sDom: 'lrtip',
+    // sEcho: true,
+    // //stateSave: true,
+    // cache:true,
+    // destroy: true,
     processing: true,
-    //stateSave: true,
-    cache:true,
-    destroy: true,
-    "language": {
+    language: {
       processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
-    serverSide: true,
+    serverMethod: 'get',
     ajax: {
-      type: "POST",
-      url: document.location.origin + "/admin/shipmentSSR/" || window.location.href,
-      data:function(d){
-        d.shipment_id = $("input[name='shipment_id']").val();
-        d.ETA = $("input[name='ETA']").val();
-        d.client_name = $("input[name='client_name']").val();
-        d.consignee = $("input[name='consignee']").val();
-        d.consignor = $("input[name='consignor']").val();
-        d.container = $("input[name='container']").val();
-        d.origin = $("input[name='origin']").val();
-        d.status = $("input[name='status']").val();
-        d.post_trigger = $("input[name='post_trigger']").val();
-      },
-      error: function (xhr) {
-          if (xhr.status === 401) {
-              window.location.assign(window.location.href);
-          }
-          else if (xhr.status !== 0){
-              alert("Ajax request failed.");
-          }
-      },
-  },
+      url:'http://basin.con/admin/shipmentSSR/',
+    },
+    columns: [
+      { data: 'shipment_id' },
+      { data: 'console_id' },
+      { data: 'eta' },
+      { data: 'eda' },
+      { data: 'hbl' },
+      { data: 'civ' },
+      { data: 'pkl' },
+      { data: 'pkd' },
+      { data: 'all' },
+      { data: 'comment' },
+    ],
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ]
   });
-//});
+
 
 //on search data table
 $('#doc_search').on( 'keyup', function () {
+  console.log($(this));
   table.search( this.value ).draw();
 });
+
 
 //ETA time picker
 $('input[name="ETA"]').daterangepicker({
@@ -122,5 +162,7 @@ $(document).on('mouseenter mouseleave','.stats',function() {
 // Append loading and redraw datatable
 $('#myModal').on('hidden.bs.modal', function (e){ 
   $('#myModal .modal-body').empty().append('Loading...');
-  table.draw();
+  table.ajax.reload();
+});
+
 });

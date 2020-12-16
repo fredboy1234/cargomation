@@ -1,6 +1,27 @@
+/* Data Tables */
+#DataTables_Table_0_processing{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .dataTables_empty{
     text-align: center;
 }
+.dataTables_filter{
+    display: none !important;
+}
+.dataTables_wrapper {
+    position: relative;
+}
+table.dataTable thead .sorting { background: url('/Content/images/sort_both.png') no-repeat center right; }
+table.dataTable thead .sorting_asc { background: url('/Content/images/sort_asc.png') no-repeat center right; }
+table.dataTable thead .sorting_desc { background: url('/Content/images/sort_desc.png') no-repeat center right; }
+
+table.dataTable thead .sorting_asc_disabled { background: url('/Content/images/sort_asc_disabled.png') no-repeat center right; }
+table.dataTable thead .sorting_desc_disabled { background: url('/Content/images/sort_desc_disabled.png') no-repeat center right; }
+/* Data Tables end */
+
 .badge {
     cursor: pointer;
 }
@@ -14,15 +35,6 @@
 }
 .stats .doc-stats:first-child > span {
     font-size: .8rem;
-}
-#DataTables_Table_0_processing{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.dataTables_wrapper {
-    position: relative;
 }
 .fa-spinner {
     color: #2962ff;
