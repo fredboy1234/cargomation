@@ -137,19 +137,14 @@ class Shipment extends Core\Model {
     }
 
     public static function getShipmentByUserID($user_id, $args = "*") {
-        if(is_numeric(strpos($args, "id")))
-            $args = str_replace("id", "d.id", $args);
-        if(is_numeric(strpos($args, "shipment_num")))
-            $args = str_replace("shipment_num", "d.shipment_num", $args);
-        if(is_numeric(strpos($args, ",")))
-            $user_id = implode("','", array_values(explode(",", $user_id)));
+        if(strpos($args, "id") !== false)
+            $args = str_replace("id", "shipment.id", $args);
+        $Db = Utility\Database::getInstance();
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT {$args} 
-                                FROM shipment AS s
-                                LEFT JOIN users AS u ON u.id = s.user_id
-                                LEFT JOIN document AS d ON d.shipment_id = s.id
-                                LEFT JOIN document_status AS ds ON ds.document_id = d.id
-                                WHERE user_id IN (" . $user_id . ") ")->results();
+                                FROM shipment 
+                                LEFT JOIN users ON users.id = shipment.user_id
+                                WHERE user_id = '{$user_id}' ")->results();
     }
 
 }

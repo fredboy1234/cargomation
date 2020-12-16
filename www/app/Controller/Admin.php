@@ -369,7 +369,7 @@ class Admin extends Core\Controller {
              }
          }
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/sid/'.$user)); 
+        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
         $Shipment = Model\Shipment::getInstance();
         $shipment_id = $Shipment->getShipment($user, "shipment_num");
         $Document = Model\Document::getInstance();
