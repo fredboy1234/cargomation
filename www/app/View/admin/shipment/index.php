@@ -98,6 +98,7 @@
                         </div>
                       </div>
                   </div>
+                    <input type="hidden" name="post_trigger" value="">
                   <div class="col-sm-6">
                     <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
                   </div>
