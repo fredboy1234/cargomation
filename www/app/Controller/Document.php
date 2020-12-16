@@ -50,13 +50,13 @@ class Document extends Core\Controller {
             case 'GET':
                 switch ($this->key) {
                     case 'sid': 
-                        $response = $this->getDocumentByShipment($this->value);
+                        $response = $this->getDocumentByShipID($this->value, $this->param);
                         break;
                     case 'did':
-                        $response = $this->getDocument($this->value, $this->param);
+                        $response = $this->getDocumentByDocID($this->value, $this->param);
                         break;
-                    case 'all':
-                        $response = $this->getAllDocument();
+                    case 'uid':
+                        $response = $this->getDocumentByUserID($this->value, $this->param);
                         break;
                     default:
                         $response = $this->unprocessableEntityResponse();
@@ -81,28 +81,6 @@ class Document extends Core\Controller {
         }
     }
 
-    // Get document by document_id
-    private function getDocument($document_id, $param) {
-        $result = $this->document->getDocument($document_id, $param);
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
-
-    }
-
-    // Get document by shipment_id
-    private function getDocumentByShipment($shipment_num) {
-        $result = $this->document->getDocumentByShipment($shipment_num);
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
-
-    }
-
-    private function getAllDocument() {
-        $this->unauthorizedAccess();
-    }
-
     private function unauthorizedAccess() {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode([
@@ -122,6 +100,34 @@ class Document extends Core\Controller {
     private function notFoundResponse() {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
         $response['body'] = null;
+        return $response;
+    }
+
+    // Get document by document_id
+    private function getDocumentByDocID($document_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->document->getDocumentByDocID($document_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+
+    }
+
+    // Get document by shipment_id
+    private function getDocumentByShipID($shipment_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->document->getDocumentByShipID($shipment_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    // Get document by user_id
+    private function getDocumentByUserID($user_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->document->getDocumentByUserID($user_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
         return $response;
     }
 
@@ -334,5 +340,4 @@ class Document extends Core\Controller {
         return $response;
 
     }
-
 }

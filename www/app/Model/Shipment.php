@@ -112,4 +112,39 @@ class Shipment extends Core\Model {
                            VALUES('{$data['user_id']}','{$user}','{$data['shipment_id']}')");
     }
 
+    public static function getShipmentByShipID($shipment_id, $args = "*") {
+        if( strpos($shipment_id, ',') !== false )
+            $shipment_id = implode("','", array_values(explode(",", $shipment_id)));
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args}
+                                FROM shipment AS s
+                                WHERE shipment_num IN ('" . $shipment_id . "') ")->results();
+    }
+
+    public static function getShipmentByDocID($document_id, $args = "*") {
+        if(is_numeric(strpos($args, "id")))
+            $args = str_replace("id", "d.id", $args);
+        if(is_numeric(strpos($args, "shipment_num")))
+            $args = str_replace("shipment_num", "d.shipment_num", $args);
+        if( strpos($document_id, ',') !== false )
+            $document_id = implode("','", array_values(explode(",", $document_id)));
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args} 
+                                FROM shipment AS s
+                                LEFT JOIN document AS d ON d.shipment_id = s.id
+                                LEFT JOIN document_status AS ds ON ds.document_id = d.id
+                                WHERE d.id IN ('" . $document_id . "') ")->results();
+    }
+
+    public static function getShipmentByUserID($user_id, $args = "*") {
+        if(strpos($args, "id") !== false)
+            $args = str_replace("id", "shipment.id", $args);
+        $Db = Utility\Database::getInstance();
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args} 
+                                FROM shipment 
+                                LEFT JOIN users ON users.id = shipment.user_id
+                                WHERE user_id = '{$user_id}' ")->results();
+    }
+
 }

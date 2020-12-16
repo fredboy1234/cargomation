@@ -281,7 +281,7 @@ class Admin extends Core\Controller {
     //     return false;
     // }
 
-    public function advanceSearch($user ='',$post){
+    public function advanceSearch($user =''){
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
@@ -295,7 +295,7 @@ class Admin extends Core\Controller {
         }
 
         $Shipment = Model\Shipment::getInstance();
-        return $Shipment->getDocumentBySearch($post,$user);
+        echo json_encode($Shipment->getDocumentBySearch($_POST,$user));
     }
 
     public function addDocumentStatus(){
@@ -360,10 +360,6 @@ class Admin extends Core\Controller {
     public function shipmentSSR($user=''){
         $data = array();
         $docsCollection = array();
-        $json_data = array();
-        $html = array();
-        $tableData = array();
-        
          Utility\Auth::checkAuthenticated();
 
          if (!$user) {
@@ -373,12 +369,7 @@ class Admin extends Core\Controller {
              }
          }
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        //$api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/sid/'.$user)); 
-        if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
-            $api = $this->advanceSearch($user,$_POST);
-        }else{
-            $api =  json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/sid/'.$user)); 
-        }
+        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
         $Shipment = Model\Shipment::getInstance();
         $shipment_id = $Shipment->getShipment($user, "shipment_num");
         $Document = Model\Document::getInstance();
@@ -386,52 +377,26 @@ class Admin extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
         $stats = $docsCollection;
-       
-        $doc_type = array('HBL','CIV','PKL','PKD','all');
-        $settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
+        $doc_type = array('HBL','CIV','PKL','PKD');
         foreach($api as $key=>$value){
             $hbl = "";
             $civ ="";
             $pkl="";
             $pkd = "";
-            $all = "";
-            $status_arr['all']['pending2'] = 0;
-            $status_arr['all']['approved2'] = 0;
+            $status_arr['all']['pending'] = 0;
+            $status_arr['all']['approved'] = 0;
             if(isset($stats[$value->shipment_num])) {
                 foreach ($stats[$value->shipment_num] as $key2 => $value2) {
-                    
                     if(isset($value2['pending'])) {
                         $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
-                        $status_arr['all']['pending2'] += count($value2['pending']);
+                        $status_arr['all']['pending'] += count($value2['pending']);
                     }  
                     if(isset($value2['approved'])) {
                         $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
-                        $status_arr['all']['approved2'] += count($value2['approved']);
-                    }
-                    //for badge and text
-                    if(isset($value2['pending'])) {
-                        $status_arr[$value2['pending'][0]->type]["color"] = "badge-warning";
-                        $status_arr[$value2['pending'][0]->type]["text"] = "Pending";
-                        $status_arr["all"]["color"] = "badge-warning";
-                        $status_arr["all"]["text"] = "Pending";
-                    }elseif(isset($value2['approved'])){
-                        $status_arr[$value2['approved'][0]->type]["color"] = "badge-success";
-                        $status_arr[$value2['approved'][0]->type]["text"] = "Approved";
-                        $status_arr["all"]["color"] = "badge-success";
-                        $status_arr["all"]["text"] = "Approved";
+                        $status_arr['all']['approved'] += count($value2['approved']);
                     }
                 }
             } else {
-                $status_arr["CIV"]["color"] = "badge-danger";
-                $status_arr["CIV"]["text"] = "Missing";
-                $status_arr["HBL"]["color"] = "badge-danger";
-                $status_arr["HBL"]["text"] = "Missing";
-                $status_arr["PKL"]["color"] = "badge-danger";
-                $status_arr["PKL"]["text"] = "Missing";
-                $status_arr["PKD"]["color"] = "badge-danger";
-                $status_arr["PKD"]["text"] = "Missing";
-                $status_arr["all"]["text"] = "Missing";
-                $status_arr["all"]["color"] = "badge-danger";
                 $status_arr['HBL']['approved2'] = 0;
                 $status_arr['HBL']['pending2'] = 0;
                 $status_arr['CIV']['approved2'] = 0;
@@ -441,64 +406,85 @@ class Admin extends Core\Controller {
                 $status_arr['PKD']['approved2'] = 0;
                 $status_arr['PKD']['pending2'] = 0;
             }
-            
+
             $status_arr['All']['count'] = 0;
        
-            foreach($status_arr as $key=>$val){
-                $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                if(in_array($key,$doc_type)){
-                    $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                    $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                    $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
-                    
-                    if(isset($val['pending2']) && $val['pending2'] > 0){
-                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['pending2'].'</span>';
-                    }elseif(isset($val['approved2']) && $val['approved2'] > 0){
-                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['approved2'].'</span>';
-                    }else{
-                        $html[$key]['count'] = "";
-                    }
-                }else{
-                    $html['missing']['badge'] ='<span class="doc badge badge-danger" '.$attr.' data-id="'.$value->shipment_num.'">Missing</span>';
-                    $html['missing']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                    $html[$key]['count'] = "";
-                }
-            }
-
             foreach($doc_type as $doc){
-                if(isset($html[$doc]['hover'])){
-                    $tableData[$doc]['hover'] = $html[$doc]['hover'];
-                    $tableData[$doc]['badge'] = $html[$doc]['badge'];
-                    if(isset($html[$doc]['count'])){
-                        $tableData[$doc]['count'] =   $html[$doc]['count'];
+                if(isset($stats[$value->shipment_num])){
+                    if(isset($stats[$value->shipment_num][$doc]['pending'])){
+                        $status_arr[$doc]['color'] = "badge-warning";
+                        $status_arr[$doc]['text'] = "Pending";
+                        $status_arr[$doc]['count']= count($stats[$value->shipment_num][$doc]['pending']); 
+                        
+                        $status_arr['All']['color'] = 'badge-warning';
+                        $status_arr['All']['text'] = 'Pending';
+                        $status_arr['All']['count'] += $status_arr[$doc]['count'];
+                    }else if(isset($stats[$value->shipment_num][$doc]['approved'])){
+                        $status_arr[$doc]['color'] = "badge-success";
+                        $status_arr[$doc]['text'] = "Approved";
+                        $status_arr[$doc]['count']= count($stats[$value->shipment_num][$doc]['approved']);
+                        
+                        $status_arr['All']['color'] = 'badge-success';
+                        $status_arr['All']['text'] = 'Approved';
+                        $status_arr['All']['count'] += $status_arr[$doc]['count'];
                     }else{
-                        $tableData[$doc]['count'] = "";
+                        $status_arr[$doc]['color'] = "badge-danger";
+                        $status_arr[$doc]['text'] = "Missing";
+                        $status_arr[$doc]['count'] = 0;
+                       
                     }
                 }else{
-                    $tableData[$doc]['hover'] = $html['missing']['hover'];
-                    $tableData[$doc]['badge'] = $html['missing']['badge'];
-                    $tableData[$doc]['count'] = "";
+                    $status_arr[$doc]['color'] = "badge-danger";
+                    $status_arr[$doc]['text'] = "Missing";
+                    $status_arr[$doc]['count'] = 0;
+            
+                    $status_arr['All']['color'] = 'badge-danger';
+                    $status_arr['All']['text'] = 'Missing';
+                    $status_arr['All']['count'] = 0;
                 }
             }
+            $hblF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["HBL"]["approved2"]) ? $status_arr["HBL"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["HBL"]["pending2"]) ? $status_arr["HBL"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+            $civF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="CIV" data-id="'.$value->shipment_num.'">'.(isset($status_arr["CIV"]["approved2"]) ? $status_arr["CIV"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["CIV"]["pending2"]) ? $status_arr["CIV"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+            $pklF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="PKL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKL"]["approved2"]) ? $status_arr["PKL"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["PKL"]["pending2"]) ? $status_arr["PKL"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+            $pkdF = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="PKD" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKD"]["approved2"]) ? $status_arr["PKD"]["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["PKD"]["pending2"]) ? $status_arr["PKD"]["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+            $allF = '<div class="doc-stats" style="display: none;"><span class="doc"  data-id="'.$value->shipment_num.'">'.(isset($status_arr["all"]["approved"]) ? $status_arr["all"]["approved"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($status_arr["all"]["pending"]) ? $status_arr["all"]["pending"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
             
-            if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
-                $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
+            $hbl = '<span class="doc badge '.(isset($status_arr["HBL"]["color"])?$status_arr["HBL"]["color"]:"badge-danger").'" data-type="HBL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["HBL"]["text"])?$status_arr["HBL"]["text"]:"missing").'</span>';
+            $civ = '<span class="doc badge '.(isset($status_arr["CIV"]["color"])?$status_arr["CIV"]["color"]:"badge-danger").'" data-type="CIV" data-id="'.$value->shipment_num.'">'.(isset($status_arr["CIV"]["text"])?$status_arr["CIV"]["text"]:"missing").'</span>';
+            $pkl = '<span class="doc badge '.(isset($status_arr["PKL"]["color"])?$status_arr["PKL"]["color"]:"badge-danger").'" data-type="PKL" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKL"]["text"])?$status_arr["PKL"]["text"]:"missing").'</span>';
+            $pkd = '<span class="doc badge '.(isset($status_arr["PKD"]["color"])?$status_arr["PKD"]["color"]:"badge-danger").'" data-type="PKD" data-id="'.$value->shipment_num.'">'.(isset($status_arr["PKD"]["text"])?$status_arr["PKD"]["text"]:"missing").'</span>';
+            $all = '<span class="doc badge '.(isset($status_arr["All"]["color"])?$status_arr["All"]["color"]:"badge-danger").'" data-id="'.$value->shipment_num.'">'.(isset($status_arr["All"]["text"])?$status_arr["All"]["text"]:"missing").'</span>';
+              
+            if(isset($status_arr) && $status_arr['HBL']['count'] > 0){
+                $hbl.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['HBL']['count'].'</span>';
+            }
+            if(isset($status_arr) && $status_arr['CIV']['count'] > 0){
+                $civ.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['CIV']['count'].'</span>';
+            }  
+            if(isset($status_arr) && $status_arr['PKL']['count'] > 0){
+                $pkl.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['PKL']['count'].'</span>';
+            } 
+            if(isset($status_arr) && $status_arr['PKD']['count'] > 0){
+                $pkd.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['PKD']['count'].'</span>';
+            } 
+            if(isset($status_arr) && $status_arr['All']['count'] > 0){
+                $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['All']['count'].'</span>';
             }
 
             $subdata =array();
-            $subdata[] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
-            $subdata[] = ($value->console_id==""?"No Console ID":$value->console_id);
+            $subdata[] = $value->shipment_num;
+            $subdata[] = $value->console_id;
             $subdata[] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
             $subdata[] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
-            $subdata[] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
-            $subdata[] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
-            $subdata[] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
-            $subdata[] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
-            $subdata[] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
+            $subdata[] =  $hblF.'<div class="doc-stats">'.$hbl.'</div>';
+            $subdata[] = $civF.'<div class="doc-stats">'.$civ.'</div>';
+            $subdata[] = $pklF.'<div class="doc-stats">'.$pkl.'</div>';
+            $subdata[] = $pkdF.'<div class="doc-stats">'.$pkd.'</div>';
+            $subdata[] = $allF.'<div class="doc-stats">'.$all.'</div>';
             $subdata[] = 'No Comment';
             $data[] = $subdata;
         }
-       
+        
         $json_data=array(
             "data"              =>  $data,
         );
