@@ -77,6 +77,44 @@ class Document extends Core\Model {
                                 WHERE shipment_num IN ('" . $shipment_id . "') " . $type)->results();
     }
 
+    public static function getDocumentByShipID($shipment_id, $args = "*") {
+        if(is_numeric(strpos($args, "id")))
+            $args = str_replace("id", "d.id", $args);
+        if( strpos($shipment_id, ',') !== false )
+            $shipment_id = implode("','", array_values(explode(",", $shipment_id)));
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args}
+                                FROM document AS d
+                                LEFT JOIN document_status AS ds ON ds.document_id = d.id
+                                WHERE shipment_num IN ('" . $shipment_id . "') ")->results();
+    }
+
+    public static function getDocumentByDocID($document_id, $args = "*") {
+        if(is_numeric(strpos($args, "id")))
+            $args = str_replace("id", "d.id", $args);
+        if( strpos($document_id, ',') !== false )
+            $document_id = implode("','", array_values(explode(",", $document_id)));
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args}
+                                FROM document AS d
+                                LEFT JOIN document_status AS ds ON d.id = ds.document_id
+                                WHERE d.id IN ('" . $document_id . "') ")->results();
+    }
+
+    public static function getDocumentByUserID($user_id, $args = "*") {
+        if(is_numeric(strpos($args, "id")))
+            $args = str_replace("id", "d.id", $args);
+        if(is_numeric(strpos($args, "shipment_num")))
+            $args = str_replace("shipment_num", "d.shipment_num", $args);
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT {$args} 
+                                FROM shipment AS s
+                                LEFT JOIN users AS u ON u.id = s.user_id
+                                LEFT JOIN document AS d ON d.shipment_id = s.id
+                                LEFT JOIN document_status AS ds ON ds.document_id = d.id
+                                WHERE user_id IN (" . $user_id . ") ")->results();
+    }
+
     public static function addDocumentStatus($data){
         $Db = Utility\Database::getInstance();
         return $Db->query("if exists(select * from document_status where document_id='{$data['doc_id']}')
@@ -84,5 +122,7 @@ class Document extends Core\Model {
                            else
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
+
+
 
 }

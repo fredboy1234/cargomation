@@ -36,11 +36,14 @@ class Shipment extends Core\Controller {
                 // break;
             case 'GET':
                 switch ($this->key) {
+                    case 'uid': 
+                        $response = $this->getShipmentByUserID($this->value, $this->param);
+                        break;
                     case 'sid': 
-                        $response = $this->getShipment($this->value);
+                        $response = $this->getShipmentByShipID($this->value, $this->param);
                         break;
                     case 'did':
-                        # code... 
+                        $response = $this->getShipmentByDocID($this->value, $this->param);
                         break;
                     case 'all':
                         $response = $this->getAllShipment();
@@ -68,18 +71,6 @@ class Shipment extends Core\Controller {
         }
     }
 
-    private function getShipment($user_id) {
-        $result = $this->shipment->getShipment($user_id);
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
-
-    }
-
-    private function getAllShipment() {
-        $this->unauthorizedAccess();
-    }
-
     private function unauthorizedAccess() {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode([
@@ -100,5 +91,37 @@ class Shipment extends Core\Controller {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
         $response['body'] = null;
         return $response;
+    }
+
+    // Get shipment by document_id
+    private function getShipmentByDocID($document_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->shipment->getShipmentByDocID($document_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+
+    }
+
+    // Get shipment by shipment_id
+    private function getShipmentByShipID($shipment_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->shipment->getShipmentByShipID($shipment_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    // Get shipment by user_id
+    private function getShipmentByUserID($user_id, $param) {
+        $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
+        $result = $this->shipment->getShipmentByUserID($user_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function getAllShipment() {
+        $this->unauthorizedAccess();
     }
 }
