@@ -97,9 +97,20 @@ $(document).ready(function(){
     processing: true,
     language: {
       processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
-    serverMethod: 'get',
+    serverMethod: 'post',
     ajax: {
       url: document.location.origin + '/admin/shipmentSSR/',
+      data:function(d){
+              d.shipment_id = $("input[name='shipment_id']").val();
+              d.ETA = $("input[name='ETA']").val();
+              d.client_name = $("input[name='client_name']").val();
+              d.consignee = $("input[name='consignee']").val();
+              d.consignor = $("input[name='consignor']").val();
+              d.container = $("input[name='container']").val();
+              d.origin = $("input[name='origin']").val();
+              d.status = $("input[name='status']").val();
+              d.post_trigger = $("input[name='post_trigger']").val();
+            },
     },
     columns: [
       { data: 'shipment_id' },
@@ -154,8 +165,19 @@ $("#advance-search-btn").on("click",function(){
     var val = value.value;
     query_data[index] = val;
   });
-  table.clear();
+  table.ajax.reload();
   table.draw();
+  // $.ajax({
+  //   url: document.location.origin + '/admin/shipmentSSR/',
+  //   type: "POST",
+  //   data:query_data,
+  //   success: function(data){
+  //     //console.log(data);
+  //     //table.clear().destroy().draw();
+  //     table.rows.add(JSON.parse(data)); 
+  //     table.columns.adjust().draw(); 
+  //   }
+  // });
 });
 
 // Toggle document stats view 
