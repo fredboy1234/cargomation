@@ -5,9 +5,9 @@
         <div class="card card-default collapsed-card">
           <div class="card-header">
             <ul class="nav nav-pills float-left">
-                    <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Advanced Search</a></li>
+                    <li class="nav-item" data-card-widget="collapse"><a class="nav-link" href="#activity" data-toggle="tab">Advanced Search</a></li>
                     <!-- <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">View</a></li> -->
-                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                    <li class="nav-item" data-card-widget="collapse"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                 </ul>
             <div class="card-tools" style="line-height: 2.49em;">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
