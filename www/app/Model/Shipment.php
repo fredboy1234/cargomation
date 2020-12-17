@@ -137,13 +137,9 @@ class Shipment extends Core\Model {
     }
 
     public static function getShipmentByUserID($user_id, $args = "*") {
-        if(strpos($args, "id") !== false)
-            $args = str_replace("id", "shipment.id", $args);
-        $Db = Utility\Database::getInstance();
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT {$args} 
-                                FROM shipment 
-                                LEFT JOIN users ON users.id = shipment.user_id
+                                FROM shipment
                                 WHERE user_id = '{$user_id}' ")->results();
     }
 
