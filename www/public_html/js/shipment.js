@@ -188,4 +188,15 @@ $(document).ready(function(){
     table.ajax.reload();
   });
 
+  $('.settings-menu').on( 'click', function (e) {
+    //e.preventDefault();
+
+    // Get the column API object
+    var column = table.column( $(this).val() );
+    var checkBoxes = $(this);
+    //(checkBoxes.prop("checked")==true)?checkBoxes.prop("checked", false):checkBoxes.prop("checked", true); 
+    checkBoxes.prop("checked");  
+    // Toggle the visibility
+    column.visible( ! column.visible() );
+  });
 });

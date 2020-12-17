@@ -122,7 +122,48 @@
                     <!-- /.tab-pane -->
 
                     <div class="tab-pane" id="settings">
-
+                      <span>Menu List:</span>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="0">
+                        <label class="form-check-label">Shipment ID</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="1">
+                        <label class="form-check-label">Console ID</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="2">
+                        <label class="form-check-label">ETA</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="3">
+                        <label class="form-check-label">ETD</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="4">
+                        <label class="form-check-label">HBL</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="5">
+                        <label class="form-check-label">CIV</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="6">
+                        <label class="form-check-label">PKL</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="7">
+                        <label class="form-check-label">PKD</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="8">
+                        <label class="form-check-label">ALL</label>
+                      </div>
+                      <div class="form-check d-inline ml-3">
+                        <input class="form-check-input settings-menu" data-toggle="toggle" name="settings-menu" type="checkbox" checked value="9">
+                        <label class="form-check-label">Comment</label>
+                      </div>
+  
                     </div>
                     <!-- /.tab-pane -->
                 </div>
