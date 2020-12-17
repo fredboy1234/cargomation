@@ -63,6 +63,7 @@
 <script src="/bower_components/bootstrap-fileinput/js/locales/es.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/themes/fas/theme.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js" type="text/javascript"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 </body>

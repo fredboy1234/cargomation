@@ -147,7 +147,7 @@ class Admin extends Core\Controller {
         // $this->View->addJS("js/custom.js");
         $this->View->addCSS("css/shipment.css");
         $this->View->addJS("js/shipment.js");
-        
+
         $docsCollection =array();
         foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;

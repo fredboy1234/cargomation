@@ -85,6 +85,7 @@ $(document).ready(function(){
     responsive: true,
     autoWidth: false,
     lengthChange: false,
+    colReorder: true,
     // bSort: true,
     // ordering: true,
     // bFilter: true,
