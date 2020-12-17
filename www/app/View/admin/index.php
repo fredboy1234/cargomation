@@ -520,7 +520,7 @@
 
             <?php if(true): ?>
             <!-- Map card -->
-            <div class="card bg-gradient-primary" style="display: none">
+            <div class="card bg-gradient-primary" style="display: block">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>

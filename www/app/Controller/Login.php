@@ -40,7 +40,7 @@ class Login extends Core\Controller {
 
         // Set any dependencies, data and render the view.
         $this->View->render("login/index", [
-            "title" => "Login"
+            "title" => "Log In"
         ]);
 
     }

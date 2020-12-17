@@ -8,7 +8,7 @@ use App\Utility\Flash;
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>a2b freight hub| Log in</title>
+  <title>A2B Freight Hub | <?= $this->escapeHTML($this->title); ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -22,4 +22,6 @@ use App\Utility\Flash;
   <link rel="stylesheet" href="bower_components/admin-lte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Particle JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.js"></script>
 </head>

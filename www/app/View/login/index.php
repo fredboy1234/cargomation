@@ -4,7 +4,7 @@ use App\Utility\Config;
 use App\Utility\Flash;
 
 ?>
-<body class="hold-transition login-page">
+<body id="body" class="hold-transition login-page">
 <div id="feedback" class="container">
 <?php if (($danger = Flash::danger())): ?>
     <div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> <?= $this->escapeHTML($danger); ?></div>
@@ -39,16 +39,64 @@ if (($errors = Flash::session(Config::get("SESSION_ERRORS")))):
 </div>
 <?php endif; ?>
 </div>
+
+
+<style>
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+
+#body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(/img/background.png);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-color: #2f2f2f;
+  background-size: cover;
+}
+
+.login-box {
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	transform: translate(50%,-50%);
+	font-family: 'Open Sans', sans-serif;
+}
+
+.card {
+	background: rgba(0, 0, 0, 0.75);
+	text-shadow: 0px 0px 2px #131415;
+}
+
+.card-body {
+	background: transparent;
+}
+
+.input-group-text {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+h1 {
+	font-size: 2.25em;
+	font-weight: 700;
+	letter-spacing: -1px;
+}
+</style>
+
 <div class="login-box">
   <div class="login-logo">
-    <a href="bower_components/admin-lte/index2.html"><b>A2B</b> Hub</a>
+    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;"><b>A2B</b> Freight Hub</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session.</p>
 
-      <form action="<?= $this->makeUrl("login/_login"); ?>" method="post">
+      <form id="login" method="post">
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -83,7 +131,9 @@ if (($errors = Flash::session(Config::get("SESSION_ERRORS")))):
         </div>
       </form>
       <p class="mb-1">
+      <?php if(false): ?>
         <a href="forgot-password.html">I forgot my password</a>
+      <?php endif; ?>
       </p>
     </div>
     <!-- /.login-card-body -->
@@ -97,6 +147,143 @@ if (($errors = Flash::session(Config::get("SESSION_ERRORS")))):
 <script src="bower_components/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="bower_components/admin-lte/dist/js/adminlte.min.js"></script>
+<script>
+$(document).ready(function(){
+  var color = '#007bff';
+  var maxParticles = 100;
 
+  // ParticlesJS Config.
+  particlesJS('body', {
+    'particles': {
+      'number': {
+        'value': maxParticles,
+        'density': {
+          'enable': false,
+          'value_area': (maxParticles * 2) * 2
+        }
+      },
+      'color': {
+        'value': color
+      },
+      'shape': {
+        'type': 'circle',
+        'stroke': {
+          'width': 0,
+          'color': '#000000'
+        },
+        'polygon': {
+          'nb_sides': 10
+        },
+      },
+      'opacity': {
+        'value': 0.5,
+        'random': false,
+        'anim': {
+          'enable': false,
+          'speed': 1,
+          'opacity_min': 0.1,
+          'sync': false
+        }
+      },
+      'size': {
+        'value': 3,
+        'random': true,
+        'anim': {
+          'enable': false,
+          'speed': 40,
+          'size_min': 0.1,
+          'sync': false
+        }
+      },
+      'line_linked': {
+        'enable': true,
+        'distance': 150,
+        'color': color,
+        'opacity': 1,
+        'width': 1
+      },
+      'move': {
+        'enable': true,
+        'speed': 2,
+        'direction': 'none',
+        'random': false,
+        'straight': false,
+        'out_mode': 'out',
+        'bounce': false,
+        'attract': {
+          'enable': false,
+          'rotateX': 600,
+          'rotateY': 1200
+        }
+      }
+    },
+    'interactivity': {
+      'detect_on': 'canvas',
+      'events': {
+        'onhover': {
+          'enable': true,
+          'mode': 'grab'
+        },
+        'onclick': {
+          'enable': true,
+          'mode': 'push'
+        },
+        'resize': true
+      },
+      'modes': {
+        'grab': {
+          'distance': 140,
+          'line_linked': {
+            'opacity': 1
+          }
+        },
+        'bubble': {
+          'distance': 400,
+          'size': 40,
+          'duration': 2,
+          'opacity': 8,
+          'speed': 3
+        },
+        'repulse': {
+          'distance': 200,
+          'duration': 0.4
+        },
+        'push': {
+          'particles_nb': 4
+        },
+        'remove': {
+          'particles_nb': 2
+        }
+      }
+    },
+    'retina_detect': true
+  });
+
+  $("#login").submit(function(event){
+      // event.preventDefault();
+
+      var email = $('input[type="email"]').val().trim();
+      var password = $('input[type="password"]').val().trim();
+      var csrf_token = $('input[type="hidden"]').val().trim();
+
+      if( email != "" && password != "" ){
+          $.ajax({
+              url:'<?= $this->makeUrl("login/_login"); ?>',
+              type:'post',
+              data:{email:email,password:password,csrf_token:csrf_token},
+              beforeSend: function() {
+                $('.card').hide();
+                $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
+                '<span class="sr-only">Loading...</span> </center>');
+              },
+              success:function(response){
+                $('#loader').hide();
+                $('.card').show();
+              }
+          });
+      }
+  });
+});
+</script>
 </body>
 </html>
