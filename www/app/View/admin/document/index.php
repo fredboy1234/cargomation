@@ -27,7 +27,11 @@
 </head>
 <body>
 
-<?php if(!empty($this->document)) {
+<?php 
+$approved = 0;
+$pending = 0;
+$freview = 0;
+if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
         
         // $initialPreview[] = "<object data='data:application/pdf;base64," . $file->img_data . "' type='text/plain' class='' alt='" . $file->name . "' ><div class='file - preview - other'> <span class='file - icon - 4x'><i class='glyphicon glyphicon-file'></i></span> </div></object>";
@@ -50,17 +54,31 @@
                                           '{id}' => $file->document_id, 
                                         '{date}' => $file->saved_date,
                                       '{origin}' => $file->upload_src];
+
+        if($file->status == 'approved')
+            $approved++;
+        if($file->status == 'pending')
+            $pending++;
+        if($file->status == 'review')
+            $freview++;
     }
 
 } ?>
 
+<div id="document">
     <div class="row">
-        <div class="col-md-6">
-            <h4>Shipment ID: <?= $this->shipment['shipment_id']; ?></h4>
-            <h5>Type: <?= $this->shipment['type']; ?></h4>
+        <div class="col-md-5">
+            <h5><b>Shipment ID: </b><?= $this->shipment['shipment_id']; ?></h5>
+            <h5><b>Type: </b><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></h5>
+            
         </div>
-        <div class="col-md-6">
-            <h5>No. of Files: <?= count($this->document); ?></h4>
+        <div class="col-md-7">
+            <h5><b>Status: </b>
+                <span class="text-success">Approved (<?= $approved; ?>)</span>
+                <span class="text-danger"> Pending (<?= $pending; ?>) </span>
+                <span class="text-warning">For Review (<?= $freview; ?>)</span> 
+            </h5>
+            <h5><b>Total: </b><?= count($this->document); ?></h5>
         </div>
     </div>
     <div class="file-loading" style="display: none;">
@@ -68,7 +86,11 @@
     </div>
     <div id="kv-error-1" style="margin-top:10px; display:none"></div>
     <div id="kv-success-1" class="alert alert-success" style="margin-top:10px; display:none"></div>
-    
+</div>
+<div id="document">
+
+</div>
+
     <script>
         var initialPreview = <?= (empty($this->document)) ? "''" : json_encode($initialPreview); ?>;
         var initialPreviewAsData = true;
