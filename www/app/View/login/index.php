@@ -260,7 +260,7 @@ $(document).ready(function(){
   });
 
   $("#login").submit(function(event){
-      // event.preventDefault();
+      event.preventDefault();
 
       var email = $('input[type="email"]').val().trim();
       var password = $('input[type="password"]').val().trim();
@@ -277,8 +277,7 @@ $(document).ready(function(){
                 '<span class="sr-only">Loading...</span> </center>');
               },
               success:function(response){
-                $('#loader').hide();
-                $('.card').show();
+                location.reload();
               }
           });
       }

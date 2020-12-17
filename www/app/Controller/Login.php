@@ -55,15 +55,20 @@ class Login extends Core\Controller {
      */
     public function _login() {
 
+        
+
         // Check that the user is unauthenticated.
         Utility\Auth::checkUnauthenticated();
+
+        //var_dump($_POST); die();
 
         // Process the login request, redirecting to the home controller if
         // successful or back to the login controller if not.
         if (Model\UserLogin::login()) {
             Utility\Redirect::to(APP_URL);
         }
-        Utility\Redirect::to(APP_URL . "login");
+        echo 'false';
+        // Utility\Redirect::to(APP_URL . "login");
     }
 
     /**
