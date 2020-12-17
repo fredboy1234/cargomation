@@ -34,7 +34,7 @@ class Client extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $this->initExternals();
+        // $this->initExternals();
  
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("css/google_font.css");

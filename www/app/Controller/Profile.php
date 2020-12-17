@@ -50,8 +50,12 @@ class Profile extends Core\Controller {
         //     "data" => (new Presenter\Profile($User->data()))->present()
         // ]);
 
-        $this->View->renderTemplate("admin", "/profile/index", [
+        $role = Model\Role::isAdmin($User) ? "admin" : "client";
+
+        $this->View->renderTemplate("admin", "/" . $role . "/profile/index", [
             "title" => "Profile",
+            "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($user)
         ]);
     }
 
