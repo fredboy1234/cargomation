@@ -403,6 +403,8 @@ class Admin extends Core\Controller {
         $doc_type = array('HBL','CIV','PKL','PKD','all');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
+            $eta_date = date_format(date_create($value->eta), "m/d/Y H:i:s");
+            $etd_date = date_format(date_create($value->etd), "m/d/Y H:i:s");
             $all = "";
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
@@ -493,14 +495,15 @@ class Admin extends Core\Controller {
             if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
                 $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
             }
+            
             if(!in_array($status_arr["all"]["text"],$status_search)){
               $tableData = [];
             }else{
                 $subdata =array();
                 $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
                 $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-                $subdata['eta'] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
-                $subdata['eda'] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
+                $subdata['eta'] = ($eta_date=="01/01/1900 00:00:00"?"No Date Available":$eta_date);
+                $subdata['eda'] = ($etd_date=="01/01/1900 00:00:00"?"No Date Available":$etd_date);
                 $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
                 $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
                 $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
