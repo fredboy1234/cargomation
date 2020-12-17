@@ -52,6 +52,8 @@ class Shipment extends Core\Model {
         $Db = Utility\Database::getInstance();
         //$where = "WHERE shipment.id is not null ";
         $where = "WHERE users.id = '{$user}' and shipment.shipment_num is not null";
+        $origin = '';
+        $status ='';
 
         if($data['shipment_id'] !="" ){
             $where .= " and shipment.shipment_num = '{$data['shipment_id']}'";
@@ -75,34 +77,25 @@ class Shipment extends Core\Model {
         }
 
         if($data['container'] != ""){
-            $where .= " and shipcontainer.containershipnumber = '{$data['container']}'";
+            $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
         }
         if($data['origin'] != ""){
            // $where .= " and document.upload_src = '{$data['origin']}'";
+           $origin = $data['origin'];
         }
        //$results = array();
-        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num,*
+        return $Db->query("SELECT
+                                shipment.id
                             FROM dbo.users
-                                INNER JOIN dbo.shipment ON dbo.users.id = dbo.shipment.user_id
-                                FULL OUTER JOIN dbo.document ON dbo.shipment.id = dbo.document.shipment_id
-                                FULL OUTER JOIN dbo.Merge_Container ON dbo.shipment.id = dbo.Merge_Container.[SHIPMENT ID]
-                            -- FROM shipment    
-                            -- LEFT JOIN users ON users.id = shipment.user_id
-                            -- LEFT JOIN document ON document.shipment_id = shipment.id
-                            -- LEFT JOIN shipcontainer ON shipcontainer.shipment_id = shipment.id
-                           {$where}")->results();
-                           
-        // if($data['ETA'] == ""){                   
-        //     foreach($query as $value){
-        //         if($value->upload_src == $data['origin']){
-        //             $results[]=$value;
-        //         }
-        //     }
-        // }else{
-        //     $results = $query;
-        // }
-
-        //return $results;
+                            INNER JOIN dbo.shipment
+                            ON dbo.users.id = dbo.shipment.user_id
+                            FULL OUTER JOIN dbo.shipcontainer
+                            ON dbo.shipment.id = dbo.shipcontainer.shipment_id
+                            FULL OUTER JOIN dbo.document
+                            ON dbo.shipment.id = dbo.document.shipment_id and  dbo.document.upload_src ='{$origin}'
+                            FULL OUTER JOIN dbo.document_status
+                            ON document.id = document_status.document_id and document_status.status in('pending','approved')
+                           {$where} group by shipment.id")->results();
     }  
 
     public static function shipmentAssign($data,$user){

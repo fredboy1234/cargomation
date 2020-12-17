@@ -73,17 +73,18 @@
                                 <div class="col-sm-6">
                                   <!-- checkbox -->
                                   <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
+                                  <input id="status" type="hidden" name="status" value="">
                                   <div class="form-group">
                                     <div class="form-check">
-                                      <input class="form-check-input" name="status" type="checkbox" checked value="approved">
+                                      <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Approved">
                                       <label class="form-check-label">Approved</label>
                                     </div>
                                     <div class="form-check">
-                                      <input class="form-check-input" name="status" type="checkbox" value="approval">
+                                      <input class="form-check-input statusC" name="stat" type="checkbox" value="Pending">
                                       <label class="form-check-label">For Approval</label>
                                     </div>
                                     <div class="form-check">
-                                      <input class="form-check-input" name="status" type="checkbox" value="missing">
+                                      <input class="form-check-input statusC" name="stat" type="checkbox" value="Missing">
                                       <label class="form-check-label">Missing</label>
                                     </div>
                                   </div>

@@ -281,7 +281,7 @@ class Admin extends Core\Controller {
     //     return false;
     // }
 
-    public function advanceSearch($user ='',$post){
+    public function advanceSearch($user ='',$post=""){
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
@@ -295,6 +295,7 @@ class Admin extends Core\Controller {
         }
 
         $Shipment = Model\Shipment::getInstance();
+        
         return $Shipment->getDocumentBySearch($post,$user);
     }
 
@@ -363,7 +364,7 @@ class Admin extends Core\Controller {
         $json_data = array();
         $html = array();
         $tableData = array();
-        
+        $status_search = array('Approved','Pending','Missing');
          Utility\Auth::checkAuthenticated();
 
          if (!$user) {
@@ -373,11 +374,22 @@ class Admin extends Core\Controller {
              }
          }
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        
+        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+        $searchStore = array();
+       
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
-            $api = $this->advanceSearch($user,$_POST);
-        }else{
-            $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+            $status_search = explode(",",$_POST['status']);
+            $searchResult = $this->advanceSearch($user,$_POST);
+            if(!empty($searchResult)){
+                foreach($searchResult as $id){
+                    foreach($api as $val){
+                        if($id->id == $val->id){
+                            $searchStore[] = $val;
+                        }
+                    }
+                }
+                $api = $searchStore;
+            }
         }
 
         $Shipment = Model\Shipment::getInstance();
@@ -389,7 +401,7 @@ class Admin extends Core\Controller {
 
         $stats = $docsCollection;
         $doc_type = array('HBL','CIV','PKL','PKD','all');
-        $settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
+        //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
             $all = "";
             $status_arr['all']['pending2'] = 0;
@@ -481,19 +493,22 @@ class Admin extends Core\Controller {
             if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
                 $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
             }
-
-            $subdata =array();
-            $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
-            $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-            $subdata['eta'] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
-            $subdata['eda'] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
-            $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
-            $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
-            $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
-            $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
-            $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
-            $subdata['comment'] = 'No Comment';
-            $data[] = $subdata;
+            if(!in_array($status_arr["all"]["text"],$status_search)){
+              $tableData = [];
+            }else{
+                $subdata =array();
+                $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
+                $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
+                $subdata['eta'] = date_format(date_create($value->eta), "m/d/Y H:i:s");;
+                $subdata['eda'] = date_format(date_create($value->etd), "m/d/Y H:i:s");;
+                $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
+                $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
+                $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
+                $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
+                $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
+                $subdata['comment'] = 'No Comment';
+                $data[] = $subdata;
+            }
         }
        
         $json_data=array(

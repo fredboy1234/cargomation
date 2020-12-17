@@ -130,65 +130,61 @@ $(document).ready(function(){
   });
 
 
-//on search data table
-$('#doc_search').on( 'keyup', function () {
-  console.log($(this));
-  table.search( this.value ).draw();
-});
-
-
-//ETA time picker
-$('input[name="ETA"]').daterangepicker({
-  //timePicker: true,
-  startDate: moment().startOf('hour'),
-  endDate: moment().startOf('hour').add(32, 'hour'),
-  autoUpdateInput: false,
-  locale: {
-    //format: 'M/DD hh:mm A'
-    format: 'M/DD/YYYY'
-  }
-});
-
-//on hide calendar set start date and end date
-$('input[name="ETA"]').on('apply.daterangepicker', function(ev, picker) {
-    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-});
-
-//for advance search.
-$("#advance-search-btn").on("click",function(){
-  $("input[name='post_trigger']").val("set");
-  var data = $("#addvance-search-form").serializeArray();
-  var query_data = {};
-  var html="";
-  $.each(data,function(key,value){
-    var index = value.name;
-    var val = value.value;
-    query_data[index] = val;
+  //on search data table
+  $('#doc_search').on( 'keyup', function () {
+    console.log($(this));
+    table.search( this.value ).draw();
   });
-  table.ajax.reload();
-  table.draw();
-  // $.ajax({
-  //   url: document.location.origin + '/admin/shipmentSSR/',
-  //   type: "POST",
-  //   data:query_data,
-  //   success: function(data){
-  //     //console.log(data);
-  //     //table.clear().destroy().draw();
-  //     table.rows.add(JSON.parse(data)); 
-  //     table.columns.adjust().draw(); 
-  //   }
-  // });
-});
 
-// Toggle document stats view 
-$(document).on('mouseenter mouseleave','.stats',function() {
-  $( this ).children().toggle( );
-});
 
-// Append loading and redraw datatable
-$('#myModal').on('hidden.bs.modal', function (e){ 
-  $('#myModal .modal-body').empty().append('Loading...');
-  table.ajax.reload();
-});
+  //ETA time picker
+  $('input[name="ETA"]').daterangepicker({
+    //timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    autoUpdateInput: false,
+    locale: {
+      //format: 'M/DD hh:mm A'
+      format: 'M/DD/YYYY'
+    }
+  });
+
+  //on hide calendar set start date and end date
+  $('input[name="ETA"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  //for advance search.
+  $("#advance-search-btn").on("click",function(){
+    var check_arr = [];
+    $("input[name='post_trigger']").val("set");
+    $("input:checkbox[name=stat]:checked").each(function(){
+      check_arr.push($(this).val());
+    });
+    $("#status").val(check_arr);
+
+    var data = $("#addvance-search-form").serializeArray();
+    var query_data = {};
+    var html="";
+    $.each(data,function(key,value){
+      var index = value.name;
+      var val = value.value;
+      query_data[index] = val;
+    });
+    console.log(query_data);
+    table.ajax.reload();
+    table.draw();
+  });
+
+  // Toggle document stats view 
+  $(document).on('mouseenter mouseleave','.stats',function() {
+    $( this ).children().toggle( );
+  });
+
+  // Append loading and redraw datatable
+  $('#myModal').on('hidden.bs.modal', function (e){ 
+    $('#myModal .modal-body').empty().append('Loading...');
+    table.ajax.reload();
+  });
 
 });
