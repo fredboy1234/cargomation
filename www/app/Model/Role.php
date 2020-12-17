@@ -17,6 +17,8 @@ class Role extends Core\Model {
     /** @var array */
     protected $permissions = [];
 
+    private static $_Role = null;
+
     /**
      * Construct:
      * @access protected
@@ -24,6 +26,13 @@ class Role extends Core\Model {
      */
     protected function __construct() {
         $this->permissions = array();
+    }
+
+    public static function getInstance() {
+        if (!isset(self::$_Role)) {
+            self::$_Role = new Role();
+        }
+        return(self::$_Role);
     }
 
     /**
@@ -96,6 +105,10 @@ class Role extends Core\Model {
             return true;
         }
         return false;
+    }
+
+    public function getUserRole($user_id) {
+        return $this->getRole($user_id);
     }
 
 }
