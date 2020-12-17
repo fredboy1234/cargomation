@@ -59,24 +59,26 @@
 
             <!-- About Me Box -->
             <div class="card card-primary">
-                <div class="card-header">
-                <h3 class="card-title">Information</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                <strong><i class="fas fa-phone mr-1"></i> </strong>
+              <div class="card-header">
+                <h3 class="card-title">About Me</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong><i class="fas fa-phone mr-1"></i> Phone </strong>
 
-                <p class="text-muted float-right"><?= $this->user->user_info[0]->phone; ?></p>
-
-                <hr>
-
-                <strong><i class="fas fa-map-marker-alt mr-1"></i></strong>
-
-                <p class="text-muted float-right"><?= $this->user->user_addr[0]->address; ?></p>
+                <p class="text-muted">
+                    <?= $this->user->user_info[0]->phone; ?>
+                </p>
 
                 <hr>
 
-                <strong><i class="fas fa-pencil-alt mr-1"></i> User Types</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+
+                <p class="text-muted"><?= $this->user->user_addr[0]->address; ?></p>
+
+                <hr>
+
+                <strong><i class="fas fa-pencil-alt mr-1"></i> Roles</strong>
 
                 <p class="text-muted">
                     <span class="badge badge-danger">Sending Agent</span>
@@ -91,10 +93,14 @@
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
                 <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                </div>
-                <!-- /.card-body -->
+              </div>
+              <!-- /.card-body -->
             </div>
             <!-- /.card -->
+
+
+
+
             </div>
             <!-- /.col -->
             <div class="col-md-9">
@@ -180,24 +186,24 @@
                             <a href="#">Adam Jones</a>
                             <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
                         </span>
-                        <span class="description">Posted 5 photos - 5 days ago</span>
+                        <span class="description">Uploaded 5 documents - 5 days ago</span>
                         </div>
                         <!-- /.user-block -->
                         <div class="row mb-3">
                         <div class="col-sm-6">
-                            <img class="img-fluid" src="/bower_components/admin-lte/dist/img/photo1.png" alt="Photo">
+                            <img class="img-fluid" src="http://placehold.it/431x288" alt="Photo">
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
                             <div class="row">
                             <div class="col-sm-6">
-                                <img class="img-fluid mb-3" src="/bower_components/admin-lte/dist/img/photo2.png" alt="Photo">
-                                <img class="img-fluid" src="/bower_components/admin-lte/dist/img/photo3.jpg" alt="Photo">
+                                <img class="img-fluid mb-3" src="http://placehold.it/200x134" alt="Photo">
+                                <img class="img-fluid" src="http://placehold.it/200x134" alt="Photo">
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-6">
-                                <img class="img-fluid mb-3" src="/bower_components/admin-lte/dist/img/photo4.jpg" alt="Photo">
-                                <img class="img-fluid" src="/bower_components/admin-lte/dist/img/photo1.png" alt="Photo">
+                                <img class="img-fluid mb-3" src="http://placehold.it/200x134" alt="Photo">
+                                <img class="img-fluid" src="http://placehold.it/200x134" alt="Photo">
                             </div>
                             <!-- /.col -->
                             </div>
@@ -261,7 +267,7 @@
                         <div class="timeline-item">
                             <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
 
-                            <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                            <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your document request
                             </h3>
                         </div>
                         </div>
@@ -300,7 +306,7 @@
                         <div class="timeline-item">
                             <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
 
-                            <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+                            <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new document</h3>
 
                             <div class="timeline-body">
                             <img src="http://placehold.it/150x100" alt="...">
