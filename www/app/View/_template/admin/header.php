@@ -35,6 +35,9 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/bower_components/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="/bower_components/admin-lte/plugins/datatables-select/css/select.bootstrap4.min.css">
   <!-- CSS -->
   <?= $this->getCSS(); ?>
 </head>
