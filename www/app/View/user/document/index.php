@@ -13,7 +13,7 @@ if(!empty($this->document)) {
             $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
         }
 
-        $server_file = "http://a2bfreighthub.com/admin/fileviewer/" . $this->id . "/"  . $file->document_id;
+        $server_file = "http://a2bfreighthub.com/document/fileviewer/" . $this->id . "/"  . $file->document_id;
 
         $initialPreview[] = $server_file;
         $initialPreviewConfig[] = [ 'caption' => $file->name,

@@ -225,7 +225,7 @@ $(document).ready(function() {
                     }).on('hidden.bs.toast', function () {
                         alert('Please leave a note for the ' + doc_status + ' document');
                         // var target = $(this).attr("href");
-                        var target = "/admin/comment/"
+                        var target = "document/comment/"
                     
                         // load the url and show modal on success
                         $("#myModal .modal-body").load(target, function() { 
@@ -247,7 +247,7 @@ $(document).ready(function() {
         //$('#document-upload, #document-comment').toggle();
         ev.preventDefault();
         // var target = $(this).attr("href");
-        var target = "/admin/comment/"
+        var target = "/comment/"
     
         // load the url and show modal on success
         $("#myModal .modal-body").load(target, function() { 
