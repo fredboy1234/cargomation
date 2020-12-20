@@ -16,7 +16,7 @@
           <img src="/bower_components/admin-lte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
+          <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
       <?php endif; ?>
@@ -35,7 +35,7 @@
             <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
           </li>
           <li class="nav-item">
-            <a href="/client/profile" class="nav-link">
+            <a href="/profile" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>Profile
                 <span class="right badge badge-danger">New</span>
@@ -43,7 +43,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/client/shipment" class="nav-link">
+            <a href="/shipment" class="nav-link">
               <i class="nav-icon fas fa-ship"></i>
               <p>
                 Shipment
@@ -53,7 +53,7 @@
           </li>
           <?php if(false): ?>
           <li class="nav-item">
-            <a href="/client/transport" class="nav-link">
+            <a href="/transport" class="nav-link">
               <i class="nav-icon fas fa-truck"></i>
               <p>
                 Transport
@@ -62,7 +62,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/client/logs" class="nav-link">
+            <a href="/logs" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 User Logs
@@ -72,7 +72,7 @@
           </li>
           <?php endif; ?>
           <li class="nav-item">
-            <a href="/login/logout" class="nav-link">
+            <a href="/logout" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
               <p>
                 Log Out

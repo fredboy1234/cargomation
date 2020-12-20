@@ -50,13 +50,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
-<!-- DataTables -->
-<script src="/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/datatables-select/js/select.bootstrap4.min.js"></script>
+<!-- Data Table -->
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <!-- Bootstrap File Input -->
 <script src="/bower_components/bootstrap-fileinput/js/plugins/piexif.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
@@ -65,10 +60,6 @@
 <script src="/bower_components/bootstrap-fileinput/js/locales/es.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/themes/fas/theme.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js" type="text/javascript"></script>
-<!--for 3rd party-->
-<script src="https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 </body>

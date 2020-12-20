@@ -1,4 +1,4 @@
-    <?php if (isset($this->data)): ?>
+<?php if (isset($this->data)): ?>
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -23,11 +23,18 @@
                         <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
                         </li>
                         <li class="list-group-item">
-                        <b>Users</b> <a class="float-right"><?= $this->user->account_info[0]->user_count; ?>/<b>
-                        <?= $this->user->account_info[0]->max_users; ?></b></a>
+                        <b>Users</b> <a class="float-right"><?= $this->escapeHTML($this->user->account_info[0]->user_count); ?>/<b>
+                        <?= $this->escapeHTML($this->user->account_info[0]->max_users); ?></b></a>
                         </li>
                         <li class="list-group-item">
-                        <?php switch ($this->user->account_info[0]->status) {
+                        <?php 
+                        $status = ""; $badge = ""; $attr = "";
+                        switch ($this->user->account_info[0]->status) {
+                            case 0:
+                                $status = "Pending";
+                                $badge = 'warning';
+                                $attr = '';
+                            break;
                             case 1:
                                 $status = "Verified";
                                 $badge = 'success';
@@ -38,7 +45,7 @@
                                 $badge = 'warning';
                                 $attr = '';
                             break;
-                            
+                                $status = '';
                             default:
                             # code...
                             break;
@@ -74,18 +81,21 @@
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                <p class="text-muted"><?= $this->user->user_addr[0]->address; ?></p>
+                <p class="text-muted"><?= isset($this->user->user_addr[0]->address); ?></p>
 
                 <hr>
 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Roles</strong>
 
                 <p class="text-muted">
+                    <span class="badge badge-primary <?= $this->role->role_id ?>"><?= ucwords($this->role->role_name); ?></span>
+                    <!-- 
                     <span class="badge badge-danger">Sending Agent</span>
                     <span class="badge badge-success">Staff</span>
                     <span class="badge badge-info">Admin</span>
                     <span class="badge badge-warning">Client</span>
-                    <span class="badge badge-primary">Importer</span>
+                    -->
+                    
                 </p>
 
                 <hr>

@@ -8,12 +8,12 @@ use App\Utility;
 use App\Presenter;
 
 /**
- * Client Controller:
+ * User Controller:
  *
  * @author John Alex
  * @since 1.0
  */
-class Client extends Core\Controller {
+class User extends Core\Controller {
 
     /**
      * Index: Renders the index view. NOTE: This controller can only be accessed
@@ -36,8 +36,8 @@ class Client extends Core\Controller {
 
         Utility\Redirect::to('/dashboard');
 
-        // $this->View->renderTemplateTwig("/client/index.php", [
-        //     "title" => "client"
+        // $this->View->renderTemplateTwig("/user/index.php", [
+        //     "title" => "user"
         // ]);
     }
 
@@ -72,7 +72,7 @@ class Client extends Core\Controller {
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("css/custom.css");
 
-        $this->View->renderTemplate("client", "/client/profile/index", [
+        $this->View->renderTemplate("user", "/user/profile/index", [
             "title" => "Profile",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user)
@@ -128,7 +128,7 @@ class Client extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
-        $this->View->renderTemplate("client", "/client/shipment/index", [
+        $this->View->renderTemplate("user", "/user/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
@@ -172,7 +172,7 @@ class Client extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
 
-        $this->View->renderTemplate("client", "/client/transport/index", [
+        $this->View->renderTemplate("user", "/user/transport/index", [
             "title" => "Transport",
             // "data" => (new Presenter\Profile($User->data()))->present()
         ]);
@@ -193,7 +193,7 @@ class Client extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
 
-        $this->View->renderTemplate("client", "/client/logs/index", [
+        $this->View->renderTemplate("user", "/user/logs/index", [
             "title" => "User Logs"
         ]);
     }
@@ -237,7 +237,7 @@ class Client extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render("client/document/index", [
+        $this->View->render("user/document/index", [
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,
@@ -276,7 +276,7 @@ class Client extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $this->View->render("client/document/fileviewer", [
+        $this->View->render("user/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);

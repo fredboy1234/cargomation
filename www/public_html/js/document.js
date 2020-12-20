@@ -1,5 +1,7 @@
 
 $(document).ready(function() {
+
+    // Bootstrap File Input
     var $el1 = $("#input");
     $('.file-loading').show();
     $el1.fileinput({
@@ -15,6 +17,7 @@ $(document).ready(function() {
         initialPreviewFileType: initialPreviewFileType,
         initialPreviewConfig: initialPreviewConfig,
         initialPreviewThumbTags: initialPreviewThumbTags,
+        initialPreviewDownloadUrl: '/404.html',
         previewFileIcon: '<i class="fas fa-file"></i>',
         previewFileIconSettings: {
             'docx': '<i class="fas fa-file-word text-primary"></i>',
@@ -56,6 +59,9 @@ $(document).ready(function() {
             showUpload: false,
             showDelete: false,
             showDownload: false,
+            // removeTitle: 'Remove File',
+            // uploadTitle: 'Upload File',
+            // downloadTitle: 'Download file',
         },
         // layoutTemplates: {
         //     main1: '{preview}\n' +
@@ -132,13 +138,13 @@ $(document).ready(function() {
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
         otherActionButtons: '<button type="button" ' +
-                                'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary {removeClass}" ' + 
-                                'title="{removeTitle}"{dataUrl}{dataKey}>' +
+                                'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
+                                'title="View Comment"{dataUrl}{dataKey}>' +
                                     '<i class="fas fa-comment"></i>' +
                             '</button>\n' +
                             '<button type="button" ' +
-                                'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary {removeClass}" ' + 
-                                'title="{removeTitle}"{dataUrl}{dataKey} ' +
+                                'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
+                                'title="Change Status"{dataUrl}{dataKey} ' +
                                 'data-doc_id="{id}" data-doc_status="{status}">' +
                                     '<i class="fas {status} fa-thumbs-down"></i>' +
                             '</button>\n',
@@ -183,23 +189,16 @@ $(document).ready(function() {
         $('#kv-success-2').fadeIn('slow');
     });
 
-    function file_ext(filename) {
-        return typeof filename != "undefined" ? filename.substring(filename.lastIndexOf(".")+1, filename.length).toLowerCase() : false;
-    }
-
-    $('.kv-file-status').each(function() {
+    // Button Status
+    $('button.kv-file-status').each(function() {
         if($(this).children().hasClass('approved')) {
             $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
         }
-    });
-
-    $('.kv-file-status').mouseenter(function() {
+    }).mouseenter(function() {
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
     }).mouseleave(function(){
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
-    });
-
-    $("button.kv-file-status").click(function() {
+    }).click(function() {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
         if(doc_status === 'approved') 
@@ -212,7 +211,7 @@ $(document).ready(function() {
         if(msg == true) {
             $.ajax({
                 type: "POST",
-                url:"/admin/addDocumentStatus",
+                url:"/document/updateDocumentStatus",
                 ContentType: 'application/json',
                 data:{ "doc_status":doc_status, "doc_id":doc_id },
                 success: function(response) {
@@ -223,12 +222,41 @@ $(document).ready(function() {
                         autohide: true,
                         close: false,
                         class:'bg-success'
+                    }).on('hidden.bs.toast', function () {
+                        alert('Please leave a note for the ' + doc_status + ' document');
+                        // var target = $(this).attr("href");
+                        var target = "/admin/comment/"
+                    
+                        // load the url and show modal on success
+                        $("#myModal .modal-body").load(target, function() { 
+                            $("#myModal").modal("show"); 
+                        });
                     });
                     $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("fa-thumbs-up fa-thumbs-down");
                     $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("approved pending");
                     $('*[data-doc_id="' + doc_id + '"]').data("doc_status", doc_status);
+
+
                 }
             });
         }
     });
+
+    // Button Comment
+    $('button.kv-file-comment').click(function(ev) {
+        //$('#document-upload, #document-comment').toggle();
+        ev.preventDefault();
+        // var target = $(this).attr("href");
+        var target = "/admin/comment/"
+    
+        // load the url and show modal on success
+        $("#myModal .modal-body").load(target, function() { 
+             $("#myModal").modal("show"); 
+        });
+    });
+
+    // Other functions
+    function file_ext(filename) {
+        return typeof filename != "undefined" ? filename.substring(filename.lastIndexOf(".")+1, filename.length).toLowerCase() : false;
+    }
 });

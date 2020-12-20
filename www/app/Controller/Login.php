@@ -28,15 +28,15 @@ class Login extends Core\Controller {
         Utility\Auth::checkUnauthenticated();
 
         // // Set any dependencies, data and render the view.
-        $this->View->addCSS("bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css");
-        $this->View->addCSS("bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css");
-        $this->View->addCSS("bower_components/admin-lte/dist/css/adminlte.css");
-        $this->View->addCSS("css/google_font.css");
-        $this->View->addCSS("css/custom.css");
+        // $this->View->addCSS("bower_components/admin-lte/plugins/fontawesome-free/css/all.min.css");
+        // $this->View->addCSS("bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css");
+        // $this->View->addCSS("bower_components/admin-lte/dist/css/adminlte.css");
+        // $this->View->addCSS("css/google_font.css");
+        // $this->View->addCSS("css/custom.css");
 
-        // <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-        $this->View->addJS("bower_components/admin-lte/plugins/jquery/jquery.min.js");
-        $this->View->addJS("js/index.jquery.js");
+        // // <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        // $this->View->addJS("bower_components/admin-lte/plugins/jquery/jquery.min.js");
+        // $this->View->addJS("js/index.jquery.js");
 
         // Set any dependencies, data and render the view.
         $this->View->render("login/index", [
@@ -55,12 +55,8 @@ class Login extends Core\Controller {
      */
     public function _login() {
 
-        
-
         // Check that the user is unauthenticated.
         Utility\Auth::checkUnauthenticated();
-
-        //var_dump($_POST); die();
 
         // Process the login request, redirecting to the home controller if
         // successful or back to the login controller if not.

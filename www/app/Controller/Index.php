@@ -33,11 +33,17 @@ class Index extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        if(Model\Role::isAdmin($User)) {
-            Utility\Redirect::to(APP_URL . "admin");
+        if (!$Role = Model\Role::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
         }
 
-        Utility\Redirect::to(APP_URL . "client");
+        $role = $Role->getUserRole($userID)->role_name;
+
+        if(!empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        Utility\Redirect::to('/404.php');
 
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("dist/css/index.css");

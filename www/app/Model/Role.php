@@ -69,13 +69,14 @@ class Role extends Core\Model {
         $this->roles = array();
 
         $Db = Utility\Database::getInstance();
-        $sql = "SELECT t1.role_id, t2.role_name FROM user_role as t1
-                JOIN roles as t2 ON t1.role_id = t2.role_id
-                WHERE t1.id = " . $user_id;
+        $sql = "SELECT ur.id, ur.role_id, r.role_name 
+                    FROM user_role as ur
+                    JOIN roles as r ON ur.role_id = r.role_id
+                WHERE ur.user_id = '" . $user_id . "'";
         $sql = $Db->query($sql);
 
         if (!empty($result = $sql->results())) {
-            return $result[0]->role_name;
+            return $result;
         }
     }
 
@@ -108,7 +109,8 @@ class Role extends Core\Model {
     }
 
     public function getUserRole($user_id) {
-        return $this->getRole($user_id);
+        $role = $this->getRole($user_id);
+        return $role[0];
     }
 
 }

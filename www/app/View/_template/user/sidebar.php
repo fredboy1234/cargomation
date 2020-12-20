@@ -16,7 +16,7 @@
           <img src="/bower_components/admin-lte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
+          <a href="#" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
       <?php endif; ?>

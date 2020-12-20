@@ -20,7 +20,7 @@ class Document extends Core\Controller {
     private $value;
     private $key;
 
-    public function __construct($requestMethod, $key, $value, $param = []) {
+    public function __construct($requestMethod = "", $key = "", $value = "", $param = []) {
         $this->document = Model\Document::getInstance();
         $this->requestMethod = $requestMethod;
         $this->param = $param;
@@ -103,7 +103,7 @@ class Document extends Core\Controller {
         return $response;
     }
 
-    // Get document by document_id
+    // API Get document by document_id
     private function getDocumentByDocID($document_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
         $result = $this->document->getDocumentByDocID($document_id, $args);
@@ -113,7 +113,7 @@ class Document extends Core\Controller {
 
     }
 
-    // Get document by shipment_id
+    // API Get document by shipment_id
     private function getDocumentByShipID($shipment_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
         $result = $this->document->getDocumentByShipID($shipment_id, $args);
@@ -122,13 +122,37 @@ class Document extends Core\Controller {
         return $response;
     }
 
-    // Get document by user_id
+    // API Get document by user_id
     private function getDocumentByUserID($user_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
         $result = $this->document->getDocumentByUserID($user_id, $args);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
+    }
+
+    // API Put document by shipment_id
+    private function putDocumentByShipment($shipment_num, $type, $fileName) {
+
+        $document = $this->document->getDocumentByShipment($shipment_num);
+
+        $data = [];
+        $data['shipment_id'] = $document[0]->shipment_id;
+        $data['shipment_num'] = $document[0]->shipment_num;
+        $data['type'] = $type;
+        $data['name'] = $fileName;
+        $data['saved_by'] = "";
+        $data['saved_date'] = "";
+        $data['event_date'] = "";
+        $data['path'] = "";
+        $data['upload_src'] = "hub";
+
+        $result = $this->document->putDocument($data);
+
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+
     }
 
     /**
@@ -317,27 +341,42 @@ class Document extends Core\Controller {
         }
     }
 
-    // Put document by shipment_id
-    private function putDocumentByShipment($shipment_num, $type, $fileName) {
+    public function updateDocumentStatus(){
+        $Document = Model\Document::getInstance();
+        echo json_encode($Document->updateDocumentStatus($_POST));
+    }
 
-        $document = $this->document->getDocumentByShipment($shipment_num);
+    public function fileviewer($user = "", $document_id){ 
 
-        $data = [];
-        $data['shipment_id'] = $document[0]->shipment_id;
-        $data['shipment_num'] = $document[0]->shipment_num;
-        $data['type'] = $type;
-        $data['name'] = $fileName;
-        $data['saved_by'] = "";
-        $data['saved_date'] = "";
-        $data['event_date'] = "";
-        $data['path'] = "";
-        $data['upload_src'] = "hub";
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
 
-        $result = $this->document->putDocument($data);
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
 
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
 
+        $view = new Core\View();
+
+        $view->render("admin/document/fileviewer", [
+            "email" => $User->data()->email,
+            "document_id" => $document_id,
+        ]);
+    }
+
+    public function comment(){ 
+        $view = new Core\View();
+        $view->render("admin/document/comment", [
+        ]);
     }
 }

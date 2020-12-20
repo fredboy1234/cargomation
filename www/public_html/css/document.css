@@ -23,9 +23,17 @@
 }
 .pending, .fa-thumbs-down {
     color: #dc3545;
-}.fa-trash-alt {
+}
+.fa-trash-alt {
     color: #ff0018fa;
 }
 .fa-comment {
     color: #007bff;
+}
+
+.bg-approved {
+    background-color: #28a74650;
+}
+.bg-pending {
+    background-color: #dc354650;
 }

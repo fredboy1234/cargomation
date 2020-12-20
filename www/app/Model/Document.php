@@ -115,7 +115,7 @@ class Document extends Core\Model {
                                 WHERE user_id IN (" . $user_id . ") ")->results();
     }
 
-    public static function addDocumentStatus($data){
+    public static function updateDocumentStatus($data){
         $Db = Utility\Database::getInstance();
         return $Db->query("if exists(select * from document_status where document_id='{$data['doc_id']}')
                             update document_status set status='{$data['doc_status']}' where document_id='{$data['doc_id']}'
