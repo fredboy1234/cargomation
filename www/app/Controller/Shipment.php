@@ -84,11 +84,11 @@ class Shipment extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
-        if (!$Role = Model\Role::getInstance($userID)) {
+        if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($userID)->role_name;
+        $role = $Role->getUserRole($user)->role_name;
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
