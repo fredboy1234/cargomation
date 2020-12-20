@@ -133,7 +133,6 @@ $(document).ready(function(){
 
   //on search data table
   $('#doc_search').on( 'keyup', function () {
-    console.log($(this));
     table.search( this.value ).draw();
   });
 
@@ -172,7 +171,7 @@ $(document).ready(function(){
       var val = value.value;
       query_data[index] = val;
     });
-    console.log(query_data);
+   
     table.ajax.reload();
     table.draw();
   });
@@ -188,15 +187,114 @@ $(document).ready(function(){
     table.ajax.reload();
   });
 
-  $('.settings-menu').on( 'click', function (e) {
-    //e.preventDefault();
-
-    // Get the column API object
-    var column = table.column( $(this).val() );
-    var checkBoxes = $(this);
-    //(checkBoxes.prop("checked")==true)?checkBoxes.prop("checked", false):checkBoxes.prop("checked", true); 
-    checkBoxes.prop("checked");  
-    // Toggle the visibility
-    column.visible( ! column.visible() );
+  //For Settings
+  $('select[name="settings-dual"]').bootstrapDualListbox({
+    nonSelectedListLabel: 'Non-selected Settings',
+    selectedListLabel: 'Selected Settings',
+    preserveSelectionOnMove: 'all',
+    helperSelectNamePostfix:'_helper',
+    sortByInputOrder: true,
+    filterTextClear: ""
   });
+  
+  //chick on click button all 
+  var wasClicked = false;
+  $(document).on('click','.moveall, .removeall',function(e){    
+    wasClicked = true;
+  });
+
+  var map = $('select[name="settings-dual"]').on("change",function(e){
+    var comp = $("select[name='settings-dual'] option:selected").map(function() {
+            return this.value;
+        }).get(),
+
+    set1 = map.filter(function(i) {
+        return comp.indexOf(i) < 0;
+    }),
+    set2 = comp.filter(function(i) {
+        return map.indexOf(i) < 0;
+    }),
+    last = (set1.length ? set1 : set2)[0];
+
+    map = comp;
+    var Sdata = getSettings(map);
+    
+    $.ajax({
+      url: document.location.origin + '/admin/addUserSettings/',
+      type: "POST",
+      dataType:"json",
+      data:{"settings":Sdata},
+      success:function(res){
+        // for checking only
+        // console.log(res);
+      }
+    });
+    
+    setTimeout(function(){
+      if(wasClicked){
+        if(map.length > 0){
+          $.each(map,function(okey,oval){
+            var column = table.column( oval );
+            column.visible(column);
+          });
+        }else{
+          var column = table.columns();
+          column.visible( ! column.visible() );
+        }
+      
+        wasClicked = false;
+      }else{
+        var column = table.column( last );
+        column.visible( ! column.visible() );
+      }
+    },100);
+    
+  
+  }).find('option:selected').map(function() {return this.value}).get();
+  
+  var check_arr = [];
+  function getSettings(map){
+    var Sdata = [];
+    var opt_value = [];
+    var temp = [];
+    $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function(){
+      opt_value.push($(this).val());
+      Sdata.push({index_name:$(this).data('text'),index_value:$(this).val(),index_check:true});
+    }); 
+    
+    $('#bootstrap-duallistbox-nonselected-list_settings-dual  option').each(function(){
+      opt_value.push($(this).val());
+      Sdata.push({index_name:$(this).data('text'),index_value:$(this).val(),index_check:false});
+    }); 
+
+    if(check_arr.length != Sdata.length && check_arr.length != 0){
+      $.each(check_arr,function(k,v){
+        if($.inArray(v.index_value,opt_value) == -1){
+          temp.push({index_name:v.index_name,index_value:v.index_value,index_check:v.index_check});
+        }else{
+          $.each(Sdata,function(okey,oval){
+            if(oval.index_value == v.index_value){
+              temp.push({index_name:oval.index_name,index_value:oval.index_value,index_check:oval.index_check});
+            }
+          });
+        }
+      });
+      Sdata = [];
+      Sdata = temp;
+    }
+    check_arr = Sdata;
+    //console.log(Sdata);
+    return Sdata;
+  }
+  var hide = getSettings();
+  $.each(hide,function($key,$val){
+    if($val.index_check == false){
+      var column = table.column( $val.index_value );
+      column.visible( ! column.visible() );
+    }
+  });
+  
+  $('.moveall').text('Show All');
+  $('.removeall').text('Hide All');
+  //end of settings
 });

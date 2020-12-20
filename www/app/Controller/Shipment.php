@@ -32,6 +32,14 @@ class Shipment extends Core\Controller {
         // Processing request.. 
         switch ($this->requestMethod) {
             case 'POST':
+                switch ($this->key) {
+                    case 'settings': 
+                        $response = $this->addShipmentSettings();
+                        break;
+                    default:
+                        $response = "test";
+                        break;
+                }
                 // $response = $this->createShipmentFromRequest();
                 // break;
             case 'GET':
@@ -123,5 +131,11 @@ class Shipment extends Core\Controller {
 
     private function getAllShipment() {
         $this->unauthorizedAccess();
+    }
+
+    public function addShipmentSettings($data){
+        // $User = Model\User::addUserSettings($data);
+        // return null;
+        echo $data;
     }
 }

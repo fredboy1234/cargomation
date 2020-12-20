@@ -152,7 +152,7 @@ class Admin extends Core\Controller {
         foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
-
+        
         $this->View->renderTemplate("admin", "/admin/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -160,6 +160,7 @@ class Admin extends Core\Controller {
             "document" => $Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user),
+            "user_settings" =>$this->defaultSettings($user)
         ]);
     }
 
@@ -519,6 +520,81 @@ class Admin extends Core\Controller {
         );
 
         echo json_encode($json_data);
+    }
+
+    // this must be change to api. temporary only
+    public function addUserSettings($user=""){
+
+        Utility\Auth::checkAuthenticated();
+
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $Shipment = Model\User::getInstance($user);
+        $data['user'] = $user;
+        $data['settings']['shipment'] = $_POST['settings'];
+        $data['settings']['document'] = "";
+        $data['settings']['profile'] = "";
+        $data['settings']['hub'] = "";
+        $Shipment->addUserSettings($data);
+        echo json_encode($_POST['settings']);
+    }
+
+    public function defaultSettings($user=""){
+
+        Utility\Auth::checkAuthenticated();
+
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $userData = $User->getUserSettings($user);
+        $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
+        
+        $defaultSettings = json_decode('[
+            {"index_name": "Shipment ID", "index_value": "0", "index_check": "true"},
+            {"index_name": "Console ID", "index_value": "1", "index_check": "true"},
+            {"index_name": "ETA", "index_value": "2", "index_check": "true"},
+            {"index_name": "ETD", "index_value": "3", "index_check": "true"},
+            {"index_name": "HBL", "index_value": "4", "index_check": "true"},
+            {"index_name": "CIV", "index_value": "5", "index_check": "true"},
+            {"index_name": "PKD", "index_value": "7", "index_check": "true"},
+            {"index_name": "PKL", "index_value": "6", "index_check": "true"},
+            {"index_name": "ALL", "index_value": "8", "index_check": "true"},
+            {"index_name": "Comment", "index_value": "9", "index_check": "true"}
+          ]');
+        $defaultCollection = array();
+        if(isset($userData) && !empty($userData)){
+            foreach($userData as $key => $value){
+                $defaultCollection[]=$value->index_value;
+            }
+        }
+        if(empty($defaultCollection)){
+            $userData = array();
+        }
+        foreach($defaultSettings as $key=> $value){
+            if(!empty($defaultCollection)){
+                if(!in_array($value->index_value,$defaultCollection)){
+                    $value->index_check = 'false';
+                    $userData[] = $value;
+                } 
+            }else{
+                $userData[] = $value;
+            }
+        }
+        
+       return json_encode($userData);
     }
 
 }
