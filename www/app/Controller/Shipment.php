@@ -84,7 +84,17 @@ class Shipment extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
-        $this->View->renderTemplate("client", "/client/shipment/index", [
+        if (!$Role = Model\Role::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($userID)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        $this->View->renderTemplate($role, $role . "/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $Shipment->getShipment($user),
@@ -235,10 +245,20 @@ class Shipment extends Core\Controller {
 
         $Document = Model\Document::getInstance();
 
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user_id)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render("admin/document/index", [
+        $this->View->render($role . "/document/index", [
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,

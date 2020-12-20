@@ -19,13 +19,77 @@ class Document extends Core\Controller {
     private $param;
     private $value;
     private $key;
+    protected $View = null;
+    protected $Shipment = null;
 
-    public function __construct($requestMethod = "", $key = "", $value = "", $param = []) {
-        $this->document = Model\Document::getInstance();
+    public function __construct($requestMethod = '', $key = '', $value = '', $param = []) {
+        // Create a new instance of the core view class.
+        $this->View = new Core\View;
+        // Create a new instance of the core view class.
+        $this->Document = Model\Document::getInstance();
+
         $this->requestMethod = $requestMethod;
         $this->param = $param;
         $this->value = $value;
         $this->key = $key;
+    }
+
+        /**
+     * Document: Renders the document view. NOTE: This controller can only be accessed
+     * by authenticated users!
+     * @access public
+     * @example index/index
+     * @return void
+     * @since 1.0
+     */
+    public function document($shipment_id = "", $type = "", $user_id = "") {
+
+        //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        
+        // if (!$Shipment = Model\Shipment::getInstance()) {
+        //     Utility\Redirect::to(APP_URL);
+        // }
+
+        $Document = Model\Document::getInstance();
+
+        if (!$Role = Model\Role::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($userID)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        $this->View->addJS("js/document.js");
+        $this->View->addCSS("css/document.css");
+
+        $this->View->render($role. "/document/index", [
+            "title" => "Shipment API",
+            "id" => $User->data()->id,
+            "email" => $User->data()->email,
+            "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
+            "document" => $Document->getDocumentByShipment($shipment_id, $type),
+        ]);
     }
 
     public function processDocument() {
@@ -106,7 +170,7 @@ class Document extends Core\Controller {
     // API Get document by document_id
     private function getDocumentByDocID($document_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
-        $result = $this->document->getDocumentByDocID($document_id, $args);
+        $result = $this->Document->getDocumentByDocID($document_id, $args);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -116,7 +180,7 @@ class Document extends Core\Controller {
     // API Get document by shipment_id
     private function getDocumentByShipID($shipment_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
-        $result = $this->document->getDocumentByShipID($shipment_id, $args);
+        $result = $this->Document->getDocumentByShipID($shipment_id, $args);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -125,7 +189,7 @@ class Document extends Core\Controller {
     // API Get document by user_id
     private function getDocumentByUserID($user_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
-        $result = $this->document->getDocumentByUserID($user_id, $args);
+        $result = $this->Document->getDocumentByUserID($user_id, $args);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -134,7 +198,7 @@ class Document extends Core\Controller {
     // API Put document by shipment_id
     private function putDocumentByShipment($shipment_num, $type, $fileName) {
 
-        $document = $this->document->getDocumentByShipment($shipment_num);
+        $document = $this->Document->getDocumentByShipment($shipment_num);
 
         $data = [];
         $data['shipment_id'] = $document[0]->shipment_id;
@@ -147,7 +211,7 @@ class Document extends Core\Controller {
         $data['path'] = "";
         $data['upload_src'] = "hub";
 
-        $result = $this->document->putDocument($data);
+        $result = $this->Document->putDocument($data);
 
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
@@ -342,8 +406,7 @@ class Document extends Core\Controller {
     }
 
     public function updateDocumentStatus(){
-        $Document = Model\Document::getInstance();
-        echo json_encode($Document->updateDocumentStatus($_POST));
+        echo json_encode($this->Document->updateDocumentStatus($_POST));
     }
 
     public function fileviewer($user = "", $document_id){ 
@@ -368,7 +431,7 @@ class Document extends Core\Controller {
 
         $view = new Core\View();
 
-        $view->render("admin/document/fileviewer", [
+        $view->render("/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
@@ -376,7 +439,7 @@ class Document extends Core\Controller {
 
     public function comment(){ 
         $view = new Core\View();
-        $view->render("admin/document/comment", [
+        $view->render("/document/comment", [
         ]);
     }
 }
