@@ -1,6 +1,18 @@
+<?php
+$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+$status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/document/uid/3/status'));
+
+$shipment = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/3/id'));
+
+$pending = 0;
+foreach ($status as $key => $value) {
+  if($value->status == 'pending') {
+    $pending++;
+  }
+}
 
 
-
+?>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -10,7 +22,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><?= count($status); ?></h3>
 
                 <p>Today's Uploads</p>
               </div>
@@ -25,14 +37,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><?= count($shipment)/10; ?><sup style="font-size: 20px">%</sup></h3>
 
                 <p>Today's Shipments</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-boat"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/shipment" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -55,7 +67,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3><?= $pending; ?></h3>
 
                 <p>Today's Pending Docs</p>
               </div>
