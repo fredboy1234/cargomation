@@ -1,8 +1,5 @@
 <?php
 
-
-var_dump($this); die();
-
 $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/get/document/did/'.$this->document_id.'/name,shipment_num,type'));
 
 $file_name = $file[0]->name;

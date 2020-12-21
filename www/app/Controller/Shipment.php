@@ -71,13 +71,6 @@ class Shipment extends Core\Controller {
 
         $Document = Model\Document::getInstance();
 
-        // Set any dependencies, data and render the view.
-        // $this->initExternals();
-        // $this->View->addCSS("css/google_font.css");
-        // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
-        $this->View->addCSS("css/shipment.css");
-        $this->View->addJS("js/shipment.js");
 
         $docsCollection =array();
         foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
@@ -93,6 +86,14 @@ class Shipment extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
+
+        // Set any dependencies, data and render the view.
+        // $this->initExternals();
+        // $this->View->addCSS("css/google_font.css");
+        // $this->View->addCSS("css/custom.css");
+        // $this->View->addJS("js/custom.js");
+        $this->View->addCSS("css/shipment.css");
+        $this->View->addJS("js/shipment.js");
 
         $this->View->renderTemplate($role, $role . "/shipment/index", [
             "title" => "Shipment",
