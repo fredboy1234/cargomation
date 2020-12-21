@@ -249,6 +249,11 @@
                       <th>PKD</th>
                       <th>All</th>
                       <th>Comment</th>
+                      <th>Vessel Name</th>
+                      <th>Place Of Delivery</th>
+                      <th>Consignee</th>
+                      <th>Consignor</th>
+                      <th>Container Number</th>
                     </tr>
                   </thead>
                 </table>

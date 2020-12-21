@@ -78,6 +78,11 @@ $(document).ready(function(){
       { data: 'pkd' },
       { data: 'all' },
       { data: 'comment' },
+      { data: 'vessel_name' },
+      { data: 'place_of_delivery' },
+      { data: 'consignee' },
+      { data: 'consignor' },
+      { data: 'container_number' }
     ],
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 

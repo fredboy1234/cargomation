@@ -93,7 +93,7 @@ class Shipment extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
-
+        
         $this->View->renderTemplate($role, $role . "/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -337,7 +337,7 @@ class Shipment extends Core\Controller {
         foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
-
+        
         $stats = $docsCollection;
         $doc_type = array('HBL','CIV','PKL','PKD','all');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
@@ -449,6 +449,12 @@ class Shipment extends Core\Controller {
                 $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
                 $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
                 $subdata['comment'] = 'No Comment';
+                $subdata['vessel_name'] = $value->vessel_name;
+                $subdata['place_of_delivery'] = $value->place_delivery;
+                $subdata['consignee'] = $value->consignee;
+                $subdata['consignor'] = $value->consignor;
+                $subdata['container_number'] = "No Containe Number.";
+                
                 $data[] = $subdata;
             }
         }
@@ -456,7 +462,7 @@ class Shipment extends Core\Controller {
         $json_data=array(
             "data"              =>  $data,
         );
-
+        
         echo json_encode($json_data);
     }
 
@@ -500,18 +506,8 @@ class Shipment extends Core\Controller {
         $userData = $User->getUserSettings($user);
         $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
         
-        $defaultSettings = json_decode('[
-            {"index_name": "Shipment ID", "index_value": "0", "index_check": "true"},
-            {"index_name": "Console ID", "index_value": "1", "index_check": "true"},
-            {"index_name": "ETA", "index_value": "2", "index_check": "true"},
-            {"index_name": "ETD", "index_value": "3", "index_check": "true"},
-            {"index_name": "HBL", "index_value": "4", "index_check": "true"},
-            {"index_name": "CIV", "index_value": "5", "index_check": "true"},
-            {"index_name": "PKD", "index_value": "7", "index_check": "true"},
-            {"index_name": "PKL", "index_value": "6", "index_check": "true"},
-            {"index_name": "ALL", "index_value": "8", "index_check": "true"},
-            {"index_name": "Comment", "index_value": "9", "index_check": "true"}
-          ]');
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
+        
         $defaultCollection = array();
         if(isset($userData) && !empty($userData)){
             foreach($userData as $key => $value){
@@ -521,7 +517,7 @@ class Shipment extends Core\Controller {
         if(empty($defaultCollection)){
             $userData = array();
         }
-        foreach($defaultSettings as $key=> $value){
+        foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
                 if(!in_array($value->index_value,$defaultCollection)){
                     $value->index_check = 'false';

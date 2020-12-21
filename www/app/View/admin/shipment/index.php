@@ -141,7 +141,7 @@
                     -->
                     <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
                       <div class="tab-pane" id="settings">
-                        <select multiple="multiple" size="10" name="settings-dual" title="settings-dual">
+                        <select multiple="multiple" size="20" name="settings-dual" title="settings-dual">
                           <?php $settings = json_decode($this->user_settings);?>
                           <?php foreach($settings as $value){?>
                             <?php $selected = ($value->index_check=="true"?"selected='selected'":"");?>
@@ -239,7 +239,6 @@
                   <thead>
                     <tr>
                       <th>Shipment ID</th>
-                      <!-- <th class="d-none">Client Name</th> -->
                       <th>Console ID</th>
                       <th>ETA</th>
                       <th>ETD</th>
@@ -249,6 +248,11 @@
                       <th>PKD</th>
                       <th>All</th>
                       <th>Comment</th>
+                      <th>Vessel Name</th>
+                      <th>Place Of Delivery</th>
+                      <th>Consignee</th>
+                      <th>Consignor</th>
+                      <th>Container Number</th>
                     </tr>
                   </thead>
                 </table>
