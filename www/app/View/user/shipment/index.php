@@ -197,7 +197,6 @@
                     <thead>
                       <tr>
                         <th>Shipment ID</th>
-                        <!-- <th class="d-none">Client Name</th> -->
                         <th>Console ID</th>
                         <th>ETA</th>
                         <th>ETD</th>
@@ -207,38 +206,17 @@
                         <th>PKD</th>
                         <th>All</th>
                         <th>Comment</th>
+                        <th>Vessel Name</th>
+                        <th>Place Of Delivery</th>
+                        <th>Consignee</th>
+                        <th>Consignor</th>
+                        <th>Container Number</th>
                       </tr>
                     </thead>
                   </table>
                 </div>
                 <!-- /.card-body -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0" style="height: 500px;">
-                <table class="table table-hover table-head-fixed text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Shipment ID</th>
-                      <!-- <th class="d-none">Client Name</th> -->
-                      <th>Console ID</th>
-                      <th>ETA</th>
-                      <th>ETD</th>
-                      <th>HBL</th>
-                      <th>CIV</th>
-                      <th>PKL</th>
-                      <th>PKD</th>
-                      <th>All</th>
-                      <th>Comment</th>
-                      <th>Vessel Name</th>
-                      <th>Place Of Delivery</th>
-                      <th>Consignee</th>
-                      <th>Consignor</th>
-                      <th>Container Number</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <!-- /.card-body -->
               <!-- /.card -->
             </div>
           </div>
