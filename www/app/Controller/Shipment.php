@@ -453,7 +453,7 @@ class Shipment extends Core\Controller {
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
-                $subdata['container_number'] = "No Containe Number.";
+                $subdata['container_number'] = $value->containernumber;
                 
                 $data[] = $subdata;
             }
