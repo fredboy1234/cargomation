@@ -409,29 +409,37 @@ class Document extends Core\Controller {
         echo json_encode($this->Document->updateDocumentStatus($_POST));
     }
 
-    public function fileviewer($user = "", $document_id){ 
+    public function fileviewer($user_id = "", $document_id){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
-        if (!$user) {
+        if (!$user_id) {
             $userSession = Utility\Config::get("SESSION_USER");
             if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
+                $user_id = Utility\Session::get($userSession);
             }
         }
 
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
-        if (!$User = Model\User::getInstance($user)) {
+        if (!$User = Model\User::getInstance($user_id)) {
             Utility\Redirect::to(APP_URL);
         }
 
-        $view = new Core\View();
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
 
-        $view->render("/document/fileviewer", [
+        $role = $Role->getUserRole($user_id)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        $this->View->render($role . "/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
