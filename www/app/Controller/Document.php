@@ -19,14 +19,15 @@ class Document extends Core\Controller {
     private $param;
     private $value;
     private $key;
+    protected $Document = null;
     protected $View = null;
-    protected $Shipment = null;
+    
 
     public function __construct($requestMethod = '', $key = '', $value = '', $param = []) {
+        // Create a new instance of the model document class.
+        $this->Document = Model\Document::getInstance();
         // Create a new instance of the core view class.
         $this->View = new Core\View;
-        // Create a new instance of the core view class.
-        $this->Document = Model\Document::getInstance();
 
         $this->requestMethod = $requestMethod;
         $this->param = $param;
@@ -34,15 +35,15 @@ class Document extends Core\Controller {
         $this->key = $key;
     }
 
-        /**
-     * Document: Renders the document view. NOTE: This controller can only be accessed
+    /**
+     * Document Index: Renders the document view. NOTE: This controller can only be accessed
      * by authenticated users!
      * @access public
      * @example index/index
      * @return void
      * @since 1.0
      */
-    public function document($shipment_id = "", $type = "", $user_id = "") {
+    public function index($shipment_id = "", $type = "", $user_id = "") {
 
         //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
@@ -68,8 +69,6 @@ class Document extends Core\Controller {
         //     Utility\Redirect::to(APP_URL);
         // }
 
-        $Document = Model\Document::getInstance();
-
         if (!$Role = Model\Role::getInstance($userID)) {
             Utility\Redirect::to(APP_URL);
         }
@@ -88,7 +87,7 @@ class Document extends Core\Controller {
             "id" => $User->data()->id,
             "email" => $User->data()->email,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
-            "document" => $Document->getDocumentByShipment($shipment_id, $type),
+            "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
         ]);
     }
 
@@ -446,8 +445,7 @@ class Document extends Core\Controller {
     }
 
     public function comment(){ 
-        $view = new Core\View();
-        $view->render("/document/comment", [
+        $this->View->render("/document/comment", [
         ]);
     }
 }

@@ -225,18 +225,14 @@ $(document).ready(function() {
                     }).on('hidden.bs.toast', function () {
                         alert('Please leave a note for the ' + doc_status + ' document');
                         // var target = $(this).attr("href");
-                        var target = "document/comment/"
+                        // var target = "document/comment/"
                     
-                        // load the url and show modal on success
-                        $("#myModal .modal-body").load(target, function() { 
-                            $("#myModal").modal("show"); 
-                        });
+                        // // load the url and show modal on success
+                        // $("#myModal .modal-body").load(target, function() { 
+                        //     $("#myModal").modal("show"); 
+                        // });
                     });
-                    $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("fa-thumbs-up fa-thumbs-down");
-                    $('*[data-doc_id="' + doc_id + '"]').children().toggleClass("approved pending");
-                    $('*[data-doc_id="' + doc_id + '"]').data("doc_status", doc_status);
-
-
+                    $('.d-' + doc_id).children().toggleClass("fa-thumbs-up fa-thumbs-down").children().toggleClass("approved pending").data("doc_status", doc_status);
                 }
             });
         }

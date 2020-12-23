@@ -34,7 +34,9 @@ class Admin extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        if(Model\Role::isAdmin($User)) {
+        Utility\Redirect::to('/dashboard');
+
+        // if(Model\Role::isAdmin($User)) {
             
             // $arr = $this->View->loadResouces(PUBLIC_ROOT . "/" . "/bower_components/");
             // var_dump($arr);
@@ -52,14 +54,14 @@ class Admin extends Core\Controller {
 
             // Render view template
             // Usage renderTemplate(string|$template, string|$filepath, array|$data)
-            $this->View->renderTemplate("admin", "admin/index", [
-                "title" => "Dashboard",
-                "data" => (new Presenter\Profile($User->data()))->present(),
-                "users" => Model\User::getUsersInstance($userID)
-            ]);
-        } else {
-            Utility\Redirect::to(APP_URL);
-        }
+            // $this->View->renderTemplate("admin", "admin/dashboard", [
+            //     "title" => "Dashboard",
+            //     "data" => (new Presenter\Profile($User->data()))->present(),
+            //     "users" => Model\User::getUsersInstance($userID)
+            // ]);
+        // } else {
+        //     Utility\Redirect::to(APP_URL);
+        // }
 
         // $this->View->renderTemplateTwig("/admin/index.php", [
         //     "title" => "Admin"

@@ -29,21 +29,7 @@ class Dashboard extends Core\Controller {
         $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
         if (!$User = Model\User::getInstance($userID)) {
             Utility\Redirect::to(APP_URL);
-        }
-        // $arr = $this->View->loadResouces(PUBLIC_ROOT . "/" . "/bower_components/");
-        // var_dump($arr);
-
-        // Set any dependencies, data and render the view.
-        // $dir = PUBLIC_ROOT . "/bower_components/";
-        // $css_files = Utility\Scan::scanDIR($dir, ["css", "min.css"], true); 
-        // $this->View->loadCSS($css_files);
-        // $js_files = Utility\Scan::scanDIR($dir, ["js", "min.js"], true); 
-        // Set any dependencies, data and render the view.
-        // $this->View->loadCSS($js_files);
-        // $this->View->addCSS("css/google_font.css");
-        // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
-        
+        }        
 
         if (!$Role = Model\Role::getInstance($userID)) {
             Utility\Redirect::to(APP_URL);
@@ -54,7 +40,6 @@ class Dashboard extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
-
 
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)

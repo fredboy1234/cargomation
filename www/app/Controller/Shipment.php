@@ -20,14 +20,17 @@ class Shipment extends Core\Controller {
     private $param;
     private $value;
     private $key;
-    protected $View = null;
     protected $Shipment = null;
+    protected $Document = null;
+    protected $View = null;
 
     public function __construct($requestMethod = '', $key = '', $value = '', $param = []) {
+        // Create a new instance of the model shipment class.
+        $this->Shipment = Model\Shipment::getInstance();
+        // Create a new instance of the model document class.
+        $this->Document = Model\Document::getInstance();
         // Create a new instance of the core view class.
         $this->View = new Core\View;
-        // Create a new instance of the core view class.
-        $this->Shipment = Model\Shipment::getInstance();
 
         $this->requestMethod = $requestMethod;
         $this->param = $param;
@@ -36,7 +39,7 @@ class Shipment extends Core\Controller {
     }
 
     /**
-     * Shipment: Renders the shipment view. NOTE: This controller can only be accessed
+     * Shipment Index: Renders the shipment view. NOTE: This controller can only be accessed
      * by authenticated users!
      * @access public
      * @example index/index
@@ -63,17 +66,10 @@ class Shipment extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        if (!$Shipment = Model\Shipment::getInstance()) {
-            Utility\Redirect::to(APP_URL);
-        }
-       
-        $shipment_id = $Shipment->getShipment($user, "shipment_num");
-
-        $Document = Model\Document::getInstance();
-
+        $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
 
         $docsCollection =array();
-        foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
+        foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
@@ -98,8 +94,8 @@ class Shipment extends Core\Controller {
         $this->View->renderTemplate($role, $role . "/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
-            "shipment" => $Shipment->getShipment($user),
-            "document" => $Document->getDocumentByShipment($shipment_id),
+            "shipment" => $this->Shipment->getShipment($user),
+            "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user),
             "user_settings" =>$this->defaultSettings($user)
@@ -207,9 +203,6 @@ class Shipment extends Core\Controller {
         return $response;
     }
 
-
-
-
     /**
      * Document: Renders the document view. NOTE: This controller can only be accessed
      * by authenticated users!
@@ -244,8 +237,6 @@ class Shipment extends Core\Controller {
         //     Utility\Redirect::to(APP_URL);
         // }
 
-        $Document = Model\Document::getInstance();
-
         if (!$Role = Model\Role::getInstance($user_id)) {
             Utility\Redirect::to(APP_URL);
         }
@@ -264,7 +255,7 @@ class Shipment extends Core\Controller {
             "id" => $User->data()->id,
             "email" => $User->data()->email,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
-            "document" => $Document->getDocumentByShipment($shipment_id, $type),
+            "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
         ]);
     }
 
@@ -334,8 +325,8 @@ class Shipment extends Core\Controller {
         }
 
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
-        $Document = Model\Document::getInstance();
-        foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
+
+        foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
         

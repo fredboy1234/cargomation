@@ -21,7 +21,7 @@ if(!empty($this->document)) {
                                     'type' => 'pdf',
                                     'size' => " ",
                                     'previewAsData' => true,
-                                    'frameClass' => 'bg-' . $file->status,
+                                    'frameClass' => 'bg-' . $file->status . ' d-' . $file->document_id,
                                     'key' => $file->document_id,
                                     'dataKey' => $file->document_id,
                                     'dataUrl' => $file->document_id,
