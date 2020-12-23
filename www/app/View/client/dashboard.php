@@ -27,7 +27,7 @@ foreach ($status as $key => $value) {
                 <p>Today's Uploads</p>
               </div>
               <div class="icon">
-                <i class="ion ion-upload"></i>
+                <i class="ion ion-android-boat"></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -39,10 +39,10 @@ foreach ($status as $key => $value) {
               <div class="inner">
                 <h3><?= count($shipment)/10; ?><sup style="font-size: 20px">%</sup></h3>
 
-                <p>Today's Shipments</p>
+                <p>Today's Approved</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-boat"></i>
+                <i class="ion ion-checkmark"></i>
               </div>
               <a href="/shipment" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>

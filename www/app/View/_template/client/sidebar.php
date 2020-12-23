@@ -37,26 +37,33 @@
           <li class="nav-item">
             <a href="/profile" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
-              <p>Profile
+              <p>Profile</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/doctracker" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Doc Tracker
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/shipment" class="nav-link">
-              <i class="nav-icon fas fa-ship"></i>
+            <a href="/transport" class="nav-link">
+              <i class="nav-icon fas fa-truck"></i>
               <p>
-                Shipment
+                Transport
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
           <?php if(false): ?>
           <li class="nav-item">
-            <a href="/transport" class="nav-link">
-              <i class="nav-icon fas fa-truck"></i>
+            <a href="/shipment" class="nav-link">
+              <i class="nav-icon fas fa-ship"></i>
               <p>
-                Transport
+                Doc Tracker
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
