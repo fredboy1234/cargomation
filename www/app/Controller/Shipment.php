@@ -334,8 +334,8 @@ class Shipment extends Core\Controller {
         $doc_type = array('HBL','CIV','PKL','PKD','all');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
-            $eta_date = date_format(date_create($value->eta), "d/m/Y H:i:s");
-            $etd_date = date_format(date_create($value->etd), "d/m/Y H:i:s");
+            $eta_date = date_format(date_create($value->eta), "d/m/Y");
+            $etd_date = date_format(date_create($value->etd), "d/m/Y");
             $all = "";
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
