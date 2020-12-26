@@ -101,7 +101,8 @@ $('input[name="ETA"]').daterangepicker({
     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
     'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Tomorrow': [moment().add(1, 'days'), moment().add(1, 'days')]
  },
   locale: {
     //format: 'M/DD hh:mm A'
