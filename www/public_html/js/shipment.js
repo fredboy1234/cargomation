@@ -32,6 +32,12 @@ $(document).on("click",".assign",function(){
 });
 
 $(document).ready(function(){
+
+  var tableColumnData = [];
+  $.each(userData,function(okey,oval){
+    tableColumnData.push({data:oval.index_name.replace(/\s+/g, '_').toLowerCase()});
+  });
+  
   var table = $('.table').DataTable({
     searching: true, 
     paging: false, 
@@ -67,23 +73,7 @@ $(document).ready(function(){
               d.post_trigger = $("input[name='post_trigger']").val();
             },
     },
-    columns: [
-      { data: 'shipment_id' },
-      { data: 'console_id' },
-      { data: 'eta' },
-      { data: 'eda' },
-      { data: 'hbl' },
-      { data: 'civ' },
-      { data: 'pkl' },
-      { data: 'pkd' },
-      { data: 'all' },
-      { data: 'comment' },
-      { data: 'vessel_name' },
-      { data: 'place_of_delivery' },
-      { data: 'consignee' },
-      { data: 'consignor' },
-      { data: 'container_number' }
-    ],
+    columns: tableColumnData,
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ]
@@ -121,9 +111,10 @@ $("#advance-search-btn").on("click",function(){
     check_arr.push($(this).val());
   });
   $("#status").val(check_arr);
-
+ 
   var data = $("#addvance-search-form").serializeArray();
   var query_data = {};
+  console.log(query_data);
   var html="";
   $.each(data,function(key,value){
     var index = value.name;
@@ -163,6 +154,7 @@ $(document).on('click','.moveall, .removeall',function(e){
 });
 
 var map = $('select[name="settings-dual"]').on("change",function(e){
+  setTimeout(function(){
   var comp = $("select[name='settings-dual'] option:selected").map(function() {
           return this.value;
       }).get(),
@@ -189,7 +181,6 @@ var map = $('select[name="settings-dual"]').on("change",function(e){
     }
   });
   
-  setTimeout(function(){
     if(wasClicked){
       if(map.length > 0){
         $.each(map,function(okey,oval){
@@ -206,6 +197,7 @@ var map = $('select[name="settings-dual"]').on("change",function(e){
       var column = table.column( last );
       column.visible( ! column.visible() );
     }
+    console.log( "last -- "+last );
   },100);
   
 
@@ -256,4 +248,41 @@ $.each(hide,function($key,$val){
 $('.moveall').text('Show All');
 $('.removeall').text('Hide All');
 //end of settings
+
+  table.on('column-reorder',function(e, settings, details){
+     
+      $("select[name='settings-dual'] option").each(function(){
+        if($(this).val() == details.from){
+          $(this).val(details.to);
+          $(this).attr('id',details.to);
+        }else if($(this).val() == details.to){
+          $(this).val(details.from);
+          $(this).attr('id',details.from);
+        }
+      }); 
+      $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function(){
+        if($(this).val() == details.from){
+          $(this).val(details.to);
+          $(this).attr('id',details.to);
+        }else if($(this).val() == details.to){
+          $(this).val(details.from);
+          $(this).attr('id',details.from);
+        }
+      }); 
+      setTimeout(function(){
+        var Sdata = getSettings();
+        $.ajax({
+          url: document.location.origin + '/shipment/addUserSettings/',
+          type: "POST",
+          dataType:"json",
+          data:{"settings":Sdata},
+          success:function(res){
+            // for checking only
+            // console.log(res);
+          }
+        });
+      },100);
+     
+  });
+  
 });

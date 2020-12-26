@@ -312,6 +312,7 @@ class Shipment extends Core\Controller {
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
             $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user,$_POST);
+           
             if(!empty($searchResult)){
                 foreach($searchResult as $id){
                     foreach($api as $val){
@@ -433,8 +434,8 @@ class Shipment extends Core\Controller {
                 $subdata =array();
                 $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
                 $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-                $subdata['eta'] = ($eta_date=="01/01/1900 00:00:00"?"No Date Available":$eta_date);
-                $subdata['eda'] = ($etd_date=="01/01/1900 00:00:00"?"No Date Available":$etd_date);
+                $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
+                $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);
                 $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
                 $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
                 $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
@@ -445,7 +446,7 @@ class Shipment extends Core\Controller {
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
-                $subdata['container_number'] = $value->containernumber;
+                $subdata['container_number'] = $value->CONTAINER;
                 
                 $data[] = $subdata;
             }

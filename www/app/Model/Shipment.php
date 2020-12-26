@@ -133,7 +133,7 @@ class Shipment extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT {$args} 
                                 FROM shipment
-                                FULL OUTER JOIN shipcontainer ON shipment.id = shipcontainer.shipment_id 
+                                FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
                                 WHERE user_id = '{$user_id}' ")->results();
     }
 

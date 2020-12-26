@@ -193,24 +193,13 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0" style="height: 500px;">
+                <?php usort($settings, function($a, $b) {return $a->index_value - $b->index_value;});?>  
                   <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
                       <tr>
-                        <th>Shipment ID</th>
-                        <th>Console ID</th>
-                        <th>ETA</th>
-                        <th>ETD</th>
-                        <th>HBL</th>
-                        <th>CIV</th>
-                        <th>PKL</th>
-                        <th>PKD</th>
-                        <th>All</th>
-                        <th>Comment</th>
-                        <th>Vessel Name</th>
-                        <th>Place Of Delivery</th>
-                        <th>Consignee</th>
-                        <th>Consignor</th>
-                        <th>Container Number</th>
+                        <?php foreach($settings as $key=>$value){ ?>
+                            <th><?=$value->index_name?></th>
+                        <?php }?>
                       </tr>
                     </thead>
                   </table>
@@ -248,3 +237,6 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<script>
+  var userData = <?php echo json_encode($settings);?>;
+</script>
