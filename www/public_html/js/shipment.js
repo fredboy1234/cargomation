@@ -98,12 +98,25 @@ $('input[name="ETA"]').daterangepicker({
   ranges: {
     'Today': [moment(), moment()],
     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last Week': [moment().subtract(6, 'days'), moment().subtract(13, 'days')],
     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 14 Days': [moment().subtract(13, 'days'), moment()],
     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Last 2 Months': [moment().subtract(2, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Last 3 Months': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Last 6 Months': [moment().subtract(6, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Last 12 Months': [moment().subtract(12, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Tomorrow': [moment().add(1, 'days'), moment().add(1, 'days')],
-    'Next 7 Days': [moment().add(6, 'days'), moment()]
+    'Next Week': [moment().add(6, 'days'), moment().add(12, 'days')],
+    'Next 7 Days': [moment(),moment().add(6, 'days')],
+    'Next 14 Days': [moment(), moment().add(13, 'days')],
+    'Next Month': [moment().add(1,'month'), moment().add(2,'month')],
+    'Next 2 Months': [moment().add(1,'month'), moment().add(3,'month')],
+    'Next 3 Months': [moment().add(1,'month'), moment().add(4,'month')],
+    'Next 6 Months': [moment().add(1,'month'), moment().add(6,'month')],
+    'Next  12 Months': [moment().add(1,'month'), moment().add(12,'month')],
  },
   locale: {
     //format: 'M/DD hh:mm A'

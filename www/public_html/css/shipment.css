@@ -44,3 +44,7 @@ td.stats .doc-stats:first-child > span {
 .fa-spinner {
     color: #2962ff;
 }
+.daterangepicker .ranges{
+    overflow: scroll;
+    height: 226px;
+}
