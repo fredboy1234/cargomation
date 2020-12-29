@@ -275,8 +275,9 @@ $('.moveall').text('Show All');
 $('.removeall').text('Hide All');
 //end of settings
 
+  //re order column
   table.on('column-reorder',function(e, settings, details){
-     
+      
       $("select[name='settings-dual'] option").each(function(){
         if($(this).val() == details.from){
           $(this).val(details.to);
@@ -308,30 +309,13 @@ $('.removeall').text('Hide All');
           }
         });
       },100);
-     
+      
   });
-  
+  //end of reorder column
+
+  //reset search
+  $("#reset-search").on("click",function(){
+    $("#addvance-search-form").find("input[type=text], textarea").val("");
+    table.ajax.reload();
+  });
 });
-
-
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-    cb(start, end);

@@ -9,6 +9,7 @@
                     <!-- <li class="nav-item" data-card-widget="collapse"><a class="nav-link" href="#vert-tabs-settings" data-toggle="tab">Settings</a></li> -->
                 </ul>
                 <div class="card-tools" style="line-height: 2.49em;">
+                
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
@@ -119,8 +120,11 @@
                                                 </div>
                                             </div>
                                                 <input type="hidden" name="post_trigger" value="">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 d-inline-block">
                                                 <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                                            </div>
+                                            <div class="col-sm-2 d-inline-block">
+                                                <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
                                             </div>
                                             <!-- /.form-group -->
                                             </div>
