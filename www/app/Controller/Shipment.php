@@ -441,7 +441,7 @@ class Shipment extends Core\Controller {
                 $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
                 $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
                 $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
-                $subdata['comment'] = 'No Comment';
+                //$subdata['comment'] = 'No Comment';
                 $subdata['vessel_name'] = $value->vessel_name;
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
