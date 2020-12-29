@@ -51,13 +51,13 @@ td.stats .doc-stats:first-child > span {
 }
 .missing-background{
     background-color: #dc3545;
-    border: 0.001px solid #2125291f;
+    border: 0.001px solid #fff;
 }
 .pending-background{
     background-color: #ffc107;
-    border: 0.001px solid #2125291f;
+    border: 0.001px solid #fff;
 }
 .approved-background{
     background-color: #28a745;
-    border: 0.001px solid #2125291f;
+    border: 0.001px solid #fff;
 }
