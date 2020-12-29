@@ -30,6 +30,7 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 }
 td.stats {
     width: 75px;
+    text-align: center;
 }
 td.stats:hover {
     background-color: #c3c3c36c;
@@ -47,4 +48,16 @@ td.stats .doc-stats:first-child > span {
 .daterangepicker .ranges{
     overflow: scroll;
     height: 226px;
+}
+.missing-background{
+    background-color: #dc3545;
+    border: 0.001px solid #2125291f;
+}
+.pending-background{
+    background-color: #ffc107;
+    border: 0.001px solid #2125291f;
+}
+.approved-background{
+    background-color: #28a745;
+    border: 0.001px solid #2125291f;
 }

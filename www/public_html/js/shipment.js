@@ -76,7 +76,10 @@ $(document).ready(function(){
     columns: tableColumnData,
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
-    ]
+    ],
+    initComplete: function(settings, json) {
+     setColor();
+    }
   });
 
 
@@ -169,7 +172,7 @@ $('select[name="settings-dual"]').bootstrapDualListbox({
   selectedListLabel: 'Selected Settings',
   preserveSelectionOnMove: 'all',
   helperSelectNamePostfix:'_helper',
-  sortByInputOrder: true,
+  sortByInputOrder: false,
   filterTextClear: ""
 });
 
@@ -318,4 +321,17 @@ $('.removeall').text('Hide All');
     $("#addvance-search-form").find("input[type=text], textarea").val("");
     table.ajax.reload();
   });
+ 
 });
+
+function setColor(){
+  $(".doc-stats span").each(function(){
+    if($(this).text()=="Missing"){
+      $(this).parent().parent().addClass("missing-background");
+    }else if($(this).text()=="Pending"){
+      $(this).parent().parent().addClass("pending-background");
+    }else if($(this).text()=="Approved"){
+      $(this).parent().parent().addClass("approved-background");
+    }
+  });
+}
