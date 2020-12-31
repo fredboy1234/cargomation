@@ -4,11 +4,14 @@ $status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/ap
 
 $shipment = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/3/id'));
 
-$pending = 0;
+$approved = 0; $pending = 0; $missing = 0;
 foreach ($status as $key => $value) {
-  if($value->status == 'pending') {
+  if($value->status == 'approved')
+  $approved++;
+  if($value->status == 'pending')
     $pending++;
-  }
+  if($value->status == '')
+    $missing++;
 }
 
 
@@ -24,12 +27,12 @@ foreach ($status as $key => $value) {
               <div class="inner">
                 <h3><?= count($status); ?></h3>
 
-                <p>Today's Uploads</p>
+                <p>Today's Shipment</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-boat"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -37,14 +40,14 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3><?= count($shipment)/10; ?><sup style="font-size: 20px">%</sup></h3>
+                <h3><?= $approved; ?></h3>
 
-                <p>Today's Approved</p>
+                <p>Today's Approved Docs</p>
               </div>
               <div class="icon">
                 <i class="ion ion-checkmark"></i>
               </div>
-              <a href="/shipment" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?doc=approved" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -52,14 +55,14 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3><?= count($this->users); ?></h3>
+                <h3><?= $pending; ?></h3>
 
-                <p>Active Clients</p>
+                <p>Today's Pending Docs</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="ion ion-clock"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?doc=pending" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -67,14 +70,14 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?= $pending; ?></h3>
+                <h3><?= $missing; ?></h3>
 
-                <p>Today's Pending Docs</p>
+                <p>Today's Missing Docs</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-warning"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?doc=missing" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
