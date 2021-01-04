@@ -68,6 +68,18 @@ class UserRegister {
                 "salt" => $salt    
             ]);
 
+            // //insert web service
+            // $User->insertWebService([
+            //     "user_id" => $userID,
+            //     "webservice_link" => Utility\Input::post("webservice-link"),
+            //     "webservice_username" => Utility\Input::post("webservice-username"),
+            //     "webservice_password" => Utility\Input::post("webservice-password"),
+            //     "server-id" => Utility\Input::post("server-id"),
+            //     "enterprise-id" => Utility\Input::post("enterprise-id"),
+            //     "isactive" => "Y",
+            //     "company_code" => "SYD"
+            // ]);
+
             //insert user info
             $User->insertUserInfo([
                 "user_id" => $userID,

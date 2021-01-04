@@ -45,6 +45,21 @@ class User extends Core\Model {
         return null;
     }
 
+    // /**
+    //  * Create User Webservice: Inserts a new user webservice into the database.
+    //  * @access public
+    //  * @param array $fields
+    //  * @return null
+    //  * @since 1.0.3
+    //  * @throws Exception
+    //  */
+    // public function insertWebService(array $fields) {
+    //     if (!$userID = $this->create("user_webservice", $fields)) {
+    //         throw new Exception(Utility\Text::get("USER_CREATE_EXCEPTION"));
+    //     }
+    //     return null;
+    // }
+
     /**
      * Create User Role: Inserts a new user Role into the database.
      * @access public

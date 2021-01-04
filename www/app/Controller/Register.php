@@ -28,6 +28,7 @@ class Register extends Core\Controller {
         Utility\Auth::checkAuthenticated();
 
         // Set any dependencies, data and render the view.
+        $this->View->addJS("js/register.js");
         $this->View->renderTemplate("admin", "register/index", [
             "title" => "Register"
         ]);
