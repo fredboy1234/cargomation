@@ -35,14 +35,8 @@
             <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
           </li>
           <li class="nav-item">
-            <a href="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Profile</p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="/doctracker" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
+              <i class="nav-icon fas fa-file-import"></i>
               <p>
                 Doc Tracker
                 <span class="right badge badge-danger">New</span>
@@ -50,11 +44,11 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/transport" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-truck"></i>
               <p>
                 Transport
-                <span class="right badge badge-danger">New</span>
+                <span class="right badge badge-primary">Coming soon...</span>
               </p>
             </a>
           </li>
@@ -77,7 +71,12 @@
               </p>
             </a>
           </li>
-          <?php endif; ?>
+          <li class="nav-item">
+            <a href="/profile" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>Profile</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="/logout" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
@@ -86,6 +85,7 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
 
         </ul>
       </nav>

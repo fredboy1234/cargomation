@@ -46,6 +46,7 @@ class Dashboard extends Core\Controller {
         $this->View->renderTemplate($role, $role . "/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID)
         ]);
     }

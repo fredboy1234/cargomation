@@ -94,6 +94,7 @@ class Doctracker extends Core\Controller {
         $this->View->renderTemplate($role, $role . "/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($user),
             "shipment" => $this->Shipment->getShipment($user),
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
