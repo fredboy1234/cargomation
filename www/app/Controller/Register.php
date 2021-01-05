@@ -51,10 +51,13 @@ class Register extends Core\Controller {
 
         // Process the register request, redirecting to the login controller if
         // successful or back to the register controller if not.
+        
         if (Model\UserRegister::register($accId)) { 
             Utility\Redirect::to(APP_URL . "login");
         }
+       
         Utility\Redirect::to(APP_URL . "register");
+
     }
 
 }

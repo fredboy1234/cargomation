@@ -48,9 +48,9 @@ class UserRegister {
     public static function register($accId) {
         
         // Validate the register form inputs.
-        if (!Utility\Input::check($_POST, self::$_inputs)) {
-            return false;
-        }
+        // if (!Utility\Input::check($_POST, self::$_inputs)) {
+        //     return false;
+        // }
         try {
 
             // Generate a salt, which will be applied to the during the password
@@ -69,16 +69,16 @@ class UserRegister {
             ]);
 
             // //insert web service
-            // $User->insertWebService([
-            //     "user_id" => $userID,
-            //     "webservice_link" => Utility\Input::post("webservice-link"),
-            //     "webservice_username" => Utility\Input::post("webservice-username"),
-            //     "webservice_password" => Utility\Input::post("webservice-password"),
-            //     "server-id" => Utility\Input::post("server-id"),
-            //     "enterprise-id" => Utility\Input::post("enterprise-id"),
-            //     "isactive" => "Y",
-            //     "company_code" => "SYD"
-            // ]);
+            $User->insertWebService([
+                "user_id" => $userID,
+                "webservice_link" => Utility\Input::post("webservice-link"),
+                "webservice_username" => Utility\Input::post("webservice-username"),
+                "webservice_password" => Utility\Input::post("webservice-password"),
+                "server_id" => Utility\Input::post("server-id"),
+                "enterprise_id" => Utility\Input::post("enterprise-id"),
+                "isactive" => "Y",
+                "company_code" => "SYD"
+            ]);
 
             //insert user info
             $User->insertUserInfo([
@@ -93,7 +93,7 @@ class UserRegister {
                 "country_id" =>"",
                 "account_id" => $accId,
                 "account_users" => "",
-                "subscription_id" => Utility\Input::post("subcription"),
+                //"subscription_id" =>Utility\Input::post("subcription"),
                 "status" => "",    
             ]);
 
@@ -110,11 +110,12 @@ class UserRegister {
             // Write all necessary data into the session as the user has been
             // successfully registered and return the user's unique ID.
             Utility\Flash::success(Utility\Text::get("REGISTER_USER_CREATED"));
-            return $userID;
+            echo json_encode($userID);
         } catch (Exception $ex) {
             Utility\Flash::danger($ex->getMessage());
+            echo json_encode(["results"=>'hala na hulog log log']);
         }
-        return false;
+        echo json_encode(['results'=>false]);
     }
 
     /**
