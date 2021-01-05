@@ -34,7 +34,7 @@
                         </div>
                         <div class="panel-body">
                             <form id="register_form" action="<?= $this->makeUrl("register/_register"); ?>" method="post">
-                                <div class="col-12 col-md-12 col-sm-12">
+                                <div class="col-12 col-lg-6 col-md-8 col-sm-12">
                                     <div class="card card-primary card-outline card-outline-tabs">
                                         <div class="card-header p-0 border-bottom-0">
                                             <ul class="nav nav-tabs" id="tab" role="tablist">
