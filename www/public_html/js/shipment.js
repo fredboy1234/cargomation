@@ -84,8 +84,8 @@ $(document).ready(function(){
      setColor();
     }
   });
-
-  if(parsed_qs.doc !== '') {
+  
+  if(parsed_qs.doc !== '' && typeof parsed_qs.doc !='undefined' ) {
     table.search( parsed_qs.doc ).draw();
   } 
 
