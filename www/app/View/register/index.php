@@ -39,57 +39,19 @@
                                         <div class="card-header p-0 border-bottom-0">
                                             <ul class="nav nav-tabs" id="tab" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" id="webservice-tab" data-toggle="tab" href="#webservice" role="tab" aria-controls="webservice" aria-selected="true">1. Web Service</a>
+                                                    <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="false">Login Details</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="false">2. Login Details</a>
+                                                    <a class="nav-link" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="false">Personal Details</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="false">3. Personal Details</a>
-                                                </li>
-                                                <?php if(false): ?>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact Details</a>
-                                                </li>
-                                                <?php endif; ?>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="finish-tab" data-toggle="tab" href="#finish" role="tab" aria-controls="finish" aria-selected="false">4. Finish</a>
+                                                    <a class="nav-link" id="finish-tab" data-toggle="tab" href="#finish" role="tab" aria-controls="finish" aria-selected="false">Finish</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="card-body">
                                             <div class="tab-content" id="tabContent">
-                                                <div class="tab-pane fade active show" id="webservice" role="tabpanel" aria-labelledby="webservice-tab">
-                                                    <div class="form-group">
-                                                        <label for="first-name-input">Web webservice Link <span class="text-danger">*</span></label>
-                                                        <input type="text" id="webservice-link" class="form-control" name="webservice-link" />
-                                                        <span id="error_webservice_link" class="text-danger"></span>
-                                                    </div> 
-                                                    <div class="form-group">
-                                                        <label for="first-name-input">Username <span class="text-danger">*</span></label>
-                                                        <input type="text" id="webservice-username-input" class="form-control" name="webservice-username" />
-                                                        <span id="error_webservice_username" class="text-danger"></span>
-                                                    </div> 
-                                                    <div class="form-group">
-                                                        <label for="first-name-input">Password <span class="text-danger">*</span></label>
-                                                        <input type="password" id="webservice-password-input" class="form-control" name="webservice-password" />
-                                                        <span id="error_webservice_password" class="text-danger"></span>
-                                                    </div> 
-                                                    <div class="form-group">
-                                                        <label for="first-name-input">Server ID <span class="text-danger"></span></label>
-                                                        <input type="text" id="server-id-input" class="form-control" name="server-id" />
-                                                        <span id="error_server_id" class="text-danger"></span>
-                                                    </div> 
-                                                    <div class="form-group">
-                                                        <label for="first-name-input">Enterprise ID <span class="text-danger"></span></label>
-                                                        <input type="text" id="enterprise-id-input" class="form-control" name="enterprise-id" />
-                                                        <span id="error_enterprise_id" class="text-danger"></span>
-                                                    </div> 
-                                                    <div align="center">
-                                                        <button type="button" name="btn_service" id="btn_service" class="btn btn-info btn-md">Next</button>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+                                                <div class="tab-pane fade active show" id="login" role="tabpanel" aria-labelledby="login-tab">
                                                     <div class="form-group">
                                                         <label for="email-input">Email <span class="text-danger">*</span></label>
                                                         <input type="text" id="email-input" class="form-control" name="email" />
@@ -106,7 +68,6 @@
                                                         <span id="error_password_repeat" class="text-danger"></span>
                                                     </div>
                                                     <div align="center">
-                                                        <button type="button" name="previous_btn_login" id="previous_btn_login" class="btn btn-default btn-md">Previous</button>
                                                         <button type="button" name="btn_login" id="btn_login" class="btn btn-info btn-md">Next</button>
                                                     </div>
                                                 </div>
@@ -138,19 +99,6 @@
                                                         <!-- <a href="<?= $this->makeURL("login"); ?>" class="btn btn-link">Cancel</a> -->
                                                     </div>
                                                 </div>
-                                                <?php if(false): ?>
-                                                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                                    <div class="form-group">
-                                                        <label>Subscription <span class="text-danger">*</span></label>
-                                                        <select class="form-control" id="subcription-input"  name="subcription">
-                                                            <option> </option>
-                                                            <option value="1">Basic</option>
-                                                            <option value="2">Standard</option>
-                                                            <option value="3">Premium</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <?php endif; ?>
                                                 <div class="tab-pane fade" id="finish" role="tabpanel" aria-labelledby="finish-tab">
                                                     <div class="form-group">
                                                         <center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>
@@ -158,8 +106,8 @@
                                                 </div>
                                                 <!-- Circles which indicates the steps of the form: -->
                                                 <div style="text-align:center;margin-top:40px;">
-                                                    <span class="step1 active"></span>
-                                                    <span class="step2"></span>
+                                                    <span class="step1" style="display: none"></span>
+                                                    <span class="step2 active"></span>
                                                     <span class="step3"></span>
                                                     <span class="step4"></span>
                                                 </div>
