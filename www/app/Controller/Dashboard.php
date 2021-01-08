@@ -40,7 +40,7 @@ class Dashboard extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
-
+        $this->View->addJS("js/dashboard.js");
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
         $this->View->renderTemplate($role, $role . "/dashboard", [

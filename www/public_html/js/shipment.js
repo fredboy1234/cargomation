@@ -45,9 +45,9 @@ $(document).ready(function(){
     calendar_start_date = parsed_qs.calendar;
     $("input[name='ETA']").val(calendar_start_date+' - '+ calendar_end_date );
     $("input[name='post_trigger']").val("set");
-    // setTimeout(function(){
-    //   $("#advance-search-btn").trigger('click');
-    // },1000);
+    setTimeout(function(){
+      $("#advance-search-btn").trigger('click');
+    },1000);
    
   }
 
