@@ -1,20 +1,31 @@
 <?php
 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-$status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/document/uid/3/status'));
+$status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/document/uid/3/status,saved_date'));
 
 $shipment = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/3/id'));
 
 $approved = 0; $pending = 0; $missing = 0;
 foreach ($status as $key => $value) {
   if($value->status == 'approved')
-  $approved++;
+    $approved++;
   if($value->status == 'pending')
     $pending++;
   if($value->status == '')
     $missing++;
 }
-
-
+// TODAY
+$today_approved = 0; $today_pending = 0; $today_missing = 0; $today_shipment = 0;
+foreach ($status as $key => $value) {
+  if( date("F j, Y") == date("F j, Y", strtotime($value->saved_date)) ) {
+    $today_shipment++;
+    if($value->status == 'approved')
+      $today_approved++;
+    if($value->status == 'pending')
+      $today_pending++;
+    if($value->status == '')
+      $today_missing++;
+  }
+}
 ?>
     <!-- Main content -->
     <section class="content">
@@ -25,7 +36,7 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3><?= count($status); ?></h3>
+                <h3><?= $today_shipment ?></h3>
 
                 <p>Today's Shipment</p>
               </div>
@@ -40,7 +51,7 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3><?= $approved; ?></h3>
+                <h3><?= $today_approved; ?></h3>
 
                 <p>Today's Approved Docs</p>
               </div>
@@ -55,7 +66,7 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3><?= $pending; ?></h3>
+                <h3><?= $today_pending; ?></h3>
 
                 <p>Today's Pending Docs</p>
               </div>
@@ -70,7 +81,7 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?= $missing; ?></h3>
+                <h3><?= $today_missing; ?></h3>
 
                 <p>Today's Missing Docs</p>
               </div>
@@ -151,7 +162,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">For Approval</span>
-                      <span class="info-box-number">5,200</span>
+                      <span class="info-box-number"><?= $pending; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -161,7 +172,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">Missing Doc</span>
-                      <span class="info-box-number">92,050</span>
+                      <span class="info-box-number"><?= $missing; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -171,7 +182,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">Approved Doc</span>
-                      <span class="info-box-number">114,381</span>
+                      <span class="info-box-number"><?= $approved; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>

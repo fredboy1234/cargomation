@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core;
 use App\Model;
 use App\Utility;
+use App\Presenter;
 
 /**
  * Register Controller:
@@ -49,7 +50,10 @@ class Register extends Core\Controller {
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
         $this->View->renderTemplate($role, "register/index", [
-            "title" => "Register"
+            "title" => "Register",
+            "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($userID),
+            "users" => Model\User::getUsersInstance($userID)
         ]);
     }
 

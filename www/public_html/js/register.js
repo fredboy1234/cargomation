@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.nav-link').removeAttr('href data-toggle role aria-labelledby');
+    $('.nav-tabs .nav-item .nav-link').removeAttr('href data-toggle role aria-labelledby');
 
     $('#btn_service').click(function() {
 

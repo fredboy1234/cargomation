@@ -1,3 +1,19 @@
+<?php
+
+$menuItems = [
+  ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
+  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">New</span>'],
+  ['label' => 'Transport', 'url' => ['#'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
+];
+
+function isActive($url) {
+  if($url == '/' && $_GET['url'] == 'dashboard')
+    echo 'active';
+  if('/'.$_GET['url'] == $url)
+    echo 'active';
+}
+?>
+
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -26,32 +42,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <?php foreach ($menuItems as $key => $menu): ?>
           <li class="nav-item">
-          <?php
-              $menu_1 = '<i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard
-                        </p>';
-            ?>
-            <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
-          </li>
-          <li class="nav-item">
-            <a href="/doctracker" class="nav-link">
-              <i class="nav-icon fas fa-file-import"></i>
-              <p>
-                Doc Tracker
-                <span class="right badge badge-danger">New</span>
-              </p>
+            <a href="<?= $menu['url'][0]; ?>" class="nav-link <?= isActive($menu['url'][0]); ?>">
+              <i class="nav-icon <?= $menu['icon']; ?>"></i>
+              <p> <?= $menu['label']; ?> <?= $menu['badge']; ?></p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-truck"></i>
-              <p>
-                Transport
-                <span class="right badge badge-primary">Coming soon...</span>
-              </p>
-            </a>
-          </li>
+          <?php endforeach; ?>
           <?php if(false): ?>
           <li class="nav-item">
             <a href="/shipment" class="nav-link">
