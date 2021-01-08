@@ -35,6 +35,21 @@ $(document).on("click",".assign",function(){
 });
 
 $(document).ready(function(){
+  
+  if(parsed_qs.calendar !='' && typeof parsed_qs.calendar !='undefined'){
+    var c_date = new Date(parsed_qs.calendar);
+    var curr_date = ("0" + (c_date.getDate() + 1)).slice(-2);
+    var curr_month = ("0" + (c_date.getMonth() + 1)).slice(-2);
+    var curr_year = c_date.getFullYear();
+    calendar_end_date = curr_month+'/'+curr_date+'/'+curr_year;
+    calendar_start_date = parsed_qs.calendar;
+    $("input[name='ETA']").val(calendar_start_date+' - '+ calendar_end_date );
+    $("input[name='post_trigger']").val("set");
+    // setTimeout(function(){
+    //   $("#advance-search-btn").trigger('click');
+    // },1000);
+   
+  }
 
   var tableColumnData = [];
   $.each(userData,function(okey,oval){
@@ -80,9 +95,7 @@ $(document).ready(function(){
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ],
-    initComplete: function(settings, json) {
-     setColor();
-    }
+    initComplete: setColor
   });
   
   if(parsed_qs.doc !== '' && typeof parsed_qs.doc !='undefined' ) {
@@ -157,8 +170,8 @@ $("#advance-search-btn").on("click",function(){
     query_data[index] = val;
   });
  
-  table.ajax.reload();
-  table.draw();
+  table.ajax.reload(setColor);
+  //table.draw();
 });
 
 // Toggle document stats view 
@@ -169,7 +182,8 @@ $(document).on('mouseenter mouseleave','.stats',function() {
 // Append loading and redraw datatable
 $('#myModal').on('hidden.bs.modal', function (e){ 
   $('#myModal .modal-body').empty().append('Loading...');
-  table.ajax.reload();
+  table.ajax.reload(setColor);
+  
 });
 
 //For Settings
@@ -325,12 +339,12 @@ $('.removeall').text('Hide All');
   //reset search
   $("#reset-search").on("click",function(){
     $("#addvance-search-form").find("input[type=text], textarea").val("");
-    table.ajax.reload();
+    table.ajax.reload(setColor);
   });
  
 });
 
-function setColor(){
+var setColor = function(){
   $(".doc-stats span").each(function(){
     if($(this).text()=="Missing"){
       $(this).parent().parent().addClass("missing-background");
@@ -340,7 +354,7 @@ function setColor(){
       $(this).parent().parent().addClass("approved-background");
     }
   });
-}
+};
 
 function parse_query_string(query) {
   var vars = query.split("&");
