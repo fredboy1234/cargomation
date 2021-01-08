@@ -35,28 +35,29 @@
             <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
           </li>
           <li class="nav-item">
-            <a href="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Profile
+            <a href="/doctracker" class="nav-link">
+              <i class="nav-icon fas fa-file-import"></i>
+              <p>
+                Doc Tracker
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/shipment" class="nav-link">
-              <i class="nav-icon fas fa-ship"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-truck"></i>
               <p>
-                Shipment
-                <span class="right badge badge-danger">New</span>
+                Transport
+                <span class="right badge badge-primary">Coming soon...</span>
               </p>
             </a>
           </li>
           <?php if(false): ?>
           <li class="nav-item">
-            <a href="/transport" class="nav-link">
-              <i class="nav-icon fas fa-truck"></i>
+            <a href="/shipment" class="nav-link">
+              <i class="nav-icon fas fa-ship"></i>
               <p>
-                Transport
+                Doc Tracker
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
@@ -70,7 +71,12 @@
               </p>
             </a>
           </li>
-          <?php endif; ?>
+          <li class="nav-item">
+            <a href="/profile" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>Profile</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="/logout" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
@@ -79,6 +85,7 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
 
         </ul>
       </nav>

@@ -51,9 +51,9 @@
       </li>
       <!-- Account Dropdown Menu -->
       <?php if (isset($this->data)): ?>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" style="border: 1px solid #cccc; border-radius: 20px;">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-user-circle"></i>
+          <i class="far fa-user-circle"></i> Account
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="/profile" class="dropdown-item">
