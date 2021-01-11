@@ -80,8 +80,14 @@ class Shipment extends Core\Model {
             $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
         }
         if($data['origin'] != ""){
-           // $where .= " and document.upload_src = '{$data['origin']}'";
+            // if($data['ETA'] == ""){
+            //     $where .= " and document.upload_src = '{$data['origin']}'";
+            // }
            $origin = $data['origin'];
+        }
+
+        if($data['transportmode'] != ""){
+            $where .= " and shipment.transport_mode  like '%{$data['transportmode']}%'";
         }
        //$results = array();
         return $Db->query("SELECT

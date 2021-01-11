@@ -86,8 +86,9 @@ $(document).ready(function(){
               d.consignee = $("input[name='consignee']").val();
               d.consignor = $("input[name='consignor']").val();
               d.container = $("input[name='container']").val();
-              d.origin = $("input[name='origin']").val();
+              d.origin = $("input[name='origin']:checked").val();
               d.status = $("input[name='status']").val();
+              d.transportmode = $("input[name='transportmode']:checked").val();
               d.post_trigger = $("input[name='post_trigger']").val();
             },
     },
@@ -161,6 +162,7 @@ $("#advance-search-btn").on("click",function(){
   $("#status").val(check_arr);
  
   var data = $("#addvance-search-form").serializeArray();
+  
   var query_data = {};
   console.log(query_data);
   var html="";
@@ -169,7 +171,8 @@ $("#advance-search-btn").on("click",function(){
     var val = value.value;
     query_data[index] = val;
   });
- 
+  // $("input[name='origin']").val(query_data.origin);
+  // $("input[name='transportmode']").val(query_data.transportmode);
   table.ajax.reload(setColor);
   //table.draw();
 });

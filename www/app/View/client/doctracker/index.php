@@ -118,6 +118,20 @@
                                                     </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-12">
+                                                    <!-- radio -->
+                                                    <label for="inputEmail3" class="col-sm-6 col-form-label">Transport Mode</label>
+                                                    <div class="form-group">
+                                                        <div class="form-check d-inline-block">
+                                                            <input class="form-check-input" type="radio" name="transportmode" value="sea" checked>
+                                                            <label class="form-check-label">Sea</label>
+                                                        </div>
+                                                        <div class="form-check d-inline-block">
+                                                            <input class="form-check-input" type="radio" name="transportmode" value="air">
+                                                            <label class="form-check-label">Air</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                                 <input type="hidden" name="post_trigger" value="">
                                             <div class="col-sm-6 d-inline-block">
