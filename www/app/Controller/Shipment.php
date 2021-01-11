@@ -322,6 +322,8 @@ class Shipment extends Core\Controller {
                     }
                 }
                 $api = $searchStore;
+            }else{
+                $api = array();
             }
         }
 

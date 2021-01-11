@@ -322,6 +322,8 @@ class Doctracker extends Core\Controller {
                     }
                 }
                 $api = $searchStore;
+            }else{
+                $api = array();
             }
         }
 

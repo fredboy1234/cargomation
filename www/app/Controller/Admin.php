@@ -392,6 +392,8 @@ class Admin extends Core\Controller {
                     }
                 }
                 $api = $searchStore;
+            }else{
+                $api = array();
             }
         }
 
