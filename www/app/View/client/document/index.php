@@ -21,7 +21,7 @@ if(!empty($this->document)) {
                                     'type' => 'pdf',
                                     'size' => " ",
                                     'previewAsData' => true,
-                                    'frameClass' => 'bg-' . $file->status,
+                                    'frameClass' => 'd-' . $file->document_id . ' bg-' . $file->status,
                                     'key' => $file->document_id,
                                     'dataKey' => $file->document_id,
                                     'dataUrl' => $file->document_id,
@@ -112,5 +112,7 @@ if(!empty($this->document)) {
     var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
     var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
     var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $this->shipment['type']; ?>";
+    var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
+    var document_type = "<?= $this->shipment['type']; ?>";
 </script>
 <?= $this->getJS(); ?>
