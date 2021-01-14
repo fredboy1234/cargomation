@@ -139,7 +139,8 @@ $(document).ready(function() {
         // },
         otherActionButtons: '<button type="button" ' +
                                 'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
-                                'title="View Comment"{dataUrl}{dataKey}>' +
+                                'title="View Comment"{dataUrl}{dataKey} ' +
+                                'data-doc_id="{id}" data-doc_status="{status}">' +
                                     '<i class="fas fa-comment"></i>' +
                             '</button>\n' +
                             '<button type="button" ' +
@@ -198,13 +199,11 @@ $(document).ready(function() {
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
     }).mouseleave(function(){
         $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
-    }).click(function() {
+    });
+    $('button.kv-file-status').click(function() {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
-        if(doc_status === 'approved') 
-            doc_status = 'pending';
-        else 
-            doc_status = 'approved';
+        if(doc_status === 'approved')  doc_status = 'pending'; else doc_status = 'approved';
 
         var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Want to continue?");
 
@@ -223,16 +222,22 @@ $(document).ready(function() {
                         close: false,
                         class:'bg-success'
                     }).on('hidden.bs.toast', function () {
-                        alert('Please leave a note for the ' + doc_status + ' document');
-                        // var target = $(this).attr("href");
-                        // var target = "document/comment/"
-                    
-                        // // load the url and show modal on success
-                        // $("#myModal .modal-body").load(target, function() { 
-                        //     $("#myModal").modal("show"); 
-                        // });
+                        // alert('Please leave a note for the ' + doc_status + ' document');
+                        if (window.confirm("Do you want to leave a comment?")) {
+                            var target = "document/comment/" + doc_id + "/" + doc_status;
+    
+                            // load the url and show modal on success
+                            $("#myModal .modal-body").load(target, function() { 
+                                 $("#myModal").modal("show"); 
+                            });
+                        }
                     });
-                    $('.d-' + doc_id).children().toggleClass("fa-thumbs-up fa-thumbs-down").children().toggleClass("approved pending").data("doc_status", doc_status);
+                    var d = $('d-' + doc_id);
+                    d.toggleClass("bg-approved bg-pending");
+                    d.find('.kv-file-status').data("doc_status", doc_status);
+                    d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+                    //find('i').toggleClass("fa-thumbs-up fa-thumbs-down");
+                    //.children().toggleClass("approved pending").data("doc_status", doc_status);
                 }
             });
         }
@@ -240,14 +245,46 @@ $(document).ready(function() {
 
     // Button Comment
     $('button.kv-file-comment').click(function(ev) {
+        var doc_status = $(this).data("doc_status");
+        var doc_id = $(this).data("doc_id");
         //$('#document-upload, #document-comment').toggle();
         ev.preventDefault();
         // var target = $(this).attr("href");
-        var target = "/comment/"
-    
+        // var target = "document/comment/" + doc_id + "/" + doc_status;
+        var target = "document/view/comment/" + doc_id;
+
         // load the url and show modal on success
         $("#myModal .modal-body").load(target, function() { 
              $("#myModal").modal("show"); 
+        });
+    });
+
+
+    $('#comment_submit').click(function(e) {
+
+        var form = $('#comment');
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            beforeSend: function(){
+                form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
+            },
+            success: function(data) {
+                if(data == 'true') {
+                    form.empty().html('Submitted Succesful!');
+                }
+            }
+        });
+
+    });
+
+    $('#go_back').click(function(e) {
+        // load the url and show modal on success
+        $("#myModal .modal-body").load("/shipment/document/" + shipment_id + "/" + document_type, function() { 
+            $("#myModal").modal("show"); 
         });
     });
 

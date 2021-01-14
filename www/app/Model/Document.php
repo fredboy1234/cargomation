@@ -123,6 +123,27 @@ class Document extends Core\Model {
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
 
+    public static function putDocumentComment($data) {
 
+        $data['submitted_date'] = date("Y-m-d H:i:s");
+
+        // Sanitize array and implode
+        if(is_array($data)) {
+            $value = implode("','", array_values($data));
+            $column = implode(", ", array_keys($data));
+        }
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("INSERT INTO document_comment2 (" . $column . ") VALUES ('" . $value . "')")->error();
+        
+    }
+
+    public static function getDocumentComment($document_id) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT dc.*, CONCAT(u.first_name, ' ', u.last_name) AS name
+                                FROM document_comment AS dc
+                                LEFT JOIN users AS u ON u.id = dc.user_id
+                                WHERE dc.document_id = " . $document_id)->results();
+    }
 
 }
