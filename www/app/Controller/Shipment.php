@@ -433,8 +433,9 @@ class Shipment extends Core\Controller {
             if(!in_array($status_arr["all"]["text"],$status_search)){
               $tableData = [];
             }else{
+                $marcoLink = 'href="edient:Command=ShowEditForm&amp;LicenceCode=KFRPERPER&amp;ControllerID=JobShipment&amp;BusinessEntityPK=4b2a753d-35b7-4606-8b58-c5e19d09a3f6&amp;Domain=wisecloud.zone&amp;Instance=KFRPER&amp;Hash=%2bcDgu8d3rRHVfuwhmg0HUnx2CFNfmZCjO"';
                 $subdata =array();
-                $subdata['shipment_id'] = (is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num);
+                $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
                 $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
                 $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
                 $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);

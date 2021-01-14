@@ -344,7 +344,14 @@ $('.removeall').text('Hide All');
     $("#addvance-search-form").find("input[type=text], textarea").val("");
     table.ajax.reload(setColor);
   });
- 
+
+  $(document).on('click','tr td',function(e){
+    var cl = $(e.target).attr("class");
+    var indx = $(this).index();
+    if(cl.indexOf('macro') >=0 && indx == 0){
+      $('tbody').find('tr.child').remove();
+    }
+  });
 });
 
 var setColor = function(){
