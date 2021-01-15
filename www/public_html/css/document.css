@@ -30,10 +30,15 @@
 .fa-comment {
     color: #007bff;
 }
-
 .bg-approved {
     background-color: #28a74650;
 }
 .bg-pending {
     background-color: #dc354650;
+}
+.b-approved {
+    border: 2px solid #28a74650 !important;
+}
+.b-pending {
+    border: 2px solid #dc354650 !important;
 }
