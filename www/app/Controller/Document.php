@@ -529,6 +529,7 @@ class Document extends Core\Controller {
 
         $this->View->render($role . "/document/comment", [
             'view' => $param,
+            'document_id' => $document_id,
             'results' => $results
         ]);
     }
