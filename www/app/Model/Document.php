@@ -134,7 +134,7 @@ class Document extends Core\Model {
         }
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("INSERT INTO document_comment2 (" . $column . ") VALUES ('" . $value . "')")->error();
+        return $Db->query("INSERT INTO document_comment (" . $column . ") VALUES ('" . $value . "')")->error();
         
     }
 
