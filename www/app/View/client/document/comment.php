@@ -8,7 +8,7 @@
             </div>
             <!-- ./card-header -->
             <div class="card-body table-responsive p-0" style="height: 320px;">
-                <table class="table table-bordered table-hover table-head-fixed" style="height: 500px;">
+                <table class="table table-bordered table-hover table-head-fixed">
                     <thead>
                         <tr>
                             <th>#</th>
