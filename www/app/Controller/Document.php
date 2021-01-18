@@ -477,8 +477,6 @@ class Document extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-
-
         $this->View->render($role . "/document/comment", [
             'user_id' => $user_id,
             'document_id' => $document_id,
@@ -531,14 +529,13 @@ class Document extends Core\Controller {
 
         $this->View->render($role . "/document/comment", [
             'view' => $param,
+            'document_id' => $document_id,
             'results' => $results
         ]);
     }
 
-    public function _comment() {
-        // Utility\Redirect::to(APP_URL . $role);
-        $results = $this->Document->putDocumentComment($_POST);
-        echo json_encode($results);
-
+    public function putDocumentComment() {
+        echo json_encode($this->Document->putDocumentComment($_POST));
     }
+
 }

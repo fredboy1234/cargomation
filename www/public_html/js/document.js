@@ -1,6 +1,12 @@
 
 $(document).ready(function() {
 
+    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' + 
+                    '<div class="spinner-border" role="status">' + 
+                    '<span class="sr-only">Loading...</span>' + 
+                    '</div>' + 
+                '</div>'; 
+
     // Bootstrap File Input
     var $el1 = $("#input");
     $('.file-loading').show();
@@ -138,17 +144,23 @@ $(document).ready(function() {
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
         otherActionButtons: '<button type="button" ' +
+                                'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
+                                'title="Request for Edit"{dataUrl}{dataKey} ' +
+                                'data-doc_id="{id}" data-doc_status="{status}">' +
+                                    '<i class="fas fa-edit"></i>' +
+                            '</button>\n' +
+                            '<button type="button" ' +
                                 'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
                                 'title="View Comment"{dataUrl}{dataKey} ' +
                                 'data-doc_id="{id}" data-doc_status="{status}">' +
                                     '<i class="fas fa-comment"></i>' +
                             '</button>\n' +
-                            '<button type="button" ' +
-                                'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
-                                'title="Change Status"{dataUrl}{dataKey} ' +
-                                'data-doc_id="{id}" data-doc_status="{status}">' +
-                                    '<i class="fas {status} fa-thumbs-down"></i>' +
-                            '</button>\n',
+                                '<button type="button" ' +
+                                    'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
+                                    'title="Change Status"{dataUrl}{dataKey} ' +
+                                    'data-doc_id="{id}" data-doc_status="{status}">' +
+                                        '<i class="fas {icon} {status}"></i>' +
+                                '</button>\n',
     }).on('filebatchpreupload', function(event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
         var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
@@ -191,21 +203,17 @@ $(document).ready(function() {
     });
 
     // Button Status
-    $('button.kv-file-status').each(function() {
-        if($(this).children().hasClass('approved')) {
-            $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
-        }
-    }).mouseenter(function() {
-        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
-    }).mouseleave(function(){
-        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down approved pending");
-    });
+    // $('button.kv-file-status').each(function() {
+    //     if($(this).children().hasClass('approved')) {
+    //         $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
+    //     }
+    // });
     $('button.kv-file-status').click(function() {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
         if(doc_status === 'approved')  doc_status = 'pending'; else doc_status = 'approved';
 
-        var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Want to continue?");
+        var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Do you still want to continue?");
 
         if(msg == true) {
             $.ajax({
@@ -222,25 +230,41 @@ $(document).ready(function() {
                         close: false,
                         class:'bg-success'
                     }).on('hidden.bs.toast', function () {
-                        // alert('Please leave a note for the ' + doc_status + ' document');
-                        if (window.confirm("Do you want to leave a comment?")) {
-                            var target = "document/comment/" + doc_id + "/" + doc_status;
-    
-                            // load the url and show modal on success
-                            $("#myModal .modal-body").load(target, function() { 
-                                 $("#myModal").modal("show"); 
-                            });
-                        }
+                        // REMOVE FUNCTION    
                     });
-                    var d = $('d-' + doc_id);
-                    d.toggleClass("bg-approved bg-pending");
-                    d.find('.kv-file-status').data("doc_status", doc_status);
+                    // alert('Please leave a note for the ' + doc_status + ' document');
+                    if (window.confirm("Do you want to leave a comment?")) {
+                        var url = "document/comment/" + doc_id + "/" + doc_status;
+
+                        // load the url and show modal on success
+                        preloader(url);
+                    } else {
+                        // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
+                        $.post( "document/putDocumentComment", { 
+                            title: "", 
+                            message: "", 
+                            status: doc_status, 
+                            user_id: user_id, 
+                            document_id: doc_id
+                        } );
+                    }
+                    var d = $('.d-' + doc_id);
+                    if (d.attr('class').indexOf('bg-') === -1)
+                        {d.addClass("bg-" + doc_status);}
+                    else  
+                        {$('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending');}
+                    d.toggleClass("b-approved b-pending");
+                    $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
                     d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
                     //find('i').toggleClass("fa-thumbs-up fa-thumbs-down");
                     //.children().toggleClass("approved pending").data("doc_status", doc_status);
                 }
             });
         }
+    }).mouseenter(function() {
+        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
+    }).mouseleave(function(){
+        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
     });
 
     // Button Comment
@@ -251,12 +275,10 @@ $(document).ready(function() {
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var target = "document/view/comment/" + doc_id;
+        var url = "document/view/comment/" + doc_id;
 
         // load the url and show modal on success
-        $("#myModal .modal-body").load(target, function() { 
-             $("#myModal").modal("show"); 
-        });
+        preloader(url);
     });
 
 
@@ -272,9 +294,11 @@ $(document).ready(function() {
             beforeSend: function(){
                 form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
             },
-            success: function(data) {
-                if(data == 'true') {
+            success: function(result) {
+                if(result == 'false') {
                     form.empty().html('Submitted Succesful!');
+                } else {
+                    form.empty().html(result);
                 }
             }
         });
@@ -282,14 +306,30 @@ $(document).ready(function() {
     });
 
     $('#go_back').click(function(e) {
-        // load the url and show modal on success
-        $("#myModal .modal-body").load("/shipment/document/" + shipment_id + "/" + document_type, function() { 
-            $("#myModal").modal("show"); 
-        });
+        var url = "/shipment/document/" + shipment_id + "/" + document_type;
+        preloader(url);
     });
 
     // Other functions
     function file_ext(filename) {
         return typeof filename != "undefined" ? filename.substring(filename.lastIndexOf(".")+1, filename.length).toLowerCase() : false;
+    }
+
+    // Show loader
+    function preloader(url) {
+
+        $("#myModal .modal-body").append(loader);
+
+        // load the url and show modal on success
+        $("#myModal .modal-body").load(url, 
+        function(response, status, xhr) { 
+            if(xhr.status == 200){
+                $('#loader-wrapper').remove();
+                $("#myModal").modal("show"); 
+            } else {
+                alert("Error: " + xhr.status + ": " + xhr.statusText);
+                $('#loader-wrapper').remove();
+            }
+        });
     }
 });

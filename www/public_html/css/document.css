@@ -30,10 +30,30 @@
 .fa-comment {
     color: #007bff;
 }
-
 .bg-approved {
     background-color: #28a74650;
 }
 .bg-pending {
     background-color: #dc354650;
+}
+.b-approved {
+    border: 2px solid #28a74650 !important;
+}
+.b-pending {
+    border: 2px solid #dc354650 !important;
+}
+
+#loader-wrapper {
+    background: #00000047;
+    z-index: 1010;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+
+#loader-wrapper .spinner-border {
+    position: absolute;
+    top: 50%;
 }

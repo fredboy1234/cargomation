@@ -1,14 +1,14 @@
 <?= $this->getCSS(); ?>
-<?php if($this->view == 'comment'): ?>
+<?php if(isset($this->view) == 'comment'): ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Comments on Document</h3>
+                <h3 class="card-title">Comments on Document #<?= $this->document_id; ?></h3>
             </div>
             <!-- ./card-header -->
-            <div class="card-body">
-                <table class="table table-bordered table-hover">
+            <div class="card-body table-responsive p-0" style="height: 320px;">
+                <table class="table table-bordered table-hover table-head-fixed">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -26,12 +26,12 @@
                                 <td><?= $comment->name; ?></td>
                                 <td><?= $comment->submitted_date; ?></td>
                                 <td><?= $comment->status; ?></td>
-                                <td><?= $comment->title; ?></td>
+                                <td><?= (empty($comment->message)) ? "<em>No comment</em>" : $comment->title; ?></td>
                             </tr>
                             <tr class="expandable-body d-none">
                                 <td colspan="5">
                                 <p style="display: none;">
-                                <strong>Message: </strong> <?= $comment->message; ?>
+                                <strong>Message: </strong> <?= (empty($comment->message)) ? "<em>No message</em>" : $comment->message; ?>
                                 </p>
                                 </td>
                             </tr>
@@ -45,8 +45,13 @@
                 </table>
             </div>
             <!-- /.card-body -->
+            <div class="card-footer"></div>
+            <!-- /.card-footer -->
         </div>
         <!-- /.card -->
+        <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+            </div>
     </div>
 </div>
 <?php else: ?>
@@ -61,7 +66,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form id="comment" action="<?= $this->makeUrl("document/_comment"); ?>" method="post">
+            <form id="comment" action="<?= $this->makeUrl("document/putDocumentComment"); ?>" method="post">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title" class="form-control">
@@ -95,6 +100,8 @@
             </div>
         </div>
         <!-- /.card-body -->
+        <div class="card-footer"></div>
+        <!-- /.card-footer -->
     </div>
     <!-- /.card -->
 </div>
