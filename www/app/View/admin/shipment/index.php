@@ -145,7 +145,7 @@
                           <?php $settings = json_decode($this->user_settings);?>
                           <?php foreach($settings as $value){?>
                             <?php $selected = ($value->index_check=="true"?"selected='selected'":"");?>
-                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>">
+                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>" lvl="<?=$value->index_lvl?>">
                               <?=$value->index_name?>
                             </option>
                           <?php }?>
