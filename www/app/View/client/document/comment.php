@@ -1,5 +1,5 @@
 <?= $this->getCSS(); ?>
-<?php if(isset($this->view) == 'comment'): ?>
+<?php if(isset($this->view) && $this->view == 'view'): ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -58,7 +58,7 @@
 <div id="document-comment" style="display: block;">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Laeave a Comment</h3>
+            <h3 class="card-title">Leave a Comment</h3>
 
             <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -76,8 +76,22 @@
                     <textarea id="message" name="message" class="form-control" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="status">Status</label>
+                    <label for="status">Template</label>
                     <select name="status" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        <?php $status = array(
+                            'working' => 'Working on it',
+                            'wrong' => 'Wrong document uploaded',
+                            'forreview' => 'For Review'
+                        ); ?>
+                        <?php foreach( $status as $key => $value ): ?>
+                        <option value="<?php echo $key ?>"<?php if( $key == $this->document_status ): ?> selected="selected"<?php endif; ?>><?php echo $value ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control custom-select" disabled>
                         <option selected disabled>Select one</option>
                         <?php $status = array(
                             'approved' => 'Approved',
