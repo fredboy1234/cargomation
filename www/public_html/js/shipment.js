@@ -81,7 +81,9 @@ $(document).ready(function(){
     // destroy: true,
     processing: true,
     language: {
-      processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'},
+      // processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
+      processing: loader
+    },
     serverMethod: 'post',
     ajax: {
       url: document.location.origin + '/shipment/shipmentSSR/',
@@ -190,7 +192,7 @@ $(document).on('mouseenter mouseleave','.stats',function() {
 
 // Append loading and redraw datatable
 $('#myModal').on('hidden.bs.modal', function (e){ 
-  $('#myModal .modal-body').empty().append('Loading...');
+  $('#myModal .modal-body').empty().append(loader);
   table.ajax.reload(setColor);
   
 });

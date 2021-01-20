@@ -250,7 +250,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Loading&hellip;</p>
+        <div id="loader-wrapper" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
