@@ -294,4 +294,50 @@ class User extends Core\Controller {
         return $data;
     }
 
+    public function deleteUserSettings($user_id=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        
+        if($User->deleteUserSettings($_POST['settings_id'])){
+            return json_encode(["success"=>true]);
+        }
+    }
+
+    public function getUserResetId($user_id=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        } 
+
+        echo json_encode($User->getUserSettings($_POST['useridreset']));
+    }
+
 }

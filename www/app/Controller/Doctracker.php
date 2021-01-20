@@ -99,7 +99,8 @@ class Doctracker extends Core\Controller {
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user),
-            "user_settings" =>$this->defaultSettings($user)
+            "user_settings" =>$this->defaultSettings($user),
+            "settings_user" => $User->getUserSettings($user)
         ]);
     }
 
