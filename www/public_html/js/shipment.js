@@ -4,6 +4,12 @@
 //   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 // }
 
+var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' + 
+                '<div class="spinner-border" role="status">' + 
+                  '<span class="sr-only">Loading...</span>' + 
+                '</div>' + 
+              '</div>'; 
+
 var query_string = window.location.search.substring(1);
 var parsed_qs = parse_query_string(query_string);
 
@@ -409,4 +415,28 @@ function byLevel(){
   }
   console.log(level);
   
+}
+
+// Button Request
+$('button#request').click(function(e) {
+  var url = "/document/request";
+  preloader(url);
+});
+
+// Show loader
+function preloader(url) {
+
+  $("#myModal .modal-body").append(loader);
+
+  // load the url and show modal on success
+  $("#myModal .modal-body").load(url, 
+  function(response, status, xhr) { 
+      if(xhr.status == 200){
+          $('#loader-wrapper').remove();
+          $("#myModal").modal("show"); 
+      } else {
+          alert("Error: " + xhr.status + ": " + xhr.statusText);
+          $('#loader-wrapper').remove();
+      }
+  });
 }

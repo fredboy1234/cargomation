@@ -247,7 +247,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a href="<?= $this->makeUrl("document/_request"); ?>" class="btn btn-primary">Request a document</a>
+        <button type="button" class="btn btn-success" id="request">Request a document</button>
       </div>
     </div>
     <!-- /.modal-content -->
