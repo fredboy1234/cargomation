@@ -121,6 +121,32 @@ class User extends Core\Model {
     }
 
     /**
+     * Update User profile: Updates a specified user record in the database.
+     * @access public
+     * @param array $fields
+     * @param integer $userID [optional]
+     * @return void
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function updateUserProfile(array $fields, $userID = null) {
+        $this->update("users", $fields, $userID);
+    }
+
+    /**
+     * Update User Info: Updates a specified user record in the database.
+     * @access public
+     * @param array $fields
+     * @param integer $userID [optional]
+     * @return void
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function updateUserInfo(array $fields, $userID = null) {
+        $this->update("user_info", $fields, $userID);
+    }
+
+    /**
      * Get User Instance: Get instance of a specified user record in the database.
      * @access public
      * @param int $userID
@@ -202,5 +228,12 @@ class User extends Core\Model {
         return $Db->query("SELECT * 
                                 FROM user_settings
                                 WHERE user_id = '{$user}' ")->results();
+    }
+
+    public function deleteUserSettings($id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("DELETE
+                            FROM user_settings
+                            WHERE id = '{$id}' ");
     }
 }

@@ -236,6 +236,7 @@ var map = $('select[name="settings-dual"]').on("change",function(e){
     success:function(res){
       // for checking only
       // console.log(res);
+      hideShowResetSettings();
     }
   });
   
@@ -256,6 +257,7 @@ var map = $('select[name="settings-dual"]').on("change",function(e){
       column.visible( ! column.visible() );
     }
     console.log( "last -- "+last );
+    byLevel();
   },100);
   
 
@@ -294,10 +296,11 @@ function getSettings(map){
     Sdata = temp;
   }
   check_arr = Sdata;
-  byLevel();
+  
   //console.log(Sdata);
   return Sdata;
 }
+byLevel();
 var hide = getSettings();
 $.each(hide,function($key,$val){
   if($val.index_check == false){
@@ -341,6 +344,7 @@ $('.removeall').text('Hide All');
           success:function(res){
             // for checking only
             // console.log(res);
+            hideShowResetSettings();
           }
         });
       },100);
@@ -361,6 +365,23 @@ $('.removeall').text('Hide All');
     //   $('tbody').find('tr.child').remove();
     // }
   });
+
+  //reset settings
+  $(document).on('click','#reset-settings',function(){
+    var id = $(this).attr('data-setting-id');
+    $.ajax({
+      url: document.location.origin + '/user/deleteUserSettings/',
+      type: "POST",
+      dataType:"json",
+      data:{"settings_id":id},
+      success:function(res){
+        // for checking only
+        console.log(res);
+      }
+    });
+    window.location.reload();
+  });
+  
 });
 
 var setColor = function(){
@@ -429,14 +450,30 @@ function preloader(url) {
   $("#myModal .modal-body").append(loader);
 
   // load the url and show modal on success
-  $("#myModal .modal-body").load(url, 
-  function(response, status, xhr) { 
-      if(xhr.status == 200){
-          $('#loader-wrapper').remove();
-          $("#myModal").modal("show"); 
-      } else {
-          alert("Error: " + xhr.status + ": " + xhr.statusText);
-          $('#loader-wrapper').remove();
+  $("#myModal .modal-body").load(url, function(response, status, xhr) { 
+    if(xhr.status == 200){
+      $('#loader-wrapper').remove();
+      $("#myModal").modal("show"); 
+    } else {
+      alert("Error: " + xhr.status + ": " + xhr.statusText);
+      $('#loader-wrapper').remove();
+    }
+  });
+}
+
+function hideShowResetSettings(){
+  var id = userReset.user_info[0].user_id;
+  $.ajax({
+    url: document.location.origin + '/user/getUserResetId/',
+    type: "POST",
+    dataType:"json",
+    data:{"useridreset":id},
+    success:function(res){
+      // for checking only
+      if(res){
+        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Reset Settings</button>`
+        $(".parent-settings").html(html);
       }
+    }
   });
 }

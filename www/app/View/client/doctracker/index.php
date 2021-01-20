@@ -163,11 +163,18 @@
                                         <?php $settings = json_decode($this->user_settings);?>
                                         <?php foreach($settings as $value){?>
                                             <?php $selected = ($value->index_check=="true"?"selected='selected'":"");?>
-                                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>" lvl="<?=$value->index_lvl?>">
+                                            <?php $level = (isset($value->index_lvl)?$value->index_lvl:"shipment")?>
+                                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>" lvl="<?=$level?>">
                                             <?=$value->index_name?>
                                             </option>
                                         <?php }?>
                                         </select>
+                                        <div class="col-md-2 float-right parent-settings">
+                                            <?php if(isset($this->settings_user[0])){?>
+                                                    <?php $settings_id = $this->settings_user[0]->id;?>
+                                                    <button id="reset-settings" type="button" data-setting-id="<?=$settings_id?>" class="btn btn-block btn-danger">Reset Settings</button>
+                                            <?php } ?>
+                                        </div>
                                     </div>
                                     <!-- /.tab-pane -->
                                     </div>
@@ -257,4 +264,5 @@
 <!-- /.modal -->
 <script>
   var userData = <?php echo json_encode($settings);?>;
+  var userReset = <?php echo json_encode($this->user);?>; 
 </script>
