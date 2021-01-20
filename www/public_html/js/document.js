@@ -234,13 +234,13 @@ $(document).ready(function() {
                     });
                     // alert('Please leave a note for the ' + doc_status + ' document');
                     if (window.confirm("Do you want to leave a comment?")) {
-                        var url = "document/comment/" + doc_id + "/" + doc_status;
+                        var url = "/document/comment/" + doc_id + "/" + doc_status;
 
                         // load the url and show modal on success
                         preloader(url);
                     } else {
                         // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
-                        $.post( "document/putDocumentComment", { 
+                        $.post( "/document/putDocumentComment", { 
                             title: "", 
                             message: "", 
                             status: doc_status, 
@@ -281,9 +281,24 @@ $(document).ready(function() {
         preloader(url);
     });
 
-    $('#comment_submit').click(function(e) {
+    // Button Edit
+    $('button.kv-file-edit').click(function(ev) {
+        var doc_status = $(this).data("doc_status");
+        var doc_id = $(this).data("doc_id");
+        //$('#document-upload, #document-comment').toggle();
+        ev.preventDefault();
+        // var target = $(this).attr("href");
+        // var target = "document/comment/" + doc_id + "/" + doc_status;
+        var url = "document/request/" + doc_id + "/edit" ;
 
-        var form = $('#comment');
+        // load the url and show modal on success
+        preloader(url);
+    });
+
+    // Submit Form
+    $('button#submit').click(function(e) {
+
+        var form = $('form');
         var url = form.attr('action');
 
         $.ajax({
@@ -304,7 +319,8 @@ $(document).ready(function() {
 
     });
 
-    $('#go_back').click(function(e) {
+    // Back Button
+    $('button#go_back').click(function(e) {
         var url = "/shipment/document/" + shipment_id + "/" + document_type;
         preloader(url);
     });
