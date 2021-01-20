@@ -275,12 +275,11 @@ $(document).ready(function() {
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/view/comment/" + doc_id;
+        var url = "document/comment/" + doc_id + "/view" ;
 
         // load the url and show modal on success
         preloader(url);
     });
-
 
     $('#comment_submit').click(function(e) {
 

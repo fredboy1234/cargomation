@@ -444,7 +444,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function comment($document_id, $document_status, $user_id = ""){ 
+    public function comment($document_id, $param = "", $user_id = ""){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -474,53 +474,16 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        $this->View->addJS("js/document.js");
-        $this->View->addCSS("css/document.css");
-
-        $this->View->render($role . "/document/comment", [
-            'user_id' => $user_id,
-            'document_id' => $document_id,
-            'document_status' => $document_status
-        ]);
-    }
- 
-    public function view($param, $document_id, $user_id = ""){ 
-
-        // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
-
-        // If no user ID has been passed, and a user session exists, display
-        // the authenticated users profile.
-        if (!$user_id) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user_id = Utility\Session::get($userSession);
-            }
-        }
-
-        // Get an instance of the user model using the user ID passed to the
-        // controll action. 
-        if (!$User = Model\User::getInstance($user_id)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        if (!$Role = Model\Role::getInstance($user_id)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        $role = $Role->getUserRole($user_id)->role_name;
-
-        if(empty($role)) {
-            Utility\Redirect::to(APP_URL . $role);
-        }
-
+        // Comment view
         switch ($param) {
-            case 'comment':
+            case 'view':
                 $results = $this->Document->getDocumentComment($document_id);
+                $document_status = "";
                 break;
             
             default:
-                # code...
+                $results = "";
+                $document_status = $param;
                 break;
         }
 
@@ -529,7 +492,9 @@ class Document extends Core\Controller {
 
         $this->View->render($role . "/document/comment", [
             'view' => $param,
+            'user_id' => $user_id,
             'document_id' => $document_id,
+            'document_status' => $document_status,
             'results' => $results
         ]);
     }
