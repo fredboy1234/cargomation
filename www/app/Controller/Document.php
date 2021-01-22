@@ -438,7 +438,7 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        $this->View->render($role . "/document/fileviewer", [
+        $this->View->renderWithoutHeaderAndFooter($role . "/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
