@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form id="comment" action="<?= $this->makeUrl("document/putDocumentComment"); ?>" method="post">
+            <form id="form-modal" action="<?= $this->makeUrl("document/putDocumentComment"); ?>" method="post">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title" class="form-control">
@@ -107,11 +107,11 @@
                     <input type="hidden" id="user_id" name="user_id" class="form-control" value="<?= $this->user_id; ?>">
                     <input type="hidden" id="document_id" name="document_id" class="form-control" value="<?= $this->document_id; ?>">
                 </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+                    <button type="button" class="btn btn-primary" id="comment_submit">Save changes</button>
+                </div>
             </form>
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-default" id="go_back">Go Back</button>
-                <button type="button" class="btn btn-primary" id="comment_submit">Save changes</button>
-            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer"></div>

@@ -441,7 +441,7 @@ function byLevel(){
 
 // Button Request
 $('button#request').click(function(e) {
-  var url = "/document/request";
+  var url = "/document/request/" + document_type;
   preloader(url);
 });
 

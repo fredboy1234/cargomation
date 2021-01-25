@@ -499,7 +499,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function request($document_id = "", $param = "", $user_id = ""){ 
+    public function request($document = "", $param = "", $user_id = ""){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -529,27 +529,35 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        // Comment view
-        switch ($param) {
-            case 'edit':
-                $results = $this->Document->getDocumentByDocID($document_id);
-                $document_status = "";
-                break;
+        // Comment view (check if edit or request)
+        // switch ($param) {
+        //     case 'edit':
+        //         $document_id = $document;
+        //         
+        //         $document_status = "";
+        //         break;
             
-            default:
-                $results = "";
-                $document_status = $param;
-                break;
+        //     default:
+        //         $results = "";
+        //         $document_status = $param;
+        //         break;
+        // }
+
+        // Comment view (check if edit or request)
+        // New implimentation, check if document (id or type)
+        if(is_numeric($document)) {
+            $results = $this->Document->getDocumentByDocID($document);
+        } else {
+            $results = "";
         }
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render($role . "/document/request", [
+        $this->View->renderWithoutHeaderAndFooter($role . "/document/request", [
             'view' => $param,
             'user_id' => $user_id,
-            'document_id' => $document_id,
-            'document_status' => $document_status,
+            'document' => $document,
             'results' => $results
         ]);
     }

@@ -289,7 +289,7 @@ $(document).ready(function() {
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/request/" + doc_id + "/edit" ;
+        var url = "document/request/" + doc_id ;
 
         // load the url and show modal on success
         preloader(url);
@@ -298,7 +298,7 @@ $(document).ready(function() {
     // Submit Form
     $('button#submit').click(function(e) {
 
-        var form = $('form');
+        var form = $('form#form-modal');
         var url = form.attr('action');
 
         $.ajax({
