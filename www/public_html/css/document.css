@@ -57,3 +57,7 @@
     position: absolute;
     top: 50%;
 }
+
+.error {
+    color: red;
+}

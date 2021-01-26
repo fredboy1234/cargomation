@@ -295,27 +295,60 @@ $(document).ready(function() {
         preloader(url);
     });
 
+    $('form#form-modal').validate();
+
     // Submit Form
     $('button#submit').click(function(e) {
+        console.log('test2');
 
         var form = $('form#form-modal');
         var url = form.attr('action');
 
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            beforeSend: function(){
-                form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
-            },
-            success: function(result) {
-                if(result == 'false') {
-                    form.empty().html('Submitted Succesful!');
-                } else {
-                    form.empty().html(result);
+        if(form.valid()) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                beforeSend: function(){
+                    form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
+                },
+                success: function(result) {
+                    if(result == 'false') {
+                        form.empty().html('Submitted Succesful!');
+                    } else {
+                        form.empty().html(result);
+                    }
                 }
-            }
-        });
+            });
+        }
+        
+        // form.validate({
+        //     success: "valid",
+        //     showErrors: function(errorMap, errorList) {
+        //         $("#summary").html("Your form contains "
+        //           + this.numberOfInvalids()
+        //           + " errors, see details below.");
+        //         this.defaultShowErrors();
+        //       },
+        //     submitHandler: function() { 
+        //         $.ajax({
+        //             type: "POST",
+        //             url: url,
+        //             data: form.serialize(),
+        //             beforeSend: function(){
+        //                 form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
+        //             },
+        //             success: function(result) {
+        //                 if(result == 'false') {
+        //                     form.empty().html('Submitted Succesful!');
+        //                 } else {
+        //                     form.empty().html(result);
+        //                 }
+        //             }
+        //         });
+        //     }
+
+        // });
 
     });
 

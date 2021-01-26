@@ -69,11 +69,11 @@
             <form id="form-modal" action="<?= $this->makeUrl("document/putDocumentComment"); ?>" method="post">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control">
+                    <input type="text" id="title" name="title" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="4"></textarea>
+                    <textarea id="message" name="message" class="form-control" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="status">Template</label>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-default" id="go_back">Go Back</button>
-                    <button type="button" class="btn btn-primary" id="comment_submit">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="submit">Comment</button>
                 </div>
             </form>
         </div>
