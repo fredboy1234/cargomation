@@ -25,6 +25,9 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="/bower_components/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jquery-validation -->
+<script src="/bower_components/admin-lte/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/bower_components/admin-lte/plugins/jquery-validation/additional-methods.min.js"></script>
 <!-- ChartJS -->
 <script src="/bower_components/admin-lte/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
