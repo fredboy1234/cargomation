@@ -241,7 +241,7 @@
 </div>
 
 <div class="modal fade" id="myModal">
-  <div class="modal-dialog modal-lg" style="width:100%; max-width:825px">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:830px">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Document</h4>
