@@ -441,7 +441,7 @@ function byLevel(){
 
 // Button Request
 $('button#request').click(function(e) {
-  var url = "/document/request/" + document_type;
+  var url = "/document/request/" + shipment_id + "/" + document_type;
   preloader(url);
 });
 

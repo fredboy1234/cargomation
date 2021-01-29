@@ -146,4 +146,20 @@ class Document extends Core\Model {
                                 WHERE dc.document_id = " . $document_id)->results();
     }
 
+    public static function putDocumentRequest($data) {
+
+        $data['submitted_date'] = date("Y-m-d H:i:s");
+        $data['expired_date'] = date("Y-m-d H:i:s", strtotime('+24 hours'));
+
+        // Sanitize array and implode
+        if(is_array($data)) {
+            $value = implode("','", array_values($data));
+            $column = implode(", ", array_keys($data));
+        }
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("INSERT INTO document_request (" . $column . ") VALUES ('" . $value . "')")->error();
+        
+    }
+
 }

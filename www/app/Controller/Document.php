@@ -499,7 +499,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function request($document = "", $param = "", $user_id = ""){ 
+    public function request($shipment_id, $document = "", $user_id = ""){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -555,15 +555,35 @@ class Document extends Core\Controller {
         $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter($role . "/document/request", [
-            'view' => $param,
             'user_id' => $user_id,
             'document' => $document,
+            'shipment_id' => $shipment_id,
             'results' => $results
         ]);
     }
 
     public function putDocumentComment() {
         echo json_encode($this->Document->putDocumentComment($_POST));
+    }
+
+    public function putDocumentRequest() {
+
+        $_POST['token'] = $this->generateToken();
+        echo json_encode($this->Document->putDocumentRequest($_POST));
+    }
+
+    private function generateToken($limit = 16) {
+        //Generate a random string.
+        $token = openssl_random_pseudo_bytes($limit);
+
+        //Convert the binary data into hexadecimal representation.
+        $token = bin2hex($token);
+
+        return $token;
+    }
+
+    private function sendMail($from = "", $subject = "", $message = "", $to = "") {
+
     }
 
 }
