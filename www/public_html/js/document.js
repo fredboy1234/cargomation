@@ -299,8 +299,6 @@ $(document).ready(function() {
 
     // Submit Form
     $('button#submit').click(function(e) {
-        console.log('test2');
-
         var form = $('form#form-modal');
         var url = form.attr('action');
 
@@ -313,8 +311,8 @@ $(document).ready(function() {
                     form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
                 },
                 success: function(result) {
-                    if(result == 'false') {
-                        form.empty().html('Submitted Succesful!');
+                    if(result == 'true') {
+                        form.empty().html('Submitted Succesfully!');
                     } else {
                         form.empty().html(result);
                     }
@@ -379,5 +377,7 @@ $(document).ready(function() {
                 $('#loader-wrapper').remove();
             }
         });
+
+        $('button#request').toggle();
     }
 });

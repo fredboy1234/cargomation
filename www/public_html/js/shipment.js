@@ -460,6 +460,8 @@ function preloader(url) {
       $('#loader-wrapper').remove();
     }
   });
+
+  $('button#request').toggle();
 }
 
 function hideShowResetSettings(){
