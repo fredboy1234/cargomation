@@ -339,5 +339,5 @@ class User extends Core\Controller {
 
         echo json_encode($User->getUserSettings($_POST['useridreset']));
     }
-
+    
 }

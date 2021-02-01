@@ -69,7 +69,7 @@ $(document).ready(function(){
     responsive: true,
     autoWidth: false,
     lengthChange: false,
-    colReorder: true,
+    colReorder:true,
     // bSort: true,
     // ordering: true,
     // bFilter: true,
@@ -101,6 +101,11 @@ $(document).ready(function(){
             },
     },
     columns: tableColumnData,
+    fnCreatedRow: function( nRow, aData, iDataIndex ) {
+      $('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
+      $(nRow).attr("ship-assign-id",aData['real_id_shipment']);
+      $('.assign').attr('data-shipid',aData['real_id_shipment']);
+    },
     columnDefs: [
       { className: "stats", targets: [4,5,6,7,8] } 
     ],
@@ -317,7 +322,7 @@ $('.removeall').text('Hide All');
 
   //re order column
   table.on('column-reorder',function(e, settings, details){
-      
+    $('table tbody tr td:first-child').append(`${$(".parent-assign").html()}`);
       $("select[name='settings-dual'] option").each(function(){
         if($(this).val() == details.from){
           $(this).val(details.to);
@@ -382,6 +387,11 @@ $('.removeall').text('Hide All');
       }
     });
     window.location.reload();
+  });
+
+  $(document).on("click",".assign-button",function(){
+    var id = $(this).parent().parent().attr("ship-assign-id");
+    $('.assign').attr('data-shipid',id);
   });
   
 });
