@@ -438,7 +438,7 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        $this->View->render($role . "/document/fileviewer", [
+        $this->View->renderWithoutHeaderAndFooter($role . "/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
@@ -499,7 +499,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function request($document_id = "", $param = "", $user_id = ""){ 
+    public function request($shipment_id, $document = "", $user_id = ""){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -529,33 +529,61 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        // Comment view
-        switch ($param) {
-            case 'edit':
-                $results = $this->Document->getDocumentByDocID($document_id);
-                $document_status = "";
-                break;
+        // Comment view (check if edit or request)
+        // switch ($param) {
+        //     case 'edit':
+        //         $document_id = $document;
+        //         
+        //         $document_status = "";
+        //         break;
             
-            default:
-                $results = "";
-                $document_status = $param;
-                break;
+        //     default:
+        //         $results = "";
+        //         $document_status = $param;
+        //         break;
+        // }
+
+        // Comment view (check if edit or request)
+        // New implimentation, check if document (id or type)
+        if(is_numeric($document)) {
+            $results = $this->Document->getDocumentByDocID($document);
+        } else {
+            $results = "";
         }
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render($role . "/document/request", [
-            'view' => $param,
+        $this->View->renderWithoutHeaderAndFooter($role . "/document/request", [
             'user_id' => $user_id,
-            'document_id' => $document_id,
-            'document_status' => $document_status,
+            'document' => $document,
+            'shipment_id' => $shipment_id,
             'results' => $results
         ]);
     }
 
     public function putDocumentComment() {
         echo json_encode($this->Document->putDocumentComment($_POST));
+    }
+
+    public function putDocumentRequest() {
+
+        $_POST['token'] = $this->generateToken();
+        echo json_encode($this->Document->putDocumentRequest($_POST));
+    }
+
+    private function generateToken($limit = 16) {
+        //Generate a random string.
+        $token = openssl_random_pseudo_bytes($limit);
+
+        //Convert the binary data into hexadecimal representation.
+        $token = bin2hex($token);
+
+        return $token;
+    }
+
+    private function sendMail($from = "", $subject = "", $message = "", $to = "") {
+
     }
 
 }
