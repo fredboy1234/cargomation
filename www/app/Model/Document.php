@@ -147,6 +147,7 @@ class Document extends Core\Model {
     }
 
     public static function putDocumentRequest($data) {
+        $mail = new SendMail();
 
         $data['submitted_date'] = date("Y-m-d H:i:s");
         $data['expired_date'] = date("Y-m-d H:i:s", strtotime('+24 hours'));
@@ -158,8 +159,11 @@ class Document extends Core\Model {
         }
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("INSERT INTO document_request (" . $column . ") VALUES ('" . $value . "')")->error();
-        
+        $results = $Db->query("INSERT INTO document_request (" . $column . ") VALUES ('" . $value . "')")->error();
+
+        if(!$results) {
+            return $mail->sendRequestMail($data);
+        }
     }
 
 }
