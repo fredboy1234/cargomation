@@ -29,7 +29,7 @@ function isActive($url) {
       <?php if (isset($this->data)): ?>
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/bower_components/admin-lte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>

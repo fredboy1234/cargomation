@@ -1,3 +1,12 @@
+<style>
+.overlay{
+    bottom: 25px;
+    position: relative;
+}
+.profile-icon{
+    font-size: 1.3em;
+}
+</style>
     <?php if (isset($this->data)): ?>
     <!-- Main content -->
     <section class="content">
@@ -8,10 +17,15 @@
             <!-- Profile Image -->
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
-                    <div class="text-center">
+                    <div class="text-center profile-container">
                         <img class="profile-user-img img-fluid img-circle"
-                            src="/bower_components/admin-lte/dist/img/user2-160x160.jpg"
+                            src="<?=$this->image_profile?>"
                             alt="User profile picture">
+                            <div class="overlay">
+                                <a href="#" class="profile-icon" title="Edit User Profile">
+                                    <i class="fas fa-camera"></i>
+                                </a>
+                            </div>
                     </div>
 
                     <h3 class="profile-username text-center"><?= $this->escapeHTML($this->data->name); ?></h3>
@@ -81,18 +95,19 @@
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Roles</strong>
 
                 <p class="text-muted">
-                    <span class="badge badge-danger">Sending Agent</span>
+                    <!-- <span class="badge badge-danger">Sending Agent</span>
                     <span class="badge badge-success">Staff</span>
                     <span class="badge badge-info">Admin</span>
                     <span class="badge badge-warning">Client</span>
-                    <span class="badge badge-primary">Importer</span>
+                    <span class="badge badge-primary">Importer</span> -->
+                    <span class="badge badge-warning"><?=$this->role->role_name?></span>
                 </p>
 
-                <hr>
+                <!-- <hr>
 
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p> -->
               </div>
               <!-- /.card-body -->
             </div>
@@ -107,14 +122,14 @@
             <div class="card">
                 <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                    <li class="nav-item d-none"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
+                    <li class="nav-item d-none"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a></li>
                 </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
                 <div class="tab-content">
-                    <div class="active tab-pane" id="activity">
+                    <div class="tab-pane" id="activity">
                     <!-- Post -->
                     <div class="post">
                         <div class="user-block">
@@ -323,8 +338,8 @@
                     </div>
                     </div>
                     <!-- /.tab-pane -->
-
-                    <div class="tab-pane" id="settings">
+                       
+                    <div class="active tab-pane" id="settings">
                     <form class="form-horizontal">
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">Name</label>
@@ -387,12 +402,82 @@
                         <?php endif; ?>
                         <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Edit</button>
-                            <button type="submit" class="btn btn-danger">Delete Account</button>
+                            <!-- <button class="btn btn-primary">Edit</button> -->
+                            <a class="nav-link btn btn-primary" href="#edit-settings" data-toggle="tab">Edit</a>
+                            <!-- <button type="submit" class="btn btn-danger">Delete Account</button> -->
                         </div>
                         </div>
                     </form>
                     </div>
+                    <!--Edit Settings-->     
+                    <div class="tab-pane" id="edit-settings">
+                        <form class="form-horizontal" _lpchecked="1" method="post" action="<?= $this->makeUrl("profile/updateProfile"); ?>">
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">First Name</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="firstname" class="form-control" id="inputName" placeholder="First Name" value="<?=$this->user_info->first_name?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="lastname" class="form-control" id="inputName" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Address</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="address" class="form-control" id="inputName" placeholder="Address" value="<?=$this->user_info->address?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">City</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="city" class="form-control" id="inputName" placeholder="City" value="<?=$this->user_info->city?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Zipcode</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="zipcode" class="form-control" id="inputName" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Contact No.</label>
+
+                                <div class="col-sm-10">
+                                <input type="text" name="contact" class="form-control" id="inputName" placeholder="Contact" value="<?=$this->user_info->phone?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+
+                                <div class="col-sm-10">
+                                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?=$this->user_info->email?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                                    </label>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--end of Edit Settings--> 
                     <!-- /.tab-pane -->
                 </div>
                 <!-- /.tab-content -->
@@ -408,3 +493,26 @@
     <!-- /.content -->
     <?php endif; ?>
 </div>
+
+<div class="modal fade" id="profileModal">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:825px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload Profile</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <!-- <button type="file" class="btn btn-block btn-primary btn-sm"><i class="fas fa-cloud-upload-alt"></i> Upload Photo</button> -->
+      </div>
+      <!-- <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

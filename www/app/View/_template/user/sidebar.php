@@ -1,3 +1,19 @@
+<?php
+
+$menuItems = [
+  ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
+  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">New</span>'],
+  ['label' => 'Transport', 'url' => ['#'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
+];
+
+function isActive($url) {
+  if($url == '/' && $_GET['url'] == 'dashboard')
+    echo 'active';
+  if('/'.$_GET['url'] == $url)
+    echo 'active';
+}
+?>
+
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -16,57 +32,52 @@
           <img src="/bower_components/admin-lte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
+          <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
       <?php endif; ?>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-fw fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-search-results">
+          <div class="list-group">
+            <a href="#" class="list-group-item">
+              <div class="search-title">
+                <b class="text-light"></b>N<b class="text-light"></b>o<b class="text-light"></b> <b class="text-light"></b>e<b class="text-light"></b>l<b class="text-light"></b>e<b class="text-light"></b>m<b class="text-light"></b>e<b class="text-light"></b>n<b class="text-light"></b>t<b class="text-light"></b> <b class="text-light"></b>f<b class="text-light"></b>o<b class="text-light"></b>u<b class="text-light"></b>n<b class="text-light"></b>d<b class="text-light"></b>!<b class="text-light"></b>
+              </div>
+              <div class="search-path"></div>
+            </a>
+          </div>
+        </div>
+      </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <?php foreach ($menuItems as $key => $menu): ?>
           <li class="nav-item">
-          <?php
-              $menu_1 = '<i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard
-                        </p>';
-            ?>
-            <?php echo $this->anchor('./', $menu_1, array('class' => 'nav-link active')); ?>
-          </li>
-          <li class="nav-item">
-            <a href="/shipment" class="nav-link">
-              <i class="nav-icon fas fa-file-import"></i>
-              <p>
-                Doc Tracker
-                <span class="right badge badge-danger">New</span>
-              </p>
+            <a href="<?= $menu['url'][0]; ?>" class="nav-link <?= isActive($menu['url'][0]); ?>">
+              <i class="nav-icon <?= $menu['icon']; ?>"></i>
+              <p> <?= $menu['label']; ?> <?= $menu['badge']; ?></p>
             </a>
           </li>
+          <?php endforeach; ?>
           <?php if(false): ?>
-          <li class="nav-item">
-            <a href="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Profile
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          
           <li class="nav-item">
             <a href="/shipment" class="nav-link">
               <i class="nav-icon fas fa-ship"></i>
               <p>
-                Shipment
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/transport" class="nav-link">
-              <i class="nav-icon fas fa-truck"></i>
-              <p>
-                Transport
+                Doc Tracker
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
@@ -78,6 +89,12 @@
                 User Logs
                 <span class="right badge badge-danger">New</span>
               </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/profile" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>Profile</p>
             </a>
           </li>
           <li class="nav-item">

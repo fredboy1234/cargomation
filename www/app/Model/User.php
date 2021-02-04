@@ -192,10 +192,15 @@ class User extends Core\Model {
                                 LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
                                 WHERE users.id = '{$user}'")->results();
 
+        $user_image = $Db->query("SELECT *
+                                    FROM user_images where user_id = '{$user}'
+                                ")->results();
+
         return [
             "user_info" => $user_info,
             "user_addr" => $user_addr,
-            "account_info" => $account_info
+            "account_info" => $account_info,
+            "user_image" => $user_image
         ];
     }
 
@@ -235,5 +240,27 @@ class User extends Core\Model {
         return $Db->query("DELETE
                             FROM user_settings
                             WHERE id = '{$id}' ");
+    }
+
+    /**
+     * Insert User Images: Insert User Images etc..
+     * @access public
+     * @param array $fields
+     * @return null
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function inserUserImages(array $fields) {
+        $img_src = base64_encode($fields['image_src']);
+        //$img_src = $fields['image_src'];
+        $Db = Utility\Database::getInstance();
+        $Db->query("UPDATE user_images
+                set image_type = '' WHERE user_id = '{$fields['user_id']}'
+        ");
+        return $Db->query("INSERT
+                            INTO user_images 
+                        (user_id,image_type,uploaded,image_src) 
+                        values('{$fields['user_id']}','{$fields['image_type']}',GETDATE(),'{$img_src}')
+        ");
     }
 }

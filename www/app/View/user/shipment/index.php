@@ -119,8 +119,11 @@
                                                 </div>
                                             </div>
                                                 <input type="hidden" name="post_trigger" value="">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 d-inline-block">
                                                 <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                                            </div>
+                                            <div class="col-sm-2 d-inline-block">
+                                                <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
                                             </div>
                                             <!-- /.form-group -->
                                             </div>
@@ -145,7 +148,7 @@
                                         <?php $settings = json_decode($this->user_settings);?>
                                         <?php foreach($settings as $value){?>
                                             <?php $selected = ($value->index_check=="true"?"selected='selected'":"");?>
-                                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>" lvl="<?=$value->index_lvl?>">
+                                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>">
                                             <?=$value->index_name?>
                                             </option>
                                         <?php }?>
@@ -193,24 +196,13 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0" style="height: 500px;">
+                  <?php usort($settings, function($a, $b) {return $a->index_value - $b->index_value;});?>                     
                   <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
                       <tr>
-                        <th>Shipment ID</th>
-                        <th>Console ID</th>
-                        <th>ETA</th>
-                        <th>ETD</th>
-                        <th>HBL</th>
-                        <th>CIV</th>
-                        <th>PKL</th>
-                        <th>PKD</th>
-                        <th>All</th>
-                        <th>Comment</th>
-                        <th>Vessel Name</th>
-                        <th>Place Of Delivery</th>
-                        <th>Consignee</th>
-                        <th>Consignor</th>
-                        <th>Container Number</th>
+                      <?php foreach($settings as $key=>$value){ ?>
+                        <th><?=$value->index_name?></th>
+                      <?php }?>
                       </tr>
                     </thead>
                   </table>
@@ -248,3 +240,8 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<script>
+  var userData = <?php echo json_encode($settings);?>;
+  var userrole = <?php echo json_encode($this->role)?>;
+</script>

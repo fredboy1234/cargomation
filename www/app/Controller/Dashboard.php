@@ -43,11 +43,19 @@ class Dashboard extends Core\Controller {
         $this->View->addJS("js/dashboard.js");
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
+        $imageList = (Object) Model\User::getProfile($userID);
+        $profileImage = '/img/default-profile.png';
+        foreach($imageList->user_image as $img){
+            if( $img->image_src!="" && $img->image_type=='profile' ){
+                $profileImage = base64_decode($img->image_src);
+            }
+        }
         $this->View->renderTemplate($role, $role . "/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
-            "users" => Model\User::getUsersInstance($userID)
+            "users" => Model\User::getUsersInstance($userID),
+            "image_profile" => $profileImage
         ]);
     }
 

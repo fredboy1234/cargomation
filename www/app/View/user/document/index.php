@@ -13,7 +13,21 @@ if(!empty($this->document)) {
             $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
         }
 
-        $server_file = "http://a2bfreighthub.com/document/fileviewer/" . $this->id . "/"  . $file->document_id;
+        $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
+
+
+        if($file->status == 'approved') {
+            $approved++;
+            $status_icon = "fa-thumbs-up";
+        }
+        if($file->status == 'pending') {
+            $pending++;
+            $status_icon = "fa-thumbs-down";
+        }
+        if($file->status == 'review') {
+            $freview++;
+            $status_icon = "fa-search";
+        }
 
         $initialPreview[] = $server_file;
         $initialPreviewConfig[] = [ 'caption' => $file->name,
@@ -21,22 +35,18 @@ if(!empty($this->document)) {
                                     'type' => 'pdf',
                                     'size' => " ",
                                     'previewAsData' => true,
-                                    'frameClass' => 'bg-' . $file->status,
+                                    'frameClass' => 'd-' . $file->document_id . ' b-' . $file->status,
                                     'key' => $file->document_id,
                                     'dataKey' => $file->document_id,
                                     'dataUrl' => $file->document_id,
                                     'extra' => ['status' => $file->status]];
         $initialPreviewThumbTags[] = ['{status}' => $file->status, 
+                                        '{icon}' => $status_icon,
                                           '{id}' => $file->document_id, 
                                         '{date}' => $file->saved_date,
                                       '{origin}' => $file->upload_src];
 
-        if($file->status == 'approved')
-            $approved++;
-        if($file->status == 'pending')
-            $pending++;
-        if($file->status == 'review')
-            $freview++;
+
     }
 
 } ?>
@@ -112,5 +122,8 @@ if(!empty($this->document)) {
     var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
     var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
     var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $this->shipment['type']; ?>";
+    var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
+    var document_type = "<?= $this->shipment['type']; ?>";
+    var user_id = <?= $_SESSION['user']; ?>;
 </script>
 <?= $this->getJS(); ?>

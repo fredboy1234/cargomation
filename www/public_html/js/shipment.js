@@ -3,7 +3,6 @@
 // if (!window.location.origin) {
 //   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 // }
-
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' + 
                 '<div class="spinner-border" role="status">' + 
                   '<span class="sr-only">Loading...</span>' + 

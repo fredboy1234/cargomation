@@ -91,6 +91,14 @@ class Doctracker extends Core\Controller {
         $this->View->addCSS("css/shipment.css");
         $this->View->addJS("js/shipment.js");
 
+        $imageList = (Object) Model\User::getProfile($user);
+        $profileImage = '/img/default-profile.png';
+        foreach($imageList->user_image as $img){
+            if( $img->image_src!="" && $img->image_type=='profile' ){
+                $profileImage = base64_decode($img->image_src);
+            }
+        }
+
         $this->View->renderTemplate($role, $role . "/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -100,7 +108,10 @@ class Doctracker extends Core\Controller {
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user),
             "user_settings" =>$this->defaultSettings($user),
-            "settings_user" => $User->getUserSettings($user)
+            "settings_user" => $User->getUserSettings($user),
+            "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
+            "image_profile" => $profileImage,
+            'role' => $role
         ]);
     }
 
@@ -307,6 +318,12 @@ class Doctracker extends Core\Controller {
                  $user = Utility\Session::get($userSession);
              }
          }
+        
+        if (!$Role = Model\Role::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $role = $Role->getUserRole($user)->role_name;
+
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
         $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
         $searchStore = array();
@@ -329,7 +346,10 @@ class Doctracker extends Core\Controller {
         }
 
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
-
+        if($role == 'user'){
+            $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
+            $api = $this->Shipment->getClientUserShipment($user);
+        }
         foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
@@ -456,6 +476,7 @@ class Doctracker extends Core\Controller {
                 
                 $data[] = $subdata;
             }
+            
         }
        
         $json_data=array(

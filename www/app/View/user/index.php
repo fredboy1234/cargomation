@@ -443,7 +443,7 @@
           <!-- Right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-8 connectedSortable">
 
-            <?php if(false): ?>
+            <?php if(true): ?>
             <!-- TABLE: Client List -->
             <div class="card">
               <div class="card-header">

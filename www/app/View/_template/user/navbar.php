@@ -51,9 +51,9 @@
       </li>
       <!-- Account Dropdown Menu -->
       <?php if (isset($this->data)): ?>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" style="border: 1px solid #cccc; border-radius: 20px;">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-user-circle"></i>
+          <i class="far fa-user-circle"></i> Account
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="/profile" class="dropdown-item">
@@ -63,9 +63,9 @@
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                 <?= $this->escapeHTML($this->data->name); ?>
-                  <span class="float-right text-sm text-primary" title="Admin Account"><i class="fas fa-star"></i></span>
+                  <span class="float-right text-sm text-danger" title="Admin Account"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm">User</p>
+                <p class="text-sm">Admin</p>
                 <?php 
                   $plan_icon = '';
                   switch ($this->user->account_info[0]->type) {

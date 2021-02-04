@@ -36,6 +36,19 @@ class Shipment extends Core\Model {
 
     }
 
+    /**
+     * Get Client user assigned shipments.
+     */
+    public  function getClientUserShipment($user_id, $arg = "*") {
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
+                        FROM shipment 
+                        LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id
+                        FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
+                        WHERE shipment_assigned.id = '{$user_id}'")->results();
+    }
+
     public static function getDocument($shipment_id) {
         // $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
         // return json_decode(file_get_contents($api_url));
