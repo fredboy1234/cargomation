@@ -24,13 +24,13 @@
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?>. Thank you. 
+                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?>. <br><br>Thank you. 
                     <?php endif; ?>
                     </textarea>
                 </div>
                 <div class="form-group">
                     <label for="title">To</label>
-                    <input type="email" id="sent_to" name="sent_to" class="form-control" required>
+                    <input type="email" id="recipient" name="recipient" class="form-control" required>
                 </div>
                 <?php if(empty($this->document)): ?>
                 <div class="form-group">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-default" id="go_back">Go Back</button>
-                    <button type="button" class="btn btn-primary" id="submit">Request</button>
+                    <button type="button" class="btn btn-primary" id="submit">Send Request</button>
                 </div>
             </form>
         </div>

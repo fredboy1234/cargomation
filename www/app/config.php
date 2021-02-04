@@ -20,6 +20,13 @@ return [
     "DATABASE_PASSWORD" => DATABASE_PASSWORD,
     "DATABASE_ENGINE" => DATABASE_ENGINE,
     // 
+    // Mail Config
+    // =========================================================================
+    "MAILER_HOST" => MAILER_HOST,
+    "MAILER_PORT" => MAILER_PORT,
+    "MAILER_USERNAME" => MAILER_USERNAME,
+    "MAILER_PASSWORD" => MAILER_PASSWORD,
+    // 
     // Error Config
     // =========================================================================
     "SHOW_ERRORS" => true,
