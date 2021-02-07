@@ -244,7 +244,7 @@ class Document extends Core\Controller {
         }
         $total = count($_FILES[$input]['name']); // multiple files
         // $path = './uploads/'; // your upload path
-        // $path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
+        $path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/';
 
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
@@ -266,13 +266,13 @@ class Document extends Core\Controller {
                 }
 
                 //Setup our new file path
-                $newFilePath = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
-                $newFileUrl = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
+                $newFilePath = $path . "/" . $type . "/" . $fileName;
+                $newFileUrl = $domain . "/filemanager/" . $email . "/CW_FILE/" . $shipment_num . "/" . $type . "/" . $fileName;
 
                 // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
-                if (!is_dir($newFilePath)) {
+                if (!is_dir($path . "/" . $type . "/")) {
                     // @mkdir($path);
-                    mkdir($newFilePath, 0777, true);
+                    mkdir($path . "/" . $type . "/", 0777, true);
                 }
 
                 //Upload the file into the new path
