@@ -26,6 +26,8 @@ class Document extends Core\Controller {
     public function __construct($requestMethod = '', $key = '', $value = '', $param = []) {
         // Create a new instance of the model document class.
         $this->Document = Model\Document::getInstance();
+        // Create a new instance of the model shipment class.
+        $this->Shipment = Model\Shipment::getInstance();
         // Create a new instance of the core view class.
         $this->View = new Core\View;
 
@@ -197,10 +199,10 @@ class Document extends Core\Controller {
     // API Put document by shipment_id
     private function putDocumentByShipment($shipment_num, $type, $fileName) {
 
-        $document = $this->Document->getDocumentByShipment($shipment_num);
+        $document = $this->Shipment->getShipmentByShipID($shipment_num);
 
         $data = [];
-        $data['shipment_id'] = $document[0]->shipment_id;
+        $data['shipment_id'] = $document[0]->id;
         $data['shipment_num'] = $document[0]->shipment_num;
         $data['type'] = $type;
         $data['name'] = $fileName;
