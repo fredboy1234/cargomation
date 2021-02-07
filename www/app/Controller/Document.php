@@ -237,16 +237,6 @@ class Document extends Core\Controller {
         $domain = "http://a2bfreighthub.com";
         $physical_path = "E:/A2BFREIGHT_MANAGER";
 
-        if(!empty($type)) {
-            $server_path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
-            // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
-            if(!is_dir($server_path)) {
-                mkdir($server_path, 0777, true);
-            }
-        } else {
-
-        }
-
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
         if (empty($_FILES[$input])) {
@@ -254,7 +244,8 @@ class Document extends Core\Controller {
         }
         $total = count($_FILES[$input]['name']); // multiple files
         // $path = './uploads/'; // your upload path
-        $path = $server_path;
+        // $path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
+
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
             $fileName = $_FILES[$input]['name'][$i]; // the file name
@@ -264,10 +255,26 @@ class Document extends Core\Controller {
             
             //Make sure we have a file path
             if ($tmpFilePath != ""){
+
+                //Checks if type is empty
+                if(empty($type)) {
+                    //Run classify; return file type
+                    // $command = escapeshellcmd('/usr/custom/api.py');
+                    // $output = shell_exec($command);
+                    // echo $output;
+                    $type = "ALL";
+                }
+
                 //Setup our new file path
-                $newFilePath = $path . $fileName;
+                $newFilePath = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
                 $newFileUrl = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
-                
+
+                // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
+                if (!is_dir($newFilePath)) {
+                    // @mkdir($path);
+                    mkdir($newFilePath, 0777, true);
+                }
+
                 //Upload the file into the new path
                 if(move_uploaded_file($tmpFilePath, $newFilePath)) {
                     $fileId = $fileName . $i; // some unique key to identify the file
