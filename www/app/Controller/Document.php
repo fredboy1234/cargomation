@@ -235,8 +235,16 @@ class Document extends Core\Controller {
         $domain = "http://a2bfreighthub.com";
         $physical_path = "E:/A2BFREIGHT_MANAGER";
 
-        $server_path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
-        
+        if(!empty($type)) {
+            $server_path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
+            // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
+            if(!is_dir($server_path)) {
+                mkdir($server_path, 0777, true);
+            }
+        } else {
+
+        }
+
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
         if (empty($_FILES[$input])) {
