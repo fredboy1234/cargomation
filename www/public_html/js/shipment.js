@@ -12,6 +12,35 @@ var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
 var query_string = window.location.search.substring(1);
 var parsed_qs = parse_query_string(query_string);
 
+// TEMPORARY
+if(parsed_qs['request'] === 'true') {
+  // Button Request
+  $(document).ready( function(e) {
+    console.log("Running....");
+    var url = "shipment/document/" + parsed_qs['shipment_num'] + "/" + parsed_qs['type'];
+    preloader(url);
+  });
+
+  // Show loader
+  function preloader(url) {
+
+    $("#myModal .modal-body").append(loader);
+
+    // load the url and show modal on success
+    $("#myModal .modal-body").load(url, function(response, status, xhr) { 
+      if(xhr.status == 200){
+        $('#loader-wrapper').remove();
+        $("#myModal").modal("show"); 
+      } else {
+        alert("Error: " + xhr.status + ": " + xhr.statusText);
+        $('#loader-wrapper').remove();
+      }
+    });
+
+    $('button#request').toggle();
+  }
+}
+
 //show documents modal
 $(document).on('click','.doc', function(e){
   e.preventDefault(); var type = "";
