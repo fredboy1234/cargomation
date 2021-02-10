@@ -3148,4 +3148,46 @@ div#graph1, div#graph4, div#graph5, div#graph6, div#graph7, div#graph8, div#grap
 /*custom*/
 .wrapper{
     padding: 0  !important;
+    margin-top: 0 !important;
+}
+.ui-sortable .bg-gradient-success{
+    background: #fff !important;
+}
+.m2{
+    margin-top: 18px;
+    margin-bottom: 5px;
+}
+
+.m2 img{
+    border-radius: 53%;
+}
+.brand-link{
+    position: absolute;
+    width: auto;
+    bottom: 0;
+    background-color: #8b5c7e;
+}
+.main-sidebar{
+    background-color: #604f48;
+}
+.content-wrapper{
+    background-color: #fab395;
+}
+.chartjs-size-monitor canvas{
+  background-color: #2677b5 !important;
+}
+body > div.wrapper > div.content-wrapper > section > div > div:nth-child(2) > section.col-lg-4.connectedSortable.ui-sortable > div.card.bg-gradient-success > div.card-header.border-0.ui-sortable-handle{
+    display: none;
+}
+.missing-background,
+.missing-background .badge-danger{
+    background-color: #ff5252  !important;
+}
+.pending-background,
+.pending-background .badge-warning{
+    background-color: #ffba57 !important;
+}
+.approved-background,
+.approved-background .badge-success{
+    background-color: #9ccc65 !important;
 }
