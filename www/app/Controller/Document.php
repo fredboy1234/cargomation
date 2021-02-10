@@ -82,7 +82,7 @@ class Document extends Core\Controller {
         }
 
         $selectedTheme = $User->getUserSettings($user_id);
-        if(isset( $selectedTheme)){
+        if(isset( $selectedTheme) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
             $selectedTheme = '';

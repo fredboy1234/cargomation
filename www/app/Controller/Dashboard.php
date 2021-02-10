@@ -42,7 +42,7 @@ class Dashboard extends Core\Controller {
         }
 
         $selectedTheme = $User->getUserSettings($userID);
-        if(isset( $selectedTheme)){
+        if(isset( $selectedTheme) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
             $selectedTheme = '';
@@ -62,6 +62,7 @@ class Dashboard extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
+        
         $this->View->renderTemplate($role, $role . "/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),

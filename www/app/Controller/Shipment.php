@@ -95,7 +95,7 @@ class Shipment extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $selectedTheme = $User->getUserSettings($user);
-        if(isset( $selectedTheme)){
+        if(isset( $selectedTheme) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
             $selectedTheme = '';

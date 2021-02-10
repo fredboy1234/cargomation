@@ -89,10 +89,10 @@ class Doctracker extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $selectedTheme = $User->getUserSettings($user);
-        if(isset( $selectedTheme)){
+        if(isset( $selectedTheme) || !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
-            $selectedTheme = '';
+            $selectedTheme = 'default';
         }
 
         $this->View->addCSS("css/shipment.css");
@@ -121,7 +121,8 @@ class Doctracker extends Core\Controller {
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
             'role' => $role,
-            'selected_theme' => $selectedTheme
+            'selected_theme' => $selectedTheme,
+           'shipment_from_contact'=> $this->Shipment->getShipmentThatHasUser($user)
         ]);
     }
 
