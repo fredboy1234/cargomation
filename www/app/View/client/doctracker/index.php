@@ -217,7 +217,7 @@
                   </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0" style="height: 500px;">
+                <div class="card-body table-responsive p-0 ttable" style="height: 500px;">
                 <?php usort($settings, function($a, $b) {return $a->index_value - $b->index_value;});?>  
                   <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
@@ -229,7 +229,7 @@
                     </thead>
                   </table>
                 </div>
-                <div class="parent-assign dropdown d-none">
+                <div class="parent-assign dropdown d-none notransition">
                     <a class="col-md-1 col-sm-1 assign-button" href="#!" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-fw fa-share-square"></i>
@@ -284,4 +284,5 @@
   var userData = <?php echo json_encode($settings);?>;
   var userReset = <?php echo json_encode($this->user);?>; 
   var userrole = <?php echo json_encode($this->role)?>;
+  var theme = <?php echo json_encode($this->selected_theme)?>;
 </script>

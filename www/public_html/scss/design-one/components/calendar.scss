@@ -1,0 +1,17 @@
+.col-lg-4{
+    & .card{
+        background: $white !important;
+        color: $d1-dark;
+        padding-top: 33px;
+        padding-bottom: 11px;
+    }
+    & .card-header{
+        display: none;
+    }
+
+    & .datepicker-days{
+        & .active{
+            background-color: $d1-success !important;
+        }
+    }
+}

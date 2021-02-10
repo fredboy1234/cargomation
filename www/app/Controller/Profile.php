@@ -55,10 +55,19 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role->role_name);
         }
 
+        $selectedTheme = $User->getUserSettings($user);
+        if(isset($selectedTheme[0])){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+        
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addJS("js/profile.js");
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/".$selectedTheme.".css");
 
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
@@ -74,7 +83,9 @@ class Profile extends Core\Controller {
             "user" => (Object) Model\User::getProfile($user),
             "user_info" => Model\User::getProfile($user)['user_info'][0],
             "image_profile" => $profileImage,
-            "role" => $role
+            "role" => $role,
+           "themes" => Model\User::getUserTheme(),
+           "selectedTheme" => $User->getUserSettings($user)
         ]);
     }
 
@@ -208,6 +219,48 @@ class Profile extends Core\Controller {
             
             Utility\Redirect::to(APP_URL . "profile");
         }
+    }
+
+    public function savetheme($user=""){
+        
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        if (!$Role = Model\Role::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user);
+
+        if(empty($role->role_name)) {
+            Utility\Redirect::to(APP_URL . $role->role_name);
+        }
+
+        if(isset($_POST)){
+            $User->addUserTheme(array(
+                'theme' => $_POST['theme'],
+                'user' => $user
+            ),$user);
+            Utility\Redirect::to(APP_URL . "profile");
+        }else{
+            Utility\Redirect::to(APP_URL . "profile");
+        }
+        
     }
 
 }

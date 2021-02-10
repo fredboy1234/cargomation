@@ -1,0 +1,29 @@
+$d1-primary: #4680ff;
+$d1-success: #9ccc65;
+$d1-danger: #ff5252;
+$d1-warning: #ffba57;
+$d1-info: #00acc1;
+$d1-ligth: #00acc1;
+$d1-dark: #343a40;
+$d1-link: #4680ff;
+$d1-adark: #37474f;
+
+$primary:       $d1-primary;
+$secondary:     $gray-700;
+$success:       $d1-success;
+$info:          $d1-info;
+$warning:       $d1-warning;
+$danger:        $d1-danger;
+$light:         $d1-ligth;
+$dark:          $d1-dark;
+
+$theme-colors: (
+  primary:    $primary,
+  secondary:  $secondary,
+  success:    $success,
+  info:       $info,
+  warning:    $warning,
+  danger:     $danger,
+  light:      $light,
+  dark:       $dark
+);

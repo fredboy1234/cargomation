@@ -195,7 +195,7 @@
                   </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0" style="height: 500px;">
+                <div class="card-body table-responsive p-0 ttable" style="height: 500px;">
                   <?php usort($settings, function($a, $b) {return $a->index_value - $b->index_value;});?>                     
                   <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
@@ -243,4 +243,7 @@
 
 <script>
   var userData = <?php echo json_encode($settings);?>;
+  var userReset = <?php echo json_encode($this->user);?>; 
+  var userrole = <?php echo json_encode($this->role)?>;
+  var theme = <?php echo json_encode($this->selected_theme)?>;
 </script>

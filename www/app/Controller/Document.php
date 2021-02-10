@@ -81,8 +81,18 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        $selectedTheme = $User->getUserSettings($user_id);
+        if(isset( $selectedTheme) && !empty($selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+        
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
+        
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        //$this->View->addCSS("css/".$selectedTheme.".css");
 
         $this->View->render($role. "/document/index", [
             "title" => "Shipment API",

@@ -76,7 +76,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2020-12-10T09:29:01+00:00"
+=======
             "time": "2021-02-05T09:19:51+00:00"
+>>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -237,12 +241,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
+<<<<<<< HEAD
+                "reference": "b0863c559ce96c90b750c272916bd657820a02a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b0863c559ce96c90b750c272916bd657820a02a2",
+                "reference": "b0863c559ce96c90b750c272916bd657820a02a2",
+=======
                 "reference": "b0764968c2158ce5379e276a224278cde740c9bf"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twigphp/Twig/zipball/b0764968c2158ce5379e276a224278cde740c9bf",
                 "reference": "b0764968c2158ce5379e276a224278cde740c9bf",
+>>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
                 "shasum": ""
             },
             "require": {
@@ -301,7 +314,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2021-02-02T15:25:52+00:00"
+=======
             "time": "2021-02-05T10:26:07+00:00"
+>>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
         }
     ],
     "packages-dev": [],

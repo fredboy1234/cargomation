@@ -45,6 +45,15 @@ class Index extends Core\Controller {
 
         Utility\Redirect::to('/404.php');
 
+        $selectedTheme = $User->getUserSettings($userID);
+        if(isset( $selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+        
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/".$selectedTheme.".css");
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("dist/css/index.css");
         // $this->View->addJS("dist/js/index.jquery.js");

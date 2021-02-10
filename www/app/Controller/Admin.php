@@ -148,7 +148,20 @@ class Admin extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addCSS("css/shipment.css");
+      
         $this->View->addJS("js/shipment.js");
+
+        $selectedTheme = $User->getUserSettings($user);
+        if(isset( $selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+
+        
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/".$selectedTheme.".css");
+       
 
         $docsCollection =array();
         foreach($Document->getDocumentByShipment($shipment_id) as $key=>$value){
