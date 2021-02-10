@@ -26,6 +26,8 @@ class Document extends Core\Controller {
     public function __construct($requestMethod = '', $key = '', $value = '', $param = []) {
         // Create a new instance of the model document class.
         $this->Document = Model\Document::getInstance();
+        // Create a new instance of the model shipment class.
+        $this->Shipment = Model\Shipment::getInstance();
         // Create a new instance of the core view class.
         $this->View = new Core\View;
 
@@ -207,10 +209,10 @@ class Document extends Core\Controller {
     // API Put document by shipment_id
     private function putDocumentByShipment($shipment_num, $type, $fileName) {
 
-        $document = $this->Document->getDocumentByShipment($shipment_num);
+        $document = $this->Shipment->getShipmentByShipID($shipment_num);
 
         $data = [];
-        $data['shipment_id'] = $document[0]->shipment_id;
+        $data['shipment_id'] = $document[0]->id;
         $data['shipment_num'] = $document[0]->shipment_num;
         $data['type'] = $type;
         $data['name'] = $fileName;
@@ -245,8 +247,6 @@ class Document extends Core\Controller {
         $domain = "http://a2bfreighthub.com";
         $physical_path = "E:/A2BFREIGHT_MANAGER";
 
-        $server_path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/";
-        
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
         if (empty($_FILES[$input])) {
@@ -254,7 +254,8 @@ class Document extends Core\Controller {
         }
         $total = count($_FILES[$input]['name']); // multiple files
         // $path = './uploads/'; // your upload path
-        $path = $server_path;
+        $path = $physical_path . '/' . $email . '/CW_FILE/' . $shipment_num . '/';
+
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
             $fileName = $_FILES[$input]['name'][$i]; // the file name
@@ -264,10 +265,26 @@ class Document extends Core\Controller {
             
             //Make sure we have a file path
             if ($tmpFilePath != ""){
+
+                //Checks if type is empty
+                if(empty($type)) {
+                    //Run classify; return file type
+                    // $command = escapeshellcmd('/usr/custom/api.py');
+                    // $output = shell_exec($command);
+                    // echo $output;
+                    $type = "ALL";
+                }
+
                 //Setup our new file path
-                $newFilePath = $path . $fileName;
-                $newFileUrl = $domain . '/filemanager/' . $email . '/CW_FILE/' . $shipment_num . '/' . $type . "/" . $fileName;
-                
+                $newFilePath = $path . "/" . $type . "/" . $fileName;
+                $newFileUrl = $domain . "/filemanager/" . $email . "/CW_FILE/" . $shipment_num . "/" . $type . "/" . $fileName;
+
+                // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
+                if (!is_dir($path . "/" . $type . "/")) {
+                    // @mkdir($path);
+                    mkdir($path . "/" . $type . "/", 0777, true);
+                }
+
                 //Upload the file into the new path
                 if(move_uploaded_file($tmpFilePath, $newFilePath)) {
                     $fileId = $fileName . $i; // some unique key to identify the file

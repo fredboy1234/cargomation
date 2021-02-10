@@ -184,10 +184,10 @@ $(document).ready(function() {
         });
         //   $('#kv-success-1').append(out);
         //   $('#kv-success-1').fadeIn('slow');
-        //   setTimeout(function(){
-        //       $('#kv-success-1').fadeOut('slow');
-        //       $('.kv-upload-progress').fadeOut('slow');
-        //   }, 3000);
+        setTimeout(function(){
+            // $('#kv-success-1').fadeOut('slow');
+            $('.kv-upload-progress').fadeOut('slow');
+        }, 3000);
     }).on('fileuploaderror', function(event, data, msg) {
         console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
     }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
