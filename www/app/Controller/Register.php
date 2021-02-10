@@ -45,7 +45,7 @@ class Register extends Core\Controller {
         }
         
         $selectedTheme = $User->getUserSettings($userID);
-        if(isset( $selectedTheme) && !empty($selectedTheme)){
+        if(isset($selectedTheme[0]) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
             $selectedTheme = '';

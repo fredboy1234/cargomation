@@ -46,7 +46,7 @@ class Index extends Core\Controller {
         Utility\Redirect::to('/404.php');
 
         $selectedTheme = $User->getUserSettings($userID);
-        if(isset( $selectedTheme)){
+        if(isset($selectedTheme[0])){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
             $selectedTheme = '';
