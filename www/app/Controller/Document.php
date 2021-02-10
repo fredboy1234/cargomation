@@ -262,17 +262,58 @@ class Document extends Core\Controller {
             $fileSize = $_FILES[$input]['size'][$i]; // the file size
             $fileType = $_FILES[$input]['type'][$i]; 
             $fileExtn = pathinfo($fileName, PATHINFO_EXTENSION);
-            
+
             //Make sure we have a file path
             if ($tmpFilePath != ""){
 
                 //Checks if type is empty
                 if(empty($type)) {
-                    //Run classify; return file type
-                    // $command = escapeshellcmd('/usr/custom/api.py');
-                    // $output = shell_exec($command);
-                    // echo $output;
+                    // Run classify; return file type
+                /***
+                    $command = escapeshellcmd('/usr/custom/api.py $_FILES[$input]');
+                    $output = shell_exec($command);
+                    echo $output;
+                */
                     $type = "ALL";
+                /***
+                    $command = 'python C:\inetpub\wwwroot\classify-api\test.py';
+                    $response = $_FILES[$input];
+                    $code = 0;
+                    exec($command, $response, $code);
+                    var_dump($code);
+                    print_r($response);
+                    die();
+                */
+                /***
+                    $ch = curl_init();
+                    // $url = 'C:/inetpub/wwwroot/classify-api/test.py';
+                    $url = "http://a2bfreighthub.com/classify/";
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
+					//$cfile = $this->getCurlValue($tmpFilePath, $fileType, $fileName);
+                    // $data = array('file' => $cfile);
+                    $data = array(
+                        'client' => 'a2b',
+                        'file' => curl_file_create($tmpFilePath, 'file/pdf', $fileName)
+                    );
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                    // in real life you should use something like:
+                    //curl_setopt($ch, CURLOPT_POSTFIELDS, 
+                    //          http_build_query($_FILES[$input]));
+                    //
+                    // receive server response ...
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $server_output = curl_exec ($ch);
+                    echo $server_output;
+                    if(curl_errno($ch)) {
+                        echo 'Error:' . curl_error($ch);
+                    }
+                    curl_close ($ch);
+                    // var_dump($server_output);
+                    die();
+                */
+
                 }
 
                 //Setup our new file path
@@ -299,6 +340,7 @@ class Document extends Core\Controller {
                     ];
                     // save to database
                     $this->putDocumentByShipment($shipment_num, $type, $fileName);
+                    self::uploadToCargoWise($config[]);
                 } else {
                     $errors[] = $fileName;
                 }
@@ -316,6 +358,87 @@ class Document extends Core\Controller {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($out);
         return $response;
+    }
+
+    /**
+     * Request.
+     * @access public
+     * @since 1.0.2
+     */
+    public static function uploadToCargoWise($data = []){
+
+        $postfield = '<UniversalEvent xmlns="http://www.cargowise.com/Schemas/Universal/2011/11" version="1.1">
+            <Event>
+                <DataContext>
+                    <DataTargetCollection>
+                        <DataTarget>
+                            <Type>ForwardingShipment</Type>
+                            <Key>S00001012</Key>
+                        </DataTarget>
+                    </DataTargetCollection>
+                    <Company>
+                        <Code>SYD</Code>
+                    </Company>
+                    <EnterpriseID>A2B</EnterpriseID>
+                    <ServerID>PRD</ServerID>
+                </DataContext>
+                <EventTime>2020-11-11T21:32:25.647</EventTime>
+                <EventType>DIM</EventType>
+                <IsEstimate>false</IsEstimate>
+                <AttachedDocumentCollection>
+                    <AttachedDocument>
+                        <FileName></FileName>
+                        <ImageData></ImageData>
+                        <Type>
+                            <Code>CIV</Code>
+                            <Description></Description>
+                        </Type>
+                        <IsPublished>true</IsPublished>
+                    </AttachedDocument>
+                </AttachedDocumentCollection>
+            </Event>
+        </UniversalEvent>';
+
+
+
+        $curl = curl_init();
+ 
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://a2btrnservices.wisegrid.net/eAdaptor",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "ftuser=".$email,
+            CURLOPT_HTTPHEADER => array(
+            "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
+            "Content-Type: application/x-www-form-urlencoded"
+            ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        echo $response;
+    }
+	
+	public function getCurlValue($filename, $contentType, $postname) {
+        // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
+        // See: https://wiki.php.net/rfc/curl-file-upload
+        if (function_exists('curl_file_create')) {
+            return curl_file_create($filename, $contentType, $postname);
+        }
+
+        // Use the old style if using an older version of PHP
+        $value = "@{$filename};filename=" . $postname;
+        if ($contentType) {
+            $value .= ';type=' . $contentType;
+        }
+
+        return $value;
     }
 
     /**

@@ -19,18 +19,16 @@
         <div class="card-body">
             <form id="form-modal" action="<?= $this->makeUrl("document/putDocumentRequest"); ?>" method="post">
                 <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control" required>
+                    <label for="recipient">To</label>
+                    <input type="email" id="recipient" name="recipient" class="form-control" placeholder="Ex: recipient@mail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?>. <br><br>Thank you. 
-                    <?php endif; ?>
-                    </textarea>
-                </div>
-                <div class="form-group">
-                    <label for="title">To</label>
-                    <input type="email" id="recipient" name="recipient" class="form-control" required>
+                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?><?php endif; ?></textarea>
                 </div>
                 <?php if(empty($this->document)): ?>
                 <div class="form-group">

@@ -68,17 +68,17 @@ class UserRegister {
                 "salt" => $salt    
             ]);
 
-            // //insert web service
-            $User->insertWebService([
-                "user_id" => $userID,
-                "webservice_link" => Utility\Input::post("webservice-link"),
-                "webservice_username" => Utility\Input::post("webservice-username"),
-                "webservice_password" => Utility\Input::post("webservice-password"),
-                "server_id" => Utility\Input::post("server-id"),
-                "enterprise_id" => Utility\Input::post("enterprise-id"),
-                "isactive" => "Y",
-                "company_code" => "SYD"
-            ]);
+            //insert web service
+            // $User->insertWebService([
+            //     "user_id" => $userID,
+            //     "webservice_link" => Utility\Input::post("webservice-link"),
+            //     "webservice_username" => Utility\Input::post("webservice-username"),
+            //     "webservice_password" => Utility\Input::post("webservice-password"),
+            //     "server_id" => Utility\Input::post("server-id"),
+            //     "enterprise_id" => Utility\Input::post("enterprise-id"),
+            //     "isactive" => "Y",
+            //     "company_code" => "SYD"
+            // ]);
 
             //insert user info
             $User->insertUserInfo([
@@ -100,7 +100,7 @@ class UserRegister {
             //insert user role
             $User->insertUserRole([
                 "user_id" => $userID,
-                "role_id" => "3", //since we dont know how to determine if user if admin or client we just set this to 3.
+                "role_id" => "2", //since we dont know how to determine if user if admin or client we just set this to 3.
             ]);
             
             
