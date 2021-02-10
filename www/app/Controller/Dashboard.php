@@ -40,9 +40,21 @@ class Dashboard extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
+
+        $selectedTheme = $User->getUserSettings($userID);
+        if(isset( $selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/dashboard.js");
+        
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
+
         $imageList = (Object) Model\User::getProfile($userID);
         $profileImage = '/img/default-profile.png';
         foreach($imageList->user_image as $img){
@@ -55,7 +67,9 @@ class Dashboard extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
-            "image_profile" => $profileImage
+            "image_profile" => $profileImage,
+            "dash_photo" =>Model\User::getUsersDashPhoto($userID),
+            'selected_theme' => $selectedTheme
         ]);
     }
 

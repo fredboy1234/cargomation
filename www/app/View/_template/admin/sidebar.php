@@ -11,14 +11,20 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <?php if (isset($this->data)): ?>
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="m1 user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/bower_components/admin-lte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
+      <div class="m2 main-menu-header text-center force-hide">
+						<img class="img-radius" src="<?=$this->image_profile?>" alt="User-Profile-Image">
+						<div class="user-details text-center">
+              <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
+						</div>
+					</div>
       <?php endif; ?>
 
       <!-- Sidebar Menu -->

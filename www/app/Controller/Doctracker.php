@@ -88,7 +88,16 @@ class Doctracker extends Core\Controller {
         // $this->View->addCSS("css/google_font.css");
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
+        $selectedTheme = $User->getUserSettings($user);
+        if(isset( $selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+
         $this->View->addCSS("css/shipment.css");
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        //$this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/shipment.js");
 
         $imageList = (Object) Model\User::getProfile($user);
@@ -111,7 +120,8 @@ class Doctracker extends Core\Controller {
             "settings_user" => $User->getUserSettings($user),
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
-            'role' => $role
+            'role' => $role,
+            'selected_theme' => $selectedTheme
         ]);
     }
 

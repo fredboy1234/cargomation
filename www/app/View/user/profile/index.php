@@ -7,6 +7,11 @@
     font-size: 1.3em;
 }
 </style>
+<?php 
+    $status = "";
+    $badge = '';
+    $attr = '';
+?>
     <?php if (isset($this->data)): ?>
     <!-- Main content -->
     <section class="content">
@@ -19,7 +24,7 @@
                 <div class="card-body box-profile">
                     <div class="text-center profile-container">
                         <img class="profile-user-img img-fluid img-circle"
-                            src="/img/default-profile.png"
+                            src="<?php echo $this->image_profile; ?>"
                             alt="User profile picture">
                             <div class="overlay">
                                 <a href="#" class="profile-icon" title="Edit User Profile">
@@ -87,8 +92,13 @@
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-
-                <p class="text-muted"><?= $this->user->user_addr[0]->address; ?></p>
+                <?php 
+                    $addrs = '';
+                    if(isset($this->user->user_addr[0])){
+                        $addrs = $this->user->user_addr[0];
+                    }
+                ?>
+                <p class="text-muted"><?= $addrs?></p>
 
                 <hr>
 
@@ -124,6 +134,7 @@
                     <li class="nav-item d-none"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
                     <li class="nav-item d-none"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#theme" data-toggle="tab">Themes</a></li>
                 </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
@@ -477,6 +488,41 @@
                         </form>
                     </div>
                     <!--end of Edit Settings--> 
+                    <div class="tab-pane" id="theme">
+                        <?php
+                            if(isset($this->selectedTheme[0])){
+                                $selectedTheme=$this->selectedTheme[0]->theme;
+                            }else{
+                                $selectedTheme="default";
+                            }
+                        
+                        ?>
+                        <form class="form-horizontal" method="post" action="<?= $this->makeUrl("profile/savetheme"); ?>">
+                            <div class="form-group">
+                                <?php foreach($this->themes as $theme){?>
+                                    <?php $name = str_replace(" ","_", strtolower($theme->theme_name));?>
+                                    <?php $selected = ($selectedTheme==$name ? 'checked' : '')?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="theme" value="<?=$name?>" <?=$selected?>>
+                                        <label class="form-check-label"><?php echo $theme->theme_name?></label>
+                                        <?php $color = explode(",",$theme->color);?>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <?php foreach($color as $c){?>
+                                                <div class="d-inline-block" style="background-color:<?=$c?>; width:33px;height:31px; margin-left:-4px;"></div>
+                                                <?php }?>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-danger">Save Theme</button>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
                     <!-- /.tab-pane -->
                 </div>
                 <!-- /.tab-content -->

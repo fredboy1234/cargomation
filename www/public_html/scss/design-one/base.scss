@@ -1,0 +1,19 @@
+/* import only the necessary Bootstrap files */
+@import "../../bower_components/bootstrap/scss/_functions.scss"; 
+@import "../../bower_components/bootstrap/scss/_variables.scss";
+
+//overide variables
+@import 'functions.scss';
+@import 'variable.scss';
+
+
+// Components
+@import 'components/button.scss';
+@import 'components/box.scss';
+@import 'components/calendar.scss';
+
+// Partials
+@import 'partials/sidebar.scss';
+
+/* finally, import Bootstrap to set the changes! */
+@import "../../bower_components/bootstrap/scss/bootstrap.scss";

@@ -395,15 +395,28 @@ $('.removeall').text('Hide All');
 });
 
 var setColor = function(){
-  $(".doc-stats span").each(function(){
-    if($(this).text()=="Missing"){
-      $(this).parent().parent().addClass("missing-background");
-    }else if($(this).text()=="Pending"){
-      $(this).parent().parent().addClass("pending-background");
-    }else if($(this).text()=="Approved"){
-      $(this).parent().parent().addClass("approved-background");
-    }
-  });
+  
+  if(theme == 'template_one'){
+      $(".doc-stats span").each(function(){
+      if($(this).text()=="Missing"){
+        $(this).parent().parent().addClass("bg-danger");
+      }else if($(this).text()=="Pending"){
+        $(this).parent().parent().addClass("bg-warning");
+      }else if($(this).text()=="Approved"){
+        $(this).parent().parent().addClass("bg-success");
+      }
+    });
+  }else{
+      $(".doc-stats span").each(function(){
+      if($(this).text()=="Missing"){
+        $(this).parent().parent().addClass("missing-background");
+      }else if($(this).text()=="Pending"){
+        $(this).parent().parent().addClass("pending-background");
+      }else if($(this).text()=="Approved"){
+        $(this).parent().parent().addClass("approved-background");
+      }
+    });
+  }
 };
 
 function parse_query_string(query) {

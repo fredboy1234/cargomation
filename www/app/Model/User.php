@@ -161,9 +161,12 @@ class User extends Core\Model {
                                 user_info.last_name, 
                                 user_info.email,
                                 user_info.status AS 'status',
+                                user_info.city,
+                                user_images.image_src,
                                 subscription.name AS 'plan' FROM users
                                 LEFT JOIN user_info ON  users.id = user_info.user_id
                                 LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                                LEFT JOIN user_images ON user_images.user_id = user_info.user_id
                                 WHERE user_info.account_id = {$userID}")->results();
     }
 
@@ -262,5 +265,39 @@ class User extends Core\Model {
                         (user_id,image_type,uploaded,image_src) 
                         values('{$fields['user_id']}','{$fields['image_type']}',GETDATE(),'{$img_src}')
         ");
+    }
+
+    public static function getUsersDashPhoto($userID) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT user_images.user_id,user_images.image_src
+                            FROM users
+                            LEFT JOIN user_info ON  users.id = user_info.user_id
+                            LEFT JOIN user_images ON user_images.user_id = users.id
+                            WHERE user_info.account_id = {$userID}")->results();
+    }
+
+    public static function getUserTheme() {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT *
+                            FROM themes ORDER BY theme_name")->results();
+    }
+
+    public  function addUserTheme($data) {
+        $fields = array(
+            $user_id = $data['user'],
+            $theme = $data['theme']
+        );
+
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT * from user_settings where user_id = '{$user_id}'")->results();
+        if(empty($select)){
+            return $Db->query("INSERT
+                           INTO user_settings (user_id,theme)
+                           VALUES('{$user_id}','{$theme}')");
+        }else{
+            return $Db->query("UPDATE user_settings 
+                                SET theme ='{$theme}'
+                                WHERE user_id = '{$user_id}'");
+        }
     }
 }

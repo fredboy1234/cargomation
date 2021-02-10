@@ -13,21 +13,25 @@ function isActive($url) {
     echo 'active';
 }
 ?>
-
+<style>
+  .force-hide{
+    display: none !important;
+  }
+</style>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
+    <!-- <a href="/" class="brand-link">
       <img src="/bower_components/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">A2B Freight Hub</span>
-    </a>
+    </a> -->
 
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <?php if (isset($this->data)): ?>
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="m1 user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image">
         </div>
@@ -35,10 +39,16 @@ function isActive($url) {
           <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
+      <div class="m2 main-menu-header text-center force-hide">
+						<img class="img-radius" src="<?=$this->image_profile?>" alt="User-Profile-Image">
+						<div class="user-details text-center">
+              <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
+						</div>
+					</div>
       <?php endif; ?>
 
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+      <div class="form-inline d-none">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -112,4 +122,9 @@ function isActive($url) {
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+    <a href="/" class="brand-link">
+      <img src="/bower_components/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">A2B Freight Hub</span>
+    </a>
   </aside>

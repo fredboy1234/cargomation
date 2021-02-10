@@ -1,0 +1,19 @@
+/* Error: Undefined variable.
+ *    ,
+ * 22 |         border: 1px solid $d1-info;
+ *    |                           ^^^^^^^^
+ *    '
+ *   www/public_html/scss/design-one/components/box.scss 22:27  @import
+ *   www/public_html/scss/design-one/base.scss 12:9             @import
+ *   www/public_html/scss/style.scss 2:9                        root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a    \2577 \a 22 \2502          border: 1px solid $d1-info;\a    \2502                            ^^^^^^^^\a    \2575 \a   www/public_html/scss/design-one/components/box.scss 22:27  @import\a   www/public_html/scss/design-one/base.scss 12:9             @import\a   www/public_html/scss/style.scss 2:9                        root stylesheet";
+}

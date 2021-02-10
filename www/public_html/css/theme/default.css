@@ -1,0 +1,19 @@
+/*custom*/
+.brand-link{
+    position: absolute;
+    width: auto;
+    bottom: 0;
+}
+#shipment-chart,
+#docs-aprvd-chart,
+.d1-st,
+#docs-pnd-chart,
+#docs-msng-chart{
+    display: none !important;
+}
+.default-st{
+    display: block !important;
+}
+.img-radius{
+    border-radius: 50%;
+}

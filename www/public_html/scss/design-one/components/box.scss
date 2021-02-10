@@ -1,0 +1,89 @@
+/** Dash board **/
+
+//small box
+.col-6{
+    & .small-box{
+        background-color: $white !important;
+        color: $black !important;
+        box-shadow: 0 2px 10px -1px rgb(69 90 100 / 30%);
+        margin-bottom: 30px;
+        transition: box-shadow 0.2s ease-in-out;
+        background-clip: border-box;   
+        border-radius: 0.25rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+}
+
+.bg-info{
+    &:hover{
+        border: 1px solid $d1-info;
+     }
+    .small-box-footer{
+        background-color: $d1-info !important;
+    }
+    .ion-android-boat{
+        color: $d1-info;
+    }
+
+}
+
+.bg-success{
+    &:hover{
+        border: 1px solid $d1-success;
+     }
+    .small-box-footer{
+        background-color: $d1-success !important;
+    }
+    .ion-checkmark{
+        color: $d1-success;
+    }
+
+}
+
+.bg-warning{
+    &:hover{
+        border: 1px solid $d1-warning;
+     }
+    .small-box-footer{
+        background-color: $d1-warning !important;
+    }
+    .ion-clock{
+        color: $d1-warning;
+    }
+
+}
+
+.bg-danger{
+    &:hover{
+        border: 1px solid $d1-danger;
+     }
+    .small-box-footer{
+        background-color: $d1-danger !important;
+    }
+    .ion-android-warning{
+        color: $d1-danger;
+    }
+
+}
+
+.d1-st{
+    line-height: 1.4em;
+}
+
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 10px -1px rgb(69 90 100 / 30%);
+    margin-bottom: 30px;
+    transition: box-shadow 0.2s ease-in-out;
+}
