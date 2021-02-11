@@ -164,24 +164,41 @@ $(document).ready(function() {
     }).on('filebatchpreupload', function(event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
         var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
-        if (!window.confirm("Are you sure you want to upload " + files + "?")) {
-            return {
-                message: "Upload aborted!", // upload error message
-                data:{} // any other data to send that can be referred in `filecustomerror`
-            };
-        }
+        swal({
+            title: "Are you sure you want to upload " + files + " to CargoWise?",
+            text: "Once uploaded, you will not be able to remove this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }) .then((willDelete) => {
+            if (willDelete) {
+                swal("Your file will be uploaded shortly", {
+                icon: "success",
+                });
+            } else {
+                swal("Upload aborted!");
+            }
+        });
+        // if (!window.confirm(")) {
+        //     return {
+        //         message: "Upload aborted!", // upload error message
+        //         data:{} // any other data to send that can be referred in `filecustomerror`
+        //     };
+        // }
     }).on("filebatchselected", function(event, files) {
         $el1.fileinput("upload");
     }).on('fileuploaded', function(event, data, id, index) {
+
         var fname = data.files[index].name,
             out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</li>';
-        $(document).Toasts('create', {
-            title: 'Success',
-            body: out,
-            autohide: true,
-            close: false,
-            class:'bg-success'
-        });
+            swal(out);
+        // $(document).Toasts('create', {
+        //     title: 'Success',
+        //     body: out,
+        //     autohide: true,
+        //     close: false,
+        //     class:'bg-success'
+        // });
         //   $('#kv-success-1').append(out);
         //   $('#kv-success-1').fadeIn('slow');
         setTimeout(function(){
@@ -378,6 +395,6 @@ $(document).ready(function() {
             }
         });
 
-        $('button#request').toggle();
+        //$('button#request').toggle();
     }
 });

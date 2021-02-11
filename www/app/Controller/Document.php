@@ -336,11 +336,12 @@ class Document extends Core\Controller {
                         'size' => $fileSize,
                         'downloadUrl' => $newFileUrl, // the url to download the file
                         'url' => '/delete.php', // server api to delete the file based on key
-                        'type' => $fileExtn
+                        'type' => $fileExtn,
+                        'fileType' => $type
                     ];
+                    
                     // save to database
                     $this->putDocumentByShipment($shipment_num, $type, $fileName);
-                    self::uploadToCargoWise($config[]);
                 } else {
                     $errors[] = $fileName;
                 }
@@ -348,6 +349,8 @@ class Document extends Core\Controller {
                 $errors[] = $fileName;
             }
         }
+        // push to cargowise
+        self::uploadToCargoWise($shipment_num, $email, $config);
         $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
         if (!empty($errors)) {
             $img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
@@ -365,7 +368,7 @@ class Document extends Core\Controller {
      * @access public
      * @since 1.0.2
      */
-    public static function uploadToCargoWise($data = []){
+    public static function uploadToCargoWise($shipment_num = "", $email, $files){
 
         $postfield = '<UniversalEvent xmlns="http://www.cargowise.com/Schemas/Universal/2011/11" version="1.1">
             <Event>
@@ -373,33 +376,37 @@ class Document extends Core\Controller {
                     <DataTargetCollection>
                         <DataTarget>
                             <Type>ForwardingShipment</Type>
-                            <Key>S00001012</Key>
+                            <Key>' . $shipment_num . '</Key>
                         </DataTarget>
                     </DataTargetCollection>
                     <Company>
                         <Code>SYD</Code>
                     </Company>
                     <EnterpriseID>A2B</EnterpriseID>
-                    <ServerID>PRD</ServerID>
+                    <ServerID>TRN</ServerID>
                 </DataContext>
                 <EventTime>2020-11-11T21:32:25.647</EventTime>
                 <EventType>DIM</EventType>
                 <IsEstimate>false</IsEstimate>
-                <AttachedDocumentCollection>
-                    <AttachedDocument>
-                        <FileName></FileName>
-                        <ImageData></ImageData>
+                <AttachedDocumentCollection>';
+                foreach ($files as $key => $value) {
+                    $file = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$shipment_num."/".$value['fileType']."/" . $value['caption'];    
+                    $imgData = file_get_contents($file);
+                    $base64 = base64_encode($imgData);
+        
+                    $postfield .= "<AttachedDocument>
+                        <FileName> " . $value['caption'] . "</FileName>
+                        <ImageData>" . $base64 . "</ImageData>
                         <Type>
-                            <Code>CIV</Code>
+                            <Code>" . $value['fileType'] . "</Code>
                             <Description></Description>
                         </Type>
                         <IsPublished>true</IsPublished>
-                    </AttachedDocument>
-                </AttachedDocumentCollection>
+                    </AttachedDocument>";
+                }
+        $postfield .= '</AttachedDocumentCollection>
             </Event>
         </UniversalEvent>';
-
-
 
         $curl = curl_init();
  
@@ -412,17 +419,20 @@ class Document extends Core\Controller {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "ftuser=".$email,
+            CURLOPT_POSTFIELDS => $postfield,
             CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
-            "Content-Type: application/x-www-form-urlencoded"
+                'Content-Type: application/xml',
+                'Authorization: Basic QTJCOkh3N20zWGhT',
+                'Cookie: WEBSVC=109af0692bd5564a'
             ),
         ));
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         
         $response = curl_exec($curl);
         
         curl_close($curl);
-        echo $response;
+        // echo $response;
     }
 	
 	public function getCurlValue($filename, $contentType, $postname) {
