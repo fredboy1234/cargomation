@@ -11,12 +11,12 @@ define("ROOT", realpath(dirname(__FILE__) . "/../") . "/");
 define("PUBLIC_ROOT", ROOT . "public_html");
 
 // App Config
-define("APP_NAME", "A2B Hub");
+define("APP_NAME", "Cargomation");
 define("APP_ROOT", ROOT . "app/");
 define("APP_PROTOCOL", stripos($_SERVER["SERVER_PROTOCOL"], "https") === true ? "https://" : "http://");
 define("APP_URL", APP_PROTOCOL . $_SERVER["HTTP_HOST"] . str_replace(PUBLIC_ROOT, "", dirname($_SERVER["SCRIPT_NAME"])) . "");
 define("APP_CONFIG_FILE", APP_ROOT . "config.php");
-define("APP_TITLE", "Cargomation");
+
 
 // Controller Config
 define("CONTROLLER_PATH", "\App\Controller\\");
