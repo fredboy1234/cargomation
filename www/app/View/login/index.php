@@ -90,7 +90,7 @@ h1 {
 <div class="login-box">
   <div class="login-logo">
     <!-- <a href="bower_components/admin-lte/index2.html" style="color: #FFF;"><b>A2B</b> Freight Hub</a>-->
-    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;"><br>CargoMation</b></a>
+    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;font-weight:900;font-size:3rem;"><br><strong><?=APP_TITLE?></strong></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

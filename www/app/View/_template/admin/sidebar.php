@@ -2,6 +2,9 @@
   .force-hide{
     display: none !important;
   }
+  .img-radius{
+    border: 1px solid #fff;
+  }
 </style>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -25,7 +28,7 @@
         </div>
       </div>
       <div class="m2 main-menu-header text-center force-hide">
-						<img class="img-radius img-responsive img-thumbnail" src="<?=$this->image_profile?>" alt="User-Profile-Image">
+						<img class="img-radius img-responsive" src="<?=$this->image_profile?>" alt="User-Profile-Image">
 						<div class="user-details text-center">
               <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
 						</div>
