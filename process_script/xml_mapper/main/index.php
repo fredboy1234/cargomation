@@ -153,13 +153,14 @@ if ($return === true) {
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
 					AND dbo.document_base64.img_data = '$ctr_b64'
-					AND dbo.document.type = '$get_valDocType_' 
+					AND dbo.document.type = '$get_valDocType_'
+					AND dbo.document.shipment_id='$ship_id'
 					";
 					$ifdocexistqry = sqlsrv_query($conn, $ifdocexist);
 					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry);
 
 					if ($ifdocexistres === false) {
-						$sqlInsertRecord = "INSERT INTO document
+					$sqlInsertRecord = "INSERT INTO document
 					(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
 					($ship_id,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','cargowise')";
 						$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
@@ -215,7 +216,7 @@ if ($return === true) {
 					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry);
 
 					if ($ifdocexistres === false) {
-						$sqlInsertRecord = "INSERT INTO document
+						echo $sqlInsertRecord = "INSERT INTO document
 						(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
 						($ship_id,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','cargowise')";
 						$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
