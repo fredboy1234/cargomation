@@ -2,7 +2,7 @@
 require_once('connection.php');
 $sqluser_info = "SELECT * FROM dbo.user_role INNER JOIN dbo.users ON dbo.user_role.user_id = dbo.users.id
 				 WHERE
-				 dbo.user_role.role_id = 1";
+				 dbo.user_role.role_id = 2";
 $execRecord_userinfo = sqlsrv_query( $conn, $sqluser_info );
 $return_user    = sqlsrv_has_rows( $execRecord_userinfo );
 if($return_user == true){
@@ -18,8 +18,8 @@ if($return_user == true){
 		{
 		$insidepath = $path.$inspath;	
         mkdir( $insidepath, 0777, true );
-	 }
-   }
+	  }
+    }
   }
 }
 ?>
