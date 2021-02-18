@@ -300,4 +300,14 @@ class User extends Core\Model {
                                 WHERE user_id = '{$user_id}'");
         }
     }
+
+    public function checkUserIfExistByEmail($email){
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT * from users where email = '{$email}'")->results();
+        if($select && !empty($select)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

@@ -1,5 +1,21 @@
 <!-- Main content -->
-    <section class="content">
+<style>
+    .dropdown-menu{
+        max-height: 336px;
+        overflow-y: auto;
+    }
+    .drop-act{
+        position: sticky;
+        width: 100%;
+        z-index: 999;
+        bottom: -7px;
+        left: 0;
+        background-color:#fff;
+        width: 250px;
+    }
+</style> 
+
+<section class="content">
         <div class="container-fluid">
           <div class="card card-default collapsed-card">
             <div class="card-header">
@@ -26,6 +42,7 @@
                                     <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
                                     -->
                                     <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-assign" role="tab" aria-controls="vert-tabs-assign" aria-selected="false">Assign Shipment</a>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-10 col-md-10 col-sm-12">
@@ -175,6 +192,46 @@
                                                     <button id="reset-settings" type="button" data-setting-id="<?=$settings_id?>" class="btn btn-block btn-danger">Reset Settings</button>
                                             <?php } ?>
                                         </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-assign" role="tabpanel" aria-labelledby="vert-tabs-assign-tab">
+                                    <div class="tab-pane" id="assign">
+                                        <span>Available User with Shipment:</span><br>
+                                        <?php if(!empty($this->shipment_from_contact['shipment_contact'])){?>
+                                            <?php $sh = $this->shipment_from_contact['shipment_contact'];?>
+                                            <?php $random_color = array("btn-primary","btn-secondary","btn-warning","btn-success","btn-danger");?>
+                                            <?php foreach($sh as $k=>$s){?>
+                                                <div class="dropdown d-inline-block dropright">
+                                                    <button class="btn <?php echo($random_color[rand(0,4)]);?> dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <?php echo $k?>
+                                                    </button>
+                                                    <div id="drop-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <div class="drop-act-search dropdown-item-text">
+                                                            <input onkeyup="filterFunction()" id="drop-search" class="mb-3 form-control" type="text" placeholder="Search Shipment">
+                                                        </div>
+                                                        <?php foreach($s as $sc){?>
+                                                            <a class="dropdown-item" href="#" data-search="<?=$sc->shipment_num?>">
+                                                            <span> <?=$sc->shipment_num?></span>
+                                                            <?php if($sc->shipment_assigned == 'not-assigned'){?>
+                                                                <button type="button" class="btn-assign btn d-inline-block btn-success btn-sm" data-userid="<?=$sc->userid?>" data-shipid="<?=$sc->shipmentid?>">
+                                                                Assign
+                                                                </button>
+                                                            <?php }else{?>
+                                                                <button type="button" class="btn-unassign btn d-inline-block btn-danger btn-sm" data-userid="<?=$sc->userid?>" data-shipid="<?=$sc->shipmentid?>">Unassign</button>
+                                                            <?php }?>
+                                                            
+                                                            </a>
+                                                        <?php }?>
+                                                        <div class="drop-act dropdown-item-text">
+                                                            <div class="dropdown-divider"></div>
+                                                            <button type="button" class="btn d-inline-block btn-primary btn-sm" id="assignall">Assign All</button>
+                                                            <button type="button" class="btn d-inline-block btn-danger btn-sm" id="unassign">Unassign All</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php }?>   
+                                        <?php }?>
                                     </div>
                                     <!-- /.tab-pane -->
                                     </div>

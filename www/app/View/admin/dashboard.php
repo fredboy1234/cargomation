@@ -1,7 +1,4 @@
-
-
-
-    <!-- Main content -->
+  <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
