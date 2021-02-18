@@ -89,7 +89,6 @@ h1 {
 
 <div class="login-box">
   <div class="login-logo">
-    <!-- <a href="bower_components/admin-lte/index2.html" style="color: #FFF;"><b>A2B</b> Freight Hub</a>-->
     <a href="bower_components/admin-lte/index2.html" style="color: #FFF;font-weight:900;font-size:3rem;"><br><strong><?=APP_NAME?></strong></b></a>
   </div>
   <!-- /.login-logo -->
@@ -269,7 +268,7 @@ $(document).ready(function(){
 
       if( email != "" && password != "" ){
           $.ajax({
-              url:'<?= $this->makeUrl("/login/_login"); ?>',
+              url:'<?= $this->makeUrl("login/_login"); ?>',
               type:'post',
               data:{email:email,password:password,csrf_token:csrf_token},
               beforeSend: function() {
@@ -278,7 +277,6 @@ $(document).ready(function(){
                 '<span class="sr-only">Loading...</span> </center>');
               },
               success:function(response){
-                console.log(response);
                 location.reload();
               }
           });
