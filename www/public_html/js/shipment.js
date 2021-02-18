@@ -589,11 +589,7 @@ function filterFunction() {
 
 function assignBulk(pp,api){
   var count = 0;
-
-  $("#myModal .modal-body").html(loader);
-  $("#myModal .modal-title").html("Updating shipment Please Wait...");
-  $("#myModal .modal-footer").hide();
-  $('#myModal').modal('show');
+  $('#loadermodal').modal('show');
   $(pp).each(function(){
     var userId =$('button',this).attr('data-userid');
     var shipId = $('button',this).attr('data-shipid');
@@ -607,7 +603,7 @@ function assignBulk(pp,api){
         success: function(res){
           count++;
           if(pp.length == count){
-            $('#myModal').modal('hide');
+            $('#loadermodal').modal('hide');
             $(document).Toasts('create', {
               title: 'Success',
               body: ' '+msg+' ',
