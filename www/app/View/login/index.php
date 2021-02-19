@@ -90,7 +90,9 @@ h1 {
 <div class="login-box">
   <div class="login-logo">
     <!-- <a href="bower_components/admin-lte/index2.html" style="color: #FFF;"><b>A2B</b> Freight Hub</a>-->
-    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;font-weight:900;font-size:3rem;"><br><strong><?=APP_NAME?></strong></b></a>
+    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;font-weight:900;font-size:3rem;">
+    <i class="fas fa-ship"></i>
+    <br><strong><?=APP_NAME?></strong></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
