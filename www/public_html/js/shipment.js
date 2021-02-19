@@ -49,7 +49,7 @@ $(document).on('click','.doc', function(e){
 });
 
 //assign shipment to users
-$(document).on("click",".assign",function(){
+$(document).on("click",".assign, .btn-assign",function(){
   var userId = $(this).data("userid");
   var shipId = $(this).data("shipid");
   $.ajax({
@@ -66,6 +66,40 @@ $(document).on("click",".assign",function(){
         })
       }
   });
+});
+
+//unassign shipment to users
+$(document).on("click",".btn-unassign",function(){
+  var userId = $(this).data("userid");
+  var shipId = $(this).data("shipid");
+  
+  $.ajax({
+      url:document.location.origin +"/doctracker/shipmentunAssign",
+      type:"POST",
+      data:{"user_id":userId,"shipment_id":shipId},
+      success: function(res){
+        $(document).Toasts('create', {
+          title: 'Success',
+          body: 'Shipment was successfully Unassigned',
+          autohide: true,
+          close: false,
+          class:'bg-success'
+        })
+      }
+  });
+});
+
+//asssigned all
+$(document).on("click","#assignall",function(){
+  var pp = $(this).parent().parent().find('.dropdown-item');
+  var count = 0;
+  assignBulk(pp,'shipmentAssign');
+});
+
+$(document).on("click","#unassign",function(){
+  var pp = $(this).parent().parent().find('.dropdown-item');
+  var count = 0;
+  assignBulk(pp,'shipmentunAssign');
 });
 
 $(document).ready(function(){
@@ -226,7 +260,7 @@ $(document).on('mouseenter mouseleave','.stats',function() {
 $('#myModal').on('hidden.bs.modal', function (e){ 
   $('#myModal .modal-body').empty().append(loader);
   table.ajax.reload(setColor);
-  
+
 });
 
 //For Settings
@@ -421,6 +455,10 @@ $('.removeall').text('Hide All');
     $('.assign').attr('data-shipid',id);
   });
   
+  $("#drop-search").on("keyup",function(){
+    var searchval = $(this).val().toLowerCase();
+  });
+  
 });
 
 var setColor = function(){
@@ -529,5 +567,52 @@ function hideShowResetSettings(){
         $(".parent-settings").html(html);
       }
     }
+  });
+}
+
+//need to jquery no time
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("drop-search");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("drop-list");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+function assignBulk(pp,api){
+  var count = 0;
+  $('#loadermodal').modal('show');
+  $(pp).each(function(){
+    var userId =$('button',this).attr('data-userid');
+    var shipId = $('button',this).attr('data-shipid');
+    var text = $.trim($('button',this).text());
+    var msg = text=='Assign'?'Assigned':'Unassigned';
+    
+    $.ajax({
+        url:document.location.origin +"/doctracker/"+api,
+        type:"POST",
+        data:{"user_id":userId,"shipment_id":shipId},
+        success: function(res){
+          count++;
+          if(pp.length == count){
+            $('#loadermodal').modal('hide');
+            $(document).Toasts('create', {
+              title: 'Success',
+              body: ' '+msg+' ',
+              autohide: true,
+              close: false,
+              class:'bg-success'
+            })
+          }
+        }
+    });
   });
 }

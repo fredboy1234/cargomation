@@ -103,12 +103,52 @@ class Doctracker extends Core\Controller {
 
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
+        $emailList = $this->Shipment->getShipmentThatHasUser($user);
         foreach($imageList->user_image as $img){
             if( $img->image_src!="" && $img->image_type=='profile' ){
                 $profileImage = base64_decode($img->image_src);
             }
         }
-
+        //create use if not exist in users table.
+        $salt = Utility\Hash::generateSalt(32);
+        // echo "<pre>";
+        // print_r($emailList);
+        // echo "</pre>";
+        // exit();
+        if(isset($emailList['list_email']) && !empty($emailList['list_email'])){
+           
+           foreach($emailList['list_email'] as $eKey => $eList){
+               if(!$User->checkUserIfExistByEmail($eList)){
+                $userID=$User->createUser([
+                    "email" => $eList,
+                    "first_name" => $eKey,
+                    "last_name" => '',
+                    "password" => Utility\Hash::generate('1234', $salt),
+                    "salt" => $salt    
+                ]);
+                $User->insertUserInfo([
+                    "user_id" => $userID,
+                    "first_name" => $eKey,
+                    "last_name" => '',
+                    "email" => $eList,
+                    "phone" =>"",
+                    "address"=>"",
+                    "city" => "",
+                    "postcode" =>"",
+                    "country_id" =>"",
+                    "account_id" => $user,
+                    "account_users" => "",
+                    "status" => "",    
+                ]);
+                $User->insertUserRole([
+                    "user_id" => $userID,
+                    "role_id" => "3"
+                ]);
+               }
+                
+           }
+        }
+       
         $this->View->renderTemplate($role, $role . "/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -123,7 +163,7 @@ class Doctracker extends Core\Controller {
             "image_profile" => $profileImage,
             'role' => $role,
             'selected_theme' => $selectedTheme,
-           //'shipment_from_contact'=> $this->Shipment->getShipmentThatHasUser($user)
+            'shipment_from_contact'=> $this->Shipment->getShipmentThatHasUser($user)
         ]);
     }
 
@@ -313,6 +353,22 @@ class Doctracker extends Core\Controller {
             }
         }
         echo json_encode($this->Shipment->shipmentAssign($_POST,$user));
+    }
+
+    public function shipmentunAssign($user=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+        
+        echo json_encode($this->Shipment->shipmentunAssign($_POST,$user));
     }
 
     public function shipmentSSR($user=""){

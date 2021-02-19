@@ -99,7 +99,7 @@ else
             {
                 while ($row_user = sqlsrv_fetch_array($execRecord_userinfo, SQLSRV_FETCH_ASSOC))
                 {
-                    $user_id = $row_user['id'];
+                    $user_id = $row_user['user_id'];
                 }
             }
             else

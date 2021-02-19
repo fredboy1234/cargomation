@@ -119,9 +119,22 @@ class Shipment extends Core\Model {
 
     public static function shipmentAssign($data,$user){
         $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT * FROM shipment_assigned  WHERE shipment_id = '{$data['shipment_id']}' and id = '{$data['user_id']}'")->results();
+        if(!empty($select)){
+            return $Db->query("update shipment_assigned set status='assigned' where shipment_id = '{$data['shipment_id']}' and id = '{$data['user_id']}'");
+        }
+
         return $Db->query("INSERT
-                           INTO shipment_assigned (id,user_id,shipment_id)
-                           VALUES('{$data['user_id']}','{$user}','{$data['shipment_id']}')");
+                           INTO shipment_assigned (id,user_id,shipment_id,status)
+                           VALUES('{$data['user_id']}','{$user}','{$data['shipment_id']}','assigned')");
+    }
+
+    public static function shipmentunAssign($data,$user){
+        $Db = Utility\Database::getInstance();
+        $userid = $data['user_id'];
+        $usershipment = $data['shipment_id'];
+
+        return $Db->query("update shipment_assigned set status='unassigned' where shipment_id = '{$usershipment}' and id = '{$userid}'");
     }
 
     public static function getShipmentByShipID($shipment_id, $args = "*") {
@@ -154,6 +167,65 @@ class Shipment extends Core\Model {
                                 FROM shipment
                                 FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
                                 WHERE user_id = '{$user_id}' ")->results();
+    }
+
+    public  function getShipmentThatHasUser($user_id){
+        $data = array();
+        $shc_arr = array();
+        $email = array();
+        $data['collection'] = array();
+        $data['collection']['implode'] = array();
+        $data['collection']['in_shipment'] = array();
+        $Db = Utility\Database::getInstance();
+        $shipment_contact =  $Db->query("SELECT
+                        *, s.id as 'shipmentid',
+                        case
+                            when shipment_assigned.shipment_id is null then 'not-assigned'
+                            when shipment_assigned.status ='unassigned' then 'not-assigned'
+                            else 'assigned'
+                            end as 'shipment_assigned',
+                            (select users.id from users where users.email = sc.email) as 'userid'
+                        FROM shipment s 
+                        left join shipment_contacts sc on s.id = sc.shipment_id 
+                        left join shipment_assigned on sc.shipment_id = shipment_assigned.shipment_id
+                        where s.user_id = '{$user_id}'")->results();
+        $checkShipmentAssigned = $Db->query("SELECT * FROM shipment_assigned WHERE user_id = $user_id")->results();
+        
+        foreach( $checkShipmentAssigned as $shi){
+            $data['collection']['in_id'][] = $shi->id;
+            $data['collection']['in_shipment'][] = $shi->shipment_id;
+            $data['collection']['in_user'][] = $shi->user_id;
+        }
+
+        foreach($shipment_contact as $shc){
+            if(!empty($shc->organization_code)){
+                $shc_arr[$shc->organization_code][]=$shc;
+                if(!empty($shc->userid)){
+                    $data['collection']['user_id'][] = $shc->userid;
+                    $data['collection']['shipment_id'][] = $shc->shipmentid; 
+                    if(!in_array($shc->shipmentid,$data['collection']['in_shipment'])){
+                        $data['collection']['implode'][] = "('".$shc->userid."','".$user_id."','".$shc->shipmentid."','assigned')";
+                    }
+                   
+                }
+                $email[$shc->organization_code] = $shc->email;
+            }  
+        }
+
+        //assignd all shipment if client is
+        $imploded = implode(",",$data['collection']['implode']);
+        $this->insertMultipleShipment($imploded); 
+        
+
+        $data['shipment_contact'] =  $shc_arr;
+        $data['list_email'] = $email;
+        return  $data;
+    }
+
+    public function insertMultipleShipment($data){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("INSERT INTO shipment_assigned (id,user_id,shipment_id,status)
+                     VALUES $data");
     }
 
 }
