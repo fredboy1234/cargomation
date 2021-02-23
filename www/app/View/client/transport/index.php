@@ -1,338 +1,226 @@
     <!-- Main content -->
+    <?php $settings = json_decode($this->user_settings);?>
     <section class="content">
         <div class="container-fluid">
 
         <div class="card card-default collapsed-card">
-          <div class="card-header">
-            <h3 class="card-title">Advanced Search</h3>
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">View</a></li> -->
+                    <!-- <li class="nav-item" data-card-widget="collapse"><a class="nav-link" href="#vert-tabs-settings" data-toggle="tab">Settings</a></li> -->
+                </ul>
+                <div class="card-tools" style="line-height: 2.49em;">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                <div class="tab-content2" id="">
+                    <div class="tab-pane" id="vert-tabs">
+                        <div class="row">
+                            <div class="col-12 col-lg-2 col-md-2 col-sm-12">
+                                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="vert-tabs-search-tab" data-toggle="pill" href="#vert-tabs-search" role="tab" aria-controls="vert-tabs-search" aria-selected="true">Advanced Search</a>
+                                    <!-- 
+                                    <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Profile</a>
+                                    <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
+                                    -->
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-10 col-md-10 col-sm-12">
+                                <div class="tab-content" id="vert-tabs-tabContent">
+                                    <div class="tab-pane text-left fade active show" id="vert-tabs-search" role="tabpanel" aria-labelledby="vert-tabs-search-tab">
+                                    <div class="active tab-pane" id="activity">
+                                        <form id="addvance-search-form">
+                                        <div class="row">
+                                            <div class="col-md-4" data-select2-id="29">
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Transport ID</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="transport_id" placeholder="Ex.: SHP001">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="ETA" placeholder="">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Vessel Name</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="vessel_name" placeholder="">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-md-4" data-select2-id="29">
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="consignee" placeholder="">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="consignor" placeholder="">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-md-4" data-select2-id="29">
+                                            <div class="form-group row">
+                                                
+                                                <div class="col-sm-6">
+                                                    <!-- checkbox -->
+                                                    <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
+                                                    <input id="status" type="hidden" name="status" value="">
+                                                    <div class="form-group">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Approved">
+                                                        <label class="form-check-label">Approved</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Pending">
+                                                        <label class="form-check-label">For Approval</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Missing">
+                                                        <label class="form-check-label">Missing</label>
+                                                    </div>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-sm-6">
+                                                    <!-- radio -->
+                                                    <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
+                                                    <div class="form-group">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="origin" value="cargowise">
+                                                        <label class="form-check-label">Cargowise</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="origin" value="hub" checked>
+                                                        <label class="form-check-label">Hub</label>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <input type="hidden" name="post_trigger" value="">
+                                            <div class="col-sm-6 d-inline-block">
+                                                <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                                            </div>
+                                            <div class="col-sm-2 d-inline-block">
+                                                <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                        </form>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    </div>
+                                    <!--
+                                    <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+                                        Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
+                                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna. 
+                                    </div>
+                                    -->
+                                    <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
+                                    <div class="tab-pane" id="settings">
+                                        <select multiple="multiple" size="10" name="settings-dual" title="settings-dual">
+                                        <?php $settings = json_decode($this->user_settings);?>
+                                        <?php foreach($settings as $value){?>
+                                            <?php $selected = ($value->index_check=="true"?"selected='selected'":"");?>
+                                            <option id="<?=$value->index_value?>" class="settings-menu" value="<?=$value->index_value?>" <?=$selected?> data-text="<?=$value->index_name?>">
+                                            <?=$value->index_name?>
+                                            </option>
+                                        <?php }?>
+                                        </select>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab2">
 
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab3">
+
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
             </div>
+            <!-- /.card-body -->
+            <div class="card-footer" style="display: none;">
+            </div>
+            <!-- /.card-footer -->
           </div>
-          <!-- /.card-header -->
-          <div class="card-body" style="display: none;">
-            <div class="row">
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Transport ID</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4" data-select2-id="29">
-                <div class="form-group row">
-                    
-                    <div class="col-sm-6">
-                      <!-- checkbox -->
-                      <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
-                      <div class="form-group">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <label class="form-check-label">Approved</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <label class="form-check-label">For Approval</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <label class="form-check-label">Missing</label>
-                        </div>
-                      </div>
-                    </div> 
-                    <div class="col-sm-6">
-                      <!-- radio -->
-                      <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
-                      <div class="form-group">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="radio1">
-                          <label class="form-check-label">Cargowise</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="radio1" checked>
-                          <label class="form-check-label">Hub</label>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <?php if(false): ?>
-            <h5>Custom Color Variants</h5>
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label>Minimal (.select2-danger)</label>
-                  <select class="form-control select2 select2-danger select2-hidden-accessible" data-dropdown-css-class="select2-danger" style="width: 100%;" data-select2-id="12" tabindex="-1" aria-hidden="true">
-                    <option selected="selected" data-select2-id="14">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="13" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-7c88-container"><span class="select2-selection__rendered" id="select2-7c88-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label>Multiple (.select2-purple)</label>
-                  <div class="select2-purple">
-                    <select class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;" data-select2-id="15" tabindex="-1" aria-hidden="true">
-                      <option>Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
-                      <option>Delaware</option>
-                      <option>Tennessee</option>
-                      <option>Texas</option>
-                      <option>Washington</option>
-                    </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="16" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false"><ul class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox" aria-autocomplete="list" placeholder="Select a State" style="width: 493.5px;"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <?php endif; ?>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer" style="display: none;">
-            
-          </div>
-        </div>
-        <!--Map -->
-        <div class="card bg-gradient-primary" style="display: block">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
-                  Visitors
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button"
-                          class="btn btn-primary btn-sm daterange"
-                          data-toggle="tooltip"
-                          title="Date range">
-                    <i class="far fa-calendar-alt"></i>
-                  </button>
-                  <button type="button"
-                          class="btn btn-primary btn-sm"
-                          data-card-widget="collapse"
-                          data-toggle="tooltip"
-                          title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div>
-              <div class="card-body">
-                <div id="world-map" style="height: 250px; width: 100%;"></div>
-              </div>
-              <!-- /.card-body-->
-              <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-4 text-center">
-                    <div id="sparkline-1"></div>
-                    <div class="text-white">Visitors</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div id="sparkline-2"></div>
-                    <div class="text-white">Online</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div id="sparkline-3"></div>
-                    <div class="text-white">Sales</div>
-                  </div>
-                  <!-- ./col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-        <!--end map-->
+
         <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Transport Document</h3>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Transport App</h3>
 
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                  <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input id="doc_search" type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0 ttable" style="height: 500px;">
+                <?php usort($settings, function($a, $b) {return $a->index_value - $b->index_value;});?>  
+                  <table class="table table-hover table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <?php foreach($settings as $key=>$value){ ?>
+                            <th><?=$value->index_name?></th>
+                        <?php }?>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <!-- /.card-body -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0" style="height: 500px;">
-                <table class="table table-hover table-head-fixed text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Transport ID</th>
-                      <th>Client Name</th>
-                      <th>Date</th>
-                      <th>HBL</th>
-                      <th>CIV</th>
-                      <th>PKL</th>
-                      <th>PKD</th>
-                      <th>All</th>
-                      <th>Comment</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>219</td>
-                      <td>Alexander Pierce</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>657</td>
-                      <td>Bob Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>175</td>
-                      <td>Mike Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>134</td>
-                      <td>Jim Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>494</td>
-                      <td>Victoria Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>832</td>
-                      <td>Michael Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                    <tr>
-                      <td>982</td>
-                      <td>Rocky Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="badge badge-danger">Missing</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
+              <!-- /.card -->
             </div>
-            <!-- /.card -->
           </div>
-        </div>
-        <!-- /.row -->
+          <!-- /.row -->
 
 
         </div>
     </section>
 
 </div>
+<script>
+  var userData = <?php echo json_encode($settings);?>;
+</script>
