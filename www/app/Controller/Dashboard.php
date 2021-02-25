@@ -25,6 +25,9 @@ class Dashboard extends Core\Controller {
      */
     public function index() {
 
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
         // Get an instance of the user model using the ID stored in the session. 
         $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
         if (!$User = Model\User::getInstance($userID)) {
