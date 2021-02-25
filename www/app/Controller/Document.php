@@ -705,11 +705,15 @@ class Document extends Core\Controller {
 
         // Comment view (check if edit or request)
         // New implimentation, check if document (id or type)
+        $shipment = [];
+        $results = [];
         if(is_numeric($document)) {
             $results = $this->Document->getDocumentByDocID($document);
         } else {
-            $results = "";
+            $shipment = $this->Shipment->getShipmentByShipID($shipment_id);
         }
+
+        $emailList = $this->Shipment->getShipmentThatHasUser($user_id);
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
@@ -718,7 +722,9 @@ class Document extends Core\Controller {
             'user_id' => $user_id,
             'document' => $document,
             'shipment_id' => $shipment_id,
-            'results' => $results
+            'shipment' => $shipment,
+            'results' => $results,
+            'emailList' => $emailList
         ]);
     }
 
