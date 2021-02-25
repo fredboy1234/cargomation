@@ -1,11 +1,11 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' + 
-                    '<div class="spinner-border" role="status">' + 
-                    '<span class="sr-only">Loading...</span>' + 
-                    '</div>' + 
-                '</div>'; 
+    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+        '<div class="spinner-border" role="status">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div>' +
+        '</div>';
 
     // Bootstrap File Input
     var $el1 = $("#input");
@@ -32,7 +32,7 @@ $(document).ready(function() {
             'jpg': '<i class="fas fa-file-image text-warning"></i>',
             'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
             'zip': '<i class="fas fa-file-archive text-muted"></i>',
-        }, 
+        },
         showPreview: true,
         initialPreviewDownloadUrl: false,
         actionDownload: false,
@@ -144,24 +144,24 @@ $(document).ready(function() {
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
         otherActionButtons: '<button type="button" ' +
-                                'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
-                                'title="Request for Edit"{dataUrl}{dataKey} ' +
-                                'data-doc_id="{id}" data-doc_status="{status}">' +
-                                    '<i class="fas fa-edit"></i>' +
-                            '</button>\n' +
-                            '<button type="button" ' +
-                                'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
-                                'title="View Comment"{dataUrl}{dataKey} ' +
-                                'data-doc_id="{id}" data-doc_status="{status}">' +
-                                    '<i class="fas fa-comment"></i>' +
-                            '</button>\n' +
-                                '<button type="button" ' +
-                                    'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' + 
-                                    'title="Change Status"{dataUrl}{dataKey} ' +
-                                    'data-doc_id="{id}" data-doc_status="{status}">' +
-                                        '<i class="fas {icon} {status}"></i>' +
-                                '</button>\n',
-    }).on('filebatchpreupload', function(event, data) {
+            'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Request for Edit"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas fa-edit"></i>' +
+            '</button>\n' +
+            '<button type="button" ' +
+            'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="View Comment"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas fa-comment"></i>' +
+            '</button>\n' +
+            '<button type="button" ' +
+            'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Change Status"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas {icon} {status}"></i>' +
+            '</button>\n',
+    }).on('filebatchpreupload', function (event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
         var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
         swal({
@@ -170,10 +170,10 @@ $(document).ready(function() {
             icon: "warning",
             buttons: true,
             dangerMode: true,
-        }) .then((willDelete) => {
+        }).then((willDelete) => {
             if (willDelete) {
                 swal("Your file will be uploaded shortly", {
-                icon: "success",
+                    icon: "success",
                 });
             } else {
                 swal("Upload aborted!");
@@ -185,13 +185,13 @@ $(document).ready(function() {
         //         data:{} // any other data to send that can be referred in `filecustomerror`
         //     };
         // }
-    }).on("filebatchselected", function(event, files) {
+    }).on("filebatchselected", function (event, files) {
         $el1.fileinput("upload");
-    }).on('fileuploaded', function(event, data, id, index) {
+    }).on('fileuploaded', function (event, data, id, index) {
 
         var fname = data.files[index].name,
-            out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</li>';
-            swal(out);
+            out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
+        swal(out);
         // $(document).Toasts('create', {
         //     title: 'Success',
         //     body: out,
@@ -201,19 +201,19 @@ $(document).ready(function() {
         // });
         //   $('#kv-success-1').append(out);
         //   $('#kv-success-1').fadeIn('slow');
-        setTimeout(function(){
+        setTimeout(function () {
             // $('#kv-success-1').fadeOut('slow');
             $('.kv-upload-progress').fadeOut('slow');
         }, 3000);
-    }).on('fileuploaderror', function(event, data, msg) {
+    }).on('fileuploaderror', function (event, data, msg) {
         console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
-    }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
+    }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
         console.log('File Batch Uploaded', preview, config, tags, extraData);
-    }).on('filebatchuploadsuccess', function(event, data) {
+    }).on('filebatchuploadsuccess', function (event, data) {
         var out = '';
-        $.each(data.files, function(key, file) {
+        $.each(data.files, function (key, file) {
             var fname = file.name;
-            out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - '  +  fname + ' successfully.' + '</li>';
+            out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - ' + fname + ' successfully.' + '</li>';
         });
         $('#kv-success-2 ul').append(out);
         $('#kv-success-2').fadeIn('slow');
@@ -225,27 +225,27 @@ $(document).ready(function() {
     //         $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
     //     }
     // });
-    $('button.kv-file-status').click(function() {
+    $('button.kv-file-status').click(function () {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
-        if(doc_status === 'approved')  doc_status = 'pending'; else doc_status = 'approved';
+        if (doc_status === 'approved') doc_status = 'pending'; else doc_status = 'approved';
 
         var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Do you still want to continue?");
 
-        if(msg == true) {
+        if (msg == true) {
             $.ajax({
                 type: "POST",
-                url:"/document/updateDocumentStatus",
+                url: "/document/updateDocumentStatus",
                 ContentType: 'application/json',
-                data:{ "doc_status":doc_status, "doc_id":doc_id },
-                success: function(response) {
+                data: { "doc_status": doc_status, "doc_id": doc_id },
+                success: function (response) {
                     //alert('Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1));
                     $(document).Toasts('create', {
                         title: 'Success',
                         body: 'Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1),
                         autohide: true,
                         close: false,
-                        class:'bg-success'
+                        class: 'bg-success'
                     }).on('hidden.bs.toast', function () {
                         // REMOVE FUNCTION    
                     });
@@ -257,19 +257,17 @@ $(document).ready(function() {
                         preloader(url);
                     } else {
                         // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
-                        $.post( "/document/putDocumentComment", { 
-                            title: "", 
-                            message: "", 
-                            status: doc_status, 
-                            user_id: user_id, 
+                        $.post("/document/putDocumentComment", {
+                            title: "",
+                            message: "",
+                            status: doc_status,
+                            user_id: user_id,
                             document_id: doc_id
-                        } );
+                        });
                     }
                     var d = $('.d-' + doc_id);
-                    if (d.attr('class').indexOf('bg-') === -1)
-                        {d.addClass("bg-" + doc_status);}
-                    else  
-                        {$('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending');}
+                    if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + doc_status); }
+                    else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
                     d.toggleClass("b-approved b-pending");
                     $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
                     d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
@@ -278,35 +276,35 @@ $(document).ready(function() {
                 }
             });
         }
-    }).mouseenter(function() {
-        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
-    }).mouseleave(function(){
-        $( this ).find( "i" ).toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
+    }).mouseenter(function () {
+        $(this).find("i").toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
+    }).mouseleave(function () {
+        $(this).find("i").toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
     });
 
     // Button Comment
-    $('button.kv-file-comment').click(function(ev) {
+    $('button.kv-file-comment').click(function (ev) {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
         //$('#document-upload, #document-comment').toggle();
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/comment/" + doc_id + "/view" ;
+        var url = "document/comment/" + doc_id + "/view";
 
         // load the url and show modal on success
         preloader(url);
     });
 
     // Button Edit
-    $('button.kv-file-edit').click(function(ev) {
+    $('button.kv-file-edit').click(function (ev) {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
         //$('#document-upload, #document-comment').toggle();
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/request/" + shipment_id + "/" + doc_id ;
+        var url = "document/request/" + shipment_id + "/" + doc_id;
 
         // load the url and show modal on success
         preloader(url);
@@ -315,20 +313,20 @@ $(document).ready(function() {
     $('form#form-modal').validate();
 
     // Submit Form
-    $('button#submit').click(function(e) {
+    $('button#submit').click(function (e) {
         var form = $('form#form-modal');
         var url = form.attr('action');
 
-        if(form.valid()) {
+        if (form.valid()) {
             $.ajax({
                 type: "POST",
                 url: url,
                 data: form.serialize(),
-                beforeSend: function(){
-                    form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');  
+                beforeSend: function () {
+                    form.empty().html('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
                 },
-                success: function(result) {
-                    if(result == 'true') {
+                success: function (result) {
+                    if (result == 'true') {
                         form.empty().html('Submitted Succesfully!');
                     } else {
                         form.empty().html(result);
@@ -336,7 +334,7 @@ $(document).ready(function() {
                 }
             });
         }
-        
+
         // form.validate({
         //     success: "valid",
         //     showErrors: function(errorMap, errorList) {
@@ -368,14 +366,14 @@ $(document).ready(function() {
     });
 
     // Back Button
-    $('button#go_back').click(function(e) {
+    $('button#go_back').click(function (e) {
         var url = "/shipment/document/" + shipment_id + "/" + document_type;
         preloader(url);
     });
 
     // Other functions
     function file_ext(filename) {
-        return typeof filename != "undefined" ? filename.substring(filename.lastIndexOf(".")+1, filename.length).toLowerCase() : false;
+        return typeof filename != "undefined" ? filename.substring(filename.lastIndexOf(".") + 1, filename.length).toLowerCase() : false;
     }
 
     // Show loader
@@ -384,17 +382,91 @@ $(document).ready(function() {
         $("#myModal .modal-body").append(loader);
 
         // load the url and show modal on success
-        $("#myModal .modal-body").load(url, 
-        function(response, status, xhr) { 
-            if(xhr.status == 200){
-                $('#loader-wrapper').remove();
-                $("#myModal").modal("show"); 
-            } else {
-                alert("Error: " + xhr.status + ": " + xhr.statusText);
-                $('#loader-wrapper').remove();
-            }
-        });
+        $("#myModal .modal-body").load(url,
+            function (response, status, xhr) {
+                if (xhr.status == 200) {
+                    $('#loader-wrapper').remove();
+                    $("#myModal").modal("show");
+                } else {
+                    alert("Error: " + xhr.status + ": " + xhr.statusText);
+                    $('#loader-wrapper').remove();
+                }
+            });
 
         //$('button#request').toggle();
     }
+});
+
+$(function () {
+    // //Initialize Select2 Elements
+    // $('.select2').select2();
+
+    // //Initialize Select2 Elements
+    // $('.select2bs4').select2({
+    //     theme: 'bootstrap4'
+    // });
+    // <select id="select-to"></select>
+
+    var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
+        '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+    var formatName = function (item) {
+        return $.trim((item.first_name || '') + ' ' + (item.last_name || ''));
+    };
+
+    $('#recipient').selectize({
+        persist: false,
+        maxItems: null,
+        valueField: 'email',
+        labelField: 'name',
+        searchField: ['first_name', 'last_name', 'email'],
+        sortField: [
+            { field: 'first_name', direction: 'asc' },
+            { field: 'last_name', direction: 'asc' }
+        ],
+        options: options,
+        render: {
+            item: function (item, escape) {
+                var name = formatName(item);
+                return '<div>' +
+                    (name ? '<span class="name">' + escape(name) + '</span>' : '') +
+                    (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+                    '</div>';
+            },
+            option: function (item, escape) {
+                var name = formatName(item);
+                var label = name || item.email;
+                var caption = name ? item.email : null;
+                return '<div>' +
+                    '<span class="label">' + escape(label) + '</span>' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                    '</div>';
+            }
+        },
+        createFilter: function (input) {
+            var regexpA = new RegExp('^' + REGEX_EMAIL + '$', 'i');
+            var regexpB = new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i');
+            return regexpA.test(input) || regexpB.test(input);
+        },
+        create: function (input) {
+            if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+                return { email: input };
+            }
+            var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+            if (match) {
+                var name = $.trim(match[1]);
+                var pos_space = name.indexOf(' ');
+                var first_name = name.substring(0, pos_space);
+                var last_name = name.substring(pos_space + 1);
+
+                return {
+                    email: match[2],
+                    first_name: first_name,
+                    last_name: last_name
+                };
+            }
+            alert('Invalid email address.');
+            return false;
+        }
+    });
 });
