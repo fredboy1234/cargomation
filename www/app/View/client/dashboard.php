@@ -5,14 +5,17 @@ $status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/ap
 $shipment = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/3/id'));
 
 $approved = 0; $pending = 0; $missing = 0;
-foreach ($status as $key => $value) {
-  if($value->status == 'approved')
-    $approved++;
-  if($value->status == 'pending')
-    $pending++;
-  if($value->status == '')
-    $missing++;
+if(!empty($status)){
+  foreach ($status as $key => $value) {
+    if($value->status == 'approved')
+      $approved++;
+    if($value->status == 'pending')
+      $pending++;
+    if($value->status == '')
+      $missing++;
+  }
 }
+
 // TODAY
 $today_approved = 0; $today_pending = 0; $today_missing = 0; $today_shipment = 0;
 foreach ($status as $key => $value) {

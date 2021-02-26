@@ -8,24 +8,24 @@ use App\Utility;
 use App\Presenter;
 
 /**
- * Index Controller:
+ * Register Controller:
  *
  * @author John Alex
- * @since 1.0
+ * @since 1.0.2
  */
-class Dashboard extends Core\Controller {
+class Contact extends Core\Controller {
 
     /**
-     * Index: Renders the index view. NOTE: This controller can only be accessed
-     * by authenticated users!
+     * Index: Renders the register view. NOTE: This controller can only be
+     * accessed by unauthenticated users!
      * @access public
-     * @example index/index
+     * @example register/index
      * @return void
-     * @since 1.0
+     * @since 1.0.2
      */
     public function index() {
 
-        // Check that the user is authenticated.
+        // Check that the user is unauthenticated.
         Utility\Auth::checkAuthenticated();
 
         // Get an instance of the user model using the ID stored in the session. 
@@ -43,19 +43,17 @@ class Dashboard extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
-
+        
         $selectedTheme = $User->getUserSettings($userID);
-
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
-            $selectedTheme = 'default';
+            $selectedTheme = '';
         }
 
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
-        $this->View->addJS("js/dashboard.js");
-        
+       
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
 
@@ -66,17 +64,34 @@ class Dashboard extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        
-        $this->View->renderTemplate($role, $role . "/dashboard", [
-            "title" => "Dashboard",
+
+        // Set any dependencies, data and render the view.
+        $this->View->addJS("js/contact.js");
+
+        // Render view template
+        // Usage renderTemplate(string|$template, string|$filepath, array|$data)
+        $this->View->renderTemplate($role, "contact/index", [
+            "title" => "Contact Us",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,
-            "dash_photo" =>Model\User::getUsersDashPhoto($userID),
-            'selected_theme' => $selectedTheme,
-            'role' => $role,
+            'selected_theme' => $selectedTheme
         ]);
     }
 
+    public function sendEmail($userID=""){
+        
+        $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
+        if (!$User = Model\User::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
+        }  
+        
+        if(isset($_POST)){
+            $mail = Model\SendMail::sendContactus($_POST);
+            // return json_encode(["success"=>true]);
+            echo json_encode($mail);
+        }
+      
+    }
 }

@@ -310,4 +310,5 @@ class User extends Core\Model {
             return false;
         }
     }
+
 }
