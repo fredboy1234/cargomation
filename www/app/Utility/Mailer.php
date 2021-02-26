@@ -106,7 +106,7 @@ class Mailer {
             }
         } else {
             // $mail->addAddress($recipients);
-			$mail->addAddress($recipient['email']);
+			$mail->addAddress($recipients['email']);
         }
         $mail->SMTPKeepAlive = true; // add it to keep SMTP connection open after each email sent
         $mail->setFrom("noreply@a2bfreighthub.com", "no-reply");
