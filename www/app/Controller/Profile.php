@@ -49,7 +49,7 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         if(empty($role->role_name)) {
             Utility\Redirect::to(APP_URL . $role->role_name);
@@ -77,7 +77,7 @@ class Profile extends Core\Controller {
             }
         }
         
-        $this->View->renderTemplate($role, $role . "/profile/index", [
+        $this->View->renderTemplate($role->role_name, $role->role_name . "/profile/index", [
             "title" => "Profile",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),

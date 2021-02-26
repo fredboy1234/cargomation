@@ -65,7 +65,7 @@
                 <?= $this->escapeHTML($this->data->name); ?>
                   <span class="float-right text-sm text-danger" title="Admin Account"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm"><?=$role?></p>
+                <p class="text-sm">Client</p>
                 <?php 
                   $plan_icon = '';
                   switch ($this->user->account_info[0]->type) {
