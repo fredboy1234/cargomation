@@ -53,6 +53,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
+<!-- Selectize JS -->
+<script src="/bower_components/selectize/dist/js/standalone/selectize.js"></script>
 <!-- DataTables -->
 <script src="/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/bower_components/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

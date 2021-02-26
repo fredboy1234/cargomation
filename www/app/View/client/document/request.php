@@ -1,11 +1,27 @@
 <?= $this->getCSS(); ?>
-<?php if(is_numeric($this->document)) {
+<script>
+var options = [
+<?php
+if(isset($this->emailList['list_email']) && !empty($this->emailList['list_email'])){
+    foreach($this->emailList['list_email'] as $name => $email){
+        echo "{ email: '" . $email . "', first_name: '" . $name . "', last_name: '' },";
+    }
+}
+?>
+];
+</script>
+<?php 
+$title = "";
+$request_type = "";
+$master_bill = "";
+if(is_numeric($this->document)) {
     // $this->results[0]->name;
     $title = 'Edit request for document id: [#' . $this->document . "]";
     $request_type = 'edit';
 } else {
     $title = 'Document request for document type: [' . $this->document  . "]";
     $request_type = 'new';
+    $master_bill = " with a master bill  " . $this->shipment[0]->master_bill;
 } ?>
 <div id="document-request" style="display: block;">
     <div class="card card-primary">
@@ -20,7 +36,7 @@
             <form id="form-modal" action="<?= $this->makeUrl("document/putDocumentRequest"); ?>" method="post">
                 <div class="form-group">
                     <label for="recipient">To</label>
-                    <input type="email" id="recipient" name="recipient" class="form-control" placeholder="Ex: recipient@mail.com" required>
+                    <input type="email" id="recipient" name="recipient" class="form-control contacts" placeholder="Ex: recipient@mail.com" required>
                 </div>
                 <div class="form-group">
                     <label for="subject">Subject</label>
@@ -28,9 +44,9 @@
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?><?php endif; ?></textarea>
+                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?><?php endif; echo $master_bill; ?>   </textarea>
                 </div>
-                <?php if(empty($this->document)): ?>
+                <?php if(false && empty($this->document)): ?>
                 <div class="form-group">
                     <label for="document_type">Document Type</label>
                     <select name="document_type" class="form-control custom-select">

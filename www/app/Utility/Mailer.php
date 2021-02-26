@@ -101,7 +101,8 @@ class Mailer {
         $mail->isHTML(true);
         if(is_array($recipients)) {
             foreach ($recipients as $recipient) {
-                $mail->addAddress($recipient['email'], $recipient['name']);
+                $mail->addAddress($recipient);
+                // $mail->addAddress($recipient['email'], $recipient['name']);
             }
         } else {
             $mail->addAddress($recipients);

@@ -17,7 +17,7 @@ class SendMail extends Core\Model {
     public function sendRequestMail($data) {
         $mail = Utility\Mailer::getInstance();
 
-        $recipient = $data['recipient'];
+        $recipient = explode(',', $data['recipient']);
         $message = $data['message'];
         $subject = $data['subject'];
 
