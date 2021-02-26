@@ -90,10 +90,15 @@ class Vessel extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        
+       
         $this->View->renderTemplate($role, $role . "/vessel/index", [
             "title" => "Vessel Track",
+            "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($user),
             "vessel" => $this->Vessel->getVessel($user),
+            "image_profile" => $profileImage,
+            'selected_theme' => $selectedTheme,
+            'role' => $role,
         ]);
     }
 
@@ -127,12 +132,36 @@ class Vessel extends Core\Controller {
             $vessel_number = explode('?',$uri[2]);
          }
         
+         $selectedTheme = $User->getUserSettings($user);
+        if(isset($selectedTheme[0]) && !empty($selectedTheme)){
+            $selectedTheme = $selectedTheme[0]->theme;
+        }else{
+            $selectedTheme = '';
+        }
+        
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/vessel.css");
+        $this->View->addJS("js/vessel.js");
+
+        $imageList = (Object) Model\User::getProfile($user);
+        $profileImage = '/img/default-profile.png';
+        foreach($imageList->user_image as $img){
+            if( $img->image_src!="" && $img->image_type=='profile' ){
+                $profileImage = base64_decode($img->image_src);
+            }
+        }
+
         $vessel_number = (isset($vessel_number[1])? $vessel_number[1] :'');
         
+        $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate($role, $role . "/vessel/details", [
             "title" => "Vessel Track",
             "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
-            
+            "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => (Object) Model\User::getProfile($user),
+            "image_profile" => $profileImage,
+            'selected_theme' => $selectedTheme,
+            'role' => $role,
         ]);
     }
 

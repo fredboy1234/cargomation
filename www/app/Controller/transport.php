@@ -95,22 +95,21 @@ class Transport extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        // echo "<pre>";
-        // print_r($this->defaultSettings($user));exit();
-        // echo "</pre>";
+        
         $this->View->renderTemplate($role, $role . "/transport/index", [
             "title" => "Transport App",
             "transport" => $this->Transport->getTransport($user),
-            //"data" => (new Presenter\Profile($User->data()))->present(),
+            "data" => (new Presenter\Profile($User->data()))->present(),
             //"document" => $this->Document->getDocumentByShipment($shipment_id),
             //"document_per_type" => $docsCollection,
             //"child_user" => Model\User::getUsersInstance($user),
             "user_settings" =>$this->defaultSettings($user),
             "settings_user" => $User->getUserSettings($user),
             //"client_user_shipments" => $this->Shipment->getClientUserShipment($user),
-            //"image_profile" => $profileImage,
-            //'role' => $role,
-            //'selected_theme' => $selectedTheme
+            "image_profile" => $profileImage,
+            'role' => $role,
+            'selected_theme' => $selectedTheme,
+            "user" => (Object) Model\User::getProfile($user),
         ]);
     }
 
