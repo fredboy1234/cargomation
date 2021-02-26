@@ -88,9 +88,9 @@ class Contact extends Core\Controller {
         }  
         
         if(isset($_POST)){
-            $User->sendEmail($_POST);
+            $mail = Model\SendMail::sendContactus($_POST);
             // return json_encode(["success"=>true]);
-            echo json_encode(["success"=>true]);
+            echo json_encode($mail);
         }
       
     }
