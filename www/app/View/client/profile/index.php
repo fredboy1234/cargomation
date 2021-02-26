@@ -100,7 +100,7 @@
                     <span class="badge badge-info">Admin</span>
                     <span class="badge badge-warning">Client</span>
                     <span class="badge badge-primary">Importer</span> -->
-                    <span class="badge badge-warning"><?=$this->role?></span>
+                    <span class="badge badge-warning"><?=$this->role->role_name?></span>
                 </p>
 
                 <!-- <hr>
