@@ -310,4 +310,9 @@ class User extends Core\Model {
             return false;
         }
     }
+
+    public function sendEmail($data){
+        $email = new SendMail();
+        return $email->sendContactus($data);
+    }
 }
