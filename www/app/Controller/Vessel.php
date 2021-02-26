@@ -97,7 +97,8 @@ class Vessel extends Core\Controller {
             "user" => (Object) Model\User::getProfile($user),
             "vessel" => $this->Vessel->getVessel($user),
             "image_profile" => $profileImage,
-            'selected_theme' => $selectedTheme
+            'selected_theme' => $selectedTheme,
+            'role' => $role,
         ]);
     }
 
@@ -159,7 +160,8 @@ class Vessel extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "image_profile" => $profileImage,
-            'selected_theme' => $selectedTheme
+            'selected_theme' => $selectedTheme,
+            'role' => $role,
         ]);
     }
 
