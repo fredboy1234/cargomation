@@ -49,84 +49,34 @@
                                                     <input type="text" class="form-control" id="inputEmail3" name="ETA" placeholder="">
                                                 </div>
                                             </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Vessel Name</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="vessel_name" placeholder="">
-                                                </div>
-                                            </div>
-                                            <!-- /.form-group -->
+                                           
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-md-4" data-select2-id="29">
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="consignee" placeholder="">
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="consignor" placeholder="">
-                                                </div>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
-                                                </div>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            </div>
-                                            <!-- /.col -->
-                                            <div class="col-md-4" data-select2-id="29">
-                                            <div class="form-group row">
                                                 
-                                                <div class="col-sm-6">
-                                                    <!-- checkbox -->
-                                                    <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
-                                                    <input id="status" type="hidden" name="status" value="">
-                                                    <div class="form-group">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Approved">
-                                                        <label class="form-check-label">Approved</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Pending">
-                                                        <label class="form-check-label">For Approval</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Missing">
-                                                        <label class="form-check-label">Missing</label>
-                                                    </div>
-                                                    </div>
-                                                </div> 
-                                                <div class="col-sm-6">
-                                                    <!-- radio -->
-                                                    <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
-                                                    <div class="form-group">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="origin" value="cargowise">
-                                                        <label class="form-check-label">Cargowise</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="origin" value="hub" checked>
-                                                        <label class="form-check-label">Hub</label>
-                                                    </div>
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Vessel Name</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="vessel_name" placeholder="">
                                                     </div>
                                                 </div>
+                                           
                                             </div>
+                                            <!-- /.col -->
+                                            <div class="col-md-4" data-select2-id="29">
                                                 <input type="hidden" name="post_trigger" value="">
-                                            <div class="col-sm-6 d-inline-block">
-                                                <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
-                                            </div>
-                                            <div class="col-sm-2 d-inline-block">
-                                                <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
-                                            </div>
+                                                <div class="col-sm-6 d-inline-block">
+                                                    <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                                                </div>
+                                                <div class="col-sm-2 d-inline-block">
+                                                    <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
+                                                </div>
                                             <!-- /.form-group -->
                                             </div>
                                             <!-- /.col -->

@@ -1,5 +1,5 @@
   <!-- Navbar -->
-  <? $role =(isset($this->role)? $this->role : '' )?> 
+  <?php $role =(isset($this->role) ? $this->role : '' )?> 
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     
     <!-- Left navbar links -->
@@ -65,7 +65,7 @@
                 <?= $this->escapeHTML($this->data->name); ?>
                   <span class="float-right text-sm text-danger" title="Admin Account"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm"><?=$this->role?></p>
+                <p class="text-sm"><?=$role?></p>
                 <?php 
                   $plan_icon = '';
                   switch ($this->user->account_info[0]->type) {

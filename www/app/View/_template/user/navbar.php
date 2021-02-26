@@ -1,5 +1,5 @@
   <!-- Navbar -->
-  <? $role =(isset($this->role)? $this->role : '' )?> 
+  <?php $role =(isset($this->role)? $this->role : '' )?> 
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     
     <!-- Left navbar links -->
