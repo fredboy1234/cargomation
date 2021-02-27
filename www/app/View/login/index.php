@@ -3,6 +3,12 @@
 use App\Utility\Config;
 use App\Utility\Flash;
 
+$redirectTo = '';
+$parts = parse_url($_SERVER['REQUEST_URI']);
+if(isset($parts['query']) && !empty($parts['query'])) {
+  $redirectTo = $parts['query'];
+}
+
 ?>
 <body id="body" class="hold-transition login-page">
 <div id="feedback" class="container">
@@ -270,7 +276,7 @@ $(document).ready(function(){
 
       if( email != "" && password != "" ){
           $.ajax({
-              url:'<?= $this->makeUrl("login/_login"); ?>',
+              url:'<?= $this->makeUrl("login/_login") . '/' . $redirectTo; ?>',
               type:'post',
               data:{email:email,password:password,csrf_token:csrf_token},
               beforeSend: function() {
