@@ -51,6 +51,8 @@ class Doctracker extends Core\Controller {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
+        Utility\Cookie::delete('redirectLink');
+
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
         if (!$user) {
