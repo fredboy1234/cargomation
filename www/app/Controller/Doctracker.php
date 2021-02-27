@@ -619,4 +619,22 @@ class Doctracker extends Core\Controller {
        return json_encode($userData);
     }
 
+    public function request($shipment_id = "", $doc_type = "", $requestToken = "") {
+
+        if(isset($requestToken) && !empty($requestToken)) {
+            $redirectLink = 'doctracker?request=true&shipment_num='.$shipment_id.'&type='.$doc_type;
+
+            Utility\Cookie::put("redirectLink", $redirectLink, 3600);
+            Utility\Cookie::put("requestToken", $requestToken, 3600);
+
+            // Check that the user is authenticated.
+            Utility\Auth::checkUnauthenticated($redirectLink);
+
+            Utility\Redirect::to(APP_URL . 'login?redirect=doctracker');
+
+        } else {
+            echo "Invalid request token!";
+        }
+    }
+
 }
