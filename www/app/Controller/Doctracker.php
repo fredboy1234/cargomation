@@ -630,7 +630,7 @@ class Doctracker extends Core\Controller {
             // Check that the user is authenticated.
             Utility\Auth::checkUnauthenticated($redirectLink);
 
-            Utility\Redirect::to(APP_URL . 'login?redirect=doctracker');
+            Utility\Redirect::to(APP_URL . '/login?redirect=doctracker');
 
         } else {
             echo "Invalid request token!";
