@@ -21,9 +21,9 @@ class SendMail extends Core\Model {
         $message = $data['message'];
         $subject = $data['subject'];
 
-        //$link = "http://a2bfreighthub.com/request?token=" . $data['token'];
-        $link = "http://a2bfreighthub.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
-
+        // $link = "http://a2bfreighthub.com/request?token=" . $data['token'];
+        // $link = "http://a2bfreighthub.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
+        $link = "http://a2bfreighthub.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
