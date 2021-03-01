@@ -101,11 +101,12 @@ class Mailer {
         $mail->isHTML(true);
         if(is_array($recipients)) {
             foreach ($recipients as $recipient) {
-                $mail->addAddress($recipient);
-                // $mail->addAddress($recipient['email'], $recipient['name']);
+                //$mail->addAddress($recipient['email'], $recipient['name']);
+				$mail->addAddress($recipient);
             }
         } else {
-            $mail->addAddress($recipients);
+            // $mail->addAddress($recipients);
+			$mail->addAddress($recipients['email']);
         }
         $mail->SMTPKeepAlive = true; // add it to keep SMTP connection open after each email sent
         $mail->setFrom("noreply@a2bfreighthub.com", "no-reply");
