@@ -38,23 +38,20 @@ class SendMail extends Core\Model {
     public static function sendContactus($data) {
         $mail = Utility\Mailer::getInstance();
         
-        $data['recipient'] = 'neildesucatan@gmail.com';
+        $data['recipient'] = 'support@cargomation.com';
         $data['subject'] = 'Client Support';
 
         $recipient = explode(',', $data['recipient']);
         $message = $data['message'];
         $subject = $data['subject'];
 
-        //$link = "http://a2bfreighthub.com/request?token=" . $data['token'];
-        //$link = "http://a2bfreighthub.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
-
+      
         $message .= "<br><br>";
         $message .= "Message From: ".$data['name'];
         $message .= "Email: ".$data['email'];
         $message .= "<br><br>";
         $message .= "<br>";
         $message .= $data['message'];
-        //$message .= "Link : <a href=" . $link . ">" . $link . "</a>";
 
         $results = $mail->sendMail($recipient, $message, $subject);
         
