@@ -268,52 +268,21 @@ class Document extends Core\Controller {
 
                 //Checks if type is empty
                 if(empty($type)) {
-                    // Run classify; return file type
-                /***
-                    $command = escapeshellcmd('/usr/custom/api.py $_FILES[$input]');
-                    $output = shell_exec($command);
-                    echo $output;
-                */
-                    $type = "ALL";
-                /***
-                    $command = 'python C:\inetpub\wwwroot\classify-api\test.py';
-                    $response = $_FILES[$input];
-                    $code = 0;
-                    exec($command, $response, $code);
-                    var_dump($code);
-                    print_r($response);
-                    die();
-                */
-                /***
-                    $ch = curl_init();
-                    // $url = 'C:/inetpub/wwwroot/classify-api/test.py';
-                    $url = "http://a2bfreighthub.com/classify/";
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
-					//$cfile = $this->getCurlValue($tmpFilePath, $fileType, $fileName);
-                    // $data = array('file' => $cfile);
-                    $data = array(
-                        'client' => 'a2b',
-                        'file' => curl_file_create($tmpFilePath, 'file/pdf', $fileName)
-                    );
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                    // in real life you should use something like:
-                    //curl_setopt($ch, CURLOPT_POSTFIELDS, 
-                    //          http_build_query($_FILES[$input]));
-                    //
-                    // receive server response ...
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $server_output = curl_exec ($ch);
-                    echo $server_output;
-                    if(curl_errno($ch)) {
-                        echo 'Error:' . curl_error($ch);
-                    }
-                    curl_close ($ch);
-                    // var_dump($server_output);
-                    die();
-                */
 
+                    // Run classify; return file type
+                    // 
+                    $this->Parser = Utility\Parser::getInstance();
+                    $pdf = $this->Parser->parseFile($tmpFilePath);
+                    $text = $pdf->getText();
+
+                    $keywords = array("CIV"=>"COMMERCIAL INVOICE", "BOL"=>"BILL OF LADING", "SWB"=>"SEA WAYBILL", "ARN"=>"ARRIVAL NOTICE", "PKL"=>"PACKING LIST");
+                    foreach ($keywords as $key => $value) {
+                        if(strpos($text, $value)) {
+                            $type = $key;
+                        } else {
+                            $type = "OTHER";
+                        }
+                    }        
                 }
 
                 //Setup our new file path
@@ -350,6 +319,7 @@ class Document extends Core\Controller {
             }
         }
         // push to cargowise
+        // User setting (tick box) 
         self::uploadToCargoWise($shipment_num, $email, $config);
         $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
         if (!empty($errors)) {
