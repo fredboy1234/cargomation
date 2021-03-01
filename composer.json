@@ -11,7 +11,8 @@
     ],
     "require": {
         "twig/twig": "~3.0",
-        "phpmailer/phpmailer": "dev-master"
+        "phpmailer/phpmailer": "dev-master",
+        "smalot/pdfparser": ">=0.18"
     },
     "autoload": {
         "psr-4": {
