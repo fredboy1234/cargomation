@@ -6,6 +6,8 @@ use App\Core;
 use App\Model;
 use App\Utility;
 
+use Spatie\PdfToText\Pdf;
+
 /**
  * Document Controller:
  *
@@ -268,21 +270,28 @@ class Document extends Core\Controller {
 
                 //Checks if type is empty
                 if(empty($type)) {
+                    $endpoint = 'http://a2bfreighthub.com/TEST_API/view.php?file=' . $tmpFilePath;
+                    // $text = file_get_contents($endpoint);
+                    // alternative for file_get_contents
+                    $curlopts = [
+                      CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                    ];
+                    $retval = $this->http_get_contents($endpoint, $curlopts);
 
-                    // Run classify; return file type
-                    // 
-                    $this->Parser = Utility\Parser::getInstance();
-                    $pdf = $this->Parser->parseFile($tmpFilePath);
-                    $text = $pdf->getText();
-
-                    $keywords = array("CIV"=>"COMMERCIAL INVOICE", "BOL"=>"BILL OF LADING", "SWB"=>"SEA WAYBILL", "ARN"=>"ARRIVAL NOTICE", "PKL"=>"PACKING LIST");
+                    $type = "OTHER";
+                    $keywords = array("CIV"=> array("COMMERCIAL INVOICE"), 
+                                      "BOL"=> array("BILL OF LADING NO."), 
+                                      "ARN"=> array("ARRIVAL NOTICE"), 
+                                      "SWB"=> array("SEA WAYBILL"), 
+                                      "PKL"=> array("PACKING LIST")
+                                    );
                     foreach ($keywords as $key => $value) {
-                        if(strpos($text, $value)) {
-                            $type = $key;
-                        } else {
-                            $type = "OTHER";
+                        foreach ($value as $key2 => $value2) {
+                            if(strval(strpos(strtoupper($retval),$value2)) != ""){
+                                $type = $key;
+                            } 
                         }
-                    }        
+                    }          
                 }
 
                 //Setup our new file path
@@ -718,8 +727,26 @@ class Document extends Core\Controller {
         return $token;
     }
 
-    private function sendMail($from = "", $subject = "", $message = "", $to = "") {
-
+    // alternative for file_get_contents
+    private function http_get_contents($url, Array $opts = []) {
+        $ch = curl_init();
+        if(!isset($opts[CURLOPT_TIMEOUT])) {
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        }
+        curl_setopt($ch, CURLOPT_URL, $url);
+        if(is_array($opts) && $opts) {
+            foreach($opts as $key => $val) {
+                curl_setopt($ch, $key, $val);
+            }
+        }
+        if(!isset($opts[CURLOPT_USERAGENT])) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['SERVER_NAME']);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        if(FALSE === ($retval = curl_exec($ch))) {
+            error_log(curl_error($ch));
+        }
+        return $retval;
     }
 
 }
