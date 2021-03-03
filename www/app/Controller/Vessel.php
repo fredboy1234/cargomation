@@ -165,4 +165,53 @@ class Vessel extends Core\Controller {
         ]);
     }
 
+    public function vesselSSR($user=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $vessel = $this->Vessel->getVessel($user);
+        $data =array();
+        $color = array();
+        $store = array();
+        if(!empty($vessel)){
+            foreach($vessel as $ves){
+                $dateTrack = date_create($ves->date_track);
+                $day = date_format($dateTrack,"l");
+                $month = date_format($dateTrack,"F j,Y");
+                $hour = date_format($dateTrack,'h:i:s A');
+                
+                $link = '<a class="col-sm-3 dcontent" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                $subdata =array(); 
+                $subdata['container_number'] = $link;
+                $subdata['vessel_name'] = $ves->vessel;
+                $subdata['date_track'] = $month." - ".$hour;
+                $subdata['status'] = $ves->moves;
+                $subdata['voyage'] = $ves->voyage;
+              
+                $data[] = $subdata; 
+            }
+           
+            $json_data=array(
+                "data"  =>  $data,
+            );
+           
+            
+        }
+        echo json_encode($json_data);
+    }
+
 }
