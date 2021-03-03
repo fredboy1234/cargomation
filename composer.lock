@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c2003ede8976680d490f81185d9a91d",
+    "content-hash": "54380bd7542b07f2e8a215ea621dc836",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "c2c5a3b9af8887f2d4d71e62cd83f4c735c30436"
+                "reference": "4a08cf4cdd2c38d12ee2b9fa69e5d235f37a6dcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c2c5a3b9af8887f2d4d71e62cd83f4c735c30436",
-                "reference": "c2c5a3b9af8887f2d4d71e62cd83f4c735c30436",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/4a08cf4cdd2c38d12ee2b9fa69e5d235f37a6dcb",
+                "reference": "4a08cf4cdd2c38d12ee2b9fa69e5d235f37a6dcb",
                 "shasum": ""
             },
             "require": {
@@ -76,11 +76,57 @@
                     "type": "github"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2020-12-10T09:29:01+00:00"
-=======
-            "time": "2021-02-05T09:19:51+00:00"
->>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
+            "time": "2021-02-19T15:28:08+00:00"
+        },
+        {
+            "name": "smalot/pdfparser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smalot/pdfparser.git",
+                "reference": "b6db6aa9f605e9a82a29f1325309929a1e0beac0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/b6db6aa9f605e9a82a29f1325309929a1e0beac0",
+                "reference": "b6db6aa9f605e9a82a29f1325309929a1e0beac0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": ">=5.6",
+                "symfony/polyfill-mbstring": "^1.18"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "symfony/phpunit-bridge": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Smalot\\PdfParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastien MALOT",
+                    "email": "sebastien@malot.fr"
+                }
+            ],
+            "description": "Pdf parser library. Can read and extract information from pdf file.",
+            "homepage": "https://www.pdfparser.org",
+            "keywords": [
+                "extract",
+                "parse",
+                "parser",
+                "pdf",
+                "text"
+            ],
+            "time": "2021-02-25T07:40:30+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -164,12 +210,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13"
+                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
-                "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/5232de97ee3b75b0360528dae24e73db49566ab1",
+                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +279,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-07T16:49:33+00:00"
+            "time": "2021-01-22T09:19:47+00:00"
         },
         {
             "name": "twig/twig",
@@ -241,21 +287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-<<<<<<< HEAD
-                "reference": "b0863c559ce96c90b750c272916bd657820a02a2"
+                "reference": "1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b0863c559ce96c90b750c272916bd657820a02a2",
-                "reference": "b0863c559ce96c90b750c272916bd657820a02a2",
-=======
-                "reference": "b0764968c2158ce5379e276a224278cde740c9bf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b0764968c2158ce5379e276a224278cde740c9bf",
-                "reference": "b0764968c2158ce5379e276a224278cde740c9bf",
->>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5",
+                "reference": "1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5",
                 "shasum": ""
             },
             "require": {
@@ -270,7 +307,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -314,11 +351,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2021-02-02T15:25:52+00:00"
-=======
-            "time": "2021-02-05T10:26:07+00:00"
->>>>>>> 35a37b789879e3396672b467eb3328312f66ce3d
+            "time": "2021-02-08T09:54:36+00:00"
         }
     ],
     "packages-dev": [],
