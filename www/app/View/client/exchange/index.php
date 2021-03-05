@@ -4,7 +4,7 @@
       <!-- SELECT2 EXAMPLE -->
       <div class="card card-default">
         <div class="card-header">
-          <h3 class="card-title">Convert</h3>
+          <h3 class="card-title"></h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -17,46 +17,57 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>From</label>
-                <select class="form-control select2bs4" style="width: 100%;" id="currency_code1" name="currency_code1">
-                  <option value="AUD" selected="selected">AUD - Australian Dollar</option>
-                </select>
+          <form action="">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>From</label>
+                    <select class="form-control select2bs4" style="width: 100%;" id="currency_code1" name="currency_code1">
+                      <option value="AUD" selected="selected">AUD - Australian Dollar</option>
+                    </select>
+                  </div>
+                  <!-- /.form-group col-md-3 -->
+                  <div class="form-group col-md-6">
+                    <label for="amount">Amount</label>
+                    <input type="amount" class="form-control" id="amount" placeholder="Enter amount" value="1" onkeyup="getExchange(this)">
+                  </div>
+                  <!-- /.form-group col-md-3 -->
+                </div>
+                <!-- /.form-row -->
               </div>
-              <!-- /.form-group -->
+              <!-- /.col-md-6 -->
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>To</label>
+                    <select class="form-control select2bs4" style="width: 100%;" id="currency_code" name="currency_code" onchange="getExchange(this)">
+                      <option value="USD" selected="selected">USD - United States Dollar</option>
+                      <?php foreach ($this->list_currency as $value): ?>
+                      <option value="<?= $value->currency_code; ?>"><?= $value->currency_code . " - " . $value->currency_desc; ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+                  <!-- /.form-group col-md-3 -->
+                  <div class="form-group col-md-6">
+                    <label for="result">Exchange</label>
+                    <input type="result" class="form-control" id="result" placeholder="0.00">
+                  </div>
+                  <!-- /.form-group col-md-3 -->
+                </div>
+                <!-- /.form-row -->
+              </div>
+              <!-- /.col-md-6 -->
             </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="amount">Amount</label>
-                <input type="amount" class="form-control" id="amount" placeholder="Enter amount" value="1" onchange="getExchange(this)">
-              </div>
+            <div id="loader-wrapper" class="justify-content-center">
+              <center>
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </center>
             </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                  <label>To</label>
-                  <select class="form-control select2bs4" style="width: 100%;" id="currency_code" name="currency_code" onchange="getExchange(this)">
-                    <option value="USD" selected="selected">USD - United States Dollar</option>
-                    <?php foreach ($this->list_currency as $value): ?>
-                    <option value="<?= $value->currency_code; ?>"><?= $value->currency_code . " - " . $value->currency_desc; ?></option>
-                    <?php endforeach; ?>
-                  </select>
-              </div>
-              <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="result">Exchange</label>
-                <input type="result" class="form-control" id="result" placeholder="0.00">
-              </div>
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
+          </form>
+          <!-- /.form -->
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
