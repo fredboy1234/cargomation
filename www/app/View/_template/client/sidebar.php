@@ -1,9 +1,9 @@
 <?php
 
 $menuItems = [
-  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Daily Exchange', 'url' => ['#'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
   ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
+  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Daily Exchange', 'url' => ['/exchange'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
   ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">New</span>'],
   ['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
   ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
