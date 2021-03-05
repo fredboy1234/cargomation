@@ -38,7 +38,7 @@ class Vessel extends Core\Model {
               $data['container'][$ves->container_number][] = $ves;
             }
         }
-        return $data['container'];
+        return $vessel;
     }
 
     public static function getVesselByNumber($vessel_number,$user_id){

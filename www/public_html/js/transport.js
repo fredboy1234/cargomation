@@ -21,10 +21,10 @@ $(document).ready(function(){
       ajax: {
         url: document.location.origin + '/transport/transportSSR/',
         data:function(d){
-            d.shipment_id = $("input[name='shipment_id']").val();
+            d.shipment_id = $("input[name='transport_id']").val();
             d.ETA = $("input[name='ETA']").val();
             d.client_name = $("input[name='client_name']").val();
-            d.consignee = $("input[name='consignee']").val();
+            d.consignee = $("input[name='vessel_name']").val();
             d.consignor = $("input[name='consignor']").val();
             d.container = $("input[name='container']").val();
             d.origin = $("input[name='origin']:checked").val();
@@ -35,4 +35,32 @@ $(document).ready(function(){
        },
       columns: tableColumnData,
     }); 
+
+    $('#doc_search').on( 'keyup', function () {
+      table.search( this.value ).draw();
+    });
+
+    $("#advance-search-btn").on("click",function(){
+      var check_arr = [];
+      $("input[name='post_trigger']").val("set");
+      $("input:checkbox[name=stat]:checked").each(function(){
+        check_arr.push($(this).val());
+      });
+      $("#status").val(check_arr);
+     
+      var data = $("#addvance-search-form").serializeArray();
+      
+      var query_data = {};
+      console.log(query_data);
+      var html="";
+      $.each(data,function(key,value){
+        var index = value.name;
+        var val = value.value;
+        query_data[index] = val;
+      });
+      // $("input[name='origin']").val(query_data.origin);
+      // $("input[name='transportmode']").val(query_data.transportmode);
+      table.ajax.reload(setColor);
+      //table.draw();
+    });
 });

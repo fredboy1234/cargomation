@@ -18,6 +18,11 @@ function isActive($url) {
     echo 'active';
 }
 ?>
+<style>
+.m2 img{
+    width: 44%;
+}
+</style>
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
