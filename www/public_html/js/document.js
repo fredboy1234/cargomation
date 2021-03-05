@@ -69,6 +69,16 @@ $(document).ready(function () {
             // uploadTitle: 'Upload File',
             // downloadTitle: 'Download file',
         },
+        layoutTemplates: {
+            footer: '<div class="file-thumbnail-footer">\n' +
+                '    <div class="file-footer-caption" title="{caption}">File Name: {caption}' +
+                '       <br>File Type: <b>{type}</b>' +
+                '       <br>File Source: <b>{origin}</b>' +
+                '       <br>File Status: <b class="{status}">{status}</b>' +
+                '   </div>\n' +
+                '    {progress} {indicator} {actions}\n' +
+                '</div>'
+        },
         // layoutTemplates: {
         //     main1: '{preview}\n' +
         //         '<div class="kv-upload-progress kv-hidden"></div><div class="clearfix"></div>\n' +
@@ -395,6 +405,10 @@ $(document).ready(function () {
 
         //$('button#request').toggle();
     }
+    function truncate(str, n) {
+        return (str.length > n) ? str.substr(0, n - 1) + '&hellip;' : str;
+    };
+
 });
 
 $(function () {

@@ -3,10 +3,18 @@
     overflow-x: hidden;
     height: 350px;
 }
-.file-actions {
+.file-footer-caption {
+    margin-bottom: 10px !important;
+    padding: 10px 20px;
+    text-align: left !important;
+}
+/* .file-actions {
     position: absolute;
     bottom: 0;
     width: 100%;
+} */
+.krajee-default.file-preview-frame .kv-file-content {
+    height: auto;
 }
 .file-footer-buttons {
     float: right;
