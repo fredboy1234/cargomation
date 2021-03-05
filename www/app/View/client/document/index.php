@@ -30,9 +30,10 @@ if(!empty($this->document)) {
         }
 
         $initialPreview[] = $server_file;
-        $initialPreviewConfig[] = [ 'caption' => $file->name,
+        $initialPreviewConfig[] = [ 'caption' => strlen($file->name) > 20 ? substr($file->name,0,20)."..." : $file->name,
                                     'width' => '200px',
                                     'type' => 'pdf',
+                                    'source' => $file->upload_src,
                                     'size' => " ",
                                     'previewAsData' => true,
                                     'frameClass' => 'd-' . $file->document_id . ' b-' . $file->status,
@@ -40,11 +41,12 @@ if(!empty($this->document)) {
                                     'dataKey' => $file->document_id,
                                     'dataUrl' => $file->document_id,
                                     'extra' => ['status' => $file->status]];
-        $initialPreviewThumbTags[] = ['{status}' => $file->status, 
+        $initialPreviewThumbTags[] = ['{status}' => $file->status,
+                                      '{origin}' => $file->upload_src,
                                         '{icon}' => $status_icon,
-                                          '{id}' => $file->document_id, 
                                         '{date}' => $file->saved_date,
-                                      '{origin}' => $file->upload_src];
+                                        '{type}' => $file->type,
+                                          '{id}' => $file->document_id];
 
 
     }
