@@ -1,3 +1,8 @@
+.file-preview {
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 350px;
+}
 .file-actions {
     position: absolute;
     bottom: 0;

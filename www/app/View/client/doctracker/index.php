@@ -312,7 +312,7 @@
 </div>
 
 <div class="modal fade" id="myModal">
-  <div class="modal-dialog modal-lg" style="width:100%; max-width:830px">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Document</h4>
@@ -339,7 +339,7 @@
 <!-- /.modal -->
 
 <div class="modal fade" id="loadermodal">
-  <div class="modal-dialog modal-lg" style="width:100%; max-width:830px">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Updating Shipment</h4>
