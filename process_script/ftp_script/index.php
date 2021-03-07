@@ -40,14 +40,14 @@ else
         if (isset($_REQUEST['ftuser']))
         {
             $username = $_POST['ftuser'];
-            $password = $username . date("Ymd");
+            $password = random_password(8);
+            $date_added = date("Ymd");
             $passwordhash = md5($password);
             $userDir = "E/:A2BFREIGHT_MANAGER/" . $username . "/CW_XML/";
             $checkuser = '<User Name="' . $username;
         }
         else
         {
-
             $username = "emptyuser";
             $checkuser = '<User Name="' . $username;
         }
@@ -58,7 +58,7 @@ else
                 "Res" => "Null"
             );
             echo json_encode($array);
-            exit;
+            die();
         }
 
         if (strlen(trim($username)) <= 5)
@@ -67,7 +67,7 @@ else
                 "Res" => "User must be at least {6} characters long."
             );
             echo json_encode($array);
-            exit;
+            die();
         }
 
         //location of filezilla
@@ -83,11 +83,15 @@ else
         $pos1 = strpos($data, $checkuser); //find user name
         //echo (".".$pos1.".");
         fclose($fp);
-
+        
+		//check existing ftp user
+		$sql="SELECT * FROM ftp_users WHERE email = '$username'";
+		$exec_ftpuser = sqlsrv_query($conn, $sql);
+		$user_exist = sqlsrv_has_rows($exec_ftpuser);
+	
         //if user not found .. add
-        if ($pos1 == "" && $username != "emptyuser")
+        if ($user_exist == "")
         {
-
             $sqluser_info = "SELECT TOP (1) * FROM dbo.users
 			INNER JOIN dbo.user_role
 			ON dbo.users.id = dbo.user_role.user_id WHERE
@@ -95,7 +99,7 @@ else
 			AND dbo.user_role.role_id = 2";
             $execRecord_userinfo = sqlsrv_query($conn, $sqluser_info);
             $return_user = sqlsrv_has_rows($execRecord_userinfo);
-            if ($return_user == true)
+            if ($return_user === false)
             {
                 while ($row_user = sqlsrv_fetch_array($execRecord_userinfo, SQLSRV_FETCH_ASSOC))
                 {
@@ -105,12 +109,10 @@ else
             else
             {
 
-                $scc = array(
-                    "Res" => "User Email does not exist / Invalid role ID!"
-                );
+                $scc = array("Res" => "User Email does not exist / Invalid role ID!!");
                 http_response_code(401);
                 echo json_encode($scc);
-                exit();
+                die();
             }
 
             // user setting for FileZilla FTP
@@ -126,7 +128,7 @@ else
             $lines = file($filelocfile);
 
             // Copy Config for backup
-            rename($filelocfile, $fileloc . $password . "-FileZilla Server.xml");
+            //rename($filelocfile, $fileloc . $password . "-FileZilla Server.xml");
 
             // open Config for writing
             $file = fopen($filelocfile, "a");
@@ -174,10 +176,15 @@ else
 					');
                 }
             }
+			
+			
+			//store ftp account
+			$sql = "INSERT INTO ftp_users (email,ftp_password,date_added,isActive) VALUES ('$username','$password','$date_added','Y');";
+			$exec_ftp = sqlsrv_query($conn, $sql);
+			 
 
             // Close xml file
             fclose($file);
-
             if (!file_exists("C:/inetpub/wwwroot/process_script/xml_mapper/batch_file/$username.bat"))
             {
                 $file_loc = "C:/inetpub/wwwroot/process_script/xml_mapper/batch_file/$username.bat";
@@ -189,19 +196,15 @@ else
             }
 
             http_response_code(200);
-            $scc = array(
-                "Res" => "Successfully Added",
-                "Generated pass" => $password,
-            );
-            echo json_encode($scc); //did not add user, user name already used
+            $scc = array("Res" => "Successfully Added","Generated pass" => $password);
+            echo json_encode($scc);
             
         }
+	
         else
         {
             http_response_code(200);
-            $scc = array(
-                "Res" => "Account already exist."
-            );
+            $scc = array("Res" => "Account already exist.");
             echo json_encode($scc); //did not add user, user name already used
             
         }
@@ -213,5 +216,12 @@ else
     }
 }
 /*end of Auto FTP*/
+
+function random_password( $length = 8 ) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+    $password = substr( str_shuffle( $chars ), 0, $length );
+    return $password;
+}
+
 
 ?>
