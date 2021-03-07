@@ -7,6 +7,8 @@
 * - Base64_Decoder()
 */
 
+/* PROCESS FLOW*/
+
 require_once ('json.php');
 require_once ('jsonpath-0.8.1.php');
 require_once ('connection.php');
@@ -38,18 +40,7 @@ if ($return === true) {
 		$auth = base64_encode($service_user . ":" . $service_password);
 	}
 
-	function process_shipment(
-		$key,
-		$client_email,
-		$ship_id,
-		$webservicelink,
-		$service_user,
-		$service_password,
-		$server_id,
-		$enterprise_id,
-		$auth,
-		$company_code
-	)
+	function process_shipment($key,$client_email,$ship_id,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code)
 	{
 		$serverName = "a2bserver.database.windows.net";
 		$connectionInfo = array("Database" => "a2bfreighthub_db","UID" => "A2B_Admin","PWD" => "v9jn9cQ9dF7W");
@@ -182,8 +173,9 @@ if ($return === true) {
 
 						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
 					}
-					break;
-				} else {
+				} 
+				else
+				{
 					$xpath_AttachedCountSingle = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].FileName");
 					$xpath_AttachedB64 = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].ImageData");
 					$xpath_DocType = jsonPath($json_xpathdoc,$path_AttachedDocument."[$attach].Type.Code");
@@ -241,7 +233,7 @@ if ($return === true) {
 			}
 		} else 
 		{
-			echo "no edocs found";
+			//echo "no edocs found";
 		}
 	}
 	// END OF DOCUMENT PROCESS
@@ -272,7 +264,17 @@ if ($return === true) {
 		);
 	}
 	
-	
+	function file_log($shipment_key,$path,$client_id){
+		
+		$serverName = "a2bserver.database.windows.net";
+		$connectionInfo = array("Database" => "a2bfreighthub_db","UID" => "A2B_Admin","PWD" => "v9jn9cQ9dF7W");
+		$conn = sqlsrv_connect($serverName, $connectionInfo);
+		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
+		$date_added = date("Ymd");
+		$sql = "INSERT INTO inbound_xml (user_id,filename,shipment_num,date_added) VALUES ('$client_id','$path','$shipment_key','$date_added')";
+		$exec_file_log = sqlsrv_query($conn, $sql);
+	} 
+ 
 	function Base64_Decoder($val, $valName, $id, $pathName, $shipkey)
 	{
 		$path = "E:/A2BFREIGHT_MANAGER/$id/CW_FILE/$shipkey/$pathName/";
@@ -407,15 +409,19 @@ if ($return === true) {
                 //GET TRANSPORT MODE
 				$OrganizationAddress = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr = $OrganizationAddress;
+				
 				$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection.".TransportMode");
 				$TRANSMODE = $parser->encode($XPATH_TRANSMODE);
 				$TRANSMODE = getArrayName($TRANSMODE);
+				
 				$XPATH_SHIP_ETD = jsonPath($universal_shipment, $path_TransportLegCollection.".EstimatedDeparture");
 				$TRANS_ETD = $parser->encode($XPATH_SHIP_ETD);
 				$TRANS_ETD = getArrayName($TRANS_ETD);
+				
 				$XPATH_SHIP_ETA = jsonPath($universal_shipment, $path_TransportLegCollection.".EstimatedArrival");
 				$TRANS_ETA = $parser->encode($XPATH_SHIP_ETA);
 				$TRANS_ETA = getArrayName($TRANS_ETA);
+				
 				$XPATH_SHIP_TRIGGERDATE = jsonPath($universal_shipment, $path_UniversalShipmentContext.".TriggerDate");
 				$SHIP_TRIGGERDATE = $parser->encode($XPATH_SHIP_TRIGGERDATE);
 				$SHIP_TRIGGERDATE = getArrayName($SHIP_TRIGGERDATE);
@@ -466,13 +472,10 @@ if ($return === true) {
 					$CONTAINERctr = 1;
 				}
 				$OrganizationAddress = jsonPath(
-					$universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress"
-				);
+					$universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr = $OrganizationAddress;
 				if ($OrganizationAddress_ctr != false) {
-					$OrganizationAddress = jsonPath(
-						$universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress"
-					);
+					$OrganizationAddress = jsonPath($universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 					$OrganizationAddress_ctr = count($OrganizationAddress[0]);
 				} else {
 					$OrganizationAddress_ctr = 0;
@@ -686,9 +689,7 @@ if ($return === true) {
 			}
 						
 						
-						
-						
-                        //INSERT RECORD FOR TBLCONTAINER
+
 						if ($CONTAINERctr > 1) {
 							for ($c = 0; $c <= $CONTAINERctr - 1; $c++) {
 								$XPATH_CONTAINERNUMBER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ContainerNumber");
@@ -700,17 +701,110 @@ if ($return === true) {
 								$XPATH_DELIVERYMODE = jsonPath($universal_shipment, $path_ContainerCollection."[$c].DeliveryMode");
 								$DELIVERYMODE = $parser->encode($XPATH_DELIVERYMODE);
 								$DELIVERYMODE = getArrayName($DELIVERYMODE);
-								$XPATH_CATEGORYDESCRIPTION = jsonPath(
-									$universal_shipment,
-									"$.Body.UniversalShipment.Shipment.ContainerCollection.Container[$c].ContainerType.Category.Description"
-								);
+								
+								$XPATH_FCLUNLOADFROMVESSEL = jsonPath($universal_shipment, $path_ContainerCollection."[$c].FCLUnloadFromVessel");
+								$FCLUNLOADFROMVESSEL = $parser->encode($XPATH_FCLUNLOADFROMVESSEL);
+								$FCLUNLOADFROMVESSEL = getArrayName($FCLUNLOADFROMVESSEL);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
+								
+								$XPATH_ARRIVALCARTAGEADVISED = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageAdvised");
+								$ARRIVALCARTAGEADVISED = $parser->encode($XPATH_ARRIVALCARTAGEADVISED);
+								$ARRIVALCARTAGEADVISED = getArrayName($ARRIVALCARTAGEADVISED);
+								if($ARRIVALCARTAGEADVISED == 'false'){$ARRIVALCARTAGEADVISED=NULL;}
+								
+								$XPATH_SLOTDATE = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalSlotDateTime");
+								$SLOTDATE = $parser->encode($XPATH_SLOTDATE);
+								$SLOTDATE = getArrayName($SLOTDATE);
+								if($SLOTDATE == 'false'){$SLOTDATE=NULL;}
+								
+								$XPATH_WHARFOUT = jsonPath($universal_shipment, $path_ContainerCollection."[$c].FCLWharfGateOut");
+								$WHARFOUT = $parser->encode($XPATH_WHARFOUT);
+								$WHARFOUT = getArrayName($WHARFOUT);
+								if($WHARFOUT == 'false'){$WHARFOUT=NULL;}
+								
+								$XPATH_ESTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalEstimatedDelivery");
+								$ESTFULLDELIVER = $parser->encode($XPATH_ESTFULLDELIVER);
+								$ESTFULLDELIVER = getArrayName($ESTFULLDELIVER);
+								if($ESTFULLDELIVER == 'false'){$ESTFULLDELIVER=NULL;}
+								
+								$XPATH_ACTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageComplete");
+								$ACTFULLDELIVER = $parser->encode($XPATH_ACTFULLDELIVER);
+								$ACTFULLDELIVER = getArrayName($ACTFULLDELIVER);
+								if($ACTFULLDELIVER == 'false'){$ACTFULLDELIVER=NULL;}
+								
+								$XPATH_EMPRETURNEDBY = jsonPath($universal_shipment, $path_ContainerCollection."[$c].EmptyReturnedBy");
+								$EMPRETURNEDBY = $parser->encode($XPATH_EMPRETURNEDBY);
+								$EMPRETURNEDBY = getArrayName($EMPRETURNEDBY);
+								if($EMPRETURNEDBY == 'false'){$EMPRETURNEDBY=NULL;}
+								
+								$XPATH_EMPFORRETURNED = jsonPath($universal_shipment, $path_ContainerCollection."[$c].EmptyReadyForReturn");
+								$EMPFORRETURNED = $parser->encode($XPATH_EMPFORRETURNED);
+								$EMPFORRETURNED = getArrayName($EMPFORRETURNED);
+								if($EMPFORRETURNED == 'false'){$EMPFORRETURNED=NULL;}
+								
+								$XPATH_CUSTOMSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ImportDepotCustomsReference");
+								$CUSTOMSREF = $parser->encode($XPATH_CUSTOMSREF);
+								$CUSTOMSREF = getArrayName($CUSTOMSREF);
+								if($CUSTOMSREF == 'false'){$CUSTOMSREF=NULL;}
+								
+								$XPATH_PORTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageRef");
+								$PORTTRANSREF = $parser->encode($XPATH_PORTTRANSREF);
+								$PORTTRANSREF = getArrayName($PORTTRANSREF);
+								if($PORTTRANSREF == 'false'){$PORTTRANSREF=NULL;}
+								
+								$XPATH_SLOTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalSlotReference");
+								$SLOTTRANSREF = $parser->encode($XPATH_SLOTTRANSREF);
+								$SLOTTRANSREF = getArrayName($SLOTTRANSREF);
+								if($SLOTTRANSREF == 'false'){$SLOTTRANSREF=NULL;}
+								
+								$XPATH_DORELEASE = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ContainerImportDORelease");
+								$DORELEASE = $parser->encode($XPATH_DORELEASE);
+								$DORELEASE = getArrayName($DORELEASE);
+								if($DORELEASE == 'false'){$DORELEASE=NULL;}
+						
+								$XPATH_CATEGORYDESCRIPTION = jsonPath($universal_shipment,"$.Body.UniversalShipment.Shipment.ContainerCollection.Container[$c].ContainerType.Category.Description");
 								$CATEGORYDESCRIPTION = $parser->encode($XPATH_CATEGORYDESCRIPTION);
 								$CATEGORYDESCRIPTION = getArrayName($CATEGORYDESCRIPTION);
+								
+								$DeliveryCartageAdvised = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageAdvised");
+								$DeliveryCartageAdvised = $parser->encode($DeliveryCartageAdvised);
+								$DeliveryCartageAdvised = getArrayName($DeliveryCartageAdvised);
+								if($DeliveryCartageAdvised == 'false'){$DeliveryCartageAdvised=NULL;}
+								
+								$DeliveryCartageCompleted = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageCompleted");
+								$DeliveryCartageCompleted = $parser->encode($DeliveryCartageCompleted);
+								$DeliveryCartageCompleted = getArrayName($DeliveryCartageCompleted);
+								if($DeliveryCartageCompleted == 'false'){$DeliveryCartageCompleted=NULL;}
+								
+								$DeliveryRequiredFrom = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredFrom");
+								$DeliveryRequiredFrom = $parser->encode($DeliveryRequiredFrom);
+								$DeliveryRequiredFrom = getArrayName($DeliveryRequiredFrom);
+								if($DeliveryRequiredFrom == 'false'){$DeliveryRequiredFrom=NULL;}
+								
+								$DeliveryRequiredBy = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredBy");
+								$DeliveryRequiredBy = $parser->encode($DeliveryRequiredBy);
+								$DeliveryRequiredBy = getArrayName($DeliveryRequiredBy);
+								if($DeliveryRequiredBy == 'false'){$DeliveryRequiredBy=NULL;}
+								
+								$EstimatedDelivery = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.EstimatedDelivery");
+								$EstimatedDelivery = $parser->encode($EstimatedDelivery);
+								$EstimatedDelivery = getArrayName($EstimatedDelivery);
+								if($EstimatedDelivery == 'false'){$EstimatedDelivery=NULL;}
+								
+								$DeliveryLabourTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryLabourTime");
+								$DeliveryLabourTime = $parser->encode($DeliveryLabourTime);
+								$DeliveryLabourTime = getArrayName($DeliveryLabourTime);
+								if($DeliveryLabourTime == 'false'){$DeliveryLabourTime=NULL;}
+								
+								$DeliveryTruckWaitTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryTruckWaitTime");
+								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
+								$DeliveryTruckWaitTime = getArrayName($DeliveryTruckWaitTime);
+								if($DeliveryTruckWaitTime == 'false'){$DeliveryTruckWaitTime=NULL;}
+								
 								$sqlInsertRecord_Container = "INSERT INTO shipcontainer
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
+								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
-                                //$sqlInsertRecord_Container;
 
 							}
 						} elseif ($CONTAINERctr == 1) {
@@ -727,9 +821,105 @@ if ($return === true) {
 								$XPATH_CATEGORYDESCRIPTION = jsonPath($universal_shipment,$path_ContainerCollection.".ContainerType.Category.Description");
 								$CATEGORYDESCRIPTION = $parser->encode($XPATH_CATEGORYDESCRIPTION);
 								$CATEGORYDESCRIPTION = getArrayName($CATEGORYDESCRIPTION);
+								
+								$XPATH_FCLUNLOADFROMVESSEL = jsonPath($universal_shipment, $path_ContainerCollection.".FCLUnloadFromVessel");
+								$FCLUNLOADFROMVESSEL = $parser->encode($XPATH_FCLUNLOADFROMVESSEL);
+								$FCLUNLOADFROMVESSEL = getArrayName($FCLUNLOADFROMVESSEL);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
+								
+								$XPATH_ARRIVALCARTAGEADVISED = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageAdvised");
+								$ARRIVALCARTAGEADVISED = $parser->encode($XPATH_ARRIVALCARTAGEADVISED);
+								$ARRIVALCARTAGEADVISED = getArrayName($ARRIVALCARTAGEADVISED);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
+								
+								$XPATH_SLOTDATE = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalSlotDateTime");
+								$SLOTDATE = $parser->encode($XPATH_SLOTDATE);
+								$SLOTDATE = getArrayName($SLOTDATE);
+								if($SLOTDATE == 'false'){$SLOTDATE=NULL;}
+								
+								$XPATH_WHARFOUT = jsonPath($universal_shipment, $path_ContainerCollection.".FCLWharfGateOut");
+								$WHARFOUT = $parser->encode($XPATH_WHARFOUT);
+								$WHARFOUT = getArrayName($WHARFOUT);
+								if($WHARFOUT == 'false'){$WHARFOUT=NULL;}
+								
+								$XPATH_ESTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalEstimatedDelivery");
+								$ESTFULLDELIVER = $parser->encode($XPATH_ESTFULLDELIVER);
+								$ESTFULLDELIVER = getArrayName($ESTFULLDELIVER);
+								if($ESTFULLDELIVER == 'false'){$ESTFULLDELIVER=NULL;}
+								
+								$XPATH_ACTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageComplete");
+								$ACTFULLDELIVER = $parser->encode($XPATH_ACTFULLDELIVER);
+								$ACTFULLDELIVER = getArrayName($ACTFULLDELIVER);
+								if($ACTFULLDELIVER == 'false'){$ACTFULLDELIVER=NULL;}
+								
+								$XPATH_EMPRETURNEDBY = jsonPath($universal_shipment, $path_ContainerCollection.".EmptyReturnedBy");
+								$EMPRETURNEDBY = $parser->encode($XPATH_EMPRETURNEDBY);
+								$EMPRETURNEDBY = getArrayName($EMPRETURNEDBY);
+								if($EMPRETURNEDBY == 'false'){$EMPRETURNEDBY=NULL;}
+								
+								$XPATH_EMPFORRETURNED = jsonPath($universal_shipment, $path_ContainerCollection.".EmptyReadyForReturn");
+								$EMPFORRETURNED = $parser->encode($XPATH_EMPFORRETURNED);
+								$EMPFORRETURNED = getArrayName($EMPFORRETURNED);
+								if($EMPFORRETURNED == 'false'){$EMPFORRETURNED=NULL;}
+								
+								$XPATH_CUSTOMSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ImportDepotCustomsReference");
+								$CUSTOMSREF = $parser->encode($XPATH_CUSTOMSREF);
+								$CUSTOMSREF = getArrayName($CUSTOMSREF);
+								if($CUSTOMSREF == 'false'){$CUSTOMSREF=NULL;}
+								
+								$XPATH_PORTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageRef");
+								$PORTTRANSREF = $parser->encode($XPATH_PORTTRANSREF);
+								$PORTTRANSREF = getArrayName($PORTTRANSREF);
+								if($PORTTRANSREF == 'false'){$PORTTRANSREF=NULL;}
+								
+								$XPATH_SLOTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalSlotReference");
+								$SLOTTRANSREF = $parser->encode($XPATH_SLOTTRANSREF);
+								$SLOTTRANSREF = getArrayName($SLOTTRANSREF);
+								if($SLOTTRANSREF == 'false'){$SLOTTRANSREF=NULL;}
+								
+								$XPATH_DORELEASE = jsonPath($universal_shipment, $path_ContainerCollection.".ContainerImportDORelease");
+								$DORELEASE = $parser->encode($XPATH_DORELEASE);
+								$DORELEASE = getArrayName($DORELEASE);
+								if($DORELEASE == 'false'){$DORELEASE=NULL;}
+								
+								$DeliveryCartageAdvised = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageAdvised");
+								$DeliveryCartageAdvised = $parser->encode($DeliveryCartageAdvised);
+								$DeliveryCartageAdvised = getArrayName($DeliveryCartageAdvised);
+								if($DeliveryCartageAdvised == 'false'){$DeliveryCartageAdvised=NULL;}
+								
+								$DeliveryCartageCompleted = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageCompleted");
+								$DeliveryCartageCompleted = $parser->encode($DeliveryCartageCompleted);
+								$DeliveryCartageCompleted = getArrayName($DeliveryCartageCompleted);
+								if($DeliveryCartageCompleted == 'false'){$DeliveryCartageCompleted=NULL;}
+								
+								$DeliveryRequiredFrom = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredFrom");
+								$DeliveryRequiredFrom = $parser->encode($DeliveryRequiredFrom);
+								$DeliveryRequiredFrom = getArrayName($DeliveryRequiredFrom);
+								if($DeliveryRequiredFrom == 'false'){$DeliveryRequiredFrom=NULL;}
+								
+								$DeliveryRequiredBy = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredBy");
+								$DeliveryRequiredBy = $parser->encode($DeliveryRequiredBy);
+								$DeliveryRequiredBy = getArrayName($DeliveryRequiredBy);
+								if($DeliveryRequiredBy == 'false'){$DeliveryRequiredBy=NULL;}
+								
+								$EstimatedDelivery = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.EstimatedDelivery");
+								$EstimatedDelivery = $parser->encode($EstimatedDelivery);
+								$EstimatedDelivery = getArrayName($EstimatedDelivery);
+								if($EstimatedDelivery == 'false'){$EstimatedDelivery=NULL;}
+								
+								$DeliveryLabourTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryLabourTime");
+								$DeliveryLabourTime = $parser->encode($DeliveryLabourTime);
+								$DeliveryLabourTime = getArrayName($DeliveryLabourTime);
+								if($DeliveryLabourTime == 'false'){$DeliveryLabourTime=NULL;}
+								
+								$DeliveryTruckWaitTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryTruckWaitTime");
+								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
+								$DeliveryTruckWaitTime = getArrayName($DeliveryTruckWaitTime);
+								if($DeliveryTruckWaitTime == 'false'){$DeliveryTruckWaitTime=NULL;}
+								
 								$sqlInsertRecord_Container = "INSERT INTO shipcontainer
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
+								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
 							}
 						}
@@ -821,7 +1011,7 @@ if ($return === true) {
 				if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
 					   VALUES ('".$ship_id."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
-					   //$qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
+					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
 					}	
 				}
 			}
@@ -841,23 +1031,117 @@ if ($return === true) {
 								$CATEGORYDESCRIPTION = $parser->encode($XPATH_CATEGORYDESCRIPTION);
 								$CATEGORYDESCRIPTION = getArrayName($CATEGORYDESCRIPTION);
 								
+								$XPATH_FCLUNLOADFROMVESSEL = jsonPath($universal_shipment, $path_ContainerCollection."[$c].FCLUnloadFromVessel");
+								$FCLUNLOADFROMVESSEL = $parser->encode($XPATH_FCLUNLOADFROMVESSEL);
+								$FCLUNLOADFROMVESSEL = getArrayName($FCLUNLOADFROMVESSEL);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
 								
-								$sqlSearchContainer = "Select * from shipcontainer WHERE
-								WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
+								$XPATH_ARRIVALCARTAGEADVISED = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageAdvised");
+								$ARRIVALCARTAGEADVISED = $parser->encode($XPATH_ARRIVALCARTAGEADVISED);
+								$ARRIVALCARTAGEADVISED = getArrayName($ARRIVALCARTAGEADVISED);
+								if($ARRIVALCARTAGEADVISED == 'false'){$ARRIVALCARTAGEADVISED=NULL;}
+								
+								$XPATH_SLOTDATE = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalSlotDateTime");
+								$SLOTDATE = $parser->encode($XPATH_SLOTDATE);
+								$SLOTDATE = getArrayName($SLOTDATE);
+								if($SLOTDATE == 'false'){$SLOTDATE=NULL;}
+								
+								$XPATH_WHARFOUT = jsonPath($universal_shipment, $path_ContainerCollection."[$c].FCLWharfGateOut");
+								$WHARFOUT = $parser->encode($XPATH_WHARFOUT);
+								$WHARFOUT = getArrayName($WHARFOUT);
+								if($WHARFOUT == 'false'){$WHARFOUT=NULL;}
+								
+								$XPATH_ESTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalEstimatedDelivery");
+								$ESTFULLDELIVER = $parser->encode($XPATH_ESTFULLDELIVER);
+								$ESTFULLDELIVER = getArrayName($ESTFULLDELIVER);
+								if($ESTFULLDELIVER == 'false'){$ESTFULLDELIVER=NULL;}
+								
+								$XPATH_ACTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageComplete");
+								$ACTFULLDELIVER = $parser->encode($XPATH_ACTFULLDELIVER);
+								$ACTFULLDELIVER = getArrayName($ACTFULLDELIVER);
+								if($ACTFULLDELIVER == 'false'){$ACTFULLDELIVER=NULL;}
+								
+								$XPATH_EMPRETURNEDBY = jsonPath($universal_shipment, $path_ContainerCollection."[$c].EmptyReturnedBy");
+								$EMPRETURNEDBY = $parser->encode($XPATH_EMPRETURNEDBY);
+								$EMPRETURNEDBY = getArrayName($EMPRETURNEDBY);
+								if($EMPRETURNEDBY == 'false'){$EMPRETURNEDBY=NULL;}
+								
+								$XPATH_EMPFORRETURNED = jsonPath($universal_shipment, $path_ContainerCollection."[$c].EmptyReadyForReturn");
+								$EMPFORRETURNED = $parser->encode($XPATH_EMPFORRETURNED);
+								$EMPFORRETURNED = getArrayName($EMPFORRETURNED);
+								if($EMPFORRETURNED == 'false'){$EMPFORRETURNED=NULL;}
+								
+								$XPATH_CUSTOMSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ImportDepotCustomsReference");
+								$CUSTOMSREF = $parser->encode($XPATH_CUSTOMSREF);
+								$CUSTOMSREF = getArrayName($CUSTOMSREF);
+								if($CUSTOMSREF == 'false'){$CUSTOMSREF=NULL;}
+								
+								$XPATH_PORTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalCartageRef");
+								$PORTTRANSREF = $parser->encode($XPATH_PORTTRANSREF);
+								$PORTTRANSREF = getArrayName($PORTTRANSREF);
+								if($PORTTRANSREF == 'false'){$PORTTRANSREF=NULL;}
+								
+								$XPATH_SLOTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ArrivalSlotReference");
+								$SLOTTRANSREF = $parser->encode($XPATH_SLOTTRANSREF);
+								$SLOTTRANSREF = getArrayName($SLOTTRANSREF);
+								if($SLOTTRANSREF == 'false'){$SLOTTRANSREF=NULL;}
+								
+								$XPATH_DORELEASE = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ContainerImportDORelease");
+								$DORELEASE = $parser->encode($XPATH_DORELEASE);
+								$DORELEASE = getArrayName($DORELEASE);
+								if($DORELEASE == 'false'){$DORELEASE=NULL;}
+								
+								$DeliveryCartageAdvised = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageAdvised");
+								$DeliveryCartageAdvised = $parser->encode($DeliveryCartageAdvised);
+								$DeliveryCartageAdvised = getArrayName($DeliveryCartageAdvised);
+								if($DeliveryCartageAdvised == 'false'){$DeliveryCartageAdvised=NULL;}
+								
+								$DeliveryCartageCompleted = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageCompleted");
+								$DeliveryCartageCompleted = $parser->encode($DeliveryCartageCompleted);
+								$DeliveryCartageCompleted = getArrayName($DeliveryCartageCompleted);
+								if($DeliveryCartageCompleted == 'false'){$DeliveryCartageCompleted=NULL;}
+								
+								$DeliveryRequiredFrom = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredFrom");
+								$DeliveryRequiredFrom = $parser->encode($DeliveryRequiredFrom);
+								$DeliveryRequiredFrom = getArrayName($DeliveryRequiredFrom);
+								if($DeliveryRequiredFrom == 'false'){$DeliveryRequiredFrom=NULL;}
+								
+								$DeliveryRequiredBy = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredBy");
+								$DeliveryRequiredBy = $parser->encode($DeliveryRequiredBy);
+								$DeliveryRequiredBy = getArrayName($DeliveryRequiredBy);
+								if($DeliveryRequiredBy == 'false'){$DeliveryRequiredBy=NULL;}
+								
+								$EstimatedDelivery = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.EstimatedDelivery");
+								$EstimatedDelivery = $parser->encode($EstimatedDelivery);
+								$EstimatedDelivery = getArrayName($EstimatedDelivery);
+								if($EstimatedDelivery == 'false'){$EstimatedDelivery=NULL;}
+								
+								$DeliveryLabourTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryLabourTime");
+								$DeliveryLabourTime = $parser->encode($DeliveryLabourTime);
+								$DeliveryLabourTime = getArrayName($DeliveryLabourTime);
+								if($DeliveryLabourTime == 'false'){$DeliveryLabourTime=NULL;}
+								
+								$DeliveryTruckWaitTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryTruckWaitTime");
+								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
+								$DeliveryTruckWaitTime = getArrayName($DeliveryTruckWaitTime);
+								if($DeliveryTruckWaitTime == 'false'){$DeliveryTruckWaitTime=NULL;}
+								
+								
+								$sqlSearchContainer = "Select * from shipcontainer WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
 								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
 								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
 								
 								if($ifContainerIDExist == true)
 							    {
-								$sqlInsertRecord_Container = "Update shipcontainer SET
-								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION'
+								$sqlUpdateRecord_Container = "Update shipcontainer SET
+								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE' ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime'
 								WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
-								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container); 
+								$insertRecContainer = sqlsrv_query($conn, $sqlUpdateRecord_Container); 
 								}
 								else{
 								$sqlInsertRecord_Container = "INSERT INTO shipcontainer
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription)
-								Values($ship_id,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
+								Values($ship_id,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);	
 								}        
 							}	
@@ -878,41 +1162,125 @@ if ($return === true) {
 								$CATEGORYDESCRIPTION = $parser->encode($XPATH_CATEGORYDESCRIPTION);
 								$CATEGORYDESCRIPTION = getArrayName($CATEGORYDESCRIPTION);
 								
-								$sqlSearchContainer = "Select * from shipcontainer WHERE
-								WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
+								$XPATH_FCLUNLOADFROMVESSEL = jsonPath($universal_shipment, $path_ContainerCollection.".FCLUnloadFromVessel");
+								$FCLUNLOADFROMVESSEL = $parser->encode($XPATH_FCLUNLOADFROMVESSEL);
+								$FCLUNLOADFROMVESSEL = getArrayName($FCLUNLOADFROMVESSEL);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
+								
+								$XPATH_ARRIVALCARTAGEADVISED = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageAdvised");
+								$ARRIVALCARTAGEADVISED = $parser->encode($XPATH_ARRIVALCARTAGEADVISED);
+								$ARRIVALCARTAGEADVISED = getArrayName($ARRIVALCARTAGEADVISED);
+								if($FCLUNLOADFROMVESSEL == 'false'){$FCLUNLOADFROMVESSEL=NULL;}
+								
+								$XPATH_SLOTDATE = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalSlotDateTime");
+								$SLOTDATE = $parser->encode($XPATH_SLOTDATE);
+								$SLOTDATE = getArrayName($SLOTDATE);
+								if($SLOTDATE == 'false'){$SLOTDATE=NULL;}
+								
+								$XPATH_WHARFOUT = jsonPath($universal_shipment, $path_ContainerCollection.".FCLWharfGateOut");
+								$WHARFOUT = $parser->encode($XPATH_WHARFOUT);
+								$WHARFOUT = getArrayName($WHARFOUT);
+								if($WHARFOUT == 'false'){$WHARFOUT=NULL;}
+								
+								$XPATH_ESTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalEstimatedDelivery");
+								$ESTFULLDELIVER = $parser->encode($XPATH_ESTFULLDELIVER);
+								$ESTFULLDELIVER = getArrayName($ESTFULLDELIVER);
+								if($ESTFULLDELIVER == 'false'){$ESTFULLDELIVER=NULL;}
+								
+								$XPATH_ACTFULLDELIVER = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageComplete");
+								$ACTFULLDELIVER = $parser->encode($XPATH_ACTFULLDELIVER);
+								$ACTFULLDELIVER = getArrayName($ACTFULLDELIVER);
+								if($ACTFULLDELIVER == 'false'){$ACTFULLDELIVER=NULL;}
+								
+								$XPATH_EMPRETURNEDBY = jsonPath($universal_shipment, $path_ContainerCollection.".EmptyReturnedBy");
+								$EMPRETURNEDBY = $parser->encode($XPATH_EMPRETURNEDBY);
+								$EMPRETURNEDBY = getArrayName($EMPRETURNEDBY);
+								if($EMPRETURNEDBY == 'false'){$EMPRETURNEDBY=NULL;}
+								
+								$XPATH_EMPFORRETURNED = jsonPath($universal_shipment, $path_ContainerCollection.".EmptyReadyForReturn");
+								$EMPFORRETURNED = $parser->encode($XPATH_EMPFORRETURNED);
+								$EMPFORRETURNED = getArrayName($EMPFORRETURNED);
+								if($EMPFORRETURNED == 'false'){$EMPFORRETURNED=NULL;}
+								
+								$XPATH_CUSTOMSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ImportDepotCustomsReference");
+								$CUSTOMSREF = $parser->encode($XPATH_CUSTOMSREF);
+								$CUSTOMSREF = getArrayName($CUSTOMSREF);
+								if($CUSTOMSREF == 'false'){$CUSTOMSREF=NULL;}
+								
+								$XPATH_PORTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalCartageRef");
+								$PORTTRANSREF = $parser->encode($XPATH_PORTTRANSREF);
+								$PORTTRANSREF = getArrayName($PORTTRANSREF);
+								if($PORTTRANSREF == 'false'){$PORTTRANSREF=NULL;}
+								
+								$XPATH_SLOTTRANSREF = jsonPath($universal_shipment, $path_ContainerCollection.".ArrivalSlotReference");
+								$SLOTTRANSREF = $parser->encode($XPATH_SLOTTRANSREF);
+								$SLOTTRANSREF = getArrayName($SLOTTRANSREF);
+								if($SLOTTRANSREF == 'false'){$SLOTTRANSREF=NULL;}
+								
+								$XPATH_DORELEASE = jsonPath($universal_shipment, $path_ContainerCollection.".ContainerImportDORelease");
+								$DORELEASE = $parser->encode($XPATH_DORELEASE);
+								echo $DORELEASE = getArrayName($DORELEASE);
+								if($DORELEASE == 'false'){$DORELEASE=NULL;}
+								
+								$DeliveryCartageAdvised = jsonPath($universal_shipment, $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageAdvised");
+								$DeliveryCartageAdvised = $parser->encode($DeliveryCartageAdvised);
+								$DeliveryCartageAdvised = getArrayName($DeliveryCartageAdvised);
+								if($DeliveryCartageAdvised == 'false'){$DeliveryCartageAdvised=NULL;}
+								
+								$DeliveryCartageCompleted = jsonPath($universal_shipment, $path_UniversalSubShipment.".LocalProcessing.DeliveryCartageCompleted");
+								$DeliveryCartageCompleted = $parser->encode($DeliveryCartageCompleted);
+								$DeliveryCartageCompleted = getArrayName($DeliveryCartageCompleted);
+								if($DeliveryCartageCompleted == 'false'){$DeliveryCartageCompleted=NULL;}
+								
+								$DeliveryRequiredFrom = jsonPath($universal_shipment, $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredFrom");
+								$DeliveryRequiredFrom = $parser->encode($DeliveryRequiredFrom);
+								$DeliveryRequiredFrom = getArrayName($DeliveryRequiredFrom);
+								if($DeliveryRequiredFrom == 'false'){$DeliveryRequiredFrom=NULL;}
+								
+								$DeliveryRequiredBy = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryRequiredBy");
+								$DeliveryRequiredBy = $parser->encode($DeliveryRequiredBy);
+								$DeliveryRequiredBy = getArrayName($DeliveryRequiredBy);
+								if($DeliveryRequiredBy == 'false'){$DeliveryRequiredBy=NULL;}
+								
+								$EstimatedDelivery = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.EstimatedDelivery");
+								$EstimatedDelivery = $parser->encode($EstimatedDelivery);
+								$EstimatedDelivery = getArrayName($EstimatedDelivery);
+								if($EstimatedDelivery == 'false'){$EstimatedDelivery=NULL;}
+								
+								$DeliveryLabourTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryLabourTime");
+								$DeliveryLabourTime = $parser->encode($DeliveryLabourTime);
+								$DeliveryLabourTime = getArrayName($DeliveryLabourTime);
+								if($DeliveryLabourTime == 'false'){$DeliveryLabourTime=NULL;}
+								
+								$DeliveryTruckWaitTime = jsonPath($universal_shipment,  $path_UniversalSubShipment.".LocalProcessing.DeliveryTruckWaitTime");
+								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
+								$DeliveryTruckWaitTime = getArrayName($DeliveryTruckWaitTime);
+								if($DeliveryTruckWaitTime == 'false'){$DeliveryTruckWaitTime=NULL;}
+								
+								$sqlSearchContainer = "Select * from shipcontainer WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
 								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
 								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
 								
-								if($ifContainerIDExist == true)
+								if($ifContainerIDExist === true)
 							    {
-								$sqlInsertRecord_Container = "Update shipcontainer SET
-								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION'
+							    $sqlUpdateRecord_Container = "Update shipcontainer SET
+								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE'  ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime'
 								WHERE shipment_id='$ship_id' AND containernumber='$CONTAINERNUMBER'";
-								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container); 
+								$insertRecContainer = sqlsrv_query($conn, $sqlUpdateRecord_Container); 
 								}
 								else{
 								$sqlInsertRecord_Container = "INSERT INTO shipcontainer
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription)
-								Values($ship_id,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
+								Values($ship_id,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);	
+					 
 								}  
 							}
 						}
-						
-
-						process_shipment(
-							$SHIPMENTKEY,
-							$client_email,
-							$ship_id,
-							$webservicelink,
-							$service_user,
-							$service_password,
-							$server_id,
-							$enterprise_id,
-							$auth,
-							$company_code
-						);
+						 
+						process_shipment($SHIPMENTKEY,$client_email,$ship_id,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
+						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
 					}
 				}
                 //END OF DATA MANAGEMENT
@@ -920,8 +1288,6 @@ if ($return === true) {
 			}
 		}
 	}
-} else {
-	die("eAdaptor not found");
-	
-}
-echo "Run Script Success";
+} 
+else{die("eAdaptor not found");}
+header("HTTP/1.1 200 OK");
