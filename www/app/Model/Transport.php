@@ -29,92 +29,45 @@ class Transport extends Core\Model {
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT b.id as trans_id, {$arg} 
-                                FROM vrpt_transhipment b
+        return $Db->query("SELECT b.shipment_id as trans_id, {$arg} 
+                                FROM vrpt_Transport b
                                 LEFT JOIN users ON users.id = b.user_id
                                 WHERE b.user_id = '{$user_id}' ")->results();
 
     }
 
-    /**
-     * Get Client user assigned shipments.
-     */
-    public  function getClientUserShipment($user_id, $arg = "*") {
-
-        $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
-                        FROM shipment 
-                        LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id
-                        FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
-                        WHERE shipment_assigned.id = '{$user_id}'")->results();
-    }
-
-    public static function getDocument($shipment_id) {
-        // $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
-        // return json_decode(file_get_contents($api_url));
-
-        $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT * 
-                                FROM document 
-                                WHERE shipment_num = '{$shipment_id}'")->results();
-
-    }
-
-    public static function getDocumentBySearch($data,$user){
+    public static function getTransportSSR($data,$user){
         
         $Db = Utility\Database::getInstance();
-        //$where = "WHERE shipment.id is not null ";
-        $where = "WHERE users.id = '{$user}' and shipment.shipment_num is not null";
-        $origin = '';
-        $status ='';
-
-        if($data['shipment_id'] !="" ){
-            $where .= " and shipment.shipment_num = '{$data['shipment_id']}'";
+    
+        $where = "WHERE users.id = '{$user}'";
+        if($data['shipment_id'] != ''){
+            $where .= " and b.shipment_id= '{$data['shipment_id']}'";
         }
-        if($data['ETA'] != ""){
-            $date =  explode(" - ",$data['ETA']);
-            $start_date = date_format(date_create($date[0]), "Y/m/d");
-            $end_date = date_format(date_create($date[1]), "Y/m/d");
-            $where .= " and shipment.eta between '{$start_date}' and '{$end_date}' and shipment.eta <>'1900-01-01 00:00:00'";
+        if($data['shipment_num'] != ''){
+            $where .= " and b.shipment_num= '{$data['shipment_num']}'";
         }
-        if($data['client_name'] != ""){
-            $where .= " and concat_ws('',users.first_name,' ',users.last_name) like '%{$data['client_name']}%'";
+        if($data['vessel_name'] != ''){
+            $where .= " and b.vessel_name = '{$data['vessel_name']}'";
         }
-
-        if($data['consignee'] !=""){
-            $where .= " and shipment.consignee like '%{$data['consignee']}%'";
+        if($data['container'] != ''){
+            $where .= " and b.containernumber = '{$data['container']}'";
         }
-
-        if($data['consignor'] !=""){
-            $where .= " and shipment.consignor like '%{$data['consignor']}%'";
+        if($data['actual_full_deliver'] != ''){
+            $where .= " and b.actual_full_deliver = '{$data['actual_full_deliver']}'";           
         }
-
-        if($data['container'] != ""){
-            $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
+        if($data['trans_estimated_delivery'] != ''){
+            $where .= " and b.trans_actual_deliver = '{$data['trans_estimated_delivery']}'";           
         }
-        if($data['origin'] != ""){
-            // if($data['ETA'] == ""){
-            //     $where .= " and document.upload_src = '{$data['origin']}'";
-            // }
-           $origin = $data['origin'];
+        if($data['fcl_unload'] != ''){
+            $where .= " and b.fcl_unload = '{$data['fcl_unload']}'";           
         }
-
-        if($data['transportmode'] != ""){
-            $where .= " and shipment.transport_mode  like '%{$data['transportmode']}%'";
-        }
-       //$results = array();
-        return $Db->query("SELECT
-                                shipment.id
-                            FROM dbo.users
-                            INNER JOIN dbo.shipment
-                            ON dbo.users.id = dbo.shipment.user_id
-                            FULL OUTER JOIN dbo.shipcontainer
-                            ON dbo.shipment.id = dbo.shipcontainer.shipment_id
-                            FULL OUTER JOIN dbo.document
-                            ON dbo.shipment.id = dbo.document.shipment_id and  dbo.document.upload_src ='{$origin}'
-                            FULL OUTER JOIN dbo.document_status
-                            ON document.id = document_status.document_id and document_status.status in('pending','approved')
-                           {$where} group by shipment.id")->results();
+        
+        
+        return $Db->query("SELECT b.shipment_id as trans_id , *
+                            FROM vrpt_Transport b
+                            LEFT JOIN users ON users.id = b.user_id
+                         {$where}")->results();
     }  
 
     public static function shipmentAssign($data,$user){

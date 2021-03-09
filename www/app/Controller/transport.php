@@ -154,6 +154,22 @@ class Transport extends Core\Controller {
        return json_encode($userData);
     }
 
+    public function advanceSearch($user ='',$post=""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+        
+        return $this->Transport->getTransportSSR($post,$user);
+    }
+
     public function transportSSR($user=""){
         $data = array();
         $docsCollection = array();
@@ -180,54 +196,72 @@ class Transport extends Core\Controller {
         $searchStore = array();
        
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
-            $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user,$_POST);
             if(!empty($searchResult)){
-                foreach($searchResult as $id){
-                    foreach($api as $val){
-                        if($id->id == $val->id){
-                            $searchStore[] = $val;
-                        }
-                    }
-                }
-                $api = $searchStore;
+                $api = $searchResult;
             }else{
                 $api = array();
             }
+           
         }
-        
-        // $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
-        // if($role == 'user'){
-        //     $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
-        //     $api = $this->Shipment->getClientUserShipment($user);
-        // }
-        // foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
-        //     $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
-        // }
-        
-        // $stats = $docsCollection;
-        $doc_type = array('HBL','CIV','PKL','PKD','all');
-        //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
+      
         foreach($api as $key=>$value){
-            $eta_date = date_format(date_create($value->eta), "d/m/Y H:i:s");
-            $etd_date = date_format(date_create($value->etd), "d/m/Y H:i:s");
-            $all = "";
+            $fcl_unload = date_format(date_create($value->fcl_unload), "d/m/Y");
+            $port_transport_booked = date_format(date_create($value->port_transport_booked), "d/m/Y");
+            $slot_date = date_format(date_create($value->slot_date), "d/m/Y");
+            $wharf_gate_out = date_format(date_create($value->wharf_gate_out), "d/m/Y");
+            $estimated_full_delivery = date_format(date_create($value->estimated_full_delivery), "d/m/Y");
+            $actual_full_deliver = date_format(date_create($value->actual_full_deliver), "d/m/Y");
+            $empty_returned_by = date_format(date_create($value->empty_returned_by), "d/m/Y");
+            $empty_readyfor_returned = date_format(date_create($value->empty_readyfor_returned), "d/m/Y");
+            $trans_book_req = date_format(date_create($value->trans_book_req), "d/m/Y");
+            $trans_actual_deliver = date_format(date_create($value->trans_actual_deliver), "d/m/Y");
+            $trans_deliverreq_from = date_format(date_create($value->trans_deliverreq_from), "d/m/Y");
+            $trans_deliverreq_by = date_format(date_create($value->trans_deliverreq_by), "d/m/Y");
+            $trans_estimated_delivery = date_format(date_create($value->fcl_unload), "d/m/Y");
+            $trans_delivery_labour = date_format(date_create($value->trans_delivery_labour), "d/m/Y");
+            $trans_wait_time = date_format(date_create($value->trans_wait_time), "d/m/Y");
             
-              $tableData = [];
-
-                $subdata =array(); 
-                $subdata['transport_id'] = $value->trans_id;
-                $subdata['container_number'] = $value->containernumber;
-                $subdata['vessel_name'] = $value->vessel_name;
-                $subdata['eta'] = $eta_date;
-                $subdata['etd'] = $etd_date ;
-                $subdata['voyage_flight_number'] = $value->voyage_flight_num;
             
-                $data[] = $subdata;
+            $subdata =array(); 
+            
+            $subdata['transport_id'] = $value->trans_id;
+            $subdata['shipment_num'] = $value->shipment_num;
+            $subdata['container_number'] = $value->containernumber;
+            $subdata['voyage_flight_num'] = $value->voyage_flight_num;
+            $subdata['vesslloyds'] = $value->vesslloyds;
+            $subdata['transport_mode'] = $value->transport_mode;
+            $subdata['container_type'] = $value->containertype;
+            $subdata['container_delivery_mode'] = $value->containerdeliverymode;
+            $subdata['container_description'] = $value->containerdescription;
+            $subdata['fcl_unload'] = ($fcl_unload=="01/01/1900"?"No Date Available":$fcl_unload);
+            $subdata['port_transport_booked'] = ($port_transport_booked=="01/01/1900"?"No Date Available":$port_transport_booked);
+            $subdata['slot_date'] = ($slot_date=="01/01/1900"?"No Date Available":$slot_date);
+            $subdata['container_number'] = $value->containernumber;
+            $subdata['vessel_name'] = $value->vessel_name;
+            $subdata['wharf_gate_out'] = ($wharf_gate_out=="01/01/1900"?"No Date Available":$wharf_gate_out);
+            $subdata['estimated_full_delivery'] = ($estimated_full_delivery=="01/01/1900"?"No Date Available":$estimated_full_delivery);
+            $subdata['actual_full_deliver'] = ($actual_full_deliver=="01/01/1900"?"No Date Available":$actual_full_deliver);
+            $subdata['empty_returned_by'] = ($empty_returned_by=="01/01/1900"?"No Date Available":$empty_returned_by);
+            $subdata['customs_ref'] = $value->customs_Ref;
+            $subdata['empty_readyfor_returned'] = ($empty_readyfor_returned=="01/01/1900"?"No Date Available":$empty_readyfor_returned);
+            $subdata['port_transport_ref'] = $value->port_transport_ref;
+            $subdata['slot_book_ref'] = $value->slot_book_ref;
+            $subdata['do_release'] = $value->do_release;
+            
+            $subdata['trans_book_req'] = ($trans_book_req=="01/01/1900"?"No Date Available":$trans_book_req);
+            $subdata['trans_actual_deliver'] = ($trans_actual_deliver=="01/01/19000"?"No Date Available":$trans_actual_deliver);
+            $subdata['trans_deliverreq_from'] = ($trans_deliverreq_from=="01/01/1900"?"No Date Available":$trans_deliverreq_from);
+            $subdata['trans_deliverreq_by'] = ($trans_deliverreq_by=="01/01/1900"?"No Date Available":$trans_deliverreq_by);
+            $subdata['trans_estimated_delivery'] = ($trans_estimated_delivery=="01/01/1900"?"No Date Available":$trans_estimated_delivery);
+            $subdata['trans_delivery_labour'] = ($trans_delivery_labour=="01/01/1900"?"No Date Available":$trans_delivery_labour);
+            $subdata['trans_wait_time'] = ($trans_wait_time=="01/01/1900"?"No Date Available":$trans_wait_time);
+            
+            $data[] = $subdata;
             
             
         }
-       //exit();
+       
         $json_data=array(
             "data"  =>  $data,
         );

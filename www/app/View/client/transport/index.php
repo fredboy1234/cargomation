@@ -1,3 +1,12 @@
+    <style>
+        .daterangepicker .ranges{
+            overflow: scroll;
+            height: 226px;
+        }
+        .font-0-7{
+            font-size: 0.7rem;
+        }
+    </style>
     <!-- Main content -->
     <?php $settings = json_decode($this->user_settings);?>
     <section class="content">
@@ -36,19 +45,25 @@
                                         <form id="addvance-search-form">
                                         <div class="row">
                                             <div class="col-md-4" data-select2-id="29">
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Transport ID</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="transport_id" placeholder="Ex.: SHP001">
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Transport ID</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="transport_id" placeholder="Ex.: SHP001">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="inputEmail3" name="ETA" placeholder="">
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Shipment Number</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="shipment_num" placeholder="Ex.: SHP001">
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                <!-- /.form-group -->
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Actual Full Deliver</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="actual_full_deliver" placeholder="">
+                                                    </div>
+                                                </div>
                                            
                                             </div>
                                             <!-- /.col -->
@@ -64,6 +79,22 @@
                                                     <label for="inputEmail3" class="col-sm-4 col-form-label">Vessel Name</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" class="form-control" id="inputEmail3" name="vessel_name" placeholder="">
+                                                    </div>
+                                                </div>
+                                           
+                                            </div>
+                                            <div class="col-md-4" data-select2-id="29">
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Trans Estimated Delivery</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="trans_estimated_delivery" placeholder="">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">FCL Unload</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="fcl_unload" placeholder="">
                                                     </div>
                                                 </div>
                                            
