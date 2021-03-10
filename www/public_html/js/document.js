@@ -154,6 +154,12 @@ $(document).ready(function () {
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
         otherActionButtons: '<button type="button" ' +
+            'class="kv-file-upload btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas fa-upload"></i>' +
+            '</button>\n' +
+            '<button type="button" ' +
             'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
             'title="Request for Edit"{dataUrl}{dataKey} ' +
             'data-doc_id="{id}" data-doc_status="{status}">' +
