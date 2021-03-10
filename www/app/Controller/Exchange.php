@@ -66,6 +66,7 @@ class Exchange extends Core\Controller {
         }
 
         $list_currency = Model\Exchange::getCurrencyList();
+        $currency = Model\Exchange::getAllCurrencyList();
         
         $this->View->renderTemplate($role, $role . "/exchange/index", [
             "title" => "Daily Exchange",
@@ -75,7 +76,8 @@ class Exchange extends Core\Controller {
             "image_profile" => $profileImage,
             "dash_photo" =>Model\User::getUsersDashPhoto($userID),
             'selected_theme' => $selectedTheme,
-            'list_currency' => $list_currency
+            'list_currency' => $list_currency,
+            'currency' => $currency
         ]);
 
     }

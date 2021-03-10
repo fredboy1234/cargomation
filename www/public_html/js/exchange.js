@@ -10,6 +10,19 @@ $(function () {
   $('.select2bs4').select2({
     theme: 'bootstrap4'
   });
+
+
+  $('#forex').DataTable({
+    searching: true,
+    paging: true,
+    info: true,
+    responsive: true,
+    autoWidth: false,
+    lengthChange: false,
+    colReorder: true,
+    order: false
+  });
+
 });
 
 

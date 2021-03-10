@@ -34,6 +34,14 @@ class Exchange extends Core\Model {
 
     }
 
+    public static function getAllCurrencyList($arg = "*") {
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT $arg FROM currency 
+                            LEFT JOIN currency_rate 
+                            ON currency.currency_code = currency_rate.RATECODE ORDER BY currency_rate.EffectiveDate DESC, currency_rate.RATECODE")->results();
+    }
+
     public static function calcExchange($arg = "*", $currency_code = "USD") {
         $Db = Utility\Database::getInstance();
         // echo "SELECT $arg FROM currency 

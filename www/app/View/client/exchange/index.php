@@ -1,3 +1,4 @@
+<?php //var_dump($this->currency); ?>
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
@@ -22,7 +23,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label>From</label>
+                    <label>Currency I have</label>
                     <select class="form-control select2bs4" style="width: 100%;" id="currency_code1" name="currency_code1">
                       <option value="AUD" selected="selected">AUD - Australian Dollar</option>
                     </select>
@@ -40,7 +41,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label>To</label>
+                    <label>Currency I want</label>
                     <select class="form-control select2bs4" style="width: 100%;" id="currency_code" name="currency_code" onchange="getExchange(this)">
                       <option value="USD" selected="selected">USD - United States Dollar</option>
                       <?php foreach ($this->list_currency as $value): ?>
@@ -68,6 +69,55 @@
             </div>
           </form>
           <!-- /.form -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <!-- <div class="card-header">
+                  <h3 class="card-title">ForEx Table</h3>
+
+                  <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0" style="height: 300px;">
+                  <table id="forex" class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Currency</th>
+                        <th>Buy</th>
+                        <th>Sell</th>
+                        <th>Effective Date</th>
+                        <th>Effective Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($this->currency as $key => $value) : ?>
+                      <tr>
+                        <td><img src="http://a2bfreighthub.com/img/flag/flag-<?= strtolower($value->currency_code) ?>.png" alt="<?= strtolower($value->currency_code) ?>" style="width: 28px"> 
+                        <?= $value->currency_code . " - " . $value->currency_desc; ?></td>
+                        <td><?= $value->TTBuy ?></td>
+                        <td><?= $value->TTSell ?></td>
+                        <td><?= date_format(date_create($value->EffectiveDate), 'j F Y') ?></td>
+                        <td><?= date_format(date_create($value->EffectiveTime), 'H:i:s A') ?></td>
+                      </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

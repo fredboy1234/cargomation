@@ -56,19 +56,73 @@ if(!empty($this->document)) {
 <div id="document-upload" style="display: block;">
     <div class="row">
         <div class="col-md-5">
-            <h5><b>Shipment ID: </b><?= $this->shipment['shipment_id']; ?></h5>
-            <h5><b>Type: </b><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></h5>
-            
+            <h5><b>Shipment ID: </b><?= $this->shipment_info[0]->shipment_num; ?></h5>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-5">
             <!-- <h5><b>Status: </b>
                 <span class="text-success">Approved (<?= $approved; ?>)</span>
                 <span class="text-danger"> Pending (<?= $pending; ?>) </span>
                 <span class="text-warning">For Review (<?= $freview; ?>)</span> 
             </h5> -->
+            <h5><b>Type: </b><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></h5>
+        </div>
+        <div class="col-md-2">
             <h5><b>Total: </b><?= count($this->document); ?></h5>
         </div>
     </div>
+
+    <div class="card card-outline card-primary collapsed-card" style="transition: all 0.15s ease 0s; height: inherit; width: inherit;">
+        <div class="card-header">
+            <h3 class="card-title">Shipment Info</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
+                <i class="fas fa-sync-alt"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                <i class="fas fa-expand"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body" style="display: none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><b>Shipment ID: </b><?= $this->shipment_info[0]->shipment_num; ?></p>
+                    <p><b>House Bill: </b><?= $this->shipment_info[0]->house_bill; ?></p>
+                    <p><b>Transport Mode: </b><?= $this->shipment_info[0]->transport_mode; ?></p>
+                    <p><b>Voyage Flight No.: </b><?= $this->shipment_info[0]->voyage_flight_num; ?></p>
+                    <p><b>ETA: </b><?= $this->shipment_info[0]->eta; ?></p>
+                    <p><b>Delivery Place: </b><?= $this->shipment_info[0]->place_delivery; ?></p>
+                    <p><b>Consignee: </b><?= $this->shipment_info[0]->consignee; ?></p>
+                    <p><b>Consignee Address: </b><?= $this->shipment_info[0]->consignee_addr; ?></p>
+                    <p><b>Sending Agent: </b><?= $this->shipment_info[0]->sending_agent; ?></p>
+                    <p><b>Sending Agent Address: </b><?= $this->shipment_info[0]->sending_agent_addr; ?></p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Console: </b><?= $this->shipment_info[0]->console_id; ?></p>
+                    <p><b>Master Bill: </b><?= $this->shipment_info[0]->master_bill; ?></p>
+                    <p><b>Vessel Name: </b><?= $this->shipment_info[0]->vessel_name; ?></p>
+                    <p><b>Vessel Lloyds: </b><?= $this->shipment_info[0]->vesslloyds; ?></p>
+                    <p><b>ETD: </b><?= $this->shipment_info[0]->etd; ?></p>
+                    <p><b>Receipt Place: </b><?= $this->shipment_info[0]->place_receipt; ?></p>
+                    <p><b>Consignor: </b><?= $this->shipment_info[0]->consignor; ?></p>
+                    <p><b>Consignor Address: </b><?= $this->shipment_info[0]->consignor_addr; ?></p>
+                    <p><b>Receiving Agent: </b><?= $this->shipment_info[0]->receiving_agent; ?></p>
+                    <p><b>Receiving Agent Address: </b><?= $this->shipment_info[0]->receiving_agent_addr; ?></p>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
     <div class="file-loading" style="display: none;">
         <input id="input" name="input[]" type="file" accept="application/*" multiple>
     </div>
