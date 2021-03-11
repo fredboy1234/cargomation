@@ -52,6 +52,7 @@ class Exchange extends Core\Controller {
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
 
+        $this->View->addCSS("css/exchange.css");
         $this->View->addJS("js/exchange.js");
         
         // Render view template

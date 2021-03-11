@@ -1,0 +1,6 @@
+div#forex_wrapper > .row:first-child {
+    display: none;
+}
+#forex {
+    margin-top: 0px !important;
+}

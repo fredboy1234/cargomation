@@ -52,7 +52,7 @@
                   <!-- /.form-group col-md-3 -->
                   <div class="form-group col-md-6">
                     <label for="result">Exchange</label>
-                    <input type="result" class="form-control" id="result" placeholder="0.00">
+                    <input type="result" class="form-control" id="result" placeholder="0.00" disabled="disabled">
                   </div>
                   <!-- /.form-group col-md-3 -->
                 </div>
@@ -72,23 +72,38 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <!-- <div class="card-header">
+                <div class="card-header">
                   <h3 class="card-title">ForEx Table</h3>
 
                   <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                      <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
-                          <i class="fas fa-search"></i>
-                        </button>
+                    <form>
+                      <div class="form-row align-items-center">
+                        <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInputGroup">Daterange</label>
+                          <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                            <input type="text" class="form-control" id="daterange" placeholder="01/01/2001">
+                            <input type="hidden" class="form-control" id="start" placeholder="01/01/2001">
+                            <input type="hidden" class="form-control" id="end" placeholder="01/01/2001">
+                          </div>
+                        </div>
+                        <div class="col-auto">
+                          <label class="sr-only" for="inlineFormInputGroup">Search</label>
+                          <div class="input-group mb-2 input-group-sm">
+                            <input type="text" class="form-control" id="table_search" placeholder="Search">
+                            <div class="input-group-append">
+                              <div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
-                </div> -->
+                </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0" style="height: 300px;">
+                <div class="card-body table-responsive p-0">
                   <table id="forex" class="table table-head-fixed text-nowrap">
                     <thead>
                       <tr>
@@ -106,6 +121,7 @@
                         <?= $value->currency_code . " - " . $value->currency_desc; ?></td>
                         <td><?= $value->TTBuy ?></td>
                         <td><?= $value->TTSell ?></td>
+
                         <td><?= date_format(date_create($value->EffectiveDate), 'j F Y') ?></td>
                         <td><?= date_format(date_create($value->EffectiveTime), 'H:i:s A') ?></td>
                       </tr>
