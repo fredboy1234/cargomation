@@ -166,4 +166,15 @@ class Document extends Core\Model {
         }
     }
 
+    public static function deleteDocumentByDocID($document_id) {
+        // if(is_numeric(strpos($args, "id")))
+        //     $args = str_replace("id", "d.id", $args);
+        if( strpos($document_id, ',') !== false )
+            $document_id = implode("','", array_values(explode(",", $document_id)));
+        $Db = Utility\Database::getInstance();
+        return $Db->query("UPDATE document_status 
+                            SET status = 'deleted'
+                            WHERE document_id IN ('" . $document_id . "') ")->results();
+    }
+
 }

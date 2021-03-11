@@ -3,54 +3,53 @@
 $approved = 0;
 $pending = 0;
 $freview = 0;
+$status_icon = "fa-thumbs-down";
 if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
-        
-        // $initialPreview[] = "<object data='data:application/pdf;base64," . $file->img_data . "' type='text/plain' class='' alt='" . $file->name . "' ><div class='file - preview - other'> <span class='file - icon - 4x'><i class='glyphicon glyphicon-file'></i></span> </div></object>";
-        // $initialPreview[] = base$file->img_data;
-        // $path = "E:/A2BFREIGHT_MANAGER/CLIENT_$id/CW_FILE/$shipkey/$pathName/";
-        if(false) {
-            $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
+        if($file->status !== 'deleted') {
+            // $initialPreview[] = "<object data='data:application/pdf;base64," . $file->img_data . "' type='text/plain' class='' alt='" . $file->name . "' ><div class='file - preview - other'> <span class='file - icon - 4x'><i class='glyphicon glyphicon-file'></i></span> </div></object>";
+            // $initialPreview[] = base$file->img_data;
+            // $path = "E:/A2BFREIGHT_MANAGER/CLIENT_$id/CW_FILE/$shipkey/$pathName/";
+            if(false) {
+                $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
+            }
+
+            $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
+
+
+            if($file->status == 'approved') {
+                $approved++;
+                $status_icon = "fa-thumbs-up";
+            }
+            if($file->status == 'pending') {
+                $pending++;
+                $status_icon = "fa-thumbs-down";
+            }
+            if($file->status == 'review') {
+                $freview++;
+                $status_icon = "fa-search";
+            }
+
+            $initialPreview[] = $server_file;
+            $initialPreviewConfig[] = [ 'caption' => strlen($file->name) > 20 ? substr($file->name,0,20)."..." : $file->name,
+                                        'width' => '200px',
+                                        'type' => 'pdf',
+                                        'source' => $file->upload_src,
+                                        'size' => " ",
+                                        'previewAsData' => true,
+                                        'frameClass' => 'd-' . $file->document_id . ' b-' . $file->status,
+                                        'key' => $file->document_id,
+                                        'dataKey' => $file->document_id,
+                                        'dataUrl' => $file->document_id,
+                                        'extra' => ['status' => $file->status]];
+            $initialPreviewThumbTags[] = ['{status}' => $file->status,
+                                        '{origin}' => $file->upload_src,
+                                            '{icon}' => $status_icon,
+                                            '{date}' => $file->saved_date,
+                                            '{type}' => $file->type,
+                                            '{id}' => $file->document_id];
         }
-
-        $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
-
-
-        if($file->status == 'approved') {
-            $approved++;
-            $status_icon = "fa-thumbs-up";
-        }
-        if($file->status == 'pending') {
-            $pending++;
-            $status_icon = "fa-thumbs-down";
-        }
-        if($file->status == 'review') {
-            $freview++;
-            $status_icon = "fa-search";
-        }
-
-        $initialPreview[] = $server_file;
-        $initialPreviewConfig[] = [ 'caption' => strlen($file->name) > 20 ? substr($file->name,0,20)."..." : $file->name,
-                                    'width' => '200px',
-                                    'type' => 'pdf',
-                                    'source' => $file->upload_src,
-                                    'size' => " ",
-                                    'previewAsData' => true,
-                                    'frameClass' => 'd-' . $file->document_id . ' b-' . $file->status,
-                                    'key' => $file->document_id,
-                                    'dataKey' => $file->document_id,
-                                    'dataUrl' => $file->document_id,
-                                    'extra' => ['status' => $file->status]];
-        $initialPreviewThumbTags[] = ['{status}' => $file->status,
-                                      '{origin}' => $file->upload_src,
-                                        '{icon}' => $status_icon,
-                                        '{date}' => $file->saved_date,
-                                        '{type}' => $file->type,
-                                          '{id}' => $file->document_id];
-
-
     }
-
 } ?>
 
 <div id="document-upload" style="display: block;">
