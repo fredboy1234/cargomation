@@ -27,6 +27,7 @@
                       <tr>
                             <th>Container Number</th>
                             <th>Vessel Name</th>
+                            <th>Location</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th>Voyage</th>
@@ -41,3 +42,6 @@
         </div>
 </section>
 </div>
+<script>
+    var mapToken = <?php echo json_encode($this->mapToken);?>;
+</script>

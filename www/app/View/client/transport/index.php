@@ -35,7 +35,7 @@
                                     <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Profile</a>
                                     <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
                                     -->
-                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
+                                    <a class="nav-link d-none" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-10 col-md-10 col-sm-12">
@@ -59,12 +59,20 @@
                                                 </div>
                                                 <!-- /.form-group -->
                                                 <div class="form-group row">
-                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Actual Full Deliver</label>
+                                                    <!-- <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Actual Full Deliver</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" class="form-control" id="inputEmail3" name="actual_full_deliver" placeholder="">
+                                                    </div> -->
+                                                    <select id="transport-selector" class="form-select col-sm-6 d-inline-block" aria-label="Default select example">
+                                                        <?php foreach($this->droplist as $drop){?>
+                                                            <option value="<?=$drop['value'] ?>"><?=$drop['text']?></option>
+                                                        <?php }?>
+                                                    </select>
+                                                    <div class="col-sm-6 d-inline-block">
+                                                        <input  type="text" class="form-control" id="daterange" name="fcl_unload" placeholder="">
                                                     </div>
                                                 </div>
-                                           
+                                                
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-md-4" data-select2-id="29">
@@ -85,16 +93,16 @@
                                             </div>
                                             <div class="col-md-4" data-select2-id="29">
                                                 <div class="form-group row">
-                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Trans Estimated Delivery</label>
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Voyage Flight Num</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="inputEmail3" name="trans_estimated_delivery" placeholder="">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="voyage_flight_num" placeholder="">
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="form-group row">
-                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">FCL Unload</label>
+                                                    <label for="inputEmail3" class="col-sm-4 col-form-label font-0-7">Container Description</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="inputEmail3" name="fcl_unload" placeholder="">
+                                                        <input type="text" class="form-control" id="inputEmail3" name="container_description" placeholder="">
                                                     </div>
                                                 </div>
                                            

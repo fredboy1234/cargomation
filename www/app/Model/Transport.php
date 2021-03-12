@@ -53,17 +53,68 @@ class Transport extends Core\Model {
         if($data['container'] != ''){
             $where .= " and b.containernumber = '{$data['container']}'";
         }
-        if($data['actual_full_deliver'] != ''){
+        if(isset($data['actual_full_deliver']) && $data['actual_full_deliver'] != ''){
             $where .= " and b.actual_full_deliver = '{$data['actual_full_deliver']}'";           
         }
-        if($data['trans_estimated_delivery'] != ''){
-            $where .= " and b.trans_actual_deliver = '{$data['trans_estimated_delivery']}'";           
+        if(isset($data['trans_estimated_delivery']) && $data['trans_estimated_delivery'] != ''){
+            $where .= " and b.trans_estimated_delivery = '{$data['trans_estimated_delivery']}'";           
         }
-        if($data['fcl_unload'] != ''){
+        if(isset($data['fcl_unload']) && $data['fcl_unload'] != ''){
             $where .= " and b.fcl_unload = '{$data['fcl_unload']}'";           
         }
         
-        
+        if(isset($data['port_transport_booked']) && $data['port_transport_booked'] !=""){
+            $where .= " and b.port_transport_booked = '{$data['port_transport_booked']}'"; 
+        }
+
+        if(isset($data['fslot_date']) && $data['fslot_date'] !=""){
+            $where .= " and b.slot_date = '{$data['fslot_date']}'"; 
+        }
+
+        if(isset($data['wharf_gate_out']) && $data['wharf_gate_out'] !=""){
+            $where .= " and b.wharf_gate_out = '{$data['wharf_gate_out']}'"; 
+        }
+         
+        if(isset($data['estimated_full_delivery']) && $data['estimated_full_delivery'] !=""){
+            $where .= " and b.estimated_full_delivery = '{$data['estimated_full_delivery']}'"; 
+        }
+         
+        if(isset($data['empty_returned_by']) && $data['empty_returned_by'] !=""){
+            $where .= " and b.empty_returned_by = '{$data['empty_returned_by']}'"; 
+        }
+
+        if(isset($data['empty_readyfor_returned']) && $data['empty_readyfor_returned'] !=""){
+            $where .= " and b.empty_readyfor_returned = '{$data['empty_readyfor_returned']}'"; 
+        }
+
+        if(isset($data['empty_readyfor_returned']) && $data['empty_readyfor_returned'] !=""){
+            $where .= " and b.empty_readyfor_returned = '{$data['empty_readyfor_returned']}'"; 
+        }
+         
+        if(isset($data['trans_book_req']) && $data['trans_book_req'] !=""){
+            $where .= " and b.trans_book_req = '{$data['trans_book_req']}'"; 
+        }
+         
+        if(isset($data['trans_actual_deliver']) && $data['trans_actual_deliver'] !=""){
+            $where .= " and b.trans_actual_deliver = '{$data['trans_actual_deliver']}'"; 
+        }
+            
+        if(isset($data['trans_deliverreq_from']) && $data['trans_deliverreq_from'] !=""){
+            $where .= " and b.trans_deliverreq_from = '{$data['trans_deliverreq_from']}'"; 
+        }
+
+        if(isset($data['trans_deliverreq_by']) && $data['trans_deliverreq_by'] !=""){
+            $where .= " and b.trans_deliverreq_by = '{$data['trans_deliverreq_by']}'"; 
+        }
+         
+        if(isset($data['trans_delivery_labour']) && $data['trans_delivery_labour'] !=""){
+            $where .= " and b.trans_delivery_labour = '{$data['trans_delivery_labour']}'"; 
+        }
+         
+        if(isset($data['trans_wait_time']) && $data['trans_wait_time'] !=""){
+            $where .= " and b.trans_wait_time = '{$data['trans_wait_time']}'"; 
+        }
+     
         return $Db->query("SELECT b.shipment_id as trans_id , *
                             FROM vrpt_Transport b
                             LEFT JOIN users ON users.id = b.user_id

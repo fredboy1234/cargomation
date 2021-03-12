@@ -72,9 +72,14 @@ $(document).ready(function(){
       $("#addvance-search-form").find("input[type=text], textarea").val("");
       table.ajax.reload();
     });
+
+    $('#transport-selector').on('change',function(){
+      var name = $(this).val();
+      $("#daterange").attr("name", name);
+    });
     dateshow('input[name="actual_full_deliver"]');
     dateshow('input[name="trans_estimated_delivery"]');
-    dateshow('input[name="fcl_unload"]');
+    dateshow('#daterange');
 
     function dateshow(element){
       $(element).daterangepicker({

@@ -110,6 +110,7 @@ class Transport extends Core\Controller {
             'role' => $role,
             'selected_theme' => $selectedTheme,
             "user" => (Object) Model\User::getProfile($user),
+            "droplist" =>$this->dropdownList(),
         ]);
     }
 
@@ -267,5 +268,25 @@ class Transport extends Core\Controller {
         );
         
         echo json_encode($json_data);
+    }
+
+    public function dropdownList(){
+        $list = array(
+            array("value"=>"fcl_unload", "text"=>"FCL Unload"),
+            array("value"=>"port_transport_booked", "text"=>"Port Transport Booked"),
+            array("value"=>"fslot_date", "text"=>"F Slot Date"),
+            array("value"=>"wharf_gate_out", "text"=>"Wharf Gate Out"),
+            array("value"=>"estimated_full_delivery", "text"=>"Estimated Full Delivery"),
+            array("value"=>"empty_returned_by", "text"=>"Empty Returned By"),
+            array("value"=>"empty_readyfor_returned", "text"=>"Empty Ready For Returned"),
+            array("value"=>"trans_book_req", "text"=>"Trans Book Req"),
+            array("value"=>"trans_actual_deliver", "text"=>"Trans Actual Delivery"),
+            array("value"=>"trans_deliverreq_from", "text"=>"Trans Delver Req From"),
+            array("value"=>"trans_deliverreq_by", "text"=>"Trans Deliver Req By"),
+            array("value"=>"trans_estimated_delivery", "text"=>"Trans Estimated Delivery"),
+            array("value"=>"trans_delivery_labour", "text"=>"Trans Delivery Labour"),
+            array("value"=>"trans_wait_time", "text"=>"Trans Wait Time")
+        );
+        return $list;
     }
 }

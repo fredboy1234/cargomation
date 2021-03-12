@@ -19,6 +19,7 @@ jQuery(document).ready(function() {
      columns: [
       { data: "container_number" },
       { data: "vessel_name" },
+      { data: "location_city" },
       { data: "date_track" },
       { data: "status" },
       { data: "voyage" },
@@ -39,4 +40,11 @@ jQuery(document).ready(function() {
       } );
   }
   }); 
+  
+  $('.a2b-marker-icon').on('click',function(){
+    $(".vesselname").removeClass("d-none");
+    setTimeout(function(){  
+      $(".vesselname").addClass("d-none");
+    },3000);
+  });
 });
