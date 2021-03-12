@@ -32,7 +32,7 @@ jQuery(document).ready(function() {
       api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
           if ( last !== group ) {
               $(rows).eq( i ).before(
-                  '<tr class="group bg-primary"><td colspan="5"> Conatiner - '+group+'</td></tr>'
+                  '<tr class="group bg-primary"><td colspan="5"> Container - '+group+'</td></tr>'
               );
 
               last = group;
