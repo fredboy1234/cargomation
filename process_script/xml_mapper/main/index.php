@@ -383,6 +383,7 @@ if ($return === true) {
 			if ($CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
                 
 				//XML PATH
+				
 				$path_UniversalShipment = "$.Body.UniversalShipment.Shipment";
 				$path_UniversalShipmentContext = "$.Body.UniversalShipment.Shipment.DataContext";
 				$path_UniversalSubShipment = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment";
@@ -410,29 +411,40 @@ if ($return === true) {
 				$OrganizationAddress = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr = $OrganizationAddress;
 				
+				//GET CONTAINERMODE
+				$XPATH_CONTAINERMODE= jsonPath($universal_shipment, $path_UniversalShipment.".ContainerMode.Code");
+				$CONTAINERMODE = $parser->encode($XPATH_CONTAINERMODE);
+				$CONTAINERMODE = getArrayName($CONTAINERMODE);
+				
+				//GET TRANSPORTMODE
 				$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection.".TransportMode");
 				$TRANSMODE = $parser->encode($XPATH_TRANSMODE);
 				$TRANSMODE = getArrayName($TRANSMODE);
 				
+				//GET ETD
 				$XPATH_SHIP_ETD = jsonPath($universal_shipment, $path_TransportLegCollection.".EstimatedDeparture");
 				$TRANS_ETD = $parser->encode($XPATH_SHIP_ETD);
 				$TRANS_ETD = getArrayName($TRANS_ETD);
 				
+				//GET ETA
 				$XPATH_SHIP_ETA = jsonPath($universal_shipment, $path_TransportLegCollection.".EstimatedArrival");
 				$TRANS_ETA = $parser->encode($XPATH_SHIP_ETA);
 				$TRANS_ETA = getArrayName($TRANS_ETA);
 				
+				//GET TRIGGER DATE
 				$XPATH_SHIP_TRIGGERDATE = jsonPath($universal_shipment, $path_UniversalShipmentContext.".TriggerDate");
 				$SHIP_TRIGGERDATE = $parser->encode($XPATH_SHIP_TRIGGERDATE);
 				$SHIP_TRIGGERDATE = getArrayName($SHIP_TRIGGERDATE);
 				if($SHIP_TRIGGERDATE == "false"){
 					$SHIP_TRIGGERDATE = date("Y-m-d h:i:s");
 				}
-				
                 //GET VESSELLOYDSIMO
 				$XPATH_VESSELLOYDSIMO = jsonPath($universal_shipment, $path_TransportLegCollection.".VesselLloydsIMO");
 				$VESSELLOYDSIMO = $parser->encode($XPATH_VESSELLOYDSIMO);
 				$VESSELLOYDSIMO = getArrayName($VESSELLOYDSIMO);
+				
+				
+				
 				if ($XPATH_TRANSMODE == false || $XPATH_SHIP_ETD == false || $XPATH_SHIP_ETA == false) {
 					$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection."[0].TransportMode");
 					$TRANSMODE = $parser->encode($XPATH_TRANSMODE);
@@ -618,9 +630,9 @@ if ($return === true) {
 				$sqlInsertRecord = "INSERT INTO shipment
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
-				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date)
+				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
-				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "')";
+				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."')";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
 						$sql_getlastshipID = "SELECT top 1 MAX(Id) as ship_id FROM shipment";
 						$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
@@ -950,7 +962,7 @@ if ($return === true) {
 				        Set console_id='$CONSOLNUMBER', master_bill ='$WAYBILLNUMBER', house_bill='$HOUSEWAYBILLNUMBER', transport_mode='$TRANSMODE',
 				        vessel_name='$VESSELNAME', voyage_flight_num='$VOYAGEFLIGHTNO', vesslloyds='$VESSELLOYDSIMO', eta='$TRANS_ETA', etd='$TRANS_ETD', place_delivery='$PLACEOFDELIVERY', place_receipt='$PLACEOFRECEIPT',
 				        consignee='$CONSIGNEE',consignor='$CONSIGNOR',sending_agent='$PATH_SENDINGAGENT',receiving_agent='$PATH_RECEIVINGAGENT',receiving_agent_addr='$RECEIVINGAGENTADDRESS',
-				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE'
+				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE'
 				        WHERE shipment_num = '$SHIPMENTKEY' AND user_id = '$CLIENT_ID'";
 						$updateRec = sqlsrv_query($conn, $sqlUpdateRecord);
 					

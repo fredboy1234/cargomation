@@ -119,6 +119,8 @@ class Document extends Core\Controller {
                     case 'uploadchunk':
                         $response = $this->uploadChunk();
                         break;
+                    case 'delete':
+                        $response = $this->deleteDocument();
                     default:
                         # code...
                         break;
@@ -187,7 +189,6 @@ class Document extends Core\Controller {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
-
     }
 
     // API Get document by shipment_id
@@ -230,6 +231,14 @@ class Document extends Core\Controller {
         $response['body'] = json_encode($result);
         return $response;
 
+    }
+
+    // API Delete document by document_id
+    private function deleteDocumentByDocID($document_id) {
+        $result = $this->Document->deleteDocumentByDocID($document_id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
     }
 
     /**
@@ -747,6 +756,22 @@ class Document extends Core\Controller {
             error_log(curl_error($ch));
         }
         return $retval;
+    }
+
+        /**
+     * Upload: Upload the bootstrap-fileinput files
+     * returns associative array
+     * @access private
+     * 
+     * @return array
+     * @since 1.0.8
+     */
+    private function deleteDocument() {
+        $document_id = $_POST['key'];
+        $result = $this->deleteDocumentByDocID($document_id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
     }
 
 }

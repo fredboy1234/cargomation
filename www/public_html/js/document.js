@@ -13,7 +13,7 @@ $(document).ready(function () {
     $el1.fileinput({
         theme: 'fas',
         uploadUrl: document.location.origin + "/api/post/document/upload" + param,
-        deleteUrl: "delete.php",
+        deleteUrl: document.location.origin + "/api/post/document/delete" + param,
         uploadAsync: false,
         allowedPreviewMimeTypes: null,
         initialPreviewAsData: true,
@@ -154,6 +154,12 @@ $(document).ready(function () {
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
         otherActionButtons: '<button type="button" ' +
+            'class="kv-file-upload btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas fa-upload"></i>' +
+            '</button>\n' +
+            '<button type="button" ' +
             'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
             'title="Request for Edit"{dataUrl}{dataKey} ' +
             'data-doc_id="{id}" data-doc_status="{status}">' +
@@ -227,6 +233,16 @@ $(document).ready(function () {
         });
         $('#kv-success-2 ul').append(out);
         $('#kv-success-2').fadeIn('slow');
+    }).on('filebeforedelete', function () {
+        var aborted = !window.confirm('Are you sure you want to delete this file?');
+        if (aborted) {
+            window.alert('File deletion was aborted! ' + krajeeGetCount('file-5'));
+        };
+        return aborted;
+    }).on('filedeleted', function () {
+        setTimeout(function () {
+            window.alert('File deletion was successful! ' + krajeeGetCount('file-5'));
+        }, 900);
     });
 
     // Button Status
