@@ -181,7 +181,7 @@ if(!empty($this->document)) {
     var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
     var document_type = "<?= $this->shipment['type']; ?>";
     var user_id = <?= $_SESSION['user']; ?>;
-    var upload_button = "", 
+    var upload_button = "";
     var options = "";
     <?php if (isset($document_settings->doctracker->push_document)): ?>
     upload_button = '<button type="button" ' +
