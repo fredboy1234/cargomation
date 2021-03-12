@@ -22,6 +22,7 @@ $(document).ready(function () {
         initialPreviewAsData: initialPreviewAsData,
         initialPreviewFileType: initialPreviewFileType,
         initialPreviewConfig: initialPreviewConfig,
+        initialPreviewShowDelete: delete_button,
         initialPreviewThumbTags: initialPreviewThumbTags,
         initialPreviewDownloadUrl: '/404.html',
         previewFileIcon: '<i class="fas fa-file"></i>',
@@ -153,12 +154,7 @@ $(document).ready(function () {
         //     actionZoom: '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>',
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
-        otherActionButtons: '<button type="button" ' +
-            'class="kv-file-upload btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
-            'data-doc_id="{id}" data-doc_status="{status}">' +
-            '<i class="fas fa-upload"></i>' +
-            '</button>\n' +
+        otherActionButtons: upload_button +
             '<button type="button" ' +
             'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
             'title="Request for Edit"{dataUrl}{dataKey} ' +
@@ -245,6 +241,20 @@ $(document).ready(function () {
             window.alert('File deletion was successful! ');
             console.log('Deleted file : ' + key);
         }, 900);
+    });
+
+    $('button.kv-file-upload').click(function () {
+        var doc_id = $(this).data("doc_id");
+        $.ajax({
+            type: "POST",
+            url: "/document/pushToCargoWise",
+            ContentType: 'application/json',
+            data: { "user_id": user_id, "doc_id": doc_id },
+            success: function (response) {
+                // console.log(response);
+                swal("Push success!", "File successfully uploaded to CargoWise!", "success");
+            }
+        });
     });
 
     // Button Status

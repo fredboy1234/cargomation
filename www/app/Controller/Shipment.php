@@ -281,6 +281,7 @@ class Shipment extends Core\Controller {
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
             "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
+            "user_settings" => $User->getUserSettings($user_id)
         ]);
     }
 

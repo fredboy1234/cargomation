@@ -4,6 +4,7 @@ $approved = 0;
 $pending = 0;
 $freview = 0;
 $status_icon = "fa-thumbs-down";
+$document_settings = json_decode($this->user_settings[0]->document);
 if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
         if($file->status !== 'deleted') {
@@ -180,5 +181,15 @@ if(!empty($this->document)) {
     var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
     var document_type = "<?= $this->shipment['type']; ?>";
     var user_id = <?= $_SESSION['user']; ?>;
+    var upload_button, options = "";
+    <?php if (isset($document_settings->doctracker->push_document)): ?>
+    upload_button = '<button type="button" ' +
+            'class="kv-file-upload btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
+            'data-doc_id="{id}" data-doc_status="{status}">' +
+            '<i class="fas fa-upload"></i>' +
+            '</button>\n';
+    <?php endif; ?>
+    var delete_button = <?= (isset($document_settings->doctracker->delete_document)) ? 'true' : 'false'; ?>;
 </script>
 <?= $this->getJS(); ?>

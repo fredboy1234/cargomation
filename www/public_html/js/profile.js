@@ -1,7 +1,7 @@
-$(document).ready(function(){
-    $(".profile-icon").on("click",function(){
-        $("#profileModal .modal-body").load("profile/profileImageList"); 
-       $("#profileModal").modal("show");
+$(document).ready(function () {
+    $(".profile-icon").on("click", function () {
+        $("#profileModal .modal-body").load("profile/profileImageList");
+        $("#profileModal").modal("show");
     });
 
     // $("#upload-image").fileinput({
@@ -25,4 +25,16 @@ $(document).ready(function(){
     //     console.log(previewId);
     //     console.log("olok")
     // });
+});
+
+$(function () {
+    var hash = window.location.hash;
+    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+    $('.nav-tabs a').click(function (e) {
+        $(this).tab('show');
+        var scrollmem = $('body').scrollTop();
+        window.location.hash = this.hash;
+        $('html,body').scrollTop(scrollmem);
+    });
 });

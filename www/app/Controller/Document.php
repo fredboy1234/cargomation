@@ -102,6 +102,7 @@ class Document extends Core\Controller {
             "email" => $User->data()->email,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
+            "user_settings" => $User->getUserSettings($user_id)
         ]);
     }
 
@@ -338,7 +339,11 @@ class Document extends Core\Controller {
         }
         // push to cargowise
         // User setting (tick box) 
-        self::uploadToCargoWise($shipment_num, $email, $config);
+        $user_settings = $User->getUserSettings($param[5]);
+        $document_settings = json_decode($this->user_settings[0]->document);
+        if(isset($document_settings->doctracker->push_document)) {
+            self::uploadToCargoWise($shipment_num, $email, $config);
+        }
         $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
         if (!empty($errors)) {
             $img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
@@ -352,7 +357,7 @@ class Document extends Core\Controller {
     }
 
     /**
-     * Request.
+     * Upload To Cargowise.
      * @access public
      * @since 1.0.2
      */
@@ -421,6 +426,110 @@ class Document extends Core\Controller {
         
         curl_close($curl);
         // echo $response;
+    }
+
+    /**
+     * Push To Cargowise. Same with uploadToCargowise
+     * @access public
+     * @since 1.0.2
+     */
+    public function pushToCargoWise(){
+
+        if(!isset($_POST)) {
+            echo "Access Denied";
+            exit;
+        }
+
+        $user_id = $_POST['user_id'];
+        $document_id = $_POST['doc_id'];
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $document = $this->Document->getDocumentByDocID($document_id);
+        $email = $User->data()->email; 
+        $shipment_num = $document[0]->shipment_num;
+        $document_name = $document[0]->name;
+        $document_type = $document[0]->type;
+
+        $file = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$shipment_num."/".$document_type."/" . $document_name;    
+        $imgData = file_get_contents($file);
+        $base64 = base64_encode($imgData);
+
+        $postfield = '<UniversalEvent xmlns="http://www.cargowise.com/Schemas/Universal/2011/11" version="1.1">
+            <Event>
+                <DataContext>
+                    <DataTargetCollection>
+                        <DataTarget>
+                            <Type>ForwardingShipment</Type>
+                            <Key>' . $shipment_num . '</Key>
+                        </DataTarget>
+                    </DataTargetCollection>
+                    <Company>
+                        <Code>SYD</Code>
+                    </Company>
+                    <EnterpriseID>A2B</EnterpriseID>
+                    <ServerID>TRN</ServerID>
+                </DataContext>
+                <EventTime>2020-11-11T21:32:25.647</EventTime>
+                <EventType>DIM</EventType>
+                <IsEstimate>false</IsEstimate>
+                <AttachedDocumentCollection>
+                    <AttachedDocument>
+                        <FileName> ' . $document_name . '</FileName>
+                        <ImageData>' . $base64 . '</ImageData>
+                        <Type>
+                            <Code>' . $document_type . '</Code>
+                            <Description></Description>
+                        </Type>
+                        <IsPublished>true</IsPublished>
+                    </AttachedDocument>
+                </AttachedDocumentCollection>
+            </Event>
+        </UniversalEvent>';
+
+        $curl = curl_init();
+ 
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://a2btrnservices.wisegrid.net/eAdaptor",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $postfield,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/xml',
+                'Authorization: Basic QTJCOkh3N20zWGhT',
+                'Cookie: WEBSVC=109af0692bd5564a'
+            ),
+        ));
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        
+        if($response = curl_exec($curl)) {
+            curl_close($curl);
+            $response['success'] = true;
+        }
+
+        echo $response;
     }
 	
 	public function getCurlValue($filename, $contentType, $postname) {
