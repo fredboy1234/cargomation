@@ -139,9 +139,9 @@ class Profile extends Core\Controller {
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
             ),$user);
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }else{
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
         
     }
@@ -218,7 +218,7 @@ class Profile extends Core\Controller {
                 'image_src' => $_POST['image_src']
             ),$user);
             
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
     }
 
@@ -257,9 +257,9 @@ class Profile extends Core\Controller {
                 'theme' => $_POST['theme'],
                 'user' => $user
             ),$user);
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }else{
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
         
     }
@@ -290,9 +290,9 @@ class Profile extends Core\Controller {
         
         if (isset($_POST)) {
             $User->updateUserSettings($column, $data, $user);
-            Utility\Redirect::to(APP_URL . "profile#settings");
+            Utility\Redirect::to(APP_URL . "/profile#settings");
         } else {
-            Utility\Redirect::to(APP_URL . "profile#settings");
+            Utility\Redirect::to(APP_URL . "/profile#settings");
         }
     }
 

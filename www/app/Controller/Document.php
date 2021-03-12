@@ -435,7 +435,7 @@ class Document extends Core\Controller {
      */
     public function pushToCargoWise(){
 
-        if(!isset($_POST)) {
+        if(!isset($_POST['user_id']) && !isset($_POST['doc_id']) ) {
             echo "Access Denied";
             exit;
         }
@@ -524,12 +524,10 @@ class Document extends Core\Controller {
 
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         
-        if($response = curl_exec($curl)) {
-            curl_close($curl);
-            $response['success'] = true;
-        }
-
-        echo $response;
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        // echo $response;
     }
 	
 	public function getCurlValue($filename, $contentType, $postname) {

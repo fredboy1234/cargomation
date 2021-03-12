@@ -244,15 +244,27 @@ $(document).ready(function () {
     });
 
     $('button.kv-file-upload').click(function () {
-        var doc_id = $(this).data("doc_id");
-        $.ajax({
-            type: "POST",
-            url: "/document/pushToCargoWise",
-            ContentType: 'application/json',
-            data: { "user_id": user_id, "doc_id": doc_id },
-            success: function (response) {
-                // console.log(response);
-                swal("Push success!", "File successfully uploaded to CargoWise!", "success");
+        swal({
+            title: "Are you sure?",
+            text: "This action will push the file to CargoWise, Still want to continue?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                var doc_id = $(this).data("doc_id");
+                $.ajax({
+                    type: "POST",
+                    url: "/document/pushToCargoWise",
+                    ContentType: 'application/json',
+                    data: { "user_id": user_id, "doc_id": doc_id },
+                    success: function (response) {
+                        // console.log(response);
+                        swal("Push success!", "File successfully uploaded to CargoWise!", "success");
+                    }
+                });
+            } else {
+                swal("You cancel your action!");
             }
         });
     });
