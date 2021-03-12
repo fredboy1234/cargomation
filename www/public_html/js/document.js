@@ -233,15 +233,17 @@ $(document).ready(function () {
         });
         $('#kv-success-2 ul').append(out);
         $('#kv-success-2').fadeIn('slow');
-    }).on('filebeforedelete', function () {
+    }).on('filebeforedelete', function (event, key, data) {
         var aborted = !window.confirm('Are you sure you want to delete this file?');
         if (aborted) {
-            window.alert('File deletion was aborted! ' + krajeeGetCount('file-5'));
+            window.alert('File deletion was aborted! ');
+            console.log('File deletion was aborted : ' + key);
         };
         return aborted;
-    }).on('filedeleted', function () {
+    }).on('filedeleted', function (event, key, jqXHR, data) {
         setTimeout(function () {
-            window.alert('File deletion was successful! ' + krajeeGetCount('file-5'));
+            window.alert('File deletion was successful! ');
+            console.log('Deleted file : ' + key);
         }, 900);
     });
 
