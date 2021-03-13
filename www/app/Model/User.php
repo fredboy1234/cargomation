@@ -246,6 +246,34 @@ class User extends Core\Model {
     }
 
     /**
+     * Update User Settings: Same as addUserSettings but slightly modified
+     * @access public
+     * @param array|string $column
+     * @param array $data
+     * @param int $user_id
+     * @return null
+     * @since 1.0.3
+     */
+    public function updateUserSettings($column = "*", $data, $user_id) {
+
+        $value = json_encode($data);
+
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
+        if(empty($select)){
+            return $Db->query("INSERT
+                           INTO user_settings (user_id, {$column})
+                           VALUES('{$user_id}','{$column}')");
+        }else{
+            return $Db->query("UPDATE user_settings 
+                                SET {$column} ='{$value}'
+                                WHERE user_id = '{$user_id}'");
+        }
+        
+        //return null;
+    }
+
+    /**
      * Insert User Images: Insert User Images etc..
      * @access public
      * @param array $fields

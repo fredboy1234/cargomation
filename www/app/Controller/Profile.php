@@ -85,7 +85,8 @@ class Profile extends Core\Controller {
             "image_profile" => $profileImage,
             "role" => $role,
            "themes" => Model\User::getUserTheme(),
-           "selectedTheme" => $User->getUserSettings($user)
+           "selectedTheme" => $User->getUserSettings($user),
+           "user_settings" => $User->getUserSettings($user)
         ]);
     }
 
@@ -138,9 +139,9 @@ class Profile extends Core\Controller {
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
             ),$user);
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }else{
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
         
     }
@@ -217,7 +218,7 @@ class Profile extends Core\Controller {
                 'image_src' => $_POST['image_src']
             ),$user);
             
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
     }
 
@@ -256,11 +257,43 @@ class Profile extends Core\Controller {
                 'theme' => $_POST['theme'],
                 'user' => $user
             ),$user);
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }else{
-            Utility\Redirect::to(APP_URL . "profile");
+            Utility\Redirect::to(APP_URL . "/profile");
         }
         
+    }
+
+    public function saveSettings($user = ""){
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        
+        $column = $_POST['column'];
+        unset($_POST['column']);
+        $data = $_POST;
+        
+        if (isset($_POST)) {
+            $User->updateUserSettings($column, $data, $user);
+            Utility\Redirect::to(APP_URL . "/profile#settings");
+        } else {
+            Utility\Redirect::to(APP_URL . "/profile#settings");
+        }
     }
 
 }
