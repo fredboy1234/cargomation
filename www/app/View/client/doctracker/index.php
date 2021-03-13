@@ -201,11 +201,12 @@
                                         <?php if(!empty($this->shipment_from_contact['shipment_contact'])){?>
                                             <?php $sh = $this->shipment_from_contact['shipment_contact'];?>
                                             <?php $random_color = array("btn-primary","btn-secondary","btn-warning","btn-success","btn-danger");?>
+                                            <ul>
                                             <?php foreach($sh as $k=>$s){?>
-                                                <div class="dropdown d-inline-block dropright">
-                                                    <button class="btn <?php echo($random_color[rand(0,4)]);?> dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <?php echo $k?>
-                                                    </button>
+                                                <li class="dropdown  dropright">
+                                                        <p class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <?php echo $k?>
+                                                        </p>
                                                     <div id="drop-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <div class="drop-act-search dropdown-item-text">
                                                             <input onkeyup="filterFunction()" id="drop-search" class="mb-3 form-control" type="text" placeholder="Search Shipment">
@@ -229,8 +230,9 @@
                                                             <button type="button" class="btn d-inline-block btn-danger btn-sm" id="unassign">Unassign All</button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            <?php }?>   
+                                                </li>
+                                            <?php }?> 
+                                            </ul>  
                                         <?php }?>
                                     </div>
                                     <!-- /.tab-pane -->
