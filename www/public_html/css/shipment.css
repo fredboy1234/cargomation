@@ -61,3 +61,6 @@ td.stats .doc-stats:first-child > span {
     background-color: #28a745;
     border: 0.001px solid #fff;
 }
+.assign-button{
+    display: none;
+}

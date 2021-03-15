@@ -92,15 +92,21 @@ class Shipment extends Core\Model {
         if($data['container'] != ""){
             $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
         }
+        
+        $data['origin'] = "('{$data['origin_cargowise']}','{$data['origin_hub']}')";
+        
         if($data['origin'] != ""){
             // if($data['ETA'] == ""){
             //     $where .= " and document.upload_src = '{$data['origin']}'";
             // }
-           $origin = $data['origin'];
+           //$origin = $data['origin'];
+           //$where .= " and document.upload_src in '{$data['origin']}'";
         }
-
+         $data['transportmode_air'] = (isset($data['transportmode_air']) ? $data['transportmode_air'] : '');
+         $data['transportmode_sea'] = (isset($data['transportmode_sea']) ? $data['transportmode_sea']  : '');
+        $data['transportmode'] = "('{$data['transportmode_sea']}','{$data['transportmode_air']}')";
         if($data['transportmode'] != ""){
-            $where .= " and shipment.transport_mode  like '%{$data['transportmode']}%'";
+            $where .= " and shipment.transport_mode  in {$data['transportmode']}";
         }
        //$results = array();
         return $Db->query("SELECT
@@ -111,7 +117,7 @@ class Shipment extends Core\Model {
                             FULL OUTER JOIN dbo.shipcontainer
                             ON dbo.shipment.id = dbo.shipcontainer.shipment_id
                             FULL OUTER JOIN dbo.document
-                            ON dbo.shipment.id = dbo.document.shipment_id and  dbo.document.upload_src ='{$origin}'
+                            ON dbo.shipment.id = dbo.document.shipment_id 
                             FULL OUTER JOIN dbo.document_status
                             ON document.id = document_status.document_id and document_status.status in('pending','approved')
                            {$where} group by shipment.id")->results();

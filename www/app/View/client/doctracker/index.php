@@ -126,11 +126,11 @@
                                                     <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
                                                     <div class="form-group">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="origin" value="cargowise">
+                                                        <input class="form-check-input" type="checkbox" name="origin_cargowise" value="cargowise" checked>
                                                         <label class="form-check-label">Cargowise</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="origin" value="hub" checked>
+                                                        <input class="form-check-input" type="checkbox" name="origin_hub" value="hub" checked>
                                                         <label class="form-check-label">Hub</label>
                                                     </div>
                                                     </div>
@@ -140,11 +140,11 @@
                                                     <label for="inputEmail3" class="col-sm-6 col-form-label">Transport Mode</label>
                                                     <div class="form-group">
                                                         <div class="form-check d-inline-block">
-                                                            <input class="form-check-input" type="radio" name="transportmode" value="sea" checked>
+                                                            <input class="form-check-input" type="checkbox" name="transportmode_sea" value="sea" checked>
                                                             <label class="form-check-label">Sea</label>
                                                         </div>
                                                         <div class="form-check d-inline-block">
-                                                            <input class="form-check-input" type="radio" name="transportmode" value="air">
+                                                            <input class="form-check-input" type="checkbox" name="transportmode_air" value="air" checked >
                                                             <label class="form-check-label">Air</label>
                                                         </div>
                                                     </div>

@@ -155,9 +155,11 @@ $(document).ready(function () {
         d.consignee = $("input[name='consignee']").val();
         d.consignor = $("input[name='consignor']").val();
         d.container = $("input[name='container']").val();
-        d.origin = $("input[name='origin']:checked").val();
+        d.origin_hub = $("input[name='origin_hub']:checked").val();
+        d.origin_cargowise = $("input[name='origin_cargowise']:checked").val();
         d.status = $("input[name='status']").val();
-        d.transportmode = $("input[name='transportmode']:checked").val();
+        d.transportmode_sea = $("input[name='transportmode_sea']:checked").val();
+        d.transportmode_air = $("input[name='transportmode_air']:checked").val();
         d.post_trigger = $("input[name='post_trigger']").val();
       },
     },
