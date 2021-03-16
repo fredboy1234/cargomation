@@ -13,6 +13,9 @@
         background-color:#fff;
         width: 250px;
     }
+    .select2-selection__choice{
+        color: #333 !important;
+    }
 </style> 
 
 <section class="content">
@@ -72,6 +75,26 @@
                                                     <input type="text" class="form-control" id="inputEmail3" name="client_name" placeholder="">
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Master Bill</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="master_bill" placeholder="">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">Container Mode</label>
+                                                <div class="col-sm-8">
+                                                <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+                                                    <option value="all">Select All</option>
+                                                    <option value="BCN">BCN</option>
+                                                    <option value="FCL">FCL</option>
+                                                    <option value="LCL">LCL</option>
+                                                    <option value="LSE">LSE</option>
+                                                </select>
+                                                </div>
+                                            </div>
+
                                             <!-- /.form-group -->
                                             </div>
                                             <!-- /.col -->
@@ -94,6 +117,12 @@
                                                 <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-4 col-form-label">House Bill</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="inputEmail3" name="house_bill" placeholder="">
                                                 </div>
                                             </div>
                                             <!-- /.form-group -->

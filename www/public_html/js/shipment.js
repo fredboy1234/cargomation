@@ -461,6 +461,23 @@ $(document).ready(function () {
     var searchval = $(this).val().toLowerCase();
   });
 
+  $('.js-example-basic-multiple').select2();
+  $('.js-example-basic-multiple').on("select2:select", function (e) { 
+    var data = e.params.data.text;
+    
+    if(data=='Select All'){
+     $(".js-example-basic-multiple > option").prop("selected","selected");
+     
+     $(".js-example-basic-multiple > option").each(function(key,val){
+      console.log($(val).val());
+      if($(val).val() == 'all'){
+        $(this).prop('selected',false);
+      }
+     });
+
+     $(".js-example-basic-multiple").trigger("change");
+    }
+  });
 });
 
 var setColor = function () {
