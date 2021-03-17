@@ -9,7 +9,9 @@
   "dependencies": {
     "admin-lte": "^3.1",
     "bootstrap-fileinput": "^5.0",
-    "selectize": "^0.13"
+    "selectize": "^0.13",
+    "sweetalert2": "^10.15",
+    "bootstrap-sweetalert": "^1.0"
   },
   "devDependencies": {}
 }
