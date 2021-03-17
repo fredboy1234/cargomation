@@ -51,6 +51,10 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
   <link href="/bower_components/bootstrap-fileinput/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
   -->
+  <!-- Bootstrap Sweetalert -->
+  <link rel="stylesheet" href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css">
+  <!-- SweetAlert2 -->
+  <!-- <link rel="stylesheet" href="/bower_components/sweetalert2/src/sweetalert.css"> -->
   <!-- CSS -->
   <?= $this->getCSS(); ?>
 </head>
