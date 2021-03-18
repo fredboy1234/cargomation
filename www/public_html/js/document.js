@@ -7,9 +7,10 @@ $(document).ready(function () {
         '</div>' +
         '</div>';
 
+    $('.file-loading').show();
+
     // Bootstrap File Input
     var $el1 = $("#input");
-    $('.file-loading').show();
     $el1.fileinput({
         theme: 'fas',
         uploadUrl: document.location.origin + "/api/post/document/upload" + param,
@@ -175,22 +176,24 @@ $(document).ready(function () {
             '</button>\n',
     }).on('filebatchpreupload', function (event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
-        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
-        Swal.fire({
-            title: "Are you sure you want to upload " + files + " to CargoWise?",
-            text: "Once uploaded, you will not be able to remove this file!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                Swal.fire("Your file will be uploaded shortly", {
-                    icon: "success",
-                });
-            } else {
-                Swal.fire("Upload aborted!");
-            }
-        });
+        alert('THIS IS BATCH');
+        // var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+        // Swal.fire({
+        //     title: "Are you sure you want to upload " + files + " to CargoWise?",
+        //     text: "Once uploaded, you will not be able to remove this file!",
+        //     icon: "warning",
+        //     buttons: true,
+        //     dangerMode: true,
+        //     showCancelButton: true,
+        // }).then((willUpload) => {
+        //     if (willUpload) {
+        //         Swal.fire("Your file will be uploaded shortly", {
+        //             icon: "success",
+        //         });
+        //     } else {
+        //         Swal.fire("Upload aborted!");
+        //     }
+        // });
         // if (!window.confirm(")) {
         //     return {
         //         message: "Upload aborted!", // upload error message
@@ -243,6 +246,7 @@ $(document).ready(function () {
         }, 900);
     });
 
+    // Button Upload
     $('button.kv-file-upload').click(function () {
         Swal.fire({
             title: "Are you sure?",
@@ -270,11 +274,6 @@ $(document).ready(function () {
     });
 
     // Button Status
-    // $('button.kv-file-status').each(function() {
-    //     if($(this).children().hasClass('approved')) {
-    //         $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
-    //     }
-    // });
     $('button.kv-file-status').click(function () {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
@@ -472,6 +471,7 @@ $(document).ready(function () {
         preloader(url);
     });
 
+    // Validate Form
     $('form#form-modal').validate();
 
     // Submit Form
@@ -557,6 +557,8 @@ $(document).ready(function () {
 
         //$('button#request').toggle();
     }
+
+    // Truncate String
     function truncate(str, n) {
         return (str.length > n) ? str.substr(0, n - 1) + '&hellip;' : str;
     };
@@ -564,14 +566,6 @@ $(document).ready(function () {
 });
 
 $(function () {
-    // //Initialize Select2 Elements
-    // $('.select2').select2();
-
-    // //Initialize Select2 Elements
-    // $('.select2bs4').select2({
-    //     theme: 'bootstrap4'
-    // });
-    // <select id="select-to"></select>
 
     var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
         '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
