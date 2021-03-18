@@ -109,8 +109,8 @@ class Mailer {
 			$mail->addAddress($recipients['email']);
         }
         $mail->SMTPKeepAlive = true; // add it to keep SMTP connection open after each email sent
-        $mail->setFrom("noreply@a2bfreighthub.com", "no-reply");
-        // $mail->addReplyTo("noreply@a2bfreighthub.com", "reply-to-name");
+        $mail->setFrom("noreply@cargomation.com", "no-reply");
+        // $mail->addReplyTo("noreply@cargomation.com", "reply-to-name");
         //$mail->addCC("backup@a2bfreighthub.com", "A2B");
         $mail->Subject = $subject;
         // $mail->Body = $message;
