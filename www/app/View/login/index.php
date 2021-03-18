@@ -54,7 +54,7 @@ canvas {
 }
 
 #body {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   background: url(/img/background.png);
@@ -95,7 +95,7 @@ h1 {
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="bower_components/admin-lte/index2.html" style="color: #FFF;font-weight:900;font-size:3rem;">
+    <a href="/" style="color: #FFF;font-weight:900;font-size:3rem;">
     <i class="fas fa-ship"></i>
     <br><strong><?=APP_NAME?></strong></b></a>
   </div>
@@ -148,6 +148,9 @@ h1 {
   </div>
 </div>
 <!-- /.login-box -->
+<div class="footer-logo" style="position: fixed;bottom: 0;margin-bottom: 20px;text-align: center;color: #FFF;">
+  Copyright © 2020 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
+</div>
 
 <!-- jQuery -->
 <script src="bower_components/admin-lte/plugins/jquery/jquery.min.js"></script>
