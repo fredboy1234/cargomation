@@ -176,7 +176,7 @@ $(document).ready(function () {
     }).on('filebatchpreupload', function (event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
         var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
-        swal({
+        Swal.fire({
             title: "Are you sure you want to upload " + files + " to CargoWise?",
             text: "Once uploaded, you will not be able to remove this file!",
             icon: "warning",
@@ -184,11 +184,11 @@ $(document).ready(function () {
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                swal("Your file will be uploaded shortly", {
+                Swal.fire("Your file will be uploaded shortly", {
                     icon: "success",
                 });
             } else {
-                swal("Upload aborted!");
+                Swal.fire("Upload aborted!");
             }
         });
         // if (!window.confirm(")) {
@@ -203,7 +203,7 @@ $(document).ready(function () {
 
         var fname = data.files[index].name,
             out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
-        swal(out);
+        Swal.fire(out);
         // $(document).Toasts('create', {
         //     title: 'Success',
         //     body: out,
@@ -244,7 +244,7 @@ $(document).ready(function () {
     });
 
     $('button.kv-file-upload').click(function () {
-        swal({
+        Swal.fire({
             title: "Are you sure?",
             text: "This action will push the file to CargoWise, Still want to continue?",
             icon: "warning",
@@ -260,11 +260,11 @@ $(document).ready(function () {
                     data: { "user_id": user_id, "doc_id": doc_id },
                     success: function (response) {
                         // console.log(response);
-                        swal("Push success!", "File successfully uploaded to CargoWise!", "success");
+                        Swal.fire("Push success!", "File successfully uploaded to CargoWise!", "success");
                     }
                 });
             } else {
-                swal("You cancel your action!");
+                Swal.fire("You cancel your action!");
             }
         });
     });
@@ -278,54 +278,166 @@ $(document).ready(function () {
     $('button.kv-file-status').click(function () {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
-        if (doc_status === 'approved') doc_status = 'pending'; else doc_status = 'approved';
-
-        var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Do you still want to continue?");
-
-        if (msg == true) {
-            $.ajax({
-                type: "POST",
-                url: "/document/updateDocumentStatus",
-                ContentType: 'application/json',
-                data: { "doc_status": doc_status, "doc_id": doc_id },
-                success: function (response) {
-                    //alert('Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1));
-                    $(document).Toasts('create', {
-                        title: 'Success',
-                        body: 'Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1),
-                        autohide: true,
-                        close: false,
-                        class: 'bg-success'
-                    }).on('hidden.bs.toast', function () {
-                        // REMOVE FUNCTION    
-                    });
-                    // alert('Please leave a note for the ' + doc_status + ' document');
-                    if (window.confirm("Do you want to leave a comment?")) {
-                        var url = "/document/comment/" + doc_id + "/" + doc_status;
-
-                        // load the url and show modal on success
-                        preloader(url);
-                    } else {
-                        // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
-                        $.post("/document/putDocumentComment", {
-                            title: "",
-                            message: "",
-                            status: doc_status,
-                            user_id: user_id,
-                            document_id: doc_id
-                        });
-                    }
-                    var d = $('.d-' + doc_id);
-                    if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + doc_status); }
-                    else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
-                    d.toggleClass("b-approved b-pending");
-                    $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
-                    d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
-                    //find('i').toggleClass("fa-thumbs-up fa-thumbs-down");
-                    //.children().toggleClass("approved pending").data("doc_status", doc_status);
-                }
-            });
+        var btn_color = '#dc3545';
+        if (doc_status === 'approved') {
+            doc_status = 'pending';
+            btn_color = '#dc3848';
+            btn_icon = 'down';
+        } else {
+            doc_status = 'approved';
+            btn_color = '#29a847';
+            btn_icon = 'up';
         }
+        var msg = 'This will change the status of the document to "' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + '". Do you still want to continue?';
+        Swal.fire({
+            title: 'Are you sure?',
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " " + '<i class="fa fa-thumbs-' + btn_icon + '"></i>',
+            confirmButtonColor: btn_color,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.post("/document/updateDocumentStatus", { doc_status: doc_status, doc_id: doc_id })
+                    .done(function () {
+                        Swal.fire({
+                            title: 'Do you want to leave a comment?',
+                            icon: 'question',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: `Leave comment`,
+                            denyButtonText: `No`,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
+                                var url = "/document/comment/" + doc_id + "/" + doc_status;
+
+                                // load the url and show modal on success
+                                preloader(url);
+                            } else if (result.isDenied) {
+                                Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                $.post("/document/putDocumentComment", {
+                                    title: "",
+                                    message: "",
+                                    status: doc_status,
+                                    user_id: user_id,
+                                    document_id: doc_id
+                                });
+                            } else {
+                                Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                $.post("/document/putDocumentComment", {
+                                    title: "",
+                                    message: "",
+                                    status: doc_status,
+                                    user_id: user_id,
+                                    document_id: doc_id
+                                });
+                            }
+                            var d = $('.d-' + doc_id);
+                            if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + doc_status); }
+                            else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
+                            d.toggleClass("b-approved b-pending");
+                            $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
+                            d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+                        })
+                    }).fail(function (response) {
+                        console.log('Error: ' + response.responseText);
+                    });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1),
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                // alert('Please leave a note for the ' + doc_status + ' document');
+                // if (window.confirm("Do you want to leave a comment?")) {
+                //     var url = "/document/comment/" + doc_id + "/" + doc_status;
+
+                //     // load the url and show modal on success
+                //     preloader(url);
+                // } else {
+                //     // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
+                //     $.post("/document/putDocumentComment", {
+                //         title: "",
+                //         message: "",
+                //         status: doc_status,
+                //         user_id: user_id,
+                //         document_id: doc_id
+                //     });
+                // }
+
+                //find('i').toggleClass("fa-thumbs-up fa-thumbs-down");
+                //.children().toggleClass("approved pending").data("doc_status", doc_status);
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                    'Cancelled',
+                    'No status change in the document',
+                    'error'
+                )
+            }
+        })
+
+
+
+
+        // var msg = confirm("This will change the status of the document to " + doc_status.charAt(0).toUpperCase() + doc_status.slice(1) + " . Do you still want to continue?");
+
+        // if (msg == true) {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/document/updateDocumentStatus",
+        //         ContentType: 'application/json',
+        //         data: { "doc_status": doc_status, "doc_id": doc_id },
+        //         success: function (response) {
+        //             //alert('Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1));
+        //             $(document).Toasts('create', {
+        //                 title: 'Success',
+        //                 body: 'Document was set to ' + doc_status.charAt(0).toUpperCase() + doc_status.slice(1),
+        //                 autohide: true,
+        //                 close: false,
+        //                 class: 'bg-success'
+        //             }).on('hidden.bs.toast', function () {
+        //                 // REMOVE FUNCTION    
+        //             });
+        //             // alert('Please leave a note for the ' + doc_status + ' document');
+        //             if (window.confirm("Do you want to leave a comment?")) {
+        //                 var url = "/document/comment/" + doc_id + "/" + doc_status;
+
+        //                 // load the url and show modal on success
+        //                 preloader(url);
+        //             } else {
+        //                 // $.post( "document/putDocumentComment", { user_id: "1", doc_id: "10001" } );
+        //                 $.post("/document/putDocumentComment", {
+        //                     title: "",
+        //                     message: "",
+        //                     status: doc_status,
+        //                     user_id: user_id,
+        //                     document_id: doc_id
+        //                 });
+        //             }
+        //             var d = $('.d-' + doc_id);
+        //             if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + doc_status); }
+        //             else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
+        //             d.toggleClass("b-approved b-pending");
+        //             $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
+        //             d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+        //             //find('i').toggleClass("fa-thumbs-up fa-thumbs-down");
+        //             //.children().toggleClass("approved pending").data("doc_status", doc_status);
+        //         }
+        //     });
+        // }
     }).mouseenter(function () {
         $(this).find("i").toggleClass("fa-thumbs-up fa-thumbs-down").toggleClass("approved pending");
     }).mouseleave(function () {

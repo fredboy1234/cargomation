@@ -45,12 +45,16 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/datatables-select/css/select.bootstrap4.min.css">
   <!-- Bootstrap File Input -->
   <link href="/bower_components/bootstrap-fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
-   <!-- Custom Style-->
-   <!-- <link rel="stylesheet" href = "/css/style.css"> -->
+  <!-- Custom Style-->
+  <!-- <link rel="stylesheet" href = "/css/style.css"> -->
   <!-- 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
   <link href="/bower_components/bootstrap-fileinput/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
   -->
+  <!-- Bootstrap Sweetalert -->
+  <!-- <link rel="stylesheet" href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css"> -->
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-default/default.css" id="theme-styles">
   <!-- CSS -->
   <?= $this->getCSS(); ?>
 </head>
