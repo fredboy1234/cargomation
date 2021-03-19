@@ -157,6 +157,19 @@
         color: #001297;
         border-radius: 1.25rem;
     }
+    #mapid { height: 380px; }
+    .myDivIcon{
+        background: none;
+        border: none;
+        color: #fb0000;
+        font-size: 1.4rem;
+        background: #fffc;
+        text-align: center;
+        border-radius: 21px;
+        box-shadow: 0 0 1.25rem 0 rgb(0 0 0 / 50%);
+        padding: 3px;
+
+    }
 </style>
 <?php $count =1;
     $origin = '';
@@ -189,38 +202,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                <div id="custom-map" style="height: 320px;">
-                    <div class="a2b-map-wrapper">        
-                        <ul class="a2b-map-route" data-id="trackingmap">
-                            <li id="pol">
-                                <span class="a2b-dis1"><?=$origin?></span>
-                                <span></span>
-                                <div class="o-trackingnomap--gauge" style="width:<?=$loadingPercentage?>%; height: 98%;">
-                                    <div class="o-trackingnomap--marker is-boat">
-                                            <i class="fas fa-plane a2b-marker-icon"></i>
-                                            <div class="o-trackingnomap--transport vesselname d-none">
-                                                <i class="fas fa-ship"></i>
-                                                <span><?=$vesselName?></span>
-                                            </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li id="pad">
-                                <span class="a2b-dis2"><?=$destination?></span>
-                                <span></span>
-                                <div class="o-trackingnomap--gauge" style="width: 0%; height: 0%;">
-                                    <div class="o-trackingnomap--marker">
-                                        <i class="o-icon__tag" aria-hidden="true"></i>
-                                        <div class="o-trackingnomap--transport d-none">
-                                            <i class="o-icon__boat" aria-hidden="true"></i>
-                                            Inland No GPS Data
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <div id="mapid"></div>
                 <div class="tab-pane" id="timeline">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
@@ -283,3 +265,8 @@
         </div>
 </section>
 </div>
+<script>
+    var mapToken = <?php echo json_encode($this->mapToken);?>;
+    var data = <?= json_encode($vesseldata)?>;
+    console.log(data);
+</script>
