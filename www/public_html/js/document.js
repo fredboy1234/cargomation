@@ -174,45 +174,50 @@ $(document).ready(function () {
             'data-doc_id="{id}" data-doc_status="{status}">' +
             '<i class="fas {icon} {status}"></i>' +
             '</button>\n',
-    }).on('filebatchpreupload', function (event, data) {
-        $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
-        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+    }).on("filebatchselected", function (event, files) {
+        var out = '';
+        $.each(files, function (key, file) {
+            var fname = file.name;
+            out = out + '<li>' + '<b>File: </b>' + (key + 1) + ' - ' + fname + '.' + '</li>';
+        });
         Swal.fire({
-            title: "Are you sure you want to upload " + files + " to CargoWise?",
-            text: "Once uploaded, you will not be able to remove this file!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            icon: "info",
+            title: "Are you sure you want to upload?",
+            text: 'TEST',
+            html: out,
             showCancelButton: true,
-        }).then((willUpload) => {
-            if (willUpload) {
-                Swal.fire("Your file will be uploaded shortly", {
-                    icon: "success",
-                });
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $el1.fileinput("upload");
             } else {
-                Swal.fire("Upload aborted!");
+                Swal.fire('File upload was aborted!', '', 'info');
             }
         });
-        // if (!window.confirm(")) {
-        //     return {
-        //         message: "Upload aborted!", // upload error message
-        //         data:{} // any other data to send that can be referred in `filecustomerror`
-        //     };
-        // }
-
-        console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
-    }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
-        console.log('File Batch Uploaded', preview, config, tags, extraData);
     }).on('filebatchuploadsuccess', function (event, data) {
         var out = '';
         $.each(data.files, function (key, file) {
             var fname = file.name;
-            out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - ' + fname + ' successfully.' + '</li>';
+            out = out + '<li>' + '<b>File # ' + (key + 1) + '</b> - ' + fname + '</li>';
         });
-        $('#kv-success-2 ul').append(out);
-        $('#kv-success-2').fadeIn('slow');
-    }).on("filebatchselected", function (event, files) {
-        $el1.fileinput("upload");
+        Swal.fire({
+            icon: 'success',
+            title: 'Uploaded successfully!',
+            html: out,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setTimeout(function () {
+                    $('.kv-upload-progress').fadeOut('slow');
+                }, 900);
+            }
+        });
+        // $('#kv-success-2 ul').append(out);
+        // $('#kv-success-2').fadeIn('slow');
+    }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
+        // alert('filebatchuploadcomplete');
+        // console.log('File Batch Uploaded', preview, config, tags, extraData);
+        // setTimeout(function () {
+        //     $('.kv-upload-progress').fadeOut('slow');
+        // }, 2000);
     }).on('filebeforedelete', function (event, key, data) {
         // var aborted = !window.confirm('Are you sure you want to delete this file?');
         // if (aborted) {
@@ -222,7 +227,6 @@ $(document).ready(function () {
         // console.log(aborted);
         // return aborted;
         // To bypass interface-blocking of swal, I need to use Promise for async process
-        console.log(data);
         return new Promise(function (resolve, reject) {
             Swal.fire({
                 icon: 'warning',
@@ -272,9 +276,10 @@ $(document).ready(function () {
             timer: 1500
         })
     }).on('filepreupload', function (event, data, previewId, index, fileId) {
-        var form = data.form, files = data.files, extra = data.extra,
-            response = data.response, reader = data.reader;
-        console.log('File pre upload triggered', fileId);
+        alert('filepreupload');
+        // var form = data.form, files = data.files, extra = data.extra,
+        //     response = data.response, reader = data.reader;
+        // console.log('File pre upload triggered', fileId);
     }).on('fileuploaded', function (event, data, id, index) {
         alert('THIS IS BATCH');
         // var fname = data.files[index].name,
@@ -294,6 +299,29 @@ $(document).ready(function () {
         //     $('.kv-upload-progress').fadeOut('slow');
         // }, 3000);
     }).on('fileuploaderror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
+    }).on('filecustomerror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: msg,
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
+    }).on('filebatchuploaderror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'BATCH Oops...',
+            text: 'Something went wrong!',
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
     });
 
     // Button Upload
@@ -302,8 +330,6 @@ $(document).ready(function () {
             title: "Are you sure?",
             text: "This action will push the file to CargoWise, Still want to continue?",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
                 var doc_id = $(this).data("doc_id");
