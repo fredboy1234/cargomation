@@ -176,51 +176,30 @@ $(document).ready(function () {
             '</button>\n',
     }).on('filebatchpreupload', function (event, data) {
         $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
-        alert('THIS IS BATCH');
-        // var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
-        // Swal.fire({
-        //     title: "Are you sure you want to upload " + files + " to CargoWise?",
-        //     text: "Once uploaded, you will not be able to remove this file!",
-        //     icon: "warning",
-        //     buttons: true,
-        //     dangerMode: true,
-        //     showCancelButton: true,
-        // }).then((willUpload) => {
-        //     if (willUpload) {
-        //         Swal.fire("Your file will be uploaded shortly", {
-        //             icon: "success",
-        //         });
-        //     } else {
-        //         Swal.fire("Upload aborted!");
-        //     }
-        // });
+        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+        Swal.fire({
+            title: "Are you sure you want to upload " + files + " to CargoWise?",
+            text: "Once uploaded, you will not be able to remove this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            showCancelButton: true,
+        }).then((willUpload) => {
+            if (willUpload) {
+                Swal.fire("Your file will be uploaded shortly", {
+                    icon: "success",
+                });
+            } else {
+                Swal.fire("Upload aborted!");
+            }
+        });
         // if (!window.confirm(")) {
         //     return {
         //         message: "Upload aborted!", // upload error message
         //         data:{} // any other data to send that can be referred in `filecustomerror`
         //     };
         // }
-    }).on("filebatchselected", function (event, files) {
-        $el1.fileinput("upload");
-    }).on('fileuploaded', function (event, data, id, index) {
 
-        var fname = data.files[index].name,
-            out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
-        Swal.fire(out);
-        // $(document).Toasts('create', {
-        //     title: 'Success',
-        //     body: out,
-        //     autohide: true,
-        //     close: false,
-        //     class:'bg-success'
-        // });
-        //   $('#kv-success-1').append(out);
-        //   $('#kv-success-1').fadeIn('slow');
-        setTimeout(function () {
-            // $('#kv-success-1').fadeOut('slow');
-            $('.kv-upload-progress').fadeOut('slow');
-        }, 3000);
-    }).on('fileuploaderror', function (event, data, msg) {
         console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
     }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
         console.log('File Batch Uploaded', preview, config, tags, extraData);
@@ -232,18 +211,89 @@ $(document).ready(function () {
         });
         $('#kv-success-2 ul').append(out);
         $('#kv-success-2').fadeIn('slow');
+    }).on("filebatchselected", function (event, files) {
+        $el1.fileinput("upload");
     }).on('filebeforedelete', function (event, key, data) {
-        var aborted = !window.confirm('Are you sure you want to delete this file?');
-        if (aborted) {
-            window.alert('File deletion was aborted! ');
-            console.log('File deletion was aborted : ' + key);
-        };
-        return aborted;
+        // var aborted = !window.confirm('Are you sure you want to delete this file?');
+        // if (aborted) {
+        //     window.alert('File deletion was aborted! ');
+        //     console.log('File deletion was aborted : ' + key);
+        // };
+        // console.log(aborted);
+        // return aborted;
+        // To bypass interface-blocking of swal, I need to use Promise for async process
+        console.log(data);
+        return new Promise(function (resolve, reject) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure you want to delete this file?',
+                text: '"' + data.name + '" will be deleted and you won\'t be able to revert this!',
+                showConfirmButton: false,
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Delete`,
+                denyButtonText: `Delete`,
+            }).then((result) => {
+                /* I use isDenied, coz of the color */
+                if (result.isDenied) {
+                    resolve();
+                } else if (result.isDismissed) {
+                    Swal.fire('File deletion was aborted!', 'File "' + data.name + '" was not deleted.', 'info');
+                }
+            });
+            // $.confirm({
+            //     title: 'Confirmation!',
+            //     content: 'Are you sure you want to delete this file?',
+            //     type: 'red',
+            //     buttons: {
+            //         ok: {
+            //             btnClass: 'btn-primary text-white',
+            //             keys: ['enter'],
+            //             action: function () {
+            //                 resolve();
+            //             }
+            //         },
+            //         cancel: function () {
+            //             $.alert('File deletion was aborted! ' + krajeeGetCount('file-6'));
+            //         }
+            //     }
+            // });
+        });
+
     }).on('filedeleted', function (event, key, jqXHR, data) {
-        setTimeout(function () {
-            window.alert('File deletion was successful! ');
-            console.log('Deleted file : ' + key);
-        }, 900);
+        // setTimeout(function () {
+        //     window.alert('File deletion was successful! ');
+        //     console.log('Deleted file : ' + key);
+        // }, 900);
+        Swal.fire({
+            icon: 'success',
+            title: 'File "' + data.name + '" was deleted successful!',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }).on('filepreupload', function (event, data, previewId, index, fileId) {
+        var form = data.form, files = data.files, extra = data.extra,
+            response = data.response, reader = data.reader;
+        console.log('File pre upload triggered', fileId);
+    }).on('fileuploaded', function (event, data, id, index) {
+        alert('THIS IS BATCH');
+        // var fname = data.files[index].name,
+        //     out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
+        // Swal.fire(out);
+        // // $(document).Toasts('create', {
+        // //     title: 'Success',
+        // //     body: out,
+        // //     autohide: true,
+        // //     close: false,
+        // //     class:'bg-success'
+        // // });
+        // //   $('#kv-success-1').append(out);
+        // //   $('#kv-success-1').fadeIn('slow');
+        // setTimeout(function () {
+        //     // $('#kv-success-1').fadeOut('slow');
+        //     $('.kv-upload-progress').fadeOut('slow');
+        // }, 3000);
+    }).on('fileuploaderror', function (event, data, msg) {
     });
 
     // Button Upload
