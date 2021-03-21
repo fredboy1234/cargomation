@@ -42,7 +42,12 @@ if(!empty($this->document)) {
                                         'key' => $file->document_id,
                                         'dataKey' => $file->document_id,
                                         'dataUrl' => $file->document_id,
-                                        'extra' => ['status' => $file->status]];
+                                        'extra' => ['id' => $file->document_id,
+                                                    'name' => $file->name,
+                                                    'type' => $file->type,
+                                                    'status' => $file->status,
+                                                    'source' => $file->upload_src,
+                                                    'date' => $file->saved_date]];
             $initialPreviewThumbTags[] = ['{status}' => $file->status,
                                         '{origin}' => $file->upload_src,
                                             '{icon}' => $status_icon,
