@@ -93,7 +93,11 @@
             <i class="nav-icon fas fa-user"></i> Profile
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer" style="text-align: left;">
+          <a href="/profile#theme" class="dropdown-item dropdown-footer" style="text-align: left;">
+            <i class="nav-icon fas fa-snowflake-o"></i> Themes
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/profile#settings" class="dropdown-item dropdown-footer" style="text-align: left;">
             <i class="nav-icon fas fa-cog"></i> Settings
           </a>
           <div class="dropdown-divider"></div>
