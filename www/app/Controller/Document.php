@@ -340,8 +340,8 @@ class Document extends Core\Controller {
         // push to cargowise
         // User setting (tick box) 
         $user_settings = $User->getUserSettings($param[5]);
-        $document_settings = json_decode($this->user_settings[0]->document);
-        if(isset($document_settings->doctracker->push_document)) {
+        $document_settings = json_decode($user_settings[0]->document);
+        if(isset($document_settings->doctracker->auto_push)) {
             self::uploadToCargoWise($shipment_num, $email, $config);
         }
         $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];

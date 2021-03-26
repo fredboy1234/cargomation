@@ -3,9 +3,17 @@
     overflow-x: hidden;
     height: 350px;
 }
+.kv-preview-data, .file-preview-pdf {
+    border: 1px solid !important;
+}
 .file-footer-caption {
-    margin-bottom: 10px !important;
     padding: 10px 20px;
+    border: 1px solid #80808040;
+    max-width: 215px;
+    margin-bottom: 10px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: left !important;
 }
 /* .file-actions {
@@ -14,7 +22,7 @@
     width: 100%;
 } */
 .krajee-default.file-preview-frame .kv-file-content {
-    height: auto;
+    height: 166px !important;
 }
 .file-footer-buttons {
     float: right;

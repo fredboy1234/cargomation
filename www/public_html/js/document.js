@@ -7,9 +7,10 @@ $(document).ready(function () {
         '</div>' +
         '</div>';
 
+    $('.file-loading').show();
+
     // Bootstrap File Input
     var $el1 = $("#input");
-    $('.file-loading').show();
     $el1.fileinput({
         theme: 'fas',
         uploadUrl: document.location.origin + "/api/post/document/upload" + param,
@@ -173,83 +174,162 @@ $(document).ready(function () {
             'data-doc_id="{id}" data-doc_status="{status}">' +
             '<i class="fas {icon} {status}"></i>' +
             '</button>\n',
-    }).on('filebatchpreupload', function (event, data) {
-        $('#kv-success-1').html('<h4>Upload Status</h4><ul></ul>').hide();
-        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+    }).on("filebatchselected", function (event, files) {
+        var out = '';
+        $.each(files, function (key, file) {
+            var fname = file.name;
+            out = out + '<li>' + '<b>File: </b>' + (key + 1) + ' - ' + fname + '.' + '</li>';
+        });
         Swal.fire({
-            title: "Are you sure you want to upload " + files + " to CargoWise?",
-            text: "Once uploaded, you will not be able to remove this file!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                Swal.fire("Your file will be uploaded shortly", {
-                    icon: "success",
-                });
+            icon: "info",
+            title: "Are you sure you want to upload?",
+            text: 'TEST',
+            html: out,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $el1.fileinput("upload");
             } else {
-                Swal.fire("Upload aborted!");
+                Swal.fire('File upload was aborted!', '', 'info');
             }
         });
-        // if (!window.confirm(")) {
-        //     return {
-        //         message: "Upload aborted!", // upload error message
-        //         data:{} // any other data to send that can be referred in `filecustomerror`
-        //     };
-        // }
-    }).on("filebatchselected", function (event, files) {
-        $el1.fileinput("upload");
-    }).on('fileuploaded', function (event, data, id, index) {
-
-        var fname = data.files[index].name,
-            out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
-        Swal.fire(out);
-        // $(document).Toasts('create', {
-        //     title: 'Success',
-        //     body: out,
-        //     autohide: true,
-        //     close: false,
-        //     class:'bg-success'
-        // });
-        //   $('#kv-success-1').append(out);
-        //   $('#kv-success-1').fadeIn('slow');
-        setTimeout(function () {
-            // $('#kv-success-1').fadeOut('slow');
-            $('.kv-upload-progress').fadeOut('slow');
-        }, 3000);
-    }).on('fileuploaderror', function (event, data, msg) {
-        console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
-    }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
-        console.log('File Batch Uploaded', preview, config, tags, extraData);
     }).on('filebatchuploadsuccess', function (event, data) {
         var out = '';
         $.each(data.files, function (key, file) {
             var fname = file.name;
-            out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - ' + fname + ' successfully.' + '</li>';
+            out = out + '<li>' + '<b>File # ' + (key + 1) + '</b> - ' + fname + '</li>';
         });
-        $('#kv-success-2 ul').append(out);
-        $('#kv-success-2').fadeIn('slow');
+        Swal.fire({
+            icon: 'success',
+            title: 'Uploaded successfully!',
+            html: out,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setTimeout(function () {
+                    $('.kv-upload-progress').fadeOut('slow');
+                }, 900);
+            }
+        });
+        // $('#kv-success-2 ul').append(out);
+        // $('#kv-success-2').fadeIn('slow');
+    }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
+        // alert('filebatchuploadcomplete');
+        // console.log('File Batch Uploaded', preview, config, tags, extraData);
+        // setTimeout(function () {
+        //     $('.kv-upload-progress').fadeOut('slow');
+        // }, 2000);
     }).on('filebeforedelete', function (event, key, data) {
-        var aborted = !window.confirm('Are you sure you want to delete this file?');
-        if (aborted) {
-            window.alert('File deletion was aborted! ');
-            console.log('File deletion was aborted : ' + key);
-        };
-        return aborted;
+        // var aborted = !window.confirm('Are you sure you want to delete this file?');
+        // if (aborted) {
+        //     window.alert('File deletion was aborted! ');
+        //     console.log('File deletion was aborted : ' + key);
+        // };
+        // console.log(aborted);
+        // return aborted;
+        // To bypass interface-blocking of swal, I need to use Promise for async process
+        return new Promise(function (resolve, reject) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure you want to delete this file?',
+                text: '"' + data.name + '" will be deleted and you won\'t be able to revert this!',
+                showConfirmButton: false,
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Delete`,
+                denyButtonText: `Delete`,
+            }).then((result) => {
+                /* I use isDenied, coz of the color */
+                if (result.isDenied) {
+                    resolve();
+                } else if (result.isDismissed) {
+                    Swal.fire('File deletion was aborted!', 'File "' + data.name + '" was not deleted.', 'info');
+                }
+            });
+            // $.confirm({
+            //     title: 'Confirmation!',
+            //     content: 'Are you sure you want to delete this file?',
+            //     type: 'red',
+            //     buttons: {
+            //         ok: {
+            //             btnClass: 'btn-primary text-white',
+            //             keys: ['enter'],
+            //             action: function () {
+            //                 resolve();
+            //             }
+            //         },
+            //         cancel: function () {
+            //             $.alert('File deletion was aborted! ' + krajeeGetCount('file-6'));
+            //         }
+            //     }
+            // });
+        });
+
     }).on('filedeleted', function (event, key, jqXHR, data) {
-        setTimeout(function () {
-            window.alert('File deletion was successful! ');
-            console.log('Deleted file : ' + key);
-        }, 900);
+        // setTimeout(function () {
+        //     window.alert('File deletion was successful! ');
+        //     console.log('Deleted file : ' + key);
+        // }, 900);
+        Swal.fire({
+            icon: 'success',
+            title: 'File "' + data.name + '" was deleted successful!',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }).on('filepreupload', function (event, data, previewId, index, fileId) {
+        alert('filepreupload');
+        // var form = data.form, files = data.files, extra = data.extra,
+        //     response = data.response, reader = data.reader;
+        // console.log('File pre upload triggered', fileId);
+    }).on('fileuploaded', function (event, data, id, index) {
+        alert('THIS IS BATCH');
+        // var fname = data.files[index].name,
+        //     out = '<li>' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</li>';
+        // Swal.fire(out);
+        // // $(document).Toasts('create', {
+        // //     title: 'Success',
+        // //     body: out,
+        // //     autohide: true,
+        // //     close: false,
+        // //     class:'bg-success'
+        // // });
+        // //   $('#kv-success-1').append(out);
+        // //   $('#kv-success-1').fadeIn('slow');
+        // setTimeout(function () {
+        //     // $('#kv-success-1').fadeOut('slow');
+        //     $('.kv-upload-progress').fadeOut('slow');
+        // }, 3000);
+    }).on('fileuploaderror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
+    }).on('filecustomerror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: msg,
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
+    }).on('filebatchuploaderror', function (event, data, msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'BATCH Oops...',
+            text: 'Something went wrong!',
+            footer: '<a href>Why do I have this issue?</a>'
+        });
+        console.log('File upload error: ' + msg);
     });
 
+    // Button Upload
     $('button.kv-file-upload').click(function () {
         Swal.fire({
             title: "Are you sure?",
             text: "This action will push the file to CargoWise, Still want to continue?",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
                 var doc_id = $(this).data("doc_id");
@@ -270,11 +350,6 @@ $(document).ready(function () {
     });
 
     // Button Status
-    // $('button.kv-file-status').each(function() {
-    //     if($(this).children().hasClass('approved')) {
-    //         $(this).children().removeClass('fa-thumbs-down').addClass('fa-thumbs-up');
-    //     }
-    // });
     $('button.kv-file-status').click(function () {
         var doc_status = $(this).data("doc_status");
         var doc_id = $(this).data("doc_id");
@@ -472,6 +547,7 @@ $(document).ready(function () {
         preloader(url);
     });
 
+    // Validate Form
     $('form#form-modal').validate();
 
     // Submit Form
@@ -557,6 +633,8 @@ $(document).ready(function () {
 
         //$('button#request').toggle();
     }
+
+    // Truncate String
     function truncate(str, n) {
         return (str.length > n) ? str.substr(0, n - 1) + '&hellip;' : str;
     };
@@ -564,14 +642,6 @@ $(document).ready(function () {
 });
 
 $(function () {
-    // //Initialize Select2 Elements
-    // $('.select2').select2();
-
-    // //Initialize Select2 Elements
-    // $('.select2bs4').select2({
-    //     theme: 'bootstrap4'
-    // });
-    // <select id="select-to"></select>
 
     var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
         '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
