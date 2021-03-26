@@ -167,6 +167,7 @@ class Vessel extends Core\Controller {
             'selected_theme' => $selectedTheme,
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
+            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
         ]);
     }
 
@@ -236,5 +237,31 @@ class Vessel extends Core\Controller {
         //  echo '<script src="https://unpkg.com/esri-leaflet"></script>';
         //echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet-geocoder/3.0.0/esri-leaflet-geocoder.js"></script>';
         
+    }
+
+    public function scrape(){
+        $data=array();
+        if(isset($_POST)){
+            
+            $port = $this->Vessel->getSeaPort($_POST['port_name']);
+            
+            if(empty($port)){
+                $dom = file_get_contents('https://us1.locationiq.com/v1/search.php?key=pk.fe49a0fae5b7f62ed12a17d8c2a77691&q='.$_POST['port_name'].'&format=json', false);
+                $dom = json_decode($dom); 
+                if(!empty($dom)){
+                    foreach($dom as $prt){
+                        $data['port_name'] = $prt->display_name;
+                        $data['port_city'] = explode(',',$prt->display_name)[0];
+                        $data['port_lat'] = $prt->lat;
+                        $data['port_long'] = $prt->lon; 
+                        $data['place_id'] = $prt->place_id;
+                        $this->Vessel->addSeaPort($data);
+                    }
+                    
+                }
+            }
+            
+            echo json_encode($this->Vessel->getSeaPort($_POST['port_name']));
+        }
     }
 }

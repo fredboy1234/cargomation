@@ -50,4 +50,29 @@ class Vessel extends Core\Model {
                                 ORDER BY b.date_track asc
                                 ")->results();
     }
+
+    public function addSeaPort($data){
+        $Db = Utility\Database::getInstance();
+        $checkport = $Db->query("SELECT * 
+                        FROM sea_ports
+                        WHERE port_city LIKE '%{$data['port_city']}%'
+                            ")->results();
+        if(empty($checkport)){
+            return $Db->query("INSERT INTO 
+                            sea_ports(port_name,port_city,port_lat,port_long,place_id)
+                            VALUES('{$data['port_name']}','{$data['port_city']}','{$data['port_lat']}','{$data['port_long']}','{$data['place_id']}')
+
+            ");       
+        }
+
+    }
+
+    public function getSeaPort($portcity){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT top(1) * 
+                            FROM sea_ports
+                            WHERE port_city like '%{$portcity}%'
+                                ")->results();
+    }
+
 }

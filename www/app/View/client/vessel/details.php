@@ -157,7 +157,7 @@
         color: #001297;
         border-radius: 1.25rem;
     }
-    #mapid { height: 380px; }
+    #mapid { height: 100%; }
     .myDivIcon{
         background: none;
         border: none;
@@ -202,8 +202,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                <div id="mapid"></div>
-                <div class="tab-pane" id="timeline">
+                <div id="mapid" class="col-md-8 float-left"></div>
+                <div class="tab-pane col-md-4 float-right" id="timeline">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
                         <?php if(!empty($vesseldata)){?>
@@ -265,8 +265,14 @@
         </div>
 </section>
 </div>
+
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
+    var geocodeToken = <?php echo json_encode($this->geocodeToken)?>;
     var data = <?= json_encode($vesseldata)?>;
+    //https://us1.locationiq.com/v1/search.php?key=pk.fe49a0fae5b7f62ed12a17d8c2a77691&q=cebu&format=json
+    var geoAPIURL = 'https://us1.locationiq.com/v1/search.php';
+    var geoAPIcitySearch = '';
+    var geoAPIFormat = 'json';
     console.log(data);
 </script>
