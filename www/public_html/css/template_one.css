@@ -86,13 +86,6 @@
 .col-lg-4 .datepicker-days .active {
   background-color: #9ccc65 !important;
 }
-
-[class*=sidebar-dark] .brand-link {
-  position: absolute;
-  width: auto;
-  bottom: 0;
-}
-
 /* finally, import Bootstrap to set the changes! */
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
