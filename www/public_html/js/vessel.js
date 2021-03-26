@@ -109,7 +109,7 @@ jQuery(document).ready(function() {
 
     var polyline = L.polyline(latlngCollection[0]
       , {
-      color: 'green',
+      color: 'red',
       weight: 5,
       opacity: 0.7,
       dashArray: '4',
