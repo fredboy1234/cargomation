@@ -6,6 +6,13 @@
 .profile-icon{
     font-size: 1.3em;
 }
+.note {
+    background-color: #dedede;
+    padding: 10px;
+    margin-top: 5px;
+    width: 488px;
+    border-radius: 5px;
+}
 </style>
     <?php 
     
@@ -518,9 +525,14 @@
                                 <div class="tab-pane" id="settings">
                                     <form method="post" action="<?= $this->makeUrl("profile/saveSettings"); ?>">
                                         <input type="hidden" id="column" name="column" value="document">
-                                        <div class="card card-secondary">
+                                        <div class="card card-outline card-primary">
                                             <div class="card-header">
                                                 <h3 class="card-title">DocTracker Settings</h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <!-- /.card-header -->
                                             <div class="card-body">
@@ -534,15 +546,12 @@
                                                             <div class="custom-control custom-switch">
                                                                 <input type="checkbox" class="custom-control-input" id="pushDocument" name="doctracker[push_document]" <?php if (isset($document_settings->doctracker->push_document)) { echo "checked='checked'"; } ?>>
                                                                 <label class="custom-control-label" for="pushDocument">Enable push to Cargowise button </label>
+                                                                <p class="note">When button enabled, you will able to see an extra button in each document file. You can push each document to CargoWise. </p>
                                                             </div>
                                                             <div class="custom-control custom-switch">
                                                                 <input type="checkbox" class="custom-control-input" id="deleteDocument" name="doctracker[delete_document]" <?php if (isset($document_settings->doctracker->delete_document)) { echo "checked='checked'"; } ?>>
                                                                 <label class="custom-control-label" for="deleteDocument">Enable delete to document button </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-offset-2 col-sm-10">
-                                                                <button type="submit" class="btn btn-danger">Save Settings</button>
+                                                                <p class="note">When button enabled, you will able to see a delete button in each document file. You can delete each document. </p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -550,7 +559,47 @@
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
+                                        <div class="card card-outline card-primary collapsed-card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Vessel Track Settings</h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+
+                                                        <div class="form-group">
+                                                        <!--
+                                                            custom-control custom-switch custom-switch-off-danger custom-switch-on-success
+                                                        -->
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" class="custom-control-input" id="deleteDocument" name="doctracker[delete_document]" <?php if (isset($document_settings->doctracker->delete_document)) { echo "checked='checked'"; } ?>>
+                                                                <label class="custom-control-label" for="deleteDocument">Enable dark mode map </label>
+                                                                <p class="note">When button enabled, tracker map will be in dark mode. </p>
+                                                            </div>
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" class="custom-control-input" id="pushDocument" name="doctracker[push_document]" <?php if (isset($document_settings->doctracker->push_document)) { echo "checked='checked'"; } ?>>
+                                                                <label class="custom-control-label" for="pushDocument">Show real-time vessel tracker map </label>
+                                                                <p class="note">When button enabled, you will able to see the real-time vessel location in the map. </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-danger">Save Settings</button>
+                                            </div>
+                                        </div>
                                     </form>
+
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>
