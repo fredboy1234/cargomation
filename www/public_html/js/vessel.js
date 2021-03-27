@@ -28,12 +28,12 @@ jQuery(document).ready(function() {
       var api = this.api();
       var rows = api.rows( {page:'current'} ).nodes();
       var last=null;
-     
+      var indexCollection = [];
       api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-        console.log(rows);  
+          
         if ( last !== group ) {
               $(rows).eq( i ).before(
-                  '<tr class="group bg-primary"><td colspan="5"><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+group+'</button></td></tr>'
+                  '<tr class="group bg-primary collapse-tr"><td colspan="5">Container <a href="#">'+$(group).text()+'</a></td><td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>'
               );
 
               last = group;
@@ -42,6 +42,19 @@ jQuery(document).ready(function() {
   }
   }); 
   
+  $(document).on('click','.collapse-tr',function(){
+    var cName = '.'+$(this).find('a').text();
+    if($(this).find('.sec i').hasClass('fa-angle-down')){
+      $(this).find('.sec i').removeClass('fa-angle-down');
+      $(this).find('.sec i').addClass('fa-angle-up');
+    }else{
+      $(this).find('.sec i').removeClass('fa-angle-up');
+      $(this).find('.sec i').addClass('fa-angle-down');
+    }
+    
+    $(cName).parent().parent().toggle();
+  });
+
   $('.a2b-marker-icon').on('click',function(){
     $(".vesselname").removeClass("d-none");
     setTimeout(function(){  

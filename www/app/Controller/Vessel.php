@@ -200,7 +200,7 @@ class Vessel extends Core\Controller {
                 $month = date_format($dateTrack,"F j,Y");
                 $hour = date_format($dateTrack,'h:i:s A');
                 
-                $link = '<a class="col-sm-3 dcontent" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
                 $subdata =array(); 
                 $subdata['container_number'] = $link;
                 $subdata['vessel_name'] = $ves->vessel;

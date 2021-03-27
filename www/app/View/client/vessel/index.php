@@ -11,6 +11,12 @@
  .group tr{
      color:#fff !important;
  }
+ .odd,.even{
+     display: none;
+ }
+ .collapse-tr{
+     cursor: pointer;
+ }
 </style>
 <?php $vessel = $this->vessel;?>
 <section class="content">
