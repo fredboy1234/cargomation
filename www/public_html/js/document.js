@@ -1,6 +1,9 @@
 
 $(document).ready(function () {
 
+    const DEFAULT_PREVIEW = '<div class="file-preview-other">\n' +
+        '   <span class="{previewFileIconClass}">{previewFileIcon}</span>\n' +
+        '</div>';
     var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
         '<div class="spinner-border" role="status">' +
         '<span class="sr-only">Loading...</span>' +
@@ -71,12 +74,34 @@ $(document).ready(function () {
             // uploadTitle: 'Upload File',
             // downloadTitle: 'Download file',
         },
+        previewTemplates: {
+            pdf: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">\n' +
+                '   <div class="checkbox">' +
+                '       <input class="form-check-input" type="checkbox" value="{id}">' +
+                '   </div>' +
+                '   <div class="kv-file-content">' +
+                '       <object class="kv-preview-data file-preview-pdf" title="{caption}" data="{data}" type="application/pdf" {style}>\n' +
+                DEFAULT_PREVIEW + '</object>\n' +
+                '   </div>\n' +
+                '   {footer}\n' +
+                '</div>',
+            other: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}" title="{caption}">\n' +
+                '   <div class="kv-file-content">' +
+                '       <div class="kv-preview-data file-preview-other-frame" {style}>\n' +
+                '           <div class="file-preview-other">\n' +
+                '              {previewFileIcon}\n' +
+                '           </div>\n' +
+                '       </div>\n' +
+                '   </div>\n' +
+                '   <div class="file-preview-other-footer">{footer}</div>\n' +
+                '</div>'
+        },
         layoutTemplates: {
             footer: '<div class="file-thumbnail-footer">\n' +
                 '    <div class="file-footer-caption" title="{caption}">File Name: {caption}' +
                 '       <br>File Type: <b>{type}</b>' +
                 '       <br>File Source: <b>{origin}</b>' +
-                '       <br>File Status: <b class="{status}">{status}</b>' +
+                '       <br>File Status: <b id="status" class="{status}">{status}</b>' +
                 '   </div>\n' +
                 '    {progress} {indicator} {actions}\n' +
                 '</div>'
@@ -325,7 +350,7 @@ $(document).ready(function () {
     });
 
     // Button Upload
-    $('button.kv-file-upload').click(function () {
+    $('button.kv-file-push').click(function () {
         Swal.fire({
             title: "Are you sure?",
             text: "This action will push the file to CargoWise, Still want to continue?",
@@ -416,6 +441,7 @@ $(document).ready(function () {
                             d.toggleClass("b-approved b-pending");
                             $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
                             d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+                            d.find('.file-footer-caption > #status').toggleClass("approved pending").text(valueSelected);
                         })
                     }).fail(function (response) {
                         console.log('Error: ' + response.responseText);
@@ -608,6 +634,146 @@ $(document).ready(function () {
         var url = "/shipment/document/" + shipment_id + "/" + document_type;
         preloader(url);
     });
+
+    // Custom: Add checkbox in each file - preview - frame
+    $('.file-preview-thumbnails > .file-preview-frame').each(function () {
+        //var id = this.className.match(/d-\d+/);
+        // $(this).append('<div class="checkbox">' +
+        //     '<input class="form-check-input" type="checkbox" value="' + id + '">' +
+        //     '</div>');
+        $(this).hover(function () {
+            $(this).children('.checkbox').toggle();
+        });
+
+    });
+
+    // Custom: function in each file-preview-frame
+    $('.file-preview-thumbnails > .file-preview-frame > .checkbox').each(function () {
+        $(this).on('change', function () {
+            $(this).toggleClass('selected');
+        });
+    });
+
+    $('#bulk-action').on('change', function () {
+        var optionSelected = $("option:selected", this);
+        var valueSelected = this.value;
+        var textSelected = optionSelected.text();
+        var groupSelected = optionSelected.parent().data('option');
+
+        // console.log(optionSelected);
+        // console.log(optionSelected.parent().data('option'));
+        // console.log(valueSelected);
+        // console.log(textSelected);
+
+        var data = [];
+
+        $('div[class*="selected"] > input').each(function () {
+            data.push($(this).val().replace('d-', ''));
+        });
+
+        Swal.fire({
+            title: "Are you sure?",
+            html: "This bulk action will make all selected document <b>" + valueSelected + "</b>. <br>Do you still want to continue?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'Yes, continue!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.post("/document/updateDocumentBulk", { group: groupSelected, value: valueSelected, data: data })
+                    .done(function () {
+                        if (valueSelected !== 'deleted') {
+                            Swal.fire({
+                                title: 'It is better to leave a comment',
+                                text: 'Do you want to leave a comment?',
+                                icon: 'info',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: `Leave comment`,
+                                denyButtonText: `No`,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
+                                    var url = "/document/comment/bulk/" + data + "/" + valueSelected;
+
+                                    // load the url and show modal on success
+                                    preloader(url);
+                                } else if (result.isDenied) {
+                                    Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                    $.post("/document/putDocumentCommentBulk", {
+                                        title: "",
+                                        message: "",
+                                        status: valueSelected,
+                                        user_id: user_id,
+                                        document_id: data
+                                    });
+                                } else {
+                                    Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                    $.post("/document/putDocumentCommentBulk", {
+                                        title: "",
+                                        message: "",
+                                        status: valueSelected,
+                                        user_id: user_id,
+                                        document_id: data
+                                    });
+                                }
+                            });
+                        }
+                        // update uploader document
+                        data.forEach(function (entry) {
+                            var d = $('.d-' + entry);
+                            if (groupSelected === 'status') {
+                                if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + valueSelected); }
+                                else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
+                                d.toggleClass("b-approved b-pending");
+                                $('[data-key="' + entry + '"]').attr("data-doc_status", valueSelected);
+                                d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+                                d.find('.file-footer-caption > #status').toggleClass("approved pending").text(valueSelected);
+                            } else {
+                                switch (valueSelected) {
+                                    case 'deleted':
+                                        d.fadeOut(3000, function () { $(this).remove(); });
+                                        break;
+                                    case 'push':
+                                        d.find('.kv-file-push').remove();
+                                        break;
+                                    default:
+                                        console.log('Error: value = ' + valueSelected);
+                                        break;
+                                }
+
+                            }
+                        });
+                        $('#bulk-action').prop('selectedIndex', 0);
+                    }).fail(function (response) {
+                        console.log('Error: ' + response.responseText);
+                    });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Update successfully!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                    'Cancelled',
+                    'No change was made',
+                    'error'
+                );
+                $('#bulk-action').prop('selectedIndex', 0);
+            }
+        });
+    });
+
 
     // Other functions
     function file_ext(filename) {

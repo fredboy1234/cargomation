@@ -61,24 +61,24 @@ if(!empty($this->document)) {
 <div id="document-upload" style="display: block;">
     <div class="row">
         <div class="col-md-5">
-            <h5><b>Shipment ID: </b><?= $this->shipment_info[0]->shipment_num; ?></h5>
+            <h5><b>Shipment ID: </b><span><?= $this->shipment_info[0]->shipment_num; ?></span></h5>
         </div>
         <div class="col-md-5">
-            <!-- <h5><b>Status: </b>
+            <!-- <h5><b>Status: </b><span>
                 <span class="text-success">Approved (<?= $approved; ?>)</span>
                 <span class="text-danger"> Pending (<?= $pending; ?>) </span>
                 <span class="text-warning">For Review (<?= $freview; ?>)</span> 
             </h5> -->
-            <h5><b>Type: </b><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></h5>
+            <h5><b>Type: </b><span><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></span></h5>
         </div>
         <div class="col-md-2">
-            <h5><b>Total: </b><?= count($this->document); ?></h5>
+            <h5><b>Total: </b><span><?= count($this->document); ?></span></h5>
         </div>
     </div>
 
     <div class="card card-outline card-primary collapsed-card" style="transition: all 0.15s ease 0s; height: inherit; width: inherit;">
         <div class="card-header">
-            <h3 class="card-title">Shipment Info</h3>
+            <h3 class="card-title">More Shipment Info</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
@@ -90,7 +90,7 @@ if(!empty($this->document)) {
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-plus"></i>
                 </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <button type="button" class="btn btn-tool" data-card-widget="remove" disabled>
                 <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -100,28 +100,28 @@ if(!empty($this->document)) {
         <div class="card-body" style="display: none;">
             <div class="row">
                 <div class="col-md-6">
-                    <p><b>Shipment ID: </b><?= $this->shipment_info[0]->shipment_num; ?></p>
-                    <p><b>House Bill: </b><?= $this->shipment_info[0]->house_bill; ?></p>
-                    <p><b>Transport Mode: </b><?= $this->shipment_info[0]->transport_mode; ?></p>
-                    <p><b>Voyage Flight No.: </b><?= $this->shipment_info[0]->voyage_flight_num; ?></p>
-                    <p><b>ETA: </b><?= $this->shipment_info[0]->eta; ?></p>
-                    <p><b>Delivery Place: </b><?= $this->shipment_info[0]->place_delivery; ?></p>
-                    <p><b>Consignee: </b><?= $this->shipment_info[0]->consignee; ?></p>
-                    <p><b>Consignee Address: </b><?= $this->shipment_info[0]->consignee_addr; ?></p>
-                    <p><b>Sending Agent: </b><?= $this->shipment_info[0]->sending_agent; ?></p>
-                    <p><b>Sending Agent Address: </b><?= $this->shipment_info[0]->sending_agent_addr; ?></p>
+                    <p><b>Shipment ID: </b><span><?= $this->shipment_info[0]->shipment_num; ?></span></p>
+                    <p><b>House Bill: </b><span><?= $this->shipment_info[0]->house_bill; ?></span></p>
+                    <p><b>Transport Mode: </b><span><?= $this->shipment_info[0]->transport_mode; ?></span></p>
+                    <p><b>Voyage Flight No.: </b><span><?= $this->shipment_info[0]->voyage_flight_num; ?></span></p>
+                    <p><b>ETA: </b><span><?= $this->shipment_info[0]->eta; ?></span></p>
+                    <p><b>Delivery Place: </b><span><?= $this->shipment_info[0]->place_delivery; ?></span></p>
+                    <p><b>Consignee: </b><span><?= $this->shipment_info[0]->consignee; ?></span></p>
+                    <p><b>Consignee Address: </b><span><?= $this->shipment_info[0]->consignee_addr; ?></span></p>
+                    <p><b>Sending Agent: </b><span><?= $this->shipment_info[0]->sending_agent; ?></span></p>
+                    <p><b>Sending Agent Address: </b><span><?= $this->shipment_info[0]->sending_agent_addr; ?></span></p>
                 </div>
                 <div class="col-md-6">
-                    <p><b>Console: </b><?= $this->shipment_info[0]->console_id; ?></p>
-                    <p><b>Master Bill: </b><?= $this->shipment_info[0]->master_bill; ?></p>
-                    <p><b>Vessel Name: </b><?= $this->shipment_info[0]->vessel_name; ?></p>
-                    <p><b>Vessel Lloyds: </b><?= $this->shipment_info[0]->vesslloyds; ?></p>
-                    <p><b>ETD: </b><?= $this->shipment_info[0]->etd; ?></p>
-                    <p><b>Receipt Place: </b><?= $this->shipment_info[0]->place_receipt; ?></p>
-                    <p><b>Consignor: </b><?= $this->shipment_info[0]->consignor; ?></p>
-                    <p><b>Consignor Address: </b><?= $this->shipment_info[0]->consignor_addr; ?></p>
-                    <p><b>Receiving Agent: </b><?= $this->shipment_info[0]->receiving_agent; ?></p>
-                    <p><b>Receiving Agent Address: </b><?= $this->shipment_info[0]->receiving_agent_addr; ?></p>
+                    <p><b>Console: </b><span><?= $this->shipment_info[0]->console_id; ?></span></p>
+                    <p><b>Master Bill: </b><span><?= $this->shipment_info[0]->master_bill; ?></span></p>
+                    <p><b>Vessel Name: </b><span><?= $this->shipment_info[0]->vessel_name; ?></span></p>
+                    <p><b>Vessel Lloyds: </b><span><?= $this->shipment_info[0]->vesslloyds; ?></span></p>
+                    <p><b>ETD: </b><span><?= $this->shipment_info[0]->etd; ?></span></p>
+                    <p><b>Receipt Place: </b><span><?= $this->shipment_info[0]->place_receipt; ?></span></p>
+                    <p><b>Consignor: </b><span><?= $this->shipment_info[0]->consignor; ?></span></p>
+                    <p><b>Consignor Address: </b><span><?= $this->shipment_info[0]->consignor_addr; ?></span></p>
+                    <p><b>Receiving Agent: </b><span><?= $this->shipment_info[0]->receiving_agent; ?></span></p>
+                    <p><b>Receiving Agent Address: </b><span><?= $this->shipment_info[0]->receiving_agent_addr; ?></span></p>
                 </div>
             </div>
         </div>
@@ -190,8 +190,8 @@ if(!empty($this->document)) {
     var options = "";
     <?php if (isset($document_settings->doctracker->push_document)): ?>
     upload_button = '<button type="button" ' +
-            'class="kv-file-upload btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
+            'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+            'title="Push to CargoWise"{dataUrl}{dataKey} ' +
             'data-doc_id="{id}" data-doc_status="{status}">' +
             '<i class="fas fa-upload"></i>' +
             '</button>\n';

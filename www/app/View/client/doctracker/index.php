@@ -365,15 +365,15 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <div class="">
                     <form class="d-inline-block mr-3" action="/action_page.php">
-                        <select name="cars" id="cars" class="form-control">
-                            <option value="" selected="" disabled="" hidden="">Choose here</option>
-                            <optgroup label="Bulk update status:">
-                                <option value="volvo">Approved</option>
-                                <option value="saab">Pending</option>
+                        <select name="bulk-action" id="bulk-action" class="form-control">
+                            <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
+                            <optgroup label="Bulk update status:" data-option="status">
+                                <option value="approved">Approve</option>
+                                <option value="pending">Pending</option>
                             </optgroup>
-                            <optgroup label="Bulk document action">
-                                <option value="mercedes">Upload</option>
-                                <option value="audi">Delete</option>
+                            <optgroup label="Bulk document action" data-option="action">
+                                <option value="push">Push</option>
+                                <option value="deleted">Delete</option>
                             </optgroup>
                         </select>
                     </form>

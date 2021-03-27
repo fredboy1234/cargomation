@@ -5,9 +5,13 @@
 }
 .kv-preview-data, .file-preview-pdf {
     border: 1px solid !important;
+    height: 100%;
+}
+.file-preview-other {
+    font-size: 5em;
 }
 .file-footer-caption {
-    padding: 10px 20px;
+    padding: 10px;
     border: 1px solid #80808040;
     max-width: 215px;
     margin-bottom: 10px !important;
@@ -23,6 +27,17 @@
 } */
 .krajee-default.file-preview-frame .kv-file-content {
     height: 166px !important;
+}
+.krajee-default.file-preview-frame .checkbox{
+    position: absolute;
+    padding-left: 1.25rem;
+    top: 0;
+    right: 0;
+    display: none;
+    z-index: 1;
+}
+.krajee-default.file-preview-frame .selected{
+    display: block !important;
 }
 .file-footer-buttons {
     float: right;
