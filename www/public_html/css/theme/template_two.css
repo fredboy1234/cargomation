@@ -3162,9 +3162,6 @@ div#graph1, div#graph4, div#graph5, div#graph6, div#graph7, div#graph8, div#grap
     border-radius: 53%;
 }
 .brand-link{
-    position: absolute;
-    width: auto;
-    bottom: 0;
     background-color: #8b5c7e;
 }
 .main-sidebar{

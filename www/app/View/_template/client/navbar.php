@@ -1,34 +1,34 @@
   <!-- Navbar -->
-  <?php $role =(isset($this->role) ? $this->role : '' )?> 
+  <?php $role = (isset($this->role) ? $this->role : '') ?>
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    
+
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <?php if(false): ?>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="/" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+      <?php if (false) : ?>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
+        </li>
       <?php endif; ?>
     </ul>
 
-    <?php if(false): ?>
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
+    <?php if (false) : ?>
+      <!-- SEARCH FORM -->
+      <form class="form-inline ml-3">
+        <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
     <?php endif; ?>
 
     <ul class="navbar-nav ml-auto">
@@ -50,23 +50,23 @@
         </div>
       </li>
       <!-- Account Dropdown Menu -->
-      <?php if (isset($this->data)): ?>
-      <li class="nav-item dropdown" style="border: 1px solid #cccc; border-radius: 20px;">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-user-circle"></i> Account
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="/profile" class="dropdown-item">
-            <!-- Account Start -->
-            <div class="media mt-2 mb-2">
-              <img src="<?=$this->image_profile?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                <?= $this->escapeHTML($this->data->name); ?>
-                  <span class="float-right text-sm text-danger" title="Admin Account"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Client</p>
-                <?php 
+      <?php if (isset($this->data)) : ?>
+        <li class="nav-item dropdown" style="border: 1px solid #cccc; border-radius: 20px;">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-user-circle"></i> Account
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="/profile" class="dropdown-item">
+              <!-- Account Start -->
+              <div class="media mt-2 mb-2">
+                <img src="<?= $this->image_profile ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    <?= $this->escapeHTML($this->data->name); ?>
+                    <span class="float-right text-sm text-danger" title="Admin Account"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">Client</p>
+                  <?php
                   $plan_icon = '';
                   switch ($this->user->account_info[0]->type) {
                     case 1:
@@ -82,129 +82,127 @@
                       $plan_icon = 'gem';
                       break;
                   }
-                ?>
-                <p class="text-sm text-muted"><i class="fas fa-<?= $plan_icon; ?> mr-1"></i> <?= $this->user->account_info[0]->plan;?> Account</p>
+                  ?>
+                  <p class="text-sm text-muted"><i class="fas fa-<?= $plan_icon; ?> mr-1"></i> <?= $this->user->account_info[0]->plan; ?> Account</p>
+                </div>
               </div>
-            </div>
-            <!-- Account End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/profile" class="dropdown-item dropdown-footer" style="text-align: left;">
-            <i class="nav-icon fas fa-user"></i> Profile
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/profile#theme" class="dropdown-item dropdown-footer" style="text-align: left;">
-            <i class="nav-icon fas fa-snowflake-o"></i> Themes
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/profile#settings" class="dropdown-item dropdown-footer" style="text-align: left;">
-            <i class="nav-icon fas fa-cog"></i> Settings
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/logout" class="dropdown-item dropdown-footer" style="text-align: right;">
-            <i class="nav-icon fas fa-door-open"></i> Log Out
-          </a>
-        </div>
-      </li>
+              <!-- Account End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/profile" class="dropdown-item dropdown-footer" style="text-align: left;">
+              <i class="nav-icon fas fa-user"></i> Profile
+            </a>
+            <a href="/profile#theme" class="dropdown-item dropdown-footer" style="text-align: left;">
+              <i class="nav-icon fas fa-tree"></i> Themes
+            </a>
+            <a href="/profile#settings" class="dropdown-item dropdown-footer" style="text-align: left;">
+              <i class="nav-icon fas fa-cog"></i> Settings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/logout" class="dropdown-item dropdown-footer" style="text-align: right;">
+              <i class="nav-icon fas fa-door-open"></i> Log Out
+            </a>
+          </div>
+        </li>
       <?php endif; ?>
     </ul>
 
 
 
-    <?php if(false): ?>
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="/bower_components/admin-lte/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+    <?php if (false) : ?>
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Messages Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-comments"></i>
+            <span class="badge badge-danger navbar-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="/bower_components/admin-lte/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Brad Diesel
+                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">Call me whenever you can...</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="/bower_components/admin-lte/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="/bower_components/admin-lte/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    John Pierce
+                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">I got your message bro</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="/bower_components/admin-lte/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="/bower_components/admin-lte/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Nora Silvester
+                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">The subject goes here</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+          </div>
+        </li>
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">15 Notifications</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> 4 new messages
+              <span class="float-right text-muted text-sm">3 mins</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-users mr-2"></i> 8 friend requests
+              <span class="float-right text-muted text-sm">12 hours</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-file mr-2"></i> 3 new reports
+              <span class="float-right text-muted text-sm">2 days</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
+        </li>
+      </ul>
     <?php endif; ?>
   </nav>
   <!-- /.navbar -->
