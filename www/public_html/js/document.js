@@ -81,7 +81,8 @@ $(document).ready(function () {
                 '   </div>' +
                 '   <div class="kv-file-content">' +
                 '       <object class="kv-preview-data file-preview-pdf" title="{caption}" data="{data}" type="application/pdf" {style}>\n' +
-                DEFAULT_PREVIEW + '</object>\n' +
+                //DEFAULT_PREVIEW +
+                '</object>\n' +
                 '   </div>\n' +
                 '   {footer}\n' +
                 '</div>',
@@ -671,107 +672,117 @@ $(document).ready(function () {
             data.push($(this).val().replace('d-', ''));
         });
 
-        Swal.fire({
-            title: "Are you sure?",
-            html: "This bulk action will make all selected document <b>" + valueSelected + "</b>. <br>Do you still want to continue?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: 'Yes, continue!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true,
-            showLoaderOnConfirm: true,
-            preConfirm: () => {
-                return $.post("/document/updateDocumentBulk", { group: groupSelected, value: valueSelected, data: data })
-                    .done(function () {
-                        if (valueSelected !== 'deleted') {
-                            Swal.fire({
-                                title: 'It is better to leave a comment',
-                                text: 'Do you want to leave a comment?',
-                                icon: 'info',
-                                showDenyButton: true,
-                                showCancelButton: true,
-                                confirmButtonText: `Leave comment`,
-                                denyButtonText: `No`,
-                            }).then((result) => {
-                                /* Read more about isConfirmed, isDenied below */
-                                if (result.isConfirmed) {
-                                    Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
-                                    var url = "/document/comment/bulk/" + data + "/" + valueSelected;
 
-                                    // load the url and show modal on success
-                                    preloader(url);
-                                } else if (result.isDenied) {
-                                    Swal.fire('Status changed!', 'Save but no comment made.', 'info')
-                                    $.post("/document/putDocumentCommentBulk", {
-                                        title: "",
-                                        message: "",
-                                        status: valueSelected,
-                                        user_id: user_id,
-                                        document_id: data
-                                    });
+        if (data.length === 0) {
+            Swal.fire(
+                'No file was selected!',
+                'Please select a file(s) by ticking the checkbox.',
+                'error'
+            );
+            $('#bulk-action').prop('selectedIndex', 0);
+        } else {
+            Swal.fire({
+                title: "Are you sure?",
+                html: "This bulk action will make all selected document <b>" + valueSelected + "</b>. <br>Do you still want to continue?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Yes, continue!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true,
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return $.post("/document/updateDocumentBulk", { group: groupSelected, value: valueSelected, data: data })
+                        .done(function () {
+                            if (valueSelected !== 'deleted') {
+                                Swal.fire({
+                                    title: 'It is better to leave a comment',
+                                    text: 'Do you want to leave a comment?',
+                                    icon: 'info',
+                                    showDenyButton: true,
+                                    showCancelButton: true,
+                                    confirmButtonText: `Leave comment`,
+                                    denyButtonText: `No`,
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
+                                        var url = "/document/comment/bulk/" + data + "/" + valueSelected;
+
+                                        // load the url and show modal on success
+                                        preloader(url);
+                                    } else if (result.isDenied) {
+                                        Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                        $.post("/document/putDocumentCommentBulk", {
+                                            title: "",
+                                            message: "",
+                                            status: valueSelected,
+                                            user_id: user_id,
+                                            document_id: data
+                                        });
+                                    } else {
+                                        Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                        $.post("/document/putDocumentCommentBulk", {
+                                            title: "",
+                                            message: "",
+                                            status: valueSelected,
+                                            user_id: user_id,
+                                            document_id: data
+                                        });
+                                    }
+                                });
+                            }
+                            // update uploader document
+                            data.forEach(function (entry) {
+                                var d = $('.d-' + entry);
+                                if (groupSelected === 'status') {
+                                    if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + valueSelected); }
+                                    else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
+                                    d.toggleClass("b-approved b-pending");
+                                    $('[data-key="' + entry + '"]').attr("data-doc_status", valueSelected);
+                                    d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
+                                    d.find('.file-footer-caption > #status').toggleClass("approved pending").text(valueSelected);
                                 } else {
-                                    Swal.fire('Status changed!', 'Save but no comment made.', 'info')
-                                    $.post("/document/putDocumentCommentBulk", {
-                                        title: "",
-                                        message: "",
-                                        status: valueSelected,
-                                        user_id: user_id,
-                                        document_id: data
-                                    });
+                                    switch (valueSelected) {
+                                        case 'deleted':
+                                            d.fadeOut(3000, function () { $(this).remove(); });
+                                            break;
+                                        case 'push':
+                                            d.find('.kv-file-push').remove();
+                                            break;
+                                        default:
+                                            console.log('Error: value = ' + valueSelected);
+                                            break;
+                                    }
+
                                 }
                             });
-                        }
-                        // update uploader document
-                        data.forEach(function (entry) {
-                            var d = $('.d-' + entry);
-                            if (groupSelected === 'status') {
-                                if (d.attr('class').indexOf('bg-') === -1) { d.addClass("bg-" + valueSelected); }
-                                else { $('.bg-approved, .bg-pending').toggleClass('bg-approved bg-pending'); }
-                                d.toggleClass("b-approved b-pending");
-                                $('[data-key="' + entry + '"]').attr("data-doc_status", valueSelected);
-                                d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
-                                d.find('.file-footer-caption > #status').toggleClass("approved pending").text(valueSelected);
-                            } else {
-                                switch (valueSelected) {
-                                    case 'deleted':
-                                        d.fadeOut(3000, function () { $(this).remove(); });
-                                        break;
-                                    case 'push':
-                                        d.find('.kv-file-push').remove();
-                                        break;
-                                    default:
-                                        console.log('Error: value = ' + valueSelected);
-                                        break;
-                                }
-
-                            }
+                            $('#bulk-action').prop('selectedIndex', 0);
+                        }).fail(function (response) {
+                            console.log('Error: ' + response.responseText);
                         });
-                        $('#bulk-action').prop('selectedIndex', 0);
-                    }).fail(function (response) {
-                        console.log('Error: ' + response.responseText);
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Update successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
                     });
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Update successfully!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else if (
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                Swal.fire(
-                    'Cancelled',
-                    'No change was made',
-                    'error'
-                );
-                $('#bulk-action').prop('selectedIndex', 0);
-            }
-        });
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'Cancelled',
+                        'No change was made',
+                        'error'
+                    );
+                    $('#bulk-action').prop('selectedIndex', 0);
+                }
+            });
+        }
     });
 
 
