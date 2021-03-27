@@ -578,13 +578,13 @@
                                                             custom-control custom-switch custom-switch-off-danger custom-switch-on-success
                                                         -->
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" class="custom-control-input" id="deleteDocument" name="doctracker[delete_document]" <?php if (isset($document_settings->doctracker->delete_document)) { echo "checked='checked'"; } ?>>
-                                                                <label class="custom-control-label" for="deleteDocument">Enable dark mode map </label>
+                                                                <input type="checkbox" class="custom-control-input" id="dummy1" name="">
+                                                                <label class="custom-control-label" for="dummy1">Enable dark mode map </label>
                                                                 <p class="note">When button enabled, tracker map will be in dark mode. </p>
                                                             </div>
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" class="custom-control-input" id="pushDocument" name="doctracker[push_document]" <?php if (isset($document_settings->doctracker->push_document)) { echo "checked='checked'"; } ?>>
-                                                                <label class="custom-control-label" for="pushDocument">Show real-time vessel tracker map </label>
+                                                                <input type="checkbox" class="custom-control-input" id="dummy2" name="">
+                                                                <label class="custom-control-label" for="dummy2">Show real-time vessel tracker map </label>
                                                                 <p class="note">When button enabled, you will able to see the real-time vessel location in the map. </p>
                                                             </div>
                                                         </div>
