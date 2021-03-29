@@ -123,6 +123,38 @@ class Document extends Core\Model {
                             insert into document_status (document_id,status) values('{$data['doc_id']}','{$data['doc_status']}')")->results();
     }
 
+    public static function updateDocumentBulk($data){
+        $Db = Utility\Database::getInstance();
+
+        //var_dump($data['data']);
+
+        if(is_array($data['data'])) {
+            $document_id = implode("','", array_values($data['data']));
+            $insert_val = '';
+            foreach ($data['data'] as $value) {
+                $insert_val .= "(" . $value . ", '" . $data['value'] . "'),";
+            }
+            $insert_val = rtrim($insert_val,',');
+        }
+
+        if($data['group'] == 'status') {
+            $query = "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
+            UPDATE document_status SET status='{$data['value']}' WHERE document_id IN ('{$document_id}')
+            ELSE
+            INSERT INTO document_status (document_id,status) VALUES {$insert_val}";
+        } elseif ($data['group'] == 'action') {
+            if($data['value'] == 'deleted') {
+                $query = "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
+                UPDATE document_status SET status='{$data['value']}' WHERE document_id IN ('{$document_id}')
+                ELSE
+                INSERT INTO document_status (document_id,status) VALUES {$insert_val}";
+            } elseif ($data['value'] == 'push') {
+
+            }
+        }
+        return $Db->query($query)->results();
+    }
+
     public static function putDocumentComment($data) {
 
         $data['submitted_date'] = date("Y-m-d H:i:s");
@@ -176,5 +208,7 @@ class Document extends Core\Model {
                             SET status = 'deleted'
                             WHERE document_id IN ('" . $document_id . "') ")->results();
     }
+
+    
 
 }

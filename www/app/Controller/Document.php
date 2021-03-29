@@ -663,6 +663,10 @@ class Document extends Core\Controller {
         echo json_encode($this->Document->updateDocumentStatus($_POST));
     }
 
+    public function updateDocumentBulk(){
+        echo json_encode($this->Document->updateDocumentBulk($_POST));
+    }
+
     public function fileviewer($user_id = "", $document_id){ 
 
         // Check that the user is authenticated.
