@@ -78,7 +78,8 @@ class Exchange extends Core\Controller {
             "dash_photo" =>Model\User::getUsersDashPhoto($userID),
             'selected_theme' => $selectedTheme,
             'list_currency' => $list_currency,
-            'currency' => $currency
+            'currency' => $currency,
+            "notifications" => Model\User::getUserNotifications($userID)
         ]);
 
     }
