@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
           
         if ( last !== group ) {
               $(rows).eq( i ).before(
-                  '<tr class="group bg-primary collapse-tr"><td colspan="5">Container <a href="#">'+$(group).text()+'</a></td><td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>'
+                  '<tr class="group bg-primary collapse-tr"><td colspan="5"><a href="#">'+$(group).text()+'</a></td><td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>'
               );
 
               last = group;
@@ -85,11 +85,12 @@ jQuery(document).ready(function() {
   var exist = [];
   $.each(data,function(key,val) {
     if(exist.includes(val.location_city)== false){
-      exist.push(val.location_city,);
+      exist.push(val.location_city.split(",")[0],);
     }
   });
 
   $.each(exist,function(okey,val){
+    
     var city = val;
     $.ajax({
       async: false,
@@ -97,9 +98,7 @@ jQuery(document).ready(function() {
       type: "POST",
       data: { "port_name": val},
       success: function( response ) { 
-        if(response){
-          console.log(city);
-          console.log(JSON.parse(response)[0]);
+        if(response){  
           var oval = JSON.parse(response)[0];
           var lat = parseFloat(oval.port_lat);
           var long = parseFloat(oval.port_long);
@@ -110,13 +109,8 @@ jQuery(document).ready(function() {
     }); 
   });
 
-  function abc(){
-    
-  }
-  
   setTimeout(function(){
-      // console.log(exist);
-      
+    console.log(latlngCollection[0]);
     $.each(latlngCollection[0],function(key,val){
       
       // p = new L.Popup({ autoClose: false, closeOnClick: false })
@@ -147,7 +141,7 @@ jQuery(document).ready(function() {
       iconSize: [40, 40],
       className: 'myDivIcon'
     });
-    
+    console.log(animationMarker.getLatLng());
     animationMarker.options.icon = greenIcon;
   
     mymap.addLayer(animationMarker );
