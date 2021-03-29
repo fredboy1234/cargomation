@@ -61,3 +61,8 @@
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed text-sm">
   <div class="wrapper">
+  
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center" style="background-color: #255caf;">
+    <img class="animation__shake" src="/img/logo.png" alt="AdminLTELogo" height="60" width="60">
+  </div>
