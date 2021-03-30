@@ -1,5 +1,6 @@
 jQuery(document).ready(function() {
   var groupColumn = 0;
+  var indexCollection = [];
    var table = $('.table').DataTable({
     searching: true, 
     paging: false, 
@@ -28,16 +29,27 @@ jQuery(document).ready(function() {
       var api = this.api();
       var rows = api.rows( {page:'current'} ).nodes();
       var last=null;
-      var indexCollection = [];
+      var lastval = '';
+      var dstn = '';
       api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-          
+        var ndxData = $(rows).eq( i ).find('td').eq(2).find("p").text();
+        var ndx = $(rows).eq( i ).find('td').eq(0).find("a").text();
+        indexCollection[ndx] = ndxData;
+       
         if ( last !== group ) {
+              var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
+              dstn = indexCollection[ndx];
+              
               $(rows).eq( i ).before(
-                  '<tr class="group bg-primary collapse-tr"><td colspan="5"><a href="#">'+$(group).text()+'</a></td><td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>'
+                  `<tr class="group bg-primary collapse-tr">
+                    <td colspan="5"><a href="#">${$(group).text()}</a> 
+                    <p class="d-inline-block col-md-2 offset-md-4">Origin: ${orgn}</p> 
+                    <p class="d-inline-block col-md-2 ">Destination: ${dstn}</p></td>
+                    <td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>`
               );
-
               last = group;
           }
+          
       } );
   }
   }); 
