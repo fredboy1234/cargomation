@@ -11,11 +11,14 @@
  .group tr{
      color:#fff !important;
  }
- .odd,.even{
+ /* .odd,.even{
      display: none;
- }
+ } */
  .collapse-tr{
      cursor: pointer;
+ }
+ .group a{
+     color:#333;
  }
 </style>
 <?php $vessel = $this->vessel;?>
@@ -35,8 +38,9 @@
                             <th>Vessel Name</th>
                             <th>Location</th>
                             <th>Date</th>
-                            <th>Status</th>
+                            <!-- <th>Status</th> -->
                             <th>Voyage</th>
+                            <th>Action</th>
                       </tr>
                     </thead>
                   </table>

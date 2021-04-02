@@ -22,8 +22,9 @@ jQuery(document).ready(function() {
       { data: "vessel_name" },
       { data: "location_city" },
       { data: "date_track" },
-      { data: "status" },
+      // { data: "status" },
       { data: "voyage" },
+      { data: "action" },
     ],
     drawCallback: function ( settings ) {
       var api = this.api();
@@ -31,25 +32,41 @@ jQuery(document).ready(function() {
       var last=null;
       var lastval = '';
       var dstn = '';
+      var count = 1;
+      var firstarry = [];
       api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
         var ndxData = $(rows).eq( i ).find('td').eq(2).find("p").text();
         var ndx = $(rows).eq( i ).find('td').eq(0).find("a").text();
-        indexCollection[ndx] = ndxData;
        
+        if(lastval == ndx || lastval ==''){ 
+          firstarry.push(ndxData);
+          indexCollection.push(firstarry);
+        }
+        
+         lastval = ndx;
+       
+        if(rows.length == count){
+          console.log(indexCollection[indexCollection.length-1]);
+          // $.each(indexCollection[indexCollection.length-1],function(k,v){
+          //   console.log(indexCollection);
+          // });
+        }
+
         if ( last !== group ) {
               var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
-              dstn = indexCollection[ndx];
               
-              $(rows).eq( i ).before(
-                  `<tr class="group bg-primary collapse-tr">
-                    <td colspan="5"><a href="#">${$(group).text()}</a> 
-                    <p class="d-inline-block col-md-2 offset-md-4">Origin: ${orgn}</p> 
-                    <p class="d-inline-block col-md-2 ">Destination: ${dstn}</p></td>
-                    <td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>`
-              );
+              // $(rows).eq( i ).before(
+              //     `<tr class="group collapse-tr">
+              //       <td colspan="5"><a href="#">${$(group).text()}</a></td>
+              //       <td><p class="d-inline-block col-md-2 offset-md-4">Origin: ${orgn}</p></td>
+              //       <td><p class="dstn-${$(group).text()} d-inline-block col-md-2 ">Destination: ${ndxData}</p></td>
+              //       <td class="sec"><i class="float-right fa fa-angle-down"></i></td>
+              //     </tr>`
+              // );
               last = group;
           }
-          
+          count++;
+         
       } );
   }
   }); 

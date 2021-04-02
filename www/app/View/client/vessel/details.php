@@ -200,6 +200,7 @@
 } ?>
 <section class="content">
         <div class="container-fluid">
+        <a href="/vessel">Show List Of Vessel</a>
             <div class="row">
                 <div class="col-12">
                 <div id="mapid" class="col-md-8 float-left"></div>

@@ -193,22 +193,48 @@ class Vessel extends Core\Controller {
         $data =array();
         $color = array();
         $store = array();
+        $count = 0;
+       
         if(!empty($vessel)){
-            foreach($vessel as $ves){
+            foreach($vessel as $key=>$ves){
                 $dateTrack = date_create($ves->date_track);
                 $day = date_format($dateTrack,"l");
                 $month = date_format($dateTrack,"F j,Y");
                 $hour = date_format($dateTrack,'h:i:s A');
+
+                $store[$ves->container_number]['vessel_name'][] =$ves->vessel;
+                $store[$ves->container_number]['location_city'][] =$ves->location_city;
+                $store[$ves->container_number]['date_track'][] =$month." - ".$hour;
+                $store[$ves->container_number]['voyage'][]=$ves->voyage;
+
                 
-                $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                // $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                // $subdata =array(); 
+                // $subdata['container_number'] = $link;
+                // $subdata['vessel_name'] = $ves->vessel;
+                // $subdata['location_city'] = '<p class="loc-city">'.$ves->location_city.'</p>';
+                // $subdata['date_track'] = $month." - ".$hour;
+                // $subdata['status'] = $ves->moves;
+                // $subdata['voyage'] = $ves->voyage;
+                // //$subdata['action'] = ' <a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">Details</a>';
+                // $subdata[''] = $key;
+
+                // $data[] = $subdata; 
+            }
+           
+            foreach($store as $key=>$st){
+                $lastvessel = end($st['vessel_name']);
+                $lastdate = end($st['vessel_name']);
+                
                 $subdata =array(); 
-                $subdata['container_number'] = $link;
-                $subdata['vessel_name'] = $ves->vessel;
-                $subdata['location_city'] = '<p class="loc-city">'.$ves->location_city.'</p>';
-                $subdata['date_track'] = $month." - ".$hour;
-                $subdata['status'] = $ves->moves;
-                $subdata['voyage'] = $ves->voyage;
+                $subdata['container_number'] = $key;
+                $subdata['vessel_name'] = 'From: '.$st['vessel_name'][0].'<br> To: '.end($st['vessel_name']);
+                $subdata['location_city'] = 'From: '.$st['location_city'][0].'<br> To: '.end($st['location_city']);
+                $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
+                $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
                 
+                $subdata['action'] = ' <a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>';
+               
                 $data[] = $subdata; 
             }
            
