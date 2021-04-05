@@ -46,6 +46,9 @@ $(document).on('click', '.doc', function (e) {
   e.preventDefault(); var type = "";
   if ($(this).data('type')) { type = "/" + $(this).data('type'); }
   $('#myModal').modal('show').find('.modal-body').load("/shipment/document/" + $(this).data('id') + type);
+  var row_id = $(this).parent().parent().parent().attr('id');
+  console.log(row_id);
+  localStorage.setItem("row_id", row_id);
 });
 
 //assign shipment to users
@@ -164,11 +167,13 @@ $(document).ready(function () {
       },
     },
     columns: tableColumnData,
-    fnCreatedRow: function (nRow, aData, iDataIndex) {
-      $('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
-      $(nRow).attr("ship-assign-id", aData['real_id_shipment']);
-      $('.assign').attr('data-shipid', aData['real_id_shipment']);
-    },
+    rowId: 'real_id_shipment',
+    select: true,
+    // fnCreatedRow: function (nRow, aData, iDataIndex) {
+    //   $('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
+    //   $(nRow).attr("ship-assign-id", aData['real_id_shipment']);
+    //   $('.assign').attr('data-shipid', aData['real_id_shipment']);
+    // },
     columnDefs: [
       { className: "stats", targets: [4, 5, 6, 7, 8] }
     ],
@@ -261,8 +266,12 @@ $(document).ready(function () {
   // Append loading and redraw datatable
   $('#myModal').on('hidden.bs.modal', function (e) {
     $('#myModal .modal-body').empty().append(loader);
-    table.ajax.reload(setColor);
-
+    table.ajax.reload(function(){
+      setColor();
+      var stId = $('#'+localStorage.getItem("row_id"));
+      $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
+      $(stId).addClass('selected');
+    }); 
   });
 
   //For Settings
