@@ -157,7 +157,7 @@
         color: #001297;
         border-radius: 1.25rem;
     }
-    #mapid { height: 100%; }
+    #mapid { height: 760px; }
     .myDivIcon{
         background: none;
         border: none;
@@ -203,8 +203,9 @@
         <a href="/vessel">Show List Of Vessel</a>
             <div class="row">
                 <div class="col-12">
-                <div id="mapid" class="col-md-8 float-left"></div>
-                <div class="tab-pane col-md-4 float-right" id="timeline">
+                <div id="sidebar"></div>
+                <div id="mapid" class="col-md-12"></div>
+                <div class="d-none tab-pane col-md-4 float-right" id="timeline">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
                         <?php if(!empty($vesseldata)){?>

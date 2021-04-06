@@ -175,6 +175,22 @@ jQuery(document).ready(function() {
   
     mymap.addLayer(animationMarker );
 
+    
+    var sidebar = L.control.sidebar('sidebar', {
+      closeButton: true,
+      position: 'left'
+    });
+    mymap.addControl(sidebar);
+    sidebar.setContent($("#timeline").html());
+    
+    setTimeout(function () {
+      sidebar.show();
+    }, 1000);
+
+    mymap.on('click',function(){
+      sidebar.toggle();
+    });
+
   },2000);
   
   
