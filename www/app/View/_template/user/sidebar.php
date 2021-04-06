@@ -30,7 +30,7 @@ function isActive($url) {
     <a href="/" class="brand-link">
       <img src="/bower_components/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">A2B Freight Hub</span>
+      <span class="brand-text font-weight-light">Cargomation</span>
     </a>
 
     <!-- Sidebar -->
