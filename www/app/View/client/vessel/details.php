@@ -157,7 +157,7 @@
         color: #001297;
         border-radius: 1.25rem;
     }
-    #mapid { height: 100%; }
+    #mapid { height: 760px; }
     .myDivIcon{
         background: none;
         border: none;
@@ -169,6 +169,13 @@
         box-shadow: 0 0 1.25rem 0 rgb(0 0 0 / 50%);
         padding: 3px;
 
+    }
+    #refreshButton {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        z-index: 400;
     }
 </style>
 <?php $count =1;
@@ -200,10 +207,13 @@
 } ?>
 <section class="content">
         <div class="container-fluid">
+        <a href="/vessel">Show List Of Vessel</a>
             <div class="row">
                 <div class="col-12">
-                <div id="mapid" class="col-md-8 float-left"></div>
-                <div class="tab-pane col-md-4 float-right" id="timeline">
+                <div id="sidebar"></div>
+                <div id="mapid" class="col-md-12"></div>
+                <button id="refreshButton" type="button" class="btn btn-primary">Show Timeline</button>
+                <div class="d-none tab-pane col-md-4 float-right" id="timeline">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
                         <?php if(!empty($vesseldata)){?>

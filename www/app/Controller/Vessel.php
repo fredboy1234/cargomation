@@ -170,6 +170,7 @@ class Vessel extends Core\Controller {
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
         ]);
+        $this->externalTemp();
     }
 
     public function vesselSSR($user=""){
@@ -194,22 +195,48 @@ class Vessel extends Core\Controller {
         $data =array();
         $color = array();
         $store = array();
+        $count = 0;
+       
         if(!empty($vessel)){
-            foreach($vessel as $ves){
+            foreach($vessel as $key=>$ves){
                 $dateTrack = date_create($ves->date_track);
                 $day = date_format($dateTrack,"l");
                 $month = date_format($dateTrack,"F j,Y");
                 $hour = date_format($dateTrack,'h:i:s A');
+
+                $store[$ves->container_number]['vessel_name'][] =$ves->vessel;
+                $store[$ves->container_number]['location_city'][] =$ves->location_city;
+                $store[$ves->container_number]['date_track'][] =$month." - ".$hour;
+                $store[$ves->container_number]['voyage'][]=$ves->voyage;
+
                 
-                $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                // $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
+                // $subdata =array(); 
+                // $subdata['container_number'] = $link;
+                // $subdata['vessel_name'] = $ves->vessel;
+                // $subdata['location_city'] = '<p class="loc-city">'.$ves->location_city.'</p>';
+                // $subdata['date_track'] = $month." - ".$hour;
+                // $subdata['status'] = $ves->moves;
+                // $subdata['voyage'] = $ves->voyage;
+                // //$subdata['action'] = ' <a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">Details</a>';
+                // $subdata[''] = $key;
+
+                // $data[] = $subdata; 
+            }
+           
+            foreach($store as $key=>$st){
+                $lastvessel = end($st['vessel_name']);
+                $lastdate = end($st['vessel_name']);
+                
                 $subdata =array(); 
-                $subdata['container_number'] = $link;
-                $subdata['vessel_name'] = $ves->vessel;
-                $subdata['location_city'] = '<p class="loc-city">'.$ves->location_city.'</p>';
-                $subdata['date_track'] = $month." - ".$hour;
-                $subdata['status'] = $ves->moves;
-                $subdata['voyage'] = $ves->voyage;
+                $subdata['container_number'] = $key;
+                $subdata['vessel_name'] = 'From: '.$st['vessel_name'][0].'<br> To: '.end($st['vessel_name']);
+                $subdata['location_city'] = 'From: '.$st['location_city'][0].'<br> To: '.end($st['location_city']);
+                $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
+                $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
                 
+                $subdata['action'] = ' <a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>';
+               
                 $data[] = $subdata; 
             }
            
@@ -224,9 +251,7 @@ class Vessel extends Core\Controller {
 
     //temporary only please ignore
     public function externalTemp(){
-        //  echo '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        //  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        //  crossorigin=""/>';
+        echo '<link rel="stylesheet" href="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.css" crossorigin=""/>';
         //  echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         //  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         //  crossorigin=""></script>';
@@ -237,7 +262,7 @@ class Vessel extends Core\Controller {
         //  echo '<script src="https://unpkg.com/leaflet/dist/leaflet-src.js"></script>';
         //  echo '<script src="https://unpkg.com/esri-leaflet"></script>';
         //echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet-geocoder/3.0.0/esri-leaflet-geocoder.js"></script>';
-        
+        echo '<script src="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
     }
 
     public function scrape(){

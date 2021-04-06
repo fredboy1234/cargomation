@@ -1,5 +1,6 @@
 jQuery(document).ready(function() {
   var groupColumn = 0;
+  var indexCollection = [];
    var table = $('.table').DataTable({
     searching: true, 
     paging: false, 
@@ -21,23 +22,51 @@ jQuery(document).ready(function() {
       { data: "vessel_name" },
       { data: "location_city" },
       { data: "date_track" },
-      { data: "status" },
+      // { data: "status" },
       { data: "voyage" },
+      { data: "action" },
     ],
     drawCallback: function ( settings ) {
       var api = this.api();
       var rows = api.rows( {page:'current'} ).nodes();
       var last=null;
-      var indexCollection = [];
+      var lastval = '';
+      var dstn = '';
+      var count = 1;
+      var firstarry = [];
       api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-          
-        if ( last !== group ) {
-              $(rows).eq( i ).before(
-                  '<tr class="group bg-primary collapse-tr"><td colspan="5">Container <a href="#">'+$(group).text()+'</a></td><td class="sec"><i class="float-right fa fa-angle-down"></i></td></tr>'
-              );
+        var ndxData = $(rows).eq( i ).find('td').eq(2).find("p").text();
+        var ndx = $(rows).eq( i ).find('td').eq(0).find("a").text();
+       
+        if(lastval == ndx || lastval ==''){ 
+          firstarry.push(ndxData);
+          indexCollection.push(firstarry);
+        }
+        
+         lastval = ndx;
+       
+        if(rows.length == count){
+          console.log(indexCollection[indexCollection.length-1]);
+          // $.each(indexCollection[indexCollection.length-1],function(k,v){
+          //   console.log(indexCollection);
+          // });
+        }
 
+        if ( last !== group ) {
+              var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
+              
+              // $(rows).eq( i ).before(
+              //     `<tr class="group collapse-tr">
+              //       <td colspan="5"><a href="#">${$(group).text()}</a></td>
+              //       <td><p class="d-inline-block col-md-2 offset-md-4">Origin: ${orgn}</p></td>
+              //       <td><p class="dstn-${$(group).text()} d-inline-block col-md-2 ">Destination: ${ndxData}</p></td>
+              //       <td class="sec"><i class="float-right fa fa-angle-down"></i></td>
+              //     </tr>`
+              // );
               last = group;
           }
+          count++;
+         
       } );
   }
   }); 
@@ -63,14 +92,21 @@ jQuery(document).ready(function() {
   });
 
   var mymap = L.map('mapid').setView([10.3130247, 123.9471531], 5);
-  
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?access_token='+mapToken, {
-    attribution: '© <a href="https://stadiamaps.com/">Stadia Maps</a>, © <a href="https://openmaptiles.org/">OpenMapTiles</a> © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-    maxZoom: 5,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: mapToken
+   
+  //   L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access_token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
+  //   attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  //   maxZoom: 5,
+  //   id: 'mapbox/streets-v11',
+  //   tileSize: 512,
+  //   zoomOffset: -1,
+  //   accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
+  // }).addTo(mymap);
+  L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
+    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    minZoom: 0,
+    maxZoom: 13,
+    subdomains: 'abcd',
+    accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
   }).addTo(mymap);
   
   var latlngCollection = [];
@@ -78,11 +114,12 @@ jQuery(document).ready(function() {
   var exist = [];
   $.each(data,function(key,val) {
     if(exist.includes(val.location_city)== false){
-      exist.push(val.location_city,);
+      exist.push(val.location_city.split(",")[0],);
     }
   });
 
   $.each(exist,function(okey,val){
+    
     var city = val;
     $.ajax({
       async: false,
@@ -90,9 +127,7 @@ jQuery(document).ready(function() {
       type: "POST",
       data: { "port_name": val},
       success: function( response ) { 
-        if(response){
-          console.log(city);
-          console.log(JSON.parse(response)[0]);
+        if(response){  
           var oval = JSON.parse(response)[0];
           var lat = parseFloat(oval.port_lat);
           var long = parseFloat(oval.port_long);
@@ -103,13 +138,8 @@ jQuery(document).ready(function() {
     }); 
   });
 
-  function abc(){
-    
-  }
-  
   setTimeout(function(){
-      // console.log(exist);
-      
+    console.log(latlngCollection[0]);
     $.each(latlngCollection[0],function(key,val){
       
       // p = new L.Popup({ autoClose: false, closeOnClick: false })
@@ -140,10 +170,38 @@ jQuery(document).ready(function() {
       iconSize: [40, 40],
       className: 'myDivIcon'
     });
-    
+    console.log(animationMarker.getLatLng());
     animationMarker.options.icon = greenIcon;
   
     mymap.addLayer(animationMarker );
+
+    
+    var sidebar = L.control.sidebar('sidebar', {
+      closeButton: true,
+      position: 'left'
+    });
+    mymap.addControl(sidebar);
+    sidebar.setContent($("#timeline").html());
+    
+    setTimeout(function () {
+      sidebar.show();
+    }, 1000);
+
+    sidebar.on('show', function () {
+      $("#refreshButton").addClass('d-none');
+    });
+
+    $("#refreshButton").on('click',function(){
+      sidebar.show();
+    });
+
+    sidebar.on('hidden', function () {
+      $("#refreshButton").removeClass('d-none');
+    });
+
+    mymap.on('click',function(){
+      sidebar.hide();
+    });
 
   },2000);
   
