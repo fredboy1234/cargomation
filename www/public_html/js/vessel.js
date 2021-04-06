@@ -104,7 +104,7 @@ jQuery(document).ready(function() {
   L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     minZoom: 0,
-    maxZoom: 22,
+    maxZoom: 13,
     subdomains: 'abcd',
     accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
   }).addTo(mymap);
@@ -187,8 +187,20 @@ jQuery(document).ready(function() {
       sidebar.show();
     }, 1000);
 
+    sidebar.on('show', function () {
+      $("#refreshButton").addClass('d-none');
+    });
+
+    $("#refreshButton").on('click',function(){
+      sidebar.show();
+    });
+
+    sidebar.on('hidden', function () {
+      $("#refreshButton").removeClass('d-none');
+    });
+
     mymap.on('click',function(){
-      sidebar.toggle();
+      sidebar.hide();
     });
 
   },2000);

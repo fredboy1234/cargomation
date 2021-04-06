@@ -170,6 +170,13 @@
         padding: 3px;
 
     }
+    #refreshButton {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        z-index: 400;
+    }
 </style>
 <?php $count =1;
     $origin = '';
@@ -205,6 +212,7 @@
                 <div class="col-12">
                 <div id="sidebar"></div>
                 <div id="mapid" class="col-md-12"></div>
+                <button id="refreshButton" type="button" class="btn btn-primary">Show Timeline</button>
                 <div class="d-none tab-pane col-md-4 float-right" id="timeline">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
