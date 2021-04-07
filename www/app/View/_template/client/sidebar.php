@@ -2,13 +2,13 @@
 
 $menuItems = [
   ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
-  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
   ['label' => 'Daily Exchange', 'url' => ['/exchange'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">New</span>'],
-  ['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-success">New</span>'],
+  ['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
   ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
   ['label' => 'Vessel Track', 'url' => ['/vessel'], 'icon' => 'fas fa-ship', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
 ];
 
 function isActive($url) {
@@ -27,6 +27,9 @@ function isActive($url) {
   }
   .m2 img{
     width: 44%;
+  }
+  .main-sidebar{
+    z-index: 999999;
   }
 </style>
   <!-- Main Sidebar Container -->
