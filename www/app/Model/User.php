@@ -339,4 +339,22 @@ class User extends Core\Model {
         }
     }
 
+    public static function getUserNotifications($user_id) {
+        $Db = Utility\Database::getInstance();
+        $query = $Db->query("SELECT * 
+            FROM user_notifications 
+            WHERE user_id = '{$user_id}'
+            AND read_flag != 1");
+        
+        // $data['results'] = $query->results();
+        // $data['count'] = $query->count();
+        // $data['error'] = $query->error();
+
+        return $data = array(
+            'results' => $query->results(),
+            'count' => $query->count(),
+            'error' => $query->error()
+        );
+    }
+
 }

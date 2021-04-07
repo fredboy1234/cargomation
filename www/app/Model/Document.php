@@ -209,6 +209,12 @@ class Document extends Core\Model {
                             WHERE document_id IN ('" . $document_id . "') ")->results();
     }
 
+    public function getAllDocumentType() {
+        $query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
     
 
 }

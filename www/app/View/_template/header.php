@@ -8,7 +8,7 @@ use App\Utility\Flash;
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>A2B Freight Hub | <?= $this->escapeHTML($this->title); ?></title>
+  <title>Cargomation | <?= $this->escapeHTML($this->title); ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 

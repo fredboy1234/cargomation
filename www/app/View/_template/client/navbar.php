@@ -1,3 +1,23 @@
+<?php 
+$results = $this->notifications['results'];
+$count = ($this->notifications['count'] != 0)?$this->notifications['count']:'No';
+// calcute date
+function secondsToTime($datetime) {
+  $dbDate = strtotime("".$datetime."");
+  $endDate = time();
+  $diff = $endDate - $dbDate;
+  $days = floor($diff/86400);
+  $hours = floor(($diff-$days*86400)/(60 * 60));
+  $min = floor(($diff-($days*86400+$hours*3600))/60);
+  $second = $diff - ($days*86400+$hours*3600+$min*60);
+  
+   if($days > 0) return $days." Days ago";
+   elseif($hours > 0) return $hours." Hours ago";
+   elseif($min > 0) return $min." Minutes ago";
+   else return "Just now";
+}
+
+?>
   <!-- Navbar -->
   <?php $role = (isset($this->role) ? $this->role : '') ?>
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -36,16 +56,41 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge"></span>
+          <?php if($count > 0)
+           echo '<span class="badge badge-danger navbar-badge">' . $count . '</span>';
+           ?>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">0 Notifications</span>
+        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right">
+          <span class="dropdown-item dropdown-header"><?= $count; ?> Notifications</span>
           <div class="dropdown-divider"></div>
+          <?php if(isset($results) && !empty($results)) : ?>
+            <?php foreach ($results as $key => $value) {
+                    echo '<a href="' . $value->url_link . '" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                              <img src="/bower_components/admin-lte/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                              <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                Brad Diesel  
+                                  <span class="float-right text-sm">
+                                  <i class="fas fa-' . $value->notification_icon . '"></i></span>
+                                </h3>
+                                <p class="text-sm">' . $value->message . '</p>
+                                <p class="text-sm text-muted text-right">
+                                <i class="far fa-clock mr-1"></i> ' . secondsToTime($value->created_date) . '</p>
+                              </div>
+                            </div>
+                            <!-- Message End -->
+                          </a>
+                        <div class="dropdown-divider"></div>';
+                } ?>
+          <?php else: ?>
           <a href="#" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> No new messages
             <span class="float-right text-muted text-sm">...</span>
           </a>
           <div class="dropdown-divider"></div>
+          <?php endif; ?>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>

@@ -99,7 +99,8 @@ class Vessel extends Core\Controller {
             "image_profile" => $profileImage,
             'selected_theme' => $selectedTheme,
             'role' => $role,
-            'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A'
+            'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
+            "notifications" => Model\User::getUserNotifications($user)
         ]);
 
         $this->externalTemp();

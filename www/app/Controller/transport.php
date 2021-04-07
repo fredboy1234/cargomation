@@ -111,6 +111,7 @@ class Transport extends Core\Controller {
             'selected_theme' => $selectedTheme,
             "user" => (Object) Model\User::getProfile($user),
             "droplist" =>$this->dropdownList(),
+            "notifications" => Model\User::getUserNotifications($user)
         ]);
     }
 

@@ -16,7 +16,11 @@
 </style>
     <?php 
     
-    $document_settings = json_decode($this->user_settings[0]->document);
+    if(!isset($this->user_settings)) {
+        $document_settings = json_decode($this->user_settings[0]->document);
+    } else {
+        $document_settings = "";
+    }
     
     if (isset($this->data)): ?>
     <!-- Main content -->
