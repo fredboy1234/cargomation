@@ -169,9 +169,76 @@ class Vessel extends Core\Controller {
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
+            "notifications" => Model\User::getUserNotifications($user)
         ]);
         $this->externalTemp();
     }
+
+    public function tracking($user=""){
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        if (!$Role = Model\Role::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $role = $Role->getUserRole($user)->role_name;
+
+        $uri = explode( '/', $_SERVER['REQUEST_URI'] );
+        $vessel_number = '';
+        if(isset($uri[2])){
+           $vessel_number = explode('?',$uri[2]);
+        }
+       
+        $selectedTheme = $User->getUserSettings($user);
+       if(isset($selectedTheme[0]) && !empty($selectedTheme)){
+           $selectedTheme = $selectedTheme[0]->theme;
+       }else{
+           $selectedTheme = '';
+       }
+       
+       $this->View->addCSS("css/theme/".$selectedTheme.".css");
+       $this->View->addCSS("css/vessel.css");
+       $this->View->addJS("js/vessel.js");
+       
+       $imageList = (Object) Model\User::getProfile($user);
+       $profileImage = '/img/default-profile.png';
+       foreach($imageList->user_image as $img){
+           if( $img->image_src!="" && $img->image_type=='profile' ){
+               $profileImage = base64_decode($img->image_src);
+           }
+       }
+
+       $vessel_number = (isset($vessel_number[1])? $vessel_number[1] :'');
+       
+       $this->View->addJS("js/vessel.js");
+       $this->View->renderTemplate($role, $role . "/vessel/tracking", [
+           "title" => "Vessel Track",
+           "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
+           "data" => (new Presenter\Profile($User->data()))->present(),
+           "user" => (Object) Model\User::getProfile($user),
+           "image_profile" => $profileImage,
+           'selected_theme' => $selectedTheme,
+           'role' => $role,
+           'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
+           'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
+           "notifications" => Model\User::getUserNotifications($user)
+       ]);
+   }
 
     public function vesselSSR($user=""){
         // Check that the user is authenticated.
@@ -235,7 +302,8 @@ class Vessel extends Core\Controller {
                 $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
                 $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
                 
-                $subdata['action'] = ' <a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>';
+                $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>/
+                <a class="col-sm-3 dcontent '.$key.'" href="/vessel/tracking?'.$key.'">Tracking</a>';
                
                 $data[] = $subdata; 
             }

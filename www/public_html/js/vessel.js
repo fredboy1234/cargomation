@@ -139,7 +139,7 @@ jQuery(document).ready(function() {
   });
 
   setTimeout(function(){
-    console.log(latlngCollection[0]);
+    
     $.each(latlngCollection[0],function(key,val){
       
       // p = new L.Popup({ autoClose: false, closeOnClick: false })
@@ -278,7 +278,7 @@ jQuery(document).ready(function() {
     // animationMarker.options.icon = greenIcon;
   
     // mymap.addLayer(animationMarker );
-  
+   
 });
 
 ///
