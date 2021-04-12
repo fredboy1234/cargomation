@@ -357,4 +357,17 @@ class User extends Core\Model {
         );
     }
 
+    public function getUserDocumentType($user_id) {
+        //$query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
+        $query = "SELECT d.type
+        FROM document AS d
+        LEFT JOIN shipment AS s
+        ON d.shipment_num = s.shipment_num
+        WHERE s.user_id = '{$user_id}' GROUP BY d.type";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+
+
 }

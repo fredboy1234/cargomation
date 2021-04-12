@@ -517,11 +517,11 @@ var setColor = function () {
   } else {
     $(".doc-stats span").each(function () {
       if ($(this).text() == "Missing") {
-        $(this).parent().parent().addClass("missing-background");
+        $(this).parent().parent().addClass("stats missing-background");
       } else if ($(this).text() == "Pending") {
-        $(this).parent().parent().addClass("pending-background");
+        $(this).parent().parent().addClass("stats pending-background");
       } else if ($(this).text() == "Approved") {
-        $(this).parent().parent().addClass("approved-background");
+        $(this).parent().parent().addClass("stats approved-background");
       }
     });
   }

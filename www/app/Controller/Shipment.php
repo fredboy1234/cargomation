@@ -322,7 +322,7 @@ class Shipment extends Core\Controller {
         $json_data = array();
         $html = array();
         $tableData = array();
-        $status_search = array('Approved','Pending','Missing');
+        $status_search = array('Approved','Pending','Missing','Empty');
          Utility\Auth::checkAuthenticated();
 
         if (!$user) {
@@ -369,57 +369,74 @@ class Shipment extends Core\Controller {
         }
         
         $stats = $docsCollection;
-        $doc_type = array('HBL','CIV','PKL','PKD','all');
+        //$doc_type = array('HBL','CIV','PKL','PKD','all');
+        $doc_type = array_column($this->Document->getAllDocumentType(), 'type');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
             $eta_date = date_format(date_create($value->eta), "d/m/Y");
             $etd_date = date_format(date_create($value->etd), "d/m/Y");
             $all = "";
-            $status_arr['all']['pending2'] = 0;
-            $status_arr['all']['approved2'] = 0;
+            // $status_arr['all']['pending2'] = 0;
+            // $status_arr['all']['approved2'] = 0;
+
+            foreach ($doc_type as $key => $value4) {
+                $status_arr[$value4]["color"] = "badge-default";
+                $status_arr[$value4]["text"] = "Empty";
+                $status_arr[$value4]['approved2'] = 0;
+                $status_arr[$value4]['pending2'] = 0;
+            }
+
+
             if(isset($stats[$value->shipment_num])) {
                 foreach ($stats[$value->shipment_num] as $key2 => $value2) {
                     
                     if(isset($value2['pending'])) {
                         $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
-                        $status_arr['all']['pending2'] += count($value2['pending']);
+                        // $status_arr['all']['pending2'] += count($value2['pending']);
                     }  
                     if(isset($value2['approved'])) {
                         $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
-                        $status_arr['all']['approved2'] += count($value2['approved']);
+                        // $status_arr['all']['approved2'] += count($value2['approved']);
                     }
                     //for badge and text
                     if(isset($value2['pending'])) {
                         $status_arr[$value2['pending'][0]->type]["color"] = "badge-warning";
                         $status_arr[$value2['pending'][0]->type]["text"] = "Pending";
-                        $status_arr["all"]["color"] = "badge-warning";
-                        $status_arr["all"]["text"] = "Pending";
+                        // $status_arr["all"]["color"] = "badge-warning";
+                        // $status_arr["all"]["text"] = "Pending";
                     }elseif(isset($value2['approved'])){
                         $status_arr[$value2['approved'][0]->type]["color"] = "badge-success";
                         $status_arr[$value2['approved'][0]->type]["text"] = "Approved";
-                        $status_arr["all"]["color"] = "badge-success";
-                        $status_arr["all"]["text"] = "Approved";
+                        // $status_arr["all"]["color"] = "badge-success";
+                        // $status_arr["all"]["text"] = "Approved";
                     }
                 }
             } else {
-                $status_arr["CIV"]["color"] = "badge-danger";
-                $status_arr["CIV"]["text"] = "Missing";
-                $status_arr["HBL"]["color"] = "badge-danger";
-                $status_arr["HBL"]["text"] = "Missing";
-                $status_arr["PKL"]["color"] = "badge-danger";
-                $status_arr["PKL"]["text"] = "Missing";
-                $status_arr["PKD"]["color"] = "badge-danger";
-                $status_arr["PKD"]["text"] = "Missing";
-                $status_arr["all"]["text"] = "Missing";
-                $status_arr["all"]["color"] = "badge-danger";
-                $status_arr['HBL']['approved2'] = 0;
-                $status_arr['HBL']['pending2'] = 0;
-                $status_arr['CIV']['approved2'] = 0;
-                $status_arr['CIV']['pending2'] = 0;
-                $status_arr['PKL']['approved2'] = 0;
-                $status_arr['PKL']['pending2'] = 0;
-                $status_arr['PKD']['approved2'] = 0;
-                $status_arr['PKD']['pending2'] = 0;
+
+                foreach ($doc_type as $key => $value4) {
+                    $status_arr[$value4]["color"] = "badge-default";
+                    $status_arr[$value4]["text"] = "Empty";
+                    $status_arr[$value4]['approved2'] = 0;
+                    $status_arr[$value4]['pending2'] = 0;
+                }
+                // $status_arr["CIV"]["color"] = "badge-danger";
+                // $status_arr["CIV"]["text"] = "Missing";
+                // $status_arr["HBL"]["color"] = "badge-danger";
+                // $status_arr["HBL"]["text"] = "Missing";
+                // $status_arr["PKL"]["color"] = "badge-danger";
+                // $status_arr["PKL"]["text"] = "Missing";
+                // $status_arr["PKD"]["color"] = "badge-danger";
+                // $status_arr["PKD"]["text"] = "Missing";
+                // $status_arr["all"]["text"] = "Missing";
+                // $status_arr["all"]["color"] = "badge-danger";
+                // $status_arr['HBL']['approved2'] = 0;
+                // $status_arr['HBL']['pending2'] = 0;
+                // $status_arr['CIV']['approved2'] = 0;
+                // $status_arr['CIV']['pending2'] = 0;
+                // $status_arr['PKL']['approved2'] = 0;
+                // $status_arr['PKL']['pending2'] = 0;
+                // $status_arr['PKD']['approved2'] = 0;
+                // $status_arr['PKD']['pending2'] = 0;
             }
             
             $status_arr['All']['count'] = 0;
@@ -439,8 +456,8 @@ class Shipment extends Core\Controller {
                         $html[$key]['count'] = "";
                     }
                 }else{
-                    $html['missing']['badge'] ='<span class="doc badge badge-danger" '.$attr.' data-id="'.$value->shipment_num.'">Missing</span>';
-                    $html['missing']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                    $html['empty']['badge'] ='<span class="doc badge badge-default" '.$attr.' data-id="'.$value->shipment_num.'">Empty</span>';
+                    $html['empty']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
                     $html[$key]['count'] = "";
                 }
             }
@@ -455,19 +472,20 @@ class Shipment extends Core\Controller {
                         $tableData[$doc]['count'] = "";
                     }
                 }else{
-                    $tableData[$doc]['hover'] = $html['missing']['hover'];
-                    $tableData[$doc]['badge'] = $html['missing']['badge'];
+                    $tableData[$doc]['hover'] = $html['empty']['hover'];
+                    $tableData[$doc]['badge'] = $html['empty']['badge'];
                     $tableData[$doc]['count'] = "";
                 }
+                
             }
             
-            if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
-                $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
-            }
+            // if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
+            //     $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
+            // }
             
-            if(!in_array($status_arr["all"]["text"],$status_search)){
-              $tableData = [];
-            }else{
+            // if(!in_array($status_arr["all"]["text"],$status_search)){
+            //   $tableData = [];
+            // }else{
                 $marcoLink = 'href="edient:Command=ShowEditForm&amp;LicenceCode=KFRPERPER&amp;ControllerID=JobShipment&amp;BusinessEntityPK=4b2a753d-35b7-4606-8b58-c5e19d09a3f6&amp;Domain=wisecloud.zone&amp;Instance=KFRPER&amp;Hash=%2bcDgu8d3rRHVfuwhmg0HUnx2CFNfmZCjO"';
                 $subdata =array();
                 $subdata['real_id_shipment'] = $value->id;
@@ -475,11 +493,16 @@ class Shipment extends Core\Controller {
                 $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
                 $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
                 $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);
-                $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
-                $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
-                $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
-                $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
-                $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
+
+                foreach ($doc_type as $key3 => $value3) {
+                    $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
+                }
+
+                // $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
+                // $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
+                // $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
+                // $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
+                // $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
                 //$subdata['comment'] = 'No Comment';
                 $subdata['vessel_name'] = $value->vessel_name;
                 $subdata['place_of_delivery'] = $value->place_delivery;
@@ -488,7 +511,7 @@ class Shipment extends Core\Controller {
                 $subdata['container_number'] = $value->CONTAINER;
                 
                 $data[] = $subdata;
-            }
+            // }
         }
        
         $json_data=array(
