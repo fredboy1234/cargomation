@@ -68,8 +68,7 @@ class Exchange extends Core\Controller {
 
         $list_currency = Model\Exchange::getCurrencyList();
         $currency = Model\Exchange::getAllCurrencyList();
-        
-        $this->View->renderTemplate($role, $role . "/exchange/index", [
+        $this->View->renderTemplate($role, "/exchange/index", [
             "title" => "Daily Exchange",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
