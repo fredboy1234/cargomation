@@ -611,7 +611,7 @@ foreach ($status as $key => $value) {
             <!-- /.card -->
             <?php endif; ?>
 
-            <?php if(true): ?>
+            <?php if(false): ?>
             <!-- Map card -->
             <div class="card bg-gradient-primary" style="display: block">
               <div class="card-header border-0">

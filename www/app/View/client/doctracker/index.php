@@ -19,7 +19,7 @@
         color: #333 !important;
     }
 </style>
-
+<?php //var_dump($this->user_settings); die(); ?>
 <section class="content">
     <div class="container-fluid">
         <div class="card card-default collapsed-card">
@@ -307,7 +307,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0 ttable" style="height: 500px;">
+                    <div class="card-body table-responsive p-0 ttable" style="height: auto;">
                         <?php usort($settings, function ($a, $b) {
                             return $a->index_value - $b->index_value;
                         }); ?>

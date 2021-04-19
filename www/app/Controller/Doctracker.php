@@ -594,9 +594,28 @@ class Doctracker extends Core\Controller {
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
+        // $settings = json_decode($this->user_settings);
+        // $count = count($settings);
+        // foreach ($doc_type as $key => $value) {
+        //     array_push($settings, (object)[
+        //         'index_name' => $value->type,
+        //         // 'index_value' => (string)$count++, // Explicit cast
+        //         'index_value' => strval($count++), // Function call
+        //         'index_check' => 'true',
+        //         'index_lvl' => 'document'
+        //     ]);
+        // }
+
+        // {"index_name": "HBL", "index_value": "4", "index_check": "true", "index_lvl":"document"},
+        // {"index_name": "CIV", "index_value": "5", "index_check": "true", "index_lvl":"document"},
+        // {"index_name": "PKD", "index_value": "7", "index_check": "true", "index_lvl":"document"},
+        // {"index_name": "PKL", "index_value": "6", "index_check": "true", "index_lvl":"document"},
+        // {"index_name": "ALL", "index_value": "8", "index_check": "true", "index_lvl":"document"},
+
         $userData = $User->getUserSettings($user);
         $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
-        
+        $doc_type = $User->getUserDocumentType($user);
+
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
         
         $defaultCollection = array();
@@ -607,6 +626,16 @@ class Doctracker extends Core\Controller {
         }
         if(empty($defaultCollection)){
             $userData = array();
+            $count = 9;
+            foreach ($doc_type as $key => $value) {
+                array_push($userData, (object)[
+                    'index_name' => $value->type,
+                    // 'index_value' => (string)$count++, // Explicit cast
+                    'index_value' => strval($count++), // Function call
+                    'index_check' => 'true',
+                    'index_lvl' => 'document'
+                ]);
+            }
         }
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
@@ -616,6 +645,7 @@ class Doctracker extends Core\Controller {
                 } 
             }else{
                 $userData[] = $value;
+
             }
         }
         

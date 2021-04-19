@@ -111,35 +111,86 @@ jQuery(document).ready(function() {
   
   var latlngCollection = [];
   var latlong = [];
+  var lbefore = [];
+  var lsbefore = [];
+  var lafter = [];
+  var lsafter = [];
   var exist = [];
-  $.each(data,function(key,val) {
-    if(exist.includes(val.location_city)== false){
-      exist.push(val.location_city.split(",")[0],);
-    }
-  });
-
-  $.each(exist,function(okey,val){
-    
-    var city = val;
-    $.ajax({
-      async: false,
-      url: "/vessel/scrape/",
-      type: "POST",
-      data: { "port_name": val},
-      success: function( response ) { 
-        if(response){  
-          var oval = JSON.parse(response)[0];
-          var lat = parseFloat(oval.port_lat);
-          var long = parseFloat(oval.port_long);
-          latlong.push([lat,long]);  
-          latlngCollection.push(latlong); 
-        }
+  var existafter =[];
+  
+  if(datapolyline.before){
+    $.each(datapolyline.before,function(key,val) {
+      if(exist.includes(val.location_city)== false){
+        exist.push(val.location_city.split(",")[0],);
       }
-    }); 
-  });
+    });
+    $.each(exist,function(okey,val){
+      var city = val;
+      $.ajax({
+        async: false,
+        url: "/vessel/scrape/",
+        type: "POST",
+        data: { "port_name": val},
+        success: function( response ) { 
+          if(response){  
+            var oval = JSON.parse(response)[0];
+            // var explodecountry = oval.port_name.split(", ");
+            // explodecountry = explodecountry[oval.port_name.split(", ").length-1];
+ 
+            var lat = parseFloat(oval.port_lat);
+            var long = parseFloat(oval.port_long);
+            latlong.push([lat,long]);  
+            latlngCollection.push(latlong); 
+            lbefore.push([lat,long]);
+            lsbefore.push(latlong);
 
+            // $.ajax({
+            //   async: false,
+            //   url: "/vessel/getFlag/",
+            //   type: "POST",
+            //   data: { "country": explodecountry},
+            //   success:function(response){
+            //     console.log(response);
+            //   }
+            // });
+
+          }
+        }
+      }); 
+    });
+  }
+  if(datapolyline.after){
+    $.each(datapolyline.after,function(key,val) {
+      if(existafter.includes(val.location_city)== false){
+        existafter.push(val.location_city.split(",")[0],);
+      }
+    });
+    $.each(existafter,function(okey,val){
+      var city = val;
+      $.ajax({
+        async: false,
+        url: "/vessel/scrape/",
+        type: "POST",
+        data: { "port_name": val},
+        success: function( response ) { 
+          if(response){  
+            var oval = JSON.parse(response)[0];
+            var lat = parseFloat(oval.port_lat);
+            var long = parseFloat(oval.port_long);
+            latlong.push([lat,long]);  
+            latlngCollection.push(latlong); 
+            lafter.push([lat,long]);
+            lsafter.push(latlong);
+          }
+        }
+      }); 
+    });
+  }
+  
   setTimeout(function(){
-    
+    console.log(lsafter);
+   console.log(lsbefore);
+    console.log(latlngCollection);
     $.each(latlngCollection[0],function(key,val){
       
       // p = new L.Popup({ autoClose: false, closeOnClick: false })
@@ -149,8 +200,8 @@ jQuery(document).ready(function() {
       //.bindPopup(p)
       .addTo(mymap)//.openPopup();
     });
-
-    var polyline = L.polyline(latlngCollection[0]
+   if(lsafter[0]){
+    var polyline = L.polyline(lsafter[0]
       , {
       color: 'red',
       weight: 5,
@@ -159,9 +210,22 @@ jQuery(document).ready(function() {
       lineJoin: 'miter',
       lineCap: 'square',
     }).addTo(mymap);
+   }
+   if(lsbefore[0]){
+    var polyline = L.polyline(lsbefore[0]
+      , {
+      color: '#00FF00',
+      weight: 5,
+      opacity: 0.7,
+      dashArray: '4',
+      lineJoin: 'miter',
+      lineCap: 'square',
+    }).addTo(mymap);
+   }
+   
   
     mymap.fitBounds(polyline.getBounds());
-
+    
     var animationMarker = L.Marker.movingMarker(
       latlngCollection[0],
       10000, {autostart: true});
@@ -279,7 +343,11 @@ jQuery(document).ready(function() {
   
     // mymap.addLayer(animationMarker );
    
-});
+    // $('.lazy').Lazy({
+    //   visibleOnly: true
+    // });
+  });
+
 
 ///
 function animateMarekt(combination,mymap){
@@ -297,3 +365,25 @@ function animateMarekt(combination,mymap){
 
   mymap.addLayer(animationMarker );
 }
+
+// $.get( "https://restcountries.eu/rest/v2/all", function( data ) {
+  
+//   $.each(data,function(key,val){
+//     $.ajax({
+//       async: false,
+//       url: "/vessel/country/",
+//       type: "POST",
+//       data: { 
+//          "country_name": val.name,
+//          "country_code2": val.alpha2Code,
+//          "country_code3": val.alpha3Code,
+//          "country_area": val.area,
+//          "country_region": val.region,
+//          "country_flag": val.flag,
+//         },
+//       success: function( response ) { 
+//        console.log(response);
+//       }
+//     }); 
+//   });
+// });

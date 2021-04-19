@@ -157,11 +157,37 @@ class Vessel extends Core\Controller {
         }
 
         $vessel_number = (isset($vessel_number[1])? $vessel_number[1] :'');
+        $color_code_vessel = array();
+        $t=0;
+        $c_flag=array();
+        $vesseeldata = $this->Vessel->getVesselByNumber($vessel_number,$user);
+
+        foreach($vesseeldata as $ot){
+            // if($t==0){
+            //     $ot->date_track = '2021-05-28 11:31:00';
+            // }
+            if(strtotime($ot->date_track) < strtotime(date("Y-m-d h:i:s"))){
+                $color_code_vessel['before'][] =  $ot;
+            }else{
+                $color_code_vessel['after'][] = $ot;
+            } 
+           
+            $port_array = $this->Vessel->getSeaPort($ot->location_city);
+            if(!empty($port_array)){
+                $country = explode(",",$port_array[0]->port_name);
+                $country_flag = $this->getFlag(trim(end($country)));
+                $c_index = preg_replace('/\s*/', '', $ot->location_city);
+                $c_flag[strtolower($c_index)][]=json_decode($country_flag)[0]->flag;
+                
+            }
+           
+            $t++;        
+        }
         
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate($role, $role . "/vessel/details", [
             "title" => "Vessel Track",
-            "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
+            "vesseldata" => $vesseeldata,
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "image_profile" => $profileImage,
@@ -169,7 +195,9 @@ class Vessel extends Core\Controller {
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
-            "notifications" => Model\User::getUserNotifications($user)
+            "notifications" => Model\User::getUserNotifications($user),
+            "polyline" => $color_code_vessel,
+            "c_flag" => $c_flag
         ]);
         $this->externalTemp();
     }
@@ -331,6 +359,8 @@ class Vessel extends Core\Controller {
         //  echo '<script src="https://unpkg.com/esri-leaflet"></script>';
         //echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet-geocoder/3.0.0/esri-leaflet-geocoder.js"></script>';
         echo '<script src="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
+        echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>';
+        echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>';
     }
 
     public function scrape(){
@@ -357,5 +387,21 @@ class Vessel extends Core\Controller {
             
             echo json_encode($this->Vessel->getSeaPort($_POST['port_name']));
         }
+    }
+
+    // public function country(){
+    //     $data['name'] = $_POST['country_name']; 
+    //     $data['code2'] = $_POST['country_code2']; 
+    //     $data['code3'] = $_POST['country_code3']; 
+    //     $data['area'] = $_POST['country_area']; 
+    //     $data['region'] = $_POST['country_region']; 
+    //     $data['flag'] = base64_encode(file_get_contents($_POST['country_flag'])); 
+    //     $this->Vessel->addCountry($data);
+
+    //     return json_encode($data);
+    // }
+
+    public function getFlag($country){
+        return json_encode($this->Vessel->getFlag($country));
     }
 }

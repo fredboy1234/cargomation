@@ -75,4 +75,21 @@ class Vessel extends Core\Model {
                                 ")->results();
     }
 
+    // public function addCountry($data){
+    //     $Db = Utility\Database::getInstance();
+    //     return $Db->query("INSERT INTO 
+    //                         country_info(name,code2,code3,area,region,flag)
+    //                         VALUES('{$data['name']}','{$data['code2']}','{$data['code3']}','{$data['area']}','{$data['region']}','{$data['flag']}')
+
+    //         "); 
+    // }
+
+    public function getFlag($country){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT flag 
+                            FROM country_info
+                            WHERE name like '%{$country}%'
+                                ")->results(); 
+    }
+
 }

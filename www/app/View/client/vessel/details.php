@@ -2,6 +2,7 @@
 <?php $vesseldata = $this->vesseldata; ?>
 <?php $bg=array('bg-danger','bg-success','bg-primary','bg-warning')?>
 <?php $countBG=0; $count=0; $icon='fa-box';?>
+<?php $c_flag = $this->c_flag;?>
 <style>
     #custom-map{
         background: lightblue url("../img/vessel/worldmap.png") no-repeat fixed center;
@@ -177,6 +178,10 @@
         padding: 10px;
         z-index: 400;
     }
+    .flag{
+        width: 40px;
+        height: 30px;
+    }
 </style>
 <?php $count =1;
     $origin = '';
@@ -223,10 +228,12 @@
                                 <?php $day = date_format($dateTrack,"l");?>
                                 <?php $month = date_format($dateTrack,"F j,Y");?>
                                 <?php $hour = date_format($dateTrack,'h:i:s A')?>
+                                <?php  $c_index = preg_replace('/\s*/', '', $vessel->location_city);?>
+                              
                                 <div class="time-label" data-time="time-<?=$id?>">
                                     <div class="head-list">
                                     <span class="col-md-2 d-inline-block">
-                                     <img src="http://www.flags.net/images/smallflags/ASTL0001.GIF">
+                                     <img class="flag f-<?=$vessel->location_city?> img-thumbnail" src="data:image/svg+xml;base64, <?=$c_flag[strtolower($c_index)][0]?>">
                                     </span>
                                     <span class="col-md-8 d-inline-block">
                                          <strong><?=$vessel->location_city?></strong><br>
@@ -255,5 +262,6 @@
     var geoAPIURL = 'https://us1.locationiq.com/v1/search.php';
     var geoAPIcitySearch = '';
     var geoAPIFormat = 'json';
+    var datapolyline = <?=json_encode($this->polyline)?>;
     console.log(data);
 </script>

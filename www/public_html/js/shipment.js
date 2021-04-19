@@ -129,8 +129,8 @@ $(document).ready(function () {
 
   var table = $('.table').DataTable({
     searching: true,
-    paging: false,
-    info: false,
+    paging: true,
+    info: true,
     responsive: true,
     autoWidth: false,
     lengthChange: false,
@@ -177,8 +177,21 @@ $(document).ready(function () {
     columnDefs: [
       { className: "stats", targets: [4, 5, 6, 7, 8] }
     ],
-    initComplete: setColor
+    initComplete: setColor,
+    "fnPreDrawCallback": function (oSettings) {
+      // if ($('#test').val() == 1) {
+      //   return false;
+      // }
+      setColor();
+    }
   });
+  // .on('draw.dt', function () {
+
+  //   var info = table.page.info();
+  //   console.log('PAGE: ' + info.page);
+  //   setColor();
+  //   // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
+  // });
 
   if (parsed_qs.doc !== '' && typeof parsed_qs.doc != 'undefined') {
     table.search(parsed_qs.doc).draw();
@@ -266,12 +279,12 @@ $(document).ready(function () {
   // Append loading and redraw datatable
   $('#myModal').on('hidden.bs.modal', function (e) {
     $('#myModal .modal-body').empty().append(loader);
-    table.ajax.reload(function(){
+    table.ajax.reload(function () {
       setColor();
-      var stId = $('#'+localStorage.getItem("row_id"));
+      var stId = $('#' + localStorage.getItem("row_id"));
       $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
       $(stId).addClass('selected');
-    }); 
+    });
   });
 
   //For Settings
@@ -471,20 +484,20 @@ $(document).ready(function () {
   });
 
   $('.js-example-basic-multiple').select2();
-  $('.js-example-basic-multiple').on("select2:select", function (e) { 
+  $('.js-example-basic-multiple').on("select2:select", function (e) {
     var data = e.params.data.text;
-    
-    if(data=='Select All'){
-     $(".js-example-basic-multiple > option").prop("selected","selected");
-     
-     $(".js-example-basic-multiple > option").each(function(key,val){
-      console.log($(val).val());
-      if($(val).val() == 'all'){
-        $(this).prop('selected',false);
-      }
-     });
 
-     $(".js-example-basic-multiple").trigger("change");
+    if (data == 'Select All') {
+      $(".js-example-basic-multiple > option").prop("selected", "selected");
+
+      $(".js-example-basic-multiple > option").each(function (key, val) {
+        console.log($(val).val());
+        if ($(val).val() == 'all') {
+          $(this).prop('selected', false);
+        }
+      });
+
+      $(".js-example-basic-multiple").trigger("change");
     }
   });
 });
@@ -504,11 +517,11 @@ var setColor = function () {
   } else {
     $(".doc-stats span").each(function () {
       if ($(this).text() == "Missing") {
-        $(this).parent().parent().addClass("missing-background");
+        $(this).parent().parent().addClass("stats missing-background");
       } else if ($(this).text() == "Pending") {
-        $(this).parent().parent().addClass("pending-background");
+        $(this).parent().parent().addClass("stats pending-background");
       } else if ($(this).text() == "Approved") {
-        $(this).parent().parent().addClass("approved-background");
+        $(this).parent().parent().addClass("stats approved-background");
       }
     });
   }
