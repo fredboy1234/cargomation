@@ -47,7 +47,7 @@
                                     <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
                                     -->
                                     <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
-                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-assign" role="tab" aria-controls="vert-tabs-assign" aria-selected="false">Assign Shipment</a>
+                                    <a class="nav-link d-none" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-assign" role="tab" aria-controls="vert-tabs-assign" aria-selected="false">Assign Shipment</a>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-10 col-md-10 col-sm-12">

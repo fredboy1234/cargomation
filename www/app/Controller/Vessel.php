@@ -264,7 +264,8 @@ class Vessel extends Core\Controller {
            'role' => $role,
            'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
-           "notifications" => Model\User::getUserNotifications($user)
+           "notifications" => Model\User::getUserNotifications($user),
+           "vesselyod" => $this->Vessel->vesseLyod($vessel_number,$user)[0]->vesslloyds
        ]);
    }
 

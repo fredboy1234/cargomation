@@ -92,4 +92,12 @@ class Vessel extends Core\Model {
                                 ")->results(); 
     }
 
+    public function vesseLyod($container_num,$user_id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT vesslloyds 
+                            FROM vrpt_Transport
+                            WHERE containernumber like '%{$container_num}%' AND user_id = '{$user_id}'
+                                ")->results(); 
+    }
+
 }
