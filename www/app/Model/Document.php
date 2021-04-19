@@ -209,8 +209,25 @@ class Document extends Core\Model {
                             WHERE document_id IN ('" . $document_id . "') ")->results();
     }
 
-    public function getAllDocumentType() {
+    public function getDocumentType() {
         $query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getDocumentStatus() {
+        // 
+    }
+
+    public function getRequestedDocument($user_id, $arg = '*', $group_by) {
+        $query = "SELECT {$arg}
+        FROM document_request
+        WHERE request_type = 'new' 
+        AND user_id = {$user_id}
+        AND status IS NULL";
+        if(!empty($group_by)) {
+            $query .= " GROUP BY " . $group_by;
+        }
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }

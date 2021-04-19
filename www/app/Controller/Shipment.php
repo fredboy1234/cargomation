@@ -322,7 +322,7 @@ class Shipment extends Core\Controller {
         $json_data = array();
         $html = array();
         $tableData = array();
-        $status_search = array('Approved','Pending','Missing','Empty');
+        $status_search = array('Approved','Pending','Missing','Requested','Empty');
          Utility\Auth::checkAuthenticated();
 
         if (!$user) {
@@ -337,6 +337,9 @@ class Shipment extends Core\Controller {
         }
         $role = $Role->getUserRole($user)->role_name;
         
+        //$doc_requested = $this->Document->getRequestedDocument($user, "shipment_num, document_type, count(*) AS count", " shipment_num, document_type");        
+         //$doc_requested = array_combine(array_map(function ($o) { return $o->shipment_num; }, $doc_requested), $doc_requested);
+
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
         $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
         $searchStore = array();
@@ -370,7 +373,7 @@ class Shipment extends Core\Controller {
         
         $stats = $docsCollection;
         //$doc_type = array('HBL','CIV','PKL','PKD','all');
-        $doc_type = array_column($this->Document->getAllDocumentType(), 'type');
+        $doc_type = array_column($this->Document->getDocumentType(), 'type');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
             $eta_date = date_format(date_create($value->eta), "d/m/Y");

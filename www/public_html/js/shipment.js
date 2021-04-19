@@ -177,13 +177,13 @@ $(document).ready(function () {
     columnDefs: [
       { className: "stats", targets: [4, 5, 6, 7, 8] }
     ],
-    initComplete: setColor,
-    "fnPreDrawCallback": function (oSettings) {
-      // if ($('#test').val() == 1) {
-      //   return false;
-      // }
-      setColor();
-    }
+    //initComplete: setColor,
+    // "fnPreDrawCallback": function (oSettings) {
+    //   // if ($('#test').val() == 1) {
+    //   //   return false;
+    //   // }
+    //   setColor();
+    // }
   });
   // .on('draw.dt', function () {
 
@@ -502,30 +502,30 @@ $(document).ready(function () {
   });
 });
 
-var setColor = function () {
+// var setColor = function () {
 
-  if (theme == 'template_one') {
-    $(".doc-stats span").each(function () {
-      if ($(this).text() == "Missing") {
-        $(this).parent().parent().addClass("bg-danger");
-      } else if ($(this).text() == "Pending") {
-        $(this).parent().parent().addClass("bg-warning");
-      } else if ($(this).text() == "Approved") {
-        $(this).parent().parent().addClass("bg-success");
-      }
-    });
-  } else {
-    $(".doc-stats span").each(function () {
-      if ($(this).text() == "Missing") {
-        $(this).parent().parent().addClass("stats missing-background");
-      } else if ($(this).text() == "Pending") {
-        $(this).parent().parent().addClass("stats pending-background");
-      } else if ($(this).text() == "Approved") {
-        $(this).parent().parent().addClass("stats approved-background");
-      }
-    });
-  }
-};
+//   if (theme == 'template_one') {
+//     $(".doc-stats span").each(function () {
+//       if ($(this).text() == "Missing") {
+//         $(this).parent().parent().addClass("bg-danger");
+//       } else if ($(this).text() == "Pending") {
+//         $(this).parent().parent().addClass("bg-warning");
+//       } else if ($(this).text() == "Approved") {
+//         $(this).parent().parent().addClass("bg-success");
+//       }
+//     });
+//   } else {
+//     $(".doc-stats span").each(function () {
+//       if ($(this).text() == "Missing") {
+//         $(this).parent().parent().addClass("stats missing-background");
+//       } else if ($(this).text() == "Pending") {
+//         $(this).parent().parent().addClass("stats pending-background");
+//       } else if ($(this).text() == "Approved") {
+//         $(this).parent().parent().addClass("stats approved-background");
+//       }
+//     });
+//   }
+// };
 
 function parse_query_string(query) {
   var vars = query.split("&");
