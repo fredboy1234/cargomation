@@ -130,7 +130,15 @@ function isActive($url) {
             </a>
           </li>
           <?php endif; ?>
-
+          <li class="nav-item">
+            <a href="/shipment" class="nav-link">
+              <i class="nav-icon fas fa-phone"></i>
+              <p>
+                Contact Us
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

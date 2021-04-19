@@ -78,14 +78,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 </body>
 </html>
-<script>
-    $(document).ready(function(){
-      $('.main-sidebar').on('mouseover',function(){
-        $('.m1').addClass("force-hide");
-        $('.m2').removeClass('force-hide');
-      }).mouseout(function(){
-        $('.m2').addClass("force-hide");
-        $('.m1').removeClass('force-hide');
-      });
-    });
-  </script>

@@ -1,14 +1,14 @@
 <?php
 
 $menuItems = [
-  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Daily Exchange', 'url' => ['#'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
   ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
-  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">New</span>'],
-  ['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
+  ['label' => 'Daily Exchange', 'url' => ['/exchange'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => '<span class="right badge badge-success">New</span>'],
+  ['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
   ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
   ['label' => 'Vessel Track', 'url' => ['/vessel'], 'icon' => 'fas fa-ship', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
 ];
 
 function isActive($url) {
@@ -19,11 +19,19 @@ function isActive($url) {
 }
 ?>
 <style>
-.m2 img{
+  .force-hide{
+    display: none !important;
+  }
+  .img-radius{
+    border: 1px solid #fff;
+  }
+  .m2 img{
     width: 44%;
-}
+  }
+  .main-sidebar{
+    z-index: 999999;
+  }
 </style>
-
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -37,7 +45,7 @@ function isActive($url) {
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <?php if (isset($this->data)): ?>
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="m1 user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image">
         </div>
@@ -122,7 +130,6 @@ function isActive($url) {
             </a>
           </li>
           <?php endif; ?>
-
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
