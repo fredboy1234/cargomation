@@ -91,6 +91,13 @@ h1 {
 	font-weight: 700;
 	letter-spacing: -1px;
 }
+#feedback .alert{
+  position: fixed;
+  top: 0;
+  text-align: center;
+  left: 30%;
+  right: 30%;
+}
 </style>
 
 <div class="login-box">
