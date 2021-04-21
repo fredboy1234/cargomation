@@ -267,7 +267,8 @@ $(document).ready(function () {
     });
     // $("input[name='origin']").val(query_data.origin);
     // $("input[name='transportmode']").val(query_data.transportmode);
-    table.ajax.reload(setColor);
+    // table.ajax.reload(setColor);
+    table.ajax.reload();
     //table.draw();
   });
 
@@ -280,7 +281,7 @@ $(document).ready(function () {
   $('#myModal').on('hidden.bs.modal', function (e) {
     $('#myModal .modal-body').empty().append(loader);
     table.ajax.reload(function () {
-      setColor();
+      // setColor();
       var stId = $('#' + localStorage.getItem("row_id"));
       $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
       $(stId).addClass('selected');
@@ -447,7 +448,8 @@ $(document).ready(function () {
   //reset search
   $("#reset-search").on("click", function () {
     $("#addvance-search-form").find("input[type=text], textarea").val("");
-    table.ajax.reload(setColor);
+    //table.ajax.reload(setColor);
+    table.ajax.reload();
   });
 
   $(document).on('click', 'tr td', function (e) {
