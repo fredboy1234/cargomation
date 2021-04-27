@@ -22,10 +22,18 @@ class Redirect {
             if ($location === 404) {
                 header('HTTP/1.0 404 Not Found');
                 include VIEW_PATH . DEFAULT_404_PATH;
-            } else {
-                header("Location: " . $location);
+            } else {     
+               if(  strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || 
+                    strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || 
+                    !strstr($_SERVER['HTTP_USER_AGENT'],'Chrome') ){ 
+                    $location = str_replace('\\', '/', $location);
+                    echo ("<script>location.href='$location'</script>");
+                }
+                else {
+                     header("Location: " . $location);
+                }
             }
-            exit();
+           exit();
         }
     }
 
