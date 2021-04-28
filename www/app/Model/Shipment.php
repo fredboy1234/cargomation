@@ -93,15 +93,18 @@ class Shipment extends Core\Model {
             $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
         }
         
-        $data['origin'] = "('{$data['origin_cargowise']}','{$data['origin_hub']}')";
+        if(isset($data['origin_cargowise']) && isset($data['origin_hub'])){
+            $data['origin'] = "('{$data['origin_cargowise']}','{$data['origin_hub']}')";     
+        }
+       
         
-        if($data['origin'] != ""){
+        //if($data['origin'] != ""){
             // if($data['ETA'] == ""){
             //     $where .= " and document.upload_src = '{$data['origin']}'";
             // }
            //$origin = $data['origin'];
            //$where .= " and document.upload_src in '{$data['origin']}'";
-        }
+        //}
          $data['transportmode_air'] = (isset($data['transportmode_air']) ? $data['transportmode_air'] : '');
          $data['transportmode_sea'] = (isset($data['transportmode_sea']) ? $data['transportmode_sea']  : '');
         $data['transportmode'] = "('{$data['transportmode_sea']}','{$data['transportmode_air']}')";
