@@ -503,6 +503,10 @@ $(document).ready(function () {
       $(".js-example-basic-multiple").trigger("change");
     }
   });
+
+  console.log();
+  var height = $(window).height();
+  $('.ttable, #DataTables_Table_0_wrapper').height(height);
 });
 
 // var setColor = function () {
