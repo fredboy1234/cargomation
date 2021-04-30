@@ -150,7 +150,7 @@ $(document).ready(function () {
     },
     serverMethod: 'post',
     ajax: {
-      url: '/shipment/shipmentSSR/',
+      url: document.location.origin + '/shipment/shipmentSSR/',
       data: function (d) {
         d.shipment_id = $("input[name='shipment_id']").val();
         d.ETA = $("input[name='ETA']").val();
@@ -503,7 +503,7 @@ $(document).ready(function () {
       $(".js-example-basic-multiple").trigger("change");
     }
   });
-
+  
   var height = $(window).height();
   $('.ttable, #DataTables_Table_0_wrapper').height(height);
 });
