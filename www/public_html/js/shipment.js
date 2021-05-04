@@ -150,7 +150,7 @@ $(document).ready(function () {
     },
     serverMethod: 'post',
     ajax: {
-      url: document.location.origin + '/shipment/shipmentSSR/',
+      url: '/shipment/shipmentSSR/',
       data: function (d) {
         d.shipment_id = $("input[name='shipment_id']").val();
         d.ETA = $("input[name='ETA']").val();
@@ -177,21 +177,21 @@ $(document).ready(function () {
     columnDefs: [
       { className: "stats", targets: [4, 5, 6, 7, 8] }
     ],
-    //initComplete: setColor,
-    // "fnPreDrawCallback": function (oSettings) {
-    //   // if ($('#test').val() == 1) {
-    //   //   return false;
-    //   // }
-    //   setColor();
-    // }
-  });
-  // .on('draw.dt', function () {
+    initComplete: setColor,
+    "fnPreDrawCallback": function (oSettings) {
+      // if ($('#test').val() == 1) {
+      //   return false;
+      // }
+      setColor();
+    }
+  })
+  .on('draw.dt', function () {
 
-  //   var info = table.page.info();
-  //   console.log('PAGE: ' + info.page);
-  //   setColor();
-  //   // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
-  // });
+    var info = table.page.info();
+    console.log('PAGE: ' + info.page);
+    setColor();
+    // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
+  });
 
   if (parsed_qs.doc !== '' && typeof parsed_qs.doc != 'undefined') {
     table.search(parsed_qs.doc).draw();
@@ -267,8 +267,8 @@ $(document).ready(function () {
     });
     // $("input[name='origin']").val(query_data.origin);
     // $("input[name='transportmode']").val(query_data.transportmode);
-    // table.ajax.reload(setColor);
-    table.ajax.reload();
+    table.ajax.reload(setColor);
+    //table.ajax.reload();
     //table.draw();
   });
 
@@ -281,7 +281,7 @@ $(document).ready(function () {
   $('#myModal').on('hidden.bs.modal', function (e) {
     $('#myModal .modal-body').empty().append(loader);
     table.ajax.reload(function () {
-      // setColor();
+      setColor();
       var stId = $('#' + localStorage.getItem("row_id"));
       // $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
       $('html, body').animate({ scrollTop: stId.offset() }, 2000);
@@ -449,8 +449,8 @@ $(document).ready(function () {
   //reset search
   $("#reset-search").on("click", function () {
     $("#addvance-search-form").find("input[type=text], textarea").val("");
-    //table.ajax.reload(setColor);
-    table.ajax.reload();
+    table.ajax.reload(setColor);
+    //table.ajax.reload();
   });
 
   $(document).on('click', 'tr td', function (e) {
@@ -503,35 +503,35 @@ $(document).ready(function () {
       $(".js-example-basic-multiple").trigger("change");
     }
   });
-  
+
   var height = $(window).height();
   $('.ttable, #DataTables_Table_0_wrapper').height(height);
 });
 
-// var setColor = function () {
+var setColor = function () {
 
-//   if (theme == 'template_one') {
-//     $(".doc-stats span").each(function () {
-//       if ($(this).text() == "Missing") {
-//         $(this).parent().parent().addClass("bg-danger");
-//       } else if ($(this).text() == "Pending") {
-//         $(this).parent().parent().addClass("bg-warning");
-//       } else if ($(this).text() == "Approved") {
-//         $(this).parent().parent().addClass("bg-success");
-//       }
-//     });
-//   } else {
-//     $(".doc-stats span").each(function () {
-//       if ($(this).text() == "Missing") {
-//         $(this).parent().parent().addClass("stats missing-background");
-//       } else if ($(this).text() == "Pending") {
-//         $(this).parent().parent().addClass("stats pending-background");
-//       } else if ($(this).text() == "Approved") {
-//         $(this).parent().parent().addClass("stats approved-background");
-//       }
-//     });
-//   }
-// };
+  if (theme == 'template_one') {
+    $(".doc-stats span").each(function () {
+      if ($(this).text() == "Missing") {
+        $(this).parent().parent().addClass("bg-danger");
+      } else if ($(this).text() == "Pending") {
+        $(this).parent().parent().addClass("bg-warning");
+      } else if ($(this).text() == "Approved") {
+        $(this).parent().parent().addClass("bg-success");
+      }
+    });
+  } else {
+    $(".doc-stats span").each(function () {
+      if ($(this).text() == "Missing") {
+        $(this).parent().parent().addClass("stats missing-background");
+      } else if ($(this).text() == "Pending") {
+        $(this).parent().parent().addClass("stats pending-background");
+      } else if ($(this).text() == "Approved") {
+        $(this).parent().parent().addClass("stats approved-background");
+      }
+    });
+  }
+};
 
 function parse_query_string(query) {
   var vars = query.split("&");
