@@ -91,6 +91,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
+                    <?php if(false): ?>
                     <select name="status" class="form-control custom-select" disabled>
                         <option selected disabled>Select one</option>
                         <?php $status = array(
@@ -102,6 +103,9 @@
                         <option value="<?php echo $key ?>"<?php if( $key == $this->document_status ): ?> selected="selected"<?php endif; ?>><?php echo $value ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <?php else: ?>
+                    <input type="status" id="status" name="status" value="<?= $this->document_status; ?>" class="form-control" readonly>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group">
                     <input type="hidden" id="user_id" name="user_id" class="form-control" value="<?= $this->user_id; ?>">
