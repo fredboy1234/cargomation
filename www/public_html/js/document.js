@@ -74,31 +74,35 @@ $(document).ready(function () {
             // uploadTitle: 'Upload File',
             // downloadTitle: 'Download file',
         },
-        previewTemplates: {
-            pdf: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">\n' +
-                '   <div class="checkbox">' +
-                '       <input class="form-check-input" type="checkbox" value="{id}">' +
-                '   </div>' +
-                '   <div class="kv-file-content">' +
-                '       <object class="kv-preview-data file-preview-pdf" title="{caption}" data="{data}" type="application/pdf" {style}>\n' +
-                //DEFAULT_PREVIEW +
-                '</object>\n' +
-                '   </div>\n' +
-                '   {footer}\n' +
-                '</div>',
-            other: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}" title="{caption}">\n' +
-                '   <div class="kv-file-content">' +
-                '       <div class="kv-preview-data file-preview-other-frame" {style}>\n' +
-                '           <div class="file-preview-other">\n' +
-                '              {previewFileIcon}\n' +
-                '           </div>\n' +
-                '       </div>\n' +
-                '   </div>\n' +
-                '   <div class="file-preview-other-footer">{footer}</div>\n' +
-                '</div>'
-        },
+        // previewTemplates: {
+        //     pdf: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}">\n' +
+        //         '   <div class="checkbox">' +
+        //         '       <input class="form-check-input" type="checkbox" value="{id}">' +
+        //         '   </div>' +
+        //         '   <div class="kv-file-content">' +
+        //         '       <object class="kv-preview-data file-preview-pdf" title="{caption}" data="{data}" type="application/pdf" {style}>\n' +
+        //         //DEFAULT_PREVIEW +
+        //         '</object>\n' +
+        //         '   </div>\n' +
+        //         '   {footer}\n' +
+        //         '</div>',
+        //     other: '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}" data-template="{template}" title="{caption}">\n' +
+        //         '   <div class="kv-file-content">' +
+        //         '       <div class="kv-preview-data file-preview-other-frame" {style}>\n' +
+        //         '           <div class="file-preview-other">\n' +
+        //         '              {previewFileIcon}\n' +
+        //         '           </div>\n' +
+        //         '       </div>\n' +
+        //         '   </div>\n' +
+        //         '   <div class="file-preview-other-footer">{footer}</div>\n' +
+        //         '</div>'
+        // },
         layoutTemplates: {
-            footer: '<div class="file-thumbnail-footer">\n' +
+            footer: 
+            '<div class="checkbox">' +
+            '    <input class="form-check-input" type="checkbox" value="{id}">' +
+            '</div>' +
+            '<div class="file-thumbnail-footer">\n' +
                 '    <div class="file-footer-caption" title="{caption}">File Name: {caption}' +
                 '       <br>File Type: <b>{type}</b>' +
                 '       <br>File Source: <b>{origin}</b>' +
