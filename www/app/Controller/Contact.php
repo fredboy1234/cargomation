@@ -73,6 +73,7 @@ class Contact extends Core\Controller {
         $this->View->renderTemplate($role, "contact/index", [
             "title" => "Contact Us",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "notifications" => Model\User::getUserNotifications($userID),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,
