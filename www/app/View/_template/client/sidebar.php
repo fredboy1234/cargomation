@@ -131,7 +131,7 @@ function isActive($url) {
           </li>
           <?php endif; ?>
           <li class="nav-item">
-            <a href="/shipment" class="nav-link">
+            <a href="/contact" class="nav-link">
               <i class="nav-icon fas fa-phone"></i>
               <p>
                 Contact Us
