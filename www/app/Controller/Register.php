@@ -73,6 +73,7 @@ class Register extends Core\Controller {
         $this->View->renderTemplate($role, "register/index", [
             "title" => "Register",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "notifications" => Model\User::getUserNotifications($userID),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,
