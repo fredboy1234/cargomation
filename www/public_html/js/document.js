@@ -706,7 +706,7 @@ $(document).ready(function () {
                                     /* Read more about isConfirmed, isDenied below */
                                     if (result.isConfirmed) {
                                         Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
-                                        var url = "/document/comment/bulk/" + data + "/" + valueSelected;
+                                        var url = "/document/comment/" + data + "/" + valueSelected;
 
                                         // load the url and show modal on success
                                         preloader(url);

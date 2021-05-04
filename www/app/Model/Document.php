@@ -165,9 +165,26 @@ class Document extends Core\Model {
             $column = implode(", ", array_keys($data));
         }
 
+        // check if there is a multiple document_id
+        if( strpos($data['document_id'], ",") === false ) {
+            $value_string = "('" . $value . "')";
+        } else {
+            $data_id = explode(",", $data['document_id']);
+            $value_array = array();
+            foreach ($data_id as $key => $id) {
+                $value_array[$key] = "('" . $data['title'] . "', '" . $data['message'] . "', '" . $data['status'] . "'";
+                $value_array[$key] .= ", '" . $data['user_id'] . "', '" . $id . "', '" . $data['submitted_date'] . "')";
+            };
+            
+            $value_string = implode(",", $value_array);
+        }
+
         $Db = Utility\Database::getInstance();
-        return $Db->query("INSERT INTO document_comment (" . $column . ") VALUES ('" . $value . "')")->error();
-        
+        $results = $Db->query("INSERT INTO document_comment (" . $column . ") VALUES " . $value_string )->error();
+
+        if($results === false) 
+            return true;
+
     }
 
     public static function getDocumentComment($document_id) {
