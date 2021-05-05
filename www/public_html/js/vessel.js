@@ -128,7 +128,7 @@ jQuery(document).ready(function() {
       var city = val;
       $.ajax({
         async: false,
-        url: "/vessel/scrape/",
+        url: document.location.origin + "/vessel/scrape/",
         type: "POST",
         data: { "port_name": val},
         success: function( response ) { 
@@ -169,7 +169,7 @@ jQuery(document).ready(function() {
       var city = val;
       $.ajax({
         async: false,
-        url: "/vessel/scrape/",
+        url: document.location.origin + "/vessel/scrape/",
         type: "POST",
         data: { "port_name": val},
         success: function( response ) { 
