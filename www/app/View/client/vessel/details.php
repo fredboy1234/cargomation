@@ -1,4 +1,9 @@
 
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <?php $vesseldata = $this->vesseldata; ?>
 <?php $bg=array('bg-danger','bg-success','bg-primary','bg-warning')?>
 <?php $countBG=0; $count=0; $icon='fa-box';?>
@@ -229,11 +234,12 @@
                                 <?php $month = date_format($dateTrack,"F j,Y");?>
                                 <?php $hour = date_format($dateTrack,'h:i:s A')?>
                                 <?php  $c_index = preg_replace('/\s*/', '', $vessel->location_city);?>
-                              
+                                <?php $urlimage = (isset($c_flag[strtolower($c_index)][0]) ? $c_flag[strtolower($c_index)][0] : '')?>
+                                
                                 <div class="time-label" data-time="time-<?=$id?>">
                                     <div class="head-list">
                                     <span class="col-md-2 d-inline-block">
-                                     <img class="flag f-<?=$vessel->location_city?> img-thumbnail" src="data:image/svg+xml;base64, <?=$c_flag[strtolower($c_index)][0]?>">
+                                     <img class="flag f-<?=$vessel->location_city?> img-thumbnail" src="data:image/svg+xml;base64, <?=$urlimage?>">
                                     </span>
                                     <span class="col-md-8 d-inline-block">
                                          <strong><?=$vessel->location_city?></strong><br>
