@@ -507,7 +507,9 @@ class Shipment extends Core\Controller {
                 // $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
                 // $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
                 //$subdata['comment'] = 'No Comment';
-                $subdata['vessel_name'] = $value->vessel_name;
+                $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
+                $vesselReplace = explode(',',$vesselReplace);
+                $subdata['vessel_name'] = '<a href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
