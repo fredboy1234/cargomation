@@ -1,9 +1,3 @@
-
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-?>
 <?php $vesseldata = $this->vesseldata; ?>
 <?php $bg=array('bg-danger','bg-success','bg-primary','bg-warning')?>
 <?php $countBG=0; $count=0; $icon='fa-box';?>
