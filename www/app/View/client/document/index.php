@@ -7,7 +7,7 @@ $status_icon = "fa-thumbs-down";
 $document_settings = json_decode($this->user_settings[0]->document);
 if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
-        if($file->status !== 'deleted') {
+        //if($file->status !== 'deleted') {
             // $initialPreview[] = "<object data='data:application/pdf;base64," . $file->img_data . "' type='text/plain' class='' alt='" . $file->name . "' ><div class='file - preview - other'> <span class='file - icon - 4x'><i class='glyphicon glyphicon-file'></i></span> </div></object>";
             // $initialPreview[] = base$file->img_data;
             // $path = "E:/A2BFREIGHT_MANAGER/CLIENT_$id/CW_FILE/$shipkey/$pathName/";
@@ -54,7 +54,7 @@ if(!empty($this->document)) {
                                             '{date}' => $file->saved_date,
                                             '{type}' => $file->type,
                                             '{id}' => $file->document_id];
-        }
+        //}
     }
 } ?>
 
