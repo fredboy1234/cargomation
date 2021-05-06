@@ -525,6 +525,9 @@ class Doctracker extends Core\Controller {
             if(!in_array($status_arr["all"]["text"],$status_search)){
               $tableData = [];
             }else{
+                $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
+                $vesselReplace = explode(',',$vesselReplace);
+
                 //not final macro
                 $marcoLink = 'href="edient:Command=ShowEditForm&amp;LicenceCode=KFRPERPER&amp;ControllerID=JobShipment&amp;BusinessEntityPK=4b2a753d-35b7-4606-8b58-c5e19d09a3f6&amp;Domain=wisecloud.zone&amp;Instance=KFRPER&amp;Hash=%2bcDgu8d3rRHVfuwhmg0HUnx2CFNfmZCjO"';
                 $subdata =array();
@@ -539,7 +542,7 @@ class Doctracker extends Core\Controller {
                 $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
                 $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
                 $subdata['comment'] = 'No Comment';
-                $subdata['vessel_name'] = $value->vessel_name;
+                $subdata['vessel_name'] = '<a href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
