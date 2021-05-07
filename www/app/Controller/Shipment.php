@@ -382,14 +382,16 @@ class Shipment extends Core\Controller {
             // $status_arr['all']['pending2'] = 0;
             // $status_arr['all']['approved2'] = 0;
 
-            foreach ($doc_type as $key => $value4) {
+            foreach ($doc_type as $key => $value4) {                
                 $status_arr[$value4]["color"] = "badge-default";
                 $status_arr[$value4]["text"] = "Empty";
                 $status_arr[$value4]['approved2'] = 0;
                 $status_arr[$value4]['pending2'] = 0;
+                if(empty($value4)) {
+                    $status_arr[$value4]["text"] = "View All";
+                    $status_arr[$value4]["color"] = "badge-primary";
+                }
             }
-
-
             if(isset($stats[$value->shipment_num])) {
                 foreach ($stats[$value->shipment_num] as $key2 => $value2) {
                     
@@ -421,6 +423,9 @@ class Shipment extends Core\Controller {
                     $status_arr[$value4]["text"] = "Empty";
                     $status_arr[$value4]['approved2'] = 0;
                     $status_arr[$value4]['pending2'] = 0;
+                    // if(empty($value4)) {
+                    //     $status_arr[$value4]["text"] = "View All";
+                    // }
                 }
                 // $status_arr["CIV"]["color"] = "badge-danger";
                 // $status_arr["CIV"]["text"] = "Missing";

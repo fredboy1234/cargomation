@@ -61,6 +61,12 @@ td.stats .doc-stats:first-child > span {
     background-color: #28a745;
     border: 0.001px solid #fff;
 } */
+.doc.badge {
+    padding: 5px;
+}
+.doc.badge-primary {
+    padding: 10px;
+}
 .assign-button{
     display: none;
 }
