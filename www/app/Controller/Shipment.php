@@ -510,7 +510,7 @@ class Shipment extends Core\Controller {
                 //$subdata['comment'] = 'No Comment';
                 $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
                 $vesselReplace = explode(',',$vesselReplace);
-                $subdata['vessel_name'] = '<a href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
+                $subdata['vessel_name'] = '<a class="vesshe" href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
