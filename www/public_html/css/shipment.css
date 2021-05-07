@@ -53,14 +53,14 @@ td.stats .doc-stats:first-child > span {
     background-color: #dc3545;
     border: 0.001px solid #fff;
 }
-.pending-background{
+/* .pending-background{
     background-color: #ffc107;
     border: 0.001px solid #fff;
 }
 .approved-background{
     background-color: #28a745;
     border: 0.001px solid #fff;
-}
+} */
 .assign-button{
     display: none;
 }

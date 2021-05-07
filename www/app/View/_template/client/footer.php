@@ -1,9 +1,131 @@
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #007bfc;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 48px;
+  right: 28px;
+  z-index: 1000;
+  border-radius: 50%;
+  box-shadow: 5px 5px 5px #666;
+    -moz-box-shadow: 5px 5px 5px #666;
+    -webkit-box-shadow: 5px 5px 5px #666;
+    -khtml-box-shadow: 5px 5px 5px #666;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 48px;
+  right: 15px;
+  /* border: 3px solid #f1f1f1; */
+  z-index: 1000;
+  width: 400px;
+  box-shadow: 5px 5px 5px #666;
+      -moz-box-shadow: 5px 5px 5px #666;
+      -webkit-box-shadow: 5px 5px 5px #666;
+      -khtml-box-shadow: 5px 5px 5px #666;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+
+<button class="open-button" onclick="openForm()"><i class="nav-icon fas fa-comments"></i></button>
+
+<div class="form-popup" id="myForm">
+  <div class="card card-primary" style="margin-bottom: 0px">
+    <div class="card-header">
+      <h3 class="card-title">Contact</h3>
+    </div>
+    <form id="contact-form" class="form-horizontal">
+        <div class="card-body">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input type="email" name="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" name="name" class="form-control" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea class="form-control" name="message" rows="3" placeholder="Enter message ..." spellcheck="false" style="margin-top: 0px; margin-bottom: 0px; height: 106px;"></textarea>
+            </div>
+            <div class="form-group">
+                <p>You may also email us at <a href="mailto:support@cargomation.com">support@cargomation.com</a></p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="button" class="btn btn-danger float-right" onclick="closeForm()">Close</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2019-2020 <a href="/"><?=APP_NAME?></a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <a href="/contact">Contact Us @support@cargomation.com</a>
+      <b>Version</b> 1.0.7
     </div>
   </footer>
 
@@ -88,12 +210,61 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
    crossorigin=""/>
-   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
-   <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
-   <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 
+<script>
+$(document).ready(function () {
+    $("#contact-form").submit(function (e) {
+
+        var data = $(this).serializeArray();
+        var email = data[0]['value'];
+        var name = data[1]['value'];
+        var message = data[2]['value'];
+
+        $.ajax({
+            url: '/contact/sendEmail',
+            type: "POST",
+            dataType: "json",
+            data: {
+                'name': name,
+                'email': email,
+                'message': message
+            },
+            beforeSend: function () {
+                $("#contact-form .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
+            }, success: function (result) {
+                $('#loader').remove();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Message Sent!',
+                    text: 'Your message was sent!',
+                    timer: 3000
+                });
+                console.log(result);
+                $('#myForm').find('input:text, input:password, input, select, textarea')
+                            .each(function () {
+                                $(this).val('');
+                            });
+                closeForm();
+            }
+        });
+        e.preventDefault();
+    });
+});
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+</script>
 </body>
 </html>
 
