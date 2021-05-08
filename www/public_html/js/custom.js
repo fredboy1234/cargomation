@@ -31,10 +31,18 @@ $(function () {
     //Toast success
     $(document).on( "click", ".toastsSuccess", function() {
         toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
+        Toast.fire({
+            icon: 'success',
+            title: 'Successfully added new client. '
+        });
     });
     //Toast error
     $(document).on( "click", ".toastError", function() {
         toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
+        Toast.fire({
+            icon: 'error',
+            title: 'Failed to add new client. '
+        });
     });
 
     // $(".datepicker").datetimepicker({
