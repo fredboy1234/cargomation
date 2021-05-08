@@ -290,9 +290,9 @@ class Document extends Core\Controller {
 
                     $type = "OTHER";
                     $keywords = array("CIV"=> array("COMMERCIAL INVOICE"), 
-                                      "BOL"=> array("BILL OF LADING NO."), 
+                                      "BOL"=> array("BILL/LADING NUMBER"), 
                                       "ARN"=> array("ARRIVAL NOTICE"), 
-                                      "SWB"=> array("SEA WAYBILL"), 
+                                      "MBL"=> array("SEA WAYBILL"), 
                                       "PKL"=> array("PACKING LIST")
                                     );
                     foreach ($keywords as $key => $value) {
@@ -336,6 +336,8 @@ class Document extends Core\Controller {
             } else {
                 $errors[] = $fileName;
             }
+            //initialize type to empty
+            $type="";
         }
         // push to cargowise
         // User setting (tick box) 
