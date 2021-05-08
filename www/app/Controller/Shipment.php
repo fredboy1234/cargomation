@@ -494,8 +494,9 @@ class Shipment extends Core\Controller {
             // if(!in_array($status_arr["all"]["text"],$status_search)){
             //   $tableData = [];
             // }else{
-                
-                $marcoLink = 'href="'.$value->macro_link.'"';
+
+                $marcoLink = 'href="edient:Command=ShowEditForm&LicenceCode=A2BSYDTRN&ControllerID=JobShipment&BusinessEntityPK=7592b26c-850e-4238-998b-38fe6d0d3845&Hash=%2bcSGJBkHeFTp%2bB3q95%2f6uRp74dMptiHhv"';
+                // $marcoLink = 'href="'.$value->macro_link.'"';
                 $subdata =array();
                 $subdata['real_id_shipment'] = $value->id;
                 $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
