@@ -29,10 +29,9 @@ class Shipment extends Core\Model {
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num , shipment.id as shipment_id, {$arg} 
+        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
                                 FROM shipment 
                                 LEFT JOIN users ON users.id = shipment.user_id
-                                FULL OUTER JOIN shipment_link sl on sl.shipment_num  = shipment.shipment_num 
                                 WHERE user_id = '{$user_id}' ")->results();
 
     }
@@ -43,11 +42,10 @@ class Shipment extends Core\Model {
     public  function getClientUserShipment($user_id, $arg = "*") {
 
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num, shipment.id as shipment_id, {$arg} 
+        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
                         FROM shipment 
                         LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id
                         FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
-                        FULL OUTER JOIN shipment_link sl on sl.shipment_num  = shipment.shipment_num 
                         WHERE shipment_assigned.id = '{$user_id}'")->results();
     }
 
@@ -152,9 +150,8 @@ class Shipment extends Core\Model {
         if( strpos($shipment_id, ',') !== false )
             $shipment_id = implode("','", array_values(explode(",", $shipment_id)));
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num, {$args}
+        return $Db->query("SELECT {$args}
                                 FROM shipment AS s
-                                FULL OUTER JOIN shipment_link sl on sl.shipment_num  = s.shipment_num 
                                 WHERE shipment_num IN ('" . $shipment_id . "') ")->results();
     }
 
@@ -175,9 +172,8 @@ class Shipment extends Core\Model {
 
     public static function getShipmentByUserID($user_id, $args = "*") {
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT shipment.shipment_num as ex_shipment_num, {$args} 
+        return $Db->query("SELECT {$args} 
                                 FROM shipment
-                                FULL OUTER JOIN shipment_link sl on sl.shipment_num  = shipment.shipment_num 
                                 FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
                                 WHERE user_id = '{$user_id}' ")->results();
     }
