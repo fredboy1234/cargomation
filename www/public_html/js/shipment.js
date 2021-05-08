@@ -663,3 +663,11 @@ function assignBulk(pp, api) {
     });
   });
 }
+
+//////////
+$(document).on('click','.stats',function(){
+  var elem = $(this).html();
+  if($(elem).hasClass('vesshe') && $(elem).attr('href') !=''){
+    window.location.replace(document.location.origin+$(elem).attr('href'));
+  }
+});

@@ -529,7 +529,7 @@ class Doctracker extends Core\Controller {
                 $vesselReplace = explode(',',$vesselReplace);
 
                 //not final macro
-                $marcoLink = 'href="edient:Command=ShowEditForm&amp;LicenceCode=KFRPERPER&amp;ControllerID=JobShipment&amp;BusinessEntityPK=4b2a753d-35b7-4606-8b58-c5e19d09a3f6&amp;Domain=wisecloud.zone&amp;Instance=KFRPER&amp;Hash=%2bcDgu8d3rRHVfuwhmg0HUnx2CFNfmZCjO"';
+                $marcoLink = 'href="'.$value->macro_link.'"';
                 $subdata =array();
              
                 $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
@@ -542,7 +542,7 @@ class Doctracker extends Core\Controller {
                 $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
                 $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
                 $subdata['comment'] = 'No Comment';
-                $subdata['vessel_name'] = '<a href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
+                $subdata['vessel_name'] = '<a class="vesshe" href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;

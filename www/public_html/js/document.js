@@ -216,6 +216,7 @@ $(document).ready(function () {
             text: 'TEST',
             html: out,
             showCancelButton: true,
+            confirmButtonText: 'Upload',
         }).then((result) => {
             if (result.isConfirmed) {
                 $el1.fileinput("upload");
@@ -240,6 +241,8 @@ $(document).ready(function () {
                 }, 900);
             }
         });
+        var url = "shipment/document/" + shipment_id + "/" + document_type;
+        preloader(url);
         // $('#kv-success-2 ul').append(out);
         // $('#kv-success-2').fadeIn('slow');
     }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {

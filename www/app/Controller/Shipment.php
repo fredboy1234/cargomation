@@ -382,14 +382,16 @@ class Shipment extends Core\Controller {
             // $status_arr['all']['pending2'] = 0;
             // $status_arr['all']['approved2'] = 0;
 
-            foreach ($doc_type as $key => $value4) {
+            foreach ($doc_type as $key => $value4) {                
                 $status_arr[$value4]["color"] = "badge-default";
                 $status_arr[$value4]["text"] = "Empty";
                 $status_arr[$value4]['approved2'] = 0;
                 $status_arr[$value4]['pending2'] = 0;
+                if(empty($value4)) {
+                    $status_arr[$value4]["text"] = "View All";
+                    $status_arr[$value4]["color"] = "badge-primary";
+                }
             }
-
-
             if(isset($stats[$value->shipment_num])) {
                 foreach ($stats[$value->shipment_num] as $key2 => $value2) {
                     
@@ -421,6 +423,9 @@ class Shipment extends Core\Controller {
                     $status_arr[$value4]["text"] = "Empty";
                     $status_arr[$value4]['approved2'] = 0;
                     $status_arr[$value4]['pending2'] = 0;
+                    // if(empty($value4)) {
+                    //     $status_arr[$value4]["text"] = "View All";
+                    // }
                 }
                 // $status_arr["CIV"]["color"] = "badge-danger";
                 // $status_arr["CIV"]["text"] = "Missing";
@@ -489,7 +494,9 @@ class Shipment extends Core\Controller {
             // if(!in_array($status_arr["all"]["text"],$status_search)){
             //   $tableData = [];
             // }else{
+
                 $marcoLink = 'href="edient:Command=ShowEditForm&LicenceCode=A2BSYDTRN&ControllerID=JobShipment&BusinessEntityPK=7592b26c-850e-4238-998b-38fe6d0d3845&Hash=%2bcSGJBkHeFTp%2bB3q95%2f6uRp74dMptiHhv"';
+                // $marcoLink = 'href="'.$value->macro_link.'"';
                 $subdata =array();
                 $subdata['real_id_shipment'] = $value->id;
                 $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
@@ -509,7 +516,7 @@ class Shipment extends Core\Controller {
                 //$subdata['comment'] = 'No Comment';
                 $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
                 $vesselReplace = explode(',',$vesselReplace);
-                $subdata['vessel_name'] = '<a href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
+                $subdata['vessel_name'] = '<a class="vesshe" href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
                 $subdata['place_of_delivery'] = $value->place_delivery;
                 $subdata['consignee'] = $value->consignee;
                 $subdata['consignor'] = $value->consignor;
