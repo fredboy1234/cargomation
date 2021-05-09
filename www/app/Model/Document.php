@@ -232,6 +232,18 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getDocumentTypeByUser($user_id) {
+        //$count = " count(*) as count";
+        $count = "";
+        $query = "SELECT ISNULL(type, 'OTHER') as type, {$count}
+        FROM document
+        LEFT JOIN shipment ON shipment.id = document.shipment_id
+        WHERE shipment.user_id = '{$user_id}'
+        GROUP BY type ";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
     public function getDocumentStatus() {
         // 
     }
