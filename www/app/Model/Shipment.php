@@ -178,7 +178,7 @@ class Shipment extends Core\Model {
                                 WHERE user_id = '{$user_id}' ")->results();
     }
 
-    public  function getShipmentThatHasUser($user_id){
+    public function getShipmentThatHasUser($user_id){
         $data = array();
         $shc_arr = array();
         $email = array();
@@ -230,6 +230,14 @@ class Shipment extends Core\Model {
         $data['list_email'] = $email;
         return  $data;
     }
+
+    public function getShipmentLink($user_id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT * from shipment_link sl
+                            LEFT JOIN shipment s ON s.shipment_num = sl.shipment_num
+                            WHERE s.user_id = '{$user_id}'")->results();
+        
+    } 
 
     public function insertMultipleShipment($data){
         $Db = Utility\Database::getInstance();

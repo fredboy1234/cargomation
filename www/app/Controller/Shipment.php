@@ -375,12 +375,19 @@ class Shipment extends Core\Controller {
         //$doc_type = array('HBL','CIV','PKL','PKD','all');
         $doc_type = array_column($this->Document->getDocumentType(), 'type');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
+        $shipment_link = $this->Shipment->getShipmentLink($user);
         foreach($api as $key=>$value){
             $eta_date = date_format(date_create($value->eta), "d/m/Y");
             $etd_date = date_format(date_create($value->etd), "d/m/Y");
             $all = "";
             // $status_arr['all']['pending2'] = 0;
             // $status_arr['all']['approved2'] = 0;
+            $marcoLink = 'href="#"';
+            foreach ($shipment_link as $key => $link) {
+                if($value->shipment_num === $link->shipment_num) {
+                    $marcoLink = 'href="' . $link->macro_link . '"';
+                }
+            }
 
             foreach ($doc_type as $key => $value4) {                
                 $status_arr[$value4]["color"] = "badge-default";
@@ -495,7 +502,7 @@ class Shipment extends Core\Controller {
             //   $tableData = [];
             // }else{
 
-                $marcoLink = 'href="edient:Command=ShowEditForm&LicenceCode=A2BSYDTRN&ControllerID=JobShipment&BusinessEntityPK=7592b26c-850e-4238-998b-38fe6d0d3845&Hash=%2bcSGJBkHeFTp%2bB3q95%2f6uRp74dMptiHhv"';
+                // $marcoLink = 'href="edient:Command=ShowEditForm&LicenceCode=A2BSYDTRN&ControllerID=JobShipment&BusinessEntityPK=7592b26c-850e-4238-998b-38fe6d0d3845&Hash=%2bcSGJBkHeFTp%2bB3q95%2f6uRp74dMptiHhv"';
                 // $marcoLink = 'href="'.$value->macro_link.'"';
                 $subdata =array();
                 $subdata['real_id_shipment'] = $value->id;
