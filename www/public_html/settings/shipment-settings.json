@@ -8,6 +8,7 @@
         {"index_name": "Consignor", "index_value": "5", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Vessel Name", "index_value": "6", "index_check": "false", "index_lvl":"shipment"},
         {"index_name": "Place Of Delivery", "index_value": "7", "index_check": "false", "index_lvl":"shipment"},
-        {"index_name": "Container Number", "index_value": "8", "index_check": "false", "index_lvl":"shipment"}
+        {"index_name": "Container Number", "index_value": "8", "index_check": "false", "index_lvl":"shipment"},
+        {"index_name": "", "index_value": "9", "index_check": "false", "index_lvl":"document"}
     ]
 }
