@@ -388,16 +388,22 @@ class Shipment extends Core\Controller {
                     $marcoLink = 'href="' . $link->macro_link . '"';
                 }
             }
-
-            foreach ($doc_type as $key => $value4) {                
-                $status_arr[$value4]["color"] = "badge-default";
-                $status_arr[$value4]["text"] = "Empty";
-                $status_arr[$value4]['approved2'] = 0;
-                $status_arr[$value4]['pending2'] = 0;
-                if(empty($value4)) {
-                    $status_arr[$value4]["text"] = "View All";
-                    $status_arr[$value4]["color"] = "badge-primary";
+            if(empty($doc_type)) {
+                foreach ($doc_type as $key => $value4) {                
+                    $status_arr[$value4]["color"] = "badge-default";
+                    $status_arr[$value4]["text"] = "Empty";
+                    $status_arr[$value4]['approved2'] = 0;
+                    $status_arr[$value4]['pending2'] = 0;
+                    if(empty($value4)) {
+                        $status_arr[$value4]["text"] = "View All";
+                        $status_arr[$value4]["color"] = "badge-primary";
+                    }
                 }
+            } else {
+                $status_arr[""]["color"] = "badge-default";
+                $status_arr[""]["text"] = "Empty";
+                $status_arr[""]['approved2'] = 0;
+                $status_arr[""]['pending2'] = 0;
             }
             if(isset($stats[$value->shipment_num])) {
                 foreach ($stats[$value->shipment_num] as $key2 => $value2) {
