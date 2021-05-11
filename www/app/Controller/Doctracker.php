@@ -616,8 +616,8 @@ class Doctracker extends Core\Controller {
         // {"index_name": "ALL", "index_value": "8", "index_check": "true", "index_lvl":"document"},
 
         $userData = $User->getUserSettings($user);
-        $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
-        $doc_type = $User->getUserDocumentType($user);
+        $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
+        $doc_type = $User->getUserDocumentType($user); // $this->Document->getDocumentType(), 'type');
 
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
         
@@ -627,8 +627,7 @@ class Doctracker extends Core\Controller {
                 $defaultCollection[]=$value->index_value;
             }
         }
-        if(empty($defaultCollection)){
-            $userData = array();
+        if(!empty($doc_type)){
             $count = 9;
             foreach ($doc_type as $key => $value) {
                 array_push($userData, (object)[
@@ -639,6 +638,14 @@ class Doctracker extends Core\Controller {
                     'index_lvl' => 'document'
                 ]);
             }
+        } else {
+            array_push($userData, (object)[
+                'index_name' => "",
+                // 'index_value' => (string)$count++, // Explicit cast
+                'index_value' => 9, // Function call
+                'index_check' => 'true',
+                'index_lvl' => 'document'
+            ]);
         }
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
