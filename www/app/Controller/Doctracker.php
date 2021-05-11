@@ -638,6 +638,14 @@ class Doctracker extends Core\Controller {
                     'index_lvl' => 'document'
                 ]);
             }
+        } else {
+            array_push($userData, (object)[
+                'index_name' => "",
+                // 'index_value' => (string)$count++, // Explicit cast
+                'index_value' => 9, // Function call
+                'index_check' => 'true',
+                'index_lvl' => 'document'
+            ]);
         }
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
