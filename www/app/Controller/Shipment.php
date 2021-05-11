@@ -399,105 +399,111 @@ class Shipment extends Core\Controller {
                         $status_arr[$value4]["color"] = "badge-primary";
                     }
                 }
+                if(isset($stats[$value->shipment_num])) {
+                    foreach ($stats[$value->shipment_num] as $key2 => $value2) {
+                        
+                        if(isset($value2['pending'])) {
+                            $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
+                            // $status_arr['all']['pending2'] += count($value2['pending']);
+                        }  
+                        if(isset($value2['approved'])) {
+                            $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
+                            // $status_arr['all']['approved2'] += count($value2['approved']);
+                        }
+                        //for badge and text
+                        if(isset($value2['pending'])) {
+                            $status_arr[$value2['pending'][0]->type]["color"] = "badge-warning";
+                            $status_arr[$value2['pending'][0]->type]["text"] = "Pending";
+                            // $status_arr["all"]["color"] = "badge-warning";
+                            // $status_arr["all"]["text"] = "Pending";
+                        }elseif(isset($value2['approved'])){
+                            $status_arr[$value2['approved'][0]->type]["color"] = "badge-success";
+                            $status_arr[$value2['approved'][0]->type]["text"] = "Approved";
+                            // $status_arr["all"]["color"] = "badge-success";
+                            // $status_arr["all"]["text"] = "Approved";
+                        }
+                    }
+                } else {
+
+                    foreach ($doc_type as $key => $value4) {
+                        $status_arr[$value4]["color"] = "badge-default";
+                        $status_arr[$value4]["text"] = "Empty";
+                        $status_arr[$value4]['approved2'] = 0;
+                        $status_arr[$value4]['pending2'] = 0;
+                        // if(empty($value4)) {
+                        //     $status_arr[$value4]["text"] = "View All";
+                        // }
+                    }
+                    // $status_arr["CIV"]["color"] = "badge-danger";
+                    // $status_arr["CIV"]["text"] = "Missing";
+                    // $status_arr["HBL"]["color"] = "badge-danger";
+                    // $status_arr["HBL"]["text"] = "Missing";
+                    // $status_arr["PKL"]["color"] = "badge-danger";
+                    // $status_arr["PKL"]["text"] = "Missing";
+                    // $status_arr["PKD"]["color"] = "badge-danger";
+                    // $status_arr["PKD"]["text"] = "Missing";
+                    // $status_arr["all"]["text"] = "Missing";
+                    // $status_arr["all"]["color"] = "badge-danger";
+                    // $status_arr['HBL']['approved2'] = 0;
+                    // $status_arr['HBL']['pending2'] = 0;
+                    // $status_arr['CIV']['approved2'] = 0;
+                    // $status_arr['CIV']['pending2'] = 0;
+                    // $status_arr['PKL']['approved2'] = 0;
+                    // $status_arr['PKL']['pending2'] = 0;
+                    // $status_arr['PKD']['approved2'] = 0;
+                    // $status_arr['PKD']['pending2'] = 0;
+                }
+                
+                $status_arr['All']['count'] = 0;
+        
+                foreach($status_arr as $key=>$val){
+                    $attr = ($key=="all"?"":'data-type="'.$key.'"');
+                    if(in_array($key,$doc_type)){
+                        $attr = ($key=="all"?"":'data-type="'.$key.'"');
+                        $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                        $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
+                        
+                        if(isset($val['pending2']) && $val['pending2'] > 0){
+                            $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['pending2'].'</span>';
+                        }elseif(isset($val['approved2']) && $val['approved2'] > 0){
+                            $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['approved2'].'</span>';
+                        }else{
+                            $html[$key]['count'] = "";
+                        }
+                    }else{
+                        $html['empty']['badge'] ='<span class="doc badge badge-default" '.$attr.' data-id="'.$value->shipment_num.'">Empty</span>';
+                        $html['empty']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                        $html[$key]['count'] = "";
+                    }
+                }
             } else {
                 $status_arr[""]["color"] = "badge-default";
                 $status_arr[""]["text"] = "Empty";
                 $status_arr[""]['approved2'] = 0;
                 $status_arr[""]['pending2'] = 0;
             }
-            if(isset($stats[$value->shipment_num])) {
-                foreach ($stats[$value->shipment_num] as $key2 => $value2) {
-                    
-                    if(isset($value2['pending'])) {
-                        $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
-                        // $status_arr['all']['pending2'] += count($value2['pending']);
-                    }  
-                    if(isset($value2['approved'])) {
-                        $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
-                        // $status_arr['all']['approved2'] += count($value2['approved']);
-                    }
-                    //for badge and text
-                    if(isset($value2['pending'])) {
-                        $status_arr[$value2['pending'][0]->type]["color"] = "badge-warning";
-                        $status_arr[$value2['pending'][0]->type]["text"] = "Pending";
-                        // $status_arr["all"]["color"] = "badge-warning";
-                        // $status_arr["all"]["text"] = "Pending";
-                    }elseif(isset($value2['approved'])){
-                        $status_arr[$value2['approved'][0]->type]["color"] = "badge-success";
-                        $status_arr[$value2['approved'][0]->type]["text"] = "Approved";
-                        // $status_arr["all"]["color"] = "badge-success";
-                        // $status_arr["all"]["text"] = "Approved";
-                    }
-                }
-            } else {
 
-                foreach ($doc_type as $key => $value4) {
-                    $status_arr[$value4]["color"] = "badge-default";
-                    $status_arr[$value4]["text"] = "Empty";
-                    $status_arr[$value4]['approved2'] = 0;
-                    $status_arr[$value4]['pending2'] = 0;
-                    // if(empty($value4)) {
-                    //     $status_arr[$value4]["text"] = "View All";
-                    // }
-                }
-                // $status_arr["CIV"]["color"] = "badge-danger";
-                // $status_arr["CIV"]["text"] = "Missing";
-                // $status_arr["HBL"]["color"] = "badge-danger";
-                // $status_arr["HBL"]["text"] = "Missing";
-                // $status_arr["PKL"]["color"] = "badge-danger";
-                // $status_arr["PKL"]["text"] = "Missing";
-                // $status_arr["PKD"]["color"] = "badge-danger";
-                // $status_arr["PKD"]["text"] = "Missing";
-                // $status_arr["all"]["text"] = "Missing";
-                // $status_arr["all"]["color"] = "badge-danger";
-                // $status_arr['HBL']['approved2'] = 0;
-                // $status_arr['HBL']['pending2'] = 0;
-                // $status_arr['CIV']['approved2'] = 0;
-                // $status_arr['CIV']['pending2'] = 0;
-                // $status_arr['PKL']['approved2'] = 0;
-                // $status_arr['PKL']['pending2'] = 0;
-                // $status_arr['PKD']['approved2'] = 0;
-                // $status_arr['PKD']['pending2'] = 0;
-            }
-            
-            $status_arr['All']['count'] = 0;
-       
-            foreach($status_arr as $key=>$val){
-                $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                if(in_array($key,$doc_type)){
-                    $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                    $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                    $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
-                    
-                    if(isset($val['pending2']) && $val['pending2'] > 0){
-                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['pending2'].'</span>';
-                    }elseif(isset($val['approved2']) && $val['approved2'] > 0){
-                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['approved2'].'</span>';
+            if(!empty($doc_type)) {
+                foreach($doc_type as $doc){
+                    if(isset($html[$doc]['hover'])){
+                        $tableData[$doc]['hover'] = $html[$doc]['hover'];
+                        $tableData[$doc]['badge'] = $html[$doc]['badge'];
+                        if(isset($html[$doc]['count'])){
+                            $tableData[$doc]['count'] =   $html[$doc]['count'];
+                        }else{
+                            $tableData[$doc]['count'] = "";
+                        }
                     }else{
-                        $html[$key]['count'] = "";
-                    }
-                }else{
-                    $html['empty']['badge'] ='<span class="doc badge badge-default" '.$attr.' data-id="'.$value->shipment_num.'">Empty</span>';
-                    $html['empty']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                    $html[$key]['count'] = "";
-                }
-            }
-
-            foreach($doc_type as $doc){
-                if(isset($html[$doc]['hover'])){
-                    $tableData[$doc]['hover'] = $html[$doc]['hover'];
-                    $tableData[$doc]['badge'] = $html[$doc]['badge'];
-                    if(isset($html[$doc]['count'])){
-                        $tableData[$doc]['count'] =   $html[$doc]['count'];
-                    }else{
+                        $tableData[$doc]['hover'] = $html['empty']['hover'];
+                        $tableData[$doc]['badge'] = $html['empty']['badge'];
                         $tableData[$doc]['count'] = "";
                     }
-                }else{
-                    $tableData[$doc]['hover'] = $html['empty']['hover'];
-                    $tableData[$doc]['badge'] = $html['empty']['badge'];
-                    $tableData[$doc]['count'] = "";
+                    
                 }
-                
+            } else {
+                $tableData[""]['hover'] = $html['empty']['hover'];
+                $tableData[""]['badge'] = $html['empty']['badge'];
+                $tableData[""]['count'] = "";
             }
             
             // if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
@@ -517,10 +523,13 @@ class Shipment extends Core\Controller {
                 $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
                 $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);
 
-                foreach ($doc_type as $key3 => $value3) {
-                    $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
+                if(!empty($doc_type)) {
+                    foreach ($doc_type as $key3 => $value3) {
+                        $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
+                    }
+                } else {
+                    $subdata[strtolower("")] =  $tableData[""]['hover'].'<div class="doc-stats">'.$tableData[""]['badge'].$tableData[""]['count'].'</div>';
                 }
-
                 // $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
                 // $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
                 // $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
