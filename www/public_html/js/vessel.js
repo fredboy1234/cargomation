@@ -228,13 +228,22 @@ jQuery(document).ready(function() {
     
     var animationMarker = L.Marker.movingMarker(
       latlngCollection[0],
-      10000, {autostart: true});
+      50000, {autostart: true});
     var greenIcon = L.divIcon({
       html: '<i class="fas fa-ship"></i>',
       iconSize: [40, 40],
       className: 'myDivIcon'
     });
-    console.log(animationMarker.getLatLng());
+
+    setTimeout(function() {
+      console.log('started this yo');
+      console.log(animationMarker.isStarted());
+      //animationMarker.stop();
+    }, 1000);
+    
+    // console.log(animationMarker.isStarted());
+    // console.log('this ani');
+    // console.log(animationMarker.getLatLng());
     animationMarker.options.icon = greenIcon;
   
     mymap.addLayer(animationMarker );
