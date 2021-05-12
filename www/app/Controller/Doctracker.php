@@ -628,7 +628,7 @@ class Doctracker extends Core\Controller {
             }
         }
         if(!empty($doc_type)){
-            $count = 9;
+            $count = 10;
             foreach ($doc_type as $key => $value) {
                 array_push($userData, (object)[
                     'index_name' => $value->type,
@@ -638,15 +638,7 @@ class Doctracker extends Core\Controller {
                     'index_lvl' => 'document'
                 ]);
             }
-        } else {
-            array_push($userData, (object)[
-                'index_name' => "",
-                // 'index_value' => (string)$count++, // Explicit cast
-                'index_value' => 9, // Function call
-                'index_check' => 'true',
-                'index_lvl' => 'document'
-            ]);
-        }
+        } 
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
                 if(!in_array($value->index_value,$defaultCollection)){

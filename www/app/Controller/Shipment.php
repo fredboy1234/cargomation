@@ -317,33 +317,43 @@ class Shipment extends Core\Controller {
     }
 
     public function shipmentSSR($user=""){
-        $data = array();
-        $docsCollection = array();
-        $json_data = array();
-        $html = array();
-        $tableData = array();
-        $status_search = array('Approved','Pending','Missing','Requested','Empty');
-         Utility\Auth::checkAuthenticated();
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
 
         if (!$user) {
-             $userSession = Utility\Config::get("SESSION_USER");
-             if (Utility\Session::exists($userSession)) {
-                 $user = Utility\Session::get($userSession);
-             }
-        }
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+       }
 
-        if (!$Role = Model\Role::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
+       # Check user roles
+       if (!$Role = Model\Role::getInstance($user)) {
+           Utility\Redirect::to(APP_URL);
+       }
+       $role = $Role->getUserRole($user)->role_name;
+
+        # Initialize multiple array variables with Empty values simultaneously
+        $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
+        # Initialize shipment API, status, shipment_id
+        $status_search = array('Approved','Pending','Missing','Requested','Empty');
+        $doc_type = array_column($this->Document->getDocumentType(), 'type');
+        $shipment_link = $this->Shipment->getShipmentLink($user);
+
+        # check User if role is user
+        if($role == 'user'){
+            $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
+            $api = $this->Shipment->getClientUserShipment($user);
+        } else {
+            $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+            $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+            $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
         }
-        $role = $Role->getUserRole($user)->role_name;
         
         //$doc_requested = $this->Document->getRequestedDocument($user, "shipment_num, document_type, count(*) AS count", " shipment_num, document_type");        
-         //$doc_requested = array_combine(array_map(function ($o) { return $o->shipment_num; }, $doc_requested), $doc_requested);
+        //$doc_requested = array_combine(array_map(function ($o) { return $o->shipment_num; }, $doc_requested), $doc_requested);
 
-        $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
-        $searchStore = array();
-       
+        # Advance search 
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
             $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user,$_POST);
@@ -362,197 +372,140 @@ class Shipment extends Core\Controller {
             }
         }
 
-        $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
-        if($role == 'user'){
-            $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
-            $api = $this->Shipment->getClientUserShipment($user);
-        }
         foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
-        
+
         $stats = $docsCollection;
-        //$doc_type = array('HBL','CIV','PKL','PKD','all');
-        $doc_type = array_column($this->Document->getDocumentType(), 'type');
-        //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
-        $shipment_link = $this->Shipment->getShipmentLink($user);
+
         foreach($api as $key=>$value){
             $eta_date = date_format(date_create($value->eta), "d/m/Y");
             $etd_date = date_format(date_create($value->etd), "d/m/Y");
-            $all = "";
-            // $status_arr['all']['pending2'] = 0;
-            // $status_arr['all']['approved2'] = 0;
+            $status_arr['all']['pending2'] = 0;
+            $status_arr['all']['approved2'] = 0;
+            $status_arr['all']['count'] = 0;
             $marcoLink = 'href="#"';
+            
+            # Initialize macro_link from shipment_link
             foreach ($shipment_link as $key => $link) {
                 if($value->shipment_num === $link->shipment_num) {
                     $marcoLink = 'href="' . $link->macro_link . '"';
                 }
             }
-            if(empty($doc_type)) {
-                foreach ($doc_type as $key => $value4) {                
-                    $status_arr[$value4]["color"] = "badge-default";
-                    $status_arr[$value4]["text"] = "Empty";
-                    $status_arr[$value4]['approved2'] = 0;
-                    $status_arr[$value4]['pending2'] = 0;
-                    if(empty($value4)) {
-                        $status_arr[$value4]["text"] = "View All";
-                        $status_arr[$value4]["color"] = "badge-primary";
-                    }
-                }
+            
+            # Check in document type list is empty
+            if(!empty($doc_type)) {
                 if(isset($stats[$value->shipment_num])) {
                     foreach ($stats[$value->shipment_num] as $key2 => $value2) {
-                        
                         if(isset($value2['pending'])) {
                             $status_arr[$value2['pending'][0]->type]['pending2'] = count($value2['pending']);
-                            // $status_arr['all']['pending2'] += count($value2['pending']);
+                            $status_arr['all']['pending2'] += count($value2['pending']);
                         }  
                         if(isset($value2['approved'])) {
                             $status_arr[$value2['approved'][0]->type]['approved2'] = count($value2['approved']);
-                            // $status_arr['all']['approved2'] += count($value2['approved']);
+                            $status_arr['all']['approved2'] += count($value2['approved']);
                         }
                         //for badge and text
                         if(isset($value2['pending'])) {
                             $status_arr[$value2['pending'][0]->type]["color"] = "badge-warning";
                             $status_arr[$value2['pending'][0]->type]["text"] = "Pending";
-                            // $status_arr["all"]["color"] = "badge-warning";
-                            // $status_arr["all"]["text"] = "Pending";
+                            $status_arr["all"]["color"] = "badge-warning";
+                            $status_arr["all"]["text"] = "View All";
                         }elseif(isset($value2['approved'])){
                             $status_arr[$value2['approved'][0]->type]["color"] = "badge-success";
                             $status_arr[$value2['approved'][0]->type]["text"] = "Approved";
-                            // $status_arr["all"]["color"] = "badge-success";
-                            // $status_arr["all"]["text"] = "Approved";
+                            $status_arr["all"]["color"] = "badge-success";
+                            $status_arr["all"]["text"] = "View All";
                         }
                     }
+                    $status_arr["all"]["color"] = "badge-primary";
+                    $status_arr["all"]["text"] = "View All";
                 } else {
-
                     foreach ($doc_type as $key => $value4) {
                         $status_arr[$value4]["color"] = "badge-default";
                         $status_arr[$value4]["text"] = "Empty";
                         $status_arr[$value4]['approved2'] = 0;
                         $status_arr[$value4]['pending2'] = 0;
-                        // if(empty($value4)) {
-                        //     $status_arr[$value4]["text"] = "View All";
-                        // }
                     }
-                    // $status_arr["CIV"]["color"] = "badge-danger";
-                    // $status_arr["CIV"]["text"] = "Missing";
-                    // $status_arr["HBL"]["color"] = "badge-danger";
-                    // $status_arr["HBL"]["text"] = "Missing";
-                    // $status_arr["PKL"]["color"] = "badge-danger";
-                    // $status_arr["PKL"]["text"] = "Missing";
-                    // $status_arr["PKD"]["color"] = "badge-danger";
-                    // $status_arr["PKD"]["text"] = "Missing";
-                    // $status_arr["all"]["text"] = "Missing";
-                    // $status_arr["all"]["color"] = "badge-danger";
-                    // $status_arr['HBL']['approved2'] = 0;
-                    // $status_arr['HBL']['pending2'] = 0;
-                    // $status_arr['CIV']['approved2'] = 0;
-                    // $status_arr['CIV']['pending2'] = 0;
-                    // $status_arr['PKL']['approved2'] = 0;
-                    // $status_arr['PKL']['pending2'] = 0;
-                    // $status_arr['PKD']['approved2'] = 0;
-                    // $status_arr['PKD']['pending2'] = 0;
+                    $status_arr["all"]["color"] = "badge-default";
+                    $status_arr["all"]["text"] = "Empty";
                 }
-                
-                $status_arr['All']['count'] = 0;
-        
-                foreach($status_arr as $key=>$val){
+            } else {
+                $status_arr["all"]["color"] = "badge-default";
+                $status_arr["all"]["text"] = "Empty";
+                $status_arr["all"]['approved2'] = 0;
+                $status_arr["all"]['pending2'] = 0;
+            }
+
+
+            //var_dump($status_arr); die();
+
+            foreach($status_arr as $key => $val){
+                $attr = ($key == "all" ? "" :'data-type="'.$key.'"');
+                if(in_array($key, $doc_type)){
                     $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                    if(in_array($key,$doc_type)){
-                        $attr = ($key=="all"?"":'data-type="'.$key.'"');
-                        $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                        $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
-                        
-                        if(isset($val['pending2']) && $val['pending2'] > 0){
-                            $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['pending2'].'</span>';
-                        }elseif(isset($val['approved2']) && $val['approved2'] > 0){
-                            $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['approved2'].'</span>';
-                        }else{
-                            $html[$key]['count'] = "";
-                        }
+                    $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                    $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
+                    
+                    if(isset($val['pending2']) && $val['pending2'] > 0){
+                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['pending2'].'</span>';
+                    }elseif(isset($val['approved2']) && $val['approved2'] > 0){
+                        $html[$key]['count'] ='<span class="badge badge-danger navbar-badge ship-badge">'.$val['approved2'].'</span>';
                     }else{
-                        $html['empty']['badge'] ='<span class="doc badge badge-default" '.$attr.' data-id="'.$value->shipment_num.'">Empty</span>';
-                        $html['empty']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
                         $html[$key]['count'] = "";
                     }
+                } else {
+                    $html['all']['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
+                    $html['all']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                    $html[$key]['count'] = "";
                 }
-            } else {
-                $status_arr[""]["color"] = "badge-default";
-                $status_arr[""]["text"] = "Empty";
-                $status_arr[""]['approved2'] = 0;
-                $status_arr[""]['pending2'] = 0;
             }
 
-            if(!empty($doc_type)) {
-                foreach($doc_type as $doc){
-                    if(isset($html[$doc]['hover'])){
-                        $tableData[$doc]['hover'] = $html[$doc]['hover'];
-                        $tableData[$doc]['badge'] = $html[$doc]['badge'];
-                        if(isset($html[$doc]['count'])){
-                            $tableData[$doc]['count'] =   $html[$doc]['count'];
-                        }else{
-                            $tableData[$doc]['count'] = "";
-                        }
+            foreach($doc_type as $doc){
+                if(isset($html[$doc]['hover'])){
+                    $tableData[$doc]['hover'] = $html[$doc]['hover'];
+                    $tableData[$doc]['badge'] = $html[$doc]['badge'];
+                    if(isset($html[$doc]['count'])){
+                        $tableData[$doc]['count'] =   $html[$doc]['count'];
                     }else{
-                        $tableData[$doc]['hover'] = $html['empty']['hover'];
-                        $tableData[$doc]['badge'] = $html['empty']['badge'];
                         $tableData[$doc]['count'] = "";
                     }
-                    
+                }else{
+                    $tableData[$doc]['hover'] = $html['all']['hover'];
+                    $tableData[$doc]['badge'] = $html['all']['badge'];
+                    $tableData[$doc]['count'] = "";
                 }
-            } else {
-                $tableData[""]['hover'] = $html['empty']['hover'];
-                $tableData[""]['badge'] = $html['empty']['badge'];
-                $tableData[""]['count'] = "";
+                
             }
             
-            // if(isset($status_arr['all']['pending2']) && $status_arr['all']['pending2'] > 0){
-            //     $all.= '<span class="badge badge-danger navbar-badge ship-badge">'.$status_arr['all']['pending2'].'</span>';
-            // }
-            
-            // if(!in_array($status_arr["all"]["text"],$status_search)){
-            //   $tableData = [];
-            // }else{
+            $tableData["all"]['hover'] = $html['all']['hover'];
+            $tableData["all"]['badge'] = $html['all']['badge'];
+            $tableData["all"]['count'] = "";
 
-                // $marcoLink = 'href="edient:Command=ShowEditForm&LicenceCode=A2BSYDTRN&ControllerID=JobShipment&BusinessEntityPK=7592b26c-850e-4238-998b-38fe6d0d3845&Hash=%2bcSGJBkHeFTp%2bB3q95%2f6uRp74dMptiHhv"';
-                // $marcoLink = 'href="'.$value->macro_link.'"';
-                $subdata =array();
-                $subdata['real_id_shipment'] = $value->id;
-                $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
-                $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-                $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
-                $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);
+            $subdata = array();
+            $subdata['real_id_shipment'] = $value->id;
+            $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
+            $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
+            $subdata['eta'] = ($eta_date=="01/01/1900"?"No Date Available":$eta_date);
+            $subdata['etd'] = ($etd_date=="01/01/1900"?"No Date Available":$etd_date);
+            $subdata[strtolower("all")] =  $tableData["all"]['hover'].'<div class="doc-stats">'.$tableData["all"]['badge'].$tableData["all"]['count'].'</div>';
+            foreach ($doc_type as $key3 => $value3) {
+                $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
+            }
+            $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
+            $vesselReplace = explode(',',$vesselReplace);
+            $subdata['vessel_name'] = '<a class="vesshe" href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
+            $subdata['place_of_delivery'] = $value->place_delivery;
+            $subdata['consignee'] = $value->consignee;
+            $subdata['consignor'] = $value->consignor;
+            $subdata['container_number'] = $value->CONTAINER;
 
-                if(!empty($doc_type)) {
-                    foreach ($doc_type as $key3 => $value3) {
-                        $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
-                    }
-                } else {
-                    $subdata[strtolower("")] =  $tableData[""]['hover'].'<div class="doc-stats">'.$tableData[""]['badge'].$tableData[""]['count'].'</div>';
-                }
-                // $subdata['hbl'] =  $tableData['HBL']['hover'].'<div class="doc-stats">'.$tableData['HBL']['badge'].$tableData['HBL']['count'].'</div>';
-                // $subdata['civ'] = $tableData['CIV']['hover'].'<div class="doc-stats">'.$tableData['CIV']['badge'].$tableData['CIV']['count'].'</div>';
-                // $subdata['pkl'] = $tableData['PKL']['hover'].'<div class="doc-stats">'.$tableData['PKL']['badge'].$tableData['PKL']['count'].'</div>';
-                // $subdata['pkd'] = $tableData['PKD']['hover'].'<div class="doc-stats">'.$tableData['PKD']['badge'].$tableData['PKD']['count'].'</div>';
-                // $subdata['all'] = $tableData['all']['hover'].'<div class="doc-stats">'.$tableData['all']['badge'].$all.'</div>';
-                //$subdata['comment'] = 'No Comment';
-                $vesselReplace = str_replace(array( '[', ']' ),'',$value->CONTAINER);
-                $vesselReplace = explode(',',$vesselReplace);
-                $subdata['vessel_name'] = '<a class="vesshe" href="/vessel/details?'.$vesselReplace[0].'">'.$value->vessel_name.'</a>';
-                $subdata['place_of_delivery'] = $value->place_delivery;
-                $subdata['consignee'] = $value->consignee;
-                $subdata['consignor'] = $value->consignor;
-                $subdata['container_number'] = $value->CONTAINER;
-                
-                $data[] = $subdata;
-            // }
+            $data[] = $subdata;
+
         }
-       
-        $json_data=array(
-            "data"              =>  $data,
-        );
-        
-        echo json_encode($json_data);
+
+        # Output JSON format
+        echo json_encode(array("data" => $data));
     }
 
     // this must be change to api. temporary only
