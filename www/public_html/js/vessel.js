@@ -117,7 +117,8 @@ jQuery(document).ready(function() {
   var lsafter = [];
   var exist = [];
   var existafter =[];
-  
+  var markerpop = [];
+
   if(datapolyline.before){
     $.each(datapolyline.before,function(key,val) {
       if(exist.includes(val.location_city)== false){
@@ -143,7 +144,7 @@ jQuery(document).ready(function() {
             latlngCollection.push(latlong); 
             lbefore.push([lat,long]);
             lsbefore.push(latlong);
-
+            markerpop.push(oval);
             // $.ajax({
             //   async: false,
             //   url: "/vessel/getFlag/",
@@ -196,9 +197,7 @@ jQuery(document).ready(function() {
       // p = new L.Popup({ autoClose: false, closeOnClick: false })
       //             .setContent(val[0])
       //             .setLatLng([val[1], val[2]]);
-      marker = new L.marker([val[0], val[1]])
-      //.bindPopup(p)
-      .addTo(mymap)//.openPopup();
+      marker = new L.marker([val[0], val[1]]).addTo(mymap)//.openPopup();
     });
    if(lsafter[0]){
     var polyline = L.polyline(lsafter[0]
@@ -228,19 +227,57 @@ jQuery(document).ready(function() {
     
     var animationMarker = L.Marker.movingMarker(
       latlngCollection[0],
-      50000, {autostart: true});
+      20000, 
+      {autostart: true}
+    );
     var greenIcon = L.divIcon({
       html: '<i class="fas fa-ship"></i>',
       iconSize: [40, 40],
       className: 'myDivIcon'
     });
+    var timeInterval = 2000;
+    var percnt = 0;
+    var previousPoint;
+    var distanceOfpoint = [];
 
+    polyline.getLatLngs().forEach(function (latLng) {
+      if (previousPoint) {
+        distanceOfpoint.push(previousPoint.distanceTo(latLng));
+        // L.marker(latLng).bindPopup(
+        //   '<div>'
+        //   +'<img src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg">'
+        //   +'<button class="btn btn-success">Live Tracking</button>'
+        //   +'</div>'
+        // ).addTo(mymap);
+      }
+      previousPoint = latLng;
+    });
+
+    console.log(markerpop);
+   
+    $.each(markerpop,function(key,val){
+      console.log(val.port_lat);
+      L.marker([val.port_lat,val.port_long]).bindPopup(
+          '<div class="text-center">'
+          +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
+          +'<span>'+val.port_name+'</span><br>'
+          +'<a href="/vessel/tracking?'+vnum+'" class="btn btn-success text-white">Live Tracking</a>'
+          +'</div>'
+        ).addTo(mymap);
+    });
     setTimeout(function() {
-      console.log('started this yo');
-      console.log(animationMarker.isStarted());
+      if(animationMarker.isStarted()){
+        console.log(distanceOfpoint);
+        
+        // setInterval(function(){ 
+        //   console.log('tst');
+        //   console.log();
+        //   //console.log(animationMarker.getLatLng());
+        //  }, 500);
+      }
       //animationMarker.stop();
     }, 1000);
-    
+
     // console.log(animationMarker.isStarted());
     // console.log('this ani');
     // console.log(animationMarker.getLatLng());

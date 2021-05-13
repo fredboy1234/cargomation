@@ -296,5 +296,5 @@
     var geoAPIcitySearch = '';
     var geoAPIFormat = 'json';
     var datapolyline = <?=json_encode($this->polyline)?>;
-    console.log(data);
+    var vnum = <?=json_encode($this->vesselnum)?>;
 </script>
