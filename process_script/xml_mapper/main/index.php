@@ -359,7 +359,7 @@ try{
 			$CONSIGNORADDRESS ="";
 			$PATH_CONSIGNORADDRESS = "";
 			$ship_id="";
-			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE); 
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
 			$universalshipment = json_encode($xml, JSON_PRETTY_PRINT);
