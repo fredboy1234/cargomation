@@ -647,11 +647,15 @@ class Doctracker extends Core\Controller {
                 } 
             }else{
                 $userData[] = $value;
-
             }
         }
-        
-       return json_encode($userData);
+
+        if(!empty($User->getUserSettings($user)[0]->shipment)){
+            return $User->getUserSettings($user)[0]->shipment;
+        }else{
+            return json_encode($userData);    
+        }
+
     }
 
     public function request($shipment_id = "", $doc_type = "", $requestToken = "") {
