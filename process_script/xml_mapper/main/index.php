@@ -250,7 +250,7 @@ try{
 						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
 					}
 					else{
-						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
+						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key); 
 					}
 				}
 			}
