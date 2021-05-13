@@ -185,6 +185,7 @@ try{
 				} 
 				else
 				{
+
 					$xpath_AttachedCountSingle = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].FileName");
 					$xpath_AttachedB64 = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].ImageData");
 					$xpath_DocType = jsonPath($json_xpathdoc,$path_AttachedDocument."[$attach].Type.Code");
@@ -246,7 +247,10 @@ try{
 						$sql_insertdocstatus = "INSERT INTO document_status (document_id,status) Values
 			        ($doc_idlast1,'pending')";
 						$sql_insertdocstatus = sqlsrv_query($conn, $sql_insertdocstatus);
-						//Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
+						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
+					}
+					else{
+						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
 					}
 				}
 			}
@@ -359,7 +363,7 @@ try{
 			$CONSIGNORADDRESS ="";
 			$PATH_CONSIGNORADDRESS = "";
 			$ship_id="";
-			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE); 
+			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
 			$universalshipment = json_encode($xml, JSON_PRETTY_PRINT);
