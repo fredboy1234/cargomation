@@ -226,7 +226,7 @@ $(document).ready(function () {
         var message = data[2]['value'];
 
         $.ajax({
-            url: '/contact/sendEmail',
+            url: '/contact/sendEmailAPI',
             type: "POST",
             dataType: "json",
             data: {
@@ -244,7 +244,6 @@ $(document).ready(function () {
                     text: 'Your message was sent!',
                     timer: 3000
                 });
-                console.log(result);
                 $('#myForm').find('input:text, input:password, input, select, textarea')
                             .each(function () {
                                 $(this).val('');

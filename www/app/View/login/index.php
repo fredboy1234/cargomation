@@ -286,7 +286,7 @@ $(document).ready(function(){
 
       if( email != "" && password != "" ){
           $.ajax({
-              url:'<?= $this->makeUrl("login/_login") . '/' . $redirectTo; ?>',
+              url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
               type:'post',
               data:{email:email,password:password,csrf_token:csrf_token},
               beforeSend: function() {
