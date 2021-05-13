@@ -181,6 +181,23 @@
         width: 40px;
         height: 30px;
     }
+    .head-list{
+        background: rgb(38 56 75 / 48%);
+        padding-top: 6px;
+        padding-bottom: 6px;
+        color: #fff;
+    }
+    #sidebar{
+        background: rgb(7,27,47);
+        color: #fff;
+    }
+    .estmd{
+        border-right: 1px solid #fff;
+    }
+    .actual,.estmd{
+        font-size: 11px;
+        font-weight: bold;
+    }
 </style>
 <?php $count =1;
     $origin = '';
@@ -220,27 +237,44 @@
                 <button id="refreshButton" type="button" class="btn btn-primary">Show Timeline</button>
                 <div class="d-none tab-pane col-md-4 float-right" id="timeline">
                     <!-- The timeline -->
+                    <h5 class="mb-2">Port Calls</h5>
+                    <hr>
+                    <div class="row">
+                        <span class="col-md-5 d-inline-block text-center">
+                            <h6>Estimated</h6>
+                        </span>
+                        <span class="col-md-5 d-inline-block text-center">
+                            <h6>Actual</h6>
+                        </span>
+                    </div>         
                     <div class="timeline timeline-inverse">
                         <?php if(!empty($vesseldata)){?>
                             <?php foreach($vesseldata as $vessel){ ?>
                                 <?php $dateTrack = date_create($vessel->date_track);?>
                                 <?php $day = date_format($dateTrack,"l");?>
-                                <?php $month = date_format($dateTrack,"F j,Y");?>
-                                <?php $hour = date_format($dateTrack,'h:i:s A')?>
+                                <?php $month = date_format($dateTrack,"M j,y");?>
+                                <?php $hour = date_format($dateTrack,'H:i:s')?>
                                 <?php  $c_index = preg_replace('/\s*/', '', $vessel->location_city);?>
                                 <?php $urlimage = (isset($c_flag[strtolower($c_index)][0]) ? $c_flag[strtolower($c_index)][0] : '')?>
                                 
                                 <div class="time-label" data-time="time-<?=$id?>">
-                                    <div class="head-list">
-                                    <span class="col-md-2 d-inline-block">
-                                     <img class="flag f-<?=$vessel->location_city?> img-thumbnail" src="data:image/svg+xml;base64, <?=$urlimage?>">
-                                    </span>
-                                    <span class="col-md-8 d-inline-block">
-                                         <strong><?=$vessel->location_city?></strong><br>
-                                         <?=$month?>
-                                    </span>
+                                    <div class="head-list timeline-header">
+                                        <span class="col-md-8 d-inline-block">
+                                            <strong><?=$vessel->location_city.' '?></strong>
+                                        </span>
+                                    </div>
+                                    <div class="timeline-body pl-5">
+                                            <div class="estmd col-md-5 d-inline-block">
+                                                <span>Arr: <?=$month.' '.$hour?></span><br>
+                                                <span>Dep: -  -</span>
+                                            </div>
+                                            <div class="actual col-md-5 d-inline-block">
+                                                <span>Arr: - -</span><br>
+                                                <span>Dep: - -</span>
+                                            </div>
                                     </div>
                                 </div>
+                                
                                 
                                 <!-- END timeline item -->
                                 <?php $id++; $count++;$countBG++; if($countBG>3){$countBG=0;}?>
@@ -253,7 +287,6 @@
         </div>
 </section>
 </div>
-
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
     var geocodeToken = <?php echo json_encode($this->geocodeToken)?>;
@@ -263,5 +296,5 @@
     var geoAPIcitySearch = '';
     var geoAPIFormat = 'json';
     var datapolyline = <?=json_encode($this->polyline)?>;
-    console.log(data);
+    var vnum = <?=json_encode($this->vesselnum)?>;
 </script>
