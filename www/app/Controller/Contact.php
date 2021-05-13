@@ -95,4 +95,19 @@ class Contact extends Core\Controller {
         }
       
     }
+
+    public function sendEmailAPI($userID=""){
+        
+        $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
+        if (!$User = Model\User::getInstance($userID)) {
+            Utility\Redirect::to(APP_URL);
+        }  
+        
+        if(isset($_POST)){
+            $mail = Model\SendMail::sendContactusAPI($_POST);
+            // return json_encode(["success"=>true]);
+            echo json_encode($mail);
+        }
+      
+    }
 }
