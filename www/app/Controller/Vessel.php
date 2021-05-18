@@ -188,11 +188,13 @@ class Vessel extends Core\Controller {
             $_SESSION['vesselnum'] = '';
         }
         
-        if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
+        //$_SESSION['livesearates'] = '';
+
+        //if( $_SESSION['livesearates'] = ""  ||  $_SESSION['vesselnum'] != $vessel_number ){
             $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             $_SESSION['livesearates'] =  $searates;
             $_SESSION['vesselnum'] =$vessel_number;
-        }
+        //}
 
         
         
@@ -272,11 +274,11 @@ class Vessel extends Core\Controller {
        if(!isset($_SESSION['vesselnum'])){
         $_SESSION['vesselnum'] = '';
        }
-        if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
+        //if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
             $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             $_SESSION['livesearates'] =  $searates;
             $_SESSION['vesselnum'] =$vessel_number;
-        }
+        //}
 
         $this->View->addJS("js/tracking.js");
        $this->View->renderTemplate($role, $role . "/vessel/tracking", [
