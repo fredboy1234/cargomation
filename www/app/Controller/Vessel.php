@@ -253,6 +253,7 @@ class Vessel extends Core\Controller {
        }
 
        $vessel_number = (isset($vessel_number[1])? $vessel_number[1] :'');
+	   $vloyds =(isset($this->Vessel->vesseLyod($vessel_number,$user)[0])? $this->Vessel->vesseLyod($vessel_number,$user)[0]->vesslloyds:'');
        
        $this->View->addJS("js/vessel.js");
        $this->View->renderTemplate($role, $role . "/vessel/tracking", [
@@ -266,7 +267,8 @@ class Vessel extends Core\Controller {
            'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
            "notifications" => Model\User::getUserNotifications($user),
-           "vesselyod" => $this->Vessel->vesseLyod($vessel_number,$user)[0]->vesslloyds
+           "vesselyod" => $vloyds
+		   
        ]);
    }
 
