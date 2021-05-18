@@ -183,6 +183,14 @@ class Vessel extends Core\Controller {
            
             $t++;        
         }
+        $searates  = 'empty';
+        if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){
+            
+            $searates = file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            $_SESSION['searates'] =  $searates;
+        }
+
+        
         
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate($role, $role . "/vessel/details", [
@@ -198,7 +206,8 @@ class Vessel extends Core\Controller {
             "notifications" => Model\User::getUserNotifications($user),
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
-            "vesselnum" => $vessel_number
+            "vesselnum" => $vessel_number,
+            "searatesTracking" => $_SESSION['searates']
         ]);
         $this->externalTemp();
     }
@@ -242,7 +251,7 @@ class Vessel extends Core\Controller {
        
        $this->View->addCSS("css/theme/".$selectedTheme.".css");
        $this->View->addCSS("css/vessel.css");
-       $this->View->addJS("js/vessel.js");
+       
        
        $imageList = (Object) Model\User::getProfile($user);
        $profileImage = '/img/default-profile.png';
@@ -253,8 +262,16 @@ class Vessel extends Core\Controller {
        }
 
        $vessel_number = (isset($vessel_number[1])? $vessel_number[1] :'');
+       $vloyds =(isset($this->Vessel->vesseLyod($vessel_number,$user)[0])? $this->Vessel->vesseLyod($vessel_number,$user)[0]->vesslloyds:'');
        
-       $this->View->addJS("js/vessel.js");
+       $searates  = 'empty';
+        if(!isset($_SESSION['livesearates']) && empty($_SESSION['livesearates'])){
+            
+            $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            $_SESSION['livesearates'] =  $searates;
+        }
+
+        $this->View->addJS("js/tracking.js");
        $this->View->renderTemplate($role, $role . "/vessel/tracking", [
            "title" => "Vessel Track",
            "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
@@ -266,7 +283,8 @@ class Vessel extends Core\Controller {
            'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
            "notifications" => Model\User::getUserNotifications($user),
-           "vesselyod" => $this->Vessel->vesseLyod($vessel_number,$user)[0]->vesslloyds
+           "vesselyod" => $vloyds,
+           "searatesTracking" => $_SESSION['livesearates']
        ]);
    }
 
@@ -390,7 +408,12 @@ class Vessel extends Core\Controller {
             echo json_encode($this->Vessel->getSeaPort($_POST['port_name']));
         }
     }
-
+    
+    // public function scrapeVessels(){
+    //     $dom = file_get_contents('https://www.fleetmon.com/community/photos');
+    //     echo "<pre>";
+    //     print_r($dom);
+    // }
     // public function country(){
     //     $data['name'] = $_POST['country_name']; 
     //     $data['code2'] = $_POST['country_code2']; 

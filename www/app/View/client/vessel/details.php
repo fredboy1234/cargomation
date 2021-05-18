@@ -227,6 +227,8 @@
    
     $count++;
 } ?>
+<?php $searates = json_decode($this->searatesTracking);?>
+
 <section class="content">
         <div class="container-fluid">
         <a href="/vessel">Show List Of Vessel</a>
@@ -248,24 +250,18 @@
                         </span>
                     </div>         
                     <div class="timeline timeline-inverse">
-                        <?php if(!empty($vesseldata)){?>
-                            <?php foreach($vesseldata as $vessel){ ?>
-                                <?php $dateTrack = date_create($vessel->date_track);?>
-                                <?php $day = date_format($dateTrack,"l");?>
-                                <?php $month = date_format($dateTrack,"M j,y");?>
-                                <?php $hour = date_format($dateTrack,'H:i:s')?>
-                                <?php  $c_index = preg_replace('/\s*/', '', $vessel->location_city);?>
-                                <?php $urlimage = (isset($c_flag[strtolower($c_index)][0]) ? $c_flag[strtolower($c_index)][0] : '')?>
-                                
-                                <div class="time-label" data-time="time-<?=$id?>">
+                        <?php if($searates->message =="OK" && !empty($searates->data)){?>
+                            <?php foreach($searates->data->locations as $vessel){ ?>
+                               
+                                <div class="time-label">
                                     <div class="head-list timeline-header">
                                         <span class="col-md-8 d-inline-block">
-                                            <strong><?=$vessel->location_city.' '?></strong>
+                                            <strong><?=$vessel->name.', '.$vessel->country?></strong>
                                         </span>
                                     </div>
                                     <div class="timeline-body pl-5">
                                             <div class="estmd col-md-5 d-inline-block">
-                                                <span>Arr: <?=$month.' '.$hour?></span><br>
+                                                <span>Arr: </span><br>
                                                 <span>Dep: -  -</span>
                                             </div>
                                             <div class="actual col-md-5 d-inline-block">
@@ -277,7 +273,7 @@
                                 
                                 
                                 <!-- END timeline item -->
-                                <?php $id++; $count++;$countBG++; if($countBG>3){$countBG=0;}?>
+                                
                             <?php } ?>
                         <?php } ?>
                     </div>
@@ -297,4 +293,5 @@
     var geoAPIFormat = 'json';
     var datapolyline = <?=json_encode($this->polyline)?>;
     var vnum = <?=json_encode($this->vesselnum)?>;
+    var searates =<?=json_encode($searates)?>;
 </script>
