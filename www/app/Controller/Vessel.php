@@ -184,11 +184,11 @@ class Vessel extends Core\Controller {
             $t++;        
         }
         $searates  = 'empty';
-       // if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){
+       if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){
             
             $searates = file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             $_SESSION['searates'] =  $searates;
-       // }
+       }
 
         
         

@@ -187,7 +187,8 @@
         padding-bottom: 6px;
         color: #fff;
     }
-    #sidebar{
+    #sidebar,
+    .more-details .card{
         background: rgb(7,27,47);
         color: #fff;
     }
@@ -197,6 +198,9 @@
     .actual,.estmd{
         font-size: 11px;
         font-weight: bold;
+    }
+    #showmore{
+        cursor: pointer;
     }
 </style>
 <?php $count =1;
@@ -261,16 +265,46 @@
                                     </div>
                                     <div class="timeline-body pl-5">
                                             <div class="estmd col-md-5 d-inline-block">
-                                                <span>Arr: </span><br>
-                                                <span>Dep: -  -</span>
+                                                <span>Arr:<i class="text-danger">Not Available</i> </span><br>
+                                                <span>Dep:<i class="text-danger">Not Available</i></span>
                                             </div>
                                             <div class="actual col-md-5 d-inline-block">
-                                                <span>Arr: - -</span><br>
-                                                <span>Dep: - -</span>
+                                                <span>Arr: <i class="text-danger">Not Available</i></span><br>
+                                                <span>Dep: <i class="text-danger">Not Available</i></span>
+                                            </div>
+                                            <span id="showmore" data-show="<?=$vessel->country?>" class="d-block mt-3 mb-2"> Show More  &#9650;</span>
+                                            <div class="more-details" id="<?=$vessel->country?>">
+                                                <div class="card card-body">
+                                                <table class="table-striped table-dark">
+                                                    <thead>
+                                                        <tr>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Vessel</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach($searates->data->container->events as $det){?>
+                                                        <?php if($det->location == $vessel->id){?>
+                                                            <?php $dateTrack = date_create($det->date);?>
+                                                            <?php $day = date_format($dateTrack,"D");?>
+                                                            <?php $month = date_format($dateTrack,"M. j,y");?>
+                                                            <?php $hour = date_format($dateTrack,'H:i:s')?>
+                                                                    <tr>
+                                                                        <th scope="row"><?=$month?></th>
+                                                                        <td><?=$det->description?></td>
+                                                                        <td><?=$det->status?></td>
+                                                                        <td><?=$det->vessel?></td>
+                                                                    </tr>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                                </div>
                                             </div>
                                     </div>
                                 </div>
-                                
                                 
                                 <!-- END timeline item -->
                                 

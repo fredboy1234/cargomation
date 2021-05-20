@@ -71,6 +71,8 @@ jQuery(document).ready(function() {
     }
     }); 
     
+    
+
     $(document).on('click','.collapse-tr',function(){
       var cName = '.'+$(this).find('a').text();
       if($(this).find('.sec i').hasClass('fa-angle-down')){
@@ -169,4 +171,16 @@ jQuery(document).ready(function() {
         sidebar.hide();
       });
 
+      sidebar.on('click','#showmore',function(){
+        var att = $(this).attr('data-show');
+        alert();
+        if($('#'+att).hasClass('d-none')){
+          $('#'+att).removeClass('d-none');
+          $(this).text('hide');
+        }else{
+          $('#'+att).addClass('d-none');
+          $(this).text('Show More');
+        }
+      });
+    
 });  
