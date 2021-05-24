@@ -171,16 +171,16 @@ jQuery(document).ready(function() {
         sidebar.hide();
       });
 
-      sidebar.on('click','#showmore',function(){
+      $('.showmore').on('click',function(){
         var att = $(this).attr('data-show');
-        alert();
-        if($('#'+att).hasClass('d-none')){
-          $('#'+att).removeClass('d-none');
-          $(this).text('hide');
-        }else{
-          $('#'+att).addClass('d-none');
-          $(this).text('Show More');
-        }
+        setTimeout(function(){
+          if($('#'+att).hasClass('d-none')){
+            $('#'+att).removeClass('d-none');
+            $(this).text('hide &#94;');
+          }else{
+            $('#'+att).addClass('d-none');
+            $(this).text('Show More ');
+          }
+        },50); 
       });
-    
 });  

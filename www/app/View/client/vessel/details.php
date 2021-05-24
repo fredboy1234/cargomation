@@ -272,8 +272,8 @@
                                                 <span>Arr: <i class="text-danger">Not Available</i></span><br>
                                                 <span>Dep: <i class="text-danger">Not Available</i></span>
                                             </div>
-                                            <span id="showmore" data-show="<?=$vessel->country?>" class="d-block mt-3 mb-2"> Show More  &#9650;</span>
-                                            <div class="more-details" id="<?=$vessel->country?>">
+                                            <span id="showmore" data-show="<?=$vessel->country?>" class="d-block mt-3 mb-2 showmore"> Show More  &#8595;</span>
+                                            <div class="more-details d-none" id="<?=$vessel->country?>">
                                                 <div class="card card-body">
                                                 <table class="table-striped table-dark">
                                                     <thead>
