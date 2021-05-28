@@ -172,7 +172,7 @@ jQuery(document).ready(function() {
       });
 
       $('.showmore').on('click',function(){
-        var att = $(this).attr('data-show');
+        var att = $(this).attr('data-show').replace(" ","");
         setTimeout(function(){
           if($('#'+att).hasClass('d-none')){
             $('#'+att).removeClass('d-none');
