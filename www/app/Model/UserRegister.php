@@ -86,11 +86,11 @@ class UserRegister {
                 "first_name" => Utility\Input::post("first-name"),
                 "last_name" => Utility\Input::post("last-name"),
                 "email" => Utility\Input::post("email"),
-                "phone" =>"",
-                "address"=>"",
-                "city" => "",
-                "postcode" =>"",
-                "country_id" =>"",
+                "phone" => Utility\Input::post("phone"),
+                "address"=> Utility\Input::post("address"),
+                "city" => Utility\Input::post("city"),
+                "postcode" => Utility\Input::post("zip"),
+                "country_id" => "",
                 "account_id" => $accId,
                 "account_users" => "",
                 //"subscription_id" =>Utility\Input::post("subcription"),
@@ -100,7 +100,7 @@ class UserRegister {
             //insert user role
             $User->insertUserRole([
                 "user_id" => $userID,
-                "role_id" => "2", //since we dont know how to determine if user if admin or client we just set this to 3.
+                "role_id" => Utility\Input::post("role")
             ]);
             
             

@@ -215,44 +215,44 @@ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0v
 crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
-
+<script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script>
 $(document).ready(function () {
-    $("#contact-form").submit(function (e) {
+  $("#contact-form").submit(function (e) {
 
-        var data = $(this).serializeArray();
-        var email = data[0]['value'];
-        var name = data[1]['value'];
-        var message = data[2]['value'];
+      var data = $(this).serializeArray();
+      var email = data[0]['value'];
+      var name = data[1]['value'];
+      var message = data[2]['value'];
 
-        $.ajax({
-            url: '/contact/sendEmailAPI',
-            type: "POST",
-            dataType: "json",
-            data: {
-                'name': name,
-                'email': email,
-                'message': message
-            },
-            beforeSend: function () {
-                $("#contact-form .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
-            }, success: function (result) {
-                $('#loader').remove();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Message Sent!',
-                    text: 'Your message was sent!',
-                    timer: 3000
-                });
-                $('#myForm').find('input:text, input:password, input, select, textarea')
-                            .each(function () {
-                                $(this).val('');
-                            });
-                closeForm();
-            }
-        });
-        e.preventDefault();
-    });
+      $.ajax({
+          url: '/contact/sendEmailAPI',
+          type: "POST",
+          dataType: "json",
+          data: {
+              'name': name,
+              'email': email,
+              'message': message
+          },
+          beforeSend: function () {
+              $("#contact-form .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
+          }, success: function (result) {
+              $('#loader').remove();
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Message Sent!',
+                  text: 'Your message was sent!',
+                  timer: 3000
+              });
+              $('#myForm').find('input:text, input:password, input, select, textarea')
+                          .each(function () {
+                              $(this).val('');
+                          });
+              closeForm();
+          }
+      });
+      e.preventDefault();
+  });
 });
 
 function openForm() {
