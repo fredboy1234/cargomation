@@ -286,7 +286,7 @@ $(document).ready(function () {
       // $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
       $('html, body').animate({ scrollTop: stId.offset() }, 2000);
       $(stId).addClass('selected');
-    });
+    }, false);
   });
 
   //For Settings
