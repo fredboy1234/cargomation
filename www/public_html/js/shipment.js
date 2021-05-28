@@ -286,7 +286,7 @@ $(document).ready(function () {
       // $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
       $('html, body').animate({ scrollTop: stId.offset() }, 2000);
       $(stId).addClass('selected');
-    });
+    }, false);
   });
 
   //For Settings
@@ -329,7 +329,9 @@ $(document).ready(function () {
         data: { "settings": Sdata },
         success: function (res) {
           // for checking only
-          // console.log(res);
+          console.log('test tes');
+           console.log(Sdata);
+           console.log(res);
           hideShowResetSettings();
         }
       });
@@ -363,7 +365,7 @@ $(document).ready(function () {
     var opt_value = [];
     var temp = [];
     $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function () {
-      console.log($(this).val());
+      console.log($(this).data('text'));
 
       opt_value.push($(this).val());
       Sdata.push({ index_name: $(this).data('text'), index_value: $(this).val(), index_check: true, index_lvl: $(this).attr('lvl') });
@@ -377,6 +379,7 @@ $(document).ready(function () {
     if (check_arr.length != Sdata.length && check_arr.length != 0) {
       $.each(check_arr, function (k, v) {
         if ($.inArray(v.index_value, opt_value) == -1) {
+          console.log("from the is array");
           temp.push({ index_name: v.index_name, index_value: v.index_value, index_check: v.index_check, index_lvl: v.index_lvl });
         } else {
           $.each(Sdata, function (okey, oval) {
@@ -437,7 +440,9 @@ $(document).ready(function () {
         data: { "settings": Sdata },
         success: function (res) {
           // for checking only
-          // console.log(res);
+          console.log('test tes');
+           console.log(Sdata);
+           cosnoel.log(res);
           hideShowResetSettings();
         }
       });
