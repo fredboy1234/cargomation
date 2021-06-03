@@ -370,6 +370,7 @@ class Shipment extends Core\Controller {
             }else{
                 $api = array();
             }
+            $shipment_id = $_POST['shipment_id'];
         }
 
         foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
@@ -384,6 +385,8 @@ class Shipment extends Core\Controller {
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
             $status_arr['all']['count'] = 0;
+            $status_arr["all"]["color"] = "badge-default";
+            $status_arr["all"]["text"] = "Empty";
             $marcoLink = 'href="#"';
             
             # Initialize macro_link from shipment_link
@@ -395,6 +398,12 @@ class Shipment extends Core\Controller {
             
             # Check in document type list is empty
             if(!empty($doc_type)) {
+                foreach ($doc_type as $type) {
+                    $status_arr[$type]["color"] = "badge-default";
+                    $status_arr[$type]["text"] = "Empty";
+                    $status_arr[$type]['approved2'] = 0;
+                    $status_arr[$type]['pending2'] = 0;
+                }
                 if(isset($stats[$value->shipment_num])) {
                     foreach ($stats[$value->shipment_num] as $key2 => $value2) {
                         if(isset($value2['pending'])) {
@@ -420,21 +429,7 @@ class Shipment extends Core\Controller {
                     }
                     $status_arr["all"]["color"] = "badge-primary";
                     $status_arr["all"]["text"] = "View All";
-                } else {
-                    foreach ($doc_type as $key => $value4) {
-                        $status_arr[$value4]["color"] = "badge-default";
-                        $status_arr[$value4]["text"] = "Empty";
-                        $status_arr[$value4]['approved2'] = 0;
-                        $status_arr[$value4]['pending2'] = 0;
-                    }
-                    $status_arr["all"]["color"] = "badge-default";
-                    $status_arr["all"]["text"] = "Empty";
                 }
-            } else {
-                $status_arr["all"]["color"] = "badge-default";
-                $status_arr["all"]["text"] = "Empty";
-                $status_arr["all"]['approved2'] = 0;
-                $status_arr["all"]['pending2'] = 0;
             }
 
 
@@ -442,7 +437,7 @@ class Shipment extends Core\Controller {
 
             foreach($status_arr as $key => $val){
                 $attr = ($key == "all" ? "" :'data-type="'.$key.'"');
-                if(in_array($key, $doc_type)){
+                #if(in_array($key, $doc_type)){
                     $attr = ($key=="all"?"":'data-type="'.$key.'"');
                     $html[$key]['hover'] ='<div class="doc-stats" style="display: none;"><span class="doc" '.$attr.' data-id="'.$value->shipment_num.'">'.(isset($val["approved2"]) ? $val["approved2"] : 0).'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'.(isset($val["pending2"]) ? $val["pending2"] : 0).'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
                     $html[$key]['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
@@ -454,13 +449,11 @@ class Shipment extends Core\Controller {
                     }else{
                         $html[$key]['count'] = "";
                     }
-                } else {
-                    $html['all']['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
-                    $html['all']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
-                    $html[$key]['count'] = "";
-                }
+                #} else {
+                // $html['all']['badge'] ='<span class="doc badge '.($val['color']).'" '.$attr.' data-id="'.$value->shipment_num.'">'.($val['text']).'</span>';
+                // $html['all']['hover'] = '<div class="doc-stats" style="display: none;"><span class="doc" data-type="HBL" data-id="'.$value->shipment_num.'">0<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>0<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 0<i class="fa fa-eye text-warning" aria-hidden="true"></i></span></div>';
+                // $html[$key]['count'] = "";
             }
-
             foreach($doc_type as $doc){
                 if(isset($html[$doc]['hover'])){
                     $tableData[$doc]['hover'] = $html[$doc]['hover'];
