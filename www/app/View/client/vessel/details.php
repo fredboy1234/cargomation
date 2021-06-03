@@ -571,8 +571,6 @@
     }';
 ?>
 <?php $rr = json_decode($routemap);?>
-<pre>
-<?php print_r($rr);?>
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
     var geocodeToken = <?php echo json_encode($this->geocodeToken)?>;

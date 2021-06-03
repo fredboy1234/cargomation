@@ -207,7 +207,7 @@ class Vessel extends Core\Controller {
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
             "searatesTracking" => $_SESSION['searates'],
-            "tracking" => $_SESSION['tracking'] 
+            "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '' 
         ]);
         $this->externalTemp();
     }
