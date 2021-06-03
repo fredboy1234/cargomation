@@ -50,5 +50,5 @@ $(document).ready(function(){
 
     //map.fitBounds(polyline.getBounds());
     console.log(polyline.getBounds());
-    map.setView(livedata.data.pin, 8);
+    map.setView(livedata.data.pin, 6);
 });

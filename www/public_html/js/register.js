@@ -1,240 +1,147 @@
-$(document).ready(function() {
-    $('.nav-tabs .nav-item .nav-link').removeAttr('href data-toggle role aria-labelledby');
+var stepperForm
+document.addEventListener('DOMContentLoaded', function () {
+  var stepperFormEl = document.querySelector('#stepperForm')
+  stepperForm = new Stepper(stepperFormEl, {
+    animation: true
+  })
+  var btnNextList = [].slice.call(document.querySelectorAll('.btn-next-form'))
+  var stepperPanList = [].slice.call(stepperFormEl.querySelectorAll('.bs-stepper-pane'))
+  var inputEmail = document.getElementById('inputEmail')
+  var inputPassword = document.getElementById('inputPassword')
+  var form = stepperFormEl.querySelector('.bs-stepper-content form')
+  btnNextList.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      stepperForm.next()
+    })
+  })
+  stepperFormEl.addEventListener('show.bs-stepper', function (event) {
+    form.classList.remove('was-validated')
+    var nextStep = event.detail.indexStep
+    var currentStep = nextStep
+    if (currentStep > 0) {
+      currentStep--
+    }
+    var stepperPan = stepperPanList[currentStep]
+    // if ((stepperPan.getAttribute('id') === 'step-1' && !inputEmail.value.length)
+    // || (stepperPan.getAttribute('id') === 'step-2' && !inputPassword.value.length)) {
+    //   event.preventDefault()
+    //   form.classList.add('was-validated')
+    // } 
 
-    $('#btn_service').click(function() {
-
-        var error_webservice_link = '';
-        var error_webservice_username = '';
-        var error_webservice_password = '';
-        var url_filter = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-
-        if($.trim($('#webservice-link').val()).length == 0) {
-            error_webservice_link = 'Web Service Link is required';
-            $('#error_webservice_link').text(error_webservice_link);
-            $('#webservice-link').addClass('has-error');
+    // Login Validation 
+    var errorEmail = ''
+    var errorPassword = ''
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+    if($.trim($('#inputEmail').val()).length == 0 && stepperPan.getAttribute('id') === 'step-1') {
+        errorEmail = 'Email is required'
+        $('#errorEmail').text(errorEmail)
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        if (!filter.test($('#inputEmail').val()) && stepperPan.getAttribute('id') === 'step-1') {
+            errorEmail = 'Invalid Email'
+            $('#errorEmail').text(errorEmail)
+            event.preventDefault()
+            form.classList.add('was-validated')
         } else {
-            if (!url_filter.test($('#webservice-link').val())) {
-                error_webservice_link = 'Invalid Link';
-                $('#error_webservice_link').text(error_webservice_link);
-                $('#webservice-link').addClass('has-error');
-            } else {
-                error_webservice_link = '';
-                $('#error_webservice_link').text(error_webservice_link);
-                $('#webservice-link').removeClass('has-error');
-            }
+            errorEmail = ''
+            $('#errorEmail').text(errorEmail)
         }
-
-        if($.trim($('#webservice-username-input').val()).length == 0) {
-            error_webservice_username = 'Username is required';
-            $('#error_webservice_username').text(error_webservice_username);
-            $('#webservice-username-input').addClass('has-error');
+    }
+    if($.trim($('#inputPassword').val()).length == 0 && stepperPan.getAttribute('id') === 'step-1') {
+        errorPassword = 'Password is required'
+        $('#errorPassword').text(errorPassword)
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        errorPassword = ''
+        $('#errorPassword').text(errorPassword)
+    }
+    if($.trim($('#inputConfirm').val()).length == 0 && stepperPan.getAttribute('id') === 'step-1') {
+        errorConfirm = 'Confirm Password is required'
+        $('#errorConfirm').text(errorConfirm)
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        if(($.trim($('#inputPassword').val()) != $.trim($('#inputConfirm').val())) && stepperPan.getAttribute('id') === 'step-1' ) {
+            errorConfirm = 'Confirm Password does not match'
+            $('#errorConfirm').text(errorConfirm)
+            event.preventDefault()
+            form.classList.add('was-validated')
         } else {
-            error_webservice_username = '';
-            $('#error_webservice_username').text(error_webservice_username);
-            $('#webservice-username-input').removeClass('has-error');
+            errorConfirm = ''
+            $('#errorConfirm').text(errorConfirm)
         }
-
-        if($.trim($('#webservice-password-input').val()).length == 0) {
-            error_webservice_password = 'Password is required';
-            $('#error_webservice_password').text(error_webservice_password);
-            $('#webservice-password-input').addClass('has-error');
+    }
+    // Concact Info Validation
+    var errorFirstName = '';
+    var errorLastName = '';
+    var errorPhone = '';
+    var phoneValidation = /^\d{10}$/;
+    if ($.trim($('#inputFirstName').val()).length == 0 && stepperPan.getAttribute('id') === 'step-2') {
+        errorFirstName = 'First Name is required';
+        $('#errorFirstName').text(errorFirstName);
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        errorFirstName = '';
+        $('#errorFirstName').text(errorFirstName);
+    }
+    if ($.trim($('#inputLastName').val()).length == 0 && stepperPan.getAttribute('id') === 'step-2') {
+        errorLastName = 'Last Name is required';
+        $('#errorLastName').text(errorLastName);
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        errorLastName = '';
+        $('#errorLastName').text(errorLastName);
+    }
+    if ($.trim($('#inputPhone').val()).length == 0 && stepperPan.getAttribute('id') === 'step-2') {
+        errorPhone = 'Mobile Number is required';
+        $('#errorPhone').text(errorPhone);
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        if (!phoneValidation.test($('#inputPhone').val()) && stepperPan.getAttribute('id') === 'step-2') {
+            errorPhone = 'Invalid Mobile Number';
+            $('#errorPhone').text(errorPhone);
+            event.preventDefault()
+            form.classList.add('was-validated')
         } else {
-            error_webservice_password = '';
-            $('#error_webservice_password').text(error_webservice_password);
-            $('#webservice-password-input').removeClass('has-error');
+            errorPhone = '';
+            $('#errorPhone').text(errorPhone);
         }
+    }
+    // Address Validation
+    var errorAddress = '';
+    if ($.trim($('#inputAddress').val()).length == 0 && stepperPan.getAttribute('id') === 'step-3') {
+        errorAddress = 'Address is required';
+        $('#errorAddress').text(errorAddress);
+        event.preventDefault()
+        form.classList.add('was-validated')
+    } else {
+        errorAddress = '';
+        $('#errorAddress').text(errorAddress);
+    }
+    
+  })
+})
 
-        if(error_webservice_link != '' || error_webservice_username != '' || error_webservice_password != '') {
-            return false;
-        } else {
-            $('#webservice-tab').removeClass('active active_tab1');
-            $('#webservice-tab').removeAttr('href data-toggle');
-            $('#webservice, .step1').removeClass('active');
-            $('#webservice-tab').addClass('inactive_tab1');
-            $('#login-tab').removeClass('inactive_tab1');
-            $('#login-tab').addClass('active_tab1 active');
-            $('#login-tab').attr('href', '#login');
-            $('#login-tab').attr('data-toggle', 'tab');
-            $('#login, .step2').addClass('active show');
+
+document.getElementById('submit').addEventListener('click', function (event) {
+    var registrationForm = document.getElementById("registrationForm")
+    console.log(registrationForm.action)
+    $.ajax({
+        type: "POST",
+        url: registrationForm.action,
+        data: $('#registrationForm').serialize(),
+        beforeSend: function() {
+            $('#submit').prop('disabled', true);
+            $("#final").prepend('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
+        },
+        success: function(data) {
+            console.log(data)
+            $('#loader').empty().html('<h4>Register complete!</h4>')
         }
-    });
-
-    $('#previous_btn_login').click(function() {
-        $('#login-tab').removeClass('active active_tab1');
-        $('#login-tab').removeAttr('href data-toggle');
-        $('#login, .step2').removeClass('active show');
-        $('#login-tab').addClass('inactive_tab1');
-        $('#webservice-tab').removeClass('inactive_tab1');
-        $('#webservice-tab').addClass('active_tab1 active');
-        $('#webservice-tab').attr('href', '#webservice');
-        $('#webservice-tab').attr('data-toggle', 'tab');
-        $('#webservice, .step1').addClass('active show');
-    });
-
-    $('#btn_login').click(function() {
-        var error_email = '';
-        var error_password = '';
-        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-        if($.trim($('#email-input').val()).length == 0) {
-            error_email = 'Email is required';
-            $('#error_email').text(error_email);
-            $('#email-input').addClass('has-error');
-        } else {
-            if (!filter.test($('#email-input').val())) {
-                error_email = 'Invalid Email';
-                $('#error_email').text(error_email);
-                $('#email-input').addClass('has-error');
-            } else {
-                error_email = '';
-                $('#error_email').text(error_email);
-                $('#email-input').removeClass('has-error');
-            }
-        }
-
-        if($.trim($('#password-input').val()).length == 0) {
-            error_password = 'Password is required';
-            $('#error_password').text(error_password);
-            $('#password-input').addClass('has-error');
-        } else {
-            error_password = '';
-            $('#error_password').text(error_password);
-            $('#password-input').removeClass('has-error');
-        }
-
-        if($.trim($('#password-repeat-input').val()).length == 0) {
-            error_password = 'Repeat Password is required';
-            $('#error_password_repeat').text(error_password);
-            $('#password-repeat-input').addClass('has-error');
-        } else {
-            if($.trim($('#password-input').val()) != $.trim($('#password-repeat-input').val())) {
-                error_password = 'Repeat Password does not match';
-                $('#error_password_repeat').text(error_password);
-                $('#password-repeat-input').addClass('has-error');
-            } else {
-                error_password = '';
-                $('#error_password_repeat').text(error_password);
-                $('#password-repeat-input').removeClass('has-error');
-            }
-        }
-
-        if(error_email != '' || error_password != '') {
-            return false;
-        } else {
-            $('#login-tab').removeClass('active active_tab1');
-            $('#login-tab').removeAttr('href data-toggle');
-            $('#login, .step2').removeClass('active');
-            $('#login-tab').addClass('inactive_tab1');
-            $('#personal-tab').removeClass('inactive_tab1');
-            $('#personal-tab').addClass('active_tab1 active');
-            $('#personal-tab').attr('href', '#personal');
-            $('#personal-tab').attr('data-toggle', 'tab');
-            $('#personal, .step3').addClass('active show');
-        }
-    });
-
-    $('#previous_btn_personal').click(function() {
-        $('#personal-tab').removeClass('active active_tab1');
-        $('#personal-tab').removeAttr('href data-toggle');
-        $('#personal, .step3').removeClass('active show');
-        $('#personal-tab').addClass('inactive_tab1');
-        $('#login-tab').removeClass('inactive_tab1');
-        $('#login-tab').addClass('active_tab1 active');
-        $('#login-tab').attr('href', '#login');
-        $('#login-tab').attr('data-toggle', 'tab');
-        $('#login, .step2').addClass('active show');
-    });
-
-    $('#btn_personal').click(function() {
-
-        var error_first_name = '';
-        var error_last_name = '';
-        var error_address = '';
-        var error_contact_num = '';
-        var mobile_validation = /^\d{10}$/;
-
-        if ($.trim($('#first-name-input').val()).length == 0) {
-            error_first_name = 'First Name is required';
-            $('#error_first_name').text(error_first_name);
-            $('#first-name-input').addClass('has-error');
-        } else {
-            error_first_name = '';
-            $('#error_first_name').text(error_first_name);
-            $('#first-name-input').removeClass('has-error');
-        }
-
-        if ($.trim($('#last-name-input').val()).length == 0) {
-            error_last_name = 'Last Name is required';
-            $('#error_last_name').text(error_last_name);
-            $('#last-name-input').addClass('has-error');
-        } else {
-            error_last_name = '';
-            $('#error_last_name').text(error_last_name);
-            $('#last-name-input').removeClass('has-error');
-        }
-
-        if ($.trim($('#address-input').val()).length == 0) {
-            error_address = 'Address is required';
-            $('#error_address').text(error_address);
-            $('#address').addClass('has-error');
-        } else {
-            error_address = '';
-            $('#error_address').text(error_address);
-            $('#address').removeClass('has-error');
-        }
-
-        if ($.trim($('#contact-num-input').val()).length == 0) {
-            error_contact_num = 'Mobile Number is required';
-            $('#error_contact_num').text(error_contact_num);
-            $('#contact-num-input').addClass('has-error');
-        } else {
-            if (!mobile_validation.test($('#contact-num-input').val())) {
-                error_contact_num = 'Invalid Mobile Number';
-                $('#error_contact_num').text(error_contact_num);
-                $('#contact-num-input').addClass('has-error');
-            } else {
-                error_contact_num = '';
-                $('#error_contact_num').text(error_contact_num);
-                $('#contact-num-input').removeClass('has-error');
-            }
-        }
-
-        if (error_first_name != '' || error_last_name != '' || error_address != '' || error_contact_num != '') {
-            return false;
-        } else {
-
-            $('#personal-tab').removeClass('active active_tab1');
-            $('#personal-tab').removeAttr('href data-toggle');
-            $('#personal, .step3').removeClass('active');
-            $('#personal-tab').addClass('inactive_tab1');
-            $('#finish-tab').removeClass('inactive_tab1');
-            $('#finish-tab').addClass('active_tab1 active');
-            $('#finish-tab').attr('href', '#finish');
-            $('#finish-tab').attr('data-toggle', 'tab');
-            $('#finish, .step4').addClass('active show');
-
-            $('#btn_personal').attr("disabled", "disabled");
-            $(document).css('cursor', 'prgress');
-
-            var form = $('#register_form');
-            var url = form.attr('action');
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function(data) {
-                    $('#loader').empty().html('Register complete!');
-                }
-            });
-
-        }
-
-    });
-
-
-
-
-
-
-});
+    })
+})

@@ -55,6 +55,8 @@
   <!-- <link rel="stylesheet" href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css"> -->
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-default/default.css" id="theme-styles">
+  <!-- Bootstrap Stepper -->
+  <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- CSS -->
   <?= $this->getCSS(); ?>
 </head>

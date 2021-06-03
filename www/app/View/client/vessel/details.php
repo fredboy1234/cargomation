@@ -187,7 +187,8 @@
         padding-bottom: 6px;
         color: #fff;
     }
-    #sidebar{
+    #sidebar,
+    .more-details .card{
         background: rgb(7,27,47);
         color: #fff;
     }
@@ -197,6 +198,9 @@
     .actual,.estmd{
         font-size: 11px;
         font-weight: bold;
+    }
+    #showmore{
+        cursor: pointer;
     }
 </style>
 <?php $count =1;
@@ -208,6 +212,8 @@
     $loadingPercentage = 0;
     $vesselName = '';
     $id = 0;
+    $ppolact = '';
+    $ppolnot='<i class="text-danger">Not Available</i>';
 ?>
 <?php foreach($vesseldata as $vdata){
     $date_now = new DateTime();
@@ -227,8 +233,205 @@
    
     $count++;
 } ?>
-<?php $searates = json_decode($this->searatesTracking);?>
-
+<?php //$searates = json_decode($this->searatesTracking);?>
+<?php $sea = '{
+    "status": "success",
+    "message": "OK",
+    "data": {
+        "locations": [
+            {
+                "id": 1,
+                "name": "Long Beach",
+                "state": "California",
+                "country": "United States",
+                "country_code": "US",
+                "locode": "USLGB",
+                "lat": 33.76696,
+                "lng": -118.18923
+            },
+            {
+                "id": 2,
+                "name": "Haiphong",
+                "state": "Thanh Pho Hai Phong",
+                "country": "Vietnam",
+                "country_code": "VN",
+                "locode": "VNHPH",
+                "lat": 20.86481,
+                "lng": 106.68345
+            },
+            {
+                "id": 3,
+                "name": "Yantian",
+                "state": "Guangdong Sheng",
+                "country": "China",
+                "country_code": "CN",
+                "locode": "CNYTN",
+                "lat": 22.58333,
+                "lng": 114.26667
+            },
+            {
+                "id": 4,
+                "name": "Hong Kong",
+                "state": "Central and Western District",
+                "country": "Hong Kong",
+                "country_code": "HK",
+                "locode": "HKHKG",
+                "lat": 22.27832,
+                "lng": 114.17469
+            }
+        ],
+        "route": {
+            "prepol": {
+                "location": 1,
+                "date": "2021-01-13 01:57:00",
+                "actual": true
+            },
+            "pol": {
+                "location": 1,
+                "date": "2021-01-14 23:57:00",
+                "actual": true
+            },
+            "pod": {
+                "location": 2,
+                "date": "2021-03-15 16:00:00",
+                "actual": false
+            },
+            "postpod": {
+                "location": 2,
+                "date": null,
+                "actual": null
+            }
+        },
+        "vessels": [
+            {
+                "id": 1,
+                "name": "MAERSK ENSHI",
+                "imo": 9502946,
+                "call_sign": "3FIL",
+                "mmsi": 355288000,
+                "flag": "PA"
+            },
+            {
+                "id": 2,
+                "name": "MAERSK STRALSUND",
+                "imo": 9303522,
+                "call_sign": "9V5634",
+                "mmsi": 563032800,
+                "flag": "SG"
+            },
+            {
+                "id": 3,
+                "name": "HANSA COLOMBO",
+                "imo": 9357781,
+                "call_sign": "V7MO8",
+                "mmsi": 538090571,
+                "flag": "MH"
+            }
+        ],
+        "container": [
+            {
+                "number": "BEAU5097502",
+                "iso_code": "42G0",
+                "events": [
+                    {
+                        "location": 1,
+                        "description": "Gate out Empty",
+                        "status": "CEP",
+                        "date": "2021-01-13 01:57:00",
+                        "actual": true,
+                        "type": "land",
+                        "vessel": null,
+                        "voyage": null
+                    },
+                    {
+                        "location": 1,
+                        "description": "Gate in",
+                        "status": "CGI",
+                        "date": "2021-01-14 23:57:00",
+                        "actual": true,
+                        "type": "land",
+                        "vessel": null,
+                        "voyage": null
+                    },
+                    {
+                        "location": 1,
+                        "description": "Load",
+                        "status": "CLL",
+                        "date": "2021-01-25 01:14:00",
+                        "actual": true,
+                        "type": "sea",
+                        "vessel": 1,
+                        "voyage": "101S"
+                    },
+                    {
+                        "location": 3,
+                        "description": "Discharge",
+                        "status": "CDT",
+                        "date": "2021-03-06 14:05:00",
+                        "actual": true,
+                        "type": "sea",
+                        "vessel": 1,
+                        "voyage": "101S"
+                    },
+                    {
+                        "location": 3,
+                        "description": "Load",
+                        "status": "CLT",
+                        "date": "2021-03-08 23:53:00",
+                        "actual": true,
+                        "type": "sea",
+                        "vessel": 2,
+                        "voyage": "109S"
+                    },
+                    {
+                        "location": 4,
+                        "description": "Discharge",
+                        "status": "CDT",
+                        "date": "2021-03-09 21:25:00",
+                        "actual": true,
+                        "type": "sea",
+                        "vessel": 2,
+                        "voyage": "109S"
+                    },
+                    {
+                        "location": 4,
+                        "description": "Load",
+                        "status": "CLT",
+                        "date": "2021-03-13 14:00:00",
+                        "actual": false,
+                        "type": "sea",
+                        "vessel": 3,
+                        "voyage": "110S"
+                    },
+                    {
+                        "location": 2,
+                        "description": "Discharge",
+                        "status": "CDD",
+                        "date": "2021-03-15 16:00:00",
+                        "actual": false,
+                        "type": "sea",
+                        "vessel": 3,
+                        "voyage": "110S"
+                    },
+                    {
+                        "location": 2,
+                        "description": "Gate out",
+                        "status": "CGO",
+                        "date": "2021-03-15 16:00:09",
+                        "actual": false,
+                        "type": "land",
+                        "vessel": null,
+                        "voyage": null
+                    }
+                ]
+            }
+            
+            
+            
+        ]
+    }
+}'?>
+<?php $searates=json_decode($sea);?>
 <section class="content">
         <div class="container-fluid">
         <a href="/vessel">Show List Of Vessel</a>
@@ -260,29 +463,116 @@
                                         </span>
                                     </div>
                                     <div class="timeline-body pl-5">
+                                        <?php $prepol = $searates->data->route->prepol;?>
+                                        <?php $pol = $searates->data->route->pol;?>
+                                        <?php $pod = $searates->data->route->pod;?>
+                                        <?php $postpod = $searates->data->route->postpod;?>
+
+                                        <?php if($prepol->actual == true){
+                                                $ppolact = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
+                                            }
+                                            if($prepol->actual == false){
+                                                $ppolnot = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
+                                            }
+                                        ?>
+
                                             <div class="estmd col-md-5 d-inline-block">
-                                                <span>Arr: </span><br>
-                                                <span>Dep: -  -</span>
+                                                <span>Prepol: <?=$ppolnot?> </span><br>
+                                                <span>Pol:<i class="text-danger">Not Available</i></span><br>
+                                                <span>Pod: <i class="text-danger">Not Available</i></span><br>
+                                                <span>Postpod: <i class="text-danger">Not Available</i></span>
                                             </div>
                                             <div class="actual col-md-5 d-inline-block">
-                                                <span>Arr: - -</span><br>
-                                                <span>Dep: - -</span>
+                                                <span>Prepol:<?=$ppolact?> </span><br>
+                                                <span>Pol:<i class="text-danger">Not Available</i></span><br>
+                                                <span>Pod: <i class="text-danger">Not Available</i></span><br>
+                                                <span>Postpod: <i class="text-danger">Not Available</i></span>
+                                            </div>
+                                            <span id="showmore" data-show="<?=str_replace(' ','',$vessel->country)?>" class="d-block mt-3 mb-2 showmore"> Show More  &#8595;</span>
+                                            <div class="more-details d-none" id="<?=str_replace(' ','',$vessel->country)?>">
+                                                <div class="card card-body">
+                                                <table class="table-striped table-dark">
+                                                    <thead>
+                                                        <tr>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Actual</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach($searates->data->container[0]->events as $det){?>
+                                                        <?php if($det->location == $vessel->id){?>
+                                                            <?php $dateTrack = date_create($det->date);?>
+                                                            <?php $day = date_format($dateTrack,"D");?>
+                                                            <?php $month = date_format($dateTrack,"M. j,y");?>
+                                                            <?php $hour = date_format($dateTrack,'H:i:s')?>
+                                                                    <tr>
+                                                                        <th scope="row"><?=$month?></th>
+                                                                        <td><?=$det->description?></td>
+                                                                        <td><?=$det->status?></td>
+                                                                        <td><?=$det->actual?></td>
+                                                                    </tr>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                                </div>
                                             </div>
                                     </div>
-                                </div>
-                                
-                                
+                                </div>          
                                 <!-- END timeline item -->
-                                
                             <?php } ?>
-                        <?php } ?>
+                        <?php } ?>     
                     </div>
+                    <hr>
+                        <h6>Legend:</h6><br>
+                        <span>Prepol: <strong> Port of Dispatch</strong></span> | <span>Pol: <strong> Port of Loading</strong></span><br>
+                        <span>Pod: <strong> Port of Port Of Discharge</strong></span> | <span>Postpod: <strong> Destination/Final</strong></span> 
                     </div>
                 </div>
             </div>
         </div>
 </section>
 </div>
+<?php 
+    $routemap = '{
+        "status": "success",
+        "message": "OK",
+        "data": {
+            "route" : [
+                {
+                    "path": [...], // 2247 items,
+                    "type": "LAND"
+                },
+                {
+                    "path": [
+                        [
+                            39.51394,
+                            -121.50776
+                        ],
+                        [
+                            37.55176504165017,
+                            -122.54747555223851
+                        ],
+                        [
+                            37.8227,
+                            -121.27661
+                        ]
+                    ],
+                    "type": "SEA",
+                }
+            ],
+            "pin": [
+                40.83242,
+                -115.76312
+            ]
+        }
+    }';
+?>
+<?php $rr = json_decode($routemap);?>
+<pre>
+<?php print_r($rr);?>
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
     var geocodeToken = <?php echo json_encode($this->geocodeToken)?>;

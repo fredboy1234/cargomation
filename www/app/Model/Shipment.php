@@ -69,7 +69,7 @@ class Shipment extends Core\Model {
         $status ='';
 
         if($data['shipment_id'] !="" ){
-            $where .= " and shipment.shipment_num = '{$data['shipment_id']}'";
+            $where .= " and shipment.shipment_num like '%{$data['shipment_id']}%'";
         }
         if($data['ETA'] != ""){
             $date =  explode(" - ",$data['ETA']);
@@ -90,7 +90,7 @@ class Shipment extends Core\Model {
         }
 
         if($data['container'] != ""){
-            $where .= " and shipcontainer.containernumber  = '{$data['container']}'";
+            $where .= " and shipment_container.containernumber  = '{$data['container']}'";
         }
         
         if(isset($data['origin_cargowise']) && isset($data['origin_hub'])){
@@ -117,8 +117,8 @@ class Shipment extends Core\Model {
                             FROM dbo.users
                             INNER JOIN dbo.shipment
                             ON dbo.users.id = dbo.shipment.user_id
-                            FULL OUTER JOIN dbo.shipcontainer
-                            ON dbo.shipment.id = dbo.shipcontainer.shipment_id
+                            FULL OUTER JOIN dbo.shipment_container
+                            ON dbo.shipment.id = dbo.shipment_container.shipment_id
                             FULL OUTER JOIN dbo.document
                             ON dbo.shipment.id = dbo.document.shipment_id 
                             FULL OUTER JOIN dbo.document_status

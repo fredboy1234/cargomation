@@ -184,20 +184,13 @@ class Vessel extends Core\Controller {
             $t++;        
         }
         $searates  = 'empty';
-        if(!isset($_SESSION['vesselnum'])){
-            $_SESSION['vesselnum'] = '';
+       if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){    
+           $searates = file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+           $tracking = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+           $_SESSION['searates'] =  $searates;
+           $_SESSION['tracking'] = $tracking;
         }
-        
-        //$_SESSION['livesearates'] = '';
-
-        //if( $_SESSION['livesearates'] = ""  ||  $_SESSION['vesselnum'] != $vessel_number ){
-            $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-            $_SESSION['livesearates'] =  $searates;
-            $_SESSION['vesselnum'] =$vessel_number;
-        //}
-
-        
-        
+      
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate($role, $role . "/vessel/details", [
             "title" => "Vessel Track",
@@ -213,7 +206,8 @@ class Vessel extends Core\Controller {
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
-            "searatesTracking" => $_SESSION['searates']
+            "searatesTracking" => $_SESSION['searates'],
+            "tracking" => $_SESSION['tracking'] 
         ]);
         $this->externalTemp();
     }
@@ -274,11 +268,11 @@ class Vessel extends Core\Controller {
        if(!isset($_SESSION['vesselnum'])){
         $_SESSION['vesselnum'] = '';
        }
-        //if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
+        if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
             $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             $_SESSION['livesearates'] =  $searates;
             $_SESSION['vesselnum'] =$vessel_number;
-        //}
+        }
 
         $this->View->addJS("js/tracking.js");
        $this->View->renderTemplate($role, $role . "/vessel/tracking", [
