@@ -66,12 +66,16 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-6 d-inline-block">
+                                                        <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                           
                         </div>
                     </div>
                 </div>

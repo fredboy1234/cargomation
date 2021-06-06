@@ -35,7 +35,7 @@ class Exchange extends Core\Controller {
            Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($userID)->role_name;
+        $role = $Role->getUserRole($userID);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -68,17 +68,18 @@ class Exchange extends Core\Controller {
 
         $list_currency = Model\Exchange::getCurrencyList();
         $currency = Model\Exchange::getAllCurrencyList();
-        $this->View->renderTemplate($role, "/exchange/index", [
+        $this->View->renderTemplate("/exchange/index", [
             "title" => "Daily Exchange",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,
             "dash_photo" =>Model\User::getUsersDashPhoto($userID),
-            'selected_theme' => $selectedTheme,
-            'list_currency' => $list_currency,
-            'currency' => $currency,
-            "notifications" => Model\User::getUserNotifications($userID)
+            "selected_theme" => $selectedTheme,
+            "list_currency" => $list_currency,
+            "currency" => $currency,
+            "notifications" => Model\User::getUserNotifications($userID),
+            "role" => $role
         ]);
 
     }

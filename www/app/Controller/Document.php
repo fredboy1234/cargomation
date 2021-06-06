@@ -77,7 +77,7 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($userID)->role_name;
+        $role = $Role->getUserRole($userID);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -96,7 +96,7 @@ class Document extends Core\Controller {
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         //$this->View->addCSS("css/".$selectedTheme.".css");
 
-        $this->View->render($role. "/document/index", [
+        $this->View->render("/document/index", [
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,
@@ -699,7 +699,7 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        $this->View->renderWithoutHeaderAndFooter($role . "/document/fileviewer", [
+        $this->View->renderWithoutHeaderAndFooter("/document/fileviewer", [
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
@@ -751,7 +751,7 @@ class Document extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render($role . "/document/comment", [
+        $this->View->render("/document/comment", [
             'view' => $param,
             'user_id' => $user_id,
             'document_id' => $document_id,
@@ -819,7 +819,7 @@ class Document extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->renderWithoutHeaderAndFooter($role . "/document/request", [
+        $this->View->renderWithoutHeaderAndFooter("/document/request", [
             'user_id' => $user_id,
             'document' => $document,
             'shipment_id' => $shipment_id,

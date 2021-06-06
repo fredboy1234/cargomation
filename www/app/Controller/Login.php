@@ -33,9 +33,9 @@ class Login extends Core\Controller {
         Utility\Auth::checkUnauthenticated($redirectLink);
 
         // Set any dependencies, data and render the view.
-        $this->View->render("login/index", [
+        $this->View->renderTemplate("login/index", [
             "title" => "Log In"
-        ]);
+        ], "login");
 
     }
 

@@ -59,7 +59,7 @@ class Transport extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         //$shipment_id = $this->Shipment->getShipment($user, "shipment_num");
         if($role == 'user'){
@@ -70,7 +70,7 @@ class Transport extends Core\Controller {
         //     $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         // }
 
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -96,7 +96,7 @@ class Transport extends Core\Controller {
             }
         }
         
-        $this->View->renderTemplate($role, $role . "/transport/index", [
+        $this->View->renderTemplate("/transport/index", [
             "title" => "Transport App",
             "transport" => $this->Transport->getTransport($user),
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -191,7 +191,7 @@ class Transport extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         //$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
         $api = $this->Transport->getTransport($user); 

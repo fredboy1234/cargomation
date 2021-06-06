@@ -68,7 +68,7 @@ class Shipment extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
         if($role == 'user'){
@@ -79,7 +79,7 @@ class Shipment extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -111,7 +111,7 @@ class Shipment extends Core\Controller {
             }
         }
 
-        $this->View->renderTemplate($role, $role . "/shipment/index", [
+        $this->View->renderTemplate("/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "shipment" => $this->Shipment->getShipment($user),
@@ -274,7 +274,7 @@ class Shipment extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render($role . "/document/index", [
+        $this->View->renderWithoutHeaderAndFooter("/document/index", [
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,
@@ -331,7 +331,7 @@ class Shipment extends Core\Controller {
        if (!$Role = Model\Role::getInstance($user)) {
            Utility\Redirect::to(APP_URL);
        }
-       $role = $Role->getUserRole($user)->role_name;
+       $role = $Role->getUserRole($user);
 
         # Initialize multiple array variables with Empty values simultaneously
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();

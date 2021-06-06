@@ -79,7 +79,7 @@ class Doctracker extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -151,7 +151,7 @@ class Doctracker extends Core\Controller {
            }
         }
        
-        $this->View->renderTemplate($role, $role . "/doctracker/index", [
+        $this->View->renderTemplate("/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
@@ -318,7 +318,7 @@ class Doctracker extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render($role . "/document/index", [
+        $this->View->render("/document/index", [
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,
@@ -393,7 +393,7 @@ class Doctracker extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
         $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
