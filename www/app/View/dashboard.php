@@ -1,36 +1,4 @@
-<?php
-$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-$status = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/document/uid/3/status,saved_date'));
-
-$shipment = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/3/id'));
-
-$approved = 0; $pending = 0; $missing = 0;
-if(!empty($status)){
-  foreach ($status as $key => $value) {
-    if($value->status == 'approved')
-      $approved++;
-    if($value->status == 'pending')
-      $pending++;
-    if($value->status == '')
-      $missing++;
-  }
-}
-
-// TODAY
-$today_approved = 0; $today_pending = 0; $today_missing = 0; $today_shipment = 0;
-foreach ($status as $key => $value) {
-  if( date("F j, Y") == date("F j, Y", strtotime($value->saved_date)) ) {
-    $today_shipment++;
-    if($value->status == 'approved')
-      $today_approved++;
-    if($value->status == 'pending')
-      $today_pending++;
-    if($value->status == '')
-      $today_missing++;
-  }
-}
-?>
-    <!-- Main content -->
+  <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -39,17 +7,14 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3><?= $today_shipment ?></h3>
+                <h3>150</h3>
 
-                <p>Today's Shipment</p>
+                <p>Today's Uploads</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-boat"></i>
+                <i class="ion ion-upload"></i>
               </div>
-              <div style="height: auto;">
-               <canvas id="shipment-chart"></canvas>
-              </div>
-              <a href="/doctracker" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -57,91 +22,44 @@ foreach ($status as $key => $value) {
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3><?= $today_approved; ?></h3>
+                <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-                <p>Today's Approved Docs</p>
+                <p>Today's Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-checkmark"></i>
+                <i class="ion ion-android-boat"></i>
               </div>
-              <div style="height: auto;">
-               <canvas id="docs-aprvd-chart"></canvas>
-              </div>
-              <a href="/doctracker?doc=approved" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
-          <div class="d1-st col-lg-6 col-12">
-            <div class="col-lg-12 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3><?= $today_pending; ?></h3>
-
-                  <p>Today's Pending Docs</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-clock"></i>
-                </div>
-                <div class="d-none" style="height: auto;">
-                <canvas id="docs-pnd-chart"  height="22"></canvas>
-                </div>
-                <a href="/doctracker?doc=pending" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-12 col-6">
-              <!-- small box -->
-              <div class="small-box bg-danger">
-                <div class="inner">
-                  <h3><?= $today_missing; ?></h3>
-
-                  <p>Today's Missing Docs</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-android-warning"></i>
-                </div>
-                <div class="d-none" style="height: auto;">
-                <canvas id="docs-msng-chart" height="22"></canvas>
-                </div>
-                <a href="/doctracker?doc=missing" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-          <!--for default-->
-          <div class="default-st col-lg-3 col-6 d-none">
+          <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3><?= $today_pending; ?></h3>
+                <h3><?= count($this->users); ?></h3>
+
+                <p>Active Clients</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>65</h3>
 
                 <p>Today's Pending Docs</p>
               </div>
               <div class="icon">
-                <i class="ion ion-clock"></i>
-              </div>
-              <div style="height: auto;">
-               <canvas id="docs-pnd-chart" width="317" height="25"></canvas>
-              </div>
-              <a href="/doctracker?doc=pending" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="default-st col-lg-3 col-6 d-none">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3><?= $today_missing; ?></h3>
-
-                <p>Today's Missing Docs</p>
-              </div>
-              <div class="icon">
                 <i class="ion ion-android-warning"></i>
               </div>
-              <div style="height: auto;">
-               <canvas id="docs-msng-chart" width="317" height="25"></canvas>
-              </div>
-              <a href="/doctracker?doc=missing" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -197,7 +115,7 @@ foreach ($status as $key => $value) {
 
             <?php if(true): ?>
             <!-- File -->
-            <div class="default-st card">
+            <div class="card">
               <div class="card-header">
                 <h3 class="card-title">File Stats</h3>
                 <div class="card-tools">
@@ -215,7 +133,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">For Approval</span>
-                      <span class="info-box-number"><?= $pending; ?></span>
+                      <span class="info-box-number">5,200</span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -225,7 +143,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">Missing Doc</span>
-                      <span class="info-box-number"><?= $missing; ?></span>
+                      <span class="info-box-number">92,050</span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -235,7 +153,7 @@ foreach ($status as $key => $value) {
 
                     <div class="info-box-content">
                       <span class="info-box-text">Approved Doc</span>
-                      <span class="info-box-number"><?= $approved; ?></span>
+                      <span class="info-box-number">114,381</span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -251,7 +169,7 @@ foreach ($status as $key => $value) {
                   </div>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer d-none">
+              <div class="card-footer">
                 * Notes:
               </div>
               <!-- /.card-footer -->
@@ -553,21 +471,7 @@ foreach ($status as $key => $value) {
                   <?php foreach ($this->users as $key => $value) { ?>
                   <tr>
                     <td><?php echo $value->id; ?></td>
-                    <td>
-                      <div class="user-panel d-flex">
-                        <div class="image">
-                        <?php $profilepic = '/img/default-profile.png';?>
-                        <?php if(!empty($value->image_src)){
-                          $profilepic = base64_decode($value->image_src);
-                        }?>
-                          <img src="<?=$profilepic?>" class="img-circle elevation-2" alt="member image">
-                        </div>
-                        <div class="info">
-                          <?php echo $value->first_name . " " . $value->last_name; ?>
-                          <p class="text-muted m-b-0">Client From: <?php echo $value->city?></p>
-                        </div>
-                      </div>
-                    </td>
+                    <td><?php echo $value->first_name . " " . $value->last_name; ?></td>
                     <td><?php echo $value->email; ?></td>
                     <td><?php echo $value->plan; ?></td>
                     <td><?php switch ($value->status) {
@@ -611,9 +515,9 @@ foreach ($status as $key => $value) {
             <!-- /.card -->
             <?php endif; ?>
 
-            <?php if(false): ?>
+            <?php if(true): ?>
             <!-- Map card -->
-            <div class="card bg-gradient-primary" style="display: block">
+            <div class="card bg-gradient-primary" style="display: none">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
@@ -840,6 +744,4 @@ foreach ($status as $key => $value) {
     </section>
     <!-- /.content -->
   </div>
-<script>
-var theme = <?php echo json_encode($this->selected_theme)?>
-</script>
+
