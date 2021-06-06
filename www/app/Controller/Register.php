@@ -38,7 +38,7 @@ class Register extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($userID)->role_name;
+        $role = $Role->getUserRole($userID);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -70,7 +70,7 @@ class Register extends Core\Controller {
 
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
-        $this->View->renderTemplate($role, "register/index", [
+        $this->View->renderTemplate("register/index", [
             "title" => "Register",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "notifications" => Model\User::getUserNotifications($userID),

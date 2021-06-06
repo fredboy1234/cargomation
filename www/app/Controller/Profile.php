@@ -77,17 +77,17 @@ class Profile extends Core\Controller {
             }
         }
         
-        $this->View->renderTemplate($role->role_name, $role->role_name . "/profile/index", [
+        $this->View->renderTemplate("/profile/index", [
             "title" => "Profile",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "user_info" => Model\User::getProfile($user)['user_info'][0],
             "image_profile" => $profileImage,
             "role" => $role,
-           "themes" => Model\User::getUserTheme(),
-           "selectedTheme" => $User->getUserSettings($user),
-           "user_settings" => $User->getUserSettings($user),
-           "notifications" => Model\User::getUserNotifications($user),
+            "themes" => Model\User::getUserTheme(),
+            "selectedTheme" => $User->getUserSettings($user),
+            "user_settings" => $User->getUserSettings($user),
+            "notifications" => Model\User::getUserNotifications($user),
         ]);
     }
 
@@ -177,7 +177,7 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
         
-        $this->View->render($role . "/profile/profileImageList", [
+        $this->View->render("/profile/profileImageList", [
             "user" => Model\User::getProfile($user_id)['user_image']
         ]);
     }

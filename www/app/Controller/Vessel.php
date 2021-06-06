@@ -58,14 +58,14 @@ class Vessel extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
       
         if($role == 'user'){
             $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
         }
        
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -91,7 +91,7 @@ class Vessel extends Core\Controller {
             }
         }
        
-        $this->View->renderTemplate($role, $role . "/vessel/index", [
+        $this->View->renderTemplate("/vessel/index", [
             "title" => "Vessel Track",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
@@ -129,7 +129,7 @@ class Vessel extends Core\Controller {
          if (!$Role = Model\Role::getInstance($user)) {
              Utility\Redirect::to(APP_URL);
          }
-         $role = $Role->getUserRole($user)->role_name;
+         $role = $Role->getUserRole($user);
 
          $uri = explode( '/', $_SERVER['REQUEST_URI'] );
          $vessel_number = '';
@@ -192,7 +192,7 @@ class Vessel extends Core\Controller {
         }
       
         $this->View->addJS("js/vessel.js");
-        $this->View->renderTemplate($role, $role . "/vessel/details", [
+        $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",
             "vesseldata" => $vesseeldata,
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -234,7 +234,7 @@ class Vessel extends Core\Controller {
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $role = $Role->getUserRole($user)->role_name;
+        $role = $Role->getUserRole($user);
 
         $uri = explode( '/', $_SERVER['REQUEST_URI'] );
         $vessel_number = '';
@@ -275,7 +275,7 @@ class Vessel extends Core\Controller {
         }
 
         $this->View->addJS("js/tracking.js");
-       $this->View->renderTemplate($role, $role . "/vessel/tracking", [
+       $this->View->renderTemplate("/vessel/tracking", [
            "title" => "Vessel Track",
            "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
            "data" => (new Presenter\Profile($User->data()))->present(),

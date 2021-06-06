@@ -38,7 +38,10 @@ class Dashboard extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($userID)->role_name;
+        $role = $Role->getUserRole($userID);
+
+        // var_dump(Model\User::getUserNotifications($userID));
+        //  die();
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -67,7 +70,7 @@ class Dashboard extends Core\Controller {
             }
         }
         
-        $this->View->renderTemplate($role, $role . "/dashboard", [
+        $this->View->renderTemplate("/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "notifications" => Model\User::getUserNotifications($userID),
