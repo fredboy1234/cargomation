@@ -198,7 +198,7 @@ class View {
      * @return void
      * @since 1.0
      */
-    public function renderTemplate($template, $filepath, array $data = []) {
+    public function renderTemplate($filepath, array $data = [], $template = "") {
         $this->addData($data);
         $this->getFile('_template/' . $template . '/header');
         $this->getFile('_template/' . $template . '/navbar');
