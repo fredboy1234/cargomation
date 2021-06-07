@@ -287,7 +287,7 @@ class Vessel extends Core\Controller {
            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
            "notifications" => Model\User::getUserNotifications($user),
            "vesselyod" => $vloyds,
-           "searatesTracking" => isset($_SESSION['livesearates']) ? $_SESSION['livesearates'] : '';
+           "searatesTracking" => isset($_SESSION['livesearates']) ? $_SESSION['livesearates'] : ''
        ]);
    }
 
