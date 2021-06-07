@@ -581,6 +581,14 @@ function byLevel() {
 
 }
 
+//check and uncheck transport mode
+$(".no_trapo").on('click',function(){
+  $( "input[name='transportmode_air']" ).prop( "checked", false );
+  $( "input[name='transportmode_sea']" ).prop( "checked", false );
+});
+$( "input[name='transportmode_sea'], input[name='transportmode_air']" ).on('click',function(){
+  $( "input[name='transportmode_none']" ).prop( "checked", false );
+});
 // Button Request
 $('button#request').click(function (e) {
   var url = "/document/request/" + shipment_id + "/" + document_type;
