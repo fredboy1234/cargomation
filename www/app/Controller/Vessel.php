@@ -185,8 +185,8 @@ class Vessel extends Core\Controller {
         }
         $searates  = 'empty';
        if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){    
-           $searates = file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-           $tracking = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+           $searates = ''; //file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+           $tracking = '';//file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
            $_SESSION['searates'] =  $searates;
            $_SESSION['tracking'] = $tracking;
         }
@@ -269,7 +269,7 @@ class Vessel extends Core\Controller {
         $_SESSION['vesselnum'] = '';
        }
         if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
-            $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            $searates = ''; //file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             $_SESSION['livesearates'] =  $searates;
             $_SESSION['vesselnum'] =$vessel_number;
         }
@@ -309,55 +309,105 @@ class Vessel extends Core\Controller {
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $vessel = $this->Vessel->getVessel($user);
+        //$vessel = $this->Vessel->getVessel($user);
+        
+        $vessel = $this->Vessel->getSearatesDB();
+        
         $data =array();
         $color = array();
         $store = array();
         $count = 0;
-       
+ 
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
-                $dateTrack = date_create($ves->date_track);
-                $day = date_format($dateTrack,"l");
-                $month = date_format($dateTrack,"F j,Y");
-                $hour = date_format($dateTrack,'h:i:s A');
+                $j_ves = json_decode($ves->sea_json);
+                
+                if( $j_ves->status == 'success'){
+                   
+                    if(isset($j_ves->data) && !empty($j_ves->data)){
+                        $vdata = $j_ves->data;
+                        $containernumber = isset($vdata->container->number) ? $vdata->container->number : 'No Container Number';
+                        $firstLocation = isset($vdata->locations[0]) ? $vdata->locations[0]->name : 'No Location';
+                        $endLocation =  isset($vdata->locations[0]) ? end($vdata->locations)->name : 'No Location';
+                        $firstvessel = isset($vdata->vessels[0]) ? $vdata->vessels[0]->name : 'No Vessel Name';
+                        $lastvessel = isset($vdata->vessels[0]) ? end($vdata->vessels)->name : 'No Vessel Name';
+                        $firstDate = isset($vdata->container->events[0]) ? $vdata->container->events[0]->date : '';
+                        $lastDate = isset($vdata->container->events[0]) ? end($vdata->container->events)->date : '';
+                        $firstvoyage = isset($vdata->container->events[0]) ? $vdata->container->events[0]->voyage : 'No Vessel Name';
+                        $lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Vessel Name';
 
-                $store[$ves->container_number]['vessel_name'][] =$ves->vessel;
-                $store[$ves->container_number]['location_city'][] =$ves->location_city;
-                $store[$ves->container_number]['date_track'][] =$month." - ".$hour;
-                $store[$ves->container_number]['voyage'][]=$ves->voyage;
+                        $firstdatrack = date_create($firstDate);
+                        $firstday = date_format($firstdatrack,"l");
+                        $firstmonth = date_format($firstdatrack,"M j,Y");
+                        $firsthour = date_format($firstdatrack,'h:i:s A');
+
+                        $lastdatrack = date_create($lastDate);
+                        $lastday = date_format($lastdatrack,"l");
+                        $lastmonth = date_format($lastdatrack,"M j,Y");
+                        $lasthour = date_format($lastdatrack,'h:i:s A');
+
+                        $today = strtotime(date("Y-m-d"));
+                        $enddate = strtotime($lastDate);
+                        $colorscheme = 'not-done';
+                       
+                        if($enddate < $today){
+                            $colorscheme = 'done';
+                        }
+
+                        if($today-$enddate <= -86400 && $today-$enddate >= -172800 ){
+                            $colorscheme = 'almost';
+                        }else if($today-$enddate == 0){
+                            $colorscheme = 'completed';
+                        }
+
+                        $subdata =array(); 
+                        if($containernumber !== 'No Container Number'){
+                            $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.'</p>';
+                            $subdata['vessel_name'] = 'From: '.$firstvessel.'<br> To: '.$lastvessel;
+                            $subdata['location_city'] = 'From: '.$firstLocation.'<br> To: '.$endLocation;
+                            $subdata['date_track'] = 'From: '.$firstmonth.'-'.$firsthour.'<br>  To: '.$lastmonth.'-'.$lasthour;
+                            $subdata['voyage'] = 'From: '.$firstvoyage.'<br>  To: '.$lastvoyage;
+                            
+                            $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
+                            <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
+                        
+                            $data[] = $subdata; 
+                        }
+                        
+                        
+                    }
+                }
+                // $dateTrack = date_create($ves->date_track);
+                // $day = date_format($dateTrack,"l");
+                // $month = date_format($dateTrack,"F j,Y");
+                // $hour = date_format($dateTrack,'h:i:s A');
+
+                // $store[$ves->container_number]['vessel_name'][] =$ves->vessel;
+                // $store[$ves->container_number]['location_city'][] =$ves->location_city;
+                // $store[$ves->container_number]['date_track'][] =$month." - ".$hour;
+                // $store[$ves->container_number]['voyage'][]=$ves->voyage;
 
                 
-                // $link = '<a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">'.$ves->container_number.'</a>';
-                // $subdata =array(); 
-                // $subdata['container_number'] = $link;
-                // $subdata['vessel_name'] = $ves->vessel;
-                // $subdata['location_city'] = '<p class="loc-city">'.$ves->location_city.'</p>';
-                // $subdata['date_track'] = $month." - ".$hour;
-                // $subdata['status'] = $ves->moves;
-                // $subdata['voyage'] = $ves->voyage;
-                // //$subdata['action'] = ' <a class="col-sm-3 dcontent '.$ves->container_number.'" href="/vessel/details?'.$ves->container_number.'">Details</a>';
-                // $subdata[''] = $key;
-
-                // $data[] = $subdata; 
-            }
+                
            
-            foreach($store as $key=>$st){
-                $lastvessel = end($st['vessel_name']);
-                $lastdate = end($st['vessel_name']);
-                
-                $subdata =array(); 
-                $subdata['container_number'] = $key;
-                $subdata['vessel_name'] = 'From: '.$st['vessel_name'][0].'<br> To: '.end($st['vessel_name']);
-                $subdata['location_city'] = 'From: '.$st['location_city'][0].'<br> To: '.end($st['location_city']);
-                $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
-                $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
-                
-                $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>/
-                <a class="col-sm-3 dcontent '.$key.'" href="/vessel/tracking?'.$key.'">Tracking</a>';
-               
-                $data[] = $subdata; 
             }
+        //    exit();
+        //     foreach($store as $key=>$st){
+        //         $lastvessel = end($st['vessel_name']);
+        //         $lastdate = end($st['vessel_name']);
+                
+        //         $subdata =array(); 
+        //         $subdata['container_number'] = $key;
+        //         $subdata['vessel_name'] = 'From: '.$st['vessel_name'][0].'<br> To: '.end($st['vessel_name']);
+        //         $subdata['location_city'] = 'From: '.$st['location_city'][0].'<br> To: '.end($st['location_city']);
+        //         $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
+        //         $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
+                
+        //         $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>/
+        //         <a class="col-sm-3 dcontent '.$key.'" href="/vessel/tracking?'.$key.'">Tracking</a>';
+               
+        //         $data[] = $subdata; 
+        //     }
            
             $json_data=array(
                 "data"  =>  $data,
@@ -432,4 +482,28 @@ class Vessel extends Core\Controller {
     public function getFlag($country){
         return json_encode($this->Vessel->getFlag($country));
     }
+
+    public function seaRatesToDB(){
+        $data['transhipment'] = $this->Vessel->getVesselV2();
+       
+        if(!empty($data['transhipment'])){
+            foreach($data['transhipment'] as $trans){
+                
+                $data['trans_id'] = $trans[0]->id;
+                $data['container_number'] = $trans[0]->containernumber;
+                $data['json']  = '';
+                
+                if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
+                    $this->Vessel->checkContainer($data);
+                }else{
+                    echo'failed';
+                }
+            
+             }
+        }
+
+        
+        //return  $this->Vessel->getVesselV2();
+    }
+
 }

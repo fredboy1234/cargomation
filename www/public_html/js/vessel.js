@@ -54,7 +54,8 @@ jQuery(document).ready(function() {
   
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
-                
+               
+                console.log($(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class')));
                 // $(rows).eq( i ).before(
                 //     `<tr class="group collapse-tr">
                 //       <td colspan="5"><a href="#">${$(group).text()}</a></td>

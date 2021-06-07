@@ -20,6 +20,38 @@
  .group a{
      color:#333;
  }
+ .done{
+     background-color: #dc3545 !important;
+     color: #fff !important;
+ }
+ .almost{
+     background-color: #ffc107!important;
+ }
+ .completed{
+     background-color: #28a745 !important;
+     color: #fff !important;
+ }
+ .l-done div{
+     width: 10px;
+     height: 10px;
+     background-color: #dc3545 !important;
+ }
+ .l-almost div{
+     width: 10px;
+     height: 10px;
+     background-color: #ffc107!important;
+ }
+ .l-completed div{
+     width: 10px;
+     height: 10px;
+     background-color:  #28a745 !important;
+ }
+ .l-not-done div{
+     width: 10px;
+     height: 10px;
+     background-color:  #fff !important;
+     border: 1px solid #333;
+ }
 </style>
 <?php $vessel = $this->vessel;?>
 <section class="content">
@@ -85,8 +117,25 @@
                 <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title d-block">List of Containers</h3><br>
-                    <span>Click each container to check details.</span>
+                    <div class="col-md-3 d-inline-block">
+                        <h3 class="card-title d-block">List of Containers</h3><br>
+                        <span>Click each container to check details.</span>
+                    </div>
+                    <div class="col-md-8 d-inline-block float-right">
+                        <h6 class="d-inline-block">Legend:</h6>
+                        <div class="l-done d-inline-block">
+                            <span class="d-inline-block">Already Completed Shipment:</span><div class="d-inline-block"></div>
+                        </div>
+                        <div class="l-almost d-inline-block">
+                        <span class="d-inline-block">Shipment Nearly Completed:</span><div class="d-inline-block"></div>
+                        </div>
+                        <div class="l-completed d-inline-block">
+                        <span class="d-inline-block">Newly Completed Shipment:</span><div class="d-inline-block"></div>
+                        </div>
+                        <div class="l-not-done d-inline-block">
+                        <span class="d-inline-block">Not Completed Shipment:</span><div class="d-inline-block"></div>
+                        </div>
+                    </div>
                     <div class="row card-body table-responsive p-0 ttable" style="height: 500px;">
                     <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
