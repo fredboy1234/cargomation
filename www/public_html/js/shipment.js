@@ -453,6 +453,7 @@ $(document).ready(function () {
 
   //reset search
   $("#reset-search").on("click", function () {
+    $("input[name='post_trigger']").val('');
     $("#addvance-search-form").find("input[type=text], textarea").val("");
     table.ajax.reload(setColor);
     //table.ajax.reload();
