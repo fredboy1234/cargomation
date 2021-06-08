@@ -178,6 +178,10 @@
                                                                         <input class="form-check-input" type="checkbox" name="transportmode_air" value="air" checked>
                                                                         <label class="form-check-label">Air</label>
                                                                     </div>
+                                                                    <div class="form-check d-inline-block">
+                                                                        <input class="form-check-input no_trapo" type="checkbox" name="transportmode_none" value="">
+                                                                        <label class="form-check-label">None</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

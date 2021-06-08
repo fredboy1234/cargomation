@@ -208,8 +208,8 @@
     $destination ='';
     $totalLength = 100;
     $timelineLength = count($vesseldata);
-    $aveLoading = $totalLength / $timelineLength;
-    $loadingPercentage = 0;
+    //$aveLoading = $totalLength / $timelineLength;
+    //$loadingPercentage = 0;
     $vesselName = '';
     $id = 0;
     $ppolact = '';
@@ -220,7 +220,7 @@
     $timedate    = new DateTime($vdata->date_track);
     
     if ($timedate < $date_now) {
-        $loadingPercentage +=$aveLoading; 
+       // $loadingPercentage +=$aveLoading; 
         $vesselName = $vdata->vessel;
     }
 
