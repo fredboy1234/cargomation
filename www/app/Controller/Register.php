@@ -78,7 +78,8 @@ class Register extends Core\Controller {
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,
             "dash_photo" =>Model\User::getUsersDashPhoto($userID),
-            'selected_theme' => $selectedTheme
+            "selected_theme" => $selectedTheme,
+            "role" => $role
         ]);
     }
 

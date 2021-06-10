@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var errorFirstName = '';
     var errorLastName = '';
     var errorPhone = '';
-    var phoneValidation = /^\d{10}$/;
+    var phoneValidation = /^(\+?\(61\)|\(\+?61\)|\+?61|\(0[1-9]\)|0[1-9])?( ?-?[0-9]){7,9}$/gm;
     if ($.trim($('#inputFirstName').val()).length == 0 && stepperPan.getAttribute('id') === 'step-2') {
         errorFirstName = 'First Name is required';
         $('#errorFirstName').text(errorFirstName);
@@ -145,3 +145,57 @@ document.getElementById('submit').addEventListener('click', function (event) {
         }
     })
 })
+
+// Declare a global object to store view data.
+var viewData = {};
+
+$(document).ready(function () {
+
+    console.log('running...')
+
+    // Update the viewData object with the current field keys and values.
+    function updateViewData(key, value) {
+        viewData[key] = value;
+    }
+
+    // Register all bindable elements
+    function detectBindableElements() {
+                var bindableEls;
+
+                bindableEls = $('[data-bind]');
+
+                // Add event handlers to update viewData and trigger callback event.
+                bindableEls.on('change', function () {
+                    var $this;
+
+                    $this = $(this);
+
+                    updateViewData($this.data('bind'), $this.val());
+
+                    $(document).trigger('updateDisplay');
+                });
+
+                // Add a reference to each bindable element in viewData.
+        bindableEls.each(function () {
+            updateViewData($(this), $(this).val());
+        });
+
+    }
+
+    // Trigger this event to manually update the list of bindable elements, useful when dynamically loading form fields.
+    $(document).on('updateBindableElements', detectBindableElements);
+
+    detectBindableElements();
+});
+
+function updateDisplay() {
+    var updateEls;
+    updateEls = $('[data-update]');
+
+    updateEls.each(function () {
+        $(this).text(viewData[$(this).data('update')]);
+    });
+}
+
+// Run updateDisplay on the callback.
+$(document).on('updateDisplay', updateDisplay);
