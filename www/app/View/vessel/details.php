@@ -234,8 +234,10 @@
     $count++;
 } ?>
 <?php $searates = $this->searatesTracking;?>
-<pre>
-<?php print_r($searates);exit();?>
+<?php if(!empty($searates[0])){
+    $searates = json_decode($searates[0]->sea_json);
+}?>
+
 <section class="content">
         <div class="container-fluid">
         <a href="/vessel">Show List Of Vessel</a>
@@ -305,7 +307,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach($searates->data->container[0]->events as $det){?>
+                                                        <?php foreach($searates->data->container->events as $det){?>
                                                         <?php if($det->location == $vessel->id){?>
                                                             <?php $dateTrack = date_create($det->date);?>
                                                             <?php $day = date_format($dateTrack,"D");?>

@@ -206,7 +206,7 @@ class Vessel extends Core\Controller {
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
-            "searatesTracking" => $this->Vessel->getSearatesDB(),
+            "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '' 
         ]);
         $this->externalTemp();
@@ -273,7 +273,8 @@ class Vessel extends Core\Controller {
             $_SESSION['livesearates'] =  $searates;
             $_SESSION['vesselnum'] =$vessel_number;
         }
-
+        // print_r($this->Vessel->getSearatesByID($vessel_number));
+        // exit();
         $this->View->addJS("js/tracking.js");
        $this->View->renderTemplate("/vessel/tracking", [
            "title" => "Vessel Track",
@@ -288,7 +289,7 @@ class Vessel extends Core\Controller {
            "notifications" => Model\User::getUserNotifications($user),
            "vesselyod" => $vloyds,
            "searatesTracking" => isset($_SESSION['livesearates']) ? $_SESSION['livesearates'] : '',
-           "searatesTracking" => $this->Vessel->getSearatesDB(),
+           "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
        ]);
    }
 
