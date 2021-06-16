@@ -7,6 +7,7 @@ use App\Model;
 use App\Utility;
 
 use Spatie\PdfToText\Pdf;
+use GuzzleHttp\Psr7;
 
 /**
  * Document Controller:
@@ -280,28 +281,32 @@ class Document extends Core\Controller {
 
                 //Checks if type is empty
                 if(empty($type)) {
-                    $endpoint = 'http://a2bfreighthub.com/TEST_API/view.php?file=' . $tmpFilePath;
-                    // $text = file_get_contents($endpoint);
-                    // alternative for file_get_contents
-                    $curlopts = [
-                      CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
-                    ];
-                    $retval = $this->http_get_contents($endpoint, $curlopts);
+                    // Check the document type using python API
+                    $obj_type = self::checkDocumentType($fileName, $tmpFilePath);
+                    $type = $obj_type->files[0]->type;
 
-                    $type = "OTHER";
-                    $keywords = array("CIV"=> array("COMMERCIAL INVOICE"), 
-                                      "BOL"=> array("BILL/LADING NUMBER"), 
-                                      "ARN"=> array("ARRIVAL NOTICE"), 
-                                      "MBL"=> array("SEA WAYBILL"), 
-                                      "PKL"=> array("PACKING LIST")
-                                    );
-                    foreach ($keywords as $key => $value) {
-                        foreach ($value as $key2 => $value2) {
-                            if(strval(strpos(strtoupper($retval),$value2)) != ""){
-                                $type = $key;
-                            } 
-                        }
-                    }          
+                    // $endpoint = 'http://a2bfreighthub.com/TEST_API/view.php?file=' . $tmpFilePath;
+                    // // $text = file_get_contents($endpoint);
+                    // // alternative for file_get_contents
+                    // $curlopts = [
+                    //   CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                    // ];
+                    // $retval = $this->http_get_contents($endpoint, $curlopts);
+
+                    // $type = "OTHER";
+                    // $keywords = array("CIV"=> array("COMMERCIAL INVOICE"), 
+                    //                   "BOL"=> array("BILL/LADING NUMBER"), 
+                    //                   "ARN"=> array("ARRIVAL NOTICE"), 
+                    //                   "MBL"=> array("SEA WAYBILL"), 
+                    //                   "PKL"=> array("PACKING LIST")
+                    //                 );
+                    // foreach ($keywords as $key => $value) {
+                    //     foreach ($value as $key2 => $value2) {
+                    //         if(strval(strpos(strtoupper($retval),$value2)) != ""){
+                    //             $type = $key;
+                    //         } 
+                    //     }
+                    // }          
                 }
 
                 //Setup our new file path
@@ -357,6 +362,35 @@ class Document extends Core\Controller {
         $response['body'] = json_encode($out);
         return $response;
     }
+
+    /**
+     * Check Document Type: Check document type
+     * returns object
+     * @access private
+     * @param string $sql
+     * @param array $params
+     * @return object
+     * @since 1.10.1
+     */
+    private function checkDocumentType($filename, $file) {
+        $url = 'http://a2bfreighthub.com:5000/classify';
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', $url, [
+            'multipart' => [
+                [ 'name' => 'client', 'contents' => 'a2b'],
+                [
+                    'Content-type' => 'multipart/form-data',
+                    'name' => 'file',
+                    'contents' => Psr7\Utils::tryFopen($file, 'r'),
+                    'filename' => $filename,
+
+                ]
+            ],
+        ]);
+
+        return json_decode($response->getBody());
+    }
+
 
     /**
      * Upload To Cargowise.
