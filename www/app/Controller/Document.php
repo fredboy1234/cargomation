@@ -283,7 +283,7 @@ class Document extends Core\Controller {
                 if(empty($type)) {
                     // Check the document type using python API
                     $obj_type = self::checkDocumentType($fileName, $tmpFilePath);
-                    $type = $obj_type->files[0]->type;
+                    $type = strtoupper($obj_type->files[0]->type);
 
                     // $endpoint = 'http://a2bfreighthub.com/TEST_API/view.php?file=' . $tmpFilePath;
                     // // $text = file_get_contents($endpoint);
