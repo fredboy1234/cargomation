@@ -5,13 +5,23 @@ document.addEventListener('DOMContentLoaded', function () {
     animation: true
   })
   var btnNextList = [].slice.call(document.querySelectorAll('.btn-next-form'))
+  var btnPrevList = [].slice.call(document.querySelectorAll('.btn-prev-form'))
+  var btnEditList = [].slice.call(document.querySelectorAll('.btn-edit-form'))
   var stepperPanList = [].slice.call(stepperFormEl.querySelectorAll('.bs-stepper-pane'))
-  var inputEmail = document.getElementById('inputEmail')
-  var inputPassword = document.getElementById('inputPassword')
   var form = stepperFormEl.querySelector('.bs-stepper-content form')
   btnNextList.forEach(function (btn) {
     btn.addEventListener('click', function () {
       stepperForm.next()
+    })
+  })
+  btnEditList.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      stepperForm.to(1)
+    })
+  })
+  btnPrevList.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      stepperForm.previous()
     })
   })
   stepperFormEl.addEventListener('show.bs-stepper', function (event) {
