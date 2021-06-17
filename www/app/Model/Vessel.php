@@ -151,4 +151,11 @@ class Vessel extends Core\Model {
         return $vessel;
     }
 
+    public function getSearatesByID($vessel_number){
+        
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT  top(1) *
+                        FROM transhipment_searates b
+                        where container_number = '{$vessel_number}' ")->results();
+    }
 }
