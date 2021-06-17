@@ -351,7 +351,7 @@
                                 <div class="active tab-pane" id="information">
                                     <form class="form-horizontal">
                                         <div class="form-group row">
-                                            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Full Name</label>
                                             <div class="col-sm-10 mt-2">
                                                 <span><?= $this->escapeHTML($this->data->name); ?></span>
                                             </div>
@@ -363,9 +363,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputName" class="col-sm-2 col-form-label">Contact</label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Phone</label>
                                             <div class="col-sm-10 mt-2">
-                                                <span>N/A</span>
+                                                <span><?= $this->escapeHTML($this->user_info->phone); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">Address</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <span><?= $this->user_info->address . " " . $this->user_info->city . " "; ?></span>
                                             </div>
                                         </div>
                                         <?php if(false): ?>
@@ -410,9 +416,9 @@
                                         </div>
                                         <?php endif; ?>
                                         <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
+                                        <div class="offset-sm-2 co">
                                             <!-- <button class="btn btn-primary">Edit</button> -->
-                                            <a class="nav-link btn btn-primary" href="#edit-settings" data-toggle="tab">Edit</a>
+                                            <a class="px-md-5 btn btn-primary" href="#edit-settings" data-toggle="tab">Edit</a>
                                             <!-- <button type="submit" class="btn btn-danger">Delete Account</button> -->
                                         </div>
                                         </div>
