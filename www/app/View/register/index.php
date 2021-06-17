@@ -72,7 +72,11 @@
                 <input id="inputConfirm" type="password" name="password_repeat" class="form-control" placeholder="Confirm Password" required>
                 <span id="errorConfirm" class="text-danger"></span>
               </div>
-              <button class="btn btn-primary btn-next-form mx-auto d-block">Next</button>
+              <div class="form-group row">
+                  <div class="mx-auto d-block">
+                    <button class="btn btn-primary btn-next-form mx-auto">Next</button>
+                  </div>
+              </div>
             </div>
             <div id="step-2" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="stepperFormTrigger2">
               <div class="form-group">
@@ -90,7 +94,12 @@
                 <input id="inputPhone" type="text" name="phone" data-bind="phone" class="form-control" placeholder="+61 (02) 9876 5432" required>
                 <span id="errorPhone" class="text-danger"></span>
               </div>
-              <button class="btn btn-primary btn-next-form mx-auto d-block">Next</button>
+              <div class="form-group row">
+                  <div class="mx-auto d-block">
+                    <button class="btn btn-primary btn-prev-form mx-auto">Previous</button>
+                    <button class="btn btn-primary btn-next-form mx-auto">Next</button>
+                  </div>
+              </div>
             </div>
             <div id="step-3" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="stepperFormTrigger3">
               <div class="form-group">
@@ -117,22 +126,81 @@
                 <input id="inputZip" type="text" name="zip" data-bind="zip" class="form-control" placeholder="Ex. 12345" required>
                 <div class="invalid-feedback">Please fill the ZIP code field</div>
               </div>
-              <button class="btn btn-primary btn-next-form mx-auto d-block">Next</button>
+              <div class="form-group row">
+                  <div class="mx-auto d-block">
+                    <button class="btn btn-primary btn-prev-form mx-auto">Previous</button>
+                    <button class="btn btn-primary btn-next-form mx-auto">Next</button>
+                  </div>
+              </div>
             </div>
             <div id="final" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="stepperFormTriggerF">
-              <div class="mx-auto d-block">
-                <p>Please review the following information you've given before submitting.</p>
-                <label for="email">Email: </label> <span data-update="email"></span> <br>
-                <label for="firstname">First Name: </label> <span data-update="first-name"></span> <br>
-                <label for="lastname">Last name: </label> <span data-update="last-name"></span> <br>
-                <label for="phone">Phone: </label> <span data-update="phone"></span> <br>
-                <label for="address">Address: </label> <span data-update="address"></span> <br>
-                <label for="address2">Address 2: </label> <span data-update="address2"></span> <br>
-                <label for="city">City: </label> <span data-update="city"></span> <br>
-                <label for="state">State: </label> <span data-update="state"></span> <br>
-                <label for="zip">ZIP Code: </label> <span data-update="zip"></span> <br>
-              </div>
-              <button id="submit" class="btn btn-primary mx-auto d-block">Submit</button>
+              <form class="form-horizontal">
+                <div class="callout callout-warning">
+                  <h5>Almost done!</h5>
+
+                  <p>Please review the following information you've given before submitting.</p>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9 mt-2">
+                        <span data-update="email"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="firstname" class="col-sm-3 col-form-label">First Name:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="first-name"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lastname" class="col-sm-3 col-form-label">Last Name:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="last-name"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-3 col-form-label">Phone:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="phone"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="col-sm-3 col-form-label">Address:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="address"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address2" class="col-sm-3 col-form-label">Address 2:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="address2"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="city" class="col-sm-3 col-form-label">City:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="city"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="state" class="col-sm-3 col-form-label">State:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="state"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="zip" class="col-sm-3 col-form-label">ZIP code:</label>
+                    <div class="col-sm-9 mt-2">
+                      <span data-update="zip"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <div class="mx-auto d-block">
+                    <button class="btn btn-primary btn-edit-form mx-auto">Edit</button>
+                    <button id="submit" class="btn btn-primary mx-auto">Submit</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </form>
         </div>

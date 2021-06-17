@@ -457,7 +457,7 @@
                 </div>
               </div>
               <!-- /.card-header -->
-              <div class="card-body table-responsive p-0" style="height: 300px;">
+              <div class="card-body table-responsive p-0" style="height: 729px;">
                 <table class="table table-head-fixed table-hover text-nowrap">
                   <thead>
                     <tr>
@@ -471,7 +471,21 @@
                   <?php foreach ($this->users as $key => $value) { ?>
                   <tr>
                     <td><?php echo $value->id; ?></td>
-                    <td><?php echo $value->first_name . " " . $value->last_name; ?></td>
+                    <td>
+                      <div class="user-panel d-flex">
+                        <div class="image">
+                        <?php $profilepic = '/img/default-profile.png';?>
+                        <?php if(!empty($value->image_src)){
+                          $profilepic = base64_decode($value->image_src);
+                        }?>
+                          <img src="<?=$profilepic?>" class="img-circle elevation-2" alt="member image">
+                        </div>
+                        <div class="info">
+                          <?php echo $value->first_name . " " . $value->last_name; ?>
+                          <p class="text-muted m-b-0">Client From: <?php echo $value->city?></p>
+                        </div>
+                      </div>
+                    </td>
                     <td><?php echo $value->email; ?></td>
                     <td><?php echo $value->plan; ?></td>
                     <td><?php switch ($value->status) {
