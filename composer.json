@@ -12,7 +12,6 @@
     "require": {
         "twig/twig": "~3.0",
         "phpmailer/phpmailer": "dev-master",
-        "smalot/pdfparser": ">=0.18",
         "guzzlehttp/guzzle": "^7.4@dev"
     },
     "autoload": {
