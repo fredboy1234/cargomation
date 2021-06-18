@@ -99,8 +99,10 @@ $(document).ready(function () {
         // },
         layoutTemplates: {
             footer: 
-            '<div class="checkbox">' +
-            '    <input class="form-check-input" type="checkbox" value="{id}">' +
+            '<div class="icheck-primary checkbox d-inline">' +
+            '    <input type="checkbox" id="checkbox-{id}" value="{id}">' +
+            '    <label for="checkbox-{id}">' +
+            '    </label>' +
             '</div>' +
             '<div class="file-thumbnail-footer">\n' +
                 '    <div class="file-footer-caption" title="{caption}">File Name: {caption}' +
@@ -655,6 +657,21 @@ $(document).ready(function () {
 
     });
 
+    $('#select-all').click(function() {
+        var checked = false;
+        if(this.checked) {
+            checked = true;
+        } else {
+            checked = false;
+        }
+
+        $('.checkbox').find('input').each(function(){
+            // $(this).prop('checked', checked);
+            $(this).attr('checked', checked);
+            $(this).parent().toggleClass('selected');
+        });
+    });
+
     // Custom: function in each file-preview-frame
     $('.file-preview-thumbnails > .file-preview-frame > .checkbox').each(function () {
         $(this).on('change', function () {
@@ -764,6 +781,9 @@ $(document).ready(function () {
                                 }
                             });
                             $('#bulk-action').prop('selectedIndex', 0);
+                            $('#select-all').prop('checked', false);
+                            var url = "shipment/document/" + shipment_id + "/" + document_type;
+                            preloader(url);
                         }).fail(function (response) {
                             console.log('Error: ' + response.responseText);
                         });

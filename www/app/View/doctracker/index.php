@@ -368,6 +368,12 @@
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <div class="">
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="select-all">
+                        <label for="select-all" style="margin-top: 7px;margin-right: 10px;">
+                            Select all
+                        </label>
+                    </div>
                     <form class="d-inline-block mr-3" action="/action_page.php">
                         <select name="bulk-action" id="bulk-action" class="form-control">
                             <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
