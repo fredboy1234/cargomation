@@ -6,7 +6,6 @@ use App\Core;
 use App\Model;
 use App\Utility;
 
-use Spatie\PdfToText\Pdf;
 use GuzzleHttp\Psr7;
 
 /**
