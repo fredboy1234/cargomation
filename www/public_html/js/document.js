@@ -668,7 +668,7 @@ $(document).ready(function () {
         $('.checkbox').find('input').each(function(){
             // $(this).prop('checked', checked);
             $(this).attr('checked', checked);
-            $(this).parent().toggleClass('selected');
+            $(this).parent().toggleClass('selected', checked);
         });
     });
 
