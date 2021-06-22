@@ -92,8 +92,5 @@ if(!empty($emails)){
     }
 } 
 imap_close($imapResource);
-<<<<<<< HEAD
+
 ?>
-=======
-?>
->>>>>>> 73397f190322a237209ecacb46bedf768186b990
