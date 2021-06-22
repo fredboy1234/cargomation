@@ -41,8 +41,24 @@ else
         {
             $username = $_POST['ftuser'];
             $password = random_password(8);
-            $date_added = date("Ymd");
-            $passwordhash = md5($password);
+            $date_added = date("Ymd");		
+			$seed = str_split("!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+			shuffle($seed);
+			$rand = '';
+
+			foreach (array_rand($seed, 64) as $k) {
+					$rand .= $seed[$k];
+			}
+
+			$passwd = $password;		
+			$salt_raw = utf8_encode($rand);
+			$salt_html = htmlentities($salt_raw);
+			$passwd = utf8_encode($passwd);
+			$salted_password = $passwd . $salt_raw;
+			$encoded_password = strtoupper(hash('SHA512', $salted_password)); 
+
+			// $salt_html goes into <Option Name="Salt">
+			// $encoded_password goes into <Option Name="Pass">
             $userDir = "E/:A2BFREIGHT_MANAGER/" . $username . "/CW_XML/";
             $checkuser = '<User Name="' . $username;
         }
@@ -99,7 +115,7 @@ else
 			AND dbo.user_role.role_id = 2";
             $execRecord_userinfo = sqlsrv_query($conn, $sqluser_info);
             $return_user = sqlsrv_has_rows($execRecord_userinfo);
-            if ($return_user === false)
+            if ($return_user === true)
             {
                 while ($row_user = sqlsrv_fetch_array($execRecord_userinfo, SQLSRV_FETCH_ASSOC))
                 {
@@ -128,7 +144,7 @@ else
             $lines = file($filelocfile);
 
             // Copy Config for backup
-            //rename($filelocfile, $fileloc . $password . "-FileZilla Server.xml");
+            rename($filelocfile, $fileloc . $username . "-FileZilla Server.xml");
 
             // open Config for writing
             $file = fopen($filelocfile, "a");
@@ -142,7 +158,8 @@ else
                 {
 
                     fwrite($file, '<User Name="' . $username . '">
-					<Option Name="Pass">' . $password . '</Option>
+					<Option Name="Pass">' . $encoded_password . '</Option>
+					<Option Name="Salt">'.$salt_html.'</Option>
 					<Option Name="Group"/>
 					<Option Name="Bypass server userlimit">0</Option>
 					<Option Name="User Limit">0</Option>
@@ -155,7 +172,7 @@ else
 					<Allowed/>
 					</IpFilter>
 					<Permissions>
-					<Permission Dir="' . $userDir . '">
+					<Permission Dir="E:\\A2BFREIGHT_MANAGER\\'.$username.'\\CW_XML">
 					<Option Name="FileRead">' . $fileread . '</Option>
 					<Option Name="FileWrite">' . $filewrite . '</Option>
 					<Option Name="FileDelete">' . $filedelete . '</Option>
