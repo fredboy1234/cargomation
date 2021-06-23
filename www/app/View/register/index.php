@@ -5,7 +5,17 @@
   padding: 20px 15px;
 }
 </style>
-   <div id="stepperForm" class="bs-stepper">
+<?php
+$user_count = $this->user->user_count[0]->count;
+$user_max = $this->user->account_info[0]->max_users;
+?>
+
+<?php if($user_count >= $user_max) : ?>
+  <div>
+    <center>Note: Maximum number of user reach, please upgrade your subscription plan.</center>
+  </div>
+<?php else: ?>
+  <div id="stepperForm" class="bs-stepper">
     <div class="bs-stepper-header" role="tablist">
       <div class="step" data-target="#step-1">
         <button type="button" class="step-trigger" role="tab" id="stepperFormTrigger1" aria-controls="step-1">
@@ -207,4 +217,5 @@
       </div>
     </div>
   </div>
+<?php endif; ?>
 </div>

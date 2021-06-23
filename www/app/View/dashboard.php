@@ -516,13 +516,21 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
+
+              <?php
+                $user_count = $this->user->user_count[0]->count;
+                $user_max = $this->user->account_info[0]->max_users;
+                if($user_count >= $user_max) {
+                  echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
+                } else { ?>
                 <a href="/register" class="btn btn-sm btn-info float-left">
                 <i class="fas fa-plus"> </i>
                   Add New User
                 </a>
-                <?php if(false): ?>
+              <?php } ?>
+              <?php if(false): ?>
                 <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
-                <?php endif; ?>
+              <?php endif; ?>
               </div>
               <!-- /.card-footer -->
             </div>
