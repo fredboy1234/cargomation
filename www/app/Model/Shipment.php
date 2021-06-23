@@ -245,4 +245,27 @@ class Shipment extends Core\Model {
                      VALUES $data");
     }
 
+    public static function getShipmentDynamic($user_id, $arg = "*",$condition="") {
+        $where = " WHERE shipment.user_id = '{$user_id}' ";
+        
+        if($condition === 'not arrived'){
+         $where .= " and shipment.eta > getdate()";
+        }
+
+        if($condition ==='air'){
+            $where .=" and shipment.transport_mode = 'air' ";
+        }
+
+        if($condition ==='sea'){
+            $where .=" and shipment.transport_mode = 'sea' ";
+        }
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
+                        FROM shipment 
+                        FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
+                        {$where}")->results();
+        
+        
+    }
 }

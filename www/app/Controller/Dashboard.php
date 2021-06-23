@@ -80,6 +80,10 @@ class Dashboard extends Core\Controller {
             "dash_photo" => Model\User::getUsersDashPhoto($userID),
             "selected_theme" => $selectedTheme,
             "role" => $role,
+            "total_shipment" => count(Model\Shipment::getShipmentDynamic($userID)),
+            "not_arrived" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'not arrived')),
+            "air_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'air')),
+            "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea')),
         ]);
     }
 
