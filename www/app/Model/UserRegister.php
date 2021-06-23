@@ -93,8 +93,10 @@ class UserRegister {
                 "country_id" => "",
                 "account_id" => $accId,
                 "account_users" => "",
-                //"subscription_id" =>Utility\Input::post("subcription"),
-                "status" => "",    
+                //"subscription_id" => Utility\Input::post("subcription"),
+                "subscription_id" => 1, // Basic Account Plan
+                "status" => 0, // Not Verified yet
+                "registered_date" => date('Y-m-d H:i:s') // Current datetime
             ]);
 
             //insert user role
