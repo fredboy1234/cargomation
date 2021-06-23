@@ -1,6 +1,8 @@
 <?php
+if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+
 $serverName = "a2bserver.database.windows.net"; 
-$connectionInfo = array( "Database"=>"a2bfreighthub_db", "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 
 if( $conn ) {
@@ -9,5 +11,4 @@ if( $conn ) {
      echo "Connection could not be established";
      die( print_r( sqlsrv_errors(), true));
 }
-
 ?>
