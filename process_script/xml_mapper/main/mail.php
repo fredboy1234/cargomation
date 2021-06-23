@@ -92,4 +92,5 @@ if(!empty($emails)){
     }
 } 
 imap_close($imapResource);
+
 ?>

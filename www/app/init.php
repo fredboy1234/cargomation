@@ -28,7 +28,7 @@ define("DEFAULT_PRESENTER", "format");
 
 // View Config
 define("VIEW_PATH", "../app/View/");
-define("DEFAULT_404_PATH", "_template/404.php");
+define("DEFAULT_404_PATH", "_template/error/404.php");
 define("DEFAULT_HEADER_PATH", "_template/header");
 define("DEFAULT_FOOTER_PATH", "_template/footer");
 define("HTMLENTITIES_FLAGS", ENT_QUOTES);

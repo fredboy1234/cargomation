@@ -51,20 +51,30 @@
                                 <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
                                 </li>
                                 <li class="list-group-item">
-                                <b>Users</b> <a class="float-right"><?= $this->user->account_info[0]->user_count; ?>/<b>
+                                <b>Users</b> <a class="float-right"><?= $this->user->user_count[0]->count; ?> /<b>
                                 <?= $this->user->account_info[0]->max_users; ?></b></a>
                                 </li>
+                                <?php if(false): ?>
                                 <li class="list-group-item">
-                                <?php switch ($this->user->account_info[0]->status) {
+                                <?php 
+                                switch ($this->user->account_info[0]->status) {
+                                    case 0:
+                                        $status = "Verify";
+                                        $badge = 'primary';
+                                        $attr = '';
+                                        $icon = 'fa-user';
+                                    break;
                                     case 1:
                                         $status = "Verified";
                                         $badge = 'success';
                                         $attr = 'disabled';
+                                        $icon = 'fa-user-check';
                                     break;
                                     case 2:
                                         $status = "Pending";
                                         $badge = 'warning';
                                         $attr = '';
+                                        $icon = 'fa-user';
                                     break;
                                     
                                     default:
@@ -73,13 +83,15 @@
                                 } ?>
                                 <b>Status</b> <a class="float-right"><?= $status ?></a>
                                 </li>
+                                <?php endif; ?>
                             </ul>
-
+                            <?php if(false): ?>
                             <?php
                                 echo '<a href="/register" class="btn btn-' . $badge . ' btn-block ' . $attr . '">';
-                                echo '    <i class="fas fa-user-check mr-1"></i><b>' . $status . '</b>';
+                                echo '    <i class="fas ' . $icon . ' mr-1"></i><b>' . $status . '</b>';
                                 echo '</a>';
                             ?>
+                            <?php endif; ?>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -101,7 +113,7 @@
 
                             <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                            <p class="text-muted"><?= $this->user->user_addr[0]->address; ?></p>
+                            <p class="text-muted"><?= $this->user_info->address . " " . $this->user_info->city . " "; ?></p>
 
                             <hr>
 
@@ -351,7 +363,7 @@
                                 <div class="active tab-pane" id="information">
                                     <form class="form-horizontal">
                                         <div class="form-group row">
-                                            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Full Name</label>
                                             <div class="col-sm-10 mt-2">
                                                 <span><?= $this->escapeHTML($this->data->name); ?></span>
                                             </div>
@@ -363,9 +375,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="inputName" class="col-sm-2 col-form-label">Contact</label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Phone</label>
                                             <div class="col-sm-10 mt-2">
-                                                <span>N/A</span>
+                                                <span><?= $this->escapeHTML($this->user_info->phone); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">Address</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <span><?= $this->user_info->address . " " . $this->user_info->city . " "; ?></span>
                                             </div>
                                         </div>
                                         <?php if(false): ?>
@@ -410,9 +428,9 @@
                                         </div>
                                         <?php endif; ?>
                                         <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
+                                        <div class="offset-sm-2 co">
                                             <!-- <button class="btn btn-primary">Edit</button> -->
-                                            <a class="nav-link btn btn-primary" href="#edit-settings" data-toggle="tab">Edit</a>
+                                            <a class="px-md-5 btn btn-primary" href="#edit-settings" data-toggle="tab">Edit</a>
                                             <!-- <button type="submit" class="btn btn-danger">Delete Account</button> -->
                                         </div>
                                         </div>
