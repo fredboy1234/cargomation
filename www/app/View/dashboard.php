@@ -7,9 +7,9 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><?php echo $this->total_shipment?></h3>
 
-                <p>Today's Uploads</p>
+                <p>Total Shipments</p>
               </div>
               <div class="icon">
                 <i class="ion ion-upload"></i>
@@ -22,9 +22,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
 
-                <p>Today's Shipments</p>
+                <p>Shipments Not Arrived</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-boat"></i>
@@ -37,14 +37,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3><?= count($this->users); ?></h3>
+                <h3><?= $this->air_shipment?></h3>
 
-                <p>Active Clients</p>
+                <p>Air Shipments</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?transport_mode=air" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -52,14 +52,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3><?=$this->sea_shipment?></h3>
 
-                <p>Today's Pending Docs</p>
+                <p>Sea Shipments</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-warning"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?transport_mode=sea" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -516,13 +516,21 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
+
+              <?php
+                $user_count = $this->user->user_count[0]->count;
+                $user_max = $this->user->account_info[0]->max_users;
+                if($user_count >= $user_max) {
+                  echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
+                } else { ?>
                 <a href="/register" class="btn btn-sm btn-info float-left">
                 <i class="fas fa-plus"> </i>
                   Add New User
                 </a>
-                <?php if(false): ?>
+              <?php } ?>
+              <?php if(false): ?>
                 <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
-                <?php endif; ?>
+              <?php endif; ?>
               </div>
               <!-- /.card-footer -->
             </div>

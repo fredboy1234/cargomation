@@ -69,6 +69,7 @@ class SendMail extends Core\Model {
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_TIMEOUT => 0,
         CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => 'name=' . $data['name'] . '&email=' . $data['email'] . '&message=' . $data['message'],
@@ -76,7 +77,6 @@ class SendMail extends Core\Model {
             'Authorization: Basic YTJiYWRtaW46XWkldipLOntwTDhDeyh3',
             'Content-Type: application/x-www-form-urlencoded'
         ),
-        CURLOPT_SSL_VERIFYPEER, false,
         ));
 
         $response = curl_exec($curl);

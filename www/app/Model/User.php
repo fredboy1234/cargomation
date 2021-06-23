@@ -182,9 +182,9 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $user_info = $Db->query("SELECT * FROM user_info WHERE user_id = '{$user}'")->results();
         $user_addr = $Db->query("SELECT CONCAT(user_info.address,' ',user_info.city,', ',countries.countryname) AS 'address' 
-                                    FROM user_info
-                                    LEFT JOIN countries ON user_info.country_id = countries.idcountry 
-                                    WHERE user_info.id = '{$user}'")->results();
+                                FROM user_info
+                                LEFT JOIN countries ON user_info.country_id = countries.idcountry 
+                                WHERE user_info.id = '{$user}'")->results();
         $account_info = $Db->query("SELECT users.id,
                                 user_info.account_users AS 'user_count',
                                 user_info.subscription_id AS 'type',
@@ -194,14 +194,17 @@ class User extends Core\Model {
                                 LEFT JOIN user_info ON  users.id = user_info.user_id
                                 LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
                                 WHERE users.id = '{$user}'")->results();
-
+        $user_count = $Db->query("SELECT count(*) AS count
+                                FROM user_info
+                                WHERE account_id = '{$user}'")->results();
         $user_image = $Db->query("SELECT *
-                                    FROM user_images where user_id = '{$user}'
+                                FROM user_images where user_id = '{$user}'
                                 ")->results();
 
         return [
             "user_info" => $user_info,
             "user_addr" => $user_addr,
+            "user_count" => $user_count,
             "account_info" => $account_info,
             "user_image" => $user_image
         ];
