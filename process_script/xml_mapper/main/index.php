@@ -13,7 +13,8 @@ require_once ('jsonpath-0.8.1.php');
 require_once ('connection.php');
 header('Content-Type: text/plain');
 set_time_limit(0);
- 
+ini_set('memory_limit', '-1');
+
 if(isset($_GET['user_id'])){
 	
 $CLIENT_ID = $_GET['user_id'];
