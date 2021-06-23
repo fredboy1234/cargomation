@@ -47,12 +47,6 @@ try{
 		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
 		$conn = sqlsrv_connect( $serverName, $connectionInfo);
 
-		if( $conn ) {
-		}else{
-			 echo "Connection could not be established";
-			 die( print_r( sqlsrv_errors(), true)); 
-		}
-		
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
 		
 		$curl_ = curl_init();
