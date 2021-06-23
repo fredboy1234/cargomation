@@ -90,7 +90,7 @@ if(!empty($emails)){
 		$result = sqlsrv_has_rows($execute_query);
 		
 		if ($result === false) {
-		$sql = "Insert into {$link_table} {$var_col} values('{$job}','{$mbill}','{$hbill}','{$shipper}','{$client}','{$mcode}','{$lcode}')";
+		$sql = "Insert into {$link_table} {$var_col} values('{$job}','{$mbill}','{$hbill}','{$shipper}','{$client}','{$code}','{$lcode}')";
 		$execute_query = sqlsrv_query($conn, $sql);	
 			}
 		}
