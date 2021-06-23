@@ -42,10 +42,11 @@ if ($return === true) {
 	function process_shipment($key,$client_email,$ship_id,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code)
 	{
 try{		
-		$serverName = base64_decode("YTJic2VydmVyLmRhdGFiYXNlLndpbmRvd3MubmV0");
-		$connectionInfo = array(base64_decode("RGF0YWJhc2U=") => base64_decode("YTJiZnJlaWdodGh1Yl9kYg=="),Base64_Decode("VUlE") => base64_decode("QTJCX0FkbWlu"),Base64_Decode("UFdE") => Base64_Decode("djlqbjljUTlkRjdX"));
-		$conn = sqlsrv_connect($serverName, $connectionInfo);
-		
+		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+		$serverName = "a2bserver.database.windows.net"; 
+		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+		$conn = sqlsrv_connect( $serverName, $connectionInfo);
+
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
 		
 		$curl_ = curl_init();
