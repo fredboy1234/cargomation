@@ -75,13 +75,14 @@ if(!empty($emails)){
         //cho $message = imap_base64($message);
 		//echo $message = imap_8bit($message);
        // echo $message = quoted_printable_encode($message);
-         
+        
 		$job = 		trim(strval(get_data($message, 'ship</span><span>&gt;<s span=""></pre>', '<span>&lt;</span><span>/</span><span>ship')));		
 		$shipper =  trim(strval(get_data($message, 'shipper</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>shipper')));		
 		$client =   trim(strval(get_data($message, 'client</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>client')));	
 		$mbill = 	trim(strval(get_data($message, 'mbill</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>mbill')));		
 		$hbill = 	trim(strval(get_data($message, 'hbill</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>hbill')));	
 	    $mcode = 	trim(strval(get_data($message, 'macro</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>macro')));
+		$code =     trim(strval(str_replace('&amp;', '', $mcode)));
 		$lcode =	trim(strval(get_data($message, 'LicenceCode=', '&amp;ControllerID')));
 		
 		$sql = "Select * from {$link_table} WHERE {$var_ship} LIKE '%{$job}%' AND {$var_code} = '{$lcode}'";
