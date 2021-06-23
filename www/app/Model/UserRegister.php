@@ -126,22 +126,24 @@ class UserRegister {
      * @since 1.0.2
      */
     public static function createFTP($email){
+
         $curl = curl_init();
- 
+
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://a2bfreighthub.com/ftp_msc/",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "ftuser=".$email,
-            CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3",
-            "Content-Type: application/x-www-form-urlencoded"
-            ),
+          CURLOPT_URL => 'https://cargomation.com/ftp_msc/',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => 'ftuser='.$email,
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic YTJiaHViYWRtaW46XWkldipLOntwTDhDeyh3',
+            'Content-Type: application/x-www-form-urlencoded'
+          ),
         ));
         
         $response = curl_exec($curl);
