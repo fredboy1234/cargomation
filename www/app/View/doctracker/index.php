@@ -87,7 +87,7 @@
                                                         <div class="form-group row">
                                                             <label for="inputEmail3" class="col-sm-4 col-form-label">Container Mode</label>
                                                             <div class="col-sm-8">
-                                                                <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+                                                                <select id="container_mode" class="js-example-basic-multiple" name="states" multiple="multiple">
                                                                     <option value="all">Select All</option>
                                                                     <option value="BCN">BCN</option>
                                                                     <option value="FCL">FCL</option>
