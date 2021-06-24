@@ -122,7 +122,7 @@ console.log(parsed_qs);
 
   }
 
-  if(parsed_qs != ""){
+  if( typeof parsed_qs.transport_mode !=="undefined" ){
     if(parsed_qs.transport_mode == "air"){
       $("input[name='transportmode_sea']").prop( "checked", false );
       $("input[name='transportmode_air']").prop( "checked", true );
