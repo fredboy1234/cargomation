@@ -42,6 +42,7 @@ class Shipment extends Core\Model {
     public  function getClientUserShipment($user_id, $arg = "*") {
 
         $Db = Utility\Database::getInstance();
+        
         return $Db->query("SELECT shipment.id as shipment_id, {$arg} 
                         FROM shipment 
                         LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id
@@ -96,7 +97,10 @@ class Shipment extends Core\Model {
         if(isset($data['origin_cargowise']) && isset($data['origin_hub'])){
             $data['origin'] = "('{$data['origin_cargowise']}','{$data['origin_hub']}')";     
         }
-       
+        if(isset($data['container_mode']) && !empty($data['container_mode'])){
+            $container_mode =implode("','",$data['container_mode']); 
+            $where .= " and shipment.container_mode in('{$container_mode}')";
+        }
         
         //if($data['origin'] != ""){
             // if($data['ETA'] == ""){

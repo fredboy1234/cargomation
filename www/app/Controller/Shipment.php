@@ -354,7 +354,7 @@ class Shipment extends Core\Controller {
         //$doc_requested = $this->Document->getRequestedDocument($user, "shipment_num, document_type, count(*) AS count", " shipment_num, document_type");        
         //$doc_requested = array_combine(array_map(function ($o) { return $o->shipment_num; }, $doc_requested), $doc_requested);
 
-        # Advance search 
+        # Advance search
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
             $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user,$_POST);
