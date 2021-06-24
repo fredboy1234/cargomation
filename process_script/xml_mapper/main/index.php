@@ -13,7 +13,8 @@ require_once ('jsonpath-0.8.1.php');
 require_once ('connection.php');
 header('Content-Type: text/plain');
 set_time_limit(0);
- 
+ini_set('memory_limit', '-1');
+
 if(isset($_GET['user_id'])){
 	
 $CLIENT_ID = $_GET['user_id'];
@@ -42,10 +43,11 @@ if ($return === true) {
 	function process_shipment($key,$client_email,$ship_id,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code)
 	{
 try{		
-		$serverName = base64_decode("YTJic2VydmVyLmRhdGFiYXNlLndpbmRvd3MubmV0");
-		$connectionInfo = array(base64_decode("RGF0YWJhc2U=") => base64_decode("YTJiZnJlaWdodGh1Yl9kYg=="),Base64_Decode("VUlE") => base64_decode("QTJCX0FkbWlu"),Base64_Decode("UFdE") => Base64_Decode("djlqbjljUTlkRjdX"));
-		$conn = sqlsrv_connect($serverName, $connectionInfo);
-		
+		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+		$serverName = "a2bserver.database.windows.net"; 
+		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+		$conn = sqlsrv_connect( $serverName, $connectionInfo);
+
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
 		
 		$curl_ = curl_init();
@@ -293,9 +295,11 @@ try{
 	
 	function file_log($shipment_key,$path,$client_id){
 	try{
-		$serverName = "a2bserver.database.windows.net";
-		$connectionInfo = array("Database" => "a2bfreighthub_db","UID" => "A2B_Admin","PWD" => "v9jn9cQ9dF7W");
-		$conn = sqlsrv_connect($serverName, $connectionInfo);
+		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+		$serverName = "a2bserver.database.windows.net"; 
+		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+		$conn = sqlsrv_connect( $serverName, $connectionInfo);
+
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
 		$date_added = date("Ymd");
 		$sql = "INSERT INTO inbound_xml (user_id,filename,shipment_num,date_added) VALUES ('$client_id','$path','$shipment_key','$date_added')";
