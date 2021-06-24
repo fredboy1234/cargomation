@@ -28,7 +28,7 @@ try {
 } catch (\Throwable $th) {
     //throw $th;
     // echo "Preview only available in live.";
-    // echo "Error in showing the document";
+    echo "No preview available.";
 }
 
 exit;
