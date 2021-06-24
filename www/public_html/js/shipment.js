@@ -11,7 +11,7 @@ var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
 
 var query_string = window.location.search.substring(1);
 var parsed_qs = parse_query_string(query_string);
-
+console.log(parsed_qs);
 // TEMPORARY
 if (parsed_qs['request'] === 'true') {
   // Button Request
@@ -106,7 +106,7 @@ $(document).on("click", "#unassign", function () {
 });
 
 $(document).ready(function () {
-
+console.log(parsed_qs);
   if (parsed_qs.calendar != '' && typeof parsed_qs.calendar != 'undefined') {
     var c_date = new Date(parsed_qs.calendar);
     var curr_date = ("0" + (c_date.getDate() + 1)).slice(-2);
@@ -120,6 +120,21 @@ $(document).ready(function () {
       $("#advance-search-btn").trigger('click');
     }, 1000);
 
+  }
+
+  if(parsed_qs != ""){
+    if(parsed_qs.transport_mode == "air"){
+      $("input[name='transportmode_sea']").prop( "checked", false );
+      $("input[name='transportmode_air']").prop( "checked", true );
+    }else if(parsed_qs.transport_mode == "sea"){
+      $("input[name='transportmode_sea']").prop( "checked", true );
+      $("input[name='transportmode_air']").prop( "checked", false );
+    }
+
+    $("input[name='post_trigger']").val("set");
+    setTimeout(function () {
+      $("#advance-search-btn").trigger('click');
+    }, 1000);
   }
 
   var tableColumnData = [];

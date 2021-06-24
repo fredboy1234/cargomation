@@ -319,7 +319,7 @@ class Vessel extends Core\Controller {
         $color = array();
         $store = array();
         $count = 0;
- 
+        $json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $j_ves = json_decode($ves->sea_json);
@@ -422,7 +422,7 @@ class Vessel extends Core\Controller {
 
     //temporary only please ignore
     public function externalTemp(){
-        echo '<link rel="stylesheet" href="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.css" crossorigin=""/>';
+        echo '<link rel="stylesheet" href="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.css" crossorigin=""/>';
         //  echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         //  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         //  crossorigin=""></script>';
@@ -433,7 +433,7 @@ class Vessel extends Core\Controller {
         //  echo '<script src="https://unpkg.com/leaflet/dist/leaflet-src.js"></script>';
         //  echo '<script src="https://unpkg.com/esri-leaflet"></script>';
         //echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet-geocoder/3.0.0/esri-leaflet-geocoder.js"></script>';
-        echo '<script src="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
+        echo '<script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
         echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>';
         echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>';
     }
@@ -494,11 +494,16 @@ class Vessel extends Core\Controller {
                 $data['trans_id'] = $trans[0]->id;
                 $data['container_number'] = $trans[0]->containernumber;
                 $data['json']  = '';
+                $data['track'] = '';
                 
                 if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                     $this->Vessel->checkContainer($data);
                 }else{
                     echo'failed';
+                }
+
+                if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
+                    $this->Vessel->checkContainer($data);
                 }
             
              }
