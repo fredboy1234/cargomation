@@ -376,7 +376,7 @@ try{
 			$XPATH_SHIPMENTTYPE = jsonPath($universal_shipment, $path_DataSource.".Type");
 			$SHIPMENTTYPE = $parser->encode($XPATH_SHIPMENTTYPE);
 		    $SHIPMENTTYPE = node_exist(getArrayName($SHIPMENTTYPE));
-           
+	
 			if ($SHIPMENTTYPE != "") {
 				if ($SHIPMENTTYPE == "ForwardingShipment") {
 					$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource.".Key");
@@ -1282,6 +1282,13 @@ try{
 				}
                 //END OF DATA MANAGEMENT
 
+			}
+			else
+			{
+			$destination_pathERR = "E:/A2BFREIGHT_MANAGER/$client_email/CW_ERROR/";						
+			if(!file_exists($destination_pathERR.$filename)){
+			rename($filename, $destination_pathERR . pathinfo($filename, PATHINFO_BASENAME));
+				}
 			}
 		}
 	}
