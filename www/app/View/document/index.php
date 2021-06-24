@@ -4,7 +4,7 @@ $approved = 0;
 $pending = 0;
 $freview = 0;
 $status_icon = "fa-thumbs-down";
-$document_settings = json_decode($this->user_settings[0]->document);
+$document_settings = (isset($this->user_settings[0])) ? json_decode($this->user_settings[0]->document) : NULL;
 if(!empty($this->document)) {
     foreach ($this->document as $key => $file) {
         //if($file->status !== 'deleted') {

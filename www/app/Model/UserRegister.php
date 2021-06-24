@@ -92,7 +92,7 @@ class UserRegister {
                 "postcode" => Utility\Input::post("zip"),
                 "country_id" => "",
                 "account_id" => $accId,
-                "account_users" => "",
+                "organization_code" => Utility\Input::post("code"),
                 //"subscription_id" => Utility\Input::post("subcription"),
                 "subscription_id" => 1, // Basic Account Plan
                 "status" => 0, // Not Verified yet
