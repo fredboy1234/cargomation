@@ -341,7 +341,8 @@ class Shipment extends Core\Controller {
         $shipment_link = $this->Shipment->getShipmentLink($user);
 
         # check User if role is user
-        if($role == 'user'){
+        
+        if($role->role_id == 3){
             $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
             $api = $this->Shipment->getClientUserShipment($user);
         } else {
