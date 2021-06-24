@@ -156,6 +156,24 @@ document.getElementById('submit').addEventListener('click', function (event) {
     })
 })
 
+
+document.getElementById('inputRole').addEventListener('change', function(event) {
+    var selectedValue = this.selectedOptions[0].value;
+    //var selectedText  = this.selectedOptions[0].text;
+
+    var html = '<div id="code" class="form-group">' +
+    '<label for="inputCode">Organization Code <span class="text-danger font-weight-bold">*</span></label>' +
+    '<input id="inputCode" type="text" name="code" data-bind="code" class="form-control" placeholder="Enter organization code">' +
+    '<span id="errorCode" class="text-danger"></span>' +
+    '</div>';
+
+    if(selectedValue === '4') {
+        $(html).insertAfter($('#inputRole').parent())
+    } else {
+        $('#code').remove()
+    }
+})
+
 // Declare a global object to store view data.
 var viewData = {};
 

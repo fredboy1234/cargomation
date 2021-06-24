@@ -5,61 +5,61 @@
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box">
               <div class="inner">
-                <h3><?php echo $this->total_shipment?></h3>
+                <h3 class="text-success"><?php echo $this->total_shipment?></h3>
 
                 <p>Total Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-upload"></i>
+                <i class="ion ion-cube text-success"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box">
               <div class="inner">
-                <h3><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
-
-                <p>Shipments Not Arrived</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-android-boat"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3><?= $this->air_shipment?></h3>
-
-                <p>Air Shipments</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="/doctracker?transport_mode=air" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3><?=$this->sea_shipment?></h3>
+                <h3 class="text-primary"><?=$this->sea_shipment?></h3>
 
                 <p>Sea Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-warning"></i>
+                <i class="ion ion-android-boat text-primary"></i>
               </div>
-              <a href="/doctracker?transport_mode=sea" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker?transport_mode=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-warning"><?= $this->air_shipment?></h3>
+
+                <p>Air Shipments</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-plane text-warning"></i>
+              </div>
+              <a href="/doctracker?transport_mode=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-danger"><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
+
+                <p>Shipments Not Arrived</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-warning text-danger"></i>
+              </div>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -74,7 +74,7 @@
 
             <?php if(true): ?>
             <!-- Calendar -->
-            <div class="card bg-gradient-success">
+            <div class="card">
               <div class="card-header border-0">
 
                 <h3 class="card-title">
@@ -85,7 +85,7 @@
                 <div class="card-tools">
                   <!-- button with a dropdown -->
                   <div class="btn-group">
-                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
                       <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
                       <a href="#" class="dropdown-item">Add new event</a>
@@ -94,10 +94,10 @@
                       <a href="#" class="dropdown-item">View calendar</a>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="remove">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
