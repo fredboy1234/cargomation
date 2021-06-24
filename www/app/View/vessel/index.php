@@ -21,20 +21,20 @@
      color:#333;
  }
  .done{
-     background-color: #dc3545 !important;
-     color: #fff !important;
+    background-color: #28a745 !important;
+    color: #fff !important;
  }
  .almost{
      background-color: #ffc107!important;
  }
  .completed{
-     background-color: #28a745 !important;
+     background-color: #dc3545 !important;
      color: #fff !important;
  }
  .l-done div{
      width: 10px;
      height: 10px;
-     background-color: #dc3545 !important;
+     background-color:  #28a745 !important;
  }
  .l-almost div{
      width: 10px;
@@ -44,7 +44,7 @@
  .l-completed div{
      width: 10px;
      height: 10px;
-     background-color:  #28a745 !important;
+     background-color: #dc3545 !important;
  }
  .l-not-done div{
      width: 10px;
