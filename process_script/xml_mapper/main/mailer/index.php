@@ -31,19 +31,25 @@
 	else
 	{
 	 if($_SERVER["REQUEST_METHOD"]	== "POST"){
-	 	
-		$name=$_POST['name'];
+	 	if(isset($_POST['name'])){
+			$name = $_POST['name'];
+		}
+		else{$name ="";}
+		
 		$email=$_POST['email'];
 		$messagecontent=$_POST['message'];
+		$requesttype=$_POST['request'];
 		
-		if(validate_email($email) == false){
-		  	$response_code = http_response_code(200);
-			$response = array("data"=>$error,"status"=>200,"message"=>"Invalid Email Address.");
-		    echo json_encode($response);
-			die();
-		}
+		
+		// if(validate_email($email) == false){
+		  	// $response_code = http_response_code(200);
+			// $response = array("data"=>$error,"status"=>200,"message"=>"Invalid Email Address.");
+		    // echo json_encode($response);
+			// die();
+		// }
 
 	    $autoemail = "support@cargomation.com";
+	    $autoemail1 = "no-reply@cargomation.com";
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
 		$mail->IsHTML(true);
@@ -55,37 +61,69 @@
 		$mail->SMTPSecure = 'tls'; 
 		$mail->Username = "info@a2bsolutiongroup.com";
 		$mail->Password = "YkblwuN7hBSL";
-
-		$mail->From = "{$email}";
-		$mail->FromName = "{$autoemail}";
-		$mail->AddAddress("{$autoemail}", "");
-		$mail->AddReplyTo("{$email}", "{$name}");
 		
+		
+		$ctr=0;
+		if($requesttype == 'contact'){
+		$subject = "Cargomation | Support Inquiry Info.";
+		$msg = '<p>Name: '.$name.'</p><p>Email: '.$email.'</p><p>Message: '.$messagecontent. '</p><br />';
+		$to = $autoemail;
+		$isbcc = false;}
+		
+		elseif($requesttype == 'missing'){
+		$subject = "Cargomation | Request for Missing Document";
+		$msg = $messagecontent;
+		$to = $email;
+		$recipient = explode(',',$to, -1);
+		if ($recipient){ $recipient = str_replace(",",";",$to);$isbcc = true;$ctr = explode(';',$recipient);$email=$ctr[0];} else { $recipient = $to;$isbcc = true;}}	
+		
+		else{
+		$subject = "Cargomation | Request for Document Update";
+		$msg = $messagecontent;
+		$to = $email;
+		$recipient = explode(',',$to, -1);
+		if ($recipient){ $recipient = str_replace(",",";",$to);$isbcc = true;$ctr = explode(';',$recipient);$email=$ctr[0];} else { $recipient = $to;$isbcc = true;}}	
+		
+			
 		$mail->addCustomHeader('MIME-Version: 1.0');
 		$mail->addCustomHeader('Content-Type: text/html; charset=ISO-8859-1'); 
+		$mail->From = "{$email}";
+		if($isbcc == true){
+		$mail->FromName = "{$autoemail1}";
+		}else{
+		$mail->FromName = "{$autoemail}";	
+		}
+		$mail->AddAddress("{$to}", "");
+		
+		if($isbcc == true){
+		if(is_array($ctr)){
+		if(count($ctr)>0){
+		foreach($ctr as $ctr1=>$value){
+		  if($ctr > 0){
+                $mail->AddBCC($value); }}}}
+		  $mail->AddReplyTo("{$autoemail1}", "A2b Cargomation");
+		}
+		else{$mail->AddReplyTo("{$email}", "{$name}");}
 
-		$subject = "Cargomation | Support Inquiry Info.";
-		$msg1 = '
-			<p>Name: '.$name.'</p>
-			<p>Email: '.$email.'</p>
-			<p>Message: '.$messagecontent. '</p><br />'; 
-
-		//SEND BACK EMAIL TO INFO@A2BSOLUTIONGROUP.COM
 		$mail->Subject = $subject;
-		$mail->Body = $msg1;
+		$mail->Body = $msg;
 		$mail->WordWrap = 50;
-		$mail->Send();
+		
+		try{$mail->Send();}
+		catch (Exception $e){
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
 
 		$response_code = http_response_code(200);
 		$response = array("status"=>"200","message"=>"Message Sent.");
-    	// show products data in json format
+    	// show data in json format
     	echo json_encode($response);
 
 
 	}else{
 		$response_code = http_response_code(200);
 		$response = array("data"=>$error,"status"=>"200","message"=>"Invalid request");
-    	// show products data in json format
+    	// show data in json format
     	echo json_encode($response);
 	} 		
 }
