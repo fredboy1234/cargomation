@@ -16,13 +16,18 @@ $request_type = "";
 $master_bill = "";
 if(is_numeric($this->document)) {
     // $this->results[0]->name;
-    $title = 'Edit request for document id: [#' . $this->document . "]";
+    $title = 'Request to edit document: ID [#' . $this->document . "]";
     $request_type = 'edit';
+    $subject_ph = 'Cargomation | Request for Document Update';
+    $template_msg = 'Please provide the updated document with ID #' . $this->document . ' for this shipment.';
 } else {
-    $title = 'Document request for document type: [' . $this->document  . "]";
+    $title = 'Request for missing document: TYPE [' . $this->document  . "]";
     $request_type = 'new';
-    $master_bill = " with a master bill  " . $this->shipment[0]->master_bill;
+    $subject_ph = 'Cargomation | Request for Missing Document';
+    $master_bill = " with a master bill " . $this->shipment[0]->master_bill;
+    $template_msg = 'Please provide the missing [' . $this->document . '] documents for this shipment' . $master_bill;
 } ?>
+ 
 <div id="document-request" style="display: block;">
     <div class="card card-primary">
         <div class="card-header">
@@ -40,11 +45,11 @@ if(is_numeric($this->document)) {
                 </div>
                 <div class="form-group">
                     <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" class="form-control" required>
+                    <input type="text" id="subject" name="subject" class="form-control" placeholder="<?= $subject_ph;?>" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" class="form-control" rows="4" required><?php if(!empty($this->document)): ?>Please provide the below missing <?= $this->document; ?> documents for this shipment <?= $this->shipment_id; ?><?php endif; echo $master_bill; ?>   </textarea>
+                    <textarea id="message" name="message" class="form-control" rows="4" required><?= $template_msg; ?></textarea>
                 </div>
                 <?php if(false && empty($this->document)): ?>
                 <div class="form-group">

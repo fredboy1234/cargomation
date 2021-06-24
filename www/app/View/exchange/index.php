@@ -117,7 +117,7 @@
                     <tbody>
                     <?php foreach ($this->currency as $key => $value) : ?>
                       <tr>
-                        <td><img src="http://a2bfreighthub.com/img/flag/flag-<?= strtolower($value->currency_code) ?>.png" alt="<?= strtolower($value->currency_code) ?>" style="width: 28px"> 
+                        <td><img src="http://cargomation.com/img/flag/flag-<?= strtolower($value->currency_code) ?>.png" alt="<?= strtolower($value->currency_code) ?>" style="width: 28px"> 
                         <?= $value->currency_code . " - " . $value->currency_desc; ?></td>
                         <td><?= $value->TTBuy ?></td>
                         <td><?= $value->TTSell ?></td>
