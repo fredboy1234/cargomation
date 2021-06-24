@@ -63,26 +63,25 @@ class SendMail extends Core\Model {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://cargomation.com/xml_map/mailer/',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => 'name=' . $data['name'] . '&email=' . $data['email'] . '&message=' . $data['message'],
-        CURLOPT_HTTPHEADER => array(
+          CURLOPT_URL => 'https://cargomation.com/xml_map/mailer/',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => 'name=' . $data['name'] . '&email=' . $data['email'] . '&message=' . $data['message'],
+          CURLOPT_HTTPHEADER => array(
             'Authorization: Basic YTJiYWRtaW46XWkldipLOntwTDhDeyh3',
             'Content-Type: application/x-www-form-urlencoded'
-        ),
+          ),
         ));
-
+        
         $response = curl_exec($curl);
-
+        
         curl_close($curl);
-
         return json_decode($response);
     }
 

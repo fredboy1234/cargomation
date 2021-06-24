@@ -139,7 +139,6 @@ class Doctracker extends Core\Controller {
                     "postcode" =>"",
                     "country_id" =>"",
                     "account_id" => $user,
-                    "account_users" => "",
                     "status" => "",    
                 ]);
                 $User->insertUserRole([
