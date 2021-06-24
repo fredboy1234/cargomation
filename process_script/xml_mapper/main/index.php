@@ -13,7 +13,8 @@ require_once ('jsonpath-0.8.1.php');
 require_once ('connection.php');
 header('Content-Type: text/plain');
 set_time_limit(0);
- 
+ini_set('memory_limit', '-1');
+
 if(isset($_GET['user_id'])){
 	
 $CLIENT_ID = $_GET['user_id'];
@@ -294,9 +295,11 @@ try{
 	
 	function file_log($shipment_key,$path,$client_id){
 	try{
-		$serverName = "a2bserver.database.windows.net";
-		$connectionInfo = array("Database" => "a2bfreighthub_db","UID" => "A2B_Admin","PWD" => "v9jn9cQ9dF7W");
-		$conn = sqlsrv_connect($serverName, $connectionInfo);
+		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+		$serverName = "a2bserver.database.windows.net"; 
+		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+		$conn = sqlsrv_connect( $serverName, $connectionInfo);
+
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
 		$date_added = date("Ymd");
 		$sql = "INSERT INTO inbound_xml (user_id,filename,shipment_num,date_added) VALUES ('$client_id','$path','$shipment_key','$date_added')";
