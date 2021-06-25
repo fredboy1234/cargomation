@@ -1,3 +1,45 @@
+  <style>
+
+.map {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.map__marker {
+  background: #002147;
+  border-radius: 10px;
+  height: 10px;
+  position: relative;
+  width: 10px;
+}
+
+.map__marker::before {
+    animation: blink 1s infinite ease-out;
+    border-radius: 60px;
+    box-shadow: inset 0 0 0 1px #002147;
+    content: "";
+    height: 10px;
+    left: 50%;
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+}
+
+
+@keyframes blink {
+  100% {
+    height: 30px;
+    opacity: 0;
+    width: 30px;
+  }
+}
+
+  </style>
   <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -440,7 +482,7 @@
           <!-- Right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-8 connectedSortable">
 
-            <?php if(true): ?>
+            <?php if(false): ?>
             <!-- TABLE: Client List -->
             <div class="card">
               <div class="card-header">
@@ -539,7 +581,8 @@
 
             <?php if(true): ?>
             <!-- Map card -->
-            <div class="card bg-gradient-primary" style="display: none">
+            <div id="dashmap" class="map" style="max-width:100%; width:100; height:100%">Map Here</div>
+            <div class="card bg-gradient-primary" style="display: none;">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
@@ -565,6 +608,7 @@
               </div>
               <div class="card-body">
                 <div id="world-map" style="height: 250px; width: 100%;"></div>
+                
               </div>
               <!-- /.card-body-->
               <div class="card-footer bg-transparent">
@@ -766,4 +810,3 @@
     </section>
     <!-- /.content -->
   </div>
-
