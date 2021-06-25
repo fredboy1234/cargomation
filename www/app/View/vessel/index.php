@@ -82,7 +82,7 @@
               <div class="icon">
                 <i class="ion ion-ios-checkmark-outline text-success"></i>
               </div>
-              <a href="/doctracker?transport_mode=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -97,7 +97,7 @@
               <div class="icon">
                 <i class="ion ion-alert-circled text-danger"></i>
               </div>
-              <a href="/doctracker?transport_mode=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -117,7 +117,7 @@
           </div>
           <!-- ./col -->
         </div>
-        <div class="card card-default collapsed-card">
+        <div class="card card-default collapsed-card d-none">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
