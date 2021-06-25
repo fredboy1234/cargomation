@@ -65,7 +65,7 @@ class SendMail extends Core\Model {
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://a2bfreighthub.com/xml_map/mailer/',
+        CURLOPT_URL => 'https://cargomation.com/xml_map/mailer/',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
