@@ -67,7 +67,7 @@
               <div class="icon">
                 <i class="ion ion-android-boat  text-primary"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -82,7 +82,7 @@
               <div class="icon">
                 <i class="ion ion-ios-checkmark-outline text-success"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -97,7 +97,7 @@
               <div class="icon">
                 <i class="ion ion-alert-circled text-danger"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -112,7 +112,7 @@
               <div class="icon">
                 <i class="ion ion-navigate text-warning"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
