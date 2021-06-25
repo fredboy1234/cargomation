@@ -141,7 +141,7 @@ class SendMail extends Core\Model {
           CURLOPT_FOLLOWLOCATION => false,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => 'name=' . $data['name'] . '&email=' . $data['email'] . '&message=' . $data['message'],
+          CURLOPT_POSTFIELDS => 'request=contact&name=' . $data['name'] . '&email=' . $data['email'] . '&message=' . $data['message'],
           CURLOPT_HTTPHEADER => array(
             'Authorization: Basic YTJiYWRtaW46XWkldipLOntwTDhDeyh3',
             'Content-Type: application/x-www-form-urlencoded'
