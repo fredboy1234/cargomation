@@ -253,6 +253,7 @@ $(document).ready(function () {
       });
       e.preventDefault();
   });
+
 });
 
 function openForm() {
@@ -262,7 +263,123 @@ function openForm() {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
+$(document).ready(function(){
+  // var mymap = L.map('dashmap').setView([10.3130247, 123.9471531], 5);
+  //   var polyArray = [];
+  //   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
+  //     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  //     minZoom: 0,
+  //     maxZoom: 13,
+  //     subdomains: 'abcd',
+  //     accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
+  //   }).addTo(mymap);
+  
+  var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
+  var map = L.map('dashmap').setView([33.8688, 151.2093], 4);
+  var polyArray = [  
+          [[31.366365,121.61475],[-33.86785, 151.20732]],
+          [[1.28967,103.85007],[-37.814,144.96332]],
+          [[13.08775,100.88433],[31.366365,121.61475]]
+        ];
+  var markerpoly = [[31.366365,121.61475],[-33.86785, 151.20732],[1.28967,103.85007],[-37.814,144.96332],[13.08775,100.88433],[31.366365,121.61475]];
+  
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
 
+  $.each(markerpoly,function(k,v){
+      L.marker(v).bindPopup(
+            '<div class="text-center">'
+            +'<br>'
+            +'<span>Origin: Australia - Destination: Singapore</span><br>'
+            +'<span>Container Number: AMCU9279460</span><br>'
+            +'<span>Arrival: 2021-06-26 06:00:00</span><br>'
+            +'<a href="/vessel/tracking?AMCU9279460" class="btn btn-success text-white">Live Tracking</a>'
+            +'</div>'
+        ).addTo(map);
+  });
+  // var greenIcon = L.icon({
+  //     iconUrl: 'leaf-green.png',
+  //     shadowUrl: 'leaf-shadow.png',
+  //     iconSize:     [38, 95], // size of the icon
+  //     shadowSize:   [50, 64], // size of the shadow
+  //     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+  //     shadowAnchor: [4, 62],  // the same for the shadow
+  //     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  // });
+  // L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
+  
+//   L.HtmlIcon = L.Icon.extend({
+// 	options: {
+// 		/*
+// 		html: (String) (required)
+// 		iconAnchor: (Point)
+// 		popupAnchor: (Point)
+// 		*/
+// 	},
+
+// 	initialize: function (options) {
+// 		L.Util.setOptions(this, options);
+// 	},
+
+// 	createIcon: function () {
+// 		var div = document.createElement('div');
+// 		div.innerHTML = this.options.html;
+// 		return div;
+// 	},
+
+// 	createShadow: function () {
+// 		return null;
+// 	}
+// });
+
+// const markerLocation = new L.LatLng(33.8684, 151.2092);
+
+// const HTMLIcon = L.HtmlIcon.extend({
+//     options : {
+//         html : "<div class=\"map__marker\"></div>",
+//     }
+// });
+
+// const customHtmlIcon = new HTMLIcon();
+
+// const marker = new L.Marker(markerLocation, {icon: customHtmlIcon});
+// map.addLayer(marker);
+
+  
+  
+var polyline = L.polyline(polyArray[0], {
+        color: '#007bff',
+        weight: 2,
+        opacity: 0.5,
+        dashArray: '4',
+        lineJoin: 'miter',
+        lineCap: 'square',
+      }).addTo(map);
+var polyline2 = L.polyline(polyArray[1], {
+  color: '#007bff',
+  weight: 2,
+  opacity: 0.5,
+  dashArray: '4',
+  lineJoin: 'miter',
+  lineCap: 'square',
+}).addTo(map);
+
+var polyline3 = L.polyline(polyArray[2], {
+  color: '#007bff',
+  weight: 2,
+  opacity: 0.5,
+  dashArray: '4',
+  lineJoin: 'miter',
+  lineCap: 'square',
+}).addTo(map);
+
+map.fitBounds(polyline.getBounds());
+map.fitBounds(polyline2.getBounds());
+
+});
 </script>
 </body>
 </html>
