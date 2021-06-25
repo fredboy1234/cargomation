@@ -56,6 +56,67 @@
 <?php $vessel = $this->vessel;?>
 <section class="content">
         <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-primary">12</h3>
+                <p>Confirmed Vessels</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-boat  text-primary"></i>
+              </div>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-success">12</h3>
+
+                <p>Confirmed Departure</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-ios-checkmark-outline text-success"></i>
+              </div>
+              <a href="/doctracker?transport_mode=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-danger">0</h3>
+
+                <p>Delays</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-alert-circled text-danger"></i>
+              </div>
+              <a href="/doctracker?transport_mode=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box">
+              <div class="inner">
+                <h3 class="text-warning">9<sup style="font-size: 20px"></sup></h3>
+
+                <p>Pending Departure </p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-navigate text-warning"></i>
+              </div>
+              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
         <div class="card card-default collapsed-card">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
