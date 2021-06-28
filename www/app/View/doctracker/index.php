@@ -18,6 +18,7 @@
     .select2-selection__choice {
         color: #333 !important;
     }
+   
 </style>
 <?php //var_dump($this->user_settings); die(); ?>
 <section class="content">
