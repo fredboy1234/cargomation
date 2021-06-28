@@ -1,3 +1,8 @@
+<style>
+  .navbar-white{
+    z-index: 22;
+  }
+</style>
 <?php 
 $results = $this->notifications['results'];
 $count = ($this->notifications['count'] != 0)?$this->notifications['count']:'No';

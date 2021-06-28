@@ -371,9 +371,9 @@ class Shipment extends Core\Controller {
             }else{
                 $api = array();
             }
-            $shipment_id = $_POST['shipment_id'];
+            //$shipment_id = $_POST['shipment_id'];
         }
-
+        
         foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
