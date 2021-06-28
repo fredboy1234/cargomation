@@ -290,7 +290,12 @@ console.log(parsed_qs);
 
   // Toggle document stats view 
   $(document).on('mouseenter mouseleave', '.stats', function () {
-    $(this).children().toggle();
+    var elem = $(this).html();
+    if($(elem).hasClass('vesshe') && $(elem).attr('href') !=''){
+      $(elem).show();
+    }else{
+      $(this).children().toggle();
+    }
   });
 
   // Append loading and redraw datatable
