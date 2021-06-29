@@ -202,6 +202,9 @@
     #showmore{
         cursor: pointer;
     }
+    .leaflet-sidebar{
+        z-index: 500 !important;
+    }
 </style>
 <?php $count =1;
     $origin = '';
