@@ -94,17 +94,17 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                 </div>
-                <input type="email" name="email" class="form-control" placeholder="Email">
+                <input type="email" name="email" class="form-control" placeholder="Email" required>
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                 </div>
-                <input type="text" name="name" class="form-control" placeholder="Name">
+                <input type="text" name="name" class="form-control" placeholder="Name" required>
             </div>
             <div class="form-group">
                 <label>Message</label>
-                <textarea class="form-control" name="message" rows="3" placeholder="Enter message ..." spellcheck="false" style="margin-top: 0px; margin-bottom: 0px; height: 106px;"></textarea>
+                <textarea class="form-control" name="message" rows="3" placeholder="Enter message ..." spellcheck="false" required style="margin-top: 0px; margin-bottom: 0px; height: 106px;"></textarea>
             </div>
             <div class="form-group">
                 <p>You may also email us at <a href="mailto:support@cargomation.com">support@cargomation.com</a></p>
