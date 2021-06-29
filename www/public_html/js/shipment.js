@@ -186,9 +186,15 @@ console.log(parsed_qs);
     rowId: 'real_id_shipment',
     select: true,
     // fnCreatedRow: function (nRow, aData, iDataIndex) {
-    //   $('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
-    //   $(nRow).attr("ship-assign-id", aData['real_id_shipment']);
-    //   $('.assign').attr('data-shipid', aData['real_id_shipment']);
+    //   //$('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
+    //   //$(nRow).attr("ship-assign-id", aData['real_id_shipment']);
+    //   //$('.assign').attr('data-shipid', aData['real_id_shipment']);
+    //   // console.log(aData.eta);
+    //   var selector = $(aData.eta).attr("data-date");
+      
+    //   $(nRow).find('td .datesort').parent().attr('data-order',selector);
+    //   $(nRow).find('td .datesort').parent().attr('data-sort',selector);
+      
     // },
     columnDefs: [
       { className: "stats", targets: [4, 5, 6, 7, 8] }
@@ -290,7 +296,12 @@ console.log(parsed_qs);
 
   // Toggle document stats view 
   $(document).on('mouseenter mouseleave', '.stats', function () {
-    $(this).children().toggle();
+    var elem = $(this).html();
+    if($(elem).hasClass('vesshe') && $(elem).attr('href') !=''){
+      $(elem).show();
+    }else{
+      $(this).children().toggle();
+    }
   });
 
   // Append loading and redraw datatable

@@ -15,12 +15,16 @@
     <div class="container-fluid">
     <a href="/vessel">Show List Of Vessel</a>
         <div class="row">
-        <div id="livemap" class="col-md-12"></div>
+         <?php if($livedata->status !== 'success'){?>
+            <h3 class="text-center">Live Tracking not Available.</h3>
+            <span></span>
+        <?php }else{ ?>
+            <div id="livemap" class="col-md-12"></div>
+        <?php }?>
         </div>
         </div>
     </section>
 </div>
 <script>
- var livedata = <?=json_encode($livedata)?>;
-
+ var livedata = <?=$this->searatesTracking?>;
 </script>

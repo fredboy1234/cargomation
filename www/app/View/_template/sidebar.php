@@ -29,7 +29,7 @@ function isActive($url) {
     width: 44%;
   }
   .main-sidebar{
-    z-index: 999999;
+    z-index: 999;
   }
 </style>
   <!-- Main Sidebar Container -->
