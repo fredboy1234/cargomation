@@ -1,6 +1,16 @@
 
 $(document).ready(function () {
 
+    console.log(document_type);
+
+    if (document_type === "") {
+        console.log('empty');
+        $('button#request').hide();
+    } else {
+        console.log(document_type);
+        $('button#request').show();
+    }
+
     const DEFAULT_PREVIEW = '<div class="file-preview-other">\n' +
         '   <span class="{previewFileIconClass}">{previewFileIcon}</span>\n' +
         '</div>';

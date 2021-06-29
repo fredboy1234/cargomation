@@ -16,6 +16,7 @@ $(document).ready(function () {
                 'message': message
             },
             beforeSend: function () {
+                $("#contact-form").find(":submit").prop('disabled', true);
                 $("#contact-form .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
             }, success: function (result) {
                 $('#loader').remove();
@@ -26,6 +27,7 @@ $(document).ready(function () {
                     timer: 3000
                 });
                 console.log(result);
+                $("#contact-form").find(":submit").prop('disabled', false);
             }
         });
         e.preventDefault();
