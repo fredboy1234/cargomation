@@ -101,6 +101,15 @@ class Shipment extends Core\Model {
             $container_mode =implode("','",$data['container_mode']); 
             $where .= " and shipment.container_mode in('{$container_mode}')";
         }
+
+        if(isset($data['master_bill']) && !empty($data['master_bill'])){
+            $where .= " and shipment.master_bill  = '{$data['master_bill']}'";
+        }
+
+        if(isset($data['house_bill']) && !empty($data['house_bill'])){
+            $where .= " and shipment.house_bill  = '{$data['house_bill']}'";
+        }
+         
         
         //if($data['origin'] != ""){
             // if($data['ETA'] == ""){
