@@ -18,7 +18,9 @@
     .select2-selection__choice {
         color: #333 !important;
     }
-   
+    #myModal{
+        z-index: 99999;
+    } 
 </style>
 <?php //var_dump($this->user_settings); die(); ?>
 <section class="content">
