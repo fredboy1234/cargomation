@@ -180,6 +180,9 @@ console.log(parsed_qs);
         d.transportmode_air = $("input[name='transportmode_air']:checked").val();
         d.post_trigger = $("input[name='post_trigger']").val();
         d.container_mode = $("#container_mode").val();
+        d.master_bill = $("input[name='master_bill']").val();
+        d.house_bill = $("input[name='house_bill']").val();
+        
       },
     },
     columns: tableColumnData,

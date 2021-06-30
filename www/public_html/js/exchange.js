@@ -21,7 +21,14 @@ $(function () {
     pageLength: 30,
     lengthChange: false,
     colReorder: true,
-    order: false
+    //order: false,
+    columns: [
+      null,
+      {orderable: false },
+      {orderable: false },
+      null,
+      {orderable: false }
+    ]
   });
 
   //on search data table
