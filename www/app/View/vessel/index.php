@@ -182,7 +182,7 @@
                         <h3 class="card-title d-block">List of Containers</h3><br>
                         <span>Click each container to check details.</span>
                     </div>
-                    <div class="col-md-8 d-inline-block float-right">
+                    <div class="col-md-8  float-right d-none">
                         <h6 class="d-inline-block">Legend:</h6>
                         <div class="l-done d-inline-block">
                             <span class="d-inline-block">Already Completed Shipment:</span><div class="d-inline-block"></div>
