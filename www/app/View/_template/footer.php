@@ -216,7 +216,9 @@ crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+
 <script>
+  
 $(document).ready(function () {
   $("#contact-form").submit(function (e) {
 
@@ -284,24 +286,94 @@ $(document).ready(function(){
           [[13.08775,100.88433],[31.366365,121.61475]]
         ];
   var markerpoly = [[31.366365,121.61475],[-33.86785, 151.20732],[1.28967,103.85007],[-37.814,144.96332],[13.08775,100.88433],[31.366365,121.61475]];
-  
+  // var earth = new WE.map('dashmap');
+  //       WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  //         attribution: '© OpenStreetMap contributors'
+  //       }).addTo(earth);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(map);
 
-  $.each(markerpoly,function(k,v){
-      L.marker(v).bindPopup(
-            '<div class="text-center">'
-            +'<br>'
-            +'<span>Origin: Australia - Destination: Singapore</span><br>'
-            +'<span>Container Number: AMCU9279460</span><br>'
-            +'<span>Arrival: 2021-06-26 06:00:00</span><br>'
-            +'<a href="/vessel/tracking?AMCU9279460" class="btn btn-success text-white">Live Tracking</a>'
-            +'</div>'
-        ).addTo(map);
+  // $.each(markerpoly,function(k,v){
+  //     L.marker(v).bindPopup(
+  //           '<div class="text-center">'
+  //           +'<br>'
+  //           +'<span>Origin: Australia - Destination: Singapore</span><br>'
+  //           +'<span>Container Number: AMCU9279460</span><br>'
+  //           +'<span>Arrival: 2021-06-26 06:00:00</span><br>'
+  //           +'<a href="/vessel/tracking?AMCU9279460" class="btn btn-success text-white">Live Tracking</a>'
+  //           +'</div>'
+  //       ).addTo(map);
+  // });
+
+  var icon = L.divIcon({
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+  popupAnchor: [10, 0],
+  shadowSize: [0, 0],
+  className: 'animated-icon my-icon',
+  html: ''
+});
+
+
+  var route = L.featureGroup().addTo(map);
+  var geo = [];
+  var mapdetails = [];
+  var shipments = <?=$this->shipment_with_port?>;
+  $.each(shipments,function(okey,oval){
+    var loading = oval.port_loading; 
+    var discharge = oval.port_discharge;
+    var loadingLoc = [];
+    var dischargeLoc = [];
+    
+    var req1 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+loading, function(data){
+        if(data[0]){
+           
+            loadingLoc.push([data[0].lat,data[0].lon]);
+        }
+    });
+    
+    var req2 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+discharge, function(data){
+        if(data[0]){
+        
+        dischargeLoc.push([data[0].lat,data[0].lon]);
+        }
+    });
+    
+    $.when(req1,req2).done(function(){
+      
+      var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
+        '<div class="text-center">'
+        +'<br>'
+        +'<span>Origin:'+oval.port_loading+'</span><br>'
+        +'<span>Shipment Number:'+oval.shipment_num+'</span><br>'
+        +'<span>Consignee:'+oval.consignee+'</span><br>'
+        +'<span>ETD:'+oval.etd+'</span><br>'
+        +'<span>see more..</span>'
+        +'</div>'
+      );
+      var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
+        '<div class="text-center">'
+        +'<br>'
+        +'<span>Destination:'+oval.port_discharge+'</span><br>'
+        +'<span>Shipment Number:'+oval.shipment_num+'</span><br>'
+        +'<span>Consignee:'+oval.consignee+'</span><br>'
+        +'<span>ETD:'+oval.eta+'</span><br>'
+        +'<span>see more..</span>'
+        +'</div>'
+      );
+      var line = new L.polyline([loadingLoc[0],dischargeLoc[0]]);
+      
+      route.addLayer(marker);
+      route.addLayer(marker2);
+      route.addLayer(line);
+        
+    });
+    
   });
+
   // var greenIcon = L.icon({
   //     iconUrl: 'leaf-green.png',
   //     shadowUrl: 'leaf-shadow.png',
@@ -352,34 +424,34 @@ $(document).ready(function(){
 
   
   
-var polyline = L.polyline(polyArray[0], {
-        color: '#007bff',
-        weight: 2,
-        opacity: 0.5,
-        dashArray: '4',
-        lineJoin: 'miter',
-        lineCap: 'square',
-      }).addTo(map);
-var polyline2 = L.polyline(polyArray[1], {
-  color: '#007bff',
-  weight: 2,
-  opacity: 0.5,
-  dashArray: '4',
-  lineJoin: 'miter',
-  lineCap: 'square',
-}).addTo(map);
+// var polyline = L.polyline(polyArray[0], {
+//         color: '#007bff',
+//         weight: 2,
+//         opacity: 0.5,
+//         dashArray: '4',
+//         lineJoin: 'miter',
+//         lineCap: 'square',
+//       }).addTo(map);
+// var polyline2 = L.polyline(polyArray[1], {
+//   color: '#007bff',
+//   weight: 2,
+//   opacity: 0.5,
+//   dashArray: '4',
+//   lineJoin: 'miter',
+//   lineCap: 'square',
+// }).addTo(map);
 
-var polyline3 = L.polyline(polyArray[2], {
-  color: '#007bff',
-  weight: 2,
-  opacity: 0.5,
-  dashArray: '4',
-  lineJoin: 'miter',
-  lineCap: 'square',
-}).addTo(map);
+// var polyline3 = L.polyline(polyArray[2], {
+//   color: '#007bff',
+//   weight: 2,
+//   opacity: 0.5,
+//   dashArray: '4',
+//   lineJoin: 'miter',
+//   lineCap: 'square',
+// }).addTo(map);
 
-map.fitBounds(polyline.getBounds());
-map.fitBounds(polyline2.getBounds());
+// map.fitBounds(polyline.getBounds());
+// map.fitBounds(polyline2.getBounds());
 
 });
 </script>

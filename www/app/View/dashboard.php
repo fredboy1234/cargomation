@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.map__marker {
+.animated-icon {
   background: #002147;
   border-radius: 10px;
   height: 10px;
@@ -16,7 +16,7 @@
   width: 10px;
 }
 
-.map__marker::before {
+.animated-icon::before {
     animation: blink 1s infinite ease-out;
     border-radius: 60px;
     box-shadow: inset 0 0 0 1px #002147;
@@ -38,7 +38,14 @@
     width: 30px;
   }
 }
-
+.animated-icon{
+  width: 20px;
+  height: 20px;
+  background-color: rgb(224 52 14 / 50%);
+  border-radius: 50%;
+  box-shadow: 0px 0px 4px white;
+  transition: all 1s;
+}
   </style>
   <!-- Main content -->
     <section class="content">
