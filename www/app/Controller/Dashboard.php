@@ -69,7 +69,9 @@ class Dashboard extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        
+            // echo"<pre>";
+            // print_r(Model\Shipment::getShipmentDynamic($userID,'*', 'port'));
+            // exit;
         $this->View->renderTemplate("/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -84,6 +86,7 @@ class Dashboard extends Core\Controller {
             "not_arrived" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'not arrived')),
             "air_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'air')),
             "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea')),
+            "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
         ]);
     }
 
