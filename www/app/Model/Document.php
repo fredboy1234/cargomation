@@ -261,6 +261,46 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    /**
+     * Get Doc Stat: Get document stats for specific user.
+     * @access public
+     * @param int $user
+     * @return array|object
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public static function getDocumentStats($user) {
+        $Db = Utility\Database::getInstance();
+        $total_files = $Db->query("SELECT count(*) as count from document d
+                                LEFT JOIN shipment s
+                                ON d.shipment_num = s.shipment_num
+                                LEFT JOIN document_status ds
+                                ON d.id = ds.document_id
+                                WHERE s.user_id = '{$user}' 
+                                AND ds.status != 'deleted'")->results();
+        $pending_files = $Db->query("SELECT count(*) as count from document d
+                                LEFT JOIN shipment s
+                                ON d.shipment_num = s.shipment_num
+                                LEFT JOIN document_status ds
+                                ON d.id = ds.document_id
+                                WHERE s.user_id = '{$user}' 
+                                AND ds.status = 'pending'")->results();
+        $new_request = $Db->query("SELECT count(*) as count from document_request dr
+                                WHERE dr.user_id = '{$user}' 
+                                AND dr.request_type = 'new'")->results();
+        $update_request = $Db->query("SELECT count(*) as count from document_request dr
+                                WHERE dr.user_id = '{$user}' 
+                                AND dr.request_type = 'edit'")->results();
+
+        return [
+            "total_files" => $total_files,
+            "pending_files" => $pending_files,
+            "new_request" => $new_request,
+            "update_request" => $update_request
+        ];
+    }
+
+
     
 
 }
