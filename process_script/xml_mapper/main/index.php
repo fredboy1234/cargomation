@@ -367,6 +367,8 @@ try{
 			$CONSIGNORADDRESS ="";
 			$PATH_CONSIGNORADDRESS = "";
 			$ship_id="";
+			$PORTOFDISCHARGE="";
+			$PORTOFLOADING="";
 			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
@@ -376,6 +378,13 @@ try{
 			$XPATH_SHIPMENTTYPE = jsonPath($universal_shipment, $path_DataSource.".Type");
 			$SHIPMENTTYPE = $parser->encode($XPATH_SHIPMENTTYPE);
 		    $SHIPMENTTYPE = node_exist(getArrayName($SHIPMENTTYPE));
+
+		    $path_EventSource ="$.Body.UniversalEvent.Event.DataContext.EventType";
+		    $XPATH_EVENTYPE = jsonPath($universal_shipment, $path_EventSource.".Description");
+			$EVENTYPE = $parser->encode($XPATH_EVENTYPE);
+		    $EVENTYPE = node_exist(getArrayName($EVENTYPE));
+
+
 	
 			if ($SHIPMENTTYPE != "") {
 				if ($SHIPMENTTYPE == "ForwardingShipment") {
@@ -428,9 +437,16 @@ try{
 					}
 				}
 			}
-	 
 
-			if ($CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
+            
+             if($SHIPMENTTYPE == "" & $SHIPMENTTYPE_ == ""){
+            	$destination_pathERR = "E:/A2BFREIGHT_MANAGER/$client_email/CW_ERROR/";						
+					if(!file_exists($destination_pathERR.$filename)){
+					rename($filename, $destination_pathERR . pathinfo($filename, PATHINFO_BASENAME));
+					}
+				}
+            
+			if ($EVENTYPE != "Document Imported" && $CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
                 
 				//XML PATH
 				$path_UniversalShipment = "$.Body.UniversalShipment.Shipment";
@@ -529,6 +545,15 @@ try{
 				$CONTAINERCOUNT = $parser->encode($XPATH_CONTAINERCOUNT);
 				$CONTAINERctr = node_exist(getArrayName($CONTAINERCOUNT));
 				$CONTAINERctr = (int)$CONTAINERctr;
+
+				$XPATH_PORTOFLOADING = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfLoading.Name");
+				$PORTOFLOADING = $parser->encode($XPATH_PORTOFLOADING);
+				$PORTOFLOADING = node_exist(getArrayName($PORTOFLOADING));
+
+				$XPATH_PORTOFDISCHARGE = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfDischarge.Name");
+				$PORTOFDISCHARGE = $parser->encode($XPATH_PORTOFDISCHARGE);
+				$PORTOFDISCHARGE = node_exist(getArrayName($PORTOFDISCHARGE));
+
 				if ($CONTAINERctr == 1) {
 					$CONTAINERctr = 1;
 				}
@@ -679,9 +704,9 @@ try{
 				$sqlInsertRecord = "INSERT INTO shipment
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
-				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode)
+				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
-				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."')";
+				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."')";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
 						$sql_getlastshipID = "SELECT top 1 MAX(Id) as ship_id FROM shipment";
 						$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
@@ -971,7 +996,7 @@ try{
 				        Set console_id='$CONSOLNUMBER', master_bill ='$WAYBILLNUMBER', house_bill='$HOUSEWAYBILLNUMBER', transport_mode='$TRANSMODE',
 				        vessel_name='$VESSELNAME', voyage_flight_num='$VOYAGEFLIGHTNO', vesslloyds='$VESSELLOYDSIMO', eta='$TRANS_ETA', etd='$TRANS_ETD', place_delivery='$PLACEOFDELIVERY', place_receipt='$PLACEOFRECEIPT',
 				        consignee='$CONSIGNEE',consignor='$CONSIGNOR',sending_agent='$PATH_SENDINGAGENT',receiving_agent='$PATH_RECEIVINGAGENT',receiving_agent_addr='$RECEIVINGAGENTADDRESS',
-				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE'
+				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE'
 				        WHERE shipment_num = '$SHIPMENTKEY' AND user_id = '$CLIENT_ID'";
 						$updateRec = sqlsrv_query($conn, $sqlUpdateRecord);
 					
