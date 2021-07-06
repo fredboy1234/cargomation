@@ -19,7 +19,7 @@
         color: #333 !important;
     }
     #myModal{
-        z-index: 99999;
+        z-index: 1049;
     } 
 </style>
 <?php //var_dump($this->user_settings); die(); ?>
