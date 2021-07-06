@@ -14,6 +14,9 @@ require_once ('connection.php');
 header('Content-Type: text/plain');
 set_time_limit(0);
 ini_set('memory_limit', '-1');
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 if(isset($_GET['user_id'])){
 	
@@ -342,11 +345,13 @@ try{
 			$client_email = $row_user['email'];
 		}
 		$myarray = glob("E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/*");
-		usort($myarray, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
+		//usort($myarray, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
+		usort($myarray, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray as $filename) {
 			$path_DataSource ="$.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource";
 			$CONSOLNUMBER = "";
 			$SHIPMENTKEY = "";
+			$SHIPMENTTYPE_ ="";
 			$WAYBILLNUMBER = "";
 			$HOUSEWAYBILLNUMBER = "";
 			$TRANSMODE = "";
@@ -369,6 +374,7 @@ try{
 			$ship_id="";
 			$PORTOFDISCHARGE="";
 			$PORTOFLOADING="";
+	
 			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
@@ -384,69 +390,91 @@ try{
 			$EVENTYPE = $parser->encode($XPATH_EVENTYPE);
 		    $EVENTYPE = node_exist(getArrayName($EVENTYPE));
 
-
+		    $SHIPKEY = false;
+		    $CONSOLKEY = false;
+		    $CUSTOMEKEY = false;
 	
 			if ($SHIPMENTTYPE != "") {
 				if ($SHIPMENTTYPE == "ForwardingShipment") {
 					$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource.".Key");
 					$SHIPMENTKEY = $parser->encode($XPATH_SHIPMENTKEY);
 					$SHIPMENTKEY = node_exist(getArrayName($SHIPMENTKEY));
+					$SHIPKEY = true;
 				} elseif ($SHIPMENTTYPE == "ForwardingConsol") {
 					$XPATH_CONSOLNUMBER = jsonPath($universal_shipment, $path_DataSource.".Key");
 					$CONSOLNUMBER = $parser->encode($XPATH_CONSOLNUMBER);
 					$CONSOLNUMBER = node_exist(getArrayName($CONSOLNUMBER));
+					$CONSOLKEY = true;
 				}
 				elseif ($SHIPMENTTYPE == "CustomsDeclaration") {
 					$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource.".Key");
 					$SHIPMENTKEY = $parser->encode($XPATH_SHIPMENTKEY);
 					$SHIPMENTKEY = node_exist(getArrayName($SHIPMENTKEY));
+					$CUSTOMKEY = true;
 				}
 				
 				else {
 					if ($CONSOLNUMBER == "" || is_null($CONSOLNUMBER) == true) {
 						$CONSOLNUMBER = "";
+
 					}
 				}
 			} elseif ($SHIPMENTTYPE == "") {
+
 				for ($k = 0; $k <= 2; $k++) {
 					$XPATH_SHIPMENTTYPE_ = jsonPath($universal_shipment, $path_DataSource."[$k].Type");
 					$SHIPMENTTYPE_ = $parser->encode($XPATH_SHIPMENTTYPE_);
 					$SHIPMENTTYPE_ = node_exist(getArrayName($SHIPMENTTYPE_));
+
 					if ($SHIPMENTTYPE_ != "") {
+
 						if ($SHIPMENTTYPE_ == "ForwardingShipment") {
 							$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource."[$k].Key");
 							$SHIPMENTKEY = $parser->encode($XPATH_SHIPMENTKEY);
 							$SHIPMENTKEY = node_exist(getArrayName($SHIPMENTKEY));
+							$SHIPKEY = true;
+								
+
 						} elseif ($SHIPMENTTYPE_ == "ForwardingConsol") {
 							$XPATH_CONSOLNUMBER = jsonPath($universal_shipment, $path_DataSource."[$k].Key");
 							$CONSOLNUMBER = $parser->encode($XPATH_CONSOLNUMBER);
 							$CONSOLNUMBER = node_exist(getArrayName($CONSOLNUMBER));
+							$CONSOLKEY = true;
+								
 						}
 						elseif ($SHIPMENTTYPE_ == "CustomsDeclaration") {
 							$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource."[$k].Key");
 							$SHIPMENTKEY = $parser->encode($XPATH_SHIPMENTKEY);
 							$SHIPMENTKEY = node_exist(getArrayName($SHIPMENTKEY));
+							$CUSTOMKEY = true;
+							
 						}
+						  
 					} else {
+					
 						if ($SHIPMENTKEY == "") {
 							$SHIPMENTKEY = "";
+								
 						}
-				if ($CONSOLNUMBER == "" || is_null($CONSOLNUMBER) == true) {
+						if ($CONSOLNUMBER == "" || is_null($CONSOLNUMBER) == true) {
 							$CONSOLNUMBER = "";
+								
+						}
+                    
+                    if($SHIPKEY == false || $CONSOLKEY == false || $CONSOLKEY == false)
+                    {
+					$destination_pathERR = "E:/A2BFREIGHT_MANAGER/$client_email/CW_ERROR/";						
+					if(!file_exists($destination_pathERR.$filename)){
+					rename($filename, $destination_pathERR . pathinfo($filename, PATHINFO_BASENAME));
+					}
+							Continue;
 						}
 					}
 				}
 			}
-
+	
             
-             if($SHIPMENTTYPE == "" & $SHIPMENTTYPE_ == ""){
-            	$destination_pathERR = "E:/A2BFREIGHT_MANAGER/$client_email/CW_ERROR/";						
-					if(!file_exists($destination_pathERR.$filename)){
-					rename($filename, $destination_pathERR . pathinfo($filename, PATHINFO_BASENAME));
-					}
-				}
-            
-			if ($EVENTYPE != "Document Imported" && $CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
+			if ($CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
                 
 				//XML PATH
 				$path_UniversalShipment = "$.Body.UniversalShipment.Shipment";
@@ -1319,5 +1347,5 @@ try{
 	}
 } 
 else{die("eAdaptor not found");}
-header("HTTP/1.1 200 OK");
+//header("HTTP/1.1 200 OK");
 ?>
