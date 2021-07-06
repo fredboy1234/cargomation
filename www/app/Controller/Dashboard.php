@@ -88,6 +88,7 @@ class Dashboard extends Core\Controller {
             "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea')),
             "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
+            "document_stats" => Model\Document::getDocumentStats($userID),
         ]);
     }
 
