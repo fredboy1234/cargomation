@@ -293,7 +293,7 @@ $(document).ready(function(){
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
-    maxZoom: 19
+    maxZoom: 8
   }).addTo(map);
 
   // $.each(markerpoly,function(k,v){
@@ -322,7 +322,7 @@ $(document).ready(function(){
   var mapdetails = [];
   var shipments = <?=$this->shipment_with_port?>;
   var port_loading_couint = <?=$this->port_loading_count?>;
-  
+  var markerarr =[];
   $.each(shipments,function(okey,oval){
     var loading = oval.port_loading; 
     var discharge = oval.port_discharge;
@@ -331,9 +331,10 @@ $(document).ready(function(){
 
    
 
-    var req1 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+loading, function(data){
-      if(data[0]){
-          loadingLoc.push([data[0].lat,data[0].lon]);
+    var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){
+     
+      if(data.status ==="OK"){
+        loadingLoc.push([data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]);
       }
     });
     
@@ -345,7 +346,7 @@ $(document).ready(function(){
     // });
     
     $.when(req1).done(function(){
-      //console.log(lon);
+      console.log(loadingLoc);
       var pcount = 0; 
       var current = null;
       $.each(port_loading_couint,function(op,ov){
@@ -389,20 +390,27 @@ $(document).ready(function(){
       //     lineCap: 'square',
       //  });
       
+       
+
       route.addLayer(marker);
-      console.log(current);
+      
       if(oval.port_loading !== current){
           route.addLayer(popup);
-          current = ov.port_loading;
+          current = oval.port_loading;
       } 
-
+     
       //route.addLayer(marker2);
       //route.addLayer(line);
-        
+      markerarr.push(marker);
     });
     
   });
-
+  setTimeout(function(){
+    var group = L.featureGroup(markerarr); 
+    map.fitBounds(group.getBounds());
+  
+  },2000);
+  
   // var greenIcon = L.icon({
   //     iconUrl: 'leaf-green.png',
   //     shadowUrl: 'leaf-shadow.png',
