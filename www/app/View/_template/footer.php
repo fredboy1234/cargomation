@@ -317,58 +317,87 @@ $(document).ready(function(){
   html: ''
 });
 
-
   var route = L.featureGroup().addTo(map);
-  var geo = [];
+  var countLoading = [];
   var mapdetails = [];
   var shipments = <?=$this->shipment_with_port?>;
+  var port_loading_couint = <?=$this->port_loading_count?>;
+  
   $.each(shipments,function(okey,oval){
     var loading = oval.port_loading; 
     var discharge = oval.port_discharge;
     var loadingLoc = [];
     var dischargeLoc = [];
-    
+
+   
+
     var req1 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+loading, function(data){
-        if(data[0]){
-           
-            loadingLoc.push([data[0].lat,data[0].lon]);
-        }
+      if(data[0]){
+          loadingLoc.push([data[0].lat,data[0].lon]);
+      }
     });
     
-    var req2 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+discharge, function(data){
-        if(data[0]){
+    // var req2 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+discharge, function(data){
+    //     if(data[0]){
         
-        dischargeLoc.push([data[0].lat,data[0].lon]);
-        }
-    });
+    //     dischargeLoc.push([data[0].lat,data[0].lon]);
+    //     }
+    // });
     
-    $.when(req1,req2).done(function(){
-      
-      var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
-        '<div class="text-center">'
-        +'<br>'
-        +'<span>Origin:'+oval.port_loading+'</span><br>'
-        +'<span>Shipment Number:'+oval.shipment_num+'</span><br>'
-        +'<span>Consignee:'+oval.consignee+'</span><br>'
-        +'<span>ETD:'+oval.etd+'</span><br>'
-        +'<span>see more..</span>'
-        +'</div>'
-      );
-      var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
-        '<div class="text-center">'
-        +'<br>'
-        +'<span>Destination:'+oval.port_discharge+'</span><br>'
-        +'<span>Shipment Number:'+oval.shipment_num+'</span><br>'
-        +'<span>Consignee:'+oval.consignee+'</span><br>'
-        +'<span>ETD:'+oval.eta+'</span><br>'
-        +'<span>see more..</span>'
-        +'</div>'
-      );
-      var line = new L.polyline([loadingLoc[0],dischargeLoc[0]]);
+    $.when(req1).done(function(){
+      //console.log(lon);
+      var pcount = 0; 
+      var current = null;
+      $.each(port_loading_couint,function(op,ov){
+        if(ov.port_loading === oval.port_loading){
+          pcount = ov.count;
+        } 
+      });
+      var popupContent = '<div class="text-center">'
+        +'<span>POL:'+oval.port_loading+'</span><br>'
+        +'<a href="/doctracker">SHP No.:'+oval.shipment_num+'</a><br>'
+        +'<span>Count:'+pcount+'</span><br>'  
+        +'</div>';
+        popup = new L.Popup();
+        popup.setLatLng(loadingLoc[0]);
+        popup.setContent(popupContent);
+        
+    //  var popup = new L.Popup({ autoClose: false, })
+    //             .setContent( '<div class="text-center">'
+    //     +'<span>POL:'+oval.port_loading+'</span><br>'
+    //     +'<a href="/doctracker">SHP No.:'+oval.shipment_num+'</a><br>'
+    //     +'<span>Count:'+pcount+'</span><br>'  
+    //     +'</div>')
+    //             .setLatLng(loadingLoc[0]);
+      var marker = L.marker(loadingLoc[0],{icon: icon});
+      // var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
+      //   '<div class="text-center">'
+      //   +'<br>'
+      //   +'<span>Destination:'+oval.port_discharge+'</span><br>'
+      //   +'<span>Shipment Number:'+oval.shipment_num+'</span><br>'
+      //   +'<span>Consignee:'+oval.consignee+'</span><br>'
+      //   +'<span>ETD:'+oval.eta+'</span><br>'
+      //   +'<span>see more..</span>'
+      //   +'</div>'
+      // );
+      // var line = new L.polyline([loadingLoc[0],dischargeLoc[0]],{
+      //     color: '#007bff',
+      //     weight: 2,
+      //     opacity: 0.5,
+      //     dashArray: '4',
+      //     lineJoin: 'miter',
+      //     lineCap: 'square',
+      //  });
       
       route.addLayer(marker);
-      route.addLayer(marker2);
-      route.addLayer(line);
+      console.log(current);
+      if(oval.port_loading !== current){
+          route.addLayer(popup);
+          current = ov.port_loading;
+      } 
+
+      //route.addLayer(marker2);
+      //route.addLayer(line);
         
     });
     
