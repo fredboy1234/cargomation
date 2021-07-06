@@ -273,7 +273,7 @@ class Shipment extends Core\Model {
             $where .=" and shipment.transport_mode = 'sea' ";
         }
         if($condition === 'port'){
-            $top .= "TOP(10)";
+            $top .= "TOP(20)";
             $where .=" and shipment.port_loading is not null and shipment.port_discharge is not null";
         }
         $Db = Utility\Database::getInstance();
@@ -283,5 +283,11 @@ class Shipment extends Core\Model {
                         {$where}")->results();
         
         
+    }
+
+    public static function countOfPort($user_id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("select count(port_loading) as count ,port_loading
+        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading")->results();
     }
 }
