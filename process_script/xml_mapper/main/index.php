@@ -467,10 +467,11 @@ try{
 					if(!file_exists($destination_pathERR.$filename)){
 					rename($filename, $destination_pathERR . pathinfo($filename, PATHINFO_BASENAME));
 					}
-							Continue;
+							
 						}
 					}
 				}
+				Continue;
 			}
 	
             
