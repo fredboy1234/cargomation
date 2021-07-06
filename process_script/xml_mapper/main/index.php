@@ -138,7 +138,8 @@ try{
 					$Saved_date = $parser->encode($xpath_SavedUtc);
 					$Saved_EventTime = $parser->encode($xpath_SavedEventTime);
 					$Saved_By = $parser->encode($xpath_SavedBy);
-					$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
+					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
+					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = getArrayName($SingleAttach_ctrb64);
 					$get_valDocType_ = node_exist(getArrayName($DocType));
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
@@ -213,7 +214,8 @@ try{
 					$Saved_date = $parser->encode($xpath_SavedUtc);
 					$Saved_EventTime = $parser->encode($xpath_SavedEventTime);
 					$Saved_By = $parser->encode($xpath_SavedBy);
-					$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
+					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
+					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = node_exist(getArrayName($SingleAttach_ctrb64));
 					$get_valDocType_ = node_exist(getArrayName($DocType));
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
