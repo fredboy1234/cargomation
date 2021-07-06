@@ -1042,7 +1042,7 @@ try{
 							 $TRANS_ETD = null;
 						}
 						while ($row_shipid = sqlsrv_fetch_array($qryResultShipID, SQLSRV_FETCH_ASSOC)) {
-								$ship_id = $row_shipid['id'];
+								 $ship_idlast = $row_shipid['id'];
 						}
 						$sqlUpdateRecord = "Update shipment
 				        Set console_id='$CONSOLNUMBER', master_bill ='$WAYBILLNUMBER', house_bill='$HOUSEWAYBILLNUMBER', transport_mode='$TRANSMODE',
@@ -1051,10 +1051,7 @@ try{
 				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE'
 				        WHERE shipment_num = '$SHIPMENTKEY' AND user_id = '$CLIENT_ID'";
 						$updateRec = sqlsrv_query($conn, $sqlUpdateRecord);
-					
-						while ($row_shipid = sqlsrv_fetch_array($qryResultShipID, SQLSRV_FETCH_ASSOC)) {
-							$ship_idlast = $row_shipid['id'];
-						}
+	
 						//rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
                         //UPDATE RECORD FOR NEW CONTAINER
 						
