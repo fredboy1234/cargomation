@@ -177,42 +177,42 @@
               <!-- /.card-header -->
               <div class="card-body">
                   <!-- Info Boxes Style 2 -->
-                  <div class="info-box mb-3 bg-warning">
-                    <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+                  <div class="info-box mb-3">
+                    <span class="info-box-icon text-success"><i class="far fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
-                      <span class="info-box-text">For Approval</span>
-                      <span class="info-box-number">5,200</span>
+                      <span class="info-box-text">Total Uploaded Files</span>
+                      <span class="info-box-number"><?= $this->document_stats['total_files'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-danger">
-                    <span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                  <div class="info-box mb-3">
+                    <span class="info-box-icon text-danger"><i class="fas fa-exclamation-triangle"></i></span>
 
                     <div class="info-box-content">
-                      <span class="info-box-text">Missing Doc</span>
-                      <span class="info-box-number">92,050</span>
+                      <span class="info-box-text">Document for Approval</span>
+                      <span class="info-box-number"><?= $this->document_stats['pending_files'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-success">
-                    <span class="info-box-icon"><i class="far fa-check-square"></i></span>
+                  <div class="info-box mb-3">
+                    <span class="info-box-icon text-info"><i class="far fa-check-square"></i></span>
 
                     <div class="info-box-content">
-                      <span class="info-box-text">Approved Doc</span>
-                      <span class="info-box-number">114,381</span>
+                      <span class="info-box-text">Requested Documents</span>
+                      <span class="info-box-number"><?= $this->document_stats['new_request'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-info">
-                    <span class="info-box-icon"><i class="far fa-edit"></i></span>
+                  <div class="info-box mb-3">
+                    <span class="info-box-icon text-warning"><i class="far fa-edit"></i></span>
 
                     <div class="info-box-content">
-                      <span class="info-box-text">Doc with Notes</span>
-                      <span class="info-box-number">163,921</span>
+                      <span class="info-box-text">Document for Update</span>
+                      <span class="info-box-number"><?= $this->document_stats['update_request'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
