@@ -274,10 +274,11 @@ class Shipment extends Core\Model {
         }
         if($condition === 'port'){
             $top .= "TOP(20)";
-            $where .=" and shipment.port_loading is not null and shipment.port_discharge is not null";
+            $where .=" and shipment.port_loading is not null and shipment.port_discharge is not null ";
         }
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT {$top} shipment.id as shipment_id, {$arg} 
+        
+        return $Db->query("SELECT  shipment.id as shipment_id, {$arg} 
                         FROM shipment 
                         FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
                         {$where}")->results();
