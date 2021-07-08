@@ -314,7 +314,7 @@ $(document).ready(function(){
   popupAnchor: [10, 0],
   shadowSize: [0, 0],
   className: 'animated-icon my-icon',
-  html: ''
+  html: 'test'
 });
 
   var route = L.featureGroup().addTo(map);
@@ -346,7 +346,7 @@ $(document).ready(function(){
     // });
     
     $.when(req1).done(function(){
-      console.log(loadingLoc);
+      
       var pcount = 0; 
       var current = null;
       $.each(port_loading_couint,function(op,ov){
@@ -370,7 +370,13 @@ $(document).ready(function(){
     //     +'<span>Count:'+pcount+'</span><br>'  
     //     +'</div>')
     //             .setLatLng(loadingLoc[0]);
-      var marker = L.marker(loadingLoc[0],{icon: icon});
+    icon.options.html ='<span class="badge badge-primary">'+pcount+'</span>';
+    console.log(icon.options.html);
+      var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
+                  '<div class="text-center">'
+                  +'<span>POL:'+oval.port_loading+'</span><br>'
+                  +'<a href="/doctracker">SHP No.:'+oval.shipment_num+'</a><br>'
+                  +'<span>Count:'+pcount+'</span><br>');
       // var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
       //   '<div class="text-center">'
       //   +'<br>'
@@ -394,10 +400,10 @@ $(document).ready(function(){
 
       route.addLayer(marker);
       
-      if(oval.port_loading !== current){
-          route.addLayer(popup);
-          current = oval.port_loading;
-      } 
+      // if(oval.port_loading !== current){
+      //     route.addLayer(popup);
+      //     current = oval.port_loading;
+      // } 
      
       //route.addLayer(marker2);
       //route.addLayer(line);
