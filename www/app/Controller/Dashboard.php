@@ -72,7 +72,7 @@ class Dashboard extends Core\Controller {
             // echo"<pre>";
             // print_r(Model\Shipment::getShipmentDynamic($userID,'*', 'port'));
             // exit;
-           
+        
         $this->View->renderTemplate("/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -91,6 +91,24 @@ class Dashboard extends Core\Controller {
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
             "document_stats" => Model\Document::getDocumentStats($userID),
         ]);
+        $this->externalTemp();
+    }
+
+    public function externalTemp(){
+        echo '<link rel="stylesheet" href="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.css" crossorigin=""/>';
+        //  echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        //  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        //  crossorigin=""></script>';
+        //echo '<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>';
+         //echo '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>';
+        // echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>';
+        //echo '<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>';
+        //  echo '<script src="https://unpkg.com/leaflet/dist/leaflet-src.js"></script>';
+        //  echo '<script src="https://unpkg.com/esri-leaflet"></script>';
+        //echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet-geocoder/3.0.0/esri-leaflet-geocoder.js"></script>';
+        //echo '<script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
+        echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>';
+        echo ' <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>';
     }
 
 }
