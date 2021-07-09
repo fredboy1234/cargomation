@@ -371,11 +371,14 @@ $(document).ready(function(){
     //     +'</div>')
     //             .setLatLng(loadingLoc[0]);
     icon.options.html ='<span class="badge badge-primary">'+pcount+'</span>';
-    console.log(oval.transport_mode);
-    if(oval.transport_mode ==='Air'){
-      icon.options.className += ' aircol ';
-    }else if(oval.transport_mode ==='Sea'){
-      icon.options.className += ' seacol ' 
+    
+    if(oval.transport_mode =='Air'){
+     
+      icon.options.className = ' animated-icon my-icon aircol ';
+    }else if(oval.transport_mode =='Sea'){
+      
+      icon.options.className = ' animated-icon my-icon seacol ' ;
+
     }
       var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
                   '<div class="text-center">'

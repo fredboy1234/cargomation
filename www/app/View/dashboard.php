@@ -41,16 +41,16 @@
 .animated-icon{
   width: 20px;
   height: 20px;
-  background-color: rgb(224 52 14 / 50%);
+  /* background-color: rgb(224 52 14 / 50%); */
   border-radius: 50%;
   box-shadow: 0px 0px 4px white;
   transition: all 1s;
 }
 .seacol{
-  background-color: rgba(52, 255, 93, 0.5) !important;
+  background-color: rgba(52, 255, 93, 0.5);
 }
 .aircol{
-  background-color: rgba(60, 150, 247, 0.5) !important;
+  background-color: rgba(60, 150, 247, 0.5);
 }
   </style>
   <!-- Main content -->
