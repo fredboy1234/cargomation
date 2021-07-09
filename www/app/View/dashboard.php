@@ -62,12 +62,12 @@
             <!-- small box -->
             <div class="small-box">
               <div class="inner">
-                <h3 class="text-success"><?php echo $this->total_shipment?></h3>
+                <h3 class="text-dark"><?php echo $this->total_shipment?></h3>
 
                 <p>Total Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-cube text-success"></i>
+                <i class="ion ion-cube text-dark"></i>
               </div>
               <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -77,12 +77,12 @@
             <!-- small box -->
             <div class="small-box">
               <div class="inner">
-                <h3 class="text-primary"><?=$this->sea_shipment?></h3>
+                <h3 class="text-success"><?=$this->sea_shipment?></h3>
 
                 <p>Sea Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-boat text-primary"></i>
+                <i class="ion ion-android-boat text-success"></i>
               </div>
               <a href="/doctracker?transport_mode=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -92,12 +92,12 @@
             <!-- small box -->
             <div class="small-box">
               <div class="inner">
-                <h3 class="text-warning"><?= $this->air_shipment?></h3>
+                <h3 class="text-primary"><?= $this->air_shipment?></h3>
 
                 <p>Air Shipments</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-plane text-warning"></i>
+                <i class="ion ion-android-plane text-primary"></i>
               </div>
               <a href="/doctracker?transport_mode=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
