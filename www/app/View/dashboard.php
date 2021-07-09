@@ -46,6 +46,12 @@
   box-shadow: 0px 0px 4px white;
   transition: all 1s;
 }
+.seacol{
+  background-color: rgba(52, 255, 93, 0.5) !important;
+}
+.aircol{
+  background-color: rgba(60, 150, 247, 0.5) !important;
+}
   </style>
   <!-- Main content -->
     <section class="content">
