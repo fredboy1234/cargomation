@@ -196,8 +196,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <!--for 3rd party-->
 <!-- <script src="https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js" type="text/javascript"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/jquery.bootstrap-duallistbox.min.js"></script>
-<!-- Custome JS -->
-<?= $this->getJS(); ?>
+
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <!-- Sweetalert -->
@@ -216,9 +215,12 @@ crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
+
+<!-- Custome JS -->
+<?= $this->getJS(); ?>
 
 <script>
-  
 $(document).ready(function () {
   $("#contact-form").submit(function (e) {
 
@@ -371,11 +373,14 @@ $(document).ready(function(){
     //     +'</div>')
     //             .setLatLng(loadingLoc[0]);
     icon.options.html ='<span class="badge badge-primary">'+pcount+'</span>';
-    console.log(oval.transport_mode);
-    if(oval.transport_mode ==='Air'){
-      icon.options.className += ' aircol ';
-    }else if(oval.transport_mode ==='Sea'){
-      icon.options.className += ' seacol ' 
+    
+    if(oval.transport_mode =='Air'){
+     
+      icon.options.className = ' animated-icon my-icon aircol ';
+    }else if(oval.transport_mode =='Sea'){
+      
+      icon.options.className = ' animated-icon my-icon seacol ' ;
+
     }
       var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
                   '<div class="text-center">'
@@ -499,6 +504,20 @@ $(document).ready(function(){
 
 // map.fitBounds(polyline.getBounds());
 // map.fitBounds(polyline2.getBounds());
+  var sidebar = L.control.sidebar('sidebardash', {
+        closeButton: false,
+        position: 'right'
+      });
+      map.addControl(sidebar);
+      //sidebar.setContent('<p>test test testeste</p>');
+      
+      setTimeout(function () {
+        sidebar.show();
+      }, 1000);
+
+      map.on('click',function(){
+        sidebar.toggle();
+      });
 
 });
 </script>
