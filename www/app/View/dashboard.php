@@ -1,4 +1,4 @@
-  <style>
+<style>
 
 .map {
   height: 100%;
@@ -63,7 +63,7 @@
   background: #130f0f3b !important;
   color: #ffffff;
 }
-  </style>
+</style>
   <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -183,11 +183,11 @@
             <!-- File -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">File Stats</h3>
+                <h3 class="card-title">Document Stats</h3>
                 <div class="card-tools">
                   <!-- Buttons, labels, and many other things can be placed here! -->
                   <!-- Here is a label for example -->
-                  <span class="badge badge-primary">Updated</span>
+                  <span class="badge badge-primary">New</span>
                 </div>
                 <!-- /.card-tools -->
               </div>
@@ -604,30 +604,17 @@
             <?php endif; ?>
 
             <?php if(true): ?>
-            <!-- Map card -->
-            <div id="dashmap" class="map" style="max-width:100%; width:100; height:100%">Map Here</div>
-            <div id="sidebardash">
-                <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
-                <?php $current = array();?>
-                <ul class="list-group">
-                  <?php foreach($dashSHIP as $shipe){?>
-                    <?php if( !in_array($shipe->port_loading,$current)){ ?>
-                      <li class="list-group-item"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
-                    <?php $current[] = $shipe->port_loading; } ?>
-                  <?php } ?>
-                </ul>
-            </div>
-            
-            <div class="card bg-gradient-primary" style="display: none;">
+            <!-- Map card -->            
+            <div class="card bg-gradient-default" style="display: block;">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
-                  Visitors
+                  Shipments
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
                   <button type="button"
-                          class="btn btn-primary btn-sm daterange"
+                          class="btn btn-primary btn-sm daterange invisible"
                           data-toggle="tooltip"
                           title="Date range">
                     <i class="far fa-calendar-alt"></i>
@@ -642,12 +629,23 @@
                 </div>
                 <!-- /.card-tools -->
               </div>
-              <div class="card-body">
-                <div id="world-map" style="height: 250px; width: 100%;"></div>
-                
+              <div class="card-body p-0">
+                <!-- <div id="world-map" style="height: 250px; width: 100%;"></div> -->
+                <div id="dashmap" class="map" style="position: relative; height: 495px;">Map Here</div>
+                <div id="sidebardash">
+                    <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
+                    <?php $current = array();?>
+                    <ul class="list-group">
+                      <?php foreach($dashSHIP as $shipe){?>
+                        <?php if( !in_array($shipe->port_loading,$current)){ ?>
+                          <li class="list-group-item"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
+                        <?php $current[] = $shipe->port_loading; } ?>
+                      <?php } ?>
+                    </ul>
+                </div>
               </div>
               <!-- /.card-body-->
-              <div class="card-footer bg-transparent">
+              <div class="card-footer bg-transparent invisible">
                 <div class="row">
                   <div class="col-4 text-center">
                     <div id="sparkline-1"></div>
