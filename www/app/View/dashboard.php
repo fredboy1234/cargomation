@@ -48,9 +48,20 @@
 }
 .seacol{
   background-color: rgba(52, 255, 93, 0.5);
+  height: 37px !important;
+  width: 37px !important;
 }
 .aircol{
   background-color: rgba(60, 150, 247, 0.5);
+}
+#sidebardash{
+  height: 250px;
+   background: unset;
+  border: none;
+}
+#sidebardash ul,#sidebardash ul li{
+  background: #130f0f3b !important;
+  color: #ffffff;
 }
   </style>
   <!-- Main content -->
@@ -595,6 +606,18 @@
             <?php if(true): ?>
             <!-- Map card -->
             <div id="dashmap" class="map" style="max-width:100%; width:100; height:100%">Map Here</div>
+            <div id="sidebardash">
+                <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
+                <?php $current = array();?>
+                <ul class="list-group">
+                  <?php foreach($dashSHIP as $shipe){?>
+                    <?php if( !in_array($shipe->port_loading,$current)){ ?>
+                      <li class="list-group-item"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
+                    <?php $current[] = $shipe->port_loading; } ?>
+                  <?php } ?>
+                </ul>
+            </div>
+            
             <div class="card bg-gradient-primary" style="display: none;">
               <div class="card-header border-0">
                 <h3 class="card-title">
