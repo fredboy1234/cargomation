@@ -638,7 +638,8 @@
                     <ul class="list-group">
                       <?php foreach($dashSHIP as $shipe){?>
                         <?php if( !in_array($shipe->port_loading,$current)){ ?>
-                          <li class="list-group-item"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
+                          <?php $outclass = str_replace(' ','_',strtolower($shipe->port_loading));?>
+                          <li id="<?=$outclass?>" class="list-group-item mapside-list"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
                         <?php $current[] = $shipe->port_loading; } ?>
                       <?php } ?>
                     </ul>

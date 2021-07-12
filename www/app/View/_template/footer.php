@@ -351,11 +351,15 @@ $(document).ready(function(){
       
       var pcount = 0; 
       var current = null;
+      var outClass ='';
       $.each(port_loading_couint,function(op,ov){
         if(ov.port_loading === oval.port_loading){
           pcount = ov.count;
         } 
       });
+
+      outClass = oval.port_loading.toLowerCase().replace(' ','_');
+      
       var popupContent = '<div class="text-center">'
         +'<span>POL:'+oval.port_loading+'</span><br>'
         +'<a href="/doctracker">SHP No.:'+oval.shipment_num+'</a><br>'
@@ -375,11 +379,10 @@ $(document).ready(function(){
     icon.options.html ='<span class="badge badge-primary">'+pcount+'</span>';
     
     if(oval.transport_mode =='Air'){
-     
-      icon.options.className = ' animated-icon my-icon aircol ';
+      icon.options.className = ' animated-icon my-icon aircol '+outClass+' ';
     }else if(oval.transport_mode =='Sea'){
       
-      icon.options.className = ' animated-icon my-icon seacol ' ;
+      icon.options.className = ' animated-icon my-icon seacol '+outClass+' ' ;
 
     }
       var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
@@ -517,8 +520,17 @@ $(document).ready(function(){
 
       map.on('click',function(){
         sidebar.toggle();
-      });
+      }); 
 
+      $('.mapside-list').on('click',function(){
+        console.log(markerarr);
+        var thid = $(this).attr('id');
+        $.each(markerarr,function(okey,oval){
+          if($(oval._icon).hasClass(thid)){
+            oval.openPopup();
+          }
+        });
+      });
 });
 </script>
 </body>
