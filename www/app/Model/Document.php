@@ -271,13 +271,17 @@ class Document extends Core\Model {
      */
     public static function getDocumentStats($user) {
         $Db = Utility\Database::getInstance();
-        $total_files = $Db->query("SELECT count(*) as count from document d
-                                LEFT JOIN shipment s
-                                ON d.shipment_num = s.shipment_num
-                                LEFT JOIN document_status ds
-                                ON d.id = ds.document_id
-                                WHERE s.user_id = '{$user}' 
-                                AND ds.status != 'deleted'")->results();
+        $total_files = $Db->query(" SELECT
+                                        count(dbo.document.id) as count
+                                    FROM
+                                        dbo.document
+                                        INNER JOIN dbo.shipment
+                                        ON dbo.document.shipment_id = dbo.shipment.id
+                                        INNER JOIN dbo.document_status
+                                        ON dbo.document.id = dbo.document_status.document_id
+                                    WHERE
+                                        dbo.shipment.user_id = 101
+                                        AND dbo.document_status.status != 'deleted' ")->results();
         $pending_files = $Db->query("SELECT count(*) as count from document d
                                 LEFT JOIN shipment s
                                 ON d.shipment_num = s.shipment_num
