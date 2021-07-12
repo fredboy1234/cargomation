@@ -624,7 +624,7 @@
                           data-card-widget="collapse"
                           data-toggle="tooltip"
                           title="Collapse">
-                    <i class="fas fa-minus"></i>
+                    <i class="fas fa-minus "></i>
                   </button>
                 </div>
                 <!-- /.card-tools -->
