@@ -36,7 +36,7 @@
                                     src="<?=$this->image_profile?>"
                                     alt="User profile picture">
                                     <div class="overlay">
-                                        <a href="javascript:void(0)" class="profile-icon" title="Edit User Profile">
+                                        <a href="javascript:void(0) " class="profile-icon" title="Edit User Profile">
                                             <i class="fas fa-camera"></i>
                                         </a>
                                     </div>
