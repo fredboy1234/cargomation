@@ -63,6 +63,7 @@
   background: #130f0f3b !important;
   color: #ffffff;
 }
+
 </style>
   <!-- Main content -->
     <section class="content">
