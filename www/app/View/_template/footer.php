@@ -533,6 +533,57 @@ $(document).ready(function(){
           }
         });
       });
+
+      console.log();
+      var sea_data = chart_data.sea;
+      var air_data = chart_data.air;
+      sea_data.FCL = ( typeof sea_data.FCL !== 'undefined' ? sea_data.FCL.length : 0);
+      sea_data.LCL = ( typeof sea_data.LCL !== 'undefined' ? sea_data.LCL.length : 0);
+      sea_data.LSE = ( typeof sea_data.LSE !== 'undefined' ? sea_data.LSE.length : 0);
+      sea_data.BCN = ( typeof sea_data.BCN !=='undefined' ? sea_data.BCN.length : 0);
+
+      air_data.FCL = ( typeof air_data.FCL !== 'undefined' ? air_data.FCL.length : 0);
+      air_data.LCL = ( typeof air_data.LCL !== 'undefined' ? air_data.LCL.length : 0);
+      air_data.LSE = ( typeof air_data.LSE !== 'undefined' ? air_data.LSE.length : 0);
+      air_data.BCN = ( typeof air_data.BCN !=='undefined' ? air_data.BCN.length : 0);
+      
+      var ctx =  document.getElementById('sea-chart').getContext('2d');
+      const config = {
+        type: 'line',
+        data: {
+            labels: ['FCL', 'LCL', 'LSE', 'BCN'],
+            datasets: [{
+              label: 'Sea',
+              yAxisID: 'sea',
+              data: [ sea_data.FCL, sea_data.LCL, sea_data.LSE,sea_data.BCN],
+              fill: false,
+              borderColor: 'rgba(52, 255, 93, 0.5)',
+              tension: 0.1
+            }, {
+              label: 'Air',
+              yAxisID: 'air',
+              data: [ air_data.FCL, air_data.LCL, air_data.LSE,air_data.BCN],
+              fill: false,
+              borderColor: 'rgba(60, 150, 247, 0.5)',
+              tension: 0.1
+            }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              id: 'sea',
+              type: 'linear',
+              position: 'left',
+            }, {
+              id: 'air',
+              type: 'linear',
+              position: 'right',
+            }]
+          }
+        }
+      };
+
+      var chart = new Chart(ctx,config);
 });
 </script>
 </body>

@@ -276,6 +276,10 @@ class Shipment extends Core\Model {
             $top .= "TOP(20)";
             $where .=" and shipment.port_loading is not null and shipment.port_discharge is not null ";
         }
+
+        if($condition == 'containermode'){
+            $where .=" and shipment.container_mode != '' ";
+        }
         $Db = Utility\Database::getInstance();
         
         return $Db->query("SELECT  shipment.id as shipment_id, {$arg} 
@@ -291,4 +295,5 @@ class Shipment extends Core\Model {
         return $Db->query("select count(port_loading) as count ,port_loading
         from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading")->results();
     }
+
 }

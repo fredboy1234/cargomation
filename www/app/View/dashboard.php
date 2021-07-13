@@ -65,6 +65,7 @@
 }
 
 </style>
+<?php $mode = $this->container_mode;?>
   <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -670,6 +671,52 @@
             </div>
             <!-- /.card -->
             <?php endif; ?>
+            
+            <div class="card-body p-0">
+                  <div class="card">
+                    <div class="card-header border-0">
+                      <div class="d-flex justify-content-between">
+                        <h3 class="card-title">Container Mode Statistics</h3>
+                        <a href="/doctracker">View Report</a>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex">
+                        <p class="d-flex flex-column">
+                          <span class="text-bold text-lg"><?=$this->count_cmode?></span>
+                          <span>Total Count of all Container Modes</span>
+                        </p>
+                        <p class="ml-auto d-flex flex-column text-right">
+                          <span class="text-success">
+                            <i class="fas fa-arrow-up"></i> <?=$this->count_sea?>
+                          </span>
+                          <span class="text-muted">Sea Total</span>
+                        </p>
+                        <p class="ml-3 d-flex flex-column text-right">
+                          <span class="text-success">
+                            <i class="fas fa-arrow-up"></i> <?=$this->count_air?>
+                          </span>
+                          <span class="text-muted">Air Total</span>
+                        </p>
+                      </div>
+                      <!-- /.d-flex -->
+
+                      <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                        <canvas id="sea-chart" height="400" width="1064" style="display: block; height: 200px; width: 532px;" class="chartjs-render-monitor"></canvas>
+                      </div>
+
+                      <div class="d-flex flex-row justify-content-end">
+                        <span class="mr-2">
+                          <i class="fas fa-square text-primary" style="color: rgba(52, 255, 93, 0.5) !important;"></i> Sea Container Mode
+                        </span>
+
+                        <span>
+                          <i class="fas fa-square text-gray" style="color: rgba(60, 150, 247, 0.5) !important;"></i> Air Container Mode
+                        </span>
+                      </div>
+                    </div>
+                </div>
+              </div>
 
             <?php if(false): ?>
             <div class="card">
@@ -846,3 +893,7 @@
     </section>
     <!-- /.content -->
   </div>
+<script>
+  var chart_data = <?=json_encode($this->container_mode);?>;
+    
+</script>
