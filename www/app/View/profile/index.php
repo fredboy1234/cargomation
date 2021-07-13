@@ -42,9 +42,9 @@
                                     </div>
                             </div>
 
-                            <h3 class="profile-username text-center"><?= $this->escapeHTML($this->data->name); ?></h3>
+                            <h3 class="profile-username text-center"><?= $this->escapeHTML( $this->data->name ); ?></h3>
 
-                            <p class="text-muted text-center"><?= $this->escapeHTML($this->data->email); ?></p>
+                            <p class="text-muted text-center"><?= $this->escapeHTML( $this->data->email ); ?></p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
