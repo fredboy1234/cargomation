@@ -483,6 +483,7 @@ class Shipment extends Core\Controller {
             $subdata = array();
             $subdata['real_id_shipment'] = $value->id;
             $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
+            $subdata['shipment_id'] .= '<a href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
             $subdata['eta'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
             $subdata['etd'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
@@ -569,6 +570,49 @@ class Shipment extends Core\Controller {
         }
         
        return json_encode($userData);
+    }
+
+    public function info($user_id = "", $shipment_id = "") {
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        
+        // if (!$Shipment = Model\Shipment::getInstance()) {
+        //     Utility\Redirect::to(APP_URL);
+        // }
+
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user_id)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        $this->View->addJS("js/document.js");
+        $this->View->addCSS("css/document.css");
+
+        $this->View->renderWithoutHeaderAndFooter("/shipment/info", [
+            "title" => "Shipment Info",
+            "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id),
+        ]);
     }
 
 }
