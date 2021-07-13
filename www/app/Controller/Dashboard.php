@@ -69,8 +69,23 @@ class Dashboard extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
+
+        $cmode = Model\Shipment::getShipmentDynamic($userID,'container_mode, transport_mode', 'containermode');
+        $cmodeArray = array();
+        $seacount = 0;
+        $aircount =0;
+        foreach($cmode as $value){
+            if($value->transport_mode === 'Sea'){
+                $cmodeArray['sea'][$value->container_mode][] = $value;
+                $seacount++;
+            }else{
+                $cmodeArray['air'][$value->container_mode][] = $value;
+                $aircount++;
+            }
+           
+        }
             // echo"<pre>";
-            // print_r(Model\Shipment::getShipmentDynamic($userID,'*', 'port'));
+            // print_r($seacount .''. $aircount);
             // exit;
         
         $this->View->renderTemplate("/dashboard", [
@@ -90,6 +105,10 @@ class Dashboard extends Core\Controller {
             "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
             "document_stats" => Model\Document::getDocumentStats($userID),
+            "container_mode" => $cmodeArray,
+            "count_cmode" => count($cmode),
+            "count_sea" => $seacount,
+            "count_air" => $aircount,
         ]);
         $this->externalTemp();
     }
