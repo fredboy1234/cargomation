@@ -141,7 +141,7 @@
 
             <?php if(true): ?>
             <!-- Calendar -->
-            <div class="card bg-gradient-primary">
+            <div class="card bg-gradient-dark">
               <div class="card-header border-0">
 
                 <h3 class="card-title">
@@ -152,7 +152,7 @@
                 <div class="card-tools">
                   <!-- button with a dropdown -->
                   <div class="btn-group">
-                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                    <button type="button" class="btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
                       <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
                       <a href="#" class="dropdown-item">Add new event</a>
@@ -161,10 +161,10 @@
                       <a href="#" class="dropdown-item">View calendar</a>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
+                  <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-primary btn-sm d-none" data-card-widget="remove">
+                  <button type="button" class="btn btn-dark btn-sm d-none" data-card-widget="remove">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
