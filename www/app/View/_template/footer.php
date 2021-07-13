@@ -523,11 +523,13 @@ $(document).ready(function(){
       }); 
 
       $('.mapside-list').on('click',function(){
-        console.log(markerarr);
+       
         var thid = $(this).attr('id');
         $.each(markerarr,function(okey,oval){
           if($(oval._icon).hasClass(thid)){
             oval.openPopup();
+            
+            map.flyTo(oval.getLatLng(), 4);
           }
         });
       });

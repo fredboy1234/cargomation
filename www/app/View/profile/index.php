@@ -36,15 +36,15 @@
                                     src="<?=$this->image_profile?>"
                                     alt="User profile picture">
                                     <div class="overlay">
-                                        <a href="javascript:void(0)" class="profile-icon" title="Edit User Profile">
+                                        <a href="javascript:void(0) " class="profile-icon" title="Edit User Profile">
                                             <i class="fas fa-camera"></i>
                                         </a>
                                     </div>
                             </div>
 
-                            <h3 class="profile-username text-center"><?= $this->escapeHTML($this->data->name); ?></h3>
+                            <h3 class="profile-username text-center"><?= $this->escapeHTML( $this->data->name ); ?></h3>
 
-                            <p class="text-muted text-center"><?= $this->escapeHTML($this->data->email); ?></p>
+                            <p class="text-muted text-center"><?= $this->escapeHTML( $this->data->email ); ?></p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
