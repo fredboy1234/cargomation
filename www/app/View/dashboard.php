@@ -141,7 +141,7 @@
 
             <?php if(true): ?>
             <!-- Calendar -->
-            <div class="card">
+            <div class="card bg-gradient-primary">
               <div class="card-header border-0">
 
                 <h3 class="card-title">
