@@ -8,6 +8,7 @@ $menuItems = [
   //['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
   ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
   ['label' => 'Vessel Track', 'url' => ['/vessel'], 'icon' => 'fas fa-ship', 'isActive' => '', 'badge' => ''],
+  ['label' => 'Document Developer', 'url' => ['/docdeveloper'], 'icon' => 'fas fa-layer-group', 'isActive' => '', 'badge' => ''],
   //['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
 ];
 
