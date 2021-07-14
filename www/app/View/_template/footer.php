@@ -281,7 +281,7 @@ $(document).ready(function(){
   //   }).addTo(mymap);
   
   var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
-  var map = L.map('dashmap').setView([33.8688, 151.2093], 4);
+  var map = L.map('dashmap',{zoomControl: false,scrollWheelZoom: false}).setView([33.8688, 151.2093], 4);
   var polyArray = [  
           [[31.366365,121.61475],[-33.86785, 151.20732]],
           [[1.28967,103.85007],[-37.814,144.96332]],
@@ -529,7 +529,7 @@ $(document).ready(function(){
           if($(oval._icon).hasClass(thid)){
             oval.openPopup();
             
-            map.flyTo(oval.getLatLng(), 4);
+            //map.flyTo(oval.getLatLng(), 4);
           }
         });
       });
