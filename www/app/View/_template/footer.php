@@ -535,6 +535,7 @@ $(document).ready(function(){
       });
 
       console.log();
+      $('.leaflet-control-attribution').hide();
       var sea_data = chart_data.sea;
       var air_data = chart_data.air;
       sea_data.FCL = ( typeof sea_data.FCL !== 'undefined' ? sea_data.FCL.length : 0);
