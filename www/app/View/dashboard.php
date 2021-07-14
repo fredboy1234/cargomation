@@ -63,6 +63,9 @@
   background: #130f0f3b !important;
   color: #ffffff;
 }
+.leaflet-sidebar.right.visible {
+    width: 250px;
+}
 
 </style>
 <?php $mode = $this->container_mode;?>
