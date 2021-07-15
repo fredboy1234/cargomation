@@ -270,18 +270,18 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
 $(document).ready(function(){
-  // var mymap = L.map('dashmap').setView([10.3130247, 123.9471531], 5);
-  //   var polyArray = [];
-  //   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
-  //     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  //     minZoom: 0,
-  //     maxZoom: 13,
-  //     subdomains: 'abcd',
-  //     accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
-  //   }).addTo(mymap);
   
   var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
-  var map = L.map('dashmap',{zoomControl: false,scrollWheelZoom: false}).setView([33.8688, 151.2093], 4);
+  var map = L.map('dashmap',{
+       //zoomControl: false,
+       //scrollWheelZoom: false,
+       zoom:1,
+       minZoom:1,
+       maxBounds: [
+          [90,-180],
+          [-90, 180]
+        ]
+      }).setView([33.8688, 151.2093], 4);
   var polyArray = [  
           [[31.366365,121.61475],[-33.86785, 151.20732]],
           [[1.28967,103.85007],[-37.814,144.96332]],
@@ -295,7 +295,8 @@ $(document).ready(function(){
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
-    maxZoom: 8
+    maxZoom: 8,
+    noWrap: true
   }).addTo(map);
 
   // $.each(markerpoly,function(k,v){
@@ -528,8 +529,7 @@ $(document).ready(function(){
         $.each(markerarr,function(okey,oval){
           if($(oval._icon).hasClass(thid)){
             oval.openPopup();
-          
-            //map.flyTo(oval.getLatLng(), 4);
+            map.flyTo(oval.getLatLng(), 4);
           }
         });
       });
