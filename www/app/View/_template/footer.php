@@ -528,7 +528,7 @@ $(document).ready(function(){
         $.each(markerarr,function(okey,oval){
           if($(oval._icon).hasClass(thid)){
             oval.openPopup();
-            
+          
             //map.flyTo(oval.getLatLng(), 4);
           }
         });
