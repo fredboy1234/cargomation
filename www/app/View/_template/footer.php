@@ -388,7 +388,7 @@ $(document).ready(function(){
     }
       var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
                   '<div class="text-center">'
-                  +'<a href="/doctracker">POL:'+oval.port_loading+'</a><br>'
+                  +'<a href="/doctracker?pol='+oval.port_loading+'">POL:'+oval.port_loading+'</a><br>'
                   +'<span>Count:'+pcount+'</span><br>');
       // var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
       //   '<div class="text-center">'

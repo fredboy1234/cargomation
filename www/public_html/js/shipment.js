@@ -106,7 +106,7 @@ $(document).on("click", "#unassign", function () {
 });
 
 $(document).ready(function () {
-console.log(parsed_qs);
+
   if (parsed_qs.calendar != '' && typeof parsed_qs.calendar != 'undefined') {
     var c_date = new Date(parsed_qs.calendar);
     var curr_date = ("0" + (c_date.getDate() + 1)).slice(-2);
@@ -132,6 +132,14 @@ console.log(parsed_qs);
     }
 
     $("input[name='post_trigger']").val("set");
+    setTimeout(function () {
+      $("#advance-search-btn").trigger('click');
+    }, 1000);
+  }
+
+  if(typeof parsed_qs.pol !== "undefined"){
+    $("input[name='pol']").val(parsed_qs.pol);
+    
     setTimeout(function () {
       $("#advance-search-btn").trigger('click');
     }, 1000);
@@ -182,6 +190,7 @@ console.log(parsed_qs);
         d.container_mode = $("#container_mode").val();
         d.master_bill = $("input[name='master_bill']").val();
         d.house_bill = $("input[name='house_bill']").val();
+        d.pol = $("input[name='pol']").val();
         
       },
     },

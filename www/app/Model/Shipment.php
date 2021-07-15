@@ -109,6 +109,10 @@ class Shipment extends Core\Model {
         if(isset($data['house_bill']) && !empty($data['house_bill'])){
             $where .= " and shipment.house_bill  = '{$data['house_bill']}'";
         }
+
+        if(isset($data['pol']) && !empty($data['pol'])){
+            $where .= " and shipment.port_loading  = '{$data['pol']}'";
+        }
          
         
         //if($data['origin'] != ""){
@@ -282,6 +286,7 @@ class Shipment extends Core\Model {
         if($condition == 'containermode'){
             $where .=" and shipment.container_mode != '' ";
         }
+
         $Db = Utility\Database::getInstance();
         
         return $Db->query("SELECT  shipment.id as shipment_id, {$arg} 
