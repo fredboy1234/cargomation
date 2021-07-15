@@ -261,6 +261,7 @@ class Shipment extends Core\Model {
     public static function getShipmentDynamic($user_id, $arg = "*",$condition="") {
         $where = " WHERE shipment.user_id = '{$user_id}' ";
         $top ='';
+        $oderby = '';
         if($condition === 'not arrived'){
          $where .= " and shipment.eta > getdate()";
         }
@@ -275,6 +276,7 @@ class Shipment extends Core\Model {
         if($condition === 'port'){
             $top .= "TOP(20)";
             $where .=" and shipment.port_loading is not null and shipment.port_discharge is not null ";
+            $oderby .=" order by shipment.port_loading asc";
         }
 
         if($condition == 'containermode'){
@@ -285,7 +287,7 @@ class Shipment extends Core\Model {
         return $Db->query("SELECT  shipment.id as shipment_id, {$arg} 
                         FROM shipment 
                         FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
-                        {$where}")->results();
+                        {$where} {$oderby}")->results();
         
         
     }
