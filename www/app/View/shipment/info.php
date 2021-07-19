@@ -11,6 +11,7 @@
             <p><b>Consignee Address: </b><span><?= $this->shipment_info[0]->consignee_addr; ?></span></p>
             <p><b>Sending Agent: </b><span><?= $this->shipment_info[0]->sending_agent; ?></span></p>
             <p><b>Sending Agent Address: </b><span><?= $this->shipment_info[0]->sending_agent_addr; ?></span></p>
+            <p><b>Port of Loading: </b><span><?= $this->shipment_info[0]->port_loading; ?></span></p>
         </div>
         <div class="col-md-6">
             <p><b>Console: </b><span><?= $this->shipment_info[0]->console_id; ?></span></p>
@@ -23,6 +24,7 @@
             <p><b>Consignor Address: </b><span><?= $this->shipment_info[0]->consignor_addr; ?></span></p>
             <p><b>Receiving Agent: </b><span><?= $this->shipment_info[0]->receiving_agent; ?></span></p>
             <p><b>Receiving Agent Address: </b><span><?= $this->shipment_info[0]->receiving_agent_addr; ?></span></p>
+            <p><b>Port of Discharge: </b><span><?= $this->shipment_info[0]->port_discharge; ?></span></p>
         </div>
     </div>
 </div>
