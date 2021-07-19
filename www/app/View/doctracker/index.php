@@ -86,6 +86,12 @@
                                                                 <input type="text" class="form-control" id="inputEmail3" name="master_bill" placeholder="">
                                                             </div>
                                                         </div>
+                                                        <div class="form-group row d-none">
+                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Port of Loading</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="inputEmail3" name="pol" placeholder="">
+                                                            </div>
+                                                        </div>
 
                                                         <div class="form-group row">
                                                             <label for="inputEmail3" class="col-sm-4 col-form-label">Container Mode</label>
