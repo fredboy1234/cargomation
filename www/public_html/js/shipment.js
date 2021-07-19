@@ -52,24 +52,24 @@ $(document).on('click', '.doc', function (e) {
 });
 
 //assign shipment to users
-$(document).on("click", ".assign, .btn-assign", function () {
-  var userId = $(this).data("userid");
-  var shipId = $(this).data("shipid");
-  $.ajax({
-    url: "/shipment/shipmentAssign",
-    type: "POST",
-    data: { "user_id": userId, "shipment_id": shipId },
-    success: function (res) {
-      $(document).Toasts('create', {
-        title: 'Success',
-        body: 'Shipment was successfully assigned',
-        autohide: true,
-        close: false,
-        class: 'bg-success'
-      })
-    }
-  });
-});
+// $(document).on("click", ".assign, .btn-assign", function () {
+//   var userId = $(this).data("userid");
+//   var shipId = $(this).data("shipid");
+//   $.ajax({
+//     url: "/shipment/shipmentAssign",
+//     type: "POST",
+//     data: { "user_id": userId, "shipment_id": shipId },
+//     success: function (res) {
+//       $(document).Toasts('create', {
+//         title: 'Success',
+//         body: 'Shipment was successfully assigned',
+//         autohide: true,
+//         close: false,
+//         class: 'bg-success'
+//       })
+//     }
+//   });
+// });
 
 //unassign shipment to users
 $(document).on("click", ".btn-unassign", function () {
@@ -93,17 +93,17 @@ $(document).on("click", ".btn-unassign", function () {
 });
 
 //asssigned all
-$(document).on("click", "#assignall", function () {
-  var pp = $(this).parent().parent().find('.dropdown-item');
-  var count = 0;
-  assignBulk(pp, 'shipmentAssign');
-});
+// $(document).on("click", "#assignall", function () {
+//   var pp = $(this).parent().parent().find('.dropdown-item');
+//   var count = 0;
+//   assignBulk(pp, 'shipmentAssign');
+// });
 
-$(document).on("click", "#unassign", function () {
-  var pp = $(this).parent().parent().find('.dropdown-item');
-  var count = 0;
-  assignBulk(pp, 'shipmentunAssign');
-});
+// $(document).on("click", "#unassign", function () {
+//   var pp = $(this).parent().parent().find('.dropdown-item');
+//   var count = 0;
+//   assignBulk(pp, 'shipmentunAssign');
+// });
 
 $(document).ready(function () {
 
