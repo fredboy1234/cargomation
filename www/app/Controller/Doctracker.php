@@ -117,38 +117,38 @@ class Doctracker extends Core\Controller {
         // print_r($emailList);
         // echo "</pre>";
         // exit();
-        if(isset($emailList['list_email']) && !empty($emailList['list_email'])){
+        // if(isset($emailList['list_email']) && !empty($emailList['list_email'])){
            
-           foreach($emailList['list_email'] as $eKey => $eList){
-               if(!$User->checkUserIfExistByEmail($eList)){
-                $userID=$User->createUser([
-                    "email" => $eList,
-                    "first_name" => $eKey,
-                    "last_name" => '',
-                    "password" => Utility\Hash::generate('1234', $salt),
-                    "salt" => $salt    
-                ]);
-                $User->insertUserInfo([
-                    "user_id" => $userID,
-                    "first_name" => $eKey,
-                    "last_name" => '',
-                    "email" => $eList,
-                    "phone" =>"",
-                    "address"=>"",
-                    "city" => "",
-                    "postcode" =>"",
-                    "country_id" =>"",
-                    "account_id" => $user,
-                    "status" => "",    
-                ]);
-                $User->insertUserRole([
-                    "user_id" => $userID,
-                    "role_id" => "3"
-                ]);
-               }
+        //    foreach($emailList['list_email'] as $eKey => $eList){
+        //        if(!$User->checkUserIfExistByEmail($eList)){
+        //         $userID=$User->createUser([
+        //             "email" => $eList,
+        //             "first_name" => $eKey,
+        //             "last_name" => '',
+        //             "password" => Utility\Hash::generate('1234', $salt),
+        //             "salt" => $salt    
+        //         ]);
+        //         $User->insertUserInfo([
+        //             "user_id" => $userID,
+        //             "first_name" => $eKey,
+        //             "last_name" => '',
+        //             "email" => $eList,
+        //             "phone" =>"",
+        //             "address"=>"",
+        //             "city" => "",
+        //             "postcode" =>"",
+        //             "country_id" =>"",
+        //             "account_id" => $user,
+        //             "status" => "",    
+        //         ]);
+        //         $User->insertUserRole([
+        //             "user_id" => $userID,
+        //             "role_id" => "3"
+        //         ]);
+        //        }
                 
-           }
-        }
+        //    }
+        // }
        
         $this->View->renderTemplate("/doctracker/index", [
             "title" => "Document Tracker",
