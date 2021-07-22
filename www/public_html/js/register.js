@@ -152,6 +152,20 @@ document.getElementById('submit').addEventListener('click', function (event) {
         success: function(data) {
             console.log(data)
             $('#loader').empty().html('<h4>Register complete!</h4>')
+            Swal.fire({
+                icon: "success",
+                title: "Registration successful",
+                showCancelButton: false,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // setTimeout(function(){
+                        window.location.href = "/profile";
+                    // }, 3000); 
+                } else {
+                    Swal.fire('Cancelled', '', 'info');
+                }
+            });
         }
     })
 })
@@ -162,15 +176,23 @@ document.getElementById('inputRole').addEventListener('change', function(event) 
     //var selectedText  = this.selectedOptions[0].text;
 
     var html = '<div id="code" class="form-group">' +
-    '<label for="inputCode">Organization Code <span class="text-danger font-weight-bold">*</span></label>' +
-    '<input id="inputCode" type="text" name="code" data-bind="code" class="form-control" placeholder="Enter organization code">' +
+    '<label for="inputCode">Organization Code <span class="text-danger font-weight-bold"></span></label>' +
+    '<input id="inputCode" type="text" name="organization_code" data-bind="organization_code" class="form-control" placeholder="Enter organization code">' +
     '<span id="errorCode" class="text-danger"></span>' +
+    '</div>' +
+    '<div id="company" class="form-group">' +
+    '<label for="inputCompany">Company Name <span class="text-danger font-weight-bold"></span></label>' +
+    '<input id="inputCompany" type="text" name="company_name" data-bind="company_name" class="form-control" placeholder="Enter company name">' +
+    '<span id="errorCompany" class="text-danger"></span>' +
     '</div>';
 
     if(selectedValue === '4') {
         $(html).insertAfter($('#inputRole').parent())
+        $('input[name=organization_code]').val($('input[name=code]').val());
+        $('input[name=company_name]').val($('input[name=company]').val());
+        $('#org_code, #comp_name').toggle();
     } else {
-        $('#code').remove()
+        $('#code, #company').remove()
     }
 })
 
