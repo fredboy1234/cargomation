@@ -234,7 +234,13 @@ class Shipment extends Core\Model {
                     }
                    
                 }
-                $email[$shc->organization_code] = $shc->email;
+                $email[$shc->organization_code] = [
+                                                    'email' => $shc->email,
+                                                    'organization_code' => $shc->organization_code,
+                                                    'company_name' => $shc->company_name,
+                                                    'is_default' => $shc->is_default,
+                                                    'address_type' => $shc->address_type
+                                                  ];
             }  
         }
 
