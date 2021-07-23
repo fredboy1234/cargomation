@@ -629,6 +629,100 @@
                         </div><!-- /.card-body -->
                     </div>
                     <!-- /.nav-tabs-custom -->
+                    <?php if(true): ?>
+                    <!-- TABLE: Client List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Contact List</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                    <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0" style="height: 500px;">
+                            <table class="table table-head-fixed table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email Address</th>
+                                    <th>Organization Code</th>
+                                    <th>Company Name</th>
+                                    <th>Is Default</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <?php 
+                            if(empty($this->contact_list)) {
+                                echo "<tr><td colspan='6'><center>No contact in the list</center></td></tr>";
+                            } else {                     
+                                foreach ($this->contact_list as $key => $value) { 
+                            ?>
+                            <tr>
+                                <td><?php echo $value->id; ?></td>
+                                <td><?php echo $value->email_address; ?></td>
+                                <td><?php echo $value->organization_code; ?></td>
+                                <td><?php echo $value->company_name; ?></td>
+                                <td><?php echo $value->is_default; ?></td>
+                                <td><?php switch ($value->status) {
+                                            case 0:
+                                                $status = "Create account";
+                                                $badge = "warning";
+                                                $link = "/register/contact/" . $value->id;
+                                            break;
+                                            case 1:
+                                                $status = "Verified";
+                                                $badge = "success";
+                                                $link = "#";
+                                            break;
+                                            case 2:
+                                                $status = "Pending";
+                                                $badge = "warning";
+                                                $link = "#";
+                                            break;
+                                            
+                                            default:
+                                            # code...
+                                            break;
+                                        } 
+                                    // echo '<span class="badge badge-' . $badge . '">' . $status . '</span>'
+                                    echo '<a href="'. $link . '" class="btn btn-sm btn-' . $badge . '">' . $status . '</a>';
+
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php } 
+                            } ?>
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+
+                            <?php
+                                $user_count = $this->user->user_count[0]->count;
+                                $user_max = $this->user->account_info[0]->max_users;
+                                if($user_count >= $user_max) {
+                                    echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
+                                } else { ?>
+                                <a href="/register" class="btn btn-sm btn-info float-left">
+                                <i class="fas fa-plus"> </i>
+                                Add New User
+                                </a>
+                            <?php } ?>
+                        <?php if(false): ?>
+                            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Users</a>
+                        <?php endif; ?>
+                        </div>
+                        <!-- /.card-footer -->
+                    </div>
+                    <!-- /.card -->
+                    <?php endif; ?>
                 </div>
                 <!-- /.col -->
             </div>

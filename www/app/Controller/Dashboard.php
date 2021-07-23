@@ -47,6 +47,19 @@ class Dashboard extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        // // User Log
+        // $User->putUserLog([
+        //     "log_id" => 1,
+        //     "user_id" => $userID,
+        //     "role_id" => $role->role_id,
+        //     "login_time" => date("Y-m-d H:i:s"),
+        //     "ip_address" => $User->getIPAddress(),
+        //     "duration" => "-",
+        //     "log_type" => "redirect",
+        //     "log_action" => "Access dashboard",
+        // ]);
+
+
         $selectedTheme = $User->getUserSettings($userID);
 
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){

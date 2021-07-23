@@ -45,7 +45,7 @@ class UserRegister {
      * @return boolean
      * @since 1.0.2
      */
-    public static function register($accId) {
+    public static function register($accId, $contactID = "") {
         
         // Validate the register form inputs.
         // if (!Utility\Input::check($_POST, self::$_inputs)) {
@@ -92,7 +92,6 @@ class UserRegister {
                 "postcode" => Utility\Input::post("zip"),
                 "country_id" => "",
                 "account_id" => $accId,
-                "organization_code" => Utility\Input::post("code"),
                 //"subscription_id" => Utility\Input::post("subcription"),
                 "subscription_id" => 1, // Basic Account Plan
                 "status" => 0, // Not Verified yet
@@ -105,6 +104,16 @@ class UserRegister {
                 "role_id" => Utility\Input::post("role")
             ]);
             
+            if(!empty($contactID)) {
+                $User->updateUserContactInfo([
+                    // "user_id" => 140,
+                    "email_address" => Utility\Input::post("email"),
+                    "organization_code" => Utility\Input::post("organization_code"),
+                    "company_name" => Utility\Input::post("company_name"),
+                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
+                    "status" => 1
+                ], $contactID);
+            }
             
             //create ftp for user
             self::createFTP(Utility\Input::post("email"));
