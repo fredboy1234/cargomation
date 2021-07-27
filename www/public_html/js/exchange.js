@@ -21,7 +21,7 @@ $(function () {
     pageLength: 30,
     lengthChange: false,
     colReorder: true,
-    //order: false,
+    order: false,
     columns: [
       null,
       {orderable: false },
