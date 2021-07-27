@@ -22,13 +22,13 @@ $(function () {
     lengthChange: false,
     colReorder: true,
     order: false,
-    /*columns: [
-      null,
-      {orderable: false },
-      {orderable: false },
-      null,
-      {orderable: false }
-    ]*/
+    columns: [
+       {orderable: false },
+       {orderable: false },
+       {orderable: false },
+       {orderable: false },
+       {orderable: false }
+    ]
   });
 
   //on search data table
