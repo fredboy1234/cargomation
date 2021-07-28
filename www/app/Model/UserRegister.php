@@ -113,6 +113,15 @@ class UserRegister {
                     "registered_date" => date('Y-m-d H:i:s'), // Current datetime
                     "status" => 1
                 ], $contactID);
+            } else {
+                $User->putUserContactInfo([
+                    // "user_id" => 140,
+                    "email_address" => Utility\Input::post("email"),
+                    "organization_code" => Utility\Input::post("organization_code"),
+                    "company_name" => Utility\Input::post("company_name"),
+                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
+                    "status" => 1
+                ]);
             }
             
             //create ftp for user
