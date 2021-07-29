@@ -90,7 +90,8 @@ class Vessel extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-       
+        $vessel = $this->Vessel->getSearatesDB();
+
         $this->View->renderTemplate("/vessel/index", [
             "title" => "Vessel Track",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -100,7 +101,8 @@ class Vessel extends Core\Controller {
             'selected_theme' => $selectedTheme,
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
-            "notifications" => Model\User::getUserNotifications($user)
+            "notifications" => Model\User::getUserNotifications($user),
+            "sea_rates" => $vessel
         ]);
 
         $this->externalTemp();
@@ -324,7 +326,9 @@ class Vessel extends Core\Controller {
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $j_ves = json_decode($ves->sea_json);
-                
+                // echo"<pre>";
+                // print_r($j_ves);
+                // exit();
                 if( $j_ves->status == 'success'){
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
@@ -370,7 +374,10 @@ class Vessel extends Core\Controller {
                             $subdata['location_city'] = 'From: '.$firstLocation.'<br> To: '.$endLocation;
                             $subdata['date_track'] = 'From: '.$firstmonth.'-'.$firsthour.'<br>  To: '.$lastmonth.'-'.$lasthour;
                             $subdata['voyage'] = 'From: '.$firstvoyage.'<br>  To: '.$lastvoyage;
-                            
+                            $subdata['masterbill'] = $ves->master_bill;
+                            $subdata['housebill'] = $ves->house_bill;
+                            $subdata['shipment_num'] = $ves->shipment_num;
+                           
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
                         

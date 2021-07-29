@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box" id="confirmed-search">
               <div class="inner">
                 <h3 class="text-primary">12</h3>
                 <p>Confirmed Vessels</p>
@@ -117,7 +117,7 @@
           </div>
           <!-- ./col -->
         </div>
-        <div class="card card-default collapsed-card d-none">
+        <div class="card card-default collapsed-card d-none ">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
@@ -143,23 +143,39 @@
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
                                                 <div class="row">
-                                                    <div class="col-md-12" data-select2-id="29">
+                                                    <div class="col-md-6" data-select2-id="29">
                                                         <div class="form-group row">
                                                             <label for="inputEmail3" class="col-sm-2 col-form-label">Container Number:</label>
                                                             <div class="col-sm-4">
                                                                 <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-6" data-select2-id="29">
                                                         <div class="form-group row">
-                                                            <label class="col-sm-2 col-form-label">Filter By:</label>
-                                                            <select class="custom-select col-sm-4">
-                                                            <option>Not departed from transhipment port</option>
-                                                            <option>Arived at transhipment port last 6 months</option>
-                                                            <option>Due to arrive transhipment port next 7 days</option>
-                                                            </select>
+                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Container Number:</label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6 d-inline-block">
+                                                    <div class="col-md-6" data-select2-id="29">
+                                                        <div class="form-group row">
+                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Container Number:</label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" data-select2-id="29">
+                                                        <div class="form-group row">
+                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Container Number:</label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 d-inline-block">
                                                         <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
                                                     </div>
                                                 </div>
@@ -201,13 +217,16 @@
                     <table class="table table-hover table-head-fixed text-nowrap">
                     <thead>
                       <tr>
-                            <th>Container Number</th>
-                            <th>Vessel Name</th>
-                            <th>Location</th>
-                            <th>Date</th>
+                            <th class="btn-search">Container Number <section></section></th>
+                            <th>Vessel Name <section></section></th>
+                            <th>Location <section></section></th>
+                            <th>Date <section></section></th>
                             <!-- <th>Status</th> -->
-                            <th>Voyage</th>
-                            <th>Action</th>
+                            <th>Voyage <section></section></th>
+                            <th>Master Bill <section></section></th>
+                            <th>House Bill <section></section></th>
+                            <th>Shipment Number<section></section></th>
+                            <th>Action <section></section></th>
                       </tr>
                     </thead>
                   </table>
@@ -221,4 +240,25 @@
 </div>
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
+    var searates = <?php echo json_encode($this->sea_rates)?>;
+    var statsCode = {
+        UNK : 'Unknown',
+        LTS : 'Land transshipment',
+        BTS : 'Barge transshipment',
+        CEP : 'Container empty to shipper',
+        CPS : 'Container pickup at shipper',
+        CGI : 'Container arrival at first POL (Gate in)',
+        CLL : 'Container loaded at first POL',
+        VDL : 'Vessel departure from first POL',
+        VAT : 'Vessel arrival at T/S port',
+        CDT : 'Container discharge at T/S port',
+        TSD : 'Transshipment Delay',
+        CLT : 'Container loaded at T/S port',
+        VDT : 'Vessel departure from T/S',
+        VAD : 'Vessel arrival at final POD',
+        CDD : 'Container discharge at final POD',
+        CGO : 'Container departure from final POD (Gate out)',
+        CDC : 'Container delivery to consignee',
+        CER : 'Container empty return to depot',
+    };
 </script>
