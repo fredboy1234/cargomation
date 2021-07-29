@@ -76,6 +76,21 @@ class User extends Core\Model {
     }
 
     /**
+     * Create User Contact: Inserts a new user contact into the database.
+     * @access public
+     * @param array $fields
+     * @return null
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function insertUserContact(array $fields) {
+        if (!$userID = $this->create("user_contact", $fields)) {
+            throw new Exception(Utility\Text::get("USER_CREATE_EXCEPTION"));
+        }
+        return null;
+    }
+
+    /**
      * Get Instance: Returns an instance of the User model if the specified user
      * exists in the database. 
      * @access public
@@ -144,6 +159,21 @@ class User extends Core\Model {
      */
     public function updateUserInfo(array $fields, $userID = null) {
         $this->update("user_info", $fields, $userID);
+    }
+
+    /**
+     * Update User Role: Updates a specified user role in the database.
+     * @access public
+     * @param array $fields
+     * @param integer $userID [optional]
+     * @return void
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public function updateUserRole(array $fields, $userID = null) {
+        $this->query("UPDATE user_role 
+                        SET role_id = '{$fields['role_id']}' 
+                        WHERE user_id = '{$fields['user_id']}'");
     }
 
     /**
@@ -334,7 +364,7 @@ class User extends Core\Model {
 
     public function checkUserIfExistByEmail($email){
         $Db = Utility\Database::getInstance();
-        $select = $Db->query("SELECT * from users where email = '{$email}'")->results();
+        $select = $Db->query("SELECT * from user_contact where email_address = '{$email}'")->results();
         if($select && !empty($select)){
             return true;
         }else{
@@ -370,6 +400,94 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
+
+    public function getUserContactList($user_id) {
+        // $query = "SELECT 
+        // sc.address_type,
+        // sc.email, 
+        // sc.organization_code,
+        // sc.is_default,
+        // sc.company_name
+        // FROM shipment_contacts sc
+        // LEFT JOIN shipment s 
+        // ON s.id = sc.shipment_id
+        // WHERE s.user_id = '{$user_id}'
+        // GROUP BY
+        // sc.address_type,
+        // sc.email, 
+        // sc.organization_code,
+        // sc.is_default,
+        // sc.company_name";
+        $query = "SELECT * FROM user_contact WHERE admin_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getUserContactInfo($contact_id) {
+        $query = "SELECT * FROM user_contact WHERE id = '{$contact_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function updateUserContactInfo(array $fields, $contact_id) {
+        // $table = "user_contact";
+        // $id = $contact_id;
+
+        // if (count($fields)) {
+        //     $x = 1;
+        //     $set = "";
+        //     $params = [];
+        //     foreach ($fields as $key => $value) {
+        //         $params[":{$key}"] = $value;
+        //         $set .= "{$key} = :$key";
+        //         if ($x < count($fields)) {
+        //             $set .= ", ";
+        //         }
+        //         $x ++;
+        //     }
+
+        // }
+        // echo "UPDATE {$table} SET {$set} WHERE id = {$id}";
+
+        $this->update("user_contact", $fields, $contact_id);
+
+
+
+    }
+
+    // public function putUserLog($data) {
+    //     $column = implode(", ", array_keys($data));
+    //     $values = implode("', '", array_values($data));
+
+    //     $query = "INSERT
+    //     INTO {$column}
+    //     VALUES ('{$values}')";
+
+    //     var_dump($query);
+
+    //     die();
+
+
+    //     $Db = Utility\Database::getInstance();
+    //     return $Db->query($query)->results();
+    // }
+
+    public function getIPAddress() {  
+        //whether ip is from the share internet  
+         if(!empty($_SERVER['HTTP_CLIENT_IP'])) {  
+            $ip = $_SERVER['HTTP_CLIENT_IP'];  
+        }  
+        //whether ip is from the proxy  
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];  
+         }  
+        //whether ip is from the remote address  
+        else{  
+            $ip = $_SERVER['REMOTE_ADDR'];  
+        }  
+        return $ip;  
+    }  
+
 
 
 

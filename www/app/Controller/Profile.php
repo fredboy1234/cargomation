@@ -82,6 +82,7 @@ class Profile extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "user_info" => Model\User::getProfile($user)['user_info'][0],
+            "contact_list" => $User->getUserContactList($user),
             "image_profile" => $profileImage,
             "role" => $role,
             "themes" => Model\User::getUserTheme(),
