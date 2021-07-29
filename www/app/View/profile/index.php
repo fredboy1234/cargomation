@@ -146,8 +146,10 @@
                                 <li class="nav-item d-none"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
                                 <li class="nav-item d-none"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                                 <li class="nav-item"><a class="nav-link active" href="#information" data-toggle="tab">Information</a></li>
+                                <?php if($this->role->role_id != 4): ?>
                                 <li class="nav-item"><a class="nav-link" href="#theme" data-toggle="tab">Themes</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                                <?php endif; ?>
                             </ul>
                         </div><!-- /.card-header -->
 
@@ -437,6 +439,7 @@
                                     </form>
                                 </div>
                                 <!-- /.tab-pane -->
+                                <?php if($this->role->role_id != 4): ?>
                                 <!--Edit Settings-->     
                                 <div class="tab-pane" id="edit-settings">
                                     <form class="form-horizontal" _lpchecked="1" method="post" action="<?= $this->makeUrl("profile/updateProfile"); ?>">
@@ -624,12 +627,13 @@
 
                                 </div>
                                 <!-- /.tab-pane -->
+                                <?php endif; ?>
                             </div>
                             <!-- /.tab-content -->
                         </div><!-- /.card-body -->
                     </div>
                     <!-- /.nav-tabs-custom -->
-                    <?php if(true): ?>
+                    <?php if($this->role->role_id != 4): ?>
                     <!-- TABLE: Client List -->
                     <div class="card">
                         <div class="card-header">
