@@ -1,6 +1,12 @@
 jQuery(document).ready(function() {
     var groupColumn = 0;
     var indexCollection = [];
+
+    $('.table thead th').each( function () {
+      var title = $(this).text();
+      $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+
      var table = $('.table').DataTable({
       searching: true, 
       paging: false, 
@@ -13,6 +19,18 @@ jQuery(document).ready(function() {
       language: {
         processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
       },
+      initComplete: function () {
+        this.api().columns().every( function () {
+            var that = this;
+            $( 'input', this.header() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that
+                        .search( this.value )
+                        .draw();
+                }
+            });
+        } );
+    },
       serverMethod: 'post',
       ajax: {
         url: document.location.origin + '/vessel/vesselSSR/',
@@ -24,6 +42,9 @@ jQuery(document).ready(function() {
         { data: "date_track" },
         // { data: "status" },
         { data: "voyage" },
+        { data: "masterbill"},
+        { data: "housebill"},
+        { data: "shipment_num"},
         { data: "action" },
       ],
       drawCallback: function ( settings ) {
@@ -55,16 +76,48 @@ jQuery(document).ready(function() {
           $(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class'));
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
+                //console.log(searates[i]);
+                //$(rows).eq( i ).find('td').eq(2).append("<span></span>");
+                var seDecode = JSON.parse(searates[i].sea_json);
+                var events = seDecode.data.container.events;
+                var htmlstat = '';
+                console.log(seDecode.data);
                 
+                var currentDay = new Date();
                 
-                // $(rows).eq( i ).before(
-                //     `<tr class="group collapse-tr">
-                //       <td colspan="5"><a href="#">${$(group).text()}</a></td>
-                //       <td><p class="d-inline-block col-md-2 offset-md-4">Origin: ${orgn}</p></td>
-                //       <td><p class="dstn-${$(group).text()} d-inline-block col-md-2 ">Destination: ${ndxData}</p></td>
-                //       <td class="sec"><i class="float-right fa fa-angle-down"></i></td>
-                //     </tr>`
-                // );
+
+                $.each(events,function(okey,oval){
+                  var status = oval.status;
+                  var location = '';
+                  var locindex = oval.location;
+                  
+                  var containerDay = new Date(oval.date);
+                  var same = currentDay.getTime() === containerDay.getTime();
+                  var notSame = currentDay.getTime() !== containerDay.getTime();
+                  
+
+                  $.each(seDecode.data.locations,function(ok,ov){
+                    console.log(ov);
+                    if(ov.id == locindex){
+                      location = `${ov.name}`;
+                    }
+                  });
+
+                  htmlstat +=`
+                      <span>Location : ${location}</span><br>
+                      <span> Date : ${oval.date}</span><br> 
+                      <span> Status : ${statsCode[status]}</span><br> 
+                        
+                      <hr>  
+                  `;
+                });
+
+                $(rows).eq( i ).attr("data-details",searates[i].trans_id);
+                $(rows).eq( i ).after(
+                    `<tr class="detail-drop group collapse-tr d-none ${searates[i].trans_id} ">
+                      <td>${htmlstat}</td>
+                    </tr>`
+                );
                 last = group;
             }
             count++;
@@ -73,8 +126,15 @@ jQuery(document).ready(function() {
     }
     }); 
     
+    $('table').on('click','tr',function(){
+     var cl = $(this).attr("data-details");
+     $('.'+cl).toggleClass('d-none');
+      
+    });
     
-
+    $('#confirmed-search').on('click',function(){
+      table.columns(0).search("AM").draw();
+    });
     $(document).on('click','.collapse-tr',function(){
       var cName = '.'+$(this).find('a').text();
       if($(this).find('.sec i').hasClass('fa-angle-down')){

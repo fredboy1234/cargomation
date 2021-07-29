@@ -106,8 +106,9 @@ class Vessel extends Core\Model {
         $data = array();
         $data['vessel'] =array();
         $Db = Utility\Database::getInstance();
-        $vessel =  $Db->query("SELECT {$arg} 
-                                FROM transhipment_searates b")->results();
+        $vessel =  $Db->query("SELECT {$arg}      
+                                FROM transhipment_searates b
+                                LEFT JOIN shipment sh on sh.id = b.trans_id")->results();
        
         return $vessel;
     }
@@ -135,6 +136,7 @@ class Vessel extends Core\Model {
         $trans_id = strval($data['trans_id']);
         $container_number = strval($data['container_number']);
         $sea_json = $data['json'];
+        $track_json = $data['track'];
         $Db = Utility\Database::getInstance();
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment_searates b
@@ -142,11 +144,11 @@ class Vessel extends Core\Model {
        
         if(!empty($vessel)){
             $Db->query("UPDATE transhipment_searates 
-                                    SET sea_json = '{$sea_json}' 
+                                    SET sea_json = '{$sea_json}', '{$track_json}'
                                     WHERE trans_id ={$trans_id} and container_number = {$container_number} ");
         }else{
-            $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json)
-            values ('{$trans_id}','{$container_number}','{$sea_json}')");
+            $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json)
+            values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}')");
         }                    
         return $vessel;
     }
