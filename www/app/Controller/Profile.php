@@ -89,6 +89,7 @@ class Profile extends Core\Controller {
             "selectedTheme" => $User->getUserSettings($user),
             "user_settings" => $User->getUserSettings($user),
             "notifications" => Model\User::getUserNotifications($user),
+            "menu" => Model\User::getUserMenu($role->role_id),
         ]);
     }
 

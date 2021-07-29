@@ -136,6 +136,7 @@ class Doctracker extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "notifications" => Model\User::getUserNotifications($user),
+            "menu" => Model\User::getUserMenu($role->role_id),
             "shipment" => $this->Shipment->getShipment($user),
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
