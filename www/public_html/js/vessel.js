@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
       responsive: true,
       autoWidth: false,
       lengthChange: false,
-      colReorder:true,
+      //colReorder:true,
       processing: true,
       language: {
         processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
@@ -22,8 +22,10 @@ jQuery(document).ready(function() {
       initComplete: function () {
         this.api().columns().every( function () {
             var that = this;
-            $( 'input', this.header() ).on( 'keyup change clear', function () {
+            $( 'input', this.header() ).on( 'keyup change clear input', function () {
+              console.log(this.value );
                 if ( that.search() !== this.value ) {
+                 
                     that
                         .search( this.value )
                         .draw();
@@ -37,14 +39,17 @@ jQuery(document).ready(function() {
        },
        columns: [
         { data: "container_number" },
+        { data: "shipment_num"},
+        { data: "housebill"},
+        { data: "masterbill"},
+        { data: "voyage" },
+
+        { data: "date_track" },
         { data: "vessel_name" },
         { data: "location_city" },
-        { data: "date_track" },
+        
         // { data: "status" },
-        { data: "voyage" },
-        { data: "masterbill"},
-        { data: "housebill"},
-        { data: "shipment_num"},
+            
         { data: "action" },
       ],
       drawCallback: function ( settings ) {
@@ -76,12 +81,22 @@ jQuery(document).ready(function() {
           $(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class'));
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
+               
                 //console.log(searates[i]);
                 //$(rows).eq( i ).find('td').eq(2).append("<span></span>");
                 var seDecode = JSON.parse(searates[i].sea_json);
-                var events = seDecode.data.container.events;
+                var events = [];
                 var htmlstat = '';
-                console.log(seDecode.data);
+                console.log(seDecode.data.container);
+                
+                if(typeof(seDecode.data.container) != "undefined" && typeof(seDecode.data.container) != null){
+                  if(typeof(seDecode.data.container.events) != "undefined" && typeof(seDecode.data.container.events) != null){
+                    events = seDecode.data.container.events;
+                  }
+                  
+                }
+                
+                //console.log(seDecode.data);
                 
                 var currentDay = new Date();
                 
@@ -97,7 +112,7 @@ jQuery(document).ready(function() {
                   
 
                   $.each(seDecode.data.locations,function(ok,ov){
-                    console.log(ov);
+                    //console.log(ov);
                     if(ov.id == locindex){
                       location = `${ov.name}`;
                     }
@@ -106,8 +121,7 @@ jQuery(document).ready(function() {
                   htmlstat +=`
                       <span>Location : ${location}</span><br>
                       <span> Date : ${oval.date}</span><br> 
-                      <span> Status : ${statsCode[status]}</span><br> 
-                        
+                      <span> Status : ${statsCode[status]}</span><br>  
                       <hr>  
                   `;
                 });
@@ -132,9 +146,14 @@ jQuery(document).ready(function() {
       
     });
     
-    $('#confirmed-search').on('click',function(){
-      table.columns(0).search("AM").draw();
+    $('.box-search').on('click',function(){
+        console.log($(this).attr('id'));
+        table.columns(0).search('bilat').draw();
+       // table.columns(0).search("");
     });
+
+    
+
     $(document).on('click','.collapse-tr',function(){
       var cName = '.'+$(this).find('a').text();
       if($(this).find('.sec i').hasClass('fa-angle-down')){

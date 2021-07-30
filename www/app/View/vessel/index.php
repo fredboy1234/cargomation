@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box" id="confirmed-search">
+            <div class="small-box box-search" id="confirmedvessels">
               <div class="inner">
                 <h3 class="text-primary">12</h3>
                 <p>Confirmed Vessels</p>
@@ -73,7 +73,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box box-search" id="departure">
               <div class="inner">
                 <h3 class="text-success">12</h3>
 
@@ -218,14 +218,19 @@
                     <thead>
                       <tr>
                             <th class="btn-search">Container Number <section></section></th>
-                            <th>Vessel Name <section></section></th>
-                            <th>Location <section></section></th>
+                            <th>Shipment Number<section></section></th>
+                            <th>House Bill <section></section></th>
+                            <th>Master Bill <section></section></th>
+                            <th>Voyage <section></section></th>
+                           
                             <th>Date <section></section></th>
                             <!-- <th>Status</th> -->
-                            <th>Voyage <section></section></th>
-                            <th>Master Bill <section></section></th>
-                            <th>House Bill <section></section></th>
-                            <th>Shipment Number<section></section></th>
+                            
+                            <th>Vessel Name <section></section></th>
+                            <th>Location <section></section></th>
+                            
+                            
+                            
                             <th>Action <section></section></th>
                       </tr>
                     </thead>
