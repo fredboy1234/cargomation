@@ -1,16 +1,18 @@
 <?php
 
-$menuItems = [
-  ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
-  //['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Daily Exchange', 'url' => ['/exchange'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => ''],
-  //['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Vessel Track', 'url' => ['/vessel'], 'icon' => 'fas fa-ship', 'isActive' => '', 'badge' => ''],
-  ['label' => 'Document Developer', 'url' => ['/docdeveloper'], 'icon' => 'fas fa-layer-group', 'isActive' => '', 'badge' => ''],
-  //['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
-];
+// $menuItems = [
+//   ['label' => 'Dashboard', 'url' => ['/'], 'icon' => 'fas fa-tachometer-alt' , 'isActive' => '', 'badge' => ''],
+//   //['label' => 'Custom Reports', 'url' => ['#'], 'icon' => 'fas fa-file-alt', 'isActive' => '', 'badge' => ''],
+//   ['label' => 'Daily Exchange', 'url' => ['/exchange'], 'icon' => 'fas fa-funnel-dollar', 'isActive' => '', 'badge' => ''],
+//   ['label' => 'Doc Tracker', 'url' => ['/doctracker'], 'icon' => 'fas fa-file-import', 'isActive' => '', 'badge' => ''],
+//   //['label' => 'Integration Dash', 'url' => ['#'], 'icon' => 'fas fa-cogs', 'isActive' => '', 'badge' => ''],
+//   ['label' => 'Transport App', 'url' => ['/transport'], 'icon' => 'fas fa-truck', 'isActive' => '', 'badge' => ''],
+//   ['label' => 'Vessel Track', 'url' => ['/vessel'], 'icon' => 'fas fa-ship', 'isActive' => '', 'badge' => ''],
+//   ['label' => 'Document Developer', 'url' => ['/docdeveloper'], 'icon' => 'fas fa-layer-group', 'isActive' => '', 'badge' => ''],
+//   //['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
+// ];
+
+$menuItems = $this->menu;
 
 function isActive($url) {
   if($url == '/' && $_GET['url'] == 'dashboard')
@@ -91,9 +93,9 @@ function isActive($url) {
                with font-awesome or any other icon font library -->
           <?php foreach ($menuItems as $key => $menu): ?>
           <li class="nav-item">
-            <a href="<?= $menu['url'][0]; ?>" class="nav-link <?= isActive($menu['url'][0]); ?>">
-              <i class="nav-icon <?= $menu['icon']; ?>"></i>
-              <p> <?= $menu['label']; ?> <?= $menu['badge']; ?></p>
+            <a href="<?= $menu->url; ?>" class="nav-link <?= isActive($menu->url); ?>">
+              <i class="nav-icon <?= $menu->icon; ?>"></i>
+              <p> <?= $menu->label; ?> <?= $menu->badge; ?></p>
             </a>
           </li>
           <?php endforeach; ?>

@@ -74,6 +74,7 @@ class Contact extends Core\Controller {
             "title" => "Contact Us",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "notifications" => Model\User::getUserNotifications($userID),
+            "menu" => Model\User::getUserMenu($role->role_id),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID),
             "image_profile" => $profileImage,

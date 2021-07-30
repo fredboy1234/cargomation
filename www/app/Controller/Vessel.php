@@ -102,6 +102,7 @@ class Vessel extends Core\Controller {
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             "notifications" => Model\User::getUserNotifications($user),
+            "menu" => Model\User::getUserMenu($role->role_id),
             "sea_rates" => $vessel
         ]);
 

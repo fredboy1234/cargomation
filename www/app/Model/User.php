@@ -489,6 +489,10 @@ class User extends Core\Model {
     }  
 
 
-
+    public static function getUserMenu($role_id = "") {
+        $query = "SELECT * FROM menu WHERE role_id = '{$role_id}' AND show = 1";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 
 }
