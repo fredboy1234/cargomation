@@ -22,8 +22,10 @@ jQuery(document).ready(function() {
       initComplete: function () {
         this.api().columns().every( function () {
             var that = this;
-            $( 'input', this.header() ).on( 'keyup change clear', function () {
+            $( 'input', this.header() ).on( 'keyup change clear input', function () {
+              console.log(this.value );
                 if ( that.search() !== this.value ) {
+                 
                     that
                         .search( this.value )
                         .draw();
@@ -47,10 +49,7 @@ jQuery(document).ready(function() {
         { data: "location_city" },
         
         // { data: "status" },
-        
-        
-       
-        
+            
         { data: "action" },
       ],
       drawCallback: function ( settings ) {
@@ -82,11 +81,21 @@ jQuery(document).ready(function() {
           $(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class'));
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
+               
                 //console.log(searates[i]);
                 //$(rows).eq( i ).find('td').eq(2).append("<span></span>");
                 var seDecode = JSON.parse(searates[i].sea_json);
-                var events = seDecode.data.container.events;
+                var events = [];
                 var htmlstat = '';
+                console.log(seDecode.data.container);
+                
+                if(typeof(seDecode.data.container) != "undefined" && typeof(seDecode.data.container) != null){
+                  if(typeof(seDecode.data.container.events) != "undefined" && typeof(seDecode.data.container.events) != null){
+                    events = seDecode.data.container.events;
+                  }
+                  
+                }
+                
                 //console.log(seDecode.data);
                 
                 var currentDay = new Date();
