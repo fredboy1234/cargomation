@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
       responsive: true,
       autoWidth: false,
       lengthChange: false,
-      colReorder:true,
+      //colReorder:true,
       processing: true,
       language: {
         processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
@@ -81,7 +81,7 @@ jQuery(document).ready(function() {
                 var seDecode = JSON.parse(searates[i].sea_json);
                 var events = seDecode.data.container.events;
                 var htmlstat = '';
-                console.log(seDecode.data);
+                //console.log(seDecode.data);
                 
                 var currentDay = new Date();
                 
@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
                   
 
                   $.each(seDecode.data.locations,function(ok,ov){
-                    console.log(ov);
+                    //console.log(ov);
                     if(ov.id == locindex){
                       location = `${ov.name}`;
                     }
@@ -106,8 +106,7 @@ jQuery(document).ready(function() {
                   htmlstat +=`
                       <span>Location : ${location}</span><br>
                       <span> Date : ${oval.date}</span><br> 
-                      <span> Status : ${statsCode[status]}</span><br> 
-                        
+                      <span> Status : ${statsCode[status]}</span><br>  
                       <hr>  
                   `;
                 });
@@ -132,9 +131,14 @@ jQuery(document).ready(function() {
       
     });
     
-    $('#confirmed-search').on('click',function(){
-      table.columns(0).search("AM").draw();
+    $('.box-search').on('click',function(){
+        console.log($(this).attr('id'));
+        table.columns(0).search('bilat').draw();
+       // table.columns(0).search("");
     });
+
+    
+
     $(document).on('click','.collapse-tr',function(){
       var cName = '.'+$(this).find('a').text();
       if($(this).find('.sec i').hasClass('fa-angle-down')){

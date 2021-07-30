@@ -333,6 +333,7 @@ class Vessel extends Core\Controller {
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
                         $vdata = $j_ves->data;
+                        $vstatus = '';
                         $containernumber = isset($vdata->container->number) ? $vdata->container->number : 'No Container Number';
                         $firstLocation = isset($vdata->locations[0]) ? $vdata->locations[0]->name : 'No Location';
                         $endLocation =  isset($vdata->locations[0]) ? end($vdata->locations)->name : 'No Location';
@@ -356,20 +357,24 @@ class Vessel extends Core\Controller {
                         $today = strtotime(date("Y-m-d"));
                         $enddate = strtotime($lastDate);
                         $colorscheme = 'not-done';
+                        $statscheme = ' delays ';
                        
                         if($enddate < $today){
                             $colorscheme = 'done';
+                            $statscheme = ' confirmedvessels ';
                         }
 
                         if($today-$enddate <= -86400 && $today-$enddate >= -172800 ){
                             $colorscheme = 'almost';
+                            $statscheme = ' pending ';
                         }else if($today-$enddate == 0){
                             $colorscheme = 'completed';
+                            $statscheme = ' departure ';
                         }
 
                         $subdata =array(); 
                         if($containernumber !== 'No Container Number'){
-                            $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.'</p>';
+                            $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.'<span class="d-none">'.$statscheme.'</span></p>';
                             $subdata['vessel_name'] = 'From: '.$firstvessel.'<br> To: '.$lastvessel;
                             $subdata['location_city'] = 'From: '.$firstLocation.'<br> To: '.$endLocation;
                             $subdata['date_track'] = 'From: '.$firstmonth.'-'.$firsthour.'<br>  To: '.$lastmonth.'-'.$lasthour;

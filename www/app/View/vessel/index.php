@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box" id="confirmed-search">
+            <div class="small-box box-search" id="confirmedvessels">
               <div class="inner">
                 <h3 class="text-primary">12</h3>
                 <p>Confirmed Vessels</p>
@@ -73,7 +73,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box box-search" id="departure">
               <div class="inner">
                 <h3 class="text-success">12</h3>
 
