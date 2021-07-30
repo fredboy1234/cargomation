@@ -455,6 +455,12 @@ class User extends Core\Model {
 
     }
 
+    public static function getUserInfoByID($user_id, $args = "*") {
+        $query = "SELECT * FROM user_info WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
     // public function putUserLog($data) {
     //     $column = implode(", ", array_keys($data));
     //     $values = implode("', '", array_values($data));
