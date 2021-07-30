@@ -37,14 +37,20 @@ jQuery(document).ready(function() {
        },
        columns: [
         { data: "container_number" },
+        { data: "shipment_num"},
+        { data: "housebill"},
+        { data: "masterbill"},
+        { data: "voyage" },
+
+        { data: "date_track" },
         { data: "vessel_name" },
         { data: "location_city" },
-        { data: "date_track" },
+        
         // { data: "status" },
-        { data: "voyage" },
-        { data: "masterbill"},
-        { data: "housebill"},
-        { data: "shipment_num"},
+        
+        
+       
+        
         { data: "action" },
       ],
       drawCallback: function ( settings ) {

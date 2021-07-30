@@ -218,14 +218,19 @@
                     <thead>
                       <tr>
                             <th class="btn-search">Container Number <section></section></th>
-                            <th>Vessel Name <section></section></th>
-                            <th>Location <section></section></th>
+                            <th>Shipment Number<section></section></th>
+                            <th>House Bill <section></section></th>
+                            <th>Master Bill <section></section></th>
+                            <th>Voyage <section></section></th>
+                           
                             <th>Date <section></section></th>
                             <!-- <th>Status</th> -->
-                            <th>Voyage <section></section></th>
-                            <th>Master Bill <section></section></th>
-                            <th>House Bill <section></section></th>
-                            <th>Shipment Number<section></section></th>
+                            
+                            <th>Vessel Name <section></section></th>
+                            <th>Location <section></section></th>
+                            
+                            
+                            
                             <th>Action <section></section></th>
                       </tr>
                     </thead>
