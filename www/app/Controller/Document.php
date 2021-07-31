@@ -847,7 +847,8 @@ class Document extends Core\Controller {
             $shipment = $this->Shipment->getShipmentByShipID($shipment_id);
         }
 
-        $emailList = $this->Shipment->getShipmentThatHasUser($user_id);
+        // $emailList = $this->Shipment->getShipmentThatHasUser($user_id);
+        $emailList = Model\Shipment::getContactEmailByShipmentID($shipment[0]->id);
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
