@@ -322,4 +322,15 @@ class Shipment extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public static function getContactEmailByShipmentID($shipment_id) {
+        $query = "SELECT DISTINCT sc.email, ui.first_name, ui.last_name ";
+        $query .= "FROM shipment_contacts sc ";
+        $query .= "LEFT JOIN user_info ui ";
+        $query .= "ON ui.email = sc.email ";
+        $query .= "WHERE sc.shipment_id = '{$shipment_id}' AND sc.email != ''";
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
 }
