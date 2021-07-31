@@ -2,9 +2,10 @@
 <script>
 var options = [
 <?php
-if(isset($this->emailList['list_email']) && !empty($this->emailList['list_email'])){
-    foreach($this->emailList['list_email'] as $name => $email){
-        echo "{ email: '" . $email . "', first_name: '" . $name . "', last_name: '' },";
+if(is_array($this->emailList)){
+    //var_dump($this->emailList[0]);
+    foreach($this->emailList as $key => $value){
+        echo "{ email: '" . $value->email . "', first_name: '" . $value->first_name . "', last_name: '" . $value->last_name . "' },";
     }
 }
 ?>
