@@ -47,6 +47,27 @@ class Dashboard extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        // assign value by user role
+        switch ($role->role_id) {
+            case 1: // SUPER ADMIN
+                $is_customer = false;
+                break;
+            case 2: // CLIENT ADMIN
+                $is_customer = false;
+                break;
+            case 3: // STAFF
+                $is_customer = false;
+                break;
+            case 4: // CUSTOMER
+                $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
+                $is_customer = $org_code;
+                break;
+            
+            default:
+                die('Error in getting the user role');
+                break;
+        }
+
         // // User Log
         // $User->putUserLog([
         //     "log_id" => 1,
@@ -112,10 +133,10 @@ class Dashboard extends Core\Controller {
             "dash_photo" => Model\User::getUsersDashPhoto($userID),
             "selected_theme" => $selectedTheme,
             "role" => $role,
-            "total_shipment" => count(Model\Shipment::getShipmentDynamic($userID)),
-            "not_arrived" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'not arrived')),
-            "air_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'air')),
-            "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea')),
+            "total_shipment" => count(Model\Shipment::getShipmentDynamic($userID, 'user_id', '', $is_customer)),
+            "not_arrived" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'not arrived', $is_customer)),
+            "air_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'air', $is_customer)),
+            "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea', $is_customer)),
             "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
             "document_stats" => Model\Document::getDocumentStats($userID),

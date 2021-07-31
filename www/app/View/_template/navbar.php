@@ -142,12 +142,14 @@ function secondsToTime($datetime) {
             <a href="/profile" class="dropdown-item dropdown-footer" style="text-align: left;">
               <i class="nav-icon fas fa-user"></i> Profile
             </a>
+            <?php if($this->role->role_id != 4): ?>
             <a href="/profile#theme" class="dropdown-item dropdown-footer" style="text-align: left;">
               <i class="nav-icon fas fa-tree"></i> Themes
             </a>
             <a href="/profile#settings" class="dropdown-item dropdown-footer" style="text-align: left;">
               <i class="nav-icon fas fa-cog"></i> Settings
             </a>
+            <?php endif; ?>
             <div class="dropdown-divider"></div>
             <a href="/logout" class="dropdown-item dropdown-footer" style="text-align: right;">
               <i class="nav-icon fas fa-door-open"></i> Log Out

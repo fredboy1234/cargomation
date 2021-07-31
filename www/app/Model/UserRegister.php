@@ -80,6 +80,12 @@ class UserRegister {
             //     "company_code" => "SYD"
             // ]);
 
+            // checks for the not required inputs
+            // $organization_code = Utility\Input::post("organization_code");
+            // $organization_code = (isset($organization_code)) ? $organization_code : "";
+            // $company_name = Utility\Input::post("company_name");
+            // $company_name = (isset($company_name)) ? $company_name : "";
+
             //insert user info
             $User->insertUserInfo([
                 "user_id" => $userID,
@@ -95,7 +101,8 @@ class UserRegister {
                 //"subscription_id" => Utility\Input::post("subcription"),
                 "subscription_id" => 1, // Basic Account Plan
                 "status" => 0, // Not Verified yet
-                "registered_date" => date('Y-m-d H:i:s') // Current datetime
+                "registered_date" => date('Y-m-d H:i:s'), // Current datetime
+                "organization_code" => Utility\Input::post("organization_code"),
             ]);
 
             //insert user role
