@@ -793,7 +793,13 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function request($shipment_id, $document = "", $user_id = ""){ 
+    public function request($shipment_num, $document = "", $user_id = ""){ 
+
+        /* ==============================================
+        // NOTE: shipment_id and shipment_num are diff
+        // shipment_id : XXXX
+        // shipment_num : S00000XX
+        ============================================== */
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -843,12 +849,15 @@ class Document extends Core\Controller {
         $results = [];
         if(is_numeric($document)) {
             $results = $this->Document->getDocumentByDocID($document);
+            $shipment_id = $document;
         } else {
-            $shipment = $this->Shipment->getShipmentByShipID($shipment_id);
+            $shipment = $this->Shipment->getShipmentByShipID($shipment_num);
+            $shipment_id = $shipment[0]->id;
+
         }
 
         // $emailList = $this->Shipment->getShipmentThatHasUser($user_id);
-        $emailList = Model\Shipment::getContactEmailByShipmentID($shipment[0]->id);
+        $emailList = Model\Shipment::getContactEmailByShipmentID($shipment_id);
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
@@ -856,7 +865,7 @@ class Document extends Core\Controller {
         $this->View->renderWithoutHeaderAndFooter("/document/request", [
             'user_id' => $user_id,
             'document' => $document,
-            'shipment_id' => $shipment_id,
+            'shipment_num' => $shipment_num,
             'shipment' => $shipment,
             'results' => $results,
             'emailList' => $emailList
