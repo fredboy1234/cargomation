@@ -70,7 +70,7 @@ if(is_numeric($this->document)) {
                 <?php endif; ?>
                 <div class="form-group">
                     <input type="hidden" id="user_id" name="user_id" class="form-control" value="<?= $this->user_id; ?>">
-                    <input type="hidden" id="shipment_num" name="shipment_num" class="form-control" value="<?= $this->shipment_id; ?>">
+                    <input type="hidden" id="shipment_num" name="shipment_num" class="form-control" value="<?= $this->shipment_num; ?>">
                     <input type="hidden" id="request_type" name="request_type" class="form-control" value="<?= $request_type; ?>">
                     <?php if(!empty($this->document)): ?>
                     <input type="hidden" id="document_type" name="document_type" class="form-control" value="<?= $this->document; ?>">
