@@ -711,7 +711,7 @@
                             <?php
                                 $user_count = $this->user->user_count[0]->count;
                                 $user_max = $this->user->account_info[0]->max_users;
-                                if($user_count >= $user_max) {
+                                if($user_count >= $user_max && $this->role->id != 1) {
                                     echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
                                 } else { ?>
                                 <a href="/register" class="btn btn-sm btn-info float-left">
