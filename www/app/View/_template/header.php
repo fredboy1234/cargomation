@@ -66,5 +66,5 @@
   
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center" style="background-color: #255caf;">
-    <img class="animation__shake" src="/img/logo.png" alt="AdminLTELogo" height="60" width="60">
+    <img class="animation__shake" src="/img/logo.png" alt="AdminLTELogo" height="128" width="128">
   </div>
