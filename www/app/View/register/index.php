@@ -69,7 +69,7 @@ if(isset($this->contact_info)) {
                   <?php if($this->role->id == 1) : ?>
                   <option value="1">Super Admin</option>
                   <?php endif; ?>
-                  <?php if($this->role->id == 2 && $this->role->id == 1) : ?>
+                  <?php if($this->role->id == 2 || $this->role->id == 1) : ?>
                   <option value="2">Client Admin</option>
                   <?php endif; ?>
                   <option value="3">Staff</option>
