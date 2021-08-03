@@ -319,6 +319,10 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
+        // echo "<pre>";
+        // print_r($vessel);
+        // exit();
+
         $data =array();
         $color = array();
         $store = array();
@@ -503,21 +507,40 @@ class Vessel extends Core\Controller {
         return json_encode($this->Vessel->getFlag($country));
     }
 
-    public function seaRatesToDB(){
-        
-        $data['transhipment'] = $this->Vessel->getVesselV2();
+    public function seaRatesToDB($user=""){
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $data['transhipment'] = $this->Vessel->getVesselV2($user);
       
         if(!empty($data['transhipment'])){
-            echo"notemp";
+            
             foreach($data['transhipment'] as $trans){
                 
                 $data['trans_id'] = $trans[0]->id;
                 $data['container_number'] = $trans[0]->containernumber;
                 $data['json']  = '';
                 $data['track'] = '';
+                $data['user'] = $trans[0]->user_id;
+                
                 if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                    echo'success';
                 }
+
                 if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                     $this->Vessel->checkContainer($data);
                 }else{
