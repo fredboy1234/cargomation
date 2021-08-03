@@ -161,4 +161,27 @@ class Vessel extends Core\Model {
                         FROM transhipment_searates b
                         where container_number = '{$vessel_number}' ")->results();
     }
+
+    public function status(){
+        return array(
+            "UNK" => 'Unknown',
+            "LTS" => 'Land transshipment',
+            "BTS" => 'Barge transshipment',
+            "CEP" => 'Container empty to shipper',
+            "CPS" => 'Container pickup at shipper',
+            "CGI" => 'Container arrival at first POL (Gate in)',
+            "CLL" => 'Container loaded at first POL',
+            "VDL" => 'Vessel departure from first POL',
+            "VAT" => 'Vessel arrival at T/S port',
+            "CDT" => 'Container discharge at T/S port',
+            "TSD" => 'Transshipment Delay',
+            "CLT" => 'Container loaded at T/S port',
+            "VDT" => 'Vessel departure from T/S',
+            "VAD" => 'Vessel arrival at final POD',
+            "CDD" => 'Container discharge at final POD',
+            "CGO" => 'Container departure from final POD (Gate out)',
+            "CDC" => 'Container delivery to consignee',
+            "CER" => 'Container empty return to depot',
+        );
+    }
 }

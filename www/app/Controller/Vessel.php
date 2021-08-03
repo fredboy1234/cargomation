@@ -91,7 +91,55 @@ class Vessel extends Core\Controller {
             }
         }
         $vessel = $this->Vessel->getSearatesDB();
+        $confirmed = 0;
+        $departCofirmed = 0;
+        $delay = 0;
+        $pending = 0;
+        
+        $today = strtotime(date("Y-m-d"));
+        // echo "<pre>";
+        // print_r($this->Vessel->status());
+        // exit();
+        if(!empty($vessel)){
+            foreach($vessel as $key=>$ves){
+                $sea_json = json_decode($ves->sea_json);
+                
+                if($sea_json->status === 'success'){
+                    //print_r($sea_json);
+                    if(isset($sea_json->data->container)){
+                        $datacontainer = $sea_json->data->container;
+                        $firstDate = isset($datacontainer->events[0]) ? $datacontainer->events[0]->date : '';
+                        $lastDate = isset($datacontainer->events[0]) ? end($datacontainer->events)->date : '';
+                        $statusEnd = isset($datacontainer->events[0]) ? end($datacontainer->events)->status : '';
+                        // $today = strtotime(date("Y-m-d"));
+                         $dateformat = strtotime($lastDate);
+                        if( $dateformat < $today){
+                            $confirmed++;
+                        }
+                       // print_r($statusEnd);
+                        
+                        // foreach($datacontainer->events as $cont){
+                        //     $dateformat = strtotime($cont->date);
+                        //     print_r($cont->status);
+                        //     // if($today-$dateformat <= -86400 && $today-$dateformat >= -172800 ){
+                        //     //     print_r($cont->date);
+                        //     //     echo"<br>";
+                        //     // }
+                        //     echo"<br>";
+                            
+                        // }
+                        
+                        if($today-$dateformat <= -86400 && $today-$dateformat>= -172800 ){
+                            $pending++;
+                        }else if($today-$dateformat == 0){
+                            $departCofirmed++;
+                        }
 
+                    }
+                }
+            }
+        }
+      //exit;
         $this->View->renderTemplate("/vessel/index", [
             "title" => "Vessel Track",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -103,7 +151,10 @@ class Vessel extends Core\Controller {
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             "notifications" => Model\User::getUserNotifications($user),
             "menu" => Model\User::getUserMenu($role->role_id),
-            "sea_rates" => $vessel
+            "sea_rates" => $vessel,
+            "confirmed" => $confirmed,
+            "pending" => $pending,
+            "departCOnfirmed" => $departCofirmed,
         ]);
 
         $this->externalTemp();
@@ -327,6 +378,7 @@ class Vessel extends Core\Controller {
         $color = array();
         $store = array();
         $count = 0;
+        $confirmed = 0;
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){

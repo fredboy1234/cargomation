@@ -61,7 +61,7 @@
             <!-- small box -->
             <div class="small-box box-search" id="confirmedvessels">
               <div class="inner">
-                <h3 class="text-primary">12</h3>
+                <h3 class="text-primary"><?= $this->confirmed;?></h3>
                 <p>Confirmed Vessels</p>
               </div>
               <div class="icon">
@@ -75,7 +75,7 @@
             <!-- small box -->
             <div class="small-box box-search" id="departure">
               <div class="inner">
-                <h3 class="text-success">12</h3>
+                <h3 class="text-success"><?= $this->departCOnfirmed;?></h3>
 
                 <p>Confirmed Departure</p>
               </div>
@@ -105,7 +105,7 @@
             <!-- small box -->
             <div class="small-box">
               <div class="inner">
-                <h3 class="text-warning">9<sup style="font-size: 20px"></sup></h3>
+                <h3 class="text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
 
                 <p>Pending Departure </p>
               </div>
