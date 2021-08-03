@@ -91,7 +91,58 @@ class Vessel extends Core\Controller {
             }
         }
         $vessel = $this->Vessel->getSearatesDB();
+        $confirmed = 0;
+        $departCofirmed = 0;
+        $delay = 0;
+        $pending = 0;
+        
+        $today = strtotime(date("Y-m-d"));
+        // echo "<pre>";
+        // print_r($this->Vessel->status());
+        // exit();
+        if(!empty($vessel)){
+            foreach($vessel as $key=>$ves){
+                $sea_json = json_decode($ves->sea_json);
+                
+                if($sea_json->status === 'success'){
+                    //print_r($sea_json);
+                    if(isset($sea_json->data->container)){
+                        $datacontainer = $sea_json->data->container;
+                        $firstDate = isset($datacontainer->events[0]) ? $datacontainer->events[0]->date : '';
+                        $lastDate = isset($datacontainer->events[0]) ? end($datacontainer->events)->date : '';
+                        $statusEnd = isset($datacontainer->events[0]) ? end($datacontainer->events)->status : '';
+                        // $today = strtotime(date("Y-m-d"));
+                         $dateformat = strtotime($lastDate);
+                        if( $dateformat < $today){
+                            $confirmed++;
+                        }else{
+                       // print_r($statusEnd);
+                        
+                        // foreach($datacontainer->events as $cont){
+                        //     $dateformat = strtotime($cont->date);
+                        //     print_r($cont->status);
+                        //     // if($today-$dateformat <= -86400 && $today-$dateformat >= -172800 ){
+                        //     //     print_r($cont->date);
+                        //     //     echo"<br>";
+                        //     // }
+                        //     echo"<br>";
+                            
+                        // }
+                        
+                        if($today-$dateformat <= -86400 && $today-$dateformat>= -172800 ){
+                            $pending++;
+                        }else if($today-$dateformat == 0){
+                            $departCofirmed++;
+                        }else{
+                            $delay++;
+                        }
+                    }
 
+                    }
+                }
+            }
+        }
+      //exit;
         $this->View->renderTemplate("/vessel/index", [
             "title" => "Vessel Track",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -103,7 +154,11 @@ class Vessel extends Core\Controller {
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             "notifications" => Model\User::getUserNotifications($user),
             "menu" => Model\User::getUserMenu($role->role_id),
-            "sea_rates" => $vessel
+            "sea_rates" => $vessel,
+            "confirmed" => $confirmed,
+            "pending" => $pending,
+            "departCOnfirmed" => $departCofirmed,
+            "delay" => $delay
         ]);
 
         $this->externalTemp();
@@ -319,17 +374,20 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
+        // echo "<pre>";
+        // print_r($vessel);
+        // exit();
+
         $data =array();
         $color = array();
         $store = array();
         $count = 0;
+        $confirmed = 0;
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $j_ves = json_decode($ves->sea_json);
-                // echo"<pre>";
-                // print_r($j_ves);
-                // exit();
+                
                 if( $j_ves->status == 'success'){
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
@@ -503,21 +561,40 @@ class Vessel extends Core\Controller {
         return json_encode($this->Vessel->getFlag($country));
     }
 
-    public function seaRatesToDB(){
-        
-        $data['transhipment'] = $this->Vessel->getVesselV2();
+    public function seaRatesToDB($user=""){
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user = Utility\Session::get($userSession);
+            }
+        }
+
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $data['transhipment'] = $this->Vessel->getVesselV2($user);
       
         if(!empty($data['transhipment'])){
-            echo"notemp";
+            
             foreach($data['transhipment'] as $trans){
                 
                 $data['trans_id'] = $trans[0]->id;
                 $data['container_number'] = $trans[0]->containernumber;
                 $data['json']  = '';
                 $data['track'] = '';
+                $data['user'] = $trans[0]->user_id;
+                
                 if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                    echo'success';
                 }
+
                 if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                     $this->Vessel->checkContainer($data);
                 }else{

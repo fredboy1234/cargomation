@@ -106,9 +106,9 @@ class Vessel extends Core\Model {
         $data = array();
         $data['vessel'] =array();
         $Db = Utility\Database::getInstance();
-        $vessel =  $Db->query("SELECT {$arg}      
+        $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
-                                LEFT JOIN shipment sh on sh.id = b.trans_id")->results();
+                                LEFT JOIN shipment sh on sh.id = b.trans_id where sh.id is not null")->results();
        
         return $vessel;
     }
@@ -120,7 +120,7 @@ class Vessel extends Core\Model {
         $data['vessel'] =array();
         $Db = Utility\Database::getInstance();
         $vessel =  $Db->query("SELECT {$arg} 
-                                FROM vrpt_transhipment b")->results();
+                                FROM vrpt_transhipment b where b.user_id = {$user_id}")->results();
         if(!empty($vessel)){
             foreach($vessel as $ves){
               if(!array_key_exists($ves->containernumber,$data['vessel'])){
@@ -137,6 +137,7 @@ class Vessel extends Core\Model {
         $container_number = strval($data['container_number']);
         $sea_json = $data['json'];
         $track_json = $data['track'];
+        $userid = $data['user'];
         $Db = Utility\Database::getInstance();
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment_searates b
@@ -147,8 +148,8 @@ class Vessel extends Core\Model {
                                     SET sea_json = '{$sea_json}', '{$track_json}'
                                     WHERE trans_id ={$trans_id} and container_number = {$container_number} ");
         }else{
-            $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json)
-            values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}')");
+            $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id)
+            values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}')");
         }                    
         return $vessel;
     }
@@ -159,5 +160,28 @@ class Vessel extends Core\Model {
         return $Db->query("SELECT  top(1) *
                         FROM transhipment_searates b
                         where container_number = '{$vessel_number}' ")->results();
+    }
+
+    public function status(){
+        return array(
+            "UNK" => 'Unknown',
+            "LTS" => 'Land transshipment',
+            "BTS" => 'Barge transshipment',
+            "CEP" => 'Container empty to shipper',
+            "CPS" => 'Container pickup at shipper',
+            "CGI" => 'Container arrival at first POL (Gate in)',
+            "CLL" => 'Container loaded at first POL',
+            "VDL" => 'Vessel departure from first POL',
+            "VAT" => 'Vessel arrival at T/S port',
+            "CDT" => 'Container discharge at T/S port',
+            "TSD" => 'Transshipment Delay',
+            "CLT" => 'Container loaded at T/S port',
+            "VDT" => 'Vessel departure from T/S',
+            "VAD" => 'Vessel arrival at final POD',
+            "CDD" => 'Container discharge at final POD',
+            "CGO" => 'Container departure from final POD (Gate out)',
+            "CDC" => 'Container delivery to consignee',
+            "CER" => 'Container empty return to depot',
+        );
     }
 }
