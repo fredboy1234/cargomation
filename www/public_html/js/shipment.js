@@ -728,16 +728,19 @@ $(document).on('click','.stats',function(){
 function showInfo(shipment_num) {
   var url = "shipment/info/101/" + shipment_num;
 
-  $("#shipmentModal .modal-body").append(loader);
+  // $("#shipmentModal .modal-body").append(loader);
+  $(loader).insertAfter('#shipmentModal');
 
   // load the url and show modal on success
   $("#shipmentModal .modal-body").load(url, function (response, status, xhr) {
     if (xhr.status == 200) {
-      $('#loader-wrapper').remove();
+      // $('#loader-wrapper').remove();
+      $('#shipmentModal').next().remove();
       $("#shipmentModal").modal("show");
     } else {
       alert("Error: " + xhr.status + ": " + xhr.statusText);
-      $('#loader-wrapper').remove();
+      $('#shipmentModal').next().remove();
+      // $('#loader-wrapper').remove();
     }
   });
 

@@ -439,7 +439,6 @@
                                     </form>
                                 </div>
                                 <!-- /.tab-pane -->
-                                <?php if($this->role->role_id != 4): ?>
                                 <!--Edit Settings-->     
                                 <div class="tab-pane" id="edit-settings">
                                     <form class="form-horizontal" _lpchecked="1" method="post" action="<?= $this->makeUrl("profile/updateProfile"); ?>">
@@ -510,6 +509,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                <?php if($this->role->role_id != 4): ?>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="theme">
                                     <?php

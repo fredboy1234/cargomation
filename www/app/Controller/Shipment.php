@@ -342,13 +342,45 @@ class Shipment extends Core\Controller {
 
         # check User if role is user
         
-        if($role->role_id == 3){
-            $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
-            $api = $this->Shipment->getClientUserShipment($user);
-        } else {
-            $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-            $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
-            $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+        // if($role->role_id == 3){
+        //     $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
+        //     $api = $this->Shipment->getClientUserShipment($user);
+        // } else {
+        //     $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+        //     $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+        //     $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+        // }
+
+        // Get the shipment by role id 
+        switch ($role->role_id) {
+            case 1: // SUPER ADMIN
+                $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+                $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+                break;
+            case 2: // CLIENT ADMIN
+                $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+                $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+                break;
+            case 3: // STAFF
+                $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+                $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+                // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
+                // $api = $this->Shipment->getClientUserShipment($user);
+                break;
+            case 4: // CUSTOMER
+                // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
+                // $api = $this->Shipment->getClientUserShipment($user);
+                $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+                $shipment_id = $this->Shipment->getShipmentByOrgCode($org_code, "shipment_num");
+                $api = $this->Shipment->getShipmentByOrgCode($org_code);
+                break;
+            
+            default:
+                die('Error in getting the user role');
+                break;
         }
         
         //$doc_requested = $this->Document->getRequestedDocument($user, "shipment_num, document_type, count(*) AS count", " shipment_num, document_type");        

@@ -268,8 +268,12 @@ class Shipment extends Core\Model {
                      VALUES $data");
     }
 
-    public static function getShipmentDynamic($user_id, $arg = "*",$condition="") {
-        $where = " WHERE shipment.user_id = '{$user_id}' ";
+    public static function getShipmentDynamic($user_id, $arg = "*", $condition = "", $customer = false) {
+        if(is_bool($customer))
+            $where = " WHERE shipment.user_id = '{$user_id}' ";
+        else 
+            $where = " WHERE (shipment.consignee = '{$customer}' OR shipment.consignor = '{$customer}')";
+            
         $top ='';
         $oderby = '';
         if($condition === 'not arrived'){
@@ -307,6 +311,26 @@ class Shipment extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("select count(port_loading) as count ,port_loading
         from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading")->results();
+    }
+
+    public static function getShipmentByOrgCode($org_code, $args = "*") {
+        $query = "SELECT {$args} FROM shipment ";
+        $query .= "LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id ";
+        $query .= "FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID] ";
+        $query .= "WHERE shipment.consignee = '{$org_code}' OR shipment.consignor = '{$org_code}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public static function getContactEmailByShipmentID($shipment_id) {
+        $query = "SELECT DISTINCT sc.email, ui.first_name, ui.last_name ";
+        $query .= "FROM shipment_contacts sc ";
+        $query .= "LEFT JOIN user_info ui ";
+        $query .= "ON ui.email = sc.email ";
+        $query .= "WHERE sc.shipment_id = '{$shipment_id}' AND sc.email != ''";
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
     }
 
 }
