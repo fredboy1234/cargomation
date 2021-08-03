@@ -600,7 +600,17 @@ class Doctracker extends Core\Controller {
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
         $doc_type = $User->getUserDocumentType($user); // $this->Document->getDocumentType(), 'type');
 
-        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
+        $Role = Model\Role::getInstance($user_id);
+        $role = $Role->getUserRole($user_id);
+        // $role = Model\Role::getInstance($user_id)->getUserRole($user_id);
+
+        $json_setting = '/settings/shipment-settings.json';
+
+        if($role->role_id == 4) {
+            $json_setting = '/settings/sub-shipment-settings.json';
+        }
+
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
         
         $defaultCollection = array();
         if(isset($userData) && !empty($userData)){
