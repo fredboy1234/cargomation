@@ -115,7 +115,7 @@ class Vessel extends Core\Controller {
                          $dateformat = strtotime($lastDate);
                         if( $dateformat < $today){
                             $confirmed++;
-                        }
+                        }else{
                        // print_r($statusEnd);
                         
                         // foreach($datacontainer->events as $cont){
@@ -133,7 +133,10 @@ class Vessel extends Core\Controller {
                             $pending++;
                         }else if($today-$dateformat == 0){
                             $departCofirmed++;
+                        }else{
+                            $delay++;
                         }
+                    }
 
                     }
                 }
@@ -155,6 +158,7 @@ class Vessel extends Core\Controller {
             "confirmed" => $confirmed,
             "pending" => $pending,
             "departCOnfirmed" => $departCofirmed,
+            "delay" => $delay
         ]);
 
         $this->externalTemp();
@@ -383,9 +387,7 @@ class Vessel extends Core\Controller {
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $j_ves = json_decode($ves->sea_json);
-                // echo"<pre>";
-                // print_r($j_ves);
-                // exit();
+                
                 if( $j_ves->status == 'success'){
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){

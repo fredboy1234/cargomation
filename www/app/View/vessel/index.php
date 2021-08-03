@@ -88,9 +88,9 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box box-search" id="delay">
               <div class="inner">
-                <h3 class="text-danger">0</h3>
+                <h3 class="text-danger"><?= $this->delay;?></h3>
 
                 <p>Delays</p>
               </div>
@@ -103,7 +103,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box box-search" id="pending">
               <div class="inner">
                 <h3 class="text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
 

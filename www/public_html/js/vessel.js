@@ -140,15 +140,15 @@ jQuery(document).ready(function() {
     }
     }); 
     
+   
     $('table').on('click','tr',function(){
      var cl = $(this).attr("data-details");
      $('.'+cl).toggleClass('d-none');
-      
     });
     
     $('.box-search').on('click',function(){
         console.log($(this).attr('id'));
-        table.columns(0).search('bilat').draw();
+        table.columns(0).search($(this).attr('id')).draw();
        // table.columns(0).search("");
     });
 
