@@ -15,7 +15,7 @@ if(isset($this->contact_info)) {
 }
 ?>
 
-<?php if($user_count >= $user_max) : ?>
+<?php if($user_count >= $user_max && $this->role->id != 1) : ?>
   <div>
     <center>Note: Maximum number of user reach, please upgrade your subscription plan.</center>
   </div>
