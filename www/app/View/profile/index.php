@@ -584,6 +584,7 @@
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="card card-outline card-primary collapsed-card">
                                             <div class="card-header">
                                                 <h3 class="card-title">Vessel Track Settings</h3>
@@ -618,6 +619,7 @@
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
+                                        <?php endif; ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
                                                 <button type="submit" class="btn btn-danger">Save Settings</button>
