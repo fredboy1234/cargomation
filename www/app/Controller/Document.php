@@ -849,12 +849,11 @@ class Document extends Core\Controller {
         $results = [];
         if(is_numeric($document)) {
             $results = $this->Document->getDocumentByDocID($document);
-            $shipment_id = $document;
-        } else {
-            $shipment = $this->Shipment->getShipmentByShipID($shipment_num);
-            $shipment_id = $shipment[0]->id;
 
-        }
+        } 
+
+        $shipment = $this->Shipment->getShipmentByShipID($shipment_num);
+        $shipment_id = $shipment[0]->id;
 
         // $emailList = $this->Shipment->getShipmentThatHasUser($user_id);
         $emailList = Model\Shipment::getContactEmailByShipmentID($shipment_id);

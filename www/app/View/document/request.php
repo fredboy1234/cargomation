@@ -74,8 +74,7 @@ if(is_numeric($this->document)) {
                     <input type="hidden" id="request_type" name="request_type" class="form-control" value="<?= $request_type; ?>">
                     <?php if(!empty($this->document)): ?>
                     <input type="hidden" id="document_type" name="document_type" class="form-control" value="<?= $this->document; ?>">
-                    <?php endif; ?>
-                    <?php if(is_numeric($this->document)): ?>
+                    <?php elseif(is_numeric($this->document)): ?>
                     <input type="hidden" id="document_type" name="document_type" class="form-control" value="<?= $this->results[0]->type; ?>">
                     <input type="hidden" id="document_id" name="document_id" class="form-control" value="<?= $this->document; ?>">
                     <?php endif; ?>
