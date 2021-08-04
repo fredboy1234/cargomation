@@ -15,7 +15,7 @@ if(isset($this->contact_info)) {
 }
 ?>
 
-<?php if($user_count >= $user_max) : ?>
+<?php if($user_count >= $user_max && $this->role->id != 1) : ?>
   <div>
     <center>Note: Maximum number of user reach, please upgrade your subscription plan.</center>
   </div>
@@ -66,7 +66,12 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputEmail">Choose role <span class="text-danger font-weight-bold">*</span></label>
                 <select id="inputRole" name="role" class="form-control" required>
+                  <?php if($this->role->id == 1) : ?>
+                  <option value="1">Super Admin</option>
+                  <?php endif; ?>
+                  <?php if($this->role->id == 2 || $this->role->id == 1) : ?>
                   <option value="2">Client Admin</option>
+                  <?php endif; ?>
                   <option value="3">Staff</option>
                   <option value="4">Customer</option>
                 </select>

@@ -28,7 +28,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   bottom: 48px;
   right: 15px;
   /* border: 3px solid #f1f1f1; */
-  z-index: 1000;
+  z-index: 10000;
   width: 400px;
   box-shadow: 5px 5px 5px #666;
       -moz-box-shadow: 5px 5px 5px #666;

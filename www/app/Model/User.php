@@ -455,6 +455,17 @@ class User extends Core\Model {
 
     }
 
+    public function putUserContactInfo(array $fields) {
+        $this->create("user_contact", $fields);
+        #$this->update("user_contact", $fields, $contact_id);
+
+        // $Db = Utility\Database::getInstance();
+        // $query = "INSERT
+        //             INTO user_contact (admin_id,user_id,email_address,organization_code,company_name,is)
+        //             VALUES('{$user_id}','{$theme}')";
+        // return $Db->query()->results();
+    }
+
     public static function getUserInfoByID($user_id, $args = "*") {
         $query = "SELECT * FROM user_info WHERE user_id = '{$user_id}'";
         $Db = Utility\Database::getInstance();

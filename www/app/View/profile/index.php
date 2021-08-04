@@ -584,6 +584,7 @@
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="card card-outline card-primary collapsed-card">
                                             <div class="card-header">
                                                 <h3 class="card-title">Vessel Track Settings</h3>
@@ -618,6 +619,7 @@
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
+                                        <?php endif; ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
                                                 <button type="submit" class="btn btn-danger">Save Settings</button>
@@ -711,7 +713,7 @@
                             <?php
                                 $user_count = $this->user->user_count[0]->count;
                                 $user_max = $this->user->account_info[0]->max_users;
-                                if($user_count >= $user_max) {
+                                if($user_count >= $user_max && $this->role->id != 1) {
                                     echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
                                 } else { ?>
                                 <a href="/register" class="btn btn-sm btn-info float-left">
