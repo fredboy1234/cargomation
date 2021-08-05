@@ -13,7 +13,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   position: fixed;
   bottom: 48px;
   right: 28px;
-  z-index: 1000;
+  z-index: 10000;
   border-radius: 50%;
   box-shadow: 5px 5px 5px #666;
     -moz-box-shadow: 5px 5px 5px #666;
