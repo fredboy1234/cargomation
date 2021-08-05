@@ -4,14 +4,17 @@ jQuery(document).ready(function() {
 
     $('.table thead th').each( function () {
       var title = $(this).text();
-      $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
+      if(title !== 'Action'){
+        $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
+      }
+      
     });
 
      var table = $('.table').DataTable({
       searching: true, 
       paging: false, 
       info: false,
-      responsive: true,
+      responsive: false,
       autoWidth: false,
       lengthChange: false,
       //colReorder:true,

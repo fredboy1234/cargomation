@@ -437,7 +437,7 @@ class Vessel extends Core\Controller {
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
-                            $subdata['voyage'] = 'From: '.$firstvoyage.'<br>  To: '.$lastvoyage;
+                            $subdata['voyage'] = $lastvoyage;
 
                             $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                             $subdata['vessel_name'] = 'From: '.$firstvessel.'<br> To: '.$lastvessel;
