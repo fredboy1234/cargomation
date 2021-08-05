@@ -40,7 +40,7 @@ jQuery(document).ready(function() {
        columns: [
         { data: "container_number" },
         { data: "shipment_num"},
-        { data: "housebill"},
+        //{// data: "housebill"},
         { data: "masterbill"},
         { data: "voyage" },
 
