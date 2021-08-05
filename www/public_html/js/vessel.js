@@ -4,7 +4,8 @@ jQuery(document).ready(function() {
 
     $('.table thead th').each( function () {
       var title = $(this).text();
-      if(title !== 'Action'){
+      console.log(title);
+      if($.trim(title) !== 'Action'){
         $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
       }
       
