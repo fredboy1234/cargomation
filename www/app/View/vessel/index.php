@@ -219,7 +219,7 @@
                       <tr>
                             <th class="btn-search">Container Number <section></section></th>
                             <th>Shipment Number<section></section></th>
-                            <th>House Bill <section></section></th>
+                            <!-- <th>House Bill <section></section></th> -->
                             <th>Master Bill <section></section></th>
                             <th>Voyage <section></section></th>
                            

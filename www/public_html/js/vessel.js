@@ -4,14 +4,18 @@ jQuery(document).ready(function() {
 
     $('.table thead th').each( function () {
       var title = $(this).text();
-      $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
+      console.log(title);
+      if($.trim(title) !== 'Action'){
+        $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
+      }
+      
     });
 
      var table = $('.table').DataTable({
       searching: true, 
       paging: false, 
       info: false,
-      responsive: true,
+      responsive: false,
       autoWidth: false,
       lengthChange: false,
       //colReorder:true,
@@ -40,7 +44,7 @@ jQuery(document).ready(function() {
        columns: [
         { data: "container_number" },
         { data: "shipment_num"},
-        { data: "housebill"},
+        //{// data: "housebill"},
         { data: "masterbill"},
         { data: "voyage" },
 

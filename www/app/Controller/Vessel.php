@@ -435,11 +435,11 @@ class Vessel extends Core\Controller {
                         if($containernumber !== 'No Container Number'){
                             $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                             $subdata['shipment_num'] = $ves->shipment_num;
-                            $subdata['housebill'] = $ves->house_bill;
+                            //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
-                            $subdata['voyage'] = 'From: '.$firstvoyage.'<br>  To: '.$lastvoyage;
+                            $subdata['voyage'] = $lastvoyage;
 
-                            $subdata['date_track'] = 'From: '.$firstmonth.'-'.$firsthour.'<br>  To: '.$lastmonth.'-'.$lasthour;
+                            $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                             $subdata['vessel_name'] = 'From: '.$firstvessel.'<br> To: '.$lastvessel;
                             
                             $subdata['location_city'] = 'From: '.$firstLocation.'<br> To: '.$endLocation;
