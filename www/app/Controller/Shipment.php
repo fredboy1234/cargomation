@@ -410,6 +410,16 @@ class Shipment extends Core\Controller {
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
+        // Get all requested document type
+        $requested_doc = $this->Document->getRequestedDocument($user, "shipment_num, document_type");
+        // Reconstruct arry object to multidimensional array
+        foreach ($requested_doc as $key => $value) {
+            $requested_doc[$key] = [
+                'shipment_num' => $value->shipment_num,
+                'document_type' => $value->document_type,
+            ];
+        }
+
         $stats = $docsCollection;
 
         foreach($api as $key=>$value){
@@ -466,6 +476,18 @@ class Shipment extends Core\Controller {
                     }
                     $status_arr["all"]["color"] = "badge-primary";
                     $status_arr["all"]["text"] = "View All";
+                }
+
+                // For requested document stats
+                foreach ($requested_doc as $key => $request) {
+                    if($value->shipment_num == $request['shipment_num']) {
+                        foreach ($doc_type as $type) {
+                            if($type == $request['document_type']) {
+                                $status_arr[$type]["color"] = "badge-info";
+                                $status_arr[$type]["text"] = "Requested";
+                            }
+                        }
+                    }
                 }
             }
 
