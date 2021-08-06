@@ -91,14 +91,18 @@ jQuery(document).ready(function() {
                 var seDecode = JSON.parse(searates[i].sea_json);
                 var events = [];
                 var htmlstat = '';
-                console.log(seDecode.data.container);
-                
-                if(typeof(seDecode.data.container) != "undefined" && typeof(seDecode.data.container) != null){
-                  if(typeof(seDecode.data.container.events) != "undefined" && typeof(seDecode.data.container.events) != null){
-                    events = seDecode.data.container.events;
+                //console.log(typeof(seDecode.data.container) );
+                try{
+                  if(typeof(seDecode.data.container) != null && typeof seDecode.data.container != "undefined"){
+                    if(typeof(seDecode.data.container.events) != "undefined" && typeof(seDecode.data.container.events) != null){
+                      events = seDecode.data.container.events;
+                    }
+                    
                   }
-                  
+                }catch(err){
+                  console.log('error');
                 }
+                
                 
                 //console.log(seDecode.data);
                 
