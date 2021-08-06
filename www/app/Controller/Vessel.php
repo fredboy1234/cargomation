@@ -104,7 +104,7 @@ class Vessel extends Core\Controller {
             foreach($vessel as $key=>$ves){
                 $sea_json = json_decode($ves->sea_json);
                 
-                if($sea_json->status === 'success'){
+                if(isset($sea_json->status ) && $sea_json->status === 'success'){
                     //print_r($sea_json);
                     if(isset($sea_json->data->container)){
                         $datacontainer = $sea_json->data->container;
@@ -139,6 +139,8 @@ class Vessel extends Core\Controller {
                     }
 
                     }
+                }else{
+
                 }
             }
         }
@@ -374,7 +376,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-        // echo "<pre>";
+         //echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -387,8 +389,8 @@ class Vessel extends Core\Controller {
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $j_ves = json_decode($ves->sea_json);
-                
-                if( $j_ves->status == 'success'){
+                $subdata =array(); 
+                if(isset($j_ves->status) && $j_ves->status == 'success'){
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
                         $vdata = $j_ves->data;
@@ -431,7 +433,7 @@ class Vessel extends Core\Controller {
                             $statscheme = ' departure ';
                         }
 
-                        $subdata =array(); 
+                        
                         if($containernumber !== 'No Container Number'){
                             $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                             $subdata['shipment_num'] = $ves->shipment_num;
@@ -440,9 +442,9 @@ class Vessel extends Core\Controller {
                             $subdata['voyage'] = $lastvoyage;
 
                             $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
-                            $subdata['vessel_name'] = 'From: '.$firstvessel.'<br> To: '.$lastvessel;
+                            $subdata['vessel_name'] = $firstvessel;
                             
-                            $subdata['location_city'] = 'From: '.$firstLocation.'<br> To: '.$endLocation;
+                            $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
                             
                            
@@ -454,7 +456,71 @@ class Vessel extends Core\Controller {
                         
                         
                     }
+                }else{
+                    //print_r($j_ves);
+                    //$vstatus = '';
+                    $containernumber = isset($j_ves->containernumber) ? $j_ves->containernumber : 'No Container Number';
+                    $firstLocation = isset($j_ves->port_loading) ? $j_ves->port_loading : 'No Location';
+                    $endLocation =  isset($j_ves->port_discharge) ? $j_ves->port_discharge : 'No Location';
+                    //$firstvessel = isset($vdata->vessels[0]) ? $vdata->vessels[0]->name : 'No Vessel Name';
+                    $lastvessel = isset($j_ves->vessel_name) ? $j_ves->vessel_name : 'No Vessel Name';
+                    $firstDate = isset($j_ves->etd) ? $j_ves->etd : '';
+                    $lastDate = isset($j_ves->eta) ? $j_ves->eta : '';
+                    $firstvoyage = isset($j_ves->voyage_flight_num) ? $j_ves->voyage_flight_num : 'No Vessel Name';
+                    //$lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Vessel Name';
+
+                    $firstdatrack = date_create($firstDate);
+                    $firstday = date_format($firstdatrack,"l");
+                    $firstmonth = date_format($firstdatrack,"M j,Y");
+                    $firsthour = date_format($firstdatrack,'h:i:s A');
+
+                    $lastdatrack = date_create($lastDate);
+                    $lastday = date_format($lastdatrack,"l");
+                    $lastmonth = date_format($lastdatrack,"M j,Y");
+                    $lasthour = date_format($lastdatrack,'h:i:s A');
+
+                    $today = strtotime(date("Y-m-d"));
+                    $enddate = strtotime($lastDate);
+                    $colorscheme = 'not-done';
+                    $statscheme = ' delays ';
+
+                    if($enddate < $today){
+                        $colorscheme = 'done';
+                        $statscheme = ' confirmedvessels ';
+                    }
+
+                    if($today-$enddate <= -86400 && $today-$enddate >= -172800 ){
+                        $colorscheme = 'almost';
+                        $statscheme = ' pending ';
+                    }else if($today-$enddate == 0){
+                        $colorscheme = 'completed';
+                        $statscheme = ' departure ';
+                    }
+
+                    if($containernumber !== 'No Container Number'){
+                        $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
+                        $subdata['shipment_num'] = $ves->shipment_num;
+                        //$subdata['housebill'] = $ves->house_bill;
+                        $subdata['masterbill'] = $ves->master_bill;
+                        $subdata['voyage'] = $firstvoyage;
+
+                        $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
+                        $subdata['vessel_name'] = $lastvessel;
+                        
+                        $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
+                        
+                        
+                       
+                        $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
+                        <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
+                    
+                        $data[] = $subdata; 
+                    }
+
+
                 }
+
+                
                 // $dateTrack = date_create($ves->date_track);
                 // $day = date_format($dateTrack,"l");
                 // $month = date_format($dateTrack,"F j,Y");
