@@ -674,7 +674,7 @@ class Vessel extends Core\Controller {
                         $lastDestination = isset($eventsData[0]) ? end($eventsData)->name :'';
                         //print_r( $lastDestination );
                         
-                        if(trim($trans[0]->port_discharge) === trim($lastDestination) && strtotime($trans[0]->eta) >= strtotime($eventsDate)){
+                        if(trim($trans[0]->port_discharge) === trim($lastDestination) || strtotime($trans[0]->eta) >= strtotime($eventsDate)){
                             $this->Vessel->checkContainer($data);
                             echo $eventsDate;
                             echo '<br>'.$trans[0]->eta;
