@@ -248,7 +248,7 @@ class Document extends Core\Model {
         // 
     }
 
-    public function getRequestedDocument($user_id, $arg = '*', $group_by) {
+    public function getRequestedDocument($user_id, $arg = '*', $group_by = "") {
         $query = "SELECT {$arg}
         FROM document_request
         WHERE request_type = 'new' 

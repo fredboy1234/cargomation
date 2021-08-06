@@ -70,13 +70,13 @@
 </style>
 <?php $mode = $this->container_mode;?>
   <!-- Main content -->
-    <section class="content">
+    <section class="content" style="padding-bottom: 5em;">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box bg-white">
               <div class="inner">
                 <h3 class="text-dark"><?php echo $this->total_shipment?></h3>
 
@@ -91,7 +91,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box bg-white">
               <div class="inner">
                 <h3 class="text-success"><?=$this->sea_shipment?></h3>
 
@@ -106,7 +106,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box bg-white">
               <div class="inner">
                 <h3 class="text-primary"><?= $this->air_shipment?></h3>
 
@@ -121,7 +121,7 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box">
+            <div class="small-box bg-white">
               <div class="inner">
                 <h3 class="text-danger"><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
 
@@ -145,7 +145,7 @@
 
             <?php if(true): ?>
             <!-- Calendar -->
-            <div class="card bg-gradient-dark">
+            <div class="card bg-gradient-white">
               <div class="card-header border-0">
 
                 <h3 class="card-title">
@@ -155,9 +155,9 @@
                 <!-- tools card -->
                 <div class="card-tools">
                   <!-- button with a dropdown -->
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
-                      <i class="fas fa-bars"></i></button>
+                  <div class="btn-group d-none">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                    <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
                       <a href="#" class="dropdown-item">Add new event</a>
                       <a href="#" class="dropdown-item">Clear events</a>
@@ -165,10 +165,10 @@
                       <a href="#" class="dropdown-item">View calendar</a>
                     </div>
                   </div>
-                  <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-dark btn-sm d-none" data-card-widget="remove">
+                  <button type="button" class="btn btn-primary btn-sm d-none" data-card-widget="remove">
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
@@ -188,18 +188,24 @@
             <!-- File -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Document Stats</h3>
+                <h3 class="card-title">
+                  <i class="fas fa-file-alt mr-1"></i>
+                  Document Stats
+                </h3>
                 <div class="card-tools">
                   <!-- Buttons, labels, and many other things can be placed here! -->
                   <!-- Here is a label for example -->
-                  <span class="badge badge-primary">New</span>
+                  <span class="badge badge-primary d-none">New</span>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
                 </div>
                 <!-- /.card-tools -->
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                   <!-- Info Boxes Style 2 -->
-                  <div class="info-box mb-3">
+                  <div class="info-box mb-3 bg-light">
                     <span class="info-box-icon text-success"><i class="far fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
@@ -209,7 +215,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3">
+                  <div class="info-box mb-3 bg-light">
                     <span class="info-box-icon text-danger"><i class="fas fa-exclamation-triangle"></i></span>
 
                     <div class="info-box-content">
@@ -219,7 +225,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3">
+                  <div class="info-box mb-3 bg-light">
                     <span class="info-box-icon text-info"><i class="far fa-check-square"></i></span>
 
                     <div class="info-box-content">
@@ -229,7 +235,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3">
+                  <div class="info-box mb-3 bg-light">
                     <span class="info-box-icon text-warning"><i class="far fa-edit"></i></span>
 
                     <div class="info-box-content">
@@ -651,7 +657,7 @@
                 </div>
               </div>
               <!-- /.card-body-->
-              <div class="card-footer bg-transparent invisible">
+              <div class="card-footer bg-transparent invisible d-none">
                 <div class="row">
                   <div class="col-4 text-center">
                     <div id="sparkline-1"></div>
@@ -677,17 +683,49 @@
             
             <div class="card-body p-0">
                   <div class="card">
-                    <div class="card-header border-0">
+                    <div class="card-header">
                       <div class="d-flex justify-content-between">
-                        <h3 class="card-title">Container Mode Statistics</h3>
-                        <a href="/doctracker">View Report</a>
+                        <h3 class="card-title"></h3>
+                        
                       </div>
+                      <h3 class="card-title">
+                        <i class="fas fa-map-marker-alt mr-1"></i>
+                        Container Mode Statistics
+                      </h3>
+                      <!-- card tools -->
+                      <div class="card-tools">
+                        <!-- button with a dropdown -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-118">
+                          <i class="fas fa-bars"></i></button>
+                          <div class="dropdown-menu" role="menu">
+                            <a href="/vessel" class="dropdown-item">Visit Vessel</a>
+                            <a href="/transport" class="dropdown-item">Transport</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/doctracker" class="dropdown-item">View Report</a>
+                          </div>
+                        </div>
+                        <button type="button"
+                                class="btn btn-primary btn-sm daterange d-none"
+                                data-toggle="tooltip"
+                                title="Date range">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary btn-sm"
+                                data-card-widget="collapse"
+                                data-toggle="tooltip"
+                                title="Collapse">
+                          <i class="fas fa-minus "></i>
+                        </button>
+                      </div>
+                      <!-- /.card-tools -->
                     </div>
                     <div class="card-body">
                       <div class="d-flex">
                         <p class="d-flex flex-column">
-                          <span class="text-bold text-lg"><?=$this->count_cmode?></span>
                           <span>Total Count of all Container Modes</span>
+                          <span class="text-bold text-xl"><?=$this->count_cmode?></span>
                         </p>
                         <p class="ml-auto d-flex flex-column text-right">
                           <span class="text-success">
@@ -707,17 +745,19 @@
                       <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                         <canvas id="sea-chart" height="400" width="1064" style="display: block; height: 200px; width: 532px;" class="chartjs-render-monitor"></canvas>
                       </div>
-
-                      <div class="d-flex flex-row justify-content-end">
-                        <span class="mr-2">
-                          <i class="fas fa-square text-primary" style="color: rgba(52, 255, 93, 0.5) !important;"></i> Sea Container Mode
-                        </span>
-
-                        <span>
-                          <i class="fas fa-square text-gray" style="color: rgba(60, 150, 247, 0.5) !important;"></i> Air Container Mode
-                        </span>
-                      </div>
                     </div>
+                    <div class="card-footer clearfix">
+                      <div class="d-flex flex-row justify-content-end">
+                          <span class="mr-2">
+                            <i class="fas fa-square text-primary" style="color: rgba(52, 255, 93, 0.5) !important;"></i> Sea Container Mode
+                          </span>
+
+                          <span>
+                            <i class="fas fa-square text-gray" style="color: rgba(60, 150, 247, 0.5) !important;"></i> Air Container Mode
+                          </span>
+                        </div>
+                    </div>
+
                 </div>
               </div>
 
