@@ -267,7 +267,8 @@ class Vessel extends Core\Controller {
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
             "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
-            "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '' 
+            "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
+            "menu" => Model\User::getUserMenu($role->role_id)
         ]);
         $this->externalTemp();
     }
