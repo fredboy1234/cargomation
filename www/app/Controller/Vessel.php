@@ -114,7 +114,7 @@ class Vessel extends Core\Controller {
                         // $today = strtotime(date("Y-m-d"));
                          $dateformat = strtotime($lastDate);
                         if( $dateformat < $today){
-                            $confirmed++;
+                            $confirmed++; 
                         }else{
                        // print_r($statusEnd);
                         
