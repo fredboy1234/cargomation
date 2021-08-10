@@ -521,8 +521,15 @@ class Vessel extends Core\Controller {
 
                 }
                 if(!in_array($containernumber,$doublechecker) && $containernumber !== 'No Container Number'){
-                    $data[] = $subdata;
-                    $doublechecker[]=$containernumber;
+                    // $datediff = $today - strtotime($lastDate);
+                    // print_r($today );echo"<br>";
+                    // print_r(strtotime($lastDate));echo"<br>";
+                    // exit();
+                    if(strtotime($lastDate)  >=  $today ){
+                        $data[] = $subdata;
+                        $doublechecker[]=$containernumber;
+                    }
+                    
                 }
                  
             }
