@@ -95,7 +95,7 @@ class Vessel extends Core\Controller {
         $departCofirmed = 0;
         $delay = 0;
         $pending = 0;
-        
+        $doublechecker = array();
         $today = strtotime(date("Y-m-d"));
         // echo "<pre>";
         // print_r($this->Vessel->status());
@@ -114,7 +114,7 @@ class Vessel extends Core\Controller {
                         // $today = strtotime(date("Y-m-d"));
                          $dateformat = strtotime($lastDate);
                         if( $dateformat < $today){
-                            $confirmed++;
+                            $confirmed++; 
                         }else{
                        // print_r($statusEnd);
                         
@@ -267,7 +267,8 @@ class Vessel extends Core\Controller {
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
             "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
-            "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '' 
+            "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
+            "menu" => Model\User::getUserMenu($role->role_id)
         ]);
         $this->externalTemp();
     }
@@ -385,6 +386,7 @@ class Vessel extends Core\Controller {
         $store = array();
         $count = 0;
         $confirmed = 0;
+        $doublechecker = array();
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
@@ -451,7 +453,7 @@ class Vessel extends Core\Controller {
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
                         
-                            $data[] = $subdata; 
+                            //$data[] = $subdata; 
                         }
                         
                         
@@ -514,44 +516,16 @@ class Vessel extends Core\Controller {
                         $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                         <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
                     
-                        $data[] = $subdata; 
                     }
 
 
                 }
-
-                
-                // $dateTrack = date_create($ves->date_track);
-                // $day = date_format($dateTrack,"l");
-                // $month = date_format($dateTrack,"F j,Y");
-                // $hour = date_format($dateTrack,'h:i:s A');
-
-                // $store[$ves->container_number]['vessel_name'][] =$ves->vessel;
-                // $store[$ves->container_number]['location_city'][] =$ves->location_city;
-                // $store[$ves->container_number]['date_track'][] =$month." - ".$hour;
-                // $store[$ves->container_number]['voyage'][]=$ves->voyage;
-
-                
-                
-           
+                if(!in_array($containernumber,$doublechecker) && $containernumber !== 'No Container Number'){
+                    $data[] = $subdata;
+                    $doublechecker[]=$containernumber;
+                }
+                 
             }
-        //    exit();
-        //     foreach($store as $key=>$st){
-        //         $lastvessel = end($st['vessel_name']);
-        //         $lastdate = end($st['vessel_name']);
-                
-        //         $subdata =array(); 
-        //         $subdata['container_number'] = $key;
-        //         $subdata['vessel_name'] = 'From: '.$st['vessel_name'][0].'<br> To: '.end($st['vessel_name']);
-        //         $subdata['location_city'] = 'From: '.$st['location_city'][0].'<br> To: '.end($st['location_city']);
-        //         $subdata['date_track'] = 'From: '.$st['date_track'][0].'<br>  To: '.end($st['date_track']);
-        //         $subdata['voyage'] = 'From: '.$st['voyage'][0].'<br>  To: '.end($st['voyage']);
-                
-        //         $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$key.'">Details</a>/
-        //         <a class="col-sm-3 dcontent '.$key.'" href="/vessel/tracking?'.$key.'">Tracking</a>';
-               
-        //         $data[] = $subdata; 
-        //     }
            
             $json_data=array(
                 "data"  =>  $data,
