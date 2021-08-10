@@ -85,6 +85,14 @@ class Doctracker extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        $User->putUserLog([
+            "user_id" => $user,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 3,
+            "log_action" => "Access doctracker",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
+
         // Set any dependencies, data and render the view.
         // $this->initExternals();
         // $this->View->addCSS("css/google_font.css");

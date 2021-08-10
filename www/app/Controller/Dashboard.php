@@ -68,17 +68,13 @@ class Dashboard extends Core\Controller {
                 break;
         }
 
-        // // User Log
-        // $User->putUserLog([
-        //     "log_id" => 1,
-        //     "user_id" => $userID,
-        //     "role_id" => $role->role_id,
-        //     "login_time" => date("Y-m-d H:i:s"),
-        //     "ip_address" => $User->getIPAddress(),
-        //     "duration" => "-",
-        //     "log_type" => "redirect",
-        //     "log_action" => "Access dashboard",
-        // ]);
+        $User->putUserLog([
+            "user_id" => $userID,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 2,
+            "log_action" => "Access dashboard",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
 
 
         $selectedTheme = $User->getUserSettings($userID);

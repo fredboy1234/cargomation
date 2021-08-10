@@ -43,6 +43,14 @@ class Register extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
+
+        $User->putUserLog([
+            "user_id" => $userID,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 5,
+            "log_action" => "Access register contact",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
         
         $selectedTheme = $User->getUserSettings($userID);
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
@@ -104,6 +112,14 @@ class Register extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
+
+        $User->putUserLog([
+            "user_id" => $userID,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 4,
+            "log_action" => "Access exchange",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
         
         $selectedTheme = $User->getUserSettings($userID);
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){

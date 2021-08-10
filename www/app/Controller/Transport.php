@@ -76,6 +76,13 @@ class Transport extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        $User->putUserLog([
+            "user_id" => $user,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 8,
+            "log_action" => "Access transport",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
         
         $selectedTheme = $User->getUserSettings($user);
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
