@@ -41,6 +41,14 @@ class Exchange extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        $User->putUserLog([
+            "user_id" => $userID,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 4,
+            "log_action" => "Access exchange",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
+
         $selectedTheme = $User->getUserSettings($userID);
 
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){

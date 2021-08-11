@@ -472,22 +472,32 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    // public function putUserLog($data) {
-    //     $column = implode(", ", array_keys($data));
-    //     $values = implode("', '", array_values($data));
+    public function putUserLog($data) {
+        $query = "";
 
-    //     $query = "INSERT
-    //     INTO {$column}
-    //     VALUES ('{$values}')";
+        if(Utility\Session::exists('log_hash')){
+            $old_hash = Utility\Session::get('log_hash');
+            $query .= "UPDATE user_log 
+            SET end_date = '" . date("Y-m-d H:i:s") .
+            "' WHERE log_hash = '{$old_hash}';";
+        } 
 
-    //     var_dump($query);
+        $log_hash = md5(mt_rand(0, 32) . time());
 
-    //     die();
+        Utility\Session::put('log_hash', $log_hash);
+        
+        $data['log_hash'] = $log_hash;
 
+        $column = implode(", ", array_keys($data));
+        $values = implode("', '", array_values($data));
 
-    //     $Db = Utility\Database::getInstance();
-    //     return $Db->query($query)->results();
-    // }
+        $query .= " INSERT
+        INTO user_log ({$column})
+        VALUES ('{$values}')";
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 
     public function getIPAddress() {  
         //whether ip is from the share internet  
