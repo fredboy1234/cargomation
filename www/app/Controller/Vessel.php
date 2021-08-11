@@ -71,13 +71,6 @@ class Vessel extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
-        $User->putUserLog([
-            "user_id" => $user,
-            "ip_address" => $User->getIPAddress(),
-            "log_type" => 9,
-            "log_action" => "Access vessel",
-            "start_date" => date("Y-m-d H:i:s"),
-        ]);
         
         $selectedTheme = $User->getUserSettings($user);
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
@@ -384,7 +377,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-         //echo "<pre>";
+        //  echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -532,7 +525,7 @@ class Vessel extends Core\Controller {
                     // print_r($today );echo"<br>";
                     // print_r(strtotime($lastDate));echo"<br>";
                     // exit();
-                    if(strtotime($lastDate)  >=  $today ){
+                    if( strtotime($lastDate) > strtotime('-30 days') ){
                         $data[] = $subdata;
                         $doublechecker[]=$containernumber;
                     }
