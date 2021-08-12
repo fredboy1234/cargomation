@@ -228,7 +228,7 @@
                             
                             <th>Vessel Name <section></section></th>
                             <th>Location <section></section></th>
-                            
+                            <th>One Stop <section></section></th>
                             
                             
                             <th>Action <section></section></th>
@@ -242,6 +242,24 @@
             </div>
         </div>
 </section>
+</div>
+<div class="modal fade" id="detailinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Shipment Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;

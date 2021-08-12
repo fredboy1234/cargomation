@@ -51,7 +51,7 @@ jQuery(document).ready(function() {
         { data: "date_track" },
         { data: "vessel_name" },
         { data: "location_city" },
-        
+        { data: "onestop" },
         // { data: "status" },
             
         { data: "action" },
@@ -85,61 +85,81 @@ jQuery(document).ready(function() {
           $(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class'));
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
-               
-                //console.log(searates[i]);
+                var shipmnt = $(rows).eq( i ).find('td').eq(1).text();
+            
                 //$(rows).eq( i ).find('td').eq(2).append("<span></span>");
-                var seDecode = JSON.parse(searates[i].sea_json);
+                var seDecode = {}//JSON.parse(searates[i].sea_json);
                 var events = [];
                 var htmlstat = '';
-                //console.log(typeof(seDecode.data.container) );
+                var currentDay = new Date();
+                var unID = '';
                 try{
+                  
+                  seDecode = JSON.parse(searates[i].sea_json);
                   if(typeof(seDecode.data.container) != null && typeof seDecode.data.container != "undefined"){
                     if(typeof(seDecode.data.container.events) != "undefined" && typeof(seDecode.data.container.events) != null){
                       events = seDecode.data.container.events;
                     }
                     
                   }
+                  $.each(events,function(okey,oval){
+                    var status = oval.status;
+                    var location = '';
+                    var locindex = oval.location;
+                    
+                    var containerDay = new Date(oval.date);
+                    var same = currentDay.getTime() === containerDay.getTime();
+                    var notSame = currentDay.getTime() !== containerDay.getTime();
+                    
+  
+                    $.each(seDecode.data.locations,function(ok,ov){
+                      //console.log(ov);
+                      if(ov.id == locindex){
+                        location = `${ov.name}`;
+                      }
+                    });
+  
+                    htmlstat +=`
+                        <span>Location : ${location}</span><br>
+                        <span> Date : ${oval.date}</span><br> 
+                        <span> Status : ${statsCode[status]}</span><br>  
+                        <hr>  
+                    `;
+                  });
+                  $(rows).eq( i ).attr("data-details",searates[i].trans_id);
+                  $(rows).eq( i ).after(
+                      `<tr class="d-none ${searates[i].trans_id} ">
+                        <td>${htmlstat}</td>
+                      </tr>`
+                  );
                 }catch(err){
-                  console.log('error');
+                  seDecode = searates;
+                  events = seDecode;
+                  var status = 'VAD';
+                  
+                  locationLoading = searates[i].port_loading;
+                  locationdischarge = searates[i].port_discharge;
+                    $.each(events,function(ikey,ival){
+                        if(searates[i].shipment_num === ival.shipment_num){
+                          htmlstat =`
+                            <span>Location : ${locationdischarge}</span><br>
+                            <span> Date : ${searates[i].eta}</span><br> 
+                            <span> Status : ${statsCode[status]}</span><br>  
+                            <hr>  
+                          `;
+                        }
+                    });
+                    
+                    $(rows).eq( i ).attr("data-details",searates[i].id);
+                    $(rows).eq( i ).after(
+                        `<tr class="d-none ${searates[i].id} ">
+                          <td>${htmlstat}</td>
+                        </tr>`
+                    );
+                  
                 }
                 
-                
-                //console.log(seDecode.data);
-                
-                var currentDay = new Date();
-                
-
-                $.each(events,function(okey,oval){
-                  var status = oval.status;
-                  var location = '';
-                  var locindex = oval.location;
-                  
-                  var containerDay = new Date(oval.date);
-                  var same = currentDay.getTime() === containerDay.getTime();
-                  var notSame = currentDay.getTime() !== containerDay.getTime();
-                  
-
-                  $.each(seDecode.data.locations,function(ok,ov){
-                    //console.log(ov);
-                    if(ov.id == locindex){
-                      location = `${ov.name}`;
-                    }
-                  });
-
-                  htmlstat +=`
-                      <span>Location : ${location}</span><br>
-                      <span> Date : ${oval.date}</span><br> 
-                      <span> Status : ${statsCode[status]}</span><br>  
-                      <hr>  
-                  `;
-                });
-
-                $(rows).eq( i ).attr("data-details",searates[i].trans_id);
-                $(rows).eq( i ).after(
-                    `<tr class="detail-drop group collapse-tr d-none ${searates[i].trans_id} ">
-                      <td>${htmlstat}</td>
-                    </tr>`
-                );
+                console.log(searates);
                 last = group;
             }
             count++;
@@ -151,7 +171,9 @@ jQuery(document).ready(function() {
    
     $('table').on('click','tr',function(){
      var cl = $(this).attr("data-details");
-     $('.'+cl).toggleClass('d-none');
+     //$('.'+cl).toggleClass('d-none');
+     $("#detailinfo .modal-body").html($('.'+cl+' td').html());
+     $('#detailinfo').modal('show');
     });
     
     $('.box-search').on('click',function(){
