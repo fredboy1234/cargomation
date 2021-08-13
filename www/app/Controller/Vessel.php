@@ -97,15 +97,14 @@ class Vessel extends Core\Controller {
         $pending = 0;
         $doublechecker = array();
         $today = strtotime(date("Y-m-d"));
-        // echo "<pre>";
-        // print_r($this->Vessel->status());
-        // exit();
+        $seadata = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $sea_json = json_decode($ves->sea_json);
                 
                 if(isset($sea_json->status ) && $sea_json->status === 'success'){
                     //print_r($sea_json);
+                    $seadata[] = $sea_json;
                     if(isset($sea_json->data->container)){
                         $datacontainer = $sea_json->data->container;
                         $firstDate = isset($datacontainer->events[0]) ? $datacontainer->events[0]->date : '';
@@ -140,7 +139,7 @@ class Vessel extends Core\Controller {
 
                     }
                 }else{
-
+                    $seadata[] = $sea_json ;
                 }
             }
         }
@@ -156,7 +155,7 @@ class Vessel extends Core\Controller {
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             "notifications" => Model\User::getUserNotifications($user),
             "menu" => Model\User::getUserMenu($role->role_id),
-            "sea_rates" => $vessel,
+            "sea_rates" => $seadata,
             "confirmed" => $confirmed,
             "pending" => $pending,
             "departCOnfirmed" => $departCofirmed,
@@ -377,7 +376,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-        //  echo "<pre>";
+        //echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -448,7 +447,7 @@ class Vessel extends Core\Controller {
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
-                            
+                            $subdata['onestop'] = '<span id="'.$containernumber.'">show</span>';
                            
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
@@ -511,7 +510,7 @@ class Vessel extends Core\Controller {
                         
                         $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                         
-                        
+                        $subdata['onestop'] = '<span id="'.$containernumber.'">show</span>';
                        
                         $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                         <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
@@ -521,10 +520,7 @@ class Vessel extends Core\Controller {
 
                 }
                 if(!in_array($containernumber,$doublechecker) && $containernumber !== 'No Container Number'){
-                    // $datediff = $today - strtotime($lastDate);
-                    // print_r($today );echo"<br>";
-                    // print_r(strtotime($lastDate));echo"<br>";
-                    // exit();
+                    
                     if( strtotime($lastDate) > strtotime('-30 days') ){
                         $data[] = $subdata;
                         $doublechecker[]=$containernumber;
@@ -540,6 +536,7 @@ class Vessel extends Core\Controller {
            
             
         }
+       
         echo json_encode($json_data);
     }
 
