@@ -184,20 +184,45 @@ class User extends Core\Model {
      * @since 1.0.3
      * @throws Exception
      */
-    public static function getUsersInstance($userID) {
+    public static function getUsersInstance($userID, $roleID) {
+
+        switch ($roleID) {
+            case 1:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_role.role_id AS 'role',
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN user_role ON  users.id = user_role.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id 
+                    WHERE user_role.role_id = '2'";
+                break;
+            case 2:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            default:
+                # code...
+                break;
+        }
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT users.id, 
-                                user_info.first_name, 
-                                user_info.last_name, 
-                                user_info.email,
-                                user_info.status AS 'status',
-                                user_info.city,
-                                user_images.image_src,
-                                subscription.name AS 'plan' FROM users
-                                LEFT JOIN user_info ON  users.id = user_info.user_id
-                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
-                                LEFT JOIN user_images ON user_images.user_id = user_info.user_id
-                                WHERE user_info.account_id = {$userID}")->results();
+        return $Db->query($query)->results();
     }
 
     /**
