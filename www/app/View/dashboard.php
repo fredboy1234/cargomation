@@ -189,7 +189,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-file-alt mr-1"></i>
+                  <i class="far fa-file-alt mr-1"></i>
                   Document Stats
                 </h3>
                 <div class="card-tools">
@@ -521,10 +521,30 @@
             <!-- TABLE: Client List -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">User List</h3>
+                <h3 class="card-title">
+                  <i class="far fa-user"></i>
+                  User List
+                </h3>
 
                 <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
+                  <!-- button with a dropdown -->
+                  <div class="btn-group d-none">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                    <i class="fas fa-bars"></i></button>
+                    <div class="dropdown-menu" role="menu">
+                      <a href="#" class="dropdown-item">Add new event</a>
+                      <a href="#" class="dropdown-item">Clear events</a>
+                      <div class="dropdown-divider"></div>
+                      <a href="#" class="dropdown-item">View calendar</a>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm d-none" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <div class="input-group input-group-sm d-none" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
                     <div class="input-group-append">
@@ -619,7 +639,7 @@
             <div class="card bg-gradient-default" style="display: block;">
               <div class="card-header border-0">
                 <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
+                  <i class="far fa-map mr-1"></i>
                   Shipments
                 </h3>
                 <!-- card tools -->
@@ -689,7 +709,7 @@
                         
                       </div>
                       <h3 class="card-title">
-                        <i class="fas fa-map-marker-alt mr-1"></i>
+                        <i class="fa fa-chart-line mr-1"></i>
                         Container Mode Statistics
                       </h3>
                       <!-- card tools -->
