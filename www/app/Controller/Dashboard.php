@@ -124,6 +124,7 @@ class Dashboard extends Core\Controller {
             "notifications" => Model\User::getUserNotifications($userID),
             "user" => (Object) Model\User::getProfile($userID),
             "users" => Model\User::getUsersInstance($userID, $role->role_id),
+            "user_log" => Model\User::getUsersLogInstance($userID, $role->role_id),
             "menu" => Model\User::getUserMenu($role->role_id),
             "image_profile" => $profileImage,
             "dash_photo" => Model\User::getUsersDashPhoto($userID),

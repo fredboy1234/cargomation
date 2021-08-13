@@ -254,6 +254,108 @@
             <!-- /.card -->
             <?php endif; ?>
 
+            <?php if($this->role->id == 1): ?>
+            <!-- File -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa fa-list mr-1"></i>
+                  User Log
+                </h3>
+                <div class="card-tools">
+                  <!-- Buttons, labels, and many other things can be placed here! -->
+                  <!-- Here is a label for example -->
+                  <span class="badge badge-primary d-none">New</span>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0" style="height: 729px;">
+                <table class="table table-head-fixed table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>IP Address</th>
+                      <th>Action</th>
+                      <th>Duration</th>
+                    </tr>
+                  </thead>
+                  <?php foreach ($this->user_log as $key => $value) { ?>
+                  <tr>
+                    <td><?php echo $value->id; ?></td>
+                    <td><?php echo $value->first_name . " " . $value->last_name; ?></td>
+                    <td><?php switch ($value->role) {
+                                case 1:
+                                  $role = "Admin";
+                                break;
+                                case 2:
+                                    $role = "Client";
+                                  break;
+                                case 3:
+                                    $role = "Staff";
+                                  break;
+                                case 4:
+                                    $role = "Customer";
+                                  break;
+                                
+                                default:
+                                  # code...
+                                  break;
+                              } 
+                          echo "<b>" . $role . "</b>" ;
+                        ?>
+                    </td>
+                    <td><?php echo $value->ip_address; ?></td>
+                    <td><?php echo $value->action; ?></td>
+                    <td>
+                      <?php 
+                        $duration = "";
+                        $total_seconds = $value->duration;
+                        if($total_seconds != NULL) {
+                          $hours = intval($total_seconds / 3600);
+                          $minutes = intval(($total_seconds % 3600) / 60);
+                          $seconds = intval($total_seconds % 60);
+                          
+                          if($hours >= 1) {
+                            $duration .= $hours . " hours ";
+                          }
+
+                          if($minutes >= 1) {
+                            $duration .= $minutes . " minutes ";
+                          }
+
+                          if($seconds >= 1) {
+                            $duration .= $seconds . " seconds ";
+                          }
+
+
+                        } else {
+                          $duration .= "-";
+                        }
+
+
+                        echo $duration;
+                      ?>
+                    </td>
+                  </tr>
+                  <?php } ?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                * Notes:
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+            <?php endif; ?>
+
             <?php if(false): ?>
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary">
