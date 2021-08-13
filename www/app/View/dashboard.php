@@ -523,7 +523,7 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="far fa-user"></i>
-                  User List
+                  Client List
                 </h3>
 
                 <div class="card-tools">
@@ -561,7 +561,7 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Subcription</th>
+                      <th>Role</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -584,7 +584,27 @@
                       </div>
                     </td>
                     <td><?php echo $value->email; ?></td>
-                    <td><?php echo $value->plan; ?></td>
+                    <td><?php switch ($value->role) {
+                                case 1:
+                                  $role = "Admin";
+                                break;
+                                case 2:
+                                    $role = "Client";
+                                  break;
+                                case 3:
+                                    $role = "Staff";
+                                  break;
+                                case 4:
+                                    $role = "Customer";
+                                  break;
+                                
+                                default:
+                                  # code...
+                                  break;
+                              } 
+                          echo "<b>" . $role . "</b>" ;
+                        ?>
+                    </td>
                     <td><?php switch ($value->status) {
                                 case 0:
                                   $status = "Pending";
