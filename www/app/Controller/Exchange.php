@@ -80,7 +80,7 @@ class Exchange extends Core\Controller {
             "title" => "Daily Exchange",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($userID),
-            "users" => Model\User::getUsersInstance($userID),
+            "users" => Model\User::getUsersInstance($userID, $role->role_id),
             "image_profile" => $profileImage,
             "dash_photo" =>Model\User::getUsersDashPhoto($userID),
             "selected_theme" => $selectedTheme,

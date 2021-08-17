@@ -76,7 +76,7 @@ class Contact extends Core\Controller {
             "notifications" => Model\User::getUserNotifications($userID),
             "menu" => Model\User::getUserMenu($role->role_id),
             "user" => (Object) Model\User::getProfile($userID),
-            "users" => Model\User::getUsersInstance($userID),
+            "users" => Model\User::getUsersInstance($userID, $role->role_id),
             "image_profile" => $profileImage,
             "selected_theme" => $selectedTheme,
             "role" => $role
