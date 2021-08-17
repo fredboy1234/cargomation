@@ -184,20 +184,45 @@ class User extends Core\Model {
      * @since 1.0.3
      * @throws Exception
      */
-    public static function getUsersInstance($userID) {
+    public static function getUsersInstance($userID, $roleID) {
+
+        switch ($roleID) {
+            case 1:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_role.role_id AS 'role',
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN user_role ON  users.id = user_role.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id 
+                    WHERE user_role.role_id = '2'";
+                break;
+            case 2:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            default:
+                # code...
+                break;
+        }
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT users.id, 
-                                user_info.first_name, 
-                                user_info.last_name, 
-                                user_info.email,
-                                user_info.status AS 'status',
-                                user_info.city,
-                                user_images.image_src,
-                                subscription.name AS 'plan' FROM users
-                                LEFT JOIN user_info ON  users.id = user_info.user_id
-                                LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
-                                LEFT JOIN user_images ON user_images.user_id = user_info.user_id
-                                WHERE user_info.account_id = {$userID}")->results();
+        return $Db->query($query)->results();
     }
 
     /**
@@ -515,6 +540,51 @@ class User extends Core\Model {
         return $ip;  
     }  
 
+        /**
+     * Get User Log Instance: Get instance of a specified user log record in the database.
+     * @access public
+     * @param int $userID
+     * @return Db
+     * @since 1.0.3
+     * @throws Exception
+     */
+    public static function getUsersLogInstance($userID, $roleID) {
+
+        switch ($roleID) {
+            case 1:
+                $query = "SELECT user_log.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_role.role_id AS 'role',
+                    user_log.ip_address,
+                    user_log.log_action AS 'action',
+                    DateDiff(second, user_log.start_date, user_log.end_date) AS 'duration'
+                    FROM user_log
+                    LEFT JOIN users ON users.id = user_log.user_id
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN user_role ON  users.id = user_role.user_id";
+                break;
+            case 2:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            default:
+                # code...
+                break;
+        }
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 
     public static function getUserMenu($role_id = "") {
         $query = "SELECT * FROM menu WHERE role_id = '{$role_id}' AND show = 1";
