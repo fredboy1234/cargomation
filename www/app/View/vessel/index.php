@@ -264,6 +264,7 @@
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
     var searates = <?php echo json_encode($this->sea_rates)?>;
+    var doublechecker =<?php echo json_encode($this->doublechecker)?> ;
     var statsCode = {
         UNK : 'Unknown',
         LTS : 'Land transshipment',

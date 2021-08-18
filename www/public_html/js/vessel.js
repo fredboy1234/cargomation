@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
 
     $('.table thead th').each( function () {
       var title = $(this).text();
-      console.log(title);
+      //console.log(title);
       if($.trim(title) !== 'Action'){
         $(this).append( '<input type="text" placeholder="Search '+title+'" />' );
       }
@@ -27,7 +27,7 @@ jQuery(document).ready(function() {
         this.api().columns().every( function () {
             var that = this;
             $( 'input', this.header() ).on( 'keyup change clear input', function () {
-              console.log(this.value );
+              //console.log(this.value );
                 if ( that.search() !== this.value ) {
                  
                     that
@@ -154,12 +154,41 @@ jQuery(document).ready(function() {
                     $(rows).eq( i ).after(
                         `<tr class="d-none ${searates[i].id} ">
                           <td>${htmlstat}</td>
+                        </tr>
+                        <tr class="d-none  ot-${searates[i].id}">
+                          <td>
+                            <span>ADLATA: ${doublechecker[i].ADLATA}</span><br>
+                            <span>ADLAvail: ${doublechecker[i].ADLAvail}</span><br>
+                            <span>ADLETA: ${doublechecker[i].ADLETA}</span><br>
+                            <span>ADLStor: ${doublechecker[i].ADLStor}</span><br>
+                            <span>AKLATA: ${doublechecker[i].AKLATA}</span><br>
+                            <span>AKLAvail: ${doublechecker[i].AKLAvail}</span><br>
+                            <span>AKLETA: ${doublechecker[i].AKLETA}</span><br>
+                            <span>AKLStor: ${doublechecker[i].AKLStor}</span><br>
+                            <span>BNEATA: ${doublechecker[i].BNEATA}</span><br>
+                            <span>BNEAvail: ${doublechecker[i].BNEAvail}</span><br>
+                            <span>BNEETA: ${doublechecker[i].BNEETA}</span><br>
+                            <span>BNEStor: ${doublechecker[i].BNEStor}</span><br>
+                            <span>FREATA: ${doublechecker[i].FREATA}</span><br>
+                            <span>FREAvail: ${doublechecker[i].FREAvail}</span><br>
+                            <span>FREStor: ${doublechecker[i].FREStor}</span><br>
+                            <span>MELATA: ${doublechecker[i].MELATA}</span><br>
+                            <span>MELAvail: ${doublechecker[i].MELAvail}</span><br>
+                            <span>MELETA: ${doublechecker[i].MELETA}</span><br>
+                            <span>MELStor: ${doublechecker[i].MELStor}</span><br>
+                            <span>SYDATA: ${doublechecker[i].SYDATA}</span><br>
+                            <span>SYDAvail: ${doublechecker[i].SYDAvail}</span><br>
+                            <span>SYDETA: ${doublechecker[i].SYDETA}</span><br>
+                            <span>SYDStor: ${doublechecker[i].SYDStor}</span><br>
+                            
+
+                          </td>
                         </tr>`
+                        
                     );
                   
                 }
-                
-                console.log(searates);
+                console.log(doublechecker[i]);
                 last = group;
             }
             count++;
@@ -169,11 +198,23 @@ jQuery(document).ready(function() {
     }); 
     
    
-    $('table').on('click','tr',function(){
+    $('table').on('click','tr',function(e){
      var cl = $(this).attr("data-details");
      //$('.'+cl).toggleClass('d-none');
-     $("#detailinfo .modal-body").html($('.'+cl+' td').html());
-     $('#detailinfo').modal('show');
+     var notincl = ['show','Details','Tracking'];
+     var text = $(e.target).text();
+    
+      if($.inArray( text, notincl) == -1){
+        $("#detailinfo .modal-body").html($('.'+cl+' td').html());
+        $('#detailinfo').modal('show');
+      }else{
+        if(text ==='show'){
+          $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
+          $('#detailinfo').modal('show');
+        }
+      }
+      
+     
     });
     
     $('.box-search').on('click',function(){

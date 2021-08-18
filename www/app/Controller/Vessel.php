@@ -141,7 +141,10 @@ class Vessel extends Core\Controller {
                 }else{
                     $seadata[] = $sea_json ;
                 }
+
+                $doublechecker[] = $ves;
             }
+
         }
       //exit;
         $this->View->renderTemplate("/vessel/index", [
@@ -159,7 +162,8 @@ class Vessel extends Core\Controller {
             "confirmed" => $confirmed,
             "pending" => $pending,
             "departCOnfirmed" => $departCofirmed,
-            "delay" => $delay
+            "delay" => $delay,
+            'doublechecker'=>$doublechecker,
         ]);
 
         $this->externalTemp();
@@ -447,7 +451,7 @@ class Vessel extends Core\Controller {
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
-                            $subdata['onestop'] = '<span id="'.$containernumber.'">show</span>';
+                            $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">show</span>';
                            
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
