@@ -141,7 +141,10 @@ class Vessel extends Core\Controller {
                 }else{
                     $seadata[] = $sea_json ;
                 }
+
+                $doublechecker[] = $ves;
             }
+
         }
       //exit;
         $this->View->renderTemplate("/vessel/index", [
@@ -159,7 +162,8 @@ class Vessel extends Core\Controller {
             "confirmed" => $confirmed,
             "pending" => $pending,
             "departCOnfirmed" => $departCofirmed,
-            "delay" => $delay
+            "delay" => $delay,
+            'doublechecker'=>$doublechecker,
         ]);
 
         $this->externalTemp();
@@ -376,7 +380,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-        //echo "<pre>";
+        // echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -436,7 +440,7 @@ class Vessel extends Core\Controller {
 
                         
                         if($containernumber !== 'No Container Number'){
-                            $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
+                            $subdata['container_number'] = '<p id="'.$ves->id.'" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
@@ -447,7 +451,7 @@ class Vessel extends Core\Controller {
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
-                            $subdata['onestop'] = '<span id="'.$containernumber.'">show</span>';
+                            $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">show</span>';
                            
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
@@ -499,7 +503,7 @@ class Vessel extends Core\Controller {
                     }
 
                     if($containernumber !== 'No Container Number'){
-                        $subdata['container_number'] = '<p class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
+                        $subdata['container_number'] = '<p id="'.$ves->id.'" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                         $subdata['shipment_num'] = $ves->shipment_num;
                         //$subdata['housebill'] = $ves->house_bill;
                         $subdata['masterbill'] = $ves->master_bill;
