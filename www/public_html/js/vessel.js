@@ -180,8 +180,6 @@ jQuery(document).ready(function() {
                             <span>SYDAvail: ${doublechecker[i].SYDAvail}</span><br>
                             <span>SYDETA: ${doublechecker[i].SYDETA}</span><br>
                             <span>SYDStor: ${doublechecker[i].SYDStor}</span><br>
-                            
-
                           </td>
                         </tr>`
                         
@@ -203,10 +201,12 @@ jQuery(document).ready(function() {
      //$('.'+cl).toggleClass('d-none');
      var notincl = ['show','Details','Tracking'];
      var text = $(e.target).text();
-    
+     var attr = $(e.target).attr('data-header');
       if($.inArray( text, notincl) == -1){
-        $("#detailinfo .modal-body").html($('.'+cl+' td').html());
-        $('#detailinfo').modal('show');
+        if(attr ==='contnum'){
+          $("#detailinfo .modal-body").html($('.'+cl+' td').html());
+          $('#detailinfo').modal('show');
+        }
       }else{
         if(text ==='show'){
           $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
