@@ -157,19 +157,46 @@ jQuery(document).ready(function() {
                         </tr>
                         <tr class="d-none  ot-${searates[i].id}">
                           <td>
-                            <span>ADLATA: ${doublechecker[i].ADLATA}</span><br>
-                            <span>ADLAvail: ${doublechecker[i].ADLAvail}</span><br>
-                            <span>ADLETA: ${doublechecker[i].ADLETA}</span><br>
-                            <span>ADLStor: ${doublechecker[i].ADLStor}</span><br>
-                            <span>AKLATA: ${doublechecker[i].AKLATA}</span><br>
-                            <span>AKLAvail: ${doublechecker[i].AKLAvail}</span><br>
-                            <span>AKLETA: ${doublechecker[i].AKLETA}</span><br>
-                            <span>AKLStor: ${doublechecker[i].AKLStor}</span><br>
-                            <span>BNEATA: ${doublechecker[i].BNEATA}</span><br>
-                            <span>BNEAvail: ${doublechecker[i].BNEAvail}</span><br>
-                            <span>BNEETA: ${doublechecker[i].BNEETA}</span><br>
-                            <span>BNEStor: ${doublechecker[i].BNEStor}</span><br>
-                            <span>FREATA: ${doublechecker[i].FREATA}</span><br>
+                            <h4>${doublechecker[i].Vessel} - ${doublechecker[i].Voyage}</h2><br>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                              <span>ADLATA: ${doublechecker[i].ADLATA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>ADLAvail: ${doublechecker[i].ADLAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>ADLETA: ${doublechecker[i].ADLETA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>ADLStor: ${doublechecker[i].ADLStor}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>AKLATA: ${doublechecker[i].AKLATA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>AKLAvail: ${doublechecker[i].AKLAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>AKLETA: ${doublechecker[i].AKLETA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>AKLStor: ${doublechecker[i].AKLStor}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>BNEATA: ${doublechecker[i].BNEATA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>BNEAvail: ${doublechecker[i].BNEAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>BNEETA: ${doublechecker[i].BNEETA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>BNEStor: ${doublechecker[i].BNEStor}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>FREATA: ${doublechecker[i].FREATA}</span>
+                            </div>
                             <span>FREAvail: ${doublechecker[i].FREAvail}</span><br>
                             <span>FREStor: ${doublechecker[i].FREStor}</span><br>
                             <span>MELATA: ${doublechecker[i].MELATA}</span><br>
@@ -180,8 +207,6 @@ jQuery(document).ready(function() {
                             <span>SYDAvail: ${doublechecker[i].SYDAvail}</span><br>
                             <span>SYDETA: ${doublechecker[i].SYDETA}</span><br>
                             <span>SYDStor: ${doublechecker[i].SYDStor}</span><br>
-                            
-
                           </td>
                         </tr>`
                         
@@ -203,13 +228,16 @@ jQuery(document).ready(function() {
      //$('.'+cl).toggleClass('d-none');
      var notincl = ['show','Details','Tracking'];
      var text = $(e.target).text();
-    
+     var attr = $(e.target).attr('data-header');
       if($.inArray( text, notincl) == -1){
-        $("#detailinfo .modal-body").html($('.'+cl+' td').html());
-        $('#detailinfo').modal('show');
+        if(attr ==='contnum'){
+          $("#detailinfo .modal-body").html($('.'+cl+' td').html());
+          $('#detailinfo').modal('show');
+        }
       }else{
         if(text ==='show'){
           $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
+          $("#exampleModalCenterTitle").text('One Stop Details');
           $('#detailinfo').modal('show');
         }
       }

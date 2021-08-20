@@ -440,7 +440,7 @@ class Vessel extends Core\Controller {
 
                         
                         if($containernumber !== 'No Container Number'){
-                            $subdata['container_number'] = '<p id="'.$ves->id.'" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
+                            $subdata['container_number'] = '<p id="'.$ves->id.'" data-header="contnum" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
@@ -503,7 +503,7 @@ class Vessel extends Core\Controller {
                     }
 
                     if($containernumber !== 'No Container Number'){
-                        $subdata['container_number'] = '<p id="'.$ves->id.'" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
+                        $subdata['container_number'] = '<p id="'.$ves->id.'" data-header="contnum" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                         $subdata['shipment_num'] = $ves->shipment_num;
                         //$subdata['housebill'] = $ves->house_bill;
                         $subdata['masterbill'] = $ves->master_bill;
