@@ -83,6 +83,7 @@ jQuery(document).ready(function() {
           }
           
           $(rows).eq( i ).addClass($(rows).eq( i ).find('td').find("p").attr('class'));
+          var shipid =  $(rows).eq( i ).find('td').eq(0).find("p").attr('id');
           if ( last !== group ) {
                 var orgn = $(rows).eq( i ).find('td').eq(2).find("p").text();
                 var shipmnt = $(rows).eq( i ).find('td').eq(1).text();
@@ -140,19 +141,20 @@ jQuery(document).ready(function() {
                   locationLoading = searates[i].port_loading;
                   locationdischarge = searates[i].port_discharge;
                     $.each(events,function(ikey,ival){
-                        if(searates[i].shipment_num === ival.shipment_num){
+                        if(ival.id == shipid){
+                          console.log(ival.port_discharge);
                           htmlstat =`
-                            <span>Location : ${locationdischarge}</span><br>
-                            <span> Date : ${searates[i].eta}</span><br> 
+                            <span>Location : ${ival.port_discharge}</span><br>
+                            <span> Date : ${ival.eta}</span><br> 
                             <span> Status : ${statsCode[status]}</span><br>  
                             <hr>  
                           `;
                         }
                     });
-                    
-                    $(rows).eq( i ).attr("data-details",searates[i].id);
+                    //console.log(searates[i].id);
+                    $(rows).eq( i ).attr("data-details",shipid);
                     $(rows).eq( i ).after(
-                        `<tr class="d-none ${searates[i].id} ">
+                        `<tr class="d-none ${shipid} ">
                           <td>${htmlstat}</td>
                         </tr>
                         <tr class="d-none  ot-${searates[i].id}">
@@ -197,23 +199,43 @@ jQuery(document).ready(function() {
                             <div class="shadow-lg p-3 mb-1 bg-white rounded">
                             <span>FREATA: ${doublechecker[i].FREATA}</span>
                             </div>
-                            <span>FREAvail: ${doublechecker[i].FREAvail}</span><br>
-                            <span>FREStor: ${doublechecker[i].FREStor}</span><br>
-                            <span>MELATA: ${doublechecker[i].MELATA}</span><br>
-                            <span>MELAvail: ${doublechecker[i].MELAvail}</span><br>
-                            <span>MELETA: ${doublechecker[i].MELETA}</span><br>
-                            <span>MELStor: ${doublechecker[i].MELStor}</span><br>
-                            <span>SYDATA: ${doublechecker[i].SYDATA}</span><br>
-                            <span>SYDAvail: ${doublechecker[i].SYDAvail}</span><br>
-                            <span>SYDETA: ${doublechecker[i].SYDETA}</span><br>
-                            <span>SYDStor: ${doublechecker[i].SYDStor}</span><br>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>FREAvail: ${doublechecker[i].FREAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>FREStor: ${doublechecker[i].FREStor}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>MELATA: ${doublechecker[i].MELATA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>MELAvail: ${doublechecker[i].MELAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>MELETA: ${doublechecker[i].MELETA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>MELStor: ${doublechecker[i].MELStor}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>SYDATA: ${doublechecker[i].SYDATA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>SYDAvail: ${doublechecker[i].SYDAvail}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>SYDETA: ${doublechecker[i].SYDETA}</span>
+                            </div>
+                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                            <span>SYDStor: ${doublechecker[i].SYDStor}</span>
+                            </div>
                           </td>
                         </tr>`
                         
                     );
                   
                 }
-                console.log(doublechecker[i]);
+                //console.log(doublechecker[i]);
                 last = group;
             }
             count++;
@@ -229,9 +251,12 @@ jQuery(document).ready(function() {
      var notincl = ['show','Details','Tracking'];
      var text = $(e.target).text();
      var attr = $(e.target).attr('data-header');
+     var clId = $(e.target).attr('id');
+     
       if($.inArray( text, notincl) == -1){
         if(attr ==='contnum'){
-          $("#detailinfo .modal-body").html($('.'+cl+' td').html());
+          console.log($('.3818').html());
+          $("#detailinfo .modal-body").html($('.'+clId+' td').html());
           $('#detailinfo').modal('show');
         }
       }else{

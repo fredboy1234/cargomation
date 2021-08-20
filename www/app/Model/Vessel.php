@@ -109,7 +109,7 @@ class Vessel extends Core\Model {
         $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
                                 LEFT JOIN shipment sh on sh.id = b.trans_id 
-                                LEFT JOIN transhipment_onestop tro on tro.Lloyds = sh.vesslloyds
+                                LEFT JOIN vrpt_onestop tro on tro.Lloyds = sh.vesslloyds
                                 where sh.id is not null")->results();
        
         return $vessel;
