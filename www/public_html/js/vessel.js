@@ -230,21 +230,18 @@ jQuery(document).ready(function() {
                             <span>SYDStor: ${doublechecker[i].SYDStor}</span>
                             </div>
                           </td>
-                        </tr>`
-                        
+                        </tr>`   
                     );
                   
                 }
-                //console.log(doublechecker[i]);
+                console.log(seDecode);
                 last = group;
             }
-            count++;
-           
+            count++; 
         } );
     }
     }); 
     
-   
     $('table').on('click','tr',function(e){
      var cl = $(this).attr("data-details");
      //$('.'+cl).toggleClass('d-none');
@@ -261,7 +258,7 @@ jQuery(document).ready(function() {
         }
       }else{
         if(text ==='show'){
-          console.log();
+          
           $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
           $("#exampleModalCenterTitle").text('One Stop Details');
           $('#detailinfo').modal('show');
