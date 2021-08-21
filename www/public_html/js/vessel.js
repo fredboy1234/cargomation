@@ -157,7 +157,7 @@ jQuery(document).ready(function() {
                         `<tr class="d-none ${shipid} ">
                           <td>${htmlstat}</td>
                         </tr>
-                        <tr class="d-none  ot-${searates[i].id}">
+                        <tr class="d-none  ot-${shipid}">
                           <td>
                             <h4>${doublechecker[i].Vessel} - ${doublechecker[i].Voyage}</h2><br>
                             <div class="shadow-lg p-3 mb-1 bg-white rounded">
@@ -230,21 +230,18 @@ jQuery(document).ready(function() {
                             <span>SYDStor: ${doublechecker[i].SYDStor}</span>
                             </div>
                           </td>
-                        </tr>`
-                        
+                        </tr>`   
                     );
                   
                 }
-                //console.log(doublechecker[i]);
+                console.log(seDecode);
                 last = group;
             }
-            count++;
-           
+            count++; 
         } );
     }
     }); 
     
-   
     $('table').on('click','tr',function(e){
      var cl = $(this).attr("data-details");
      //$('.'+cl).toggleClass('d-none');
@@ -255,12 +252,13 @@ jQuery(document).ready(function() {
      
       if($.inArray( text, notincl) == -1){
         if(attr ==='contnum'){
-          console.log($('.3818').html());
           $("#detailinfo .modal-body").html($('.'+clId+' td').html());
+          $("#exampleModalCenterTitle").text('Movements Details');
           $('#detailinfo').modal('show');
         }
       }else{
         if(text ==='show'){
+          
           $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
           $("#exampleModalCenterTitle").text('One Stop Details');
           $('#detailinfo').modal('show');
