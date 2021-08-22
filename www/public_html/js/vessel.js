@@ -271,7 +271,7 @@ jQuery(document).ready(function() {
     $('.box-search').on('click',function(){
         console.log($(this).attr('id'));
         table.columns(0).search($(this).attr('id')).draw();
-       // table.columns(0).search("");
+       // table.columns(0).search(""); 
     });
 
     
