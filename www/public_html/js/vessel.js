@@ -94,6 +94,8 @@ jQuery(document).ready(function() {
                 var htmlstat = '';
                 var currentDay = new Date();
                 var unID = '';
+                var htmlOnestop = '';
+                
                 try{
                   
                   seDecode = JSON.parse(searates[i].sea_json);
@@ -149,9 +151,37 @@ jQuery(document).ready(function() {
                             <span> Status : ${statsCode[status]}</span><br>  
                             <hr>  
                           `;
+                          $.each(doublechecker,function(dkey,dval){
+                            if(dval.Vessel == ival.vessel_name && (dval.Voyage==ival.voyage_flight_num)){
+                             var locfirstthree = onestopLoc[ival.port_discharge];
+                             
+                             if(typeof locfirstthree !== 'undefined'){
+                                var indexATA = locfirstthree+'ATA';
+                                var indexETA = locfirstthree+'ETA';
+                                var indexAvail = locfirstthree+'Avail';
+                                var indexStor = locfirstthree+'Stor';
+                                htmlOnestop = `<h4>${dval.Vessel} - ${dval.Voyage}</h2><br>
+                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                                 <span>${indexATA}: ${dval[indexETA]}</span>
+                                </div>
+                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                                 <span>${indexETA}: ${dval[indexATA]}</span>
+                                </div>
+                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                                 <span>${indexAvail}: ${dval[indexAvail]}</span>
+                                </div>
+                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
+                                 <span>${indexStor}: ${dval[indexStor]}</span>
+                                </div>`;
+                             }
+                              
+                            } 
+                          });
+                          
                         }
                     });
-                    //console.log(searates[i].id);
+                    console.log(events);
+                    //console.log(i);
                     $(rows).eq( i ).attr("data-details",shipid);
                     $(rows).eq( i ).after(
                         `<tr class="d-none ${shipid} ">
@@ -159,82 +189,13 @@ jQuery(document).ready(function() {
                         </tr>
                         <tr class="d-none  ot-${shipid}">
                           <td>
-                            <h4>${doublechecker[i].Vessel} - ${doublechecker[i].Voyage}</h2><br>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                              <span>ADLATA: ${doublechecker[i].ADLATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>ADLAvail: ${doublechecker[i].ADLAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>ADLETA: ${doublechecker[i].ADLETA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>ADLStor: ${doublechecker[i].ADLStor}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>AKLATA: ${doublechecker[i].AKLATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>AKLAvail: ${doublechecker[i].AKLAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>AKLETA: ${doublechecker[i].AKLETA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>AKLStor: ${doublechecker[i].AKLStor}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>BNEATA: ${doublechecker[i].BNEATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>BNEAvail: ${doublechecker[i].BNEAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>BNEETA: ${doublechecker[i].BNEETA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>BNEStor: ${doublechecker[i].BNEStor}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>FREATA: ${doublechecker[i].FREATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>FREAvail: ${doublechecker[i].FREAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>FREStor: ${doublechecker[i].FREStor}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>MELATA: ${doublechecker[i].MELATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>MELAvail: ${doublechecker[i].MELAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>MELETA: ${doublechecker[i].MELETA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>MELStor: ${doublechecker[i].MELStor}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>SYDATA: ${doublechecker[i].SYDATA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>SYDAvail: ${doublechecker[i].SYDAvail}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>SYDETA: ${doublechecker[i].SYDETA}</span>
-                            </div>
-                            <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                            <span>SYDStor: ${doublechecker[i].SYDStor}</span>
-                            </div>
+                            ${htmlOnestop}
                           </td>
                         </tr>`   
                     );
                   
                 }
-                console.log(seDecode);
+                
                 last = group;
             }
             count++; 
@@ -271,7 +232,7 @@ jQuery(document).ready(function() {
     $('.box-search').on('click',function(){
         console.log($(this).attr('id'));
         table.columns(0).search($(this).attr('id')).draw();
-       // table.columns(0).search("");
+       // table.columns(0).search(""); 
     });
 
     

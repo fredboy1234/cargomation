@@ -163,7 +163,7 @@ class Vessel extends Core\Controller {
             "pending" => $pending,
             "departCOnfirmed" => $departCofirmed,
             "delay" => $delay,
-            'doublechecker'=>$doublechecker,
+            'doublechecker'=>$this->Vessel->getOnestop(),
         ]);
 
         $this->externalTemp();

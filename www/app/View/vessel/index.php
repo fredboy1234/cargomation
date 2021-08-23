@@ -285,4 +285,12 @@
         CDC : 'Container delivery to consignee',
         CER : 'Container empty return to depot',
     };
+    var onestopLoc = {
+      Sydney : 'SYD',
+      Melbourne :  'MEL',
+      Brisbane : 'BNE',
+      Adelaide : 'ADL',
+      Fremantle : 'FRE',
+      Auck: 'AKL'
+    };
 </script>
