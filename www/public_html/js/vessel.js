@@ -95,7 +95,8 @@ jQuery(document).ready(function() {
                 var currentDay = new Date();
                 var unID = '';
                 var htmlOnestop = '';
-                
+                var catcher = 0;
+                var bg = ['bg-primary','bg-success','bg-warning','bg-success'];
                 try{
                   
                   seDecode = JSON.parse(searates[i].sea_json);
@@ -144,7 +145,8 @@ jQuery(document).ready(function() {
                   locationdischarge = searates[i].port_discharge;
                     $.each(events,function(ikey,ival){
                         if(ival.id == shipid){
-                          console.log(ival.port_discharge);
+                          htmlOnestop='';
+                          catcher = 0;
                           htmlstat =`
                             <span>Location : ${ival.port_discharge}</span><br>
                             <span> Date : ${ival.eta}</span><br> 
@@ -155,26 +157,25 @@ jQuery(document).ready(function() {
                             if(dval.Vessel == ival.vessel_name && (dval.Voyage==ival.voyage_flight_num)){
                              var locfirstthree = onestopLoc[ival.port_discharge];
                              
-                             if(typeof locfirstthree !== 'undefined'){
-                                var indexATA = locfirstthree+'ATA';
-                                var indexETA = locfirstthree+'ETA';
-                                var indexAvail = locfirstthree+'Avail';
-                                var indexStor = locfirstthree+'Stor';
-                                htmlOnestop = `<h4>${dval.Vessel} - ${dval.Voyage}</h2><br>
-                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                                 <span>${indexATA}: ${dval[indexETA]}</span>
-                                </div>
-                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                                 <span>${indexETA}: ${dval[indexATA]}</span>
-                                </div>
-                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                                 <span>${indexAvail}: ${dval[indexAvail]}</span>
-                                </div>
-                                <div class="shadow-lg p-3 mb-1 bg-white rounded">
-                                 <span>${indexStor}: ${dval[indexStor]}</span>
+                             //htmlOnestop = `<h4>${dval.Vessel} - ${dval.Voyage}</h2><br>`;
+                             $.each(dval,function(is,ks){
+                              if(ks != null){
+                                var addedClass ='';
+                                if(catcher > 2){
+                                  addedClass =`d-inline-block col-md-3 ${bg[Math.floor(Math.random() * 3) ]}`;
+                                }else{
+                                  addedClass = `bg-white`;
+                                }
+                                
+                                htmlOnestop += `
+                                <div class="shadow-lg p-3 mb-1  rounded ${addedClass}">
+                                 <span>${is}: ${ks}</span>
                                 </div>`;
-                             }
+                              }
+                              catcher++;
                               
+                             });
+                        
                             } 
                           });
                           
