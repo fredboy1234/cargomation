@@ -334,12 +334,26 @@ class Vessel extends Core\Controller {
        }
         //if(!isset($_SESSION['livesearates'])  ||  $_SESSION['vesselnum'] != $vessel_number ){
             //$searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=CMDU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-            $searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=CMDU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-            $_SESSION['livesearates'] =  $searates;
-            $_SESSION['vesselnum'] =$vessel_number;
+            //$searates = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=CMDU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            //$_SESSION['livesearates'] =  $searates;
+            //$_SESSION['vesselnum'] =$vessel_number;
         //}
         // print_r($this->Vessel->getSearatesByID($vessel_number));
         // exit();
+        //echo"<pre>";
+        $_SESSION['vessel_num']=  $this->searatesRoute($vessel_number);
+         if(isset( $_SESSION['vessel_num'])){
+             if($_SESSION['vessel_num']->message ==='OK'){
+                 if(!empty($_SESSION['vessel_num']->data)){
+                     $metadata = $_SESSION['vessel_num']->data;
+                     $type = $metadata->metadata->type;
+                     $sealine = $metadata->metadata->sealine;
+                     $cont = file_get_contents('https://tracking.searates.com/route?type='.$type.'&number='.$vessel_number.'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+                 }
+             }
+            
+         }
+        //exit();
         $this->View->addJS("js/tracking.js");
        $this->View->renderTemplate("/vessel/tracking", [
            "title" => "Vessel Track",
@@ -353,9 +367,10 @@ class Vessel extends Core\Controller {
            'geocodeToken' => 'pk.fe49a0fae5b7f62ed12a17d8c2a77691',
            "notifications" => Model\User::getUserNotifications($user),
            "vesselyod" => $vloyds,
-           "searatesTracking" => $searates,
+           "searatesTracking" => $cont,
            "menu" => Model\User::getUserMenu($role->role_id),
            //"searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
+
        ]);
    }
 
@@ -645,7 +660,7 @@ class Vessel extends Core\Controller {
                 // if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                 //    echo'success';
                 // } 
-
+                
                 if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                     //$this->Vessel->checkContainer($data);
                     $searates = json_decode( $data['json']);
@@ -685,5 +700,9 @@ class Vessel extends Core\Controller {
     public function searatesIframe(){
         print_r($_GET);
     }
-
+    public function searatesRoute($cnumber){
+        //$cont = filge_get_contents('https://tracking.searates.com/route?type=CT&number=&sealine=ONEY&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+        $data = file_get_contents('http://tracking.searates.com/tracking?number='.$cnumber.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+        return json_decode($data);
+    }
 }
