@@ -6,7 +6,7 @@ $file_name = $file[0]->name;
 $shipment_num = $file[0]->shipment_num;
 $file_type = $file[0]->type;
 
-$url = "http://cargomation.com/filemanager/".$this->email."/CW_FILE/".$shipment_num."/".$file_type."/" . rawurlencode($file_name);
+$url = "https://cargomation.com/filemanager/".$this->email."/CW_FILE/".$shipment_num."/".$file_type."/" . rawurlencode($file_name);
 
 $cookie = 'cookies.txt';
 $timeout = 30;

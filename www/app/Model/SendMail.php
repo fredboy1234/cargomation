@@ -21,9 +21,9 @@ class SendMail extends Core\Model {
         $message = $data['message'];
         $subject = $data['subject'];
 
-        // $link = "http://a2bfreighthub.com/request?token=" . $data['token'];
-        // $link = "http://a2bfreighthub.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
-        $link = "http://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        // $link = "https://cargomation.com/request?token=" . $data['token'];
+        // $link = "https://cargomation.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
+        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
@@ -45,7 +45,7 @@ class SendMail extends Core\Model {
       if($data['request_type'] == 'new') {
         $request = 'missing';
 
-        $link = "http://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
@@ -54,7 +54,7 @@ class SendMail extends Core\Model {
       } else {
         $request = 'edit';
 
-        $link = "http://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";

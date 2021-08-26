@@ -25,7 +25,7 @@ class Shipment extends Core\Model {
     }
 
     public static function getShipment($user_id, $arg = "*") {
-        // $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
+        // $api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();
@@ -51,7 +51,7 @@ class Shipment extends Core\Model {
     }
 
     public static function getDocument($shipment_id) {
-        // $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+        // $api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();

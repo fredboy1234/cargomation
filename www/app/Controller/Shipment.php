@@ -114,10 +114,11 @@ class Shipment extends Core\Controller {
         $this->View->renderTemplate("/shipment/index", [
             "title" => "Shipment",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "notifications" => Model\User::getUserNotifications($user),
             "shipment" => $this->Shipment->getShipment($user),
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
-            "child_user" => Model\User::getUsersInstance($user),
+            "child_user" => Model\User::getUsersInstance($user, $role->role_id),
             "user_settings" =>$this->defaultSettings($user),
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
@@ -237,7 +238,7 @@ class Shipment extends Core\Controller {
      */
     public function document($shipment_id = "", $type = "", $user_id = "") {
 
-        //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+        //$api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -536,7 +537,7 @@ class Shipment extends Core\Controller {
 
             $subdata = array();
             $subdata['real_id_shipment'] = $value->id;
-            $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro text-dark" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
+            $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
             $subdata['shipment_id'] .= '<a href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
             $subdata['eta'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
