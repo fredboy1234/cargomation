@@ -247,13 +247,22 @@ class Vessel extends Core\Controller {
             $t++;        
         }
         $searates  = 'empty';
-       if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){    
-           $searates = ''; //file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-           $tracking = '';//file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-           $_SESSION['searates'] =  $searates;
-           $_SESSION['tracking'] = $tracking;
-        }
-      
+    //    if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){    
+    //        $searates = ''; //file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+    //        $tracking = '';//file_get_contents('https://tracking.searates.com/route?type=CT&number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+    //        $_SESSION['searates'] =  $searates;
+    //        $_SESSION['tracking'] = $tracking;
+    //     }
+            $_SESSION['searates']=  $this->searatesRoute($vessel_number);
+            if(isset($_SESSION['searates'])){
+                if($_SESSION['searates']->message ==='OK'){
+                    if(!empty($_SESSION['searates']->data)){
+                        $cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+                    }
+                }
+            
+            }
+          
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",
@@ -269,7 +278,7 @@ class Vessel extends Core\Controller {
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
-            "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
+            "searatesTracking" =>$cont , //$this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
             "menu" => Model\User::getUserMenu($role->role_id)
         ]);
