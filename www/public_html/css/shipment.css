@@ -40,6 +40,8 @@ td.stats .doc-stats:first-child > span {
     font-size: .8rem;
 }
 .doc-stats {
+    max-width: 100%;
+    width: 75px;
     display: inline-block;
 }
 .fa-spinner {
