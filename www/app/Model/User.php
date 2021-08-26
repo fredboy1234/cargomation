@@ -562,7 +562,8 @@ class User extends Core\Model {
                     FROM user_log
                     LEFT JOIN users ON users.id = user_log.user_id
                     LEFT JOIN user_info ON  users.id = user_info.user_id
-                    LEFT JOIN user_role ON  users.id = user_role.user_id";
+                    LEFT JOIN user_role ON  users.id = user_role.user_id 
+                    ORDER BY user_log.id DESC";
                 break;
             case 2:
                 $query = "SELECT users.id, 
