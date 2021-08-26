@@ -354,6 +354,7 @@ class Vessel extends Core\Controller {
            "notifications" => Model\User::getUserNotifications($user),
            "vesselyod" => $vloyds,
            "searatesTracking" => $searates,
+           "menu" => Model\User::getUserMenu($role->role_id),
            //"searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
        ]);
    }
@@ -643,7 +644,7 @@ class Vessel extends Core\Controller {
                 
                 // if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                 //    echo'success';
-                // }
+                // } 
 
                 if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                     //$this->Vessel->checkContainer($data);

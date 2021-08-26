@@ -182,7 +182,7 @@ jQuery(document).ready(function() {
                         }
                     });
                     console.log(events);
-                    //console.log(i);
+                    //console.log(i); 
                     $(rows).eq( i ).attr("data-details",shipid);
                     $(rows).eq( i ).after(
                         `<tr class="d-none ${shipid} ">
