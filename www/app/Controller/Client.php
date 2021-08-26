@@ -208,7 +208,7 @@ class Client extends Core\Controller {
      */
     public function document($shipment_id = "", $type = "", $user_id = "") {
 
-        //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+        //$api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();

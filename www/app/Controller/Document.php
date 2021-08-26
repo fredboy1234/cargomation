@@ -49,7 +49,7 @@ class Document extends Core\Controller {
      */
     public function index($shipment_id = "", $type = "", $user_id = "") {
 
-        //$api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
+        //$api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id . "&request=document";
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -256,7 +256,7 @@ class Document extends Core\Controller {
         $email = $User->data()->email;
         $shipment_num = $param[6];
         $type = $param[7];
-        $domain = "http://a2bfreighthub.com";
+        $domain = "https://cargomation.com";
         $physical_path = "E:/A2BFREIGHT_MANAGER";
 
         $preview = $config = $errors = [];
@@ -284,7 +284,7 @@ class Document extends Core\Controller {
                     $obj_type = self::checkDocumentType($fileName, $tmpFilePath);
                     $type = strtoupper($obj_type->files[0]->type);
 
-                    // $endpoint = 'http://a2bfreighthub.com/TEST_API/view.php?file=' . $tmpFilePath;
+                    // $endpoint = 'https://cargomation.com/TEST_API/view.php?file=' . $tmpFilePath;
                     // // $text = file_get_contents($endpoint);
                     // // alternative for file_get_contents
                     // $curlopts = [
@@ -372,7 +372,7 @@ class Document extends Core\Controller {
      * @since 1.10.1
      */
     private function checkDocumentType($filename, $file) {
-        $url = 'http://a2bfreighthub.com:5000/classify';
+        $url = 'https://cargomation.com:5000/classify';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', $url, [
             'multipart' => [
