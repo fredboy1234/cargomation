@@ -61,13 +61,13 @@
               </div>
               <!-- /.col-md-6 -->
             </div>
-            <div id="loader-wrapper" class="justify-content-center">
+            <!-- <div id="loader-wrapper" class="justify-content-center">
               <center>
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
               </center>
-            </div>
+            </div> -->
           </form>
           <!-- /.form -->
           <div class="row">
