@@ -4,3 +4,16 @@ div#forex_wrapper > .row:first-child {
 #forex {
     margin-top: 0px !important;
 }
+#loader-wrapper {
+    background: #00000047;
+    z-index: 1010;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+#loader-wrapper .spinner-border {
+    position: absolute;
+    top: 50%;
+}

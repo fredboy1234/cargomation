@@ -373,7 +373,7 @@ class Document extends Core\Controller {
      */
     private function checkDocumentType($filename, $file) {
         $url = 'https://cargomation.com:5000/classify';
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(['verify' => false ]);
         $response = $client->request('POST', $url, [
             'multipart' => [
                 [ 'name' => 'client', 'contents' => 'a2b'],

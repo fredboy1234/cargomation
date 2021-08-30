@@ -55,15 +55,23 @@ function getExchange(selectObject) {
   var amount = $('#amount').val();
   var code = $("#currency_code option:selected").val();
 
+  var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+  '<div class="spinner-border" role="status">' +
+  '<span class="sr-only">Loading...</span>' +
+  '</div>' +
+  '</div>';
+
   $.ajax({
     url: document.location.origin + "/exchange/calculate/" + code,
     beforeSend: function () {
-      $('#loader-wrapper').show();
+      //$('#loader-wrapper').show();
+      $("body").append(loader);
     },
     success: function (res) {
       var obj = JSON.parse(res);
-      $('#loader-wrapper').hide();
-      $('#result').val(amount * obj[0].TTBuy);
+      //$('#loader-wrapper').hide();
+      $('#loader-wrapper').remove();
+      $('#result').val((amount * obj[0].TTBuy).toFixed(2));
     }
   });
 }

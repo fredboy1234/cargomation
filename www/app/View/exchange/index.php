@@ -43,9 +43,10 @@
                   <div class="form-group col-md-6">
                     <label>Currency I want</label>
                     <select class="form-control select2bs4" style="width: 100%;" id="currency_code" name="currency_code" onchange="getExchange(this)">
-                      <option value="USD" selected="selected">USD - United States Dollar</option>
                       <?php foreach ($this->list_currency as $value): ?>
-                      <option value="<?= $value->currency_code; ?>"><?= $value->currency_code . " - " . $value->currency_desc; ?></option>
+                      <option value="<?= $value->currency_code; ?>" <?= ($value->currency_code != "USD") ?: "selected" ?>>
+                        <?= $value->currency_code . " - " . $value->currency_desc; ?>
+                      </option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -60,13 +61,13 @@
               </div>
               <!-- /.col-md-6 -->
             </div>
-            <div id="loader-wrapper" class="justify-content-center">
+            <!-- <div id="loader-wrapper" class="justify-content-center">
               <center>
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
               </center>
-            </div>
+            </div> -->
           </form>
           <!-- /.form -->
           <div class="row">
