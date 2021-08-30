@@ -71,6 +71,7 @@ function getExchange(selectObject) {
       var obj = JSON.parse(res);
       //$('#loader-wrapper').hide();
       $('#loader-wrapper').remove();
+      // rounded up result value
       $('#result').val((amount * obj[0].TTBuy).toFixed(2));
     }
   });
