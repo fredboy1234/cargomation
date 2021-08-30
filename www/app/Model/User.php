@@ -217,6 +217,34 @@ class User extends Core\Model {
                     LEFT JOIN user_images ON user_images.user_id = user_info.user_id
                     WHERE user_info.account_id = {$userID}";
                 break;
+            case 3:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            case 4:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
             default:
                 # code...
                 break;
@@ -566,6 +594,34 @@ class User extends Core\Model {
                     ORDER BY user_log.id DESC";
                 break;
             case 2:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            case 3:
+                $query = "SELECT users.id, 
+                    user_info.first_name, 
+                    user_info.last_name, 
+                    user_info.email,
+                    user_info.status AS 'status',
+                    user_info.city,
+                    user_images.image_src,
+                    subscription.name AS 'plan' FROM users
+                    LEFT JOIN user_info ON  users.id = user_info.user_id
+                    LEFT JOIN subscription ON  user_info.subscription_id = subscription.id
+                    LEFT JOIN user_images ON user_images.user_id = user_info.user_id
+                    WHERE user_info.account_id = {$userID}";
+                break;
+            case 4:
                 $query = "SELECT users.id, 
                     user_info.first_name, 
                     user_info.last_name, 
