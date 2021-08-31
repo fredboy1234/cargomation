@@ -1,7 +1,19 @@
 $(document).ready(function () {
+    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+                '<div class="spinner-border" role="status">' +
+                '<span class="sr-only">Loading...</span>' +
+                '</div>' +
+                '</div>';
+
     $(".profile-icon").on("click", function () {
         $("#profileModal .modal-body").load("profile/profileImageList");
         $("#profileModal").modal("show");
+    });
+
+    $( "form" ).submit(function( event ) {
+        console.log('subbbb');
+        $("body").append(loader);
+        //event.preventDefault();
     });
 
     // $("#upload-image").fileinput({

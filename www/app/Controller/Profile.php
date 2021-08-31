@@ -74,6 +74,7 @@ class Profile extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addJS("js/profile.js");
+        $this->View->addCSS("css/profile.css");
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
 
