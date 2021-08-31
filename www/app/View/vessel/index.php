@@ -228,7 +228,7 @@
                             
                             <th>Vessel Name <section></section></th>
                             <th>Location <section></section></th>
-                            <th>One Stop <section></section></th>
+                            <th>1 Stop <section></section></th>
                             
                             
                             <th>Action <section></section></th>
