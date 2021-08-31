@@ -10,10 +10,30 @@ $(document).ready(function () {
         $("#profileModal").modal("show");
     });
 
-    $( "form" ).submit(function( event ) {
+    $("#settings > form").submit(function( event ) {
         console.log('subbbb');
-        $("body").append(loader);
-        //event.preventDefault();
+        // $("body").append(loader);
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: document.location.origin + "/profile/saveSettings",
+            data: $(this).serializeArray(),
+            dataType: "JSON",
+            beforeSend: function () {
+                $("body").append(loader);
+            },
+            success: function (res) {
+                console.log(res);
+                if(res.status == "success") {
+                    $('#loader-wrapper').remove();
+                    window.history.pushState("", "", '/profile#settings');                    
+                } else {
+                    console.log(res.message);
+                }
+
+
+            }
+        });
     });
 
     // $("#upload-image").fileinput({

@@ -295,17 +295,21 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        
-        $column = $_POST['column'];
-        unset($_POST['column']);
-        $data = $_POST;
-        
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
+            $column = $_POST['column'];
+            unset($_POST['column']);
+            $data = $_POST;
+
             $User->updateUserSettings($column, $data, $user);
-            Utility\Redirect::to(APP_URL . "/profile#settings");
+            # Utility\Redirect::to(APP_URL . "/profile#settings");
+            $result['status'] = "success";
         } else {
-            Utility\Redirect::to(APP_URL . "/profile#settings");
+            $result['status'] = "error";
+            $result['message'] = "No post data submitted!";
         }
+
+        echo json_encode($result);
+        exit;
     }
 
 }

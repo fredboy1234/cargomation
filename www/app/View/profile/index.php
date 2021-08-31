@@ -547,7 +547,7 @@
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="settings">
-                                    <form method="post" action="<?= $this->makeUrl("profile/saveSettings"); ?>">
+                                    <form method="post">
                                         <input type="hidden" id="column" name="column" value="document">
                                         <div class="card card-outline card-primary">
                                             <div class="card-header">
