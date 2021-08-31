@@ -866,6 +866,7 @@ class Document extends Core\Controller {
         $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/document/request", [
+            'email' => $User->data()->email,
             'user_id' => $user_id,
             'document' => $document,
             'shipment_num' => $shipment_num,
