@@ -46,14 +46,19 @@
                             <p class="text-muted text-center"><?= $this->escapeHTML( $this->data->email ); ?></p>
 
                             <ul class="list-group list-group-unbordered mb-3">
+                                <?php if($this->role->role_id != 4): ?>
                                 <li class="list-group-item">
-                                <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
+                                    <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
                                 </li>
                                 <li class="list-group-item">
-                                <b>Users</b> <a class="float-right"><?= $this->user->user_count[0]->count; ?> /<b>
+                                    <b>Users</b> <a class="float-right"><?= $this->user->user_count[0]->count; ?> /<b>
                                 <?= $this->user->account_info[0]->max_users; ?></b></a>
                                 </li>
-                                <?php if(false): ?>
+                                <?php else: ?>
+                                <li class="list-group-item">
+                                    <b>Organization Code</b> <a class="float-right"><?= $this->user->user_info[0]->organization_code; ?></a>
+                                </li>
+                                <?php endif; ?>
                                 <li class="list-group-item">
                                 <?php 
                                 switch ($this->user->account_info[0]->status) {
@@ -82,15 +87,13 @@
                                 } ?>
                                 <b>Status</b> <a class="float-right"><?= $status ?></a>
                                 </li>
-                                <?php endif; ?>
+                                
                             </ul>
-                            <?php if(false): ?>
                             <?php
                                 echo '<a href="/register" class="btn btn-' . $badge . ' btn-block ' . $attr . '">';
                                 echo '    <i class="fas ' . $icon . ' mr-1"></i><b>' . $status . '</b>';
                                 echo '</a>';
                             ?>
-                            <?php endif; ?>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -679,16 +682,19 @@
                                                 $status = "Create account";
                                                 $badge = "warning";
                                                 $link = "/register/contact/" . $value->id;
+                                                $attr = "";
                                             break;
                                             case 1:
                                                 $status = "Verified";
                                                 $badge = "success";
                                                 $link = "#";
+                                                $attr = "disabled";
                                             break;
                                             case 2:
                                                 $status = "Pending";
                                                 $badge = "warning";
                                                 $link = "#";
+                                                $attr = "";
                                             break;
                                             
                                             default:
@@ -696,7 +702,7 @@
                                             break;
                                         } 
                                     // echo '<span class="badge badge-' . $badge . '">' . $status . '</span>'
-                                    echo '<a href="'. $link . '" class="btn btn-sm btn-' . $badge . '">' . $status . '</a>';
+                                    echo '<a href="'. $link . '" class="btn btn-sm btn-' . $badge . '" ' . $attr . '>' . $status . '</a>';
 
                                     ?>
                                 </td>
