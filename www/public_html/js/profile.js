@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    hashPop();
     var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
                 '<div class="spinner-border" role="status">' +
                 '<span class="sr-only">Loading...</span>' +
@@ -59,7 +60,7 @@ $(document).ready(function () {
     // });
 });
 
-$(function () {
+function hashPop() {
     var hash = window.location.hash;
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
 
@@ -69,4 +70,12 @@ $(function () {
         window.location.hash = this.hash;
         $('html,body').scrollTop(scrollmem);
     });
+}
+
+$(window).bind('hashchange', function() {
+    hashPop() 
+});
+
+$(window).bind('popstate', function() {
+    hashPop() 
 });
