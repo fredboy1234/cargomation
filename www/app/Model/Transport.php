@@ -25,7 +25,7 @@ class Transport extends Core\Model {
     }
 
     public static function getTransport($user_id, $arg = "*") {
-        // $api_url = "http://a2bfreighthub.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
+        // $api_url = "https://cargomation.com/eAdaptor/jsoneAdaptor.php?shipment_id=" . $shipment_id;
         // return json_decode(file_get_contents($api_url));
 
         $Db = Utility\Database::getInstance();

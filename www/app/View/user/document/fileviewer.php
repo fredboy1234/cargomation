@@ -6,7 +6,7 @@ $file_name = $file[0]->name;
 $shipment_num = $file[0]->shipment_num;
 $file_type = $file[0]->type;
 
-// URL: http://a2bfreighthub.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
+// URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
 $file = "E:/A2BFREIGHT_MANAGER/".$this->email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;
 
 try {
