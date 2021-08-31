@@ -15,8 +15,7 @@
 }
 </style>
     <?php 
-    
-    if(!isset($this->user_settings)) {
+    if(isset($this->user_settings)) {
         $document_settings = json_decode($this->user_settings[0]->document);
     } else {
         $document_settings = "";
