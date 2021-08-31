@@ -151,10 +151,14 @@ class Profile extends Core\Controller {
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
             ),$user);
-            Utility\Redirect::to(APP_URL . "/profile");
-        }else{
-            Utility\Redirect::to(APP_URL . "/profile");
+            $result['status'] = "success";
+        } else {
+            $result['status'] = "error";
+            $result['message'] = "No post data submitted!";
         }
+
+        echo json_encode($result);
+        exit;
         
     }
 

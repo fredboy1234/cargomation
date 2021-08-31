@@ -443,7 +443,7 @@
                                 <!-- /.tab-pane -->
                                 <!--Edit Settings-->     
                                 <div class="tab-pane" id="edit-settings">
-                                    <form class="form-horizontal" _lpchecked="1" method="post" action="<?= $this->makeUrl("profile/updateProfile"); ?>">
+                                    <form class="form-horizontal" _lpchecked="1">
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">First Name</label>
 

@@ -12,8 +12,6 @@ $(document).ready(function () {
     });
 
     $("#settings > form").submit(function( event ) {
-        console.log('subbbb');
-        // $("body").append(loader);
         event.preventDefault();
         $.ajax({
             type: "POST",
@@ -27,12 +25,33 @@ $(document).ready(function () {
                 console.log(res);
                 if(res.status == "success") {
                     $('#loader-wrapper').remove();
-                    window.history.pushState("", "", '/profile#settings');                    
+                    window.history.pushState("", "", '/profile#settings'); 
                 } else {
                     console.log(res.message);
                 }
+            }
+        });
+    });
 
-
+    $("#edit-settings > form").submit(function( event ) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: document.location.origin + "/profile/updateProfile",
+            data: $(this).serializeArray(),
+            dataType: "JSON",
+            beforeSend: function () {
+                $("body").append(loader);
+            },
+            success: function (res) {
+                console.log(res);
+                if(res.status == "success") {
+                    $('#loader-wrapper').remove();
+                    //window.history.pushState("", "", '/profile#information');
+                    window.location.href = "/profile";
+                } else {
+                    console.log(res.message);
+                }
             }
         });
     });
