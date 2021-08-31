@@ -188,7 +188,7 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
         
-        $this->View->render("/profile/profileImageList", [
+        $this->View->renderWithoutHeaderAndFooter("/profile/profileImageList", [
             "user" => Model\User::getProfile($user_id)['user_image']
         ]);
     }
