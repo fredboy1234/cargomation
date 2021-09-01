@@ -62,7 +62,7 @@
 		} 
 
 	    $autoemail = "support@cargomation.com";
-	    $autoemail1 = "no-reply@cargomation.com";
+	    $autoemail1 = $sender;
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
 		$mail->IsHTML(true);
