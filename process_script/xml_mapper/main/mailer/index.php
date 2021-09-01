@@ -52,13 +52,11 @@
 		$sender = "no-reply@cargomation.com";
 
 		// if the checkbox is checked, use the email provided
-		if($_POST['use'] == "on") {
+		if($_POST['use_email'] == "on") {
 			// if user email was not change
 			if(empty($sender)) {
-				$sender = $_POST['user_email'];
-			} else {
 				$sender = $_POST['sender'];
-			}
+			} 
 		} 
 
 	    $autoemail = "support@cargomation.com";

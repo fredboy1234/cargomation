@@ -55,9 +55,9 @@ if(is_numeric($this->document)) {
                 <div class="form-group">
                     <label for="recipient">From</label>
                     <input type="email" id="sender" name="sender" class="form-control mb-3" placeholder="<?= $this->email; ?>" 
-                    value="<?= $this->email; ?>">
-                    <div class="icheck-primary d-inline">
-                        <input type="checkbox" name="use" id="checkboxPrimary1" checked>
+                    value="<?= $this->email; ?>" required>
+                    <div class="icheck-primary">
+                        <input type="checkbox" name="use_email" id="checkboxPrimary1" checked>
                         <label for="checkboxPrimary1">Use email as "sender".</label>
                     </div>
                 </div>
@@ -79,7 +79,6 @@ if(is_numeric($this->document)) {
                 <?php endif; ?>
                 <div class="form-group">
                     <input type="hidden" id="user_id" name="user_id" class="form-control" value="<?= $this->user_id; ?>">
-                    <input type="hidden" id="user_email" name="user_email" class="form-control" value="<?= $this->email; ?>">
                     <input type="hidden" id="shipment_num" name="shipment_num" class="form-control" value="<?= $this->shipment_num; ?>">
                     <input type="hidden" id="request_type" name="request_type" class="form-control" value="<?= $request_type; ?>">
                     <?php if(!empty($this->document)): ?>
