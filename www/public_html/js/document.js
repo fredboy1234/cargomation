@@ -36,7 +36,7 @@ $(document).ready(function () {
         initialPreviewAsData: initialPreviewAsData,
         initialPreviewFileType: initialPreviewFileType,
         initialPreviewConfig: initialPreviewConfig,
-        initialPreviewShowDelete: delete_button,
+        initialPreviewShowDelete: btn_delete,
         initialPreviewThumbTags: initialPreviewThumbTags,
         initialPreviewDownloadUrl: '/404.html',
         previewFileIcon: '<i class="fas fa-file"></i>',
@@ -197,25 +197,7 @@ $(document).ready(function () {
         //     actionZoom: '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>',
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
-        otherActionButtons: upload_button +
-            '<button type="button" ' +
-            'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="Request for Edit"{dataUrl}{dataKey} ' +
-            'data-doc_id="{id}" data-doc_status="{status}">' +
-            '<i class="fas fa-edit"></i>' +
-            '</button>\n' +
-            '<button type="button" ' +
-            'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="View Comment"{dataUrl}{dataKey} ' +
-            'data-doc_id="{id}" data-doc_status="{status}">' +
-            '<i class="fas fa-comment"></i>' +
-            '</button>\n' +
-            '<button type="button" ' +
-            'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="Change Status"{dataUrl}{dataKey} ' +
-            'data-doc_id="{id}" data-doc_status="{status}">' +
-            '<i class="fas {icon} {status}"></i>' +
-            '</button>\n',
+        otherActionButtons: btn_upload + btn_edit + btn_comment + btn_status,
     }).on("filebatchselected", function (event, files) {
         var out = '';
         $.each(files, function (key, file) {

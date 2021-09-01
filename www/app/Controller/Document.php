@@ -740,6 +740,8 @@ class Document extends Core\Controller {
 
     public function comment($document_id, $param = "", $user_id = ""){ 
 
+        
+
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
@@ -751,6 +753,8 @@ class Document extends Core\Controller {
                 $user_id = Utility\Session::get($userSession);
             }
         }
+
+       
 
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
@@ -784,7 +788,7 @@ class Document extends Core\Controller {
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
-        $this->View->render("/document/comment", [
+        $this->View->renderWithoutHeaderAndFooter("/document/comment", [
             'view' => $param,
             'user_id' => $user_id,
             'document_id' => $document_id,
@@ -862,6 +866,7 @@ class Document extends Core\Controller {
         $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/document/request", [
+            'email' => $User->data()->email,
             'user_id' => $user_id,
             'document' => $document,
             'shipment_num' => $shipment_num,

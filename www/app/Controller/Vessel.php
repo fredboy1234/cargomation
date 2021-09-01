@@ -476,7 +476,7 @@ class Vessel extends Core\Controller {
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
-                            $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">show</span>';
+                            $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">View</span>';
                            
                             $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                             <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
@@ -539,7 +539,7 @@ class Vessel extends Core\Controller {
                         
                         $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                         
-                        $subdata['onestop'] = '<span id="'.$containernumber.'">show</span>';
+                        $subdata['onestop'] = '<span id="'.$containernumber.'">View</span>';
                        
                         $subdata['action'] = '<a class="col-sm-3 dcontent '.$key.'" href="/vessel/details?'.$containernumber.'">Details</a>/
                         <a class="col-sm-3 dcontent '.$containernumber.'" href="/vessel/tracking?'.$containernumber.'">Tracking</a>';
@@ -653,7 +653,7 @@ class Vessel extends Core\Controller {
         }
 
         $data['transhipment'] = $this->Vessel->getVesselV2($user);
-        echo "<pre>";
+        //echo "<pre>";
         // print_r($data['transhipment']);
         // exit;
         if(!empty($data['transhipment'])){

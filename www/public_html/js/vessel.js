@@ -95,6 +95,7 @@ jQuery(document).ready(function() {
                 var currentDay = new Date();
                 var unID = '';
                 var htmlOnestop = '';
+                var tTable ='';
                 var catcher = 0;
                 var bg = ['bg-primary','bg-success','bg-warning','bg-success'];
                 try{
@@ -117,7 +118,7 @@ jQuery(document).ready(function() {
                     
   
                     $.each(seDecode.data.locations,function(ok,ov){
-                      //console.log(ov);
+                      
                       if(ov.id == locindex){
                         location = `${ov.name}`;
                       }
@@ -140,12 +141,14 @@ jQuery(document).ready(function() {
                   seDecode = searates;
                   events = seDecode;
                   var status = 'VAD';
-                  
+                  var eventObj = {};
+                  var kimino = [];
                   locationLoading = searates[i].port_loading;
                   locationdischarge = searates[i].port_discharge;
                     $.each(events,function(ikey,ival){
                         if(ival.id == shipid){
                           htmlOnestop='';
+                          tTable ='';
                           catcher = 0;
                           htmlstat =`
                             <span>Location : ${ival.port_discharge}</span><br>
@@ -153,36 +156,63 @@ jQuery(document).ready(function() {
                             <span> Status : ${statsCode[status]}</span><br>  
                             <hr>  
                           `;
+
+                          var $headtitle='';
+                          var etaetd ='';
+                          var dcount = 0;
                           $.each(doublechecker,function(dkey,dval){
+                           
                             if(dval.Vessel == ival.vessel_name && (dval.Voyage==ival.voyage_flight_num)){
                              var locfirstthree = onestopLoc[ival.port_discharge];
                              
-                             //htmlOnestop = `<h4>${dval.Vessel} - ${dval.Voyage}</h2><br>`;
+                             tTable = `<h4>${dval.Vessel} - ${dval.Voyage}</h2><br>`;
+                             
+                             kimino = [];
                              $.each(dval,function(is,ks){
-                              if(ks != null){
+                              //if(ks != null){
+                             
                                 var addedClass ='';
                                 if(catcher > 2){
-                                  addedClass =`d-inline-block col-md-3 ${bg[Math.floor(Math.random() * 3) ]}`;
+                                  $headtitle = is.substring(0, 3); 
+                                  etaetd +=ks;
+                                  if(dcount == 4){
+                                    dcount = 0;
+                                    kimino = [];
+                                  }
+                                  kimino.push(ks);  
+                                  eventObj[$headtitle] = kimino;
+                                  dcount++;
                                 }else{
-                                  addedClass = `bg-white`;
-                                }
-                                
-                                htmlOnestop += `
-                                <div class="shadow-lg p-3 mb-1  rounded ${addedClass}">
-                                 <span>${is}: ${ks}</span>
-                                </div>`;
-                              }
-                              catcher++;
-                              
+                                  
+                                } 
+                             // }
+    
+                              catcher++;  
+        
                              });
-                        
+                             
                             } 
                           });
                           
                         }
                     });
-                    console.log(events);
-                    //console.log(i); 
+                    
+                    $.each(eventObj,function(ekey,eval){
+                      htmlOnestop +=`<tr class="col"> <td>${ekey}</td>
+                        <td>${(eval[0]!=null ? eval[0]  : 'no data')}</td>
+                        <td>${(eval[1]!=null ? eval[1]  : 'no data')}</td>
+                        <td>${(eval[2]!=null ? eval[2]  : 'no data')}</td>
+                        <td>${(eval[3]!=null ? eval[3]  : 'no data')}</td>
+                      </tr>
+                      `;
+                    });
+                    if( $.isEmptyObject(eventObj) ){
+                      $(rows).eq( i ).find('td').eq(7).find("span").hide();
+                    }
+                    
+                    // if(eventObj.length == 0){
+                    //   $(rows).eq( i ).find('td').eq(7).find("span").hide();
+                    // }
                     $(rows).eq( i ).attr("data-details",shipid);
                     $(rows).eq( i ).after(
                         `<tr class="d-none ${shipid} ">
@@ -190,7 +220,23 @@ jQuery(document).ready(function() {
                         </tr>
                         <tr class="d-none  ot-${shipid}">
                           <td>
-                            ${htmlOnestop}
+                            ${tTable}
+                            <table class="w-100 table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Code</th>
+                                      <th scope="col">ETA</th>
+                                      <th scope="col">ATA</th>
+                                      <th scope="col">AVA</th>
+                                      <th scope="col">Stor</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                ${htmlOnestop}
+                              </tbody>
+                            
+                            </table>
+                            
                           </td>
                         </tr>`   
                     );
@@ -207,7 +253,7 @@ jQuery(document).ready(function() {
     $('table').on('click','tr',function(e){
      var cl = $(this).attr("data-details");
      //$('.'+cl).toggleClass('d-none');
-     var notincl = ['show','Details','Tracking'];
+     var notincl = ['View','Details','Tracking'];
      var text = $(e.target).text();
      var attr = $(e.target).attr('data-header');
      var clId = $(e.target).attr('id');
@@ -219,7 +265,7 @@ jQuery(document).ready(function() {
           $('#detailinfo').modal('show');
         }
       }else{
-        if(text ==='show'){
+        if(text ==='View'){
           
           $("#detailinfo .modal-body").html($('.ot-'+cl+' td').html());
           $("#exampleModalCenterTitle").text('One Stop Details');

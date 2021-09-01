@@ -120,8 +120,8 @@
                       <tr>
                         <td><img src="https://cargomation.com/img/flag/flag-<?= strtolower($value->currency_code) ?>.png" alt="<?= strtolower($value->currency_code) ?>" style="width: 28px"> 
                         <?= $value->currency_code . " - " . $value->currency_desc; ?></td>
-                        <td><?= $value->TTBuy ?></td>
-                        <td><?= $value->TTSell ?></td>
+                        <td><?= round($value->TTBuy, 4) ?></td>
+                        <td><?= round($value->TTSell, 4) ?></td>
 
                         <td><?= date_format(date_create($value->EffectiveDate), 'j F Y') ?></td>
                         <td><?= date_format(date_create($value->EffectiveTime), 'H:i:s A') ?></td>

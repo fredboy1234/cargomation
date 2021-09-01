@@ -376,6 +376,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <?php if($this->role->role_id != 4): ?>
                 <div class="">
                     <div class="icheck-primary d-inline">
                         <input type="checkbox" id="select-all">
@@ -398,6 +399,7 @@
                     </form>
                     <button type="button" class="btn btn-success" id="request">Request a document</button>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
         <!-- /.modal-content -->

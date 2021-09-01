@@ -266,7 +266,7 @@ class Shipment extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($user_id)->role_name;
+        $role = $Role->getUserRole($user_id);
 
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
@@ -279,6 +279,7 @@ class Shipment extends Core\Controller {
             "title" => "Shipment API",
             "id" => $User->data()->id,
             "email" => $User->data()->email,
+            "role" => $role,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
             "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
