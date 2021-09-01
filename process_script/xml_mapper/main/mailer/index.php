@@ -52,9 +52,9 @@
 		$sender = "no-reply@cargomation.com";
 
 		// if the checkbox is checked, use the email provided
-		if($_POST['use_email'] == "on") {
+		if(isset($_POST['use_email'])) {
 			// if user email was not change
-			if(empty($sender)) {
+			if(!empty($_POST['sender'])) {
 				$sender = $_POST['sender'];
 			} 
 		} 
