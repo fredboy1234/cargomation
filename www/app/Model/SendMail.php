@@ -70,10 +70,10 @@ class SendMail extends Core\Model {
       );
 
       // if the checkbox is checked, use the email provided
-      if($data['use_email'] == "on") {
+      if(isset($data['use_email'])) {
         $post_data['use_email'] = $data['use_email'];
         // if user email was not change
-        if(empty($data['sender'])) {
+        if(!empty($data['sender'])) {
           $post_data['sender'] = $data['sender'];
         } 
       } 
