@@ -10,6 +10,7 @@ $json_url = "$.data.Brands.WBC.Portfolios['Foreign Exchange Currencies'].Product
 $curr_table = "dbo.currency";
 $curr_rate = "dbo.currency_rate";
 $parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+
 $arr = array();
 $curr_path = array('RATECODE','PRODUCT','UNIT','TTBuy','TTBuyFee','TTSell','TTSellFee','EffectiveDate','EffectiveTime');
 
