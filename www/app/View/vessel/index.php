@@ -21,15 +21,15 @@
      color:#333;
  }
  .done{
-    background-color: #28a745 !important;
-    color: #fff !important;
+    /* background-color: #28a745 !important;
+    color: #fff !important; */
  }
  .almost{
-     background-color: #ffc107!important;
+     /* background-color: #ffc107!important; */
  }
  .completed{
-     background-color: #dc3545 !important;
-     color: #fff !important;
+     /* background-color: #dc3545 !important;
+     color: #fff !important; */
  }
  .l-done div{
      width: 10px;
@@ -51,6 +51,35 @@
      height: 10px;
      background-color:  #fff !important;
      border: 1px solid #333;
+ }
+ thead tr{
+   line-height: 1rem;
+ }
+ table tbody tr td{
+   border: none !important;
+   background: #fff !important;
+ }
+ td a, table tbody tr td{
+  color: #777;
+    font-weight: 400 !important;
+    padding-bottom: 20px !important;
+    padding-top: 20px !important;
+    font-weight: 300 !important;
+ }
+ table{
+   display: grid;
+ }
+ table tbody{
+   display: contents;
+ }
+ table tbody tr{
+  border-radius: 7px;
+  overflow: hidden;
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+  margin: 0.4rem;
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
  }
 </style>
 <?php $vessel = $this->vessel;?>
@@ -214,24 +243,24 @@
                         </div>
                     </div>
                     <div class="row card-body table-responsive p-0 ttable" style="height: 500px;">
-                    <table class="table table-hover table-head-fixed text-nowrap">
+                    <table class="table table-hover table-head-fixed text-nowrap custom-table">
                     <thead>
                       <tr>
-                            <th class="btn-search">Container Number <section></section></th>
-                            <th>Shipment Number<section></section></th>
+                            <th scope="col" class="btn-search">Container Number <section></section></th>
+                            <th scope="col">Shipment Number<section></section></th>
                             <!-- <th>House Bill <section></section></th> -->
-                            <th>Master Bill <section></section></th>
-                            <th>Voyage <section></section></th>
+                            <th scope="col">Master Bill <section></section></th>
+                            <th scope="col">Voyage <section></section></th>
                            
-                            <th>Date <section></section></th>
+                            <th scope="col">Date <section></section></th>
                             <!-- <th>Status</th> -->
                             
-                            <th>Vessel Name <section></section></th>
-                            <th>Location <section></section></th>
-                            <th>1 Stop <section></section></th>
+                            <th scope="col">Vessel Name <section></section></th>
+                            <th scope="col">Location <section></section></th>
+                            <th scope="col">1 Stop <section></section></th>
                             
                             
-                            <th>Action <section></section></th>
+                            <th scope="col">Action <section></section></th>
                       </tr>
                     </thead>
                   </table>
