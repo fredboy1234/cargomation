@@ -269,32 +269,54 @@ class Document extends Core\Model {
      * @since 1.0.3
      * @throws Exception
      */
-    public static function getDocumentStats($user) {
+    public static function getDocumentStats($user, $org_code = "") {
         $Db = Utility\Database::getInstance();
+
+        $where_clause = "dbo.shipment.user_id = '{$user}'";
+        if(!empty($org_code)) {
+            $where_clause = "dbo.shipment.consignee = '{$org_code}'";
+        }
+
         $total_files = $Db->query(" SELECT
-                                        count(dbo.document.id) as count
+                                        COUNT(dbo.document.id) as count
                                     FROM
                                         dbo.document
                                         INNER JOIN dbo.shipment
-                                        ON dbo.document.shipment_id = dbo.shipment.id
+                                            ON dbo.document.shipment_id = dbo.shipment.id
                                         INNER JOIN dbo.document_status
-                                        ON dbo.document.id = dbo.document_status.document_id
+                                            ON dbo.document.id = dbo.document_status.document_id
                                     WHERE
-                                        dbo.shipment.user_id = 101
-                                        AND dbo.document_status.status != 'deleted' ")->results();
-        $pending_files = $Db->query("SELECT count(*) as count from document d
-                                LEFT JOIN shipment s
-                                ON d.shipment_num = s.shipment_num
-                                LEFT JOIN document_status ds
-                                ON d.id = ds.document_id
-                                WHERE s.user_id = '{$user}' 
-                                AND ds.status = 'pending'")->results();
-        $new_request = $Db->query("SELECT count(*) as count from document_request dr
-                                WHERE dr.user_id = '{$user}' 
-                                AND dr.request_type = 'new'")->results();
-        $update_request = $Db->query("SELECT count(*) as count from document_request dr
-                                WHERE dr.user_id = '{$user}' 
-                                AND dr.request_type = 'edit'")->results();
+                                        {$where_clause}
+                                    AND 
+                                        dbo.document_status.status != 'deleted' ")->results();
+        $pending_files = $Db->query("   SELECT 
+                                            COUNT(*) as count 
+                                        FROM 
+                                            dbo.document
+                                            LEFT JOIN dbo.shipment
+                                                ON dbo.document.shipment_id = dbo.shipment.id
+                                            LEFT JOIN dbo.document_status
+                                                ON dbo.document.id = dbo.document_status.document_id
+                                        WHERE 
+                                            {$where_clause}
+                                        AND 
+                                            (dbo.document_status.status = 'pending' 
+                                        AND 
+                                            dbo.document_status.status != 'deleted') ")->results();
+        $new_request = $Db->query(" SELECT 
+                                        COUNT(*) as count 
+                                    FROM 
+                                        document_request dr
+                                    WHERE 
+                                        dr.user_id = '{$user}' 
+                                    AND dr.request_type = 'new'")->results();
+        $update_request = $Db->query("  SELECT 
+                                            COUNT(*) as count 
+                                        FROM 
+                                            document_request dr
+                                        WHERE 
+                                            dr.user_id = '{$user}' 
+                                        AND dr.request_type = 'edit'")->results();
 
         return [
             "total_files" => $total_files,

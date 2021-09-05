@@ -62,6 +62,22 @@ class SendMail extends Core\Model {
         $message .= "Link : <a href=" . $link . ">" . $link . "</a>";        
       }
 
+      $post_data = array(
+        'request' => $request,
+        'email' => $recipient,
+        'subject' => $subject,
+        'message' => $message
+      );
+
+      // if the checkbox is checked, use the email provided
+      if(isset($data['use_email'])) {
+        $post_data['use_email'] = $data['use_email'];
+        // if user email was not change
+        if(!empty($data['sender'])) {
+          $post_data['sender'] = $data['sender'];
+        } 
+      } 
+
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
@@ -74,7 +90,7 @@ class SendMail extends Core\Model {
         CURLOPT_FOLLOWLOCATION => false,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => 'request=' . $request . '&email=' . $recipient . '&subject=' . $subject . '&message=' . $message,
+        CURLOPT_POSTFIELDS => http_build_query($post_data),
         CURLOPT_HTTPHEADER => array(
           'Authorization: Basic YTJiYWRtaW46XWkldipLOntwTDhDeyh3',
           'Content-Type: application/x-www-form-urlencoded'
@@ -99,7 +115,7 @@ class SendMail extends Core\Model {
         $result['message'] = "Failed. Mailer error: " . $response->message;
       }
 
-    return $result['success'];
+      return $result['success'];
 
   }
 

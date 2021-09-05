@@ -3,14 +3,14 @@ require_once ('../../main/connection.php');
 require_once ('../../main/jsonpath-0.8.1.php');
 require_once ('../../main/json.php');
 
-
-$json = file_get_contents('http://a2bfreighthub.com/exchangerate/');
+$json = file_get_contents('https://www.cargomation.com/exchangerate/');
 $data = json_decode($json,true);
 $json_url = "$.data.Brands.WBC.Portfolios['Foreign Exchange Currencies'].Products";
 $curr_table = "dbo.currency";
 $curr_rate = "dbo.currency_rate";
 $parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 $arr = array();
+
 $curr_path = array('RATECODE','PRODUCT','UNIT','TTBuy','TTBuyFee','TTSell','TTSellFee','EffectiveDate','EffectiveTime');
 
 $sql = "SELECT * from {$curr_table};";

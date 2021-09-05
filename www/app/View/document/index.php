@@ -186,16 +186,39 @@ if(!empty($this->document)) {
     var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
     var document_type = "<?= $this->shipment['type']; ?>";
     var user_id = <?= $_SESSION['user']; ?>;
-    var upload_button = "";
     var options = "";
-    <?php if (isset($document_settings->doctracker->push_document)): ?>
-    upload_button = '<button type="button" ' +
-            'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-            'title="Push to CargoWise"{dataUrl}{dataKey} ' +
-            'data-doc_id="{id}" data-doc_status="{status}">' +
-            '<i class="fas fa-upload"></i>' +
-            '</button>\n';
+    var btn_upload = "";
+    var btn_status = "";
+    var btn_edit = "";
+    var btn_comment = "";
+    <?php if ($this->role->role_id != 4): ?>
+        <?php if (isset($document_settings->doctracker->push_document)): ?>
+        btn_upload = '<button type="button" ' +
+                    'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                    'title="Push to CargoWise"{dataUrl}{dataKey} ' +
+                    'data-doc_id="{id}" data-doc_status="{status}">' +
+                    '<i class="fas fa-upload"></i>' +
+                    '</button>\n';
+        <?php endif; ?>
+            btn_edit = '<button type="button" ' +
+                        'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                        'title="Request for Edit"{dataUrl}{dataKey} ' +
+                        'data-doc_id="{id}" data-doc_status="{status}">' +
+                        '<i class="fas fa-edit"></i>' +
+                        '</button>\n';
+            btn_comment = '<button type="button" ' +
+                        'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                        'title="View Comment"{dataUrl}{dataKey} ' +
+                        'data-doc_id="{id}" data-doc_status="{status}">' +
+                        '<i class="fas fa-comment"></i>' +
+                        '</button>\n';
+            btn_status = '<button type="button" ' +
+                        'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                        'title="Change Status"{dataUrl}{dataKey} ' +
+                        'data-doc_id="{id}" data-doc_status="{status}">' +
+                        '<i class="fas {icon} {status}"></i>' +
+                        '</button>\n';
     <?php endif; ?>
-    var delete_button = <?= (isset($document_settings->doctracker->delete_document)) ? 'true' : 'false'; ?>;
+    var btn_delete = <?= (isset($document_settings->doctracker->delete_document)) ? 'true' : 'false'; ?>;
 </script>
 <?= $this->getJS(); ?>

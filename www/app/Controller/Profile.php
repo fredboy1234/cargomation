@@ -74,6 +74,7 @@ class Profile extends Core\Controller {
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
         $this->View->addJS("js/profile.js");
+        $this->View->addCSS("css/profile.css");
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
 
@@ -150,10 +151,14 @@ class Profile extends Core\Controller {
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
             ),$user);
-            Utility\Redirect::to(APP_URL . "/profile");
-        }else{
-            Utility\Redirect::to(APP_URL . "/profile");
+            $result['status'] = "success";
+        } else {
+            $result['status'] = "error";
+            $result['message'] = "No post data submitted!";
         }
+
+        echo json_encode($result);
+        exit;
         
     }
 
@@ -187,7 +192,7 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
         
-        $this->View->render("/profile/profileImageList", [
+        $this->View->renderWithoutHeaderAndFooter("/profile/profileImageList", [
             "user" => Model\User::getProfile($user_id)['user_image']
         ]);
     }
@@ -294,17 +299,21 @@ class Profile extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        
-        $column = $_POST['column'];
-        unset($_POST['column']);
-        $data = $_POST;
-        
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
+            $column = $_POST['column'];
+            unset($_POST['column']);
+            $data = $_POST;
+
             $User->updateUserSettings($column, $data, $user);
-            Utility\Redirect::to(APP_URL . "/profile#settings");
+            # Utility\Redirect::to(APP_URL . "/profile#settings");
+            $result['status'] = "success";
         } else {
-            Utility\Redirect::to(APP_URL . "/profile#settings");
+            $result['status'] = "error";
+            $result['message'] = "No post data submitted!";
         }
+
+        echo json_encode($result);
+        exit;
     }
 
 }

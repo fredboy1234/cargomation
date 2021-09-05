@@ -51,16 +51,20 @@ class Dashboard extends Core\Controller {
         switch ($role->role_id) {
             case 1: // SUPER ADMIN
                 $is_customer = false;
+                $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 2: // CLIENT ADMIN
                 $is_customer = false;
+                $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 3: // STAFF
                 $is_customer = false;
+                $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 4: // CUSTOMER
                 $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
                 $is_customer = $org_code;
+                $document_stats = Model\Document::getDocumentStats($userID, $org_code);
                 break;
             
             default:
@@ -136,7 +140,7 @@ class Dashboard extends Core\Controller {
             "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea', $is_customer)),
             "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
-            "document_stats" => Model\Document::getDocumentStats($userID),
+            "document_stats" => $document_stats,
             "container_mode" => $cmodeArray,
             "count_cmode" => count($cmode),
             "count_sea" => $seacount,

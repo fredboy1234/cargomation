@@ -48,8 +48,19 @@
 			// die();
 		// }
 
+		// default
+		$sender = "no-reply@cargomation.com";
+
+		// if the checkbox is checked, use the email provided
+		if(isset($_POST['use_email'])) {
+			// if user email was not change
+			if(!empty($_POST['sender'])) {
+				$sender = $_POST['sender'];
+			} 
+		} 
+
 	    $autoemail = "support@cargomation.com";
-	    $autoemail1 = "no-reply@cargomation.com";
+	    $autoemail1 = $sender;
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
 		$mail->IsHTML(true);
