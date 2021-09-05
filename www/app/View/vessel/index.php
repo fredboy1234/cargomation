@@ -23,6 +23,7 @@
  .done{
     /* background-color: #28a745 !important;
     color: #fff !important; */
+    border-top: 2px solid #28a745 !important;
  }
  .almost{
      /* background-color: #ffc107!important; */
