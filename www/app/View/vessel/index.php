@@ -20,11 +20,24 @@
  .group a{
      color:#333;
  }
- .done{
+ 
+ tr.done{
     /* background-color: #28a745 !important;
     color: #fff !important; */
     border-top: 2px solid #28a745 !important;
+    transform: scaleX(1);
  }
+ tr.done:after {
+  display:block;
+  content: '';
+  border-top: solid 1.4px #28a745;  
+  transform: scaleX(0);  
+  transition: transform 250ms ease-in-out;
+}
+tr.done:hover:after { transform: scaleX(1); }
+tr.done.fromRight:after{ transform-origin:100% 50%; }
+tr.done.fromLeft:after{  transform-origin:  0% 50%; }
+
  .almost{
      /* background-color: #ffc107!important; */
  }
@@ -53,27 +66,29 @@
      background-color:  #fff !important;
      border: 1px solid #333;
  }
- thead tr{
+ .custom-table thead tr{
    line-height: 1rem;
  }
- table tbody tr td{
+ .custom-table tbody tr td{
    border: none !important;
    background: #fff !important;
  }
- td a, table tbody tr td{
+ .custom-table td a, table tbody tr td{
   color: #777;
     font-weight: 400 !important;
     padding-bottom: 20px !important;
     padding-top: 20px !important;
     font-weight: 300 !important;
  }
- table{
-   display: grid;
+ .custom-table{
+    /* display: grid;  */
+    border-collapse: separate !important;
+    border-spacing: 0.4rem !important;
  }
- table tbody{
-   display: contents;
+ .custom-table tbody{
+    display: contents;
  }
- table tbody tr{
+ .custom-table tbody tr{
   border-radius: 7px;
   overflow: hidden;
   -webkit-transition: .3s all ease;
