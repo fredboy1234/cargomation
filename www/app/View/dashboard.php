@@ -125,7 +125,7 @@
               <div class="inner">
                 <h3 class="text-danger"><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
 
-                <p>Shipments Not Arrived</p>
+                <p>Shipments Pending Arrival</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-warning text-danger"></i>
@@ -1076,6 +1076,7 @@
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
+
     <!-- /.content -->
   </div>
 <script>
