@@ -159,10 +159,12 @@ class Vessel extends Core\Model {
                                     SET sea_json = '{$sea_json}', '{$track_json}'
                                     WHERE trans_id ={$trans_id} and container_number = {$container_number} ");
         }else{
+
             $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id)
             values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}')");
-        }                    
-        return $vessel;
+        }  
+
+        //return $vessel;
     }
 
     public function getSearatesByID($vessel_number){

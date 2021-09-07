@@ -565,7 +565,8 @@ class Vessel extends Core\Controller {
            
             
         }
-       
+        print
+       exit();
         echo json_encode($json_data);
     }
 
@@ -669,36 +670,36 @@ class Vessel extends Core\Controller {
                 // if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                 //    echo'success';
                 // } 
-                
-                if($data['json']  = file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
-                    //$this->Vessel->checkContainer($data);
-                    $searates = json_decode( $data['json']);
-                    //print_r($searates);
-                    //print_r($trans[0]);
-                    if($searates->status === "success" && $searates->message === 'OK'){
-                        $eventsData = $searates->data->locations;
-                        $eventsDate = end($searates->data->container->events)->date;
-                        $lastDestination = isset($eventsData[0]) ? end($eventsData)->name :'';
-                        //print_r( $lastDestination );
-                        
-                        if(trim($trans[0]->port_discharge) === trim($lastDestination) || strtotime($trans[0]->eta) >= strtotime($eventsDate)){
-                            $this->Vessel->checkContainer($data);
-                            echo $eventsDate;
-                            echo '<br>'.$trans[0]->eta;
-                        }else{
-                            $data['json'] = json_encode($trans[0]);
-                            $this->Vessel->checkContainer($data);
+                try {
+                    if($data['json']  = @file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
+                        //$this->Vessel->checkContainer($data);
+                        $searates = json_decode( $data['json']);
+                        //print_r($searates);
+                        //print_r($trans[0]);
+                        if($searates->status === "success" && $searates->message === 'OK'){
+                            $eventsData = $searates->data->locations;
+                            $eventsDate = end($searates->data->container->events)->date;
+                            $lastDestination = isset($eventsData[0]) ? end($eventsData)->name :'';
+                            //print_r( $lastDestination );
+                            
+                            if(trim($trans[0]->port_discharge) === trim($lastDestination) || strtotime($trans[0]->eta) >= strtotime($eventsDate)){
+                                $this->Vessel->checkContainer($data);
+                                echo $eventsDate;
+                                echo '<br>'.$trans[0]->eta;
+                            }else{
+                                $data['json'] = json_encode($trans[0]);
+                                $this->Vessel->checkContainer($data);
+                            }
+                            echo "<br> ";
                         }
-                        echo "<br> ";
+                       
                     }
-                   
-                }else{
-                    echo'failed';
+                    
                 }
-                
-
-                
-            
+                catch(Exception $e) {
+                    echo 'Message: ' . $e->getMessage();
+                }
+                    
              }
         }
 
