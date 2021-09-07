@@ -394,7 +394,10 @@ try{
 			$ship_idlast="";
 			$PORTOFDISCHARGE="";
 			$PORTOFLOADING="";
-
+			$TOTALVOLUME="";
+			$TOTALHEIGHT="";
+			$TOTALWIDTH="";
+			$TOTALLENGTH="";
 	
 			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
