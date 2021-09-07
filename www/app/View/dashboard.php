@@ -108,7 +108,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-primary"><?= $this->air_shipment?></h3>
+                <h3 class="text-primary"><?=$this->count_air?></h3>
 
                 <p>Air Shipments</p>
               </div>
@@ -125,7 +125,7 @@
               <div class="inner">
                 <h3 class="text-danger"><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
 
-                <p>Shipments Not Arrived</p>
+                <p>Shipments Pending Arrival</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-warning text-danger"></i>
@@ -1076,6 +1076,7 @@
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
+
     <!-- /.content -->
   </div>
 <script>
