@@ -405,7 +405,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-        // echo "<pre>";
+         //echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -418,6 +418,7 @@ class Vessel extends Core\Controller {
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
+                
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
                 if(isset($j_ves->status) && $j_ves->status == 'success'){
@@ -565,8 +566,7 @@ class Vessel extends Core\Controller {
            
             
         }
-        print
-       exit();
+       
         echo json_encode($json_data);
     }
 
