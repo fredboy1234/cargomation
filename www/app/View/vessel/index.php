@@ -32,19 +32,44 @@
   content: '';
   border-top: solid 1.4px #28a745;  
   transform: scaleX(0);  
-  transition: transform 250ms ease-in-out;
+  transition: transform 550ms ease-in-out;
 }
 tr.done:hover:after { transform: scaleX(1); }
 tr.done.fromRight:after{ transform-origin:100% 50%; }
 tr.done.fromLeft:after{  transform-origin:  0% 50%; }
 
- .almost{
+ tr.almost{
      /* background-color: #ffc107!important; */
+     border-top: 2px solid #ffc107!important;
  }
- .completed{
+ tr.almost:after {
+  display:block;
+  content: '';
+  border-top: solid 1.4px #ffc107;  
+  transform: scaleX(0);  
+  transition: transform 550ms ease-in-out;
+}
+tr.almost:hover:after { transform: scaleX(1); }
+tr.almost.fromRight:after{ transform-origin:100% 50%; }
+tr.almost.fromLeft:after{  transform-origin:  0% 50%; }
+
+ tr.completed{
      /* background-color: #dc3545 !important;
      color: #fff !important; */
+     border-top: 2px solid #dc3545 !important;
  }
+ 
+ tr.completed:after {
+  display:block;
+  content: '';
+  border-top: solid 1.4px #dc3545;  
+  transform: scaleX(0);  
+  transition: transform 550ms ease-in-out;
+}
+tr.completed:hover:after { transform: scaleX(1); }
+tr.completed.fromRight:after{ transform-origin:100% 50%; }
+tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
+
  .l-done div{
      width: 10px;
      height: 10px;
@@ -71,7 +96,9 @@ tr.done.fromLeft:after{  transform-origin:  0% 50%; }
  }
  .custom-table tbody tr td{
    border: none !important;
-   background: #fff !important;
+   /* background: #fff !important; */
+   display: table-cell;
+    width: 14%;
  }
  .custom-table td a, table tbody tr td{
   color: #777;
@@ -82,11 +109,14 @@ tr.done.fromLeft:after{  transform-origin:  0% 50%; }
  }
  .custom-table{
     /* display: grid;  */
-    border-collapse: separate !important;
+    border-collapse: collapse !important;
     border-spacing: 0.4rem !important;
  }
  .custom-table tbody{
-    display: contents;
+    /* display: contents; */
+    display: grid;
+    width: 100%;
+    position: absolute;
  }
  .custom-table tbody tr{
   border-radius: 7px;
@@ -94,8 +124,11 @@ tr.done.fromLeft:after{  transform-origin:  0% 50%; }
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
-  margin: 0.4rem;
+  margin: 0.6rem;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+ }
+ #DataTables_Table_0_wrapper{
+   display: table;
  }
 </style>
 <?php $vessel = $this->vessel;?>
