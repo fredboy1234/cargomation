@@ -506,6 +506,7 @@
                                         <?php endif; ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
+                                            <input type="hidden" name="info_id" value="<?=$this->user_info->id?>">
                                             <button type="submit" class="btn btn-danger">Submit</button>
                                             </div>
                                         </div>

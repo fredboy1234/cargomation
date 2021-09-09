@@ -46,7 +46,7 @@ $(document).ready(function () {
             success: function (res) {
                 console.log(res);
                 if(res.status == "success") {
-                    $('#loader-wrapper').remove();
+                    //$('#loader-wrapper').remove();
                     //window.history.pushState("", "", '/profile#information');
                     window.location.href = "/profile";
                 } else {
