@@ -145,7 +145,7 @@ class Profile extends Core\Controller {
                 "address"=>$_POST['address'],
                 "city"=>$_POST['city'],
                 "postcode"=>$_POST['zipcode'],
-            ),$user);
+            ),$_POST['info_id']);
             $User->updateUserProfile(array(
                 "email"=>$_POST['email'],
                 "first_name"=>$_POST['firstname'],
