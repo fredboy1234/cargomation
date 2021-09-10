@@ -66,7 +66,9 @@
 .leaflet-sidebar.right.visible {
     width: 250px;
 }
-
+.tablue{
+  border: 1px solid;
+}
 </style>
 <?php $mode = $this->container_mode;?>
   <!-- Main content -->
@@ -825,11 +827,11 @@
             <div class="card-body p-1 mb-1 mt-1">
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button onclick="tablueshipment()" class="nav-link tablue mr-1" id="navshipment" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
-                  Total Volume of Shipments
+                <button onclick="tablueshipment()" class="nav-link tablue mr-1 btn  btn-outline-info btn-xs border" id="navshipment" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                <i class="fas fa-ship"></i> Total Volume of Shipments
                 </button>
-                <button onclick="tablueContainer()" class="nav-link tablue" id="navcontainer" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
-                  Total Count of Container Modes
+                <button onclick="tablueContainer()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navcontainer" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                <i class="fas fa-box-open"></i> Total Count of Container Modes
                 </button>
               </div>
             </nav>
