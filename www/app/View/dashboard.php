@@ -822,7 +822,26 @@
             </div>
             <!-- /.card -->
             <?php endif; ?>
-            
+            <div class="card-body p-1 mb-1 mt-1">
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button onclick="tablueshipment()" class="nav-link tablue mr-1" id="navshipment" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                  Total Volume of Shipments
+                </button>
+                <button onclick="tablueContainer()" class="nav-link tablue" id="navcontainer" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                  Total Count of Container Modes
+                </button>
+              </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade navshipment" id="navshipment" role="tabpanel" aria-labelledby="nav-home-tab">
+                <img src="http://cargomation.com/img/reports/101/report_2.png" class="img-fluid" alt="Responsive image">
+              </div>
+              <div class="tab-pane fade navcontainer" id="navcontainer" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <img src="http://cargomation.com/img/reports/101/report_1.png" class="img-fluid" alt="Responsive image">
+              </div>
+            </div>
+            </div>
             <div class="card-body p-0">
                   <div class="card">
                     <div class="card-header">
