@@ -836,10 +836,10 @@
               </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade navshipment show active" id="navshipment" role="tabpanel" aria-labelledby="nav-home-tab">
+              <div class="tab-pane fade navshipment" id="navshipment" role="tabpanel" aria-labelledby="nav-home-tab">
                 <img src="http://cargomation.com/img/reports/101/report_2.png" class="img-fluid" alt="Responsive image">
               </div>
-              <div class="tab-pane fade navcontainer" id="navcontainer" role="tabpanel" aria-labelledby="nav-profile-tab">
+              <div class="tab-pane fade navcontainer show active" id="navcontainer" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <img src="http://cargomation.com/img/reports/101/report_1.png" class="img-fluid" alt="Responsive image">
               </div>
             </div>
