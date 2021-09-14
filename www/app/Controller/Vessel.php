@@ -405,7 +405,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB();
         
-         //echo "<pre>";
+        //  echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -418,9 +418,23 @@ class Vessel extends Core\Controller {
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
-                
+                $mismatchETA = '';
+                $mismatchETD = '';
+                $tcolor = '';
+                $tcolorETD = '';
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
+
+                
+                $lastdatrackCW = date_create($ves->eta);
+                $lastdayCW = date_format($lastdatrackCW,"l");
+                $lastmonthCW = date_format($lastdatrackCW,"M j,Y");
+                $lasthourCW = date_format($lastdatrackCW,'h:i:s A');
+
+                $firstdatrackCW = date_create($ves->etd);
+                $firstdayCW = date_format($firstdatrackCW,"l");
+                $firstmonthCW = date_format($firstdatrackCW,"M j,Y");
+                $firsthourCW = date_format($firstdatrackCW,'h:i:s A');
                 if(isset($j_ves->status) && $j_ves->status == 'success'){
                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
@@ -450,7 +464,21 @@ class Vessel extends Core\Controller {
                         $enddate = strtotime($lastDate);
                         $colorscheme = 'not-done';
                         $statscheme = ' delays ';
-                       
+                        
+
+                        if(strtotime($lastDate) != strtotime($ves->eta)){
+                            $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none"> Searates:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
+                            $tcolor = 'text-danger';
+                        }
+
+                        if(strtotime($firstDate) != strtotime($ves->etd)){
+                            $firsthour = date_format($firstdatrack,'h:i:s A');
+                            $mismatchETD = '<strong>ETD</strong><br> Searates:'.$firstmonth.'-'.$firsthour .'<br> Cargomation:'.$firstmonthCW.'-'.$firsthour;
+                            $tcolorETD = 'text-danger';
+                        }
+
+                        $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>Searates:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
+                        
                         if($enddate < $today){
                             $colorscheme = 'done';
                             $statscheme = ' confirmedvessels ';
@@ -472,7 +500,8 @@ class Vessel extends Core\Controller {
                             $subdata['masterbill'] = $ves->master_bill;
                             $subdata['voyage'] = $lastvoyage;
 
-                            $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
+                            $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
+                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
                             $subdata['vessel_name'] = $firstvessel;
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;

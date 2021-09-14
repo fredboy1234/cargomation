@@ -1,5 +1,15 @@
 
 <style>
+
+ .mismatch{
+  position: absolute;
+    border: 1px solid #3333;
+    padding: 0.4rem;
+    border-radius: 8px;
+    background: #fff;
+    z-index: 9999;
+ }
+ 
  .vessel-container{
      cursor: pointer;
  }
@@ -120,16 +130,17 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
  }
  .custom-table tbody tr{
   border-radius: 7px;
-  overflow: hidden;
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
   margin: 0.6rem;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+  z-index: 100;
  }
  #DataTables_Table_0_wrapper{
    display: table;
  }
+
 </style>
 <?php $vessel = $this->vessel;?>
 <section class="content">
