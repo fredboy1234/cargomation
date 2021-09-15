@@ -1,7 +1,8 @@
 
 <style>
 
- .mismatch{
+ .mismatch,
+ .mismatchvsl{
   position: absolute;
     border: 1px solid #3333;
     padding: 0.4rem;

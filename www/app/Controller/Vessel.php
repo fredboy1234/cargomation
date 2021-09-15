@@ -419,9 +419,9 @@ class Vessel extends Core\Controller {
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $mismatchETA = '';
-                $mismatchETD = '';
-                $tcolor = '';
-                $tcolorETD = '';
+                $mismatchETD =  $mismatchVsl='';
+                $tcolor = $tcolorETD =  $tcolorvsl= '';
+
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
                 $sealine  ='Not Specified';
@@ -480,6 +480,11 @@ class Vessel extends Core\Controller {
                             $tcolorETD = 'text-danger';
                         }
 
+                        if($ves->Vessel !== $firstvessel){
+                            $tcolorvsl = 'text-danger';
+                            $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">1stop:'.$ves->Vessel.'<br>Searates:'.$firstvessel.'<br></span>';
+                        }
+                        
                         $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>Searates:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
                         
                         if($enddate < $today){
@@ -505,7 +510,7 @@ class Vessel extends Core\Controller {
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
-                            $subdata['vessel_name'] = $firstvessel;
+                            $subdata['vessel_name'] ='<span data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstvessel.'</span>'.$mismatchVsl;
                             
                             $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
                             
