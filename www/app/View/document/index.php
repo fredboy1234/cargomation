@@ -33,6 +33,7 @@ if(!empty($this->document)) {
 
             $initialPreview[] = $server_file;
             $initialPreviewConfig[] = [ 'caption' => strlen($file->name) > 20 ? substr($file->name,0,20)."..." : $file->name,
+                                        'description' => $file->name,
                                         'width' => '200px',
                                         'type' => 'pdf',
                                         'source' => $file->upload_src,
@@ -48,8 +49,9 @@ if(!empty($this->document)) {
                                                     'status' => $file->status,
                                                     'source' => $file->upload_src,
                                                     'date' => $file->saved_date]];
-            $initialPreviewThumbTags[] = ['{status}' => $file->status,
-                                        '{origin}' => $file->upload_src,
+            $initialPreviewThumbTags[] = [  '{status}' => $file->status,
+                                            '{title}' => $file->name,
+                                            '{origin}' => $file->upload_src,
                                             '{icon}' => $status_icon,
                                             '{date}' => $file->saved_date,
                                             '{type}' => $file->type,

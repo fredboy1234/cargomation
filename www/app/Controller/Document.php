@@ -726,13 +726,20 @@ class Document extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
-        $role = $Role->getUserRole($user_id)->role_name;
+        $role = $Role->getUserRole($user_id);
 
-        if(empty($role)) {
-            Utility\Redirect::to(APP_URL . $role);
+        if(empty($role->role_name)) {
+            Utility\Redirect::to(APP_URL . $role->role_name);
+        }
+
+        // get client admin email when role id not 2
+        $subacc_info = "";
+        if($role->role_id > 2) {
+            $subacc_info = $User->getSubAccountInfo($user_id);
         }
 
         $this->View->renderWithoutHeaderAndFooter("/document/fileviewer", [
+            "subacc_info" => $subacc_info,
             "email" => $User->data()->email,
             "document_id" => $document_id,
         ]);
