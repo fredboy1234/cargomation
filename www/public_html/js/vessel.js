@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
     var groupColumn = 0;
     var indexCollection = [];
-
+  
     $('.table thead th').each( function () {
       var title = $(this).text();
       //console.log(title);
@@ -10,6 +10,23 @@ jQuery(document).ready(function() {
       }
       
     });
+    // console.log('test');
+    // console.log($('table tr').find('td'));
+    $('table').on('mouseover','tr',function(e){
+      if($(e.target).hasClass('mmatchhover')){
+        var lID = $(this).find('.mmatchhover').attr('data-match');
+        $('#'+lID).removeClass('d-none');
+      }
+    }).on('mouseleave','tr',function(e){
+      var lID = $(this).find('.mmatchhover').attr('data-match');
+      $('#'+lID).addClass('d-none');
+      if($(e.target).hasClass('mmatchhover')){
+        var lID = $(this).find('.mmatchhover').attr('data-match');
+        $('#'+lID).addClass('d-none');
+      }
+
+    });
+    
 
      var table = $('.table').DataTable({
       searching: true, 
@@ -395,3 +412,12 @@ jQuery(document).ready(function() {
         },50); 
       });
 });  
+
+// $(document).on({
+//   mouseenter: function () {
+//       alert('tst');
+//   },
+//   mouseleave: function () {
+//       alert('ter');
+//   }
+// });
