@@ -115,7 +115,7 @@ $(document).ready(function () {
             '    </label>' +
             '</div>' +
             '<div class="file-thumbnail-footer">\n' +
-                '    <div class="file-footer-caption" title="{caption}">File Name: {caption}' +
+                '    <div class="file-footer-caption" title="{title}">File Name: {caption}' +
                 '       <br>File Type: <b>{type}</b>' +
                 '       <br>File Source: <b>{origin}</b>' +
                 '       <br>File Status: <b id="status" class="{status}">{status}</b>' +
