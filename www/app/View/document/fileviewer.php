@@ -5,9 +5,14 @@ $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/ge
 $file_name = $file[0]->name;
 $shipment_num = $file[0]->shipment_num;
 $file_type = $file[0]->type;
+$email = $this->email;
+
+if(!empty($this->subacc_info)) {
+    $email = $this->subacc_info[0]->client_email;
+}
 
 // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
-$file = "E:/A2BFREIGHT_MANAGER/".$this->email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;
+$file = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;
 
 try {
     $fp = fopen($file, "r") ;
