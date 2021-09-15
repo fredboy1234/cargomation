@@ -649,4 +649,10 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getSubAccountInfo($user_id = "") {
+        $query = "SELECT * FROM vrpt_subaccount WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
 }
