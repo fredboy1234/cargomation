@@ -7,7 +7,7 @@
     padding: 0.4rem;
     border-radius: 8px;
     background: #fff;
-    z-index: 9999;
+    z-index: 9999 !important;
  }
  
  .vessel-container{
@@ -135,7 +135,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
   transition: .3s all ease;
   margin: 0.6rem;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
-  z-index: 100;
+  /* z-index: 100 !important; */
  }
  #DataTables_Table_0_wrapper{
    display: table;

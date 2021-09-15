@@ -14,6 +14,7 @@ jQuery(document).ready(function() {
     // console.log($('table tr').find('td'));
     $('table').on('mouseover','tr',function(e){
       if($(e.target).hasClass('mmatchhover')){
+        $(this).css({"z-index":"100"});
         var lID = $(this).find('.mmatchhover').attr('data-match');
         $('#'+lID).removeClass('d-none');
       }
