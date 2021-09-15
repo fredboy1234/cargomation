@@ -108,7 +108,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
    border: none !important;
    /* background: #fff !important; */
    display: table-cell;
-    width: 14%;
+    width: 12%;
  }
  .custom-table td a, table tbody tr td{
   color: #777;
@@ -319,6 +319,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                             <th scope="col">Location <section></section></th>
                             <th scope="col">1 Stop <section></section></th>
                             
+                            <th scope="col">Shipping Line <section></section></th>
                             
                             <th scope="col">Action <section></section></th>
                       </tr>

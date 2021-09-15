@@ -70,7 +70,7 @@ jQuery(document).ready(function() {
         { data: "vessel_name" },
         { data: "location_city" },
         { data: "onestop" },
-        // { data: "status" },
+         { data: "shipping_line" },
             
         { data: "action" },
       ],
