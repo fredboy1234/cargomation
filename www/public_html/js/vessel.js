@@ -25,11 +25,15 @@ jQuery(document).ready(function() {
     }).on('mouseleave','tr',function(e){
       var lID = $(this).find('.mmatchhover').attr('data-match');
       $('#'+lID).addClass('d-none');
+      var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
+      $('#'+xlID).addClass('d-none');
+
       if($(e.target).hasClass('mmatchhover')){
         var lID = $(this).find('.mmatchhover').attr('data-match');
         $('#'+lID).addClass('d-none');
+
       }else if($(e.target).hasClass('mmatchhovervsl')){
-        $(this).css({"z-index":"100"});
+    
         var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
         $('#'+xlID).addClass('d-none');
       }
