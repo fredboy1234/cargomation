@@ -254,15 +254,17 @@ class Vessel extends Core\Controller {
     //        $_SESSION['tracking'] = $tracking;
     //     }
             $_SESSION['searates']=  $this->searatesRoute($vessel_number);
-            if(isset($_SESSION['searates'])){
-                if($_SESSION['searates']->message ==='OK'){
-                    if(!empty($_SESSION['searates']->data)){
-                        $cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-                    }
-                }
+            $cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            // if(isset($_SESSION['searates'])){
+            //     if($_SESSION['searates']->message ==='OK'){
+            //         if(!empty($_SESSION['searates']->data)){
+            //             $cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            //         }
+            //     }
             
-            }
-          
+            // }
+          print_r($cont);
+          exit();
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",

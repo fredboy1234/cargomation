@@ -19,8 +19,8 @@ jQuery(document).ready(function() {
         $('#'+lID).removeClass('d-none');
       }else if($(e.target).hasClass('mmatchhovervsl')){
         $(this).css({"z-index":"100"});
-        var lID = $(this).find('.mmatchhovervsl').attr('data-match');
-        $('#'+lID).removeClass('d-none');
+        var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
+        $('#'+xlID).removeClass('d-none');
       }
     }).on('mouseleave','tr',function(e){
       var lID = $(this).find('.mmatchhover').attr('data-match');
@@ -30,8 +30,8 @@ jQuery(document).ready(function() {
         $('#'+lID).addClass('d-none');
       }else if($(e.target).hasClass('mmatchhovervsl')){
         $(this).css({"z-index":"100"});
-        var lID = $(this).find('.mmatchhovervsl').attr('data-match');
-        $('#'+lID).addClass('d-none');
+        var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
+        $('#'+xlID).addClass('d-none');
       }
 
     });
