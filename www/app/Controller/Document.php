@@ -253,11 +253,18 @@ class Document extends Core\Controller {
     private function uploadDocument($param) {
 
         $User = Model\User::getInstance($param[5]);
-        $email = $User->data()->email;
         $shipment_num = $param[6];
         $type = $param[7];
         $domain = "https://cargomation.com";
         $physical_path = "E:/A2BFREIGHT_MANAGER";
+
+        $email = $User->data()->email;
+        $user_id = $User->data()->id;
+
+        // get client admin email
+        if(!empty($User->getSubAccountInfo($user_id))) {
+            $email = $User->getSubAccountInfo($user_id);
+        }
 
         $preview = $config = $errors = [];
         $input = 'input'; // the input name for the fileinput plugin
