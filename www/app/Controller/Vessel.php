@@ -90,7 +90,7 @@ class Vessel extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        $vessel = $this->Vessel->getSearatesDB();
+        $vessel = $this->Vessel->getSearatesDB($user);
         $confirmed = 0;
         $departCofirmed = 0;
         $delay = 0;
@@ -404,7 +404,7 @@ class Vessel extends Core\Controller {
         }
         //$vessel = $this->Vessel->getVessel($user);
         
-        $vessel = $this->Vessel->getSearatesDB();
+        $vessel = $this->Vessel->getSearatesDB($user);
         
         //  echo "<pre>";
         // print_r($vessel);
