@@ -263,8 +263,7 @@ class Vessel extends Core\Controller {
             //     }
             
             // }
-          print_r($cont);
-          exit();
+         
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",
