@@ -27,12 +27,11 @@
                 </script>
             </div> -->
             
-         <?php if($livedata->status !== 'success'){?>
+         <?php if(isset($livedata->status) && $livedata->status !== 'success'){?>
             <h3 class="text-center">Live Tracking not Available.</h3>
             <span></span>
         <?php }else{ ?>
              <div id="livemap" class="col-md-12"></div> 
-           
         <?php }?>
         </div>
         </div>

@@ -112,28 +112,31 @@ class Vessel extends Core\Controller {
                         $statusEnd = isset($datacontainer->events[0]) ? end($datacontainer->events)->status : '';
                         // $today = strtotime(date("Y-m-d"));
                          $dateformat = strtotime($lastDate);
-                        if( $dateformat < $today){
-                            $confirmed++; 
-                        }else{
-                       // print_r($statusEnd);
-                        
-                        // foreach($datacontainer->events as $cont){
-                        //     $dateformat = strtotime($cont->date);
-                        //     print_r($cont->status);
-                        //     // if($today-$dateformat <= -86400 && $today-$dateformat >= -172800 ){
-                        //     //     print_r($cont->date);
-                        //     //     echo"<br>";
-                        //     // }
-                        //     echo"<br>";
+
+                         if(strtotime($lastDate) > strtotime('-30 days')){ 
+                            if( $dateformat < $today){
+                                $confirmed++; 
+                            }else{
+                        // print_r($statusEnd);
                             
-                        // }
-                        
-                        if($today-$dateformat <= -86400 && $today-$dateformat>= -172800 ){
-                            $pending++;
-                        }else if($today-$dateformat == 0){
-                            $departCofirmed++;
-                        }else{
-                            $delay++;
+                            // foreach($datacontainer->events as $cont){
+                            //     $dateformat = strtotime($cont->date);
+                            //     print_r($cont->status);
+                            //     // if($today-$dateformat <= -86400 && $today-$dateformat >= -172800 ){
+                            //     //     print_r($cont->date);
+                            //     //     echo"<br>";
+                            //     // }
+                            //     echo"<br>";
+                                
+                            // }
+                            
+                            if($today-$dateformat <= -86400 && $today-$dateformat>= -172800 ){
+                                $pending++;
+                            }else if($today-$dateformat == 0){
+                                $departCofirmed++;
+                            }else{
+                                $delay++;
+                            }
                         }
                     }
 
@@ -351,6 +354,7 @@ class Vessel extends Core\Controller {
         // print_r($this->Vessel->getSearatesByID($vessel_number));
         // exit();
         //echo"<pre>";
+        $cont = '';
         $_SESSION['vessel_num']=  $this->searatesRoute($vessel_number);
          if(isset( $_SESSION['vessel_num'])){
              if($_SESSION['vessel_num']->message ==='OK'){
@@ -711,6 +715,20 @@ class Vessel extends Core\Controller {
                 //    echo'success';
                 // } 
                 try {
+
+                    $_SESSION['vessel_num'] =  $this->searatesRoute($data["container_number"]);
+                    if(isset( $_SESSION['vessel_num'])){
+                        if($_SESSION['vessel_num']->message ==='OK'){
+                            if(!empty($_SESSION['vessel_num']->data)){
+                                $metadata = $_SESSION['vessel_num']->data;
+                                $type = $metadata->metadata->type;
+                                $sealine = $metadata->metadata->sealine;
+                                $data['track'] = @file_get_contents('https://tracking.searates.com/route?type='.$type.'&number='.$data["container_number"].'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+                            }
+                        }  
+                    }
+
+                 
                     if($data['json']  = @file_get_contents('https://tracking.searates.com/container?number='.$data["container_number"].'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                         //$this->Vessel->checkContainer($data);
                         $searates = json_decode( $data['json']);

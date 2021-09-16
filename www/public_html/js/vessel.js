@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
     var groupColumn = 0;
     var indexCollection = [];
-  
+    var earlyCheck = [];
     $('.table thead th').each( function () {
       var title = $(this).text();
       //console.log(title);
@@ -190,8 +190,9 @@ jQuery(document).ready(function() {
                           var $headtitle='';
                           var etaetd ='';
                           var dcount = 0;
+                          
                           $.each(doublechecker,function(dkey,dval){
-                           
+                            earlyCheck =[];
                             if(dval.Vessel == ival.vessel_name && (dval.Voyage==ival.voyage_flight_num)){
                              var locfirstthree = onestopLoc[ival.port_discharge];
                              
@@ -211,6 +212,7 @@ jQuery(document).ready(function() {
                                   }
                                   kimino.push(ks);  
                                   eventObj[$headtitle] = kimino;
+                                  
                                   dcount++;
                                 }else{
                                   
@@ -227,15 +229,35 @@ jQuery(document).ready(function() {
                         }
                     });
                     
+                    console.log(earlyCheck);
                     $.each(eventObj,function(ekey,eval){
+                      var tbletd = '';
+                      var datehandler = '';
+
+                      $.each(eval,function(xco,xcoh){
+                        if(!isNaN(Date.parse(xcoh))){
+                          earlyCheck.push(Date.parse(xcoh));
+                        }
+                      });
+
+                      $.each(eval,function(co,coh){
+                        var reta = Date.parse(coh);
+                        datehandler = Math.min.apply(Math,earlyCheck);
+                        if(datehandler === reta){
+                          tbletd += `<td class="text-success">${(coh!=null ? coh  : 'no data')}</td>`;  
+                        }else{
+                          tbletd += `<td>${(coh!=null ? coh  : 'no data')}</td>`;  
+                        }
+                        
+                      });
+
                       htmlOnestop +=`<tr class="col"> <td>${ekey}</td>
-                        <td>${(eval[0]!=null ? eval[0]  : 'no data')}</td>
-                        <td>${(eval[1]!=null ? eval[1]  : 'no data')}</td>
-                        <td>${(eval[2]!=null ? eval[2]  : 'no data')}</td>
-                        <td>${(eval[3]!=null ? eval[3]  : 'no data')}</td>
-                      </tr>
-                      `;
+                        ${tbletd}
+                      </tr>`;
+                      tbletd = '';
+                      earlyCheck = [];
                     });
+                   
                     if( $.isEmptyObject(eventObj) ){
                       $(rows).eq( i ).find('td').eq(7).find("span").hide();
                     }
