@@ -14,7 +14,12 @@ jQuery(document).ready(function() {
     // console.log($('table tr').find('td'));
     $('table').on('mouseover','tr',function(e){
       if($(e.target).hasClass('mmatchhover')){
+        $(this).css({"z-index":"100"});
         var lID = $(this).find('.mmatchhover').attr('data-match');
+        $('#'+lID).removeClass('d-none');
+      }else if($(e.target).hasClass('mmatchhovervsl')){
+        $(this).css({"z-index":"100"});
+        var lID = $(this).find('.mmatchhovervsl').attr('data-match');
         $('#'+lID).removeClass('d-none');
       }
     }).on('mouseleave','tr',function(e){
@@ -22,6 +27,10 @@ jQuery(document).ready(function() {
       $('#'+lID).addClass('d-none');
       if($(e.target).hasClass('mmatchhover')){
         var lID = $(this).find('.mmatchhover').attr('data-match');
+        $('#'+lID).addClass('d-none');
+      }else if($(e.target).hasClass('mmatchhovervsl')){
+        $(this).css({"z-index":"100"});
+        var lID = $(this).find('.mmatchhovervsl').attr('data-match');
         $('#'+lID).addClass('d-none');
       }
 
@@ -69,7 +78,7 @@ jQuery(document).ready(function() {
         { data: "vessel_name" },
         { data: "location_city" },
         { data: "onestop" },
-        // { data: "status" },
+         { data: "shipping_line" },
             
         { data: "action" },
       ],
