@@ -890,6 +890,49 @@ class Document extends Core\Controller {
         ]);
     }
 
+    public function download($user_id = "", $document_id){ 
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user_id);
+
+        if(empty($role->role_name)) {
+            Utility\Redirect::to(APP_URL . $role->role_name);
+        }
+
+        // get client admin email when role id not 2
+        $subacc_info = "";
+        if($role->role_id > 2) {
+            $subacc_info = $User->getSubAccountInfo($user_id);
+        }
+
+        $this->View->renderWithoutHeaderAndFooter("/document/download", [
+            "subacc_info" => $subacc_info,
+            "email" => $User->data()->email,
+            "document_id" => $document_id,
+        ]);
+    }
+
     public function putDocumentComment() {
         echo json_encode($this->Document->putDocumentComment($_POST));
     }
