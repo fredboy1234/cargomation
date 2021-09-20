@@ -475,22 +475,22 @@ class Vessel extends Core\Controller {
                         
 
                         if(strtotime($lastDate) != strtotime($ves->eta)){
-                            $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none"> Searates:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
+                            $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none"> S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
                             $tcolor = 'text-danger';
                         }
 
                         if(strtotime($firstDate) != strtotime($ves->etd)){
                             $firsthour = date_format($firstdatrack,'h:i:s A');
-                            $mismatchETD = '<strong>ETD</strong><br> Searates:'.$firstmonth.'-'.$firsthour .'<br> Cargomation:'.$firstmonthCW.'-'.$firsthour;
+                            $mismatchETD = '<strong>ETD</strong><br> S.Line:'.$firstmonth.'-'.$firsthour .'<br> Cargomation:'.$firstmonthCW.'-'.$firsthour;
                             $tcolorETD = 'text-danger';
                         }
 
                         if($ves->Vessel !== $firstvessel){
                             $tcolorvsl = 'text-danger';
-                            $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">1stop:'.$ves->Vessel.'<br>Searates:'.$firstvessel.'<br></span>';
+                            $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">1stop:'.$ves->Vessel.'<br>S.Line:'.$firstvessel.'<br></span>';
                         }
                         
-                        $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>Searates:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
+                        $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
                         
                         if($enddate < $today){
                             $colorscheme = 'done';
