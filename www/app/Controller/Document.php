@@ -890,7 +890,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function download($user_id = "", $document_id){ 
+    public function download($document_id, $user_id = ""){ 
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
