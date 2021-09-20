@@ -585,6 +585,7 @@ $(document).ready(function () {
             type: 'GET',
             beforeSend: function() {
                 $("#myModal .modal-body").append(loader);
+                window.location =  "document/download/" + doc_id;
             },
             success: function() {
                 $('#loader-wrapper').remove();
