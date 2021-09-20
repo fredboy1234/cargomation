@@ -14,6 +14,13 @@ if(!empty($this->subacc_info)) {
 // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
 $file = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;
 
+// Checks if file is pdf
+$ext = pathinfo($file, PATHINFO_EXTENSION);
+if($ext != "pdf") {
+    echo 'File is not in a "PDF" format.';
+    die();
+}
+
 try {
     $fp = fopen($file, "r") ;
 
