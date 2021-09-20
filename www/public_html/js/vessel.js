@@ -249,7 +249,7 @@ jQuery(document).ready(function() {
                           tbletd += `<td>${(coh!=null ? coh  : 'no data')}</td>`;  
                         }
                         
-                      });
+                      }); 
 
                       htmlOnestop +=`<tr class="col"> <td>${ekey}</td>
                         ${tbletd}
