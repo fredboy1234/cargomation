@@ -49,8 +49,8 @@ $(document).ready(function () {
             'zip': '<i class="fas fa-file-archive text-muted"></i>',
         },
         showPreview: true,
-        initialPreviewDownloadUrl: false,
-        actionDownload: false,
+        initialPreviewDownloadUrl: true,
+        actionDownload: true,
         enableResumableUpload: false,
         resumableUploadOptions: {
             // uncomment below if you wish to test the file for previous partial uploaded chunks
@@ -69,7 +69,7 @@ $(document).ready(function () {
         showPreview: true,
         showUpload: true, // hide upload button
         showRemove: false, // hide remove button
-        showDownload: false,
+        showDownload: true,
         overwriteInitial: false, // append files to initial preview
         minFileCount: 1,
         maxFileCount: 5,
@@ -197,7 +197,7 @@ $(document).ready(function () {
         //     actionZoom: '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>',
         //     actionDrag: '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'
         // },
-        otherActionButtons: btn_upload + btn_edit + btn_comment + btn_status,
+        otherActionButtons: btn_download + btn_upload + btn_edit + btn_comment + btn_status,
     }).on("filebatchselected", function (event, files) {
         var out = '';
         $.each(files, function (key, file) {
@@ -570,6 +570,19 @@ $(document).ready(function () {
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
         var url = "document/request/" + shipment_id + "/" + doc_id;
+
+        // load the url and show modal on success
+        preloader(url);
+    });
+
+    // Button Edit
+    $('button.kv-file-download').click(function (ev) {
+        var doc_id = $(this).data("doc_id");
+        //$('#document-upload, #document-comment').toggle();
+        ev.preventDefault();
+        // var target = $(this).attr("href");
+        // var target = "document/comment/" + doc_id + "/" + doc_status;
+        var url = "document/download/" + doc_id;
 
         // load the url and show modal on success
         preloader(url);

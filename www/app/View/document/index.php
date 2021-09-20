@@ -202,6 +202,12 @@ if(!empty($this->document)) {
                     '<i class="fas fa-upload"></i>' +
                     '</button>\n';
         <?php endif; ?>
+            btn_download = '<button type="button" ' +
+                        'class="kv-file-download btn btn-sm btn-kv btn-default btn-outline-secondary {downloadClass}" ' +
+                        'title="{caption}" ' + 
+                        'data-doc_id="{id}" data-url="{downloadUrl}" data-caption="{caption}"> ' +
+                        '<i class="fas fa-download"></i>' + 
+                        '</button>\n';
             btn_edit = '<button type="button" ' +
                         'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
                         'title="Request for Edit"{dataUrl}{dataKey} ' +
