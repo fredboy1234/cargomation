@@ -578,14 +578,18 @@ $(document).ready(function () {
     // Button Edit
     $('button.kv-file-download').click(function (ev) {
         var doc_id = $(this).data("doc_id");
-        //$('#document-upload, #document-comment').toggle();
         ev.preventDefault();
-        // var target = $(this).attr("href");
-        // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/download/" + doc_id;
-
         // load the url and show modal on success
-        preloader(url);
+        $.ajax({
+            url: "document/download/" + doc_id,
+            type: 'GET',
+            beforeSend: function() {
+                $("#myModal .modal-body").append(loader);
+            },
+            success: function() {
+                $('#loader-wrapper').remove();
+            }
+        });
     });
 
     // Validate Form
