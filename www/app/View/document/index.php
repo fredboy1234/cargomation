@@ -193,40 +193,41 @@ if(!empty($this->document)) {
     var btn_status = "";
     var btn_edit = "";
     var btn_comment = "";
-    <?php if ($this->role->role_id != 4): ?>
-        <?php if (isset($document_settings->doctracker->push_document)): ?>
-        btn_upload = '<button type="button" ' +
-                    'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-                    'title="Push to CargoWise"{dataUrl}{dataKey} ' +
-                    'data-doc_id="{id}" data-doc_status="{status}">' +
-                    '<i class="fas fa-upload"></i>' +
-                    '</button>\n';
-        <?php endif; ?>
-            btn_download = '<button type="button" ' +
-                        'class="kv-file-download btn btn-sm btn-kv btn-default btn-outline-secondary {downloadClass}" ' +
-                        'title="{caption}" ' + 
-                        'data-doc_id="{id}" data-url="{downloadUrl}" data-caption="{caption}"> ' +
-                        '<i class="fas fa-download"></i>' + 
-                        '</button>\n';
-            btn_edit = '<button type="button" ' +
-                        'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-                        'title="Request for Edit"{dataUrl}{dataKey} ' +
-                        'data-doc_id="{id}" data-doc_status="{status}">' +
-                        '<i class="fas fa-edit"></i>' +
-                        '</button>\n';
-            btn_comment = '<button type="button" ' +
-                        'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-                        'title="View Comment"{dataUrl}{dataKey} ' +
-                        'data-doc_id="{id}" data-doc_status="{status}">' +
-                        '<i class="fas fa-comment"></i>' +
-                        '</button>\n';
-            btn_status = '<button type="button" ' +
-                        'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-                        'title="Change Status"{dataUrl}{dataKey} ' +
-                        'data-doc_id="{id}" data-doc_status="{status}">' +
-                        '<i class="fas {icon} {status}"></i>' +
-                        '</button>\n';
+    var btn_delete = "";
+<?php if ($this->role->role_id != 4): ?>
+    <?php if (isset($document_settings->doctracker->push_document)): ?>
+    btn_upload = '<button type="button" ' +
+                'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                'title="Push to CargoWise"{dataUrl}{dataKey} ' +
+                'data-doc_id="{id}" data-doc_status="{status}">' +
+                '<i class="fas fa-upload"></i>' +
+                '</button>\n';
     <?php endif; ?>
-    var btn_delete = <?= (isset($document_settings->doctracker->delete_document)) ? 'true' : 'false'; ?>;
+    btn_edit = '<button type="button" ' +
+                'class="kv-file-edit btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                'title="Request for Edit"{dataUrl}{dataKey} ' +
+                'data-doc_id="{id}" data-doc_status="{status}">' +
+                '<i class="fas fa-edit"></i>' +
+                '</button>\n';
+    btn_comment = '<button type="button" ' +
+                'class="kv-file-comment btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                'title="View Comment"{dataUrl}{dataKey} ' +
+                'data-doc_id="{id}" data-doc_status="{status}">' +
+                '<i class="fas fa-comment"></i>' +
+                '</button>\n';
+    btn_status = '<button type="button" ' +
+                'class="kv-file-status btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
+                'title="Change Status"{dataUrl}{dataKey} ' +
+                'data-doc_id="{id}" data-doc_status="{status}">' +
+                '<i class="fas {icon} {status}"></i>' +
+                '</button>\n';
+<?php endif; ?>
+    btn_download = '<button type="button" ' +
+                'class="kv-file-download btn btn-sm btn-kv btn-default btn-outline-secondary {downloadClass}" ' +
+                'title="{caption}" ' + 
+                'data-doc_id="{id}" data-url="{downloadUrl}" data-caption="{caption}"> ' +
+                '<i class="fas fa-download"></i>' + 
+                '</button>\n';
+    btn_delete = <?= (isset($document_settings->doctracker->delete_document)) ? 'true' : 'false'; ?>;
 </script>
 <?= $this->getJS(); ?>
