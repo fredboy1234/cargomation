@@ -511,7 +511,7 @@ class Vessel extends Core\Controller {
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
-                            $subdata['voyage'] = $lastvoyage;
+                            $subdata['voyage'] = (!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num);
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
@@ -577,7 +577,7 @@ class Vessel extends Core\Controller {
                         $subdata['shipment_num'] = $ves->shipment_num;
                         //$subdata['housebill'] = $ves->house_bill;
                         $subdata['masterbill'] = $ves->master_bill;
-                        $subdata['voyage'] = $firstvoyage;
+                        $subdata['voyage'] = (!empty($firstvoyage) ? $firstvoyage : $ves->voyage_flight_num);
 
                         $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                         $subdata['vessel_name'] = $lastvessel;
