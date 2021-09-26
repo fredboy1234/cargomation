@@ -21,21 +21,29 @@ jQuery(document).ready(function() {
         $(this).css({"z-index":"100"});
         var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
         $('#'+xlID).removeClass('d-none');
+      }else if($(e.target).hasClass('mmatchVo')){
+        $(this).css({"z-index":"100"});
+        var xlID = $(this).find('.mmatchVo').attr('data-match');
+        $('#'+xlID).removeClass('d-none');
       }
     }).on('mouseleave','tr',function(e){
       var lID = $(this).find('.mmatchhover').attr('data-match');
       $('#'+lID).addClass('d-none');
       var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
       $('#'+xlID).addClass('d-none');
+      var vlID = $(this).find('.mmatchVo').attr('data-match');
+        $('#'+vlID).addClass('d-none');
 
       if($(e.target).hasClass('mmatchhover')){
         var lID = $(this).find('.mmatchhover').attr('data-match');
         $('#'+lID).addClass('d-none');
-
       }else if($(e.target).hasClass('mmatchhovervsl')){
-    
         var xlID = $(this).find('.mmatchhovervsl').attr('data-match');
         $('#'+xlID).addClass('d-none');
+      }else if($(e.target).hasClass('mmatchVo')){
+        //$(this).css({"z-index":"100"});
+        var vlID = $(this).find('.mmatchVo').attr('data-match');
+        $('#'+vlID).addClass('d-none');
       }
 
     });

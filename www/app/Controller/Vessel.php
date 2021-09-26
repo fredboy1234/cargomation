@@ -424,9 +424,9 @@ class Vessel extends Core\Controller {
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $mismatchETA = '';
-                $mismatchETD =  $mismatchVsl='';
-                $tcolor = $tcolorETD =  $tcolorvsl= '';
-
+                $mismatchETD = $mismatchVo =  $mismatchVsl='';
+                $tcolor = $tcolorETD = $vtcolor = $tcolorvsl= '';
+                
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
                 $sealine  ='Not Specified';
@@ -455,9 +455,14 @@ class Vessel extends Core\Controller {
                         $lastvessel = isset($vdata->vessels[0]) ? end($vdata->vessels)->name : 'No Vessel Name';
                         $firstDate = isset($vdata->container->events[0]) ? $vdata->container->events[0]->date : '';
                         $lastDate = isset($vdata->container->events[0]) ? end($vdata->container->events)->date : '';
-                        $firstvoyage = isset($vdata->container->events[0]) ? $vdata->container->events[0]->voyage : 'No Vessel Name';
-                        $lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Vessel Name';
+                        $firstvoyage = isset($vdata->container->events[0]) ? $vdata->container->events[0]->voyage : 'No Voyage Name';
+                        $lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Voyage Name';
 
+                        if($ves->port_discharge !== $endLocation){
+                            $lastDate = $ves->eta;
+                            $firstDate  = $ves->etd;
+                        }
+                       
                         $firstdatrack = date_create($firstDate);
                         $firstday = date_format($firstdatrack,"l");
                         $firstmonth = date_format($firstdatrack,"M j,Y");
@@ -473,7 +478,9 @@ class Vessel extends Core\Controller {
                         $colorscheme = 'not-done';
                         $statscheme = ' delays ';
                         
-
+                        if($ves->port_discharge != $endLocation){
+                            $lastDate = $ves->eta;
+                        }
                         if(strtotime($lastDate) != strtotime($ves->eta)){
                             $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none"> S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
                             $tcolor = 'text-danger';
@@ -485,9 +492,14 @@ class Vessel extends Core\Controller {
                             $tcolorETD = 'text-danger';
                         }
 
-                        if($ves->Vessel !== $firstvessel){
+                        if($ves->vessel_name !== $firstvessel){
                             $tcolorvsl = 'text-danger';
-                            $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">1stop:'.$ves->Vessel.'<br>S.Line:'.$firstvessel.'<br></span>';
+                            $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">Cargowise:'.$ves->vessel_name.'<br>S.Line:'.$firstvessel.'<br></span>';
+                        }
+
+                        if($ves->Voyage != $ves->voyage_flight_num){
+                            $vtcolor = 'text-danger'; 
+                            $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$ves->voyage_flight_num.'<br></span>';;
                         }
                         
                         $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
@@ -511,7 +523,7 @@ class Vessel extends Core\Controller {
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
-                            $subdata['voyage'] = (!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num);
+                            $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
@@ -572,12 +584,18 @@ class Vessel extends Core\Controller {
                         $statscheme = ' departure ';
                     }
 
+                    
+                    if($ves->Voyage != $ves->voyage_flight_num){
+                        $vtcolor = 'text-danger'; 
+                        $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$ves->voyage_flight_num.'<br></span>';;
+                    }
+
                     if($containernumber !== 'No Container Number'){
                         $subdata['container_number'] = '<p id="'.$ves->id.'" data-header="contnum" class="'.$colorscheme.'">'.$containernumber.' <span class="d-none">'.$statscheme.'</span></p>';
                         $subdata['shipment_num'] = $ves->shipment_num;
                         //$subdata['housebill'] = $ves->house_bill;
                         $subdata['masterbill'] = $ves->master_bill;
-                        $subdata['voyage'] = (!empty($firstvoyage) ? $firstvoyage : $ves->voyage_flight_num);
+                        $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                         $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                         $subdata['vessel_name'] = $lastvessel;

@@ -2,7 +2,8 @@
 <style>
 
  .mismatch,
- .mismatchvsl{
+ .mismatchvsl,
+ .mismatchVo{
   position: absolute;
     border: 1px solid #3333;
     padding: 0.4rem;
