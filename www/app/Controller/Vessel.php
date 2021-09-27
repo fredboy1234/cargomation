@@ -425,7 +425,7 @@ class Vessel extends Core\Controller {
             foreach($vessel as $key=>$ves){
                 $mismatchETA = '';
                 $mismatchETD = $mismatchVo =  $mismatchVsl='';
-                $tcolor = $tcolorETD = $vtcolor = $tcolorvsl= '';
+                $tcolor = $tcolorETD = $vtcolor = $tcolorLocE = $tcolorLocD = $tcolorvsl= '';
                 
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
@@ -457,10 +457,14 @@ class Vessel extends Core\Controller {
                         $lastDate = isset($vdata->container->events[0]) ? end($vdata->container->events)->date : '';
                         $firstvoyage = isset($vdata->container->events[0]) ? $vdata->container->events[0]->voyage : 'No Voyage Name';
                         $lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Voyage Name';
-
+                        
                         if($ves->port_discharge !== $endLocation){
                             $lastDate = $ves->eta;
                             $firstDate  = $ves->etd;
+                            $tcolorLocD = 'text-danger';
+                        }
+                        if($ves->port_loading !== $firstLocation){
+                            $tcolorLocE = 'text-danger';
                         }
                        
                         $firstdatrack = date_create($firstDate);
@@ -529,7 +533,7 @@ class Vessel extends Core\Controller {
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
                             $subdata['vessel_name'] ='<span data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstvessel.'</span>'.$mismatchVsl;
                             
-                            $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
+                            $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Destination: '.$endLocation.'</span>';
                             
                             $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">View</span>';
                             
@@ -571,6 +575,15 @@ class Vessel extends Core\Controller {
                     $colorscheme = 'not-done';
                     $statscheme = ' delays ';
 
+                    if($ves->port_discharge !== $endLocation){
+                        //$lastDate = $ves->eta;
+                        //$firstDate  = $ves->etd;
+                        $tcolorLocD = 'text-danger';
+                    }
+                    if($ves->port_loading !== $firstLocation){
+                        $tcolorLocE = 'text-danger';
+                    }
+
                     if($enddate < $today){
                         $colorscheme = 'done';
                         $statscheme = ' confirmedvessels ';
@@ -600,7 +613,7 @@ class Vessel extends Core\Controller {
                         $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                         $subdata['vessel_name'] = $lastvessel;
                         
-                        $subdata['location_city'] = 'Origin: '.$firstLocation.'<br> Destination: '.$endLocation;
+                        $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br> <span class="'.$tcolorLocE.'"> Destination: '.$endLocation.'</span>';
                         
                         $subdata['onestop'] = '<span id="'.$containernumber.'">View</span>';
                         $subdata['shipping_line']  = $sealine;
