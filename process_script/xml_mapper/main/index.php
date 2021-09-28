@@ -578,29 +578,39 @@ try{
 				
 				
 				
-				if ($XPATH_TRANSMODE == "" || $XPATH_SHIP_ETD == "" || $XPATH_SHIP_ETA == "") {
-					$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection."[0].TransportMode");
+				if ($XPATH_TRANSMODE == "" || $XPATH_SHIP_ETD == "" || $XPATH_SHIP_ETA == "") {        
+              
+                for ($k = 0; $k <= 5; $k++) {
+               	$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].LegOrder");
+				$TRANSMODE_LEG = $parser->encode($XPATH_TRANSMODE);
+				if ($TRANSMODE_LEG != 'false') {
+                    $XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].TransportMode");
 					$TRANSMODE = $parser->encode($XPATH_TRANSMODE);
 					$TRANSMODE = node_exist(getArrayName($TRANSMODE));
-					$XPATH_SHIP_ETD = jsonPath($universal_shipment, $path_TransportLegCollection."[0].EstimatedDeparture");
+					//GET ETD
+					$XPATH_SHIP_ETD = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].EstimatedDeparture");
 					$TRANS_ETD = $parser->encode($XPATH_SHIP_ETD);
 					$TRANS_ETD = node_exist(getArrayName($TRANS_ETD));
-					$XPATH_SHIP_ETA = jsonPath($universal_shipment, $path_TransportLegCollection."[0].EstimatedArrival");
-					$TRANS_ETA = $parser->encode($XPATH_SHIP_ETA);
-					$TRANS_ETA = node_exist(getArrayName($TRANS_ETA));
 					//GET ETA
-					$XPATH_SHIP_ETA = jsonPath($universal_shipment, $path_TransportLegCollection."[0].EstimatedArrival");
+					$XPATH_SHIP_ETA = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].EstimatedArrival");
 					$TRANS_ETA = $parser->encode($XPATH_SHIP_ETA);
 					$TRANS_ETA = node_exist(getArrayName($TRANS_ETA));
 
 					//GET ACTUAL ARRIVAL
-					$XPATH_ACTUAL_ARRIVAL = jsonPath($universal_shipment, $path_TransportLegCollection."[0].ActualArrival");
+					$XPATH_ACTUAL_ARRIVAL = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].ActualArrival");
 					$ACTUAL_ARRIVAL = $parser->encode($XPATH_ACTUAL_ARRIVAL);
 					$ACTUAL_ARRIVAL = node_exist(getArrayName($ACTUAL_ARRIVAL));
 
-					$XPATH_VESSELLOYDSIMO = jsonPath($universal_shipment, $path_TransportLegCollection."[0].VesselLloydsIMO");
+					$XPATH_VESSELLOYDSIMO = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].VesselLloydsIMO");
 					$VESSELLOYDSIMO = $parser->encode($XPATH_VESSELLOYDSIMO);
 					$VESSELLOYDSIMO = node_exist(getArrayName($VESSELLOYDSIMO));
+                    
+				 }
+				 else
+				 {
+				 	break;
+				 		}
+                 	}	
 				}
                 //GET VESSEL NAME
 				$XPATH_VESSELNAME = jsonPath($universal_shipment, $path_UniversalShipment.".VesselName");
@@ -644,7 +654,7 @@ try{
 				$OrganizationAddress = jsonPath(
 					$universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr = $OrganizationAddress;
-				if ($OrganizationAddress_ctr != false) {
+				if ($OrganizationAddress_ctr != 'false') {
 					$OrganizationAddress = jsonPath($universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 					$OrganizationAddress_ctr = count($OrganizationAddress[0]);
 				} else {
@@ -652,7 +662,7 @@ try{
 				}
 				$OrganizationAddress1 = jsonPath($universal_shipment, $path_AddressUniversalShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr1 = $OrganizationAddress1;
-				if ($OrganizationAddress_ctr1 != false) {
+				if ($OrganizationAddress_ctr1 != 'false') {
 					$OrganizationAddress1 = jsonPath($universal_shipment, $path_AddressUniversalShipment.".OrganizationAddress");
 					$OrganizationAddress_ctr1 = count($OrganizationAddress1[0]);
 				} else {
