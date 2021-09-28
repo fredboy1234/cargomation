@@ -654,7 +654,7 @@ try{
 				$OrganizationAddress = jsonPath(
 					$universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr = $OrganizationAddress;
-				if ($OrganizationAddress_ctr != 'false') {
+				if ($OrganizationAddress_ctr != false) {
 					$OrganizationAddress = jsonPath($universal_shipment, $path_SubUniversalSubShipment.".OrganizationAddress");
 					$OrganizationAddress_ctr = count($OrganizationAddress[0]);
 				} else {
@@ -662,7 +662,7 @@ try{
 				}
 				$OrganizationAddress1 = jsonPath($universal_shipment, $path_AddressUniversalShipment.".OrganizationAddress");
 				$OrganizationAddress_ctr1 = $OrganizationAddress1;
-				if ($OrganizationAddress_ctr1 != 'false') {
+				if ($OrganizationAddress_ctr1 != false) {
 					$OrganizationAddress1 = jsonPath($universal_shipment, $path_AddressUniversalShipment.".OrganizationAddress");
 					$OrganizationAddress_ctr1 = count($OrganizationAddress1[0]);
 				} else {
