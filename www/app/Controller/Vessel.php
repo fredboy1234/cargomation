@@ -444,9 +444,10 @@ class Vessel extends Core\Controller {
                 $firsthourCW = date_format($firstdatrackCW,'h:i:s A');
                 if(isset($j_ves->status) && $j_ves->status == 'success'){
                     
-                    if(isset($j_ves->data->sealine)){
-                        $sealine = $j_ves->data->sealine;
+                    if(isset($ves->sealine)){
+                        $sealine = $ves->sealine;
                     }
+                    
                     if(isset($j_ves->data) && !empty($j_ves->data)){
                         $vdata = $j_ves->data;
                         $vstatus = '';
@@ -544,7 +545,7 @@ class Vessel extends Core\Controller {
                             $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
-                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' '.$macthover.'">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
+                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
                             $subdata['vessel_name'] ='<span data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstvessel.'</span>'.$mismatchVsl;
                             
                             $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Destination: '.$endLocation.'</span>';
