@@ -127,4 +127,9 @@ class Contact extends Core\Controller {
 
     }
 
+    public function delete($contact_id = "") {
+        $Contact = new Model\Contact;
+        $Contact->deleteContactInfo($contact_id);
+    }
+
 }
