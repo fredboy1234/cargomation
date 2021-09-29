@@ -486,13 +486,15 @@
                                             <input type="text" name="contact" class="form-control" id="inputName" placeholder="Contact" value="<?=$this->user_info->phone?>">
                                             </div>
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="form-group">
                                             <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                             <div class="col-sm-10">
-                                            <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?=$this->user_info->email?>">
+                                            <input disabled="disabled" type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?=$this->user_info->email?>">
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <?php if(false): ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
