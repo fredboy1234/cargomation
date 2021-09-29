@@ -56,6 +56,20 @@ $(document).ready(function () {
         });
     });
 
+    $("button.action").click(function(event) {
+        var url = "contact/" + this.dataset.action + "/" + this.dataset.id;
+        switch (this.dataset.action) {
+            case "edit":
+                preloader(url);
+                break;
+            case "delete":
+                break;
+            default:
+                break;
+        }
+
+    })
+
     // $("#upload-image").fileinput({
     //     //showPreview: false,
     //     previewFileType: "image",
@@ -78,6 +92,32 @@ $(document).ready(function () {
     //     console.log("olok")
     // });
 });
+
+// Show loader
+function preloader(url) {
+
+    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+            '<div class="spinner-border" role="status">' +
+            '<span class="sr-only">Loading...</span>' +
+            '</div>' +
+            '</div>';
+
+    $("body").append(loader);
+
+    // load the url and show modal on success
+    $("#myModal .modal-body").load(url,
+        function (response, status, xhr) {
+            if (xhr.status == 200) {
+                $('#loader-wrapper').remove();
+                $("#myModal").modal("show");
+            } else {
+                alert("Error: " + xhr.status + ": " + xhr.statusText);
+                $('#loader-wrapper').remove();
+            }
+        });
+
+    //$('button#request').toggle();
+}
 
 function hashPop() {
     var hash = window.location.hash;
