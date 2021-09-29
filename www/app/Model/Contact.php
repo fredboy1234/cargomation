@@ -32,4 +32,10 @@ class Contact extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function deleteContactInfo($contact_id) {
+        $Db = Utility\Database::getInstance();
+        $query = "UPDATE user_contact SET status = 3 WHERE id = {$contact_id}";
+        return $Db->query($query)->results();
+    }
+
 }
