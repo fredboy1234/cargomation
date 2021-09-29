@@ -410,7 +410,7 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB($user);
         
-        //  echo "<pre>";
+        //echo "<pre>";
         // print_r($vessel);
         // exit();
 
@@ -423,6 +423,7 @@ class Vessel extends Core\Controller {
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
+               // print_r($ves);
                 $mismatchETA = '';
                 $mismatchETD = $mismatchVo =  $mismatchVsl='';
                 $tcolor = $tcolorETD = $vtcolor = $tcolorLocE = $tcolorLocD = $tcolorvsl= '';
@@ -430,6 +431,7 @@ class Vessel extends Core\Controller {
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
                 $sealine  ='Not Specified';
+                $macthover='';
                 
                 $lastdatrackCW = date_create($ves->eta);
                 $lastdayCW = date_format($lastdatrackCW,"l");
@@ -453,15 +455,22 @@ class Vessel extends Core\Controller {
                         $endLocation =  isset($vdata->locations[0]) ? end($vdata->locations)->name : 'No Location';
                         $firstvessel = isset($vdata->vessels[0]) ? $vdata->vessels[0]->name : 'No Vessel Name';
                         $lastvessel = isset($vdata->vessels[0]) ? end($vdata->vessels)->name : 'No Vessel Name';
-                        $firstDate = isset($vdata->container->events[0]) ? $vdata->container->events[0]->date : '';
-                        $lastDate = isset($vdata->container->events[0]) ? end($vdata->container->events)->date : '';
+                        $firstDate = isset($vdata->route->pol->date) ? $vdata->route->pol->date : '';
+                        $lastDate = isset($vdata->route->pod->date) ? $vdata->route->pod->date : '';
                         $firstvoyage = isset($vdata->container->events[0]) ? $vdata->container->events[0]->voyage : 'No Voyage Name';
                         $lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Voyage Name';
                         
-                        if($ves->port_discharge !== $endLocation){
+                        if(strtotime($ves->eta) < strtotime(date("Y-m-d"))){
                             $lastDate = $ves->eta;
-                            $firstDate  = $ves->etd;
+                            $firstDate = $ves->etd;   
+                        }
+                        //print_r($lastDate );
+                        //echo"<br>";
+                        if($ves->port_discharge !== $endLocation){
+                            // $lastDate = $ves->eta;
+                            // $firstDate  = $ves->etd;
                             $tcolorLocD = 'text-danger';
+                            
                         }
                         if($ves->port_loading !== $firstLocation){
                             $tcolorLocE = 'text-danger';
@@ -483,14 +492,19 @@ class Vessel extends Core\Controller {
                         $statscheme = ' delays ';
                         
                         if($ves->port_discharge != $endLocation){
-                            $lastDate = $ves->eta;
+                            //$lastDate = $ves->eta;
                         }
-                        if(strtotime($lastDate) != strtotime($ves->eta)){
+
+                        // echo 'searates '.$lastDate.' cargomation '. $ves->eta. ' '.$containernumber;
+                        // echo "<br>";
+                        if(strtotime($lastDate) !== strtotime($ves->eta)){
+                            $macthover ='mmatchhover';
                             $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none"> S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
                             $tcolor = 'text-danger';
                         }
 
-                        if(strtotime($firstDate) != strtotime($ves->etd)){
+                        if(strtotime($firstDate) !== strtotime($ves->etd)){
+                            $macthover ='mmatchhover';
                             $firsthour = date_format($firstdatrack,'h:i:s A');
                             $mismatchETD = '<strong>ETD</strong><br> S.Line:'.$firstmonth.'-'.$firsthour .'<br> Cargomation:'.$firstmonthCW.'-'.$firsthour;
                             $tcolorETD = 'text-danger';
@@ -530,7 +544,7 @@ class Vessel extends Core\Controller {
                             $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
-                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
+                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' '.$macthover.'">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
                             $subdata['vessel_name'] ='<span data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstvessel.'</span>'.$mismatchVsl;
                             
                             $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Destination: '.$endLocation.'</span>';
@@ -559,7 +573,10 @@ class Vessel extends Core\Controller {
                     $lastDate = isset($j_ves->eta) ? $j_ves->eta : '';
                     $firstvoyage = isset($j_ves->voyage_flight_num) ? $j_ves->voyage_flight_num : 'No Vessel Name';
                     //$lastvoyage = isset($vdata->container->events[0]) ? end($vdata->container->events)->voyage : 'No Vessel Name';
-
+                    if(strtotime($ves->eta) < strtotime(date("Y-m-d"))){
+                        $lastDate = $ves->eta;
+                        $firstDate = $ves->etd;
+                    }
                     $firstdatrack = date_create($firstDate);
                     $firstday = date_format($firstdatrack,"l");
                     $firstmonth = date_format($firstdatrack,"M j,Y");
@@ -574,7 +591,7 @@ class Vessel extends Core\Controller {
                     $enddate = strtotime($lastDate);
                     $colorscheme = 'not-done';
                     $statscheme = ' delays ';
-
+                    
                     if($ves->port_discharge !== $endLocation){
                         //$lastDate = $ves->eta;
                         //$firstDate  = $ves->etd;
@@ -641,7 +658,7 @@ class Vessel extends Core\Controller {
            
             
         }
-       
+        // exit();
         echo json_encode($json_data);
     }
 
@@ -729,7 +746,7 @@ class Vessel extends Core\Controller {
         }
 
         $data['transhipment'] = $this->Vessel->getVesselV2($user);
-        //echo "<pre>";
+        // echo "<pre>";
         // print_r($data['transhipment']);
         // exit;
         if(!empty($data['transhipment'])){
@@ -741,20 +758,26 @@ class Vessel extends Core\Controller {
                 $data['json']  = '';
                 $data['track'] = '';
                 $data['user'] = $trans[0]->user_id;
-                
+                $data['sealine'] = '';
+                $data['eta'] = $trans[0]->eta;
+                $data['portdischarge'] = $trans[0]->port_discharge;
                 // if($data['track']  = file_get_contents('https://tracking.searates.com/route?type=CT&number='.$data["container_number"].'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
                 //    echo'success';
                 // } 
                 try {
-
+                   
                     $_SESSION['vessel_num'] =  $this->searatesRoute($data["container_number"]);
                     if(isset( $_SESSION['vessel_num'])){
+                        
                         if($_SESSION['vessel_num']->message ==='OK'){
                             if(!empty($_SESSION['vessel_num']->data)){
                                 $metadata = $_SESSION['vessel_num']->data;
                                 $type = $metadata->metadata->type;
                                 $sealine = $metadata->metadata->sealine;
-                                $data['track'] = @file_get_contents('https://tracking.searates.com/route?type='.$type.'&number='.$data["container_number"].'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+                                $data['sealine'] = $sealine;
+                                if($data['track'] = @file_get_contents('https://tracking.searates.com/route?type='.$type.'&number='.$data["container_number"].'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632')){
+                                    
+                                }
                             }
                         }  
                     }
@@ -765,21 +788,22 @@ class Vessel extends Core\Controller {
                         $searates = json_decode( $data['json']);
                         //print_r($searates);
                         //print_r($trans[0]);
-                        if($searates->status === "success" && $searates->message === 'OK'){
+                        if(isset($searates->status) && $searates->status === "success" && $searates->message === 'OK'){
                             $eventsData = $searates->data->locations;
-                            $eventsDate = end($searates->data->container->events)->date;
+                            $eventsDate = $searates->data->route->pod->date;
                             $lastDestination = isset($eventsData[0]) ? end($eventsData)->name :'';
                             //print_r( $lastDestination );
                             
                             if(trim($trans[0]->port_discharge) === trim($lastDestination) || strtotime($trans[0]->eta) >= strtotime($eventsDate)){
-                                $this->Vessel->checkContainer($data);
-                                echo $eventsDate;
-                                echo '<br>'.$trans[0]->eta;
+                                $this->Vessel->checkContainer($data);   
                             }else{
                                 $data['json'] = json_encode($trans[0]);
                                 $this->Vessel->checkContainer($data);
                             }
-                            echo "<br> ";
+                            
+                        }else{
+                            $data['json'] = json_encode($trans[0]);
+                            $this->Vessel->checkContainer($data);
                         }
                        
                     }
@@ -801,7 +825,12 @@ class Vessel extends Core\Controller {
     }
     public function searatesRoute($cnumber){
         //$cont = filge_get_contents('https://tracking.searates.com/route?type=CT&number=&sealine=ONEY&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-        $data = file_get_contents('http://tracking.searates.com/tracking?number='.$cnumber.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-        return json_decode($data);
+        try{
+            $data = @file_get_contents('https://tracking.searates.com/tracking?number='.$cnumber.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            return json_decode($data);
+        }catch(Exception $e) {
+            echo 'Message: ' . $e->getMessage();
+        }
+        
     }
 }
