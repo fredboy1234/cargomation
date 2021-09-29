@@ -63,6 +63,35 @@ $(document).ready(function () {
                 preloader(url);
                 break;
             case "delete":
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Are you sure you want to delete this account?',
+                    text: 'Account will be deleted and you won\'t be able to revert this!',
+                    showConfirmButton: true,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: `Delete`,
+                    denyButtonText: `Delete`,
+                }).then((result) => {
+                    /* I use isDenied, coz of the color */
+                    if (result.isConfirmed) {
+                        $.post( "contact/delete/" + this.dataset.id, function() {
+                            Swal.fire('Account deleted!', 'This page will be refreshed.', 'success');
+                        }).done(function() {
+                            location.reload();
+                            // alert( "second success" );
+                        }).fail(function() {
+                            // alert( "error" );
+                        }).always(function() {
+                            // alert( "finished" );
+                        });
+                    }
+                    if (result.isDenied) {
+                        resolve();
+                    } else if (result.isDismissed) {
+                        Swal.fire('Account deletion was aborted!', 'Account "' + this.dataset.id + '" was not deleted.', 'info');
+                    }
+                });
                 break;
             default:
                 break;
