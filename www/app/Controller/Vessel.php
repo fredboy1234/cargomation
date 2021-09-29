@@ -410,9 +410,9 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB($user);
         
-        //echo "<pre>";
-        // print_r($vessel);
-        // exit();
+     //echo "<pre>";
+        //  print_r($vessel);
+        //  exit();
 
         $data =array();
         $color = array();
@@ -423,7 +423,23 @@ class Vessel extends Core\Controller {
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
-               // print_r($ves);
+                $leg =json_decode($ves->route_leg);
+                foreach($leg as $leeg){
+                   
+                    if($leeg->LegOrder == 1){
+                        $firstVesleg = $leeg->VesselName;
+                        $firstDesleg = $leeg->Destination;
+
+                    }
+
+                    if($leeg->LegOrder == 2){
+                        $secondVesleg = $leeg->VesselName;
+                        $secondDesleg = $leeg->Destination;
+                    }
+                }
+                
+                
+                
                 $mismatchETA = '';
                 $mismatchETD = $mismatchVo =  $mismatchVsl='';
                 $tcolor = $tcolorETD = $vtcolor = $tcolorLocE = $tcolorLocD = $tcolorvsl= '';
@@ -463,7 +479,9 @@ class Vessel extends Core\Controller {
                         
                         if(strtotime($ves->eta) < strtotime(date("Y-m-d"))){
                             $lastDate = $ves->eta;
-                            $firstDate = $ves->etd;   
+                            $firstDate = $ves->etd; 
+                            $firstLocation = $firstDesleg;
+                            $endLocation = $secondDesleg;  
                         }
                         //print_r($lastDate );
                         //echo"<br>";
@@ -546,7 +564,7 @@ class Vessel extends Core\Controller {
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
-                            $subdata['vessel_name'] ='<span data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstvessel.'</span>'.$mismatchVsl;
+                            $subdata['vessel_name'] ='<span style="font-size:12px;" data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstVesleg.':'.$firstDesleg.'<br>'.$secondVesleg.': '.$secondDesleg.'</span>'.$mismatchVsl;
                             
                             $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Destination: '.$endLocation.'</span>';
                             
@@ -629,9 +647,9 @@ class Vessel extends Core\Controller {
                         $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                         $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
-                        $subdata['vessel_name'] = $lastvessel;
+                        $subdata['vessel_name'] = '<span style="font-size:12px;">'.$firstVesleg.': '.$firstDesleg.'</span><br>'.'<span style="font-size:12px;">'.$secondVesleg.': '.$secondDesleg.'</span>';
                         
-                        $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br> <span class="'.$tcolorLocE.'"> Destination: '.$endLocation.'</span>';
+                        $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br> <span class="'.$tcolorLocE.'"> Destination: '.$secondDesleg.'</span>';
                         
                         $subdata['onestop'] = '<span id="'.$containernumber.'">View</span>';
                         $subdata['shipping_line']  = $sealine;
