@@ -611,10 +611,9 @@ try{
 				$XPATH_PORTOFDISCHARGE = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfDischarge.Name");
 				$PORTOFDISCHARGE = $parser->encode($XPATH_PORTOFDISCHARGE);
 				$PORTOFDISCHARGE = node_exist(getArrayName($PORTOFDISCHARGE));
+
 				
-				
-				
-				//if ($XPATH_TRANSMODE == "" || $XPATH_SHIP_ETD == "" || $XPATH_SHIP_ETA == "") {        
+				if ($XPATH_TRANSMODE == "" || $XPATH_SHIP_ETD == "" || $XPATH_SHIP_ETA == "") {        
               	
                 for ($k = 0; $k <= 5; $k++) {
                	$XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].LegOrder");
@@ -657,12 +656,12 @@ try{
 					//GET DISCHARGE CODE
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
-					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE)); 
+					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
 
 					//GET BOOKING CODE
-					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".[$k].BookingStatus.Code");
+					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
-					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS)); 
+					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
 					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
 					
@@ -675,7 +674,8 @@ try{
                  	}	
 				}
 				else{
-					 $XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection.".TransportMode");
+					//GET TRANS MODE
+                    $XPATH_TRANSMODE = jsonPath($universal_shipment, $path_TransportLegCollection.".TransportMode");
 					$TRANSMODE = $parser->encode($XPATH_TRANSMODE);
 					$TRANSMODE = node_exist(getArrayName($TRANSMODE));
 					//GET ETD
@@ -698,7 +698,7 @@ try{
 					$VESSELLOYDSIMO = node_exist(getArrayName($VESSELLOYDSIMO));
 
 					//GET VESSEL LEG TYPE
-					$XPATH_TRANSLEGTYPE = jsonPath($universal_shipment, $path_TransportLegCollection."].LegType");
+					$XPATH_TRANSLEGTYPE = jsonPath($universal_shipment, $path_TransportLegCollection.".LegType");
 					$XPATH_TRANSLEGTYPE = $parser->encode($XPATH_TRANSLEGTYPE);
 					$LEG_TYPE = node_exist(getArrayName($XPATH_TRANSLEGTYPE));
 
@@ -710,14 +710,14 @@ try{
 					//GET DISCHARGE CODE
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
-					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE)); 
+					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
 
 					//GET BOOKING CODE
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
-					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS)); 
+					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
 				}
 			
 				$routing = json_encode($items);
@@ -1165,7 +1165,7 @@ try{
 
 				
 						$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_SUCCESS/";						
-						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
@@ -1495,7 +1495,7 @@ try{
 							}
 						}
 						 
-						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
