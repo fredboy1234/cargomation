@@ -420,10 +420,11 @@ class Vessel extends Core\Controller {
         $count = 0;
         $confirmed = 0;
         $doublechecker = array();
-        $firstDesleg=$firstVesleg=$secondDesleg=$secondVesleg=$thirdDesleg=$thirdVesleg="";
+        
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
+                $firstDesleg=$firstVesleg=$secondDesleg=$secondVesleg=$thirdDesleg=$thirdVesleg="";
                 $leg =json_decode($ves->route_leg);
                 //print_r($leg);
                 foreach($leg as $leeg){
