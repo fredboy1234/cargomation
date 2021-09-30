@@ -32,6 +32,25 @@ class Contact extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function updateContactInfo($contact_id, $post_data, $join_clause = "") {
+        $params = array(); $items = null;
+        #$allowed = array("first_name","last_name","email","phone"); 
+        // Sanitize array and implode
+        if(is_array($post_data)) {
+            foreach($post_data as $key => $value) {
+                #if (in_array($key , $allowed)) {
+                    if ($items) $items .= ', ';
+                    $items .= "$key='{$value}'";
+                    $params[$key] = $value;
+                #}
+            }
+        }
+        if (!$items) die("Nothing to update");
+        $Db = Utility\Database::getInstance();
+        $query = "UPDATE user_info SET {$items} WHERE user_id = {$post_data['user_id']}";
+        return $Db->query($query)->error();
+    }
+
     public function deleteContactInfo($contact_id) {
         $Db = Utility\Database::getInstance();
         $query = "UPDATE user_contact SET status = 3 WHERE id = {$contact_id}";
