@@ -717,7 +717,7 @@ try{
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
 				}
 			
 				$routing = json_encode($items);
