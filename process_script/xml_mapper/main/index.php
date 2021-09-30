@@ -657,7 +657,7 @@ try{
 					//GET DISCHARGE CODE
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
-					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
+					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE)); 
 
 					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE);
 					
