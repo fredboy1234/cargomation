@@ -12,6 +12,9 @@
     z-index: 9999 !important;
     
  }
+ #DataTables_Table_0 > tbody > tr > td:nth-child(4){
+   width: 10%!important;
+ }
  .mismatch{
     display: block;
     top: -20px;

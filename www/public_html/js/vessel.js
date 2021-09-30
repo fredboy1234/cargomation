@@ -454,6 +454,7 @@ jQuery(document).ready(function() {
           }
         },50); 
       });
+
 });  
 
 // $(document).on({
