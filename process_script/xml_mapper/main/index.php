@@ -660,7 +660,7 @@ try{
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE)); 
 
 					//GET BOOKING CODE
-					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".[$K]BookingStatus.Code");
+					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".[$k].BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS)); 
 
