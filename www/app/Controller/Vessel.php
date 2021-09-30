@@ -420,12 +420,14 @@ class Vessel extends Core\Controller {
         $count = 0;
         $confirmed = 0;
         $doublechecker = array();
+        $firstDesleg=$firstVesleg=$secondDesleg=$secondVesleg=$thirdDesleg=$thirdVesleg="";
         //$json_data = array();
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $leg =json_decode($ves->route_leg);
+                //print_r($leg);
                 foreach($leg as $leeg){
-                   
+        
                     if($leeg->LegOrder == 1){
                         $firstVesleg = $leeg->VesselName;
                         $firstDesleg = $leeg->Destination;
@@ -435,6 +437,11 @@ class Vessel extends Core\Controller {
                     if($leeg->LegOrder == 2){
                         $secondVesleg = $leeg->VesselName;
                         $secondDesleg = $leeg->Destination;
+                    }
+
+                    if($leeg->LegOrder == 3){
+                        $thirdVesleg = $leeg->VesselName;
+                        $thirdDesleg = $leeg->Destination;
                     }
                 }
                 
@@ -488,9 +495,11 @@ class Vessel extends Core\Controller {
                         if($ves->port_discharge !== $endLocation){
                             // $lastDate = $ves->eta;
                             // $firstDate  = $ves->etd;
+                            $endLocation = (!empty($thirdDesleg) ? $thirdDesleg  : $secondDesleg );
                             $tcolorLocD = 'text-danger';
                             
                         }
+
                         if($ves->port_loading !== $firstLocation){
                             $tcolorLocE = 'text-danger';
                         }
@@ -564,9 +573,13 @@ class Vessel extends Core\Controller {
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
-                            $subdata['vessel_name'] ='<span style="font-size:12px;" data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstVesleg.':'.$firstDesleg.'<br>'.$secondVesleg.': '.$secondDesleg.'</span>'.$mismatchVsl;
+                            $subdata['vessel_name'] ='<span style="font-size:12px;" data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstVesleg.':'.$firstDesleg.'<br>'.$secondVesleg.': '.$secondDesleg.'<br>'.$thirdVesleg.':'.$thirdDesleg.'</span>'.$mismatchVsl;
                             
-                            $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Destination: '.$endLocation.'</span>';
+                            if(!empty($thirdDesleg)){
+                                $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Transhipment port: '.$secondDesleg.'<br> Destination: '.$endLocation.'</span>';
+                            }else{
+                                $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'">Destination: '.$endLocation.'</span>';
+                            }
                             
                             $subdata['onestop'] = '<span class="onestop" id="'.$containernumber.'">View</span>';
                             
@@ -647,9 +660,12 @@ class Vessel extends Core\Controller {
                         $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                         $subdata['date_track'] = 'ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
-                        $subdata['vessel_name'] = '<span style="font-size:12px;">'.$firstVesleg.': '.$firstDesleg.'</span><br>'.'<span style="font-size:12px;">'.$secondVesleg.': '.$secondDesleg.'</span>';
-                        
-                        $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br> <span class="'.$tcolorLocE.'"> Destination: '.$secondDesleg.'</span>';
+                        $subdata['vessel_name'] = '<span style="font-size:12px;">'.$firstVesleg.': '.$firstDesleg.'</span><br>'.'<span style="font-size:12px;">'.$secondVesleg.': '.$secondDesleg.'<br>'.$thirdVesleg.': '.$thirdDesleg.'</span>';
+                        if(!empty($thirdDesleg)){
+                            $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br> <span class="'.$tcolorLocE.'"> Transhipment port: '.$secondDesleg.'<br>Destination: '.$thirdDesleg.'</span>';
+                        }else{
+                            $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br> <span class="'.$tcolorLocE.'"> Destination: '.(!empty($thirdDesleg) ? $thirdDesleg  : $secondDesleg ).'</span>';
+                        }
                         
                         $subdata['onestop'] = '<span id="'.$containernumber.'">View</span>';
                         $subdata['shipping_line']  = $sealine;
