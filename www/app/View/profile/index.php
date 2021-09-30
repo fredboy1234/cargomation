@@ -394,7 +394,7 @@
                                         <div class="form-group row">
                                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                            <input type="email" class="form-control" placeholder="Name">
                                         </div>
                                         </div>
                                         <div class="form-group row">
@@ -448,42 +448,42 @@
                                             <label for="inputName" class="col-sm-2 control-label">First Name</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="firstname" class="form-control" id="inputName" placeholder="First Name" value="<?=$this->user_info->first_name?>">
+                                            <input type="text" name="firstname" class="form-control" placeholder="First Name" value="<?=$this->user_info->first_name?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Last Name</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="lastname" class="form-control" id="inputName" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
+                                            <input type="text" name="lastname" class="form-control" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Address</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="address" class="form-control" id="inputName" placeholder="Address" value="<?=$this->user_info->address?>">
+                                            <input type="text" name="address" class="form-control" placeholder="Address" value="<?=$this->user_info->address?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">City</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="city" class="form-control" id="inputName" placeholder="City" value="<?=$this->user_info->city?>">
+                                            <input type="text" name="city" class="form-control" placeholder="City" value="<?=$this->user_info->city?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Zipcode</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="zipcode" class="form-control" id="inputName" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
+                                            <input type="text" name="zipcode" class="form-control" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Contact No.</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="contact" class="form-control" id="inputName" placeholder="Contact" value="<?=$this->user_info->phone?>">
+                                            <input type="text" name="contact" class="form-control" placeholder="Contact" value="<?=$this->user_info->phone?>">
                                             </div>
                                         </div>
                                         <?php if(false): ?>
