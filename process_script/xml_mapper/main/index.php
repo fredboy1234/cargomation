@@ -655,7 +655,7 @@ try{
 					$TRANSVESSELNAME = node_exist(getArrayName($XPATH_TRANSVESSELNAME));
 
 					//GET DISCHARGE CODE
-					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Code");
+					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
 
