@@ -127,6 +127,14 @@ class Contact extends Core\Controller {
 
     }
 
+    public function update($contact_id = "") {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        $Contact = new Model\Contact;
+        $has_error = $Contact->updateContactInfo($contact_id, $_POST);
+        echo json_encode($has_error);
+    }
+
     public function delete($contact_id = "") {
         $Contact = new Model\Contact;
         $Contact->deleteContactInfo($contact_id);
