@@ -112,4 +112,32 @@ class Contact extends Core\Controller {
         }
       
     }
+
+    public function edit($contact_id = "") {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        $Contact = new Model\Contact;
+
+        $this->View->renderWithoutHeaderAndFooter("/contact/edit", [
+            "title" => "Contact Info",
+            "contact_id" => $contact_id,
+            "contact_info" => $Contact->getContactInfo($contact_id)[0]
+        ]);
+
+    }
+
+    public function update($contact_id = "") {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        $Contact = new Model\Contact;
+        $has_error = $Contact->updateContactInfo($contact_id, $_POST);
+        echo json_encode($has_error);
+    }
+
+    public function delete($contact_id = "") {
+        $Contact = new Model\Contact;
+        $Contact->deleteContactInfo($contact_id);
+    }
+
 }

@@ -113,7 +113,7 @@ class UserRegister {
             
             if(!empty($contactID)) {
                 $User->updateUserContactInfo([
-                    // "user_id" => 140,
+                    "user_id" => $userID,
                     "email_address" => Utility\Input::post("email"),
                     "organization_code" => Utility\Input::post("organization_code"),
                     "company_name" => Utility\Input::post("company_name"),
@@ -122,7 +122,7 @@ class UserRegister {
                 ], $contactID);
             } else {
                 $User->putUserContactInfo([
-                    // "user_id" => 140,
+                    "user_id" => $userID,
                     "email_address" => Utility\Input::post("email"),
                     "organization_code" => Utility\Input::post("organization_code"),
                     "company_name" => Utility\Input::post("company_name"),

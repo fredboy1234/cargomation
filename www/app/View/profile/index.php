@@ -394,7 +394,7 @@
                                         <div class="form-group row">
                                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                            <input type="email" class="form-control" placeholder="Name">
                                         </div>
                                         </div>
                                         <div class="form-group row">
@@ -448,51 +448,53 @@
                                             <label for="inputName" class="col-sm-2 control-label">First Name</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="firstname" class="form-control" id="inputName" placeholder="First Name" value="<?=$this->user_info->first_name?>">
+                                            <input type="text" name="firstname" class="form-control" placeholder="First Name" value="<?=$this->user_info->first_name?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Last Name</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="lastname" class="form-control" id="inputName" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
+                                            <input type="text" name="lastname" class="form-control" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Address</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="address" class="form-control" id="inputName" placeholder="Address" value="<?=$this->user_info->address?>">
+                                            <input type="text" name="address" class="form-control" placeholder="Address" value="<?=$this->user_info->address?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">City</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="city" class="form-control" id="inputName" placeholder="City" value="<?=$this->user_info->city?>">
+                                            <input type="text" name="city" class="form-control" placeholder="City" value="<?=$this->user_info->city?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Zipcode</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="zipcode" class="form-control" id="inputName" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
+                                            <input type="text" name="zipcode" class="form-control" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputName" class="col-sm-2 control-label">Contact No.</label>
 
                                             <div class="col-sm-10">
-                                            <input type="text" name="contact" class="form-control" id="inputName" placeholder="Contact" value="<?=$this->user_info->phone?>">
+                                            <input type="text" name="contact" class="form-control" placeholder="Contact" value="<?=$this->user_info->phone?>">
                                             </div>
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="form-group">
                                             <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                             <div class="col-sm-10">
-                                            <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?=$this->user_info->email?>">
+                                            <input disabled="disabled" type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?=$this->user_info->email?>">
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <?php if(false): ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
@@ -662,8 +664,7 @@
                                     <th>Email Address</th>
                                     <th>Organization Code</th>
                                     <th>Company Name</th>
-                                    <th>Is Default</th>
-                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <?php 
@@ -677,34 +678,34 @@
                                 <td><?php echo $value->email_address; ?></td>
                                 <td><?php echo $value->organization_code; ?></td>
                                 <td><?php echo $value->company_name; ?></td>
-                                <td><?php echo $value->is_default; ?></td>
                                 <td><?php switch ($value->status) {
                                             case 0:
-                                                $status = "Create account";
-                                                $badge = "warning";
-                                                $link = "/register/contact/" . $value->id;
-                                                $attr = "";
+                                                echo 
+                                                '<a href="/register/contact/' . $value->id . '" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-user-plus mr-1"></i> Register </a>';
                                             break;
                                             case 1:
-                                                $status = "Verified";
-                                                $badge = "success";
-                                                $link = "#";
-                                                $attr = "disabled";
+                                                echo
+                                                '<button type="button" class="btn btn-sm btn-info action" data-action="edit" data-id="' . $value->id . '">
+                                                <i class="fas fa-pencil-alt mr-1"></i> Edit</button>
+                                                <button type="button" class="btn btn-sm btn-danger action" data-action="delete" data-id="' . $value->id . '">
+                                                <i class="fas fa-trash-alt mr-1"></i> Delete</button>';
                                             break;
                                             case 2:
-                                                $status = "Pending";
-                                                $badge = "warning";
-                                                $link = "#";
-                                                $attr = "";
+                                                echo 
+                                                '<a href="#" class="btn btn-sm btn-success">
+                                                <i class="fas fa-user-check mr-1"></i> Approved </a>';
+                                            break;
+                                            case 3:
+                                                echo 
+                                                '<a href="#" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-user-slash mr-1"></i> Deleted </a>';
                                             break;
                                             
                                             default:
                                             # code...
                                             break;
                                         } 
-                                    // echo '<span class="badge badge-' . $badge . '">' . $status . '</span>'
-                                    echo '<a href="'. $link . '" class="btn btn-sm btn-' . $badge . '" ' . $attr . '>' . $status . '</a>';
-
                                     ?>
                                 </td>
                             </tr>
@@ -762,6 +763,31 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div> -->
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Contact Info</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Loading&hellip;</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php if (false): ?>
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <?php endif; ?>
+      </div>
     </div>
     <!-- /.modal-content -->
   </div>

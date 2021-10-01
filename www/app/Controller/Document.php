@@ -975,8 +975,8 @@ class Document extends Core\Controller {
         return $retval;
     }
 
-        /**
-     * Upload: Upload the bootstrap-fileinput files
+    /**
+     * Delete Document: delete document from document table
      * returns associative array
      * @access private
      * 
@@ -986,6 +986,22 @@ class Document extends Core\Controller {
     private function deleteDocument() {
         $document_id = $_POST['key'];
         $result = $this->deleteDocumentByDocID($document_id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    /**
+     * Update Document: update document from document table
+     * returns associative array
+     * @access private
+     * 
+     * @return array
+     * @since 1.0.8
+     */
+    private function updateDocument() {
+        $document_id = $_POST['key'];
+        $result = $this->updateDocumentByDocID($document_id);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
