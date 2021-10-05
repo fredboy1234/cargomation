@@ -117,7 +117,7 @@ class Vessel extends Core\Model {
         $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
                                 LEFT JOIN shipment sh on sh.id = b.trans_id 
-                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
+                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
                                 and tro.Vessel = sh.vessel_name
                                 where sh.id is not null and b.user_id = {$user}")->results();
        

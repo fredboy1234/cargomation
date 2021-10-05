@@ -410,9 +410,9 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB($user);
         
-      //echo "<pre>";
-        //  print_r($vessel);
-        //  exit();
+    //   echo "<pre>";
+    //      print_r($vessel);
+    //       exit();
 
         $data =array();
         $color = array();
@@ -582,7 +582,6 @@ class Vessel extends Core\Controller {
                             }else{
                                 if(empty($secondDesleg) || $secondDesleg === "" ){
                                     $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$ves->port_loading.'</span><br><span class="'.$tcolorLocD.'">Destination: '.$ves->port_discharge.'</span>';
-                                    //$subdata['location_city'] = 'Single Leg<br>Destination: <span class="'.$tcolorLocE.'">'.$ves->port_discharge.'</span>';
                                 }else{
                                     $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br><span class="'.$tcolorLocD.'">Destination: '.$endLocation.'</span>';
                                 }
