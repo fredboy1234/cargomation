@@ -574,7 +574,8 @@ class Vessel extends Core\Controller {
                             $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                             $subdata['date_track'] = 'ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
-                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor.' mmatchhover">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
+                                                    ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor." ".$macthover.'">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
+
                             $subdata['vessel_name'] ='<span style="font-size:12px;" data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstVesleg.':'.$firstDesleg.'<br>'.$secondVesleg.': '.$secondDesleg.'<br>'.$thirdVesleg.':'.$thirdDesleg.'</span>'.$mismatchVsl;
                             
                             if(!empty($thirdDesleg) || $thirdDesleg !==""){
