@@ -451,7 +451,7 @@ class Vessel extends Core\Controller {
                 
                 $mismatchETA = '';
                 $mismatchETD = $mismatchVo =  $mismatchVsl='';
-                $tcolor = $tcolorETD = $vtcolor = $tcolorLocE = $tcolorLocD = $tcolorvsl= '';
+                $tcolor = $tcolorETD = $vtcolor = $tcolorLocE =  $matchLoc = $tcolorLocD = $tcolorvsl= '';
                 
                 $j_ves = json_decode($ves->sea_json);
                 $subdata =array(); 
@@ -504,6 +504,7 @@ class Vessel extends Core\Controller {
 
                         if($ves->port_loading !== $firstLocation){
                             $tcolorLocE = 'text-danger';
+                            $matchLoc = '<span id="matchLocETD-'.$ves->id.'" class="mismatchLocETD d-none">S.Line:'.$firstLocation.'<br>Cargowise:'.$ves->port_loading.'<br></span>';;
                         }
                        
                         $firstdatrack = date_create($firstDate);
@@ -547,7 +548,7 @@ class Vessel extends Core\Controller {
 
                         if($ves->Voyage != $ves->voyage_flight_num){
                             $vtcolor = 'text-danger'; 
-                            $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$ves->voyage_flight_num.'<br></span>';;
+                            $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$ves->voyage_flight_num.'<br></span>';
                         }
                         
                         $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
@@ -579,12 +580,12 @@ class Vessel extends Core\Controller {
                             $subdata['vessel_name'] ='<span style="font-size:12px;" data-match="matchvsl-'.$ves->id.'" class="mmatchhovervsl '. $tcolorvsl.'">'.$firstVesleg.':'.$firstDesleg.'<br>'.$secondVesleg.': '.$secondDesleg.'<br>'.$thirdVesleg.':'.$thirdDesleg.'</span>'.$mismatchVsl;
                             
                             if(!empty($thirdDesleg) || $thirdDesleg !==""){
-                                $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstLocation.'</span><br><span class="'.$tcolorLocD.'"> Transhipment port: '.$secondDesleg.'<br> Destination: '.$endLocation.'</span>';
+                                $subdata['location_city'] = 'Origin: <span data-match="matchLocETD-'.$ves->id.'" class="'.$tcolorLocE.' mismatchLoc">'.$firstLocation.'</span><br>Transhipment port:<span class="'.$tcolorLocD.'">  '.$secondDesleg.'<br> Destination: '.$endLocation.'</span>'.$matchLoc;
                             }else{
                                 if(empty($secondDesleg) || $secondDesleg === "" ){
-                                    $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$ves->port_loading.'</span><br><span class="'.$tcolorLocD.'">Destination: '.$ves->port_discharge.'</span>';
+                                    $subdata['location_city'] = 'Origin: <span data-match="matchLocETD-'.$ves->id.'"  class="'.$tcolorLocE.' mismatchLoc">'.$ves->port_loading.'</span><br>Destination:<span class="'.$tcolorLocD.'"> '.$ves->port_discharge.'</span>'.$matchLoc;
                                 }else{
-                                    $subdata['location_city'] = 'Origin: <span class="'.$tcolorLocE.'">'.$firstDesleg.'</span><br><span class="'.$tcolorLocD.'">Destination: '.$endLocation.'</span>';
+                                    $subdata['location_city'] = 'Origin: <span data-match="matchLocETD-'.$ves->id.'" class="'.$tcolorLocE.' mismatchLoc">'.$firstDesleg.'</span><br>Destination:<span class="'.$tcolorLocD.'"> '.$endLocation.'</span>'.$matchLoc;
                                 }
                                 
                             }
