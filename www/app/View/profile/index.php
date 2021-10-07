@@ -157,6 +157,7 @@
 
                         <div class="card-body">
                             <div class="tab-content">
+                                <?php if(false): ?>
                                 <div class="tab-pane" id="activity">
                                     <!-- Post -->
                                     <div class="post">
@@ -269,6 +270,7 @@
                                     <!-- /.post -->
                                 </div>
                                 <!-- /.tab-pane -->
+                                <?php endif; ?>
                                 <div class="tab-pane" id="timeline">
                                     <!-- The timeline -->
                                     <div class="timeline timeline-inverse">
