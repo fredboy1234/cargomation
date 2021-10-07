@@ -27,7 +27,8 @@ class Contact extends Core\Model {
 
     public function getContactInfo($contact_id, $join_clause = "") {
         $Db = Utility\Database::getInstance();
-        $join_clause = "LEFT JOIN user_info ui ON ui.user_id = uc.user_id";
+        $join_clause = "LEFT JOIN user_info ui ON ui.user_id = uc.user_id ";
+        $join_clause .= "LEFT JOIN user_images i ON i.user_id = uc.user_id AND image_type = 'profile'";
         $query = "SELECT * FROM user_contact uc {$join_clause} WHERE uc.id = {$contact_id}";
         return $Db->query($query)->results();
     }
