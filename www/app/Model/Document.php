@@ -326,6 +326,17 @@ class Document extends Core\Model {
         ];
     }
 
+    public static function getDocumentTypeByOrg($org_code) {
+        //$count = " count(*) as count";
+        $count = "";
+        $query = "SELECT ISNULL(type, 'OTHER') as type
+        FROM document
+        LEFT JOIN shipment ON shipment.id = document.shipment_id
+        WHERE shipment.consignee = '{$org_code}'
+        GROUP BY type ";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 
     
 
