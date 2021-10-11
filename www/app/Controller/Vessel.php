@@ -546,9 +546,9 @@ class Vessel extends Core\Controller {
                             $mismatchVsl = '<span id="matchvsl-'.$ves->id.'" class="mismatchvsl d-none">Cargowise:'.$ves->vessel_name.'<br>S.Line:'.$firstvessel.'<br></span>';
                         }
 
-                        if($ves->Voyage != $ves->voyage_flight_num){
+                        if($ves->Voyage != $lastvoyage && !empty($lastvoyage)){
                             $vtcolor = 'text-danger'; 
-                            $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$ves->voyage_flight_num.'<br></span>';
+                            $mismatchVo = '<span id="matchVo-'.$ves->id.'" class="mismatchVo d-none">1stop:'.$ves->Voyage.'<br>S.Line:'.$lastvoyage.'<br></span>';
                         }
                         
                         $mismatchETA = '<span id="match-'.$ves->id.'" class="mismatch d-none">'.$mismatchETD.'<br><strong>ETA</strong><br>S.Line:'.$lastmonth.'-'.$lasthour .'<br> Cargomation:'.$lastmonthCW.'-'.$lasthourCW.'</span>';
