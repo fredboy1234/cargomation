@@ -127,6 +127,24 @@ class Contact extends Core\Controller {
 
     }
 
+    public function show($contact_id = "") {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        $Contact = new Model\Contact;
+        $contac_info = $Contact->getContactInfo($contact_id)[0];
+
+        $this->View->renderWithoutHeaderAndFooter("/contact/show", [
+            "title" => "Contact Info",
+            "contact_id" => $contact_id,
+            "contact_info" => $contac_info,
+            "total_shipment" => count(Model\Shipment::getShipmentDynamic($contact_id, 'user_id', '', $contac_info->organization_code)),
+            "document_stats" => Model\Document::getDocumentStats($contact_id, $contac_info->organization_code),
+            "document_type" => Model\Document::getDocumentTypeByOrg($contac_info->organization_code)
+        ]);
+
+    }
+
     public function update($contact_id = "") {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();

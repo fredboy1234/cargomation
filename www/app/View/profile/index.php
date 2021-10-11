@@ -157,6 +157,7 @@
 
                         <div class="card-body">
                             <div class="tab-content">
+                                <?php if(false): ?>
                                 <div class="tab-pane" id="activity">
                                     <!-- Post -->
                                     <div class="post">
@@ -269,6 +270,7 @@
                                     <!-- /.post -->
                                 </div>
                                 <!-- /.tab-pane -->
+                                <?php endif; ?>
                                 <div class="tab-pane" id="timeline">
                                     <!-- The timeline -->
                                     <div class="timeline timeline-inverse">
@@ -686,7 +688,9 @@
                                             break;
                                             case 1:
                                                 echo
-                                                '<button type="button" class="btn btn-sm btn-info action" data-action="edit" data-id="' . $value->id . '">
+                                                '<button type="button" class="btn btn-sm btn-info action" data-action="show" data-id="' . $value->id . '">
+                                                <i class="fas fa-eye mr-1"></i> Show</button>
+                                                <button type="button" class="btn btn-sm btn-info action" data-action="edit" data-id="' . $value->id . '">
                                                 <i class="fas fa-pencil-alt mr-1"></i> Edit</button>
                                                 <button type="button" class="btn btn-sm btn-danger action" data-action="delete" data-id="' . $value->id . '">
                                                 <i class="fas fa-trash-alt mr-1"></i> Delete</button>';

@@ -653,17 +653,22 @@ try{
 					$XPATH_TRANSVESSELNAME = $parser->encode($XPATH_TRANSVESSELNAME);
 					$TRANSVESSELNAME = node_exist(getArrayName($XPATH_TRANSVESSELNAME));
 
-					//GET DISCHARGE CODE
+					//GET DISCHARGE NAME
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
+
+					//GET LOADING NAME
+					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfLoading.Name");
+					$XPATH_TRANSLOADING = $parser->encode($XPATH_TRANSLOADING);
+					$TRANSLOADING = node_exist(getArrayName($XPATH_TRANSLOADING));
 
 					//GET BOOKING CODE
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"BookingStatus"=>$BOOKINGSTATUS);
 					
                     
 				 }
@@ -707,20 +712,26 @@ try{
 					$XPATH_TRANSVESSELNAME = $parser->encode($XPATH_TRANSVESSELNAME);
 					$TRANSVESSELNAME = node_exist(getArrayName($XPATH_TRANSVESSELNAME));
 
-					//GET DISCHARGE CODE
+					//GET DISCHARGE NAME
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
+
+					//GET LOADING NAME
+					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfLoading.Name");
+					$XPATH_TRANSLOADING = $parser->encode($XPATH_TRANSLOADING);
+					$TRANSLOADING = node_exist(getArrayName($XPATH_TRANSLOADING));
 
 					//GET BOOKING CODE
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"BookingStatus"=>$BOOKINGSTATUS);
 				}
 			
 				$routing = json_encode($items);
+				
 
                 
 

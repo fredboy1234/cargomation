@@ -59,6 +59,9 @@ $(document).ready(function () {
     $("button.action").click(function(event) {
         var url = "contact/" + this.dataset.action + "/" + this.dataset.id;
         switch (this.dataset.action) {
+            case "show":
+                preloader(url);
+                break;
             case "edit":
                 preloader(url);
                 break;
