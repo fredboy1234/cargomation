@@ -131,7 +131,7 @@ h1 {
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" id="remember" name="remember">
               <label for="remember">
                 Remember Me
               </label>
@@ -282,13 +282,14 @@ $(document).ready(function(){
 
       var email = $('input[type="email"]').val().trim();
       var password = $('input[type="password"]').val().trim();
+      var remember = $('input[type="checkbox"]').val().trim();
       var csrf_token = $('input[type="hidden"]').val().trim();
 
       if( email != "" && password != "" ){
           $.ajax({
               url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
               type:'post',
-              data:{email:email,password:password,csrf_token:csrf_token},
+              data:{email:email,password:password,csrf_token:csrf_token,remember:remember},
               beforeSend: function() {
                 $('.card').hide();
                 $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
