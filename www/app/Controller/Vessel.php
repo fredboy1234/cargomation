@@ -577,7 +577,7 @@ class Vessel extends Core\Controller {
                             $subdata['shipment_num'] = $ves->shipment_num;
                             //$subdata['housebill'] = $ves->house_bill;
                             $subdata['masterbill'] = $ves->master_bill;
-                            $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
+                            $subdata['voyage'] = '<small><strong>'.$ves->port_discharge.'</strong></small><br><span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                             $subdata['date_track'] = '<small><strong>'.$ves->port_discharge.'</strong></small><br>ETD: <span class="'.$tcolorETD.' ">'.$firstmonth.'-'.$firsthour.'</span><br>  
                                                     ETA: <span data-match="match-'.$ves->id.'" class="'.$tcolor." ".$macthover.'">'.$lastmonth.'-'.$lasthour.'</span>'.$mismatchETA;
@@ -672,7 +672,7 @@ class Vessel extends Core\Controller {
                         $subdata['shipment_num'] = $ves->shipment_num;
                         //$subdata['housebill'] = $ves->house_bill;
                         $subdata['masterbill'] = $ves->master_bill;
-                        $subdata['voyage'] = '<span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
+                        $subdata['voyage'] ='<small><strong>'.$ves->port_discharge.'</strong></small><br><span data-match="matchVo-'.$ves->id.'" class="'.$vtcolor.' mmatchVo">'.(!empty($lastvoyage) ?  $lastvoyage: $ves->voyage_flight_num).'</span>'.$mismatchVo;
 
                         $subdata['date_track'] ='<small><strong>'.$ves->port_discharge.'</strong></small><br>ETD: '.$firstmonth.'-'.$firsthour.'<br>  ETA: '.$lastmonth.'-'.$lasthour;
                         $subdata['vessel_name'] = '<span style="font-size:12px;">'.$firstVesleg.': '.$firstDesleg.'</span><br>'.'<span style="font-size:12px;">'.$secondVesleg.': '.$secondDesleg.'<br>'.$thirdVesleg.': '.$thirdDesleg.'</span>';
