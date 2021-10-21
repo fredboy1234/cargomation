@@ -66,5 +66,5 @@
   
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center" style="background-color: #0f1255;">
-    <img class="animation__shake" src="/img/cargomation_logo.png" alt="AdminLTELogo" height="200" width="200">
+    <img class="animation__shake" src="/img/logo.png" alt="CargoMationLogo" height="200" width="200">
   </div>
