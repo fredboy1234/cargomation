@@ -103,6 +103,7 @@ class UserRegister {
                 "status" => 0, // Not Verified yet
                 "registered_date" => date('Y-m-d H:i:s'), // Current datetime
                 "organization_code" => Utility\Input::post("organization_code"),
+                "contact_id" => $contactID,
             ]);
 
             //insert user role
