@@ -688,7 +688,7 @@
                                             break;
                                             case 1:
                                                 echo
-                                                '<button type="button" class="btn btn-sm btn-info action" data-action="show" data-id="' . $value->id . '">
+                                                '<button type="button" class="btn btn-sm btn-success action" data-action="show" data-id="' . $value->id . '">
                                                 <i class="fas fa-eye mr-1"></i> Show</button>
                                                 <button type="button" class="btn btn-sm btn-info action" data-action="edit" data-id="' . $value->id . '">
                                                 <i class="fas fa-pencil-alt mr-1"></i> Edit</button>
