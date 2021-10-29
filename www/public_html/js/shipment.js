@@ -481,7 +481,7 @@ $(document).ready(function () {
           // for checking only
           console.log('test tes');
            console.log(Sdata);
-           cosnoel.log(res);
+           console.log(res);
           hideShowResetSettings();
         }
       });

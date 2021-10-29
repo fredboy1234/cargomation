@@ -340,7 +340,7 @@ class User extends Core\Model {
      * @return null
      * @since 1.0.3
      */
-    public function updateUserSettings($column = "*", $data, $user_id) {
+    public function updateUserSettings($column = "*", $data = "", $user_id = "") {
 
         $value = json_encode($data);
 
