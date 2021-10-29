@@ -207,7 +207,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
               <div class="inner">
                 <h3 class="text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
 
-                <p>Pending Departure </p>
+                <p>Pending Transhipment </p>
               </div>
               <div class="icon">
                 <i class="ion ion-navigate text-warning"></i>
@@ -217,7 +217,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
           </div>
           <!-- ./col -->
         </div>
-        <div class="card card-default collapsed-card d-none ">
+        <div class="card card-default collapsed-card">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
