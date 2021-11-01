@@ -217,7 +217,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
           </div>
           <!-- ./col -->
         </div>
-        <div class="card card-default collapsed-card">
+        <div class="card card-default collapsed-card f">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
