@@ -385,11 +385,11 @@ class Shipment extends Core\Controller {
                 break;
             case 3: // STAFF
                 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+                $user_key = $User->getSubAccountInfo($user)[0]->account_id;
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user_key)); 
                 $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
                 // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
                 // $api = $this->Shipment->getClientUserShipment($user);
-                $user_key = $user;
                 break;
             case 4: // CUSTOMER
                 // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
