@@ -303,7 +303,7 @@ $(document).ready(function(){
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 8,
-    noWrap: true
+    noWrap: false
   }).addTo(map);
 
   // $.each(markerpoly,function(k,v){
@@ -333,20 +333,20 @@ $(document).ready(function(){
   var shipments = <?=$this->shipment_with_port?>;
   var port_loading_couint = <?=$this->port_loading_count?>;
   var markerarr =[];
+  
   $.each(shipments,function(okey,oval){
     var loading = oval.port_loading; 
     var discharge = oval.port_discharge;
     var loadingLoc = [];
     var dischargeLoc = [];
-
-   
-
+    
     var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){
-     
-      if(data.status ==="OK"){
-        loadingLoc.push([data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]);
-      }
+        if(data.status ==="OK"){
+          loadingLoc.push([data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]);
+        } 
     });
+    
+   
     
     // var req2 = $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+discharge, function(data){
     //     if(data[0]){
