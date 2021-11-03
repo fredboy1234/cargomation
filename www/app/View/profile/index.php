@@ -688,7 +688,7 @@
                                             break;
                                             case 1:
                                                 echo
-                                                '<button type="button" class="btn btn-sm btn-info action" data-action="show" data-id="' . $value->id . '">
+                                                '<button type="button" class="btn btn-sm btn-success action" data-action="show" data-id="' . $value->id . '">
                                                 <i class="fas fa-eye mr-1"></i> Show</button>
                                                 <button type="button" class="btn btn-sm btn-info action" data-action="edit" data-id="' . $value->id . '">
                                                 <i class="fas fa-pencil-alt mr-1"></i> Edit</button>
@@ -725,7 +725,7 @@
                                 $user_count = $this->user->user_count[0]->count;
                                 $user_max = $this->user->account_info[0]->max_users;
                                 if($user_count >= $user_max && $this->role->id != 1) {
-                                    echo "Note: Maximum number of user reach, please upgrade your subscription plan.";
+                                    echo "<span class='text-danger'><b>Note:</b> Maximum number of user reach, please upgrade your subscription plan.</span>";
                                 } else { ?>
                                 <a href="/register" class="btn btn-sm btn-info float-left">
                                 <i class="fas fa-plus"> </i>

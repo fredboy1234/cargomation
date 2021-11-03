@@ -1,45 +1,39 @@
-<form id="update_info" class="form-horizontal" _lpchecked="1">
-    <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">First Name</label>
+<form id="update_info" class="mx-5 form-horizontal" _lpchecked="1">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputName" class="control-label">First Name</label>
+            <input type="text" name="first_name" class="form-control" placeholder="First Name" value="<?=$this->contact_info->first_name?>">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputName" class="control-label">Last Name</label>
+            <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="<?=$this->contact_info->last_name?>">
 
-        <div class="col-sm-10">
-        <input type="text" name="first_name" class="form-control" placeholder="First Name" value="<?=$this->contact_info->first_name?>">
         </div>
     </div>
     <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Last Name</label>
-
-        <div class="col-sm-10">
-        <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="<?=$this->contact_info->last_name?>">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Address</label>
-
-        <div class="col-sm-10">
+        <label for="inputName" class="control-label">Address</label>
         <input type="text" name="address" class="form-control" placeholder="Address" value="<?=$this->contact_info->address?>">
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputName" class="control-label">City</label>
+            <input type="text" name="city" class="form-control" placeholder="City" value="<?=$this->contact_info->city?>">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputState">State</label>
+                <select id="inputState" class="form-control" disabled>
+                <option selected>Choose...</option>
+                <option>...</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputName" class="control-label">Zipcode</label>
+            <input type="text" name="postcode" class="form-control" placeholder="Zipcode" value="<?=$this->contact_info->postcode?>">
         </div>
     </div>
     <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">City</label>
-
-        <div class="col-sm-10">
-        <input type="text" name="city" class="form-control" placeholder="City" value="<?=$this->contact_info->city?>">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Zipcode</label>
-
-        <div class="col-sm-10">
-        <input type="text" name="postcode" class="form-control" placeholder="Zipcode" value="<?=$this->contact_info->postcode?>">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Contact No.</label>
-
-        <div class="col-sm-10">
+        <label for="inputName" class="control-label">Contact No.</label>
         <input type="text" name="phone" class="form-control" placeholder="Contact" value="<?=$this->contact_info->phone?>">
-        </div>
     </div>
     
     <?php if(false): ?>
@@ -52,8 +46,8 @@
     </div>
     <?php endif; ?>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-        <input type="hidden" name="user_id" value="<?=$this->contact_info->user_id; ?>">
+        <div class="col-sm-offset-2">
+        <input type="hidden" name="user_id" value="<?=$this->contact_info->uid; ?>">
         <button type="submit" class="btn btn-danger">Submit</button>
         </div>
     </div>
@@ -73,7 +67,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: document.location.origin + "/contact/update/<?= $this->contact_info->id; ?>",
+            url: document.location.origin + "/contact/update/<?= $this->contact_info->ucid; ?>",
             data: $(this).serializeArray(),
             dataType: "JSON",
             beforeSend: function () {

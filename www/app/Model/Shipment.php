@@ -315,7 +315,7 @@ class Shipment extends Core\Model {
 
     public static function getShipmentByOrgCode($org_code, $args = "*") {
         $query = "SELECT {$args} FROM shipment ";
-        $query .= "LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id ";
+        #$query .= "LEFT JOIN shipment_assigned on shipment.id = shipment_assigned.shipment_id ";
         $query .= "FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID] ";
         $query .= "WHERE shipment.consignee = '{$org_code}' OR shipment.consignor = '{$org_code}'";
         $Db = Utility\Database::getInstance();

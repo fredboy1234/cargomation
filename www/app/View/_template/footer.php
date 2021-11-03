@@ -87,6 +87,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <div class="card card-primary" style="margin-bottom: 0px">
     <div class="card-header">
       <h3 class="card-title">Contact</h3>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" onclick="closeForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
     <form id="contact-form" class="form-horizontal">
         <div class="card-body">

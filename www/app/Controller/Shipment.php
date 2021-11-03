@@ -152,6 +152,9 @@ class Shipment extends Core\Controller {
                     case 'did':
                         $response = $this->getShipmentByDocID($this->value, $this->param);
                         break;
+                    case 'org':
+                        $response = $this->getShipmentByOrgCode($this->value);
+                        break;
                     case 'all':
                         $response = $this->getAllShipment();
                         break;
@@ -223,6 +226,14 @@ class Shipment extends Core\Controller {
     private function getShipmentByUserID($user_id, $param) {
         $args = (isset($param[6]) && !empty($param[6])) ? $param[6] : "*";
         $result = $this->Shipment->getShipmentByUserID($user_id, $args);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    // API Get shipment by org_code
+    private function getShipmentByOrgCode($org_code) {
+        $result = $this->Shipment->getShipmentByOrgCode($org_code);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -329,11 +340,17 @@ class Shipment extends Core\Controller {
             }
        }
 
-       # Check user roles
-       if (!$Role = Model\Role::getInstance($user)) {
-           Utility\Redirect::to(APP_URL);
-       }
-       $role = $Role->getUserRole($user);
+        // // Get an instance of the user model using the user ID passed to the
+        // // controll action. 
+        if (!$User = Model\User::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        # Check user roles
+        if (!$Role = Model\Role::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $role = $Role->getUserRole($user);
 
         # Initialize multiple array variables with Empty values simultaneously
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
@@ -364,10 +381,12 @@ class Shipment extends Core\Controller {
                 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
                 $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
                 $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+                $user_key = $user;
                 break;
             case 3: // STAFF
                 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user)); 
+                $user_key = $User->getSubAccountInfo($user)[0]->account_id;
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/uid/'.$user_key)); 
                 $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
                 // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
                 // $api = $this->Shipment->getClientUserShipment($user);
@@ -375,9 +394,12 @@ class Shipment extends Core\Controller {
             case 4: // CUSTOMER
                 // $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
                 // $api = $this->Shipment->getClientUserShipment($user);
+                $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
                 $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
                 $shipment_id = $this->Shipment->getShipmentByOrgCode($org_code, "shipment_num");
-                $api = $this->Shipment->getShipmentByOrgCode($org_code);
+                #$api = $this->Shipment->getShipmentByOrgCode($org_code);
+                $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/org/'.$org_code));
+                $user_key = $User->getSubAccountInfo($user)[0]->account_id;
                 break;
             
             default:
@@ -391,7 +413,7 @@ class Shipment extends Core\Controller {
         # Advance search
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
             $status_search = explode(",",$_POST['status']);
-            $searchResult = $this->advanceSearch($user,$_POST);
+            $searchResult = $this->advanceSearch($user_key,$_POST);
            
             if(!empty($searchResult)){
                 foreach($searchResult as $id){
