@@ -29,8 +29,8 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         </div>
         <div class="card-footer p-0">
           <ul class="nav flex-column">
-            <?php var_dump($this->file_stat['files'][0]->rank);
-              foreach ($this->file_stat['files'][0]->rank as $key => $value):         
+            <?php 
+              foreach ($this->file_stat->files[0]->rank as $key => $value):         
             ?>
             <li class="nav-item">
               <a href="#" class="nav-link">
