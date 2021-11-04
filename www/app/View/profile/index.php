@@ -669,6 +669,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
+                            <tbody>
                             <?php 
                             if(empty($this->contact_list)) {
                                 echo "<tr><td colspan='6'><center>No contact in the list</center></td></tr>";
