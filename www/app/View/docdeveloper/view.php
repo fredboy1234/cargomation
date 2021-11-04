@@ -16,8 +16,31 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         <embed src="<?= $file_src; ?>" width="100%" height="500px">
     </div>
     <div class="col-md-5 bg-primary">
-            <h1>File Stats</h1>
-            <?php var_dump($file_stat); ?>
+      <h1>File Stats</h1>
+      <div class="card card-widget widget-user-2 shadow-sm">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header bg-primary">
+          <div class="widget-user-image float-left">
+            <i class="far fa-file"></i>
+          </div>
+          <!-- /.widget-user-image -->
+          <h3 class="widget-user-username">File Stats</h3>
+          <h5 class="widget-user-desc">Other</h5>
+        </div>
+        <div class="card-footer p-0">
+          <ul class="nav flex-column">
+            <?php var_dump($this->file_stat['files'][0]->rank);
+              foreach ($this->file_stat['files'][0]->rank as $key => $value):         
+            ?>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+              <?= $key; ?> <span class="float-right badge bg-primary"><?= $value; ?></span>
+              </a>
+            </li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
