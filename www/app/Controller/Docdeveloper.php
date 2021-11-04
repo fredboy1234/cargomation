@@ -132,17 +132,32 @@ class Docdeveloper extends Core\Controller {
             }
         }
 
-        // $Contact = new Model\Contact;
-        // $contac_info = $Contact->getContactInfo($contact_id)[0];
+        $Document = new Model\Document;
+        $User = Model\User::getInstance($user_id);
+
+        // $Document->checkDocumentType()
+        // get client admin email
+        if(!empty($User->getSubAccountInfo($user_id))) {
+            $sub_account = $User->getSubAccountInfo($user_id);
+            // "user email" change to "client email"
+            $email = $sub_account[0]->client_email;
+        } else {
+            $email = $User->data()->email;
+        }
+
+        // File API request
+        $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/get/document/did/'.$doc_id.'/name,shipment_num,type'));
+    
+        // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
+        $filepath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
+
+        $test = $Document->checkDocumentType($file[0]->name, $filepath);
+        var_dump($test); die();
 
         $this->View->renderWithoutHeaderAndFooter("/docdeveloper/view", [
-            "title" => "Contact Info",
+            "title" => "Developer Viewer",
             "doc_id" => $doc_id,
             "user_id" => $user_id,
-            // "contact_info" => $contac_info,
-            // "total_shipment" => count(Model\Shipment::getShipmentDynamic($contact_id, 'user_id', '', $contac_info->organization_code)),
-            // "document_stats" => Model\Document::getDocumentStats($contact_id, $contac_info->organization_code),
-            // "document_type" => Model\Document::getDocumentTypeByOrg($contac_info->organization_code)
         ]);
     }
 

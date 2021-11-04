@@ -6,6 +6,8 @@ use Exception;
 use App\Core;
 use App\Utility;
 
+use GuzzleHttp\Psr7;
+
 /**
  * Document Model:
  *
@@ -338,6 +340,60 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    
+    /**
+     * Check Document Type: Check document type
+     * returns object
+     * @access private
+     * @param string $filename
+     * @param object $file
+     * @return object
+     * @since 1.10.1
+     */
+    public function checkDocumentType($filename, $file) {
+        $url = 'https://cargomation.com:5000/classify';
+        $client = new \GuzzleHttp\Client(['verify' => false ]);
+        $response = $client->request('POST', $url, [
+            'multipart' => [
+                [ 'name' => 'client', 'contents' => 'a2b'],
+                [
+                    'Content-type' => 'multipart/form-data',
+                    'name' => 'file',
+                    'contents' => Psr7\Utils::tryFopen($file, 'r'),
+                    'filename' => $filename,
+
+                ]
+            ],
+        ]);
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * Learn Document Type: Learn document type
+     * returns object
+     * @access private
+     * @param string $filename
+     * @param object $file
+     * @return object
+     * @since 1.10.1
+     */
+    private function learnDocumentType($filename, $file) {
+        $url = 'https://cargomation.com:5000/learn';
+        $client = new \GuzzleHttp\Client(['verify' => false ]);
+        $response = $client->request('POST', $url, [
+            'multipart' => [
+                [ 'name' => 'client', 'contents' => 'a2b'],
+                [
+                    'Content-type' => 'multipart/form-data',
+                    'name' => 'file',
+                    'contents' => Psr7\Utils::tryFopen($file, 'r'),
+                    'filename' => $filename,
+
+                ]
+            ],
+        ]);
+
+        return json_decode($response->getBody());
+    }
 
 }
