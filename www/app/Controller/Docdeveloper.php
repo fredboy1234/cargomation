@@ -149,15 +149,15 @@ class Docdeveloper extends Core\Controller {
         $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/get/document/did/'.$doc_id.'/name,shipment_num,type'));
     
         // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
-        $filepath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
+        $file_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
 
-        $test = $Document->checkDocumentType($file[0]->name, $filepath);
-        var_dump($test); die();
+        $file_stat = $Document->checkDocumentType($file[0]->name, $file_path);
 
         $this->View->renderWithoutHeaderAndFooter("/docdeveloper/view", [
             "title" => "Developer Viewer",
             "doc_id" => $doc_id,
             "user_id" => $user_id,
+            "file_stat" => $file_stat,
         ]);
     }
 

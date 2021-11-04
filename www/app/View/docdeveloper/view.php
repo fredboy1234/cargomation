@@ -16,7 +16,8 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         <embed src="<?= $file_src; ?>" width="100%" height="500px">
     </div>
     <div class="col-md-5 bg-primary">
-            
+            <h1>File Stats</h1>
+            <?php var_dump($file_stat); ?>
     </div>
   </div>
 </div>
