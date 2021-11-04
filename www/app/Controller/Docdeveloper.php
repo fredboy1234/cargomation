@@ -120,15 +120,15 @@ class Docdeveloper extends Core\Controller {
         ]);
     }
 
-    public function view($doc_id = "") {
+    public function view($doc_id = "", $user_id = "") {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
-        if (!$user) {
+        if (!$user_id) {
             $userSession = Utility\Config::get("SESSION_USER");
             if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
+                $user_id = Utility\Session::get($userSession);
             }
         }
 
@@ -138,7 +138,7 @@ class Docdeveloper extends Core\Controller {
         $this->View->renderWithoutHeaderAndFooter("/docdeveloper/view", [
             "title" => "Contact Info",
             "doc_id" => $doc_id,
-            "user_id" => $user,
+            "user_id" => $user_id,
             // "contact_info" => $contac_info,
             // "total_shipment" => count(Model\Shipment::getShipmentDynamic($contact_id, 'user_id', '', $contac_info->organization_code)),
             // "document_stats" => Model\Document::getDocumentStats($contact_id, $contac_info->organization_code),
