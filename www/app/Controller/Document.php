@@ -263,7 +263,8 @@ class Document extends Core\Controller {
 
         // get client admin email
         if(!empty($User->getSubAccountInfo($user_id))) {
-            $email = $User->getSubAccountInfo($user_id);
+            $sub_account = $User->getSubAccountInfo($user_id);
+            $email = $sub_account[0]->email;
         }
 
         $preview = $config = $errors = [];
