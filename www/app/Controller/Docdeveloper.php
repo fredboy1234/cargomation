@@ -141,9 +141,14 @@ class Docdeveloper extends Core\Controller {
             $sub_account = $User->getSubAccountInfo($user_id);
             // "user email" change to "client email"
             $email = $sub_account[0]->client_email;
+            $user_key = $sub_account[0]->account_id;
         } else {
             $email = $User->data()->email;
+            $user_key = $User->data()->id;
         }
+
+        // All doc type by client user
+        $doc_type = $Document->getDocumentTypeByUser($user_key);
 
         // File API request
         $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/get/document/did/'.$doc_id.'/name,shipment_num,type'));
@@ -158,6 +163,7 @@ class Docdeveloper extends Core\Controller {
             "doc_id" => $doc_id,
             "user_id" => $user_id,
             "file_stat" => $file_stat,
+            "doc_type" => $doc_type,
         ]);
     }
 

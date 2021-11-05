@@ -29,7 +29,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-primary">
           <div class="widget-user-image float-left">
-            <i class="far fa-file"></i>
+            <i class="far fa-file fa-4x"></i>
           </div>
           <!-- /.widget-user-image -->
           <h3 class="widget-user-username"><?= $this->file_stat->files[0]->{'file name'} ?></h3>
@@ -37,17 +37,55 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         </div>
         <div class="card-footer p-0">
           <ul class="nav flex-column">
-            <?php 
-              foreach ($this->file_stat->files[0]->rank as $key => $value):         
-            ?>
+            <?php foreach ($this->file_stat->files[0]->rank as $key => $value): ?>
             <li class="nav-item">
-              <a href="#" class="nav-link">
-              <?= strtoupper($key); ?> <span class="float-right badge bg-primary"><?= round($value, 2); ?></span>
-              </a>
+              <span href="#" class="nav-link">
+              <?= strtoupper($key); ?> <span class="float-right"><?= number_format(round($value, 2), 2); ?></span>
+              </span>
             </li>
             <?php endforeach; ?>
           </ul>
         </div>
+      </div>
+      <div class="card card-info">
+        <div class="card-header">
+          <h3 class="card-title">File Trainer</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form class="form-horizontal" id="filetrainer">
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-2 col-form-label">Type</label>
+              <div class="col-sm-10">
+                <select name="type" id="type" class="form-control">
+                    <option value="" selected="" disabled="" hidden="">Choose file type</option>
+                    <optgroup label="Default type" data-option="default">
+                    <?php foreach ($this->file_stat->files[0]->rank as $key => $value): ?>
+                      <option value="<?= strtoupper($key); ?> ">
+                        <?= strtoupper($key); ?> (<?= number_format(round($value, 2), 2); ?>)
+                      </option>
+                    <?php endforeach; ?>
+                    </optgroup>
+                    <optgroup label="All file type" data-option="all">
+                      <?php foreach ($this->doc_type as $key => $value): ?>
+                        <?php if (!isset($this->file_stat->files[0]->rank->{strtolower($value->type)})): ?>
+                        <option value="<?= strtoupper($value->type); ?>">
+                          <?= strtoupper($value->type); ?>
+                        </option>
+                        <?php endif; ?>
+                      <?php endforeach; ?>
+                    </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right">Train</button>
+          </div>
+          <!-- /.card-footer -->
+        </form>
       </div>
     </div>
   </div>
