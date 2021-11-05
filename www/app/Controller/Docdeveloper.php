@@ -217,7 +217,12 @@ class Docdeveloper extends Core\Controller {
         // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
         $file_old_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
 
-        $new_type = $_POST['type'];
+        if(isset($_POST['type'])) {
+            $new_type = $_POST['type'];
+        } else {
+            echo "Invalid Request";
+            exit;
+        }
 
         // LEARN FILE
         $result = $Document->learnDocumentType($file[0]->name, $file_old_path, $new_type);

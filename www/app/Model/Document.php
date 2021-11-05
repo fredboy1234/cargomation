@@ -388,7 +388,7 @@ class Document extends Core\Model {
      * @return object
      * @since 1.10.1
      */
-    private function learnDocumentType($filename, $file, $type) {
+    public function learnDocumentType($filename, $file, $type) {
         $url = 'https://cargomation.com:5000/learn';
         $client = new \GuzzleHttp\Client(['verify' => false ]);
         $response = $client->request('POST', $url, [

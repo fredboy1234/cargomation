@@ -107,7 +107,7 @@ $(document).ready(function () {
           /* I use isDenied, coz of the color */
           if (result.isConfirmed) {
             $.ajax({
-                url: '/docdeveloper/learn/' <?= $this->doc_id; ?> . "/". <?= $this->user_id; ?>,
+                url: '/docdeveloper/learn/' + <?= $this->doc_id; ?> + '/' + <?= $this->user_id; ?>,
                 type: "POST",
                 dataType: "json",
                 data: $(this).serializeArray(),
