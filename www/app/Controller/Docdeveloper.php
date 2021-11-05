@@ -135,7 +135,15 @@ class Docdeveloper extends Core\Controller {
         $Document = new Model\Document;
         $User = Model\User::getInstance($user_id);
 
-        // $Document->checkDocumentType()
+        // USER LOGS!
+        // $User->putUserLog([
+        //     "user_id" => $user_id,
+        //     "ip_address" => $User->getIPAddress(),
+        //     "log_type" => 3,
+        //     "log_action" => "Access doctracker",
+        //     "start_date" => date("Y-m-d H:i:s"),
+        // ]);
+
         // get client admin email
         if(!empty($User->getSubAccountInfo($user_id))) {
             $sub_account = $User->getSubAccountInfo($user_id);
