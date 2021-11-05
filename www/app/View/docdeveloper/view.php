@@ -69,9 +69,11 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
                     </optgroup>
                     <optgroup label="All file type" data-option="all">
                       <?php foreach ($this->doc_type as $key => $value): ?>
-                      <option value="<?= strtoupper($value->type); ?>">
-                        <?= strtoupper($value->type); ?>
-                      </option>
+                        <?php if (!isset($this->file_stat->files[0]->rank->{strtolower($value->type)})): ?>
+                        <option value="<?= strtoupper($value->type); ?>">
+                          <?= strtoupper($value->type); ?>
+                        </option>
+                        <?php endif; ?>
                       <?php endforeach; ?>
                     </optgroup>
                 </select>
