@@ -90,4 +90,50 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
     </div>
   </div>
 </div>
+<script>
+$(document).ready(function () {
+    $('#filetrainer').submit(function(event) {
+      event.preventDefault();
+      Swal.fire({
+          icon: 'info',
+          title: 'Are you sure you want to train this file?',
+          text: 'Document type will be change you won\'t be able to revert this!',
+          showConfirmButton: true,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: `Start`,
+          denyButtonText: `Deny`,
+      }).then((result) => {
+          /* I use isDenied, coz of the color */
+          if (result.isConfirmed) {
+            $.ajax({
+                url: '/docdeveloper/learn/' <?= $this->doc_id; ?> . "/". <?= $this->user_id; ?>,
+                type: "POST",
+                dataType: "json",
+                data: $(this).serializeArray(),
+                beforeSend: function () {
+                    $("#filetrainer").find(":submit").prop('disabled', true);
+                    $("#filetrainer .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
+                }, success: function (result) {
+                    $('#loader').remove();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'File was train successfully!',
+                        timer: 3000
+                    });
+                    console.log(result);
+                    $("#filetrainer ").find(":submit").prop('disabled', false);
+                }
+            });
+          }
+          if (result.isDenied) {
+              resolve();
+          } else if (result.isDismissed) {
+              Swal.fire('Process was aborted!', 'File was not process.', 'info');
+          }
+      });
+    })
 
+});
+</script>

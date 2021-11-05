@@ -52,34 +52,6 @@ $(document).ready(function () {
 
     })
 
-    $('#filetrainer').submit(function(event) {
-        event.preventDefault();
-
-        // var data = $(this).serializeArray();
-
-        $.ajax({
-            url: '/docdeveloper/learn',
-            type: "POST",
-            dataType: "json",
-            data: $(this).serializeArray(),
-            beforeSend: function () {
-                $("#filetrainer").find(":submit").prop('disabled', true);
-                $("#filetrainer .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
-            }, success: function (result) {
-                $('#loader').remove();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'File was train successfully!',
-                    timer: 3000
-                });
-                console.log(result);
-                $("#filetrainer ").find(":submit").prop('disabled', false);
-            }
-        });
-       
-    })
-
 });
 
 // Show loader
