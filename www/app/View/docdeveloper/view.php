@@ -53,7 +53,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="filetrainer">
           <div class="card-body">
             <div class="form-group row">
               <label for="inputEmail3" class="col-sm-2 col-form-label">Type</label>
