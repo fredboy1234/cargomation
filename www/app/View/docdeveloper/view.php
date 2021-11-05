@@ -29,7 +29,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-primary">
           <div class="widget-user-image float-left">
-            <i class="far fa-file"></i>
+            <i class="far fa-file fa-4x"></i>
           </div>
           <!-- /.widget-user-image -->
           <h3 class="widget-user-username"><?= $this->file_stat->files[0]->{'file name'} ?></h3>
@@ -42,7 +42,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
             ?>
             <li class="nav-item">
               <a href="#" class="nav-link">
-              <?= strtoupper($key); ?> <span class="float-right badge bg-primary"><?= round($value, 2); ?></span>
+              <?= strtoupper($key); ?> <span class="float-right badge bg-primary"><?= number_format(round($value, 2), 2); ?></span>
               </a>
             </li>
             <?php endforeach; ?>
