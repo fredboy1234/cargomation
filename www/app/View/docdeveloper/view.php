@@ -1,4 +1,13 @@
 <?php
+function byteConvert($bytes) {
+    if ($bytes == 0)
+        return "0.00 B";
+
+    $s = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+    $e = floor(log($bytes, 1024));
+
+    return round($bytes/pow(1024, $e), 2).$s[$e];
+}
 
 $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
 
@@ -15,8 +24,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
 		  ?>
         <embed src="<?= $file_src; ?>" width="100%" height="500px">
     </div>
-    <div class="col-md-5 bg-primary">
-      <h1>File Stats</h1>
+    <div class="col-md-5">
       <div class="card card-widget widget-user-2 shadow-sm">
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-primary">
@@ -24,8 +32,8 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
             <i class="far fa-file"></i>
           </div>
           <!-- /.widget-user-image -->
-          <h3 class="widget-user-username">File Stats</h3>
-          <h5 class="widget-user-desc">Other</h5>
+          <h3 class="widget-user-username"><?= $this->file_stat->files[0]->{'file name'} ?></h3>
+          <h5 class="widget-user-desc"><?= byteConvert($this->file_stat->files[0]->{'file size in bytes'}) ?></h5>
         </div>
         <div class="card-footer p-0">
           <ul class="nav flex-column">
@@ -34,7 +42,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
             ?>
             <li class="nav-item">
               <a href="#" class="nav-link">
-              <?= $key; ?> <span class="float-right badge bg-primary"><?= $value; ?></span>
+              <?= strtoupper($key); ?> <span class="float-right badge bg-primary"><?= round($value, 2); ?></span>
               </a>
             </li>
             <?php endforeach; ?>
