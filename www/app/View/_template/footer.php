@@ -320,7 +320,7 @@ $(document).ready(function(){
 
   var icon = L.divIcon({
   iconSize: [30, 30],
-  iconAnchor: [15, 15],
+  iconAnchor: [30, 30],
   popupAnchor: [10, 0],
   shadowSize: [0, 0],
   className: 'animated-icon my-icon',
