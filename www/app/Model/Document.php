@@ -236,12 +236,23 @@ class Document extends Core\Model {
 
     public function getDocumentTypeByUser($user_id) {
         //$count = " count(*) as count";
-        $count = "";
-        $query = "SELECT ISNULL(type, 'OTHER') as type, {$count}
+        // $count = "";
+        // $query = "SELECT ISNULL(type, 'OTHER') as type, {$count}
+        $query = "SELECT ISNULL(type, 'OTHER') as type
         FROM document
         LEFT JOIN shipment ON shipment.id = document.shipment_id
         WHERE shipment.user_id = '{$user_id}'
         GROUP BY type ";
+        // *EXCLUDE SOME DOC TYPE*
+        // SELECT ISNULL(type, 'OTHER') as type
+        //         FROM document
+        //         LEFT JOIN shipment ON shipment.id = document.shipment_id
+        //         WHERE shipment.user_id = '101'
+        // EXCEPT
+        // SELECT   ISNULL(type, 'OTHER') as type
+        // FROM document
+        // WHERE    type IN ('OTHER', 'TSC', 'TLX')
+        //         GROUP BY type
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
