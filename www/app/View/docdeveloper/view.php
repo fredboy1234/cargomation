@@ -40,7 +40,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
             <?php foreach ($this->file_stat->files[0]->rank as $key => $value): ?>
             <li class="nav-item">
               <span href="#" class="nav-link">
-              <?= strtoupper($key); ?> <span class="float-right"><?= number_format(round($value, 2), 2); ?></span>
+              <?= strtoupper($key); ?> <span class="float-right"><?= number_format(round($value, 2), 2); ?>%</span>
               </span>
             </li>
             <?php endforeach; ?>
@@ -63,7 +63,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
                     <optgroup label="Default type" data-option="default">
                     <?php foreach ($this->file_stat->files[0]->rank as $key => $value): ?>
                       <option value="<?= strtoupper($key); ?> ">
-                        <?= strtoupper($key); ?> (<?= number_format(round($value, 2), 2); ?>)
+                        <?= strtoupper($key); ?> (<?= number_format(round($value, 2), 2); ?>%)
                       </option>
                     <?php endforeach; ?>
                     </optgroup>

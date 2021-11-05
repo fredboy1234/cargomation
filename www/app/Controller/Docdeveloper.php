@@ -218,7 +218,7 @@ class Docdeveloper extends Core\Controller {
         $file_old_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
 
         if(isset($_POST['type'])) {
-            $new_type = $_POST['type'];
+            $new_type = strtolower(rtrim($_POST['type']));
         } else {
             echo "Invalid Request";
             exit;
@@ -227,16 +227,16 @@ class Docdeveloper extends Core\Controller {
         // LEARN FILE
         $result = $Document->learnDocumentType($file[0]->name, $file_old_path, $new_type);
 
-        if(isset($result)) {
+        if(is_null($result)) {
             // NEW PATH
-            $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$new_type."/" . $file[0]->name;
+            // $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$new_type."/" . $file[0]->name;
             // MOVE FILE TO NEW PATH
-            rename($file_old_path, $file_new_path);
-
-            $response['status_code_header'] = 'HTTP/1.1 200 OK';
-            $response['body'] = json_encode($result);
-            return $response;
+            // rename($file_old_path, $file_new_path);
         }
+
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
 
     }
 
