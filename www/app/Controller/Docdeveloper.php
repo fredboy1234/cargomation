@@ -175,6 +175,65 @@ class Docdeveloper extends Core\Controller {
         ]);
     }
 
+    public function learn($doc_id = "", $user_id = "") {
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        $Document = new Model\Document;
+        $User = Model\User::getInstance($user_id);
+
+        // USER LOGS!
+        // $User->putUserLog([
+        //     "user_id" => $user_id,
+        //     "ip_address" => $User->getIPAddress(),
+        //     "log_type" => 3,
+        //     "log_action" => "Access doctracker",
+        //     "start_date" => date("Y-m-d H:i:s"),
+        // ]);
+
+        // get client admin email
+        if(!empty($User->getSubAccountInfo($user_id))) {
+            $sub_account = $User->getSubAccountInfo($user_id);
+            // "user email" change to "client email"
+            $email = $sub_account[0]->client_email;
+            $user_key = $sub_account[0]->account_id;
+        } else {
+            $email = $User->data()->email;
+            $user_key = $User->data()->id;
+        }
+
+        // File API request
+        $file = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/api/get/document/did/'.$doc_id.'/name,shipment_num,type'));
+    
+        // OLD PATH
+        // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
+        $file_old_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
+
+        $new_type = $_POST['type'];
+
+        // LEARN FILE
+        $result = $Document->learnDocumentType($file[0]->name, $file_old_path, $new_type);
+
+        if(isset($result)) {
+            // NEW PATH
+            $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$new_type."/" . $file[0]->name;
+            // MOVE FILE TO NEW PATH
+            rename($file_old_path, $file_new_path);
+
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            $response['body'] = json_encode($result);
+            return $response;
+        }
+
+    }
 
 
 
