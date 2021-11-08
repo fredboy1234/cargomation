@@ -443,13 +443,21 @@ class User extends Core\Model {
         );
     }
 
-    public function getUserDocumentType($user_id) {
+    public function getUserDocumentType($user_key, $role_id) {
         //$query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
         $query = "SELECT d.type
         FROM document AS d
         LEFT JOIN shipment AS s
         ON d.shipment_num = s.shipment_num
-        WHERE s.user_id = '{$user_id}' GROUP BY d.type";
+        WHERE s.user_id = '{$user_key}' GROUP BY d.type";
+        if($role_id == 4) {
+            $query = "SELECT d.type 
+            FROM shipment_contacts sc
+            LEFT JOIN document d
+            ON d.shipment_id = sc.shipment_id
+            WHERE sc.email = '{$user_key}'
+            GROUP BY d.type";
+        }
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
