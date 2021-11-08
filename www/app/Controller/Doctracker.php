@@ -85,6 +85,27 @@ class Doctracker extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        switch ($role->role_id) {
+            case 1:
+                $user_key = $user;
+                break;
+            case 2:
+                $user_key = $user;
+                break;
+            case 3:
+                $sub_account = $User->getSubAccountInfo($user);
+                $user_key = $sub_account[0]->account_id;
+                break;
+            case 4:
+                $sub_account = $User->getSubAccountInfo($user);
+                $user_key = $sub_account[0]->email;
+                break;
+            
+            default:
+                $user_key = $user;
+                break;
+        }
+
         $User->putUserLog([
             "user_id" => $user,
             "ip_address" => $User->getIPAddress(),
@@ -149,7 +170,7 @@ class Doctracker extends Core\Controller {
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user, $role->role_id),
-            "user_settings" =>$this->defaultSettings($user),
+            "user_settings" =>$this->defaultSettings($user_key, $role->role_id),
             "settings_user" => $User->getUserSettings($user),
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
@@ -573,7 +594,7 @@ class Doctracker extends Core\Controller {
         echo json_encode($_POST['settings']);
     }
 
-    public function defaultSettings($user=""){
+    public function defaultSettings($user="", $role_id=""){
 
         Utility\Auth::checkAuthenticated();
 
@@ -606,15 +627,15 @@ class Doctracker extends Core\Controller {
 
         $userData = $User->getUserSettings($user);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
-        $doc_type = $User->getUserDocumentType($user); // $this->Document->getDocumentType(), 'type');
+        $doc_type = $User->getUserDocumentType($user, $role_id); // $this->Document->getDocumentType(), 'type');
 
-        $Role = Model\Role::getInstance($user);
-        $role = $Role->getUserRole($user);
+        // $Role = Model\Role::getInstance($user);
+        // $role = $Role->getUserRole($user);
         // $role = Model\Role::getInstance($user_id)->getUserRole($user_id);
 
         $json_setting = '/settings/shipment-settings.json';
 
-        if($role->role_id == 4) {
+        if($role_id == 4 && empty($doc_type)) {
             $json_setting = '/settings/sub-shipment-settings.json';
         }
 
