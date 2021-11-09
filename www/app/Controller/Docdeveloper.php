@@ -227,19 +227,23 @@ class Docdeveloper extends Core\Controller {
         // LEARN FILE
         $result = $Document->learnDocumentType($file[0]->name, $file_old_path, $new_type);
 
-
-        var_dump($result); die();
-
-        if(is_null($result)) {
+        if(!is_null($result->files[0]->type)) {
+            $doc_type = $result->files[0]->type;
             // NEW PATH
-            // $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$new_type."/" . $file[0]->name;
+            $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$doc_type."/" . $file[0]->name;
             // MOVE FILE TO NEW PATH
-            // rename($file_old_path, $file_new_path);
+            rename($file_old_path, $file_new_path);
+
+            $data['doc_type'] = $type;
+            $data['doc_id'] = $doc_id;
+
+            // update database
+            $Document->updateDocumentType($data);
         }
 
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
+        // $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        // $response['body'] = json_encode($result);
+        echo json_encode($result);;
 
     }
 }
