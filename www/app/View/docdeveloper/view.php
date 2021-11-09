@@ -15,13 +15,13 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
 <div class="container">
   <div class="row">
     <div class="col-md-7">
-    	<?php
-    			/* Most browsers no longer support Java Applets and Plug-ins.
-    			   ActiveX controls are no longer supported in any browsers.
-				   The support for Shockwave Flash has also been turned off in modern browsers.
-				   You may use "iframe" or any other third party plugins
-    			*/ 
-		  ?>
+      <?php
+          /* Most browsers no longer support Java Applets and Plug-ins.
+             ActiveX controls are no longer supported in any browsers.
+           The support for Shockwave Flash has also been turned off in modern browsers.
+           You may use "iframe" or any other third party plugins
+          */ 
+      ?>
         <embed src="<?= $file_src; ?>" width="100%" height="500px">
     </div>
     <div class="col-md-5">
@@ -36,7 +36,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
           <h5 class="widget-user-desc"><?= byteConvert($this->file_stat->files[0]->{'file size in bytes'}) ?></h5>
         </div>
         <div class="card-footer p-0">
-          <ul class="nav flex-column">
+          <ul id="stats" class="nav flex-column">
             <?php foreach ($this->file_stat->files[0]->rank as $key => $value): ?>
             <li class="nav-item">
               <span href="#" class="nav-link">
@@ -56,7 +56,7 @@ $file_src = "/document/fileviewer/" . $this->user_id . "/" . $this->doc_id;
         <form class="form-horizontal" id="filetrainer">
           <div class="card-body">
             <div class="form-group row">
-              <label for="inputEmail3" class="col-sm-2 col-form-label">Type</label>
+              <label for="type" class="col-sm-2 col-form-label">Type</label>
               <div class="col-sm-10">
                 <select name="type" id="type" class="form-control">
                     <option value="" selected="" disabled="" hidden="">Choose file type</option>
@@ -123,6 +123,20 @@ $(document).ready(function () {
                         timer: 3000
                     });
                     console.log(result);
+                    var html = "", option = "";
+                    var obj = result.files[0].rank;
+                    Object.keys(obj).forEach(function(key) {
+                      html += '<li class="nav-item">' +
+                      '<span href="#" class="nav-link">' +
+                      key.toUpperCase() + '<span class="float-right">' + obj[key].toFixed(2) + '%</span>' + 
+                      '</span>' +
+                      '</li>';
+                      option += '<option value="<?= strtoupper($key); ?> ">' +
+                      key.toUpperCase() + ' (' + obj[key].toFixed(2) + '%)' +
+                      '</option>';
+                    });
+                    $('select#type').find("optgroup[label='Default type']").html(option);
+                    $('#stats').html(html);
                     $("#filetrainer ").find(":submit").prop('disabled', false);
                 }
             });
