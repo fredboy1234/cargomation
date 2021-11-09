@@ -334,7 +334,7 @@
                             <tbody>
                             <?php 
                             if(empty($this->document)) {
-                                echo "<tr><td colspan='6'><center>No contact in the list</center></td></tr>";
+                                echo "<tr><td colspan='6'><center>No document in the list</center></td></tr>";
                             } else {                     
                                 foreach ($this->document as $key => $value) { 
                             ?>
