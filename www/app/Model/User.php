@@ -576,7 +576,7 @@ class User extends Core\Model {
         return $ip;  
     }  
 
-        /**
+    /**
      * Get User Log Instance: Get instance of a specified user log record in the database.
      * @access public
      * @param int $userID
@@ -661,6 +661,58 @@ class User extends Core\Model {
         $query = "SELECT * FROM vrpt_subaccount WHERE user_id = '{$user_id}'";
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
+    }
+
+    // Users default setting
+    public function defaultSettings($user, $role_id){
+
+        $userData = $this->getUserSettings($user);
+        $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
+        $doc_type = $this->getUserDocumentType($user, $role_id); 
+
+        $json_setting = '/settings/shipment-settings.json';
+
+        if($role_id == 4 && empty($doc_type)) {
+            $json_setting = '/settings/sub-shipment-settings.json';
+        }
+
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+        
+        $defaultCollection = array();
+        if(isset($userData) && !empty($userData)){
+            foreach($userData as $key => $value){
+                $defaultCollection[]=$value->index_value;
+            }
+        }
+        if(!empty($doc_type)){
+            $count = 10;
+            foreach ($doc_type as $key => $value) {
+                array_push($userData, (object)[
+                    'index_name' => $value->type,
+                    // 'index_value' => (string)$count++, // Explicit cast
+                    'index_value' => strval($count++), // Function call
+                    'index_check' => 'true',
+                    'index_lvl' => 'document'
+                ]);
+            }
+        } 
+        foreach($defaultSettings->table  as $key=> $value){
+            if(!empty($defaultCollection)){
+                if(!in_array($value->index_value,$defaultCollection)){
+                    $value->index_check = 'false';
+                    $userData[] = $value;
+                } 
+            }else{
+                $userData[] = $value;
+            }
+        }
+
+        if(!empty($this->getUserSettings($user)[0]->shipment)){
+            return $this->getUserSettings($user)[0]->shipment;
+        }else{
+            return json_encode($userData);    
+        }
+
     }
 
 }
