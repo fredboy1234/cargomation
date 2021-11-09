@@ -157,6 +157,12 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public static function updateDocumentType($data){
+        $Db = Utility\Database::getInstance();
+        $query = "UPDATE document SET type='{$data['doc_type']}' WHERE id='{$data['doc_id']}'";
+        return $Db->query($query)->results();
+    }
+
     public static function putDocumentComment($data) {
 
         $data['submitted_date'] = date("Y-m-d H:i:s");
