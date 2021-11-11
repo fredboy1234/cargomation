@@ -19,10 +19,17 @@ $(document).ready(function(){
 function tablueshipment(){
     $('.navshipment').addClass('show active');
     $('.navcontainer').removeClass('show active');
+    $('.navimport').removeClass('show active');
 }
 function tablueContainer(){
     $('.navcontainer').addClass('show active');
+    $('.navshipment').removeClass('show active');
+    $('.navimport').removeClass('show active');
+}
+function tablueImport(){
+    $('.navimport').addClass('show active');
     $('.navshipment').removeClass('show active'); 
+    $('.navcontainer').removeClass('show active');
 }
 function dashChart(id,bgcolor,data){
     var ctx = document.getElementById(id).getContext('2d');
