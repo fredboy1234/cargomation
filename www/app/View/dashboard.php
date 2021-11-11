@@ -833,7 +833,7 @@
                 <button onclick="tablueContainer()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navcontainer" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                 <i class="fas fa-box-open"></i> Total Count of Container Modes
                 </button>
-                <button onclick="tablueContainer()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navimport" data-bs-toggle="tab" data-bs-target="#nav-import" type="button" role="tab" aria-controls="nav-import" aria-selected="false">
+                <button onclick="tablueImport()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navimport" data-bs-toggle="tab" data-bs-target="#nav-import" type="button" role="tab" aria-controls="nav-import" aria-selected="false">
                 <i class="fas fa-box-open"></i> Import/Export
                 </button>
               </div>
