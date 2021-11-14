@@ -1541,5 +1541,5 @@ try{
 } 
 else{die("eAdaptor not found");}
 header("HTTP/1.1 200 OK");
-error_reporting(0);
+
 ?>
