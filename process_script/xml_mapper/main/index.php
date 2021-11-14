@@ -173,7 +173,7 @@ try{
 					if ($ifdocexistres === false) {
 					
 					$sqlInsertRecord = "INSERT INTO document
-					(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
+					(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src,is_published) Values
 					($ship_idlast,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}')";
 						$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
 						//$sql_getlastdocID = "SELECT IDENT_CURRENT('dbo.document') as document_id;";
@@ -249,7 +249,7 @@ try{
 
 					if ($ifdocexistres_ === false) {
 						$sqlInsertRecord = "INSERT INTO document
-						(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
+						(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src,is_published) Values
 						({$ship_idlast},'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}') SELECT SCOPE_IDENTITY() as ins_id ";
 						//$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
 						//$sql_getlastdocID = "SELECT SCOPE_IDENTITY() as ins_id ";
