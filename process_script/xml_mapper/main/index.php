@@ -6,7 +6,6 @@
 * - getArrayName()
 * - Base64_Decoder()
 */
-
 /* PROCESS FLOW*/
 require_once ('json.php');
 require_once ('jsonpath-0.8.1.php');
