@@ -1190,7 +1190,7 @@ try{
 
 				
 						$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_SUCCESS/";						
-						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
@@ -1520,7 +1520,7 @@ try{
 							}
 						}
 						 
-						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
