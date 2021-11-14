@@ -132,12 +132,14 @@ try{
 					$xpath_SavedUtc = jsonPath($json_xpathdoc, $path_AttachedDocument.".SaveDateUTC");
 					$xpath_SavedBy = jsonPath($json_xpathdoc, $path_AttachedDocument.".SavedBy.Code");
 					$xpath_SavedEventTime = jsonPath($json_xpathdoc, "$.Data.UniversalEvent.Event.EventTime");
+					$xpath_IsPublished = jsonPath($json_xpathdoc, $path_AttachedDocument.".IsPublished");
 					$SingleAttach_ctr = $parser->encode($xpath_AttachedCountSingle);
 					$SingleAttach_ctrb64 = $parser->encode($xpath_AttachedB64);
 					$DocType = $parser->encode($xpath_DocType);
 					$Saved_date = $parser->encode($xpath_SavedUtc);
 					$Saved_EventTime = $parser->encode($xpath_SavedEventTime);
 					$Saved_By = $parser->encode($xpath_SavedBy);
+					$IsPublished = $parser->encode($xpath_IsPublished);
 					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
 					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = getArrayName($SingleAttach_ctrb64);
@@ -145,6 +147,7 @@ try{
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
 					$get_Saved_By = node_exist(getArrayName($Saved_By));
 					$get_Saved_EventTime = node_exist(getArrayName($Saved_EventTime));
+					$get_IsPublished = node_exist(getArrayName($IsPublished));
 					
 					//CHECK IF FILE IS FROM HUB OR CW IF HAS CHARACTER OF ~			
 					$pos = strpos(strrev($get_Saved_By), '~', 1); 
@@ -172,7 +175,7 @@ try{
 					
 					$sqlInsertRecord = "INSERT INTO document
 					(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
-					($ship_idlast,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}')";
+					($ship_idlast,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}')";
 						$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
 						//$sql_getlastdocID = "SELECT IDENT_CURRENT('dbo.document') as document_id;";
 						//$execRecord_getlastdocID = sqlsrv_query($conn, $sql_getlastdocID);
@@ -199,14 +202,13 @@ try{
 				} 
 				else
 				{
-				
-
-
+		
 					$xpath_AttachedCountSingle = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].FileName");
 					$xpath_AttachedB64 = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].ImageData");
 					$xpath_DocType = jsonPath($json_xpathdoc,$path_AttachedDocument."[$attach].Type.Code");
 					$xpath_SavedUtc = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].SaveDateUTC");
 					$xpath_SavedBy = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].SavedBy.Code");
+					$xpath_IsPublished = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].IsPublished");
 					$xpath_SavedEventTime = jsonPath($json_xpathdoc, "$.Data.UniversalEvent.Event.EventTime");
 					$SingleAttach_ctr = $parser->encode($xpath_AttachedCountSingle);
 					$SingleAttach_ctrb64 = $parser->encode($xpath_AttachedB64);
@@ -214,6 +216,7 @@ try{
 					$Saved_date = $parser->encode($xpath_SavedUtc);
 					$Saved_EventTime = $parser->encode($xpath_SavedEventTime);
 					$Saved_By = $parser->encode($xpath_SavedBy);
+					$IsPublished = $parser->encode($xpath_IsPublished);
 					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
 					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = node_exist(getArrayName($SingleAttach_ctrb64));
@@ -221,6 +224,7 @@ try{
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
 					$get_Saved_By = node_exist(getArrayName($Saved_By));
 					$get_Saved_EventTime = node_exist(getArrayName($Saved_EventTime));
+					$get_IsPublished = node_exist(getArrayName($IsPublished));
 					
 					//CHECK IF FILE IS FROM HUB OR CW IF HAS CHARACTER OF ~			
 					$pos = strpos(strrev($get_Saved_By), '~', 1); 
@@ -247,7 +251,7 @@ try{
 					if ($ifdocexistres_ === false) {
 						$sqlInsertRecord = "INSERT INTO document
 						(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src ) Values
-						({$ship_idlast},'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}') SELECT SCOPE_IDENTITY() as ins_id ";
+						({$ship_idlast},'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}') SELECT SCOPE_IDENTITY() as ins_id ";
 						//$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
 						//$sql_getlastdocID = "SELECT SCOPE_IDENTITY() as ins_id ";
 						$execRecord_getlastdocID = sqlsrv_query($conn, $sqlInsertRecord);
@@ -727,13 +731,11 @@ try{
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"BookingStatus"=>$BOOKINGSTATUS);
 				}
 			
 				$routing = json_encode($items);
-				
-
-                
+				    
 
 				if ($CONTAINERctr == 1) {
 					$CONTAINERctr = 1;
@@ -1055,9 +1057,21 @@ try{
 								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
 								$DeliveryTruckWaitTime = node_exist(getArrayName($DeliveryTruckWaitTime));
 								
+								$XPATH_TOTALHEIGHT = jsonPath($universal_shipment, $path_ContainerCollection."[$c].TotalHeight");
+								$TOTALHEIGHT = $parser->encode($XPATH_TOTALHEIGHT);
+								$TOTALHEIGHT = node_exist(getArrayName($TOTALHEIGHT));
+
+								$XPATH_TOTALLENGTH = jsonPath($universal_shipment, $path_ContainerCollection."[$c].TotalLength");
+								$TOTALLENGTH = $parser->encode($XPATH_TOTALLENGTH);
+								$TOTALLENGTH = node_exist(getArrayName($TOTALLENGTH));
+
+								$XPATH_TOTALWIDTH = jsonPath($universal_shipment, $path_ContainerCollection."[$c].TotalWidth");
+								$TOTALWIDTH = $parser->encode($XPATH_TOTALWIDTH);
+								$TOTALWIDTH = node_exist(getArrayName($TOTALWIDTH));
+								
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
+								Values('".$ship_idlast."','" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
 
 							}
@@ -1168,15 +1182,15 @@ try{
 								$TOTALWIDTH = node_exist(getArrayName($TOTALWIDTH));
 								
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
+								Values('".$ship_idlast."','" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
 							}
 						}
 
 				
 						$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_SUCCESS/";						
-						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
@@ -1506,7 +1520,7 @@ try{
 							}
 						}
 						 
-						process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
+						//process_shipment($SHIPMENTKEY,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code);
 						if(!file_exists($destination_path.$filename)){
 						rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 						file_log($SHIPMENTKEY,$filename,$CLIENT_ID);
