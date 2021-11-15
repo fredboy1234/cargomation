@@ -131,7 +131,7 @@ $(document).ready(function () {
                       key.toUpperCase() + '<span class="float-right">' + obj[key].toFixed(2) + '%</span>' + 
                       '</span>' +
                       '</li>';
-                      option += '<option value="<?= strtoupper($key); ?> ">' +
+                      option += '<option value="' + key.toUpperCase() + '">' +
                       key.toUpperCase() + ' (' + obj[key].toFixed(2) + '%)' +
                       '</option>';
                     });
