@@ -270,7 +270,7 @@ class Shipment extends Core\Model {
 
     public static function getShipmentDynamic($user_id, $arg = "*", $condition = "", $customer = false) {
         if(is_bool($customer))
-            $where = " WHERE shipment.user_id = '{$user_id}' ";
+            $where = " WHERE shipment.user_id =  '{$user_id}' ";
         else 
             $where = " WHERE (shipment.consignee = '{$customer}' OR shipment.consignor = '{$customer}')";
             
