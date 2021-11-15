@@ -76,7 +76,9 @@ class Document extends Core\Model {
         return $Db->query("SELECT * 
                                 FROM document 
                                 LEFT JOIN document_status ON document.id = document_status.document_id
-                                WHERE document_status.status != 'deleted' AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
+                                WHERE document_status.status != 'deleted' 
+                                AND document.is_published = 'true'
+                                AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
     }
 
     public static function getDocumentByShipID($shipment_id, $args = "*") {
