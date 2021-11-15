@@ -60,6 +60,12 @@ class Transport extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
         $role = $Role->getUserRole($user);
+        if($role->role_id > 2) {
+            $sub_account = $User->getSubAccountInfo($user);
+            $user_key = $sub_account[0]->account_id;
+        } else {
+            $user_key = $user;
+        }
 
         //$shipment_id = $this->Shipment->getShipment($user, "shipment_num");
         if($role == 'user'){
@@ -110,7 +116,7 @@ class Transport extends Core\Controller {
             //"document" => $this->Document->getDocumentByShipment($shipment_id),
             //"document_per_type" => $docsCollection,
             //"child_user" => Model\User::getUsersInstance($user),
-            "user_settings" =>$this->defaultSettings($user),
+            "user_settings" =>$User->defaultSettings( $user_key , $role->role_id),
             "settings_user" => $User->getUserSettings($user),
             //"client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
