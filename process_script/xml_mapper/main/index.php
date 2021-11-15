@@ -930,7 +930,7 @@ try{
 			}
 						
 				for ($b = 0; $b <= $OrganizationAddress_ctr1 - 1; $b++) {
-					    $XPATH_COMPANYNAME = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$a].OrganizationCode");
+					    $XPATH_COMPANYNAME = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].OrganizationCode");
 						$ADDRESSTYPE = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].AddressType");
 						$EMAIL = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].Email");
 						$XPATH_EMAIL_GLOBAL_ = $parser->encode($EMAIL);
@@ -941,7 +941,7 @@ try{
 						$PATH_ADDRESSTYPE_ = node_exist(getArrayName($PATH_ADDRESSTYPE_));
 						
 						
-						$XPATH_COMPANY_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$a].CompanyName");
+						$XPATH_COMPANY_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].CompanyName");
 						$XPATH_COMPANY_ = $parser->encode($XPATH_COMPANY_);
 						$XPATH_COMPANY_ = node_exist(getArrayName($XPATH_COMPANY_));
 					
@@ -1247,7 +1247,7 @@ try{
 			}
 						
 				for ($b = 0; $b <= $OrganizationAddress_ctr1 - 1; $b++) {
-						$XPATH_COMPANYNAME_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$a].OrganizationCode");
+						$XPATH_COMPANYNAME_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].OrganizationCode");
 						$ADDRESSTYPE_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].AddressType");
 						$EMAIL_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].Email");
 						$XPATH_EMAIL_GLOBAL_ = $parser->encode($EMAIL_);
@@ -1259,7 +1259,7 @@ try{
 						$PATH_ADDRESSTYPE_ = $parser->encode($ADDRESSTYPE_);
 					    $PATH_ADDRESSTYPE_ = node_exist(getArrayName($PATH_ADDRESSTYPE_));
 						
-						$XPATH_COMPANY_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$a].CompanyName");
+						$XPATH_COMPANY_ = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].CompanyName");
 						$XPATH_COMPANY_ = $parser->encode($XPATH_COMPANY_);
 						$XPATH_COMPANY_ = node_exist(getArrayName($XPATH_COMPANY_));
 						
