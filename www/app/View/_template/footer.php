@@ -319,13 +319,13 @@ $(document).ready(function(){
   // });
 
   var icon = L.divIcon({
-  iconSize: [30, 30],
-  iconAnchor: [30, 30],
-  popupAnchor: [10, 0],
-  shadowSize: [0, 0],
-  className: 'animated-icon my-icon',
-  html: 'test'
-});
+    iconSize: [30, 30],
+    iconAnchor: [30, 30],
+    popupAnchor: [10, 0],
+    shadowSize: [0, 0],
+    className: 'animated-icon my-icon',
+    html: 'test'
+  });
 
   var route = L.featureGroup().addTo(map);
   var countLoading = [];
@@ -338,8 +338,6 @@ $(document).ready(function(){
     var discharge = oval.port_discharge;
     var loadingLoc = [];
     var dischargeLoc = [];
-
-   
 
     var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){
      
@@ -428,13 +426,13 @@ $(document).ready(function(){
       //route.addLayer(marker2);
       //route.addLayer(line);
       markerarr.push(marker);
+      
     });
     
   });
   setTimeout(function(){
     var group = L.featureGroup(markerarr); 
     map.fitBounds(group.getBounds());
-  
   },2000);
   
   // var greenIcon = L.icon({
