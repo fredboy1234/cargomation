@@ -343,6 +343,11 @@ class Document extends Core\Controller {
                     
                     // save to database
                     $this->putDocumentByShipment($shipment_num, $type, $fileName);
+                    // if requestToken cookie is exist
+                    if(Utility\Cookie::exist("requestToken")) {
+                        $requestToken = Utility\Cookie::get("requestToken");
+                        $Document->putRequestedStatus("done", $requestToken);
+                    }
                 } else {
                     $errors[] = $fileName;
                 }
