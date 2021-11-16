@@ -25,7 +25,8 @@
 <?php //var_dump($this->document); die(); ?>
 <section class="content">
     <div class="container-fluid">
-        <div class="card card-default collapsed-card">
+        <?php if(false): ?> 
+        <div class="card card-default collapsed-card d-none">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
@@ -302,7 +303,7 @@
             </div>
             <!-- /.card-footer -->
         </div>
-
+        <?php endif; ?> 
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -419,10 +420,3 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
-<script>
-    var userData = <?php echo json_encode($settings); ?>;
-    var userReset = <?php echo json_encode($this->user); ?>;
-    var userrole = <?php echo json_encode($this->role) ?>;
-    var theme = <?php echo json_encode($this->selected_theme) ?>;
-</script>

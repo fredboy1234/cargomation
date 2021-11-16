@@ -54,8 +54,8 @@ class Document extends Core\Model {
 
         $Db = Utility\Database::getInstance();
         // echo "INSERT INTO document (" . $column . ") VALUES ('" . $value . "')";
-        $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src)
-        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "') ");
+        $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src, is_published)
+        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "', true) ");
 
         $last_inserted = $Db->query("SELECT @@IDENTITY AS id")->results();
 
@@ -76,7 +76,9 @@ class Document extends Core\Model {
         return $Db->query("SELECT * 
                                 FROM document 
                                 LEFT JOIN document_status ON document.id = document_status.document_id
-                                WHERE document_status.status != 'deleted' AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
+                                WHERE document_status.status != 'deleted' 
+                                AND document.is_published = 'true'
+                                AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
     }
 
     public static function getDocumentByShipID($shipment_id, $args = "*") {

@@ -228,13 +228,13 @@ class Docdeveloper extends Core\Controller {
         $result = $Document->learnDocumentType($file[0]->name, $file_old_path, $new_type);
 
         if(!is_null($result->files[0]->type)) {
-            $doc_type = $result->files[0]->type;
+            $doc_type = strtoupper($result->files[0]->type);
             // NEW PATH
             $file_new_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$doc_type."/" . $file[0]->name;
             // MOVE FILE TO NEW PATH
             rename($file_old_path, $file_new_path);
 
-            $data['doc_type'] = $type;
+            $data['doc_type'] = $doc_type;
             $data['doc_id'] = $doc_id;
 
             // update database
