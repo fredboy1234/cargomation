@@ -421,7 +421,8 @@ class Vessel extends Core\Controller {
         $confirmed = 0;
         $doublechecker = array();
         
-        //$json_data = array();
+        $json_data = array();
+       
         if(!empty($vessel)){
             foreach($vessel as $key=>$ves){
                 $firstDesleg=$firstVesleg=
