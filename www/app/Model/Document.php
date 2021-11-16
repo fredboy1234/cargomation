@@ -300,6 +300,14 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getRequestedDocumentByToken($token) {
+        $query = "SELECT *
+        FROM document_request
+        WHERE token = '{$token}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }    
+
     public function putRequestedStatus($status, $token) {
         $query = "UPDATE document_request SET status = '{$status}'
         WHERE token = '{$token}'";
