@@ -87,7 +87,7 @@
               <div class="icon">
                 <i class="ion ion-cube text-dark"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/doctracker" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
