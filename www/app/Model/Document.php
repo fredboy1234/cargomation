@@ -274,12 +274,37 @@ class Document extends Core\Model {
         FROM document_request
         WHERE request_type = 'new' 
         AND user_id = {$user_id}
-        AND status IS NULL";
+        AND (status IS NULL OR status != 'done')";
         if(!empty($group_by)) {
             $query .= " GROUP BY " . $group_by;
         }
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
+    }
+
+    // update document request 
+    public function putRequestedDocument($data, $token) {
+        $status = $data['status'];
+        $doc_id = $data['doc_id'];
+        $query = "UPDATE document_request SET status = '{$status}'
+        WHERE token = '{$token}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getRequestedStatus($token) {
+        $query = "SELECT status
+        FROM document_request
+        WHERE token = '{$token}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function putRequestedStatus($status, $token) {
+        $query = "UPDATE document_request SET status = '{$status}'
+        WHERE token = '{$token}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->error();
     }
 
     /**
