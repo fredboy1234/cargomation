@@ -681,6 +681,25 @@ class Doctracker extends Core\Controller {
     public function request($shipment_id = "", $doc_type = "", $requestToken = "") {
 
         if(isset($requestToken) && !empty($requestToken)) {
+            $Document = new Model\Document();
+            $checkStatus = $Document->getRequestedStatus($requestToken);
+
+            if(!empty($checkStatus)) { // check if result array is empty
+                if(is_null($checkStatus[0]->status)) {
+                    $Document->putRequestedStatus("opened", $requestToken);
+                } else {
+                    $requestDocument = $Document->getRequestedDocumentByToken($requestToken);
+                    $expired_date = date("Y-m-d H:i:s", strtotime($requestDocument[0]->expired_date));
+                    $now_date = date("Y-m-d H:i:s");
+
+                    if ($expired_date < $now_date)
+                        die("Your request token has expired!");
+                }
+            } else {
+                echo "Can't process the token. Please contact administrator.";
+                echo '<br> Go to <a href="/dashboard">dashboard</a>';
+                die();
+            }
             $redirectLink = 'doctracker?request=true&shipment_num='.$shipment_id.'&type='.$doc_type;
 
             Utility\Cookie::put("redirectLink", $redirectLink, 3600);
