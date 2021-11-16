@@ -391,10 +391,15 @@ $(document).ready(function(){
       icon.options.className = ' animated-icon my-icon seacol '+outClass+' ' ;
 
     }
+    
+    if(typeof(loadingLoc[0]) !== 'undefined'){
       var marker = L.marker(loadingLoc[0],{icon: icon}).bindPopup(
                   '<div class="text-center">'
                   +'<a href="/doctracker?pol='+oval.port_loading+'">POL:'+oval.port_loading+'</a><br>'
                   +'<span>Count:'+pcount+'</span><br>');
+    }
+      
+            
       // var marker2 =  L.marker(dischargeLoc[0],{icon: icon}).bindPopup(
       //   '<div class="text-center">'
       //   +'<br>'
