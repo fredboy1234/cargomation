@@ -54,8 +54,8 @@ class Document extends Core\Model {
 
         $Db = Utility\Database::getInstance();
         // echo "INSERT INTO document (" . $column . ") VALUES ('" . $value . "')";
-        $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src)
-        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "') ");
+        $Db->query("INSERT INTO document (shipment_id, shipment_num, type, name, saved_by, saved_date, event_date, path, upload_src, is_published)
+        VALUES ('" . $data['shipment_id'] . "','" . $data['shipment_num'] . "','" . $data['type'] . "','" . $data['name'] . "', '', getdate(), getdate(),'','" . $data['upload_src'] . "', true) ");
 
         $last_inserted = $Db->query("SELECT @@IDENTITY AS id")->results();
 
