@@ -435,7 +435,7 @@ class Shipment extends Core\Controller {
         }
 
         // Get all requested document type
-        $requested_doc = $this->Document->getRequestedDocument($user, "shipment_num, document_type");
+        $requested_doc = $this->Document->getRequestedDocument($user_key, "shipment_num, document_type");
         // Reconstruct arry object to multidimensional array
         foreach ($requested_doc as $key => $value) {
             $requested_doc[$key] = [
