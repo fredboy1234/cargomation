@@ -220,18 +220,18 @@
 ?>
 <?php foreach($vesseldata as $vdata){
     $date_now = new DateTime();
-    $timedate    = new DateTime($vdata->date_track);
+    $timedate    = new DateTime($vdata->ata);
     
     if ($timedate < $date_now) {
        // $loadingPercentage +=$aveLoading; 
-        $vesselName = $vdata->vessel;
+        $vesselName = $vdata->vessel_name;
     }
 
     if($count == 1){
-        $origin = $vdata->location_city;
+        $origin = $vdata->port_loading;
     }
     if($count == $timelineLength){
-        $destination = $vdata->location_city;
+        $destination = $vdata->port_discharge;
     }
    
     $count++;
@@ -239,9 +239,9 @@
 <?php $searates = $this->searatesTracking;?>
 <?php if(!empty($searates[0])){
     //$searates = json_decode($searates[0]->sea_json);
-    $searates = json_decode($searates);
+    //$searates = json_decode($searates);
 }?>
-
+ 
 <section class="content">
         <div class="container-fluid">
         <a href="/vessel">Show List Of Vessel</a>
@@ -333,7 +333,10 @@
                                 </div>          
                                 <!-- END timeline item -->
                             <?php } ?>
-                        <?php } ?>     
+                        <?php }else{ echo"tew";?> 
+                            
+                        <?php } ?> 
+                         
                     </div>
                     <hr>
                         <h6>Legend:</h6><br>
@@ -392,4 +395,6 @@
     var datapolyline = <?=json_encode($this->polyline)?>;
     var vnum = <?=json_encode($this->vesselnum)?>;
     var searates =<?=json_encode($searates)?>;
+    //console.log($searates);
+    alert();
 </script>

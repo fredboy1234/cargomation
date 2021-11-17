@@ -227,28 +227,30 @@ class Vessel extends Core\Controller {
         $t=0;
         $c_flag=array();
         $vesseeldata = $this->Vessel->getVesselByNumber($vessel_number,$user);
-
-        foreach($vesseeldata as $ot){
-            // if($t==0){
-            //     $ot->date_track = '2021-05-28 11:31:00';
-            // }
-            if(strtotime($ot->date_track) < strtotime(date("Y-m-d h:i:s"))){
-                $color_code_vessel['before'][] =  $ot;
-            }else{
-                $color_code_vessel['after'][] = $ot;
-            } 
+        // echo"<pre>";
+        // print_r($vesseeldata);
+        // exit;
+        // foreach($vesseeldata as $ot){
+        //     // if($t==0){
+        //     //     $ot->date_track = '2021-05-28 11:31:00';
+        //     // }
+        //     if(strtotime($ot->ata) < strtotime(date("Y-m-d h:i:s"))){
+        //         $color_code_vessel['before'][] =  $ot;
+        //     }else{
+        //         $color_code_vessel['after'][] = $ot;
+        //     } 
            
-            $port_array = $this->Vessel->getSeaPort($ot->location_city);
-            if(!empty($port_array)){
-                $country = explode(",",$port_array[0]->port_name);
-                $country_flag = $this->getFlag(trim(end($country)));
-                $c_index = preg_replace('/\s*/', '', $ot->location_city);
-                $c_flag[strtolower($c_index)][]=json_decode($country_flag)[0]->flag;
+        //     $port_array = $this->Vessel->getSeaPort($ot->location_city);
+        //     if(!empty($port_array)){
+        //         $country = explode(",",$port_array[0]->port_name);
+        //         $country_flag = $this->getFlag(trim(end($country)));
+        //         $c_index = preg_replace('/\s*/', '', $ot->location_city);
+        //         $c_flag[strtolower($c_index)][]=json_decode($country_flag)[0]->flag;
                 
-            }
+        //     }
            
-            $t++;        
-        }
+        //     $t++;        
+        // }
         $searates  = 'empty';
     //    if(!isset($_SESSION['searates']) && empty($_SESSION['searates'])){    
     //        $searates = ''; //file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=ANNU&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
@@ -257,7 +259,8 @@ class Vessel extends Core\Controller {
     //        $_SESSION['tracking'] = $tracking;
     //     }
             $_SESSION['searates']=  $this->searatesRoute($vessel_number);
-            $cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+            
+            //$cont= file_get_contents('https://tracking.searates.com/container?number='.$vessel_number.'&sealine=auto&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
             // if(isset($_SESSION['searates'])){
             //     if($_SESSION['searates']->message ==='OK'){
             //         if(!empty($_SESSION['searates']->data)){
@@ -282,7 +285,7 @@ class Vessel extends Core\Controller {
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
-            "searatesTracking" =>$cont , //$this->Vessel->getSearatesByID($vessel_number),
+            "searatesTracking" =>$vesseeldata , //$this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
             "menu" => Model\User::getUserMenu($role->role_id)
         ]);
