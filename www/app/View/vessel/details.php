@@ -228,7 +228,7 @@
     }
 
     if($count == 1){
-        $origin = $vdata->port_loading;
+        $origin = $vdata->port_loading; 
     }
     if($count == $timelineLength){
         $destination = $vdata->port_discharge;
