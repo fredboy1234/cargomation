@@ -205,7 +205,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
             <!-- small box -->
             <div class="small-box box-search" id="pending">
               <div class="inner">
-                <h3 class="text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
+                <h3 class="date text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
 
                 <p>Pending Transhipment </p>
               </div>
