@@ -1,7 +1,9 @@
 jQuery(document).ready(function() {
+  console.log(searates);
     var groupColumn = 0;
     var indexCollection = [];
     var earlyCheck = [];
+    var greq = 'https://maps.googleapis.com/maps/api/geocode/json?address=cebu&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
     $('.table thead th').each( function () {
       var title = $(this).text();
       //console.log(title);
@@ -394,7 +396,7 @@ jQuery(document).ready(function() {
       subdomains: 'abcd',
       accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
     }).addTo(mymap);
-    
+   
     //set marker and popup
     $.each(searates.data.locations,function(key,val){
         polyArray.push([val.lat,val.lng]);
