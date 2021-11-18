@@ -145,4 +145,16 @@ class Api extends Core\Controller {
     // DELETE
     public function delete() { } 
 
+    // save searates every 24 hours
+    public function seaRates(){
+        
+        $this->header();
+
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = explode( '/', $uri );
+
+        $sea = new Vessel();
+        print_r($sea->seaRatesToDB());
+    }
+
 }

@@ -239,7 +239,7 @@
 <?php $searates = $this->searatesTracking;?>
 <?php if(!empty($searates[0])){
     //$searates = json_decode($searates[0]->sea_json);
-    //$searates = json_decode($searates);
+    //$searates = json_decode($searates); 
 }?>
  
 <section class="content">

@@ -43,7 +43,7 @@ class Vessel extends Core\Model {
     }
 
     public static function getVesselByNumber($vessel_number,$user_id){
-        $Db = Utility\Database::getInstance();
+        $Db = Utility\Database::getInstance(); 
         // return $Db->query("SELECT * 
         //                         FROM transhipment b
         //                         LEFT JOIN users ON users.id = b.user_id
