@@ -216,7 +216,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
             </div>
           </div>
           <!-- ./col -->
-        </div>
+        </div> 
         <div class="card card-default collapsed-card f">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
