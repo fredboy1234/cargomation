@@ -240,6 +240,7 @@
 <?php if(!empty($searates[0])){
     //$searates = json_decode($searates[0]->sea_json);
     //$searates = json_decode($searates); 
+  
 }?>
  
 <section class="content">
@@ -263,7 +264,7 @@
                         </span>
                     </div>         
                     <div class="timeline timeline-inverse">
-                        <?php if($searates->message =="OK" && !empty($searates->data)){?>
+                        <?php if(!empty($searates->data) && $searates->message =="OK"){?>
                             <?php foreach($searates->data->locations as $vessel){ ?>
                                
                                 <div class="time-label">
@@ -383,6 +384,7 @@
         }
     }';
 ?>
+
 <?php $rr = json_decode($routemap);?>
 <script>
     var mapToken = <?php echo json_encode($this->mapToken);?>;
