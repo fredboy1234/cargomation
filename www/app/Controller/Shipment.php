@@ -458,12 +458,12 @@ class Shipment extends Core\Controller {
             $status_arr['all']['count'] = 0;
             $status_arr["all"]["color"] = "badge-default";
             $status_arr["all"]["text"] = "Empty";
-            $marcoLink = 'href="#"';
+            $marcoLink = '';
             
             # Initialize macro_link from shipment_link
             foreach ($shipment_link as $key => $link) {
                 if($value->shipment_num === $link->shipment_num) {
-                    $marcoLink = 'href="' . $link->macro_link . '"';
+                    $marcoLink = $link->macro_link;
                 }
             }
             
@@ -560,8 +560,19 @@ class Shipment extends Core\Controller {
 
             $subdata = array();
             $subdata['real_id_shipment'] = $value->id;
-            $subdata['shipment_id'] = '<a '.$marcoLink.' class="macro" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
-            $subdata['shipment_id'] .= '<a href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+            #$subdata['shipment_id'] = '<a '.$marcoLink.' class="macro" data-ship-id="'.$value->id.'">'.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num)."</a>";
+            #$subdata['shipment_id'] .= '<a href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+            $subdata['shipment_id'] = '
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              '.(is_null($value->shipment_num)?$value->ex_shipment_num:$value->shipment_num).'
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\'' . $marcoLink. '\')" data-ship-id="'.$value->id.'"> Open Cargowise </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')">Information <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+              </div>
+            </div>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
             $subdata['eta'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
             $subdata['etd'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
