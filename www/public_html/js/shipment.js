@@ -498,13 +498,13 @@ $(document).ready(function () {
     //table.ajax.reload();
   });
 
-  $(document).on('click', 'tr td', function (e) {
-    var cl = $(e.target).attr("class");
-    var indx = $(this).index();
-    // if(cl.indexOf('macro') >=0 && indx == 0){
-    //   $('tbody').find('tr.child').remove();
-    // }
-  });
+  // $(document).on('click', 'tr td', function (e) {
+  //   var cl = $(e.target).attr("class");
+  //   var indx = $(this).index();
+  //   // if(cl.indexOf('macro') >=0 && indx == 0){
+  //   //   $('tbody').find('tr.child').remove();
+  //   // }
+  // });
 
   //reset settings
   $(document).on('click', '#reset-settings', function () {
@@ -745,4 +745,20 @@ function showInfo(shipment_num) {
   });
 
   $('button#request').toggle();
+}
+
+function macroLink(link) {
+  Swal.fire({
+    title: "This action will open CargoWise",
+    text: "Please make sure you already installed it?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: `Open CargoWise`,
+  }).then((willDelete) => {
+    if (willDelete) {
+      window.location.href = link;
+    } else {
+      Swal.fire("You cancel your action!");
+    }
+  });
 }
