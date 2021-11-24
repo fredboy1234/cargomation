@@ -397,6 +397,6 @@
     var datapolyline = <?=json_encode($this->polyline)?>;
     var vnum = <?=json_encode($this->vesselnum)?>;
     var searates =<?=json_encode($searates)?>;
-    //console.log($searates);
-    alert();
+    console.log($searates);
+    
 </script>
