@@ -3,7 +3,6 @@ jQuery(document).ready(function() {
     var groupColumn = 0;
     var indexCollection = [];
     var earlyCheck = [];
-    var greq = 'https://maps.googleapis.com/maps/api/geocode/json?address=cebu&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
     $('.table thead th').each( function () {
       var title = $(this).text();
       //console.log(title);
@@ -386,7 +385,54 @@ jQuery(document).ready(function() {
         $(".vesselname").addClass("d-none");
       },3000);
     });
-  
+
+    if(typeof searates.data !== 'undefined'){
+     
+        //set marker and popup
+        $.each(searates.data.locations,function(key,val){
+          polyArray.push([val.lat,val.lng]);
+          L.marker([val.lat,val.lng]).bindPopup(
+              '<div class="text-center">'
+              +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
+              +'<span>'+val.name+", "+val.country+'</span><br>'
+              +'<a href="/vessel/tracking?'+vnum+'" class="btn btn-success text-white">Live Tracking</a>'
+              +'</div>'
+          ).addTo(mymap);
+      });
+    }else{
+      var gkey = '&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
+      var gaddress = 'address=';
+      var greq = 'https://maps.googleapis.com/maps/api/geocode/json?';
+      $.each(searates,function(okey,oval){
+        var legorder = JSON.parse(oval.route_leg);
+        var legcollection =[];
+
+        console.log(legorder);
+        $.each(legorder, function(legkey,legval){
+          legcollection.push(legval.Destination,legval.Origin);
+          $.each(legcollection,function(colkey,colval){
+              $.get(greq+'address='+colval+gkey, function(data){  
+                if(data.status == 'OK'){
+                 var lat = data.results[0].geometry.location.lat;
+                 var long = data.results[0].geometry.location.lng;
+                  polyArray.push([lat,long]);
+                  L.marker([lat,long]).bindPopup(
+                      '<div class="text-center">'
+                      +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
+                      +'<span>Origin: '+legval.Origin+'</span><br>'
+                      +'<span>Destination: '+legval.Destination+'</span><br>'
+                      +'<span>Vessel Name:  '+legval.VesselName+'</span><br>'
+                      +'</div>'
+                  ).addTo(mymap);
+                }
+              });
+          });
+          legcollection = [];
+        });
+      });
+    }
+
+
     var mymap = L.map('mapid',{zoomControl:false}).setView([10.3130247, 123.9471531], 5);
     var polyArray = [];
     L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
@@ -397,17 +443,7 @@ jQuery(document).ready(function() {
       accessToken: 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC'
     }).addTo(mymap);
    
-    //set marker and popup
-    $.each(searates.data.locations,function(key,val){
-        polyArray.push([val.lat,val.lng]);
-        L.marker([val.lat,val.lng]).bindPopup(
-            '<div class="text-center">'
-            +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
-            +'<span>'+val.name+", "+val.country+'</span><br>'
-            +'<a href="/vessel/tracking?'+vnum+'" class="btn btn-success text-white">Live Tracking</a>'
-            +'</div>'
-        ).addTo(mymap);
-    });
+   
     
     //set green line
     var polyline = L.polyline(polyArray
@@ -488,3 +524,4 @@ jQuery(document).ready(function() {
 //       alert('ter');
 //   }
 // }); 
+console.log(searates);
