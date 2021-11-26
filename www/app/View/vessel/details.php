@@ -265,7 +265,7 @@
                     </div>         
                     <div class="timeline timeline-inverse">
                         <?php if(!isset($searates->data)){ exit;?>
-                            
+                             
                         <?php } ?>
                         <?php if(!empty($searates->data) && $searates->message =="OK"){?>
                             <?php foreach($searates->data->locations as $vessel){ ?>
