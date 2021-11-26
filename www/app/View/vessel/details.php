@@ -258,7 +258,7 @@
                             <h6>Actual</h6>
                         </span>
                     </div>         
-                    <div class="timeline timeline-inverse">
+                    <div class="timeline timeline-inverse rev">
                         <?php if(!isset($searates->data)){ ?>
                                 <?php foreach($searates as $srate){?>
                                     <?php $rleg = json_decode($srate->route_leg)?>
