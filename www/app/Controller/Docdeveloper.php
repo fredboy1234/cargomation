@@ -164,7 +164,8 @@ class Docdeveloper extends Core\Controller {
         // URL: https://cargomation.com/filemanager/cto@mail.com/CW_FILE/S00001055/MSC/Coversheet%20-%20S00001055.pdf
         $file_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
 
-        $file_stat = $Document->checkDocumentType($file[0]->name, $file_path);
+        #$file_stat = $Document->checkDocumentType($file[0]->name, $file_path);
+        $file_stat = $Document->getDocumentRank($doc_id);
 
         $this->View->renderWithoutHeaderAndFooter("/docdeveloper/view", [
             "title" => "Developer Viewer",
@@ -239,6 +240,7 @@ class Docdeveloper extends Core\Controller {
 
             // update database
             $Document->updateDocumentType($data);
+            $Document->updateDocumentRank($doc_id, $result);
         }
 
         // $response['status_code_header'] = 'HTTP/1.1 200 OK';
