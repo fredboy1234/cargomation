@@ -165,13 +165,13 @@ class Docdeveloper extends Core\Controller {
         $file_path = "E:/A2BFREIGHT_MANAGER/".$email."/CW_FILE/".$file[0]->shipment_num."/".$file[0]->type."/" . $file[0]->name;
 
         #$file_stat = $Document->checkDocumentType($file[0]->name, $file_path);
-        $file_stat = $Document->getDocumentRank($doc_id);
+        $file_stat = $Document->getDocumentRank($doc_id)[0]->result;
 
         $this->View->renderWithoutHeaderAndFooter("/docdeveloper/view", [
             "title" => "Developer Viewer",
             "doc_id" => $doc_id,
             "user_id" => $user_id,
-            "file_stat" => $file_stat,
+            "file_stat" => json_decode($file_stat),
             "doc_type" => $doc_type,
         ]);
     }
