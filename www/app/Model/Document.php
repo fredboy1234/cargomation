@@ -462,4 +462,10 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function updateDocumentRank($doc_id, $json_encode) {
+        $query = "UPDATE document_rank SET result = '{$json_encode}' WHERE document_id = '{$doc_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
 }
