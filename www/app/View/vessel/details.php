@@ -250,14 +250,7 @@
                     <!-- The timeline -->
                     <h5 class="mb-2">Port Calls</h5>
                     <hr>
-                    <div class="row">
-                        <span class="col-md-5 d-inline-block text-center">
-                            <h6>Estimated</h6>
-                        </span>
-                        <span class="col-md-5 d-inline-block text-center">
-                            <h6>Actual</h6>
-                        </span>
-                    </div>         
+                         
                     <div class="timeline timeline-inverse rev">
                         <?php if(!isset($searates->data)){ ?>
                                 <?php foreach($searates as $srate){?>
@@ -270,7 +263,7 @@
                                                 </span>
                                             </div>
                                             <div class="timeline-body pl-5">
-                                                <span>Port of Loading: <?php echo $r->Origin;?></span>
+                                                <span>Port of Loading: <?php echo $r->Origin;?></span><br>
                                                 <span>Port of Discharge: <?php echo $r->Destination;?></span>
                                             </div>
                                         </div>
@@ -280,7 +273,6 @@
                         <?php }else{ ?>
                             <?php if(!empty($searates->data) && $searates->message =="OK"){?>
                                 <?php foreach($searates->data->locations as $vessel){ ?>
-                                
                                     <div class="time-label">
                                         <div class="head-list timeline-header">
                                             <span class="col-md-8 d-inline-block">
@@ -353,10 +345,7 @@
                             <?php } ?> 
                         <?php } ?>
                     </div>
-                    <hr>
-                        <h6>Legend:</h6><br>
-                        <span>Prepol: <strong> Port of Dispatch</strong></span> | <span>Pol: <strong> Port of Loading</strong></span><br>
-                        <span>Pod: <strong> Port of Port Of Discharge</strong></span> | <span>Postpod: <strong> Destination/Final</strong></span> 
+                    
                     </div>
                 </div>
             </div>
