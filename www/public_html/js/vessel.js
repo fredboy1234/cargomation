@@ -1,8 +1,9 @@
 jQuery(document).ready(function() {
-  console.log(searates);
+  
     var groupColumn = 0;
     var indexCollection = [];
     var earlyCheck = [];
+    var polyArray = [];
     $('.table thead th').each( function () {
       var title = $(this).text();
       //console.log(title);
@@ -259,7 +260,6 @@ jQuery(document).ready(function() {
                         }
                     });
                     
-                    console.log(earlyCheck);
                     $.each(eventObj,function(ekey,eval){
                       var tbletd = '';
                       var datehandler = '';
@@ -415,15 +415,17 @@ jQuery(document).ready(function() {
                 if(data.status == 'OK'){
                  var lat = data.results[0].geometry.location.lat;
                  var long = data.results[0].geometry.location.lng;
-                  polyArray.push([lat,long]);
-                  L.marker([lat,long]).bindPopup(
-                      '<div class="text-center">'
-                      +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
-                      +'<span>Origin: '+legval.Origin+'</span><br>'
-                      +'<span>Destination: '+legval.Destination+'</span><br>'
-                      +'<span>Vessel Name:  '+legval.VesselName+'</span><br>'
-                      +'</div>'
-                  ).addTo(mymap);
+                 
+                    polyArray.push([lat,long]);
+                    L.marker([lat,long]).bindPopup(
+                        '<div class="text-center">'
+                        +'<img class="img-thumbnail" src="https://www.myshiptracking.com/requests/getimage-small/271045135.jpg"><br><br>'
+                        +'<span>Origin: '+legval.Origin+'</span><br>'
+                        +'<span>Destination: '+legval.Destination+'</span><br>'
+                        +'<span>Vessel Name:  '+legval.VesselName+'</span><br>'
+                        +'</div>'
+                    ).addTo(mymap);
+                  
                 }
               });
           });
@@ -432,9 +434,47 @@ jQuery(document).ready(function() {
       });
     }
 
-
     var mymap = L.map('mapid',{zoomControl:false}).setView([10.3130247, 123.9471531], 5);
-    var polyArray = [];
+    //set sidebar map
+    var sidebar = L.control.sidebar('sidebar', {
+      closeButton: true,
+      position: 'left'
+    });
+    mymap.addControl(sidebar);
+    sidebar.setContent($("#timeline").html());
+    
+    setTimeout(function () {
+      sidebar.show();
+    }, 1000);
+
+    sidebar.on('show', function () {
+      $("#refreshButton").addClass('d-none');
+    });
+
+    $("#refreshButton").on('click',function(){
+      sidebar.show();
+    });
+
+    sidebar.on('hidden', function () {
+      $("#refreshButton").removeClass('d-none');
+    });
+
+    mymap.on('click',function(){
+      sidebar.hide();
+    });
+
+    $('.showmore').on('click',function(){
+      var att = $(this).attr('data-show').replace(" ","");
+      setTimeout(function(){
+        if($('#'+att).hasClass('d-none')){
+          $('#'+att).removeClass('d-none');
+          $(this).text('hide &#94;');
+        }else{
+          $('#'+att).addClass('d-none');
+          $(this).text('Show More ');
+        }
+      },50); 
+    });
     L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC', {
       attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       minZoom: 0,
@@ -473,46 +513,7 @@ jQuery(document).ready(function() {
   
     mymap.addLayer(animationMarker );
 
-    //set sidebar map
-    var sidebar = L.control.sidebar('sidebar', {
-        closeButton: true,
-        position: 'left'
-      });
-      mymap.addControl(sidebar);
-      sidebar.setContent($("#timeline").html());
-      
-      setTimeout(function () {
-        sidebar.show();
-      }, 1000);
-  
-      sidebar.on('show', function () {
-        $("#refreshButton").addClass('d-none');
-      });
-  
-      $("#refreshButton").on('click',function(){
-        sidebar.show();
-      });
-  
-      sidebar.on('hidden', function () {
-        $("#refreshButton").removeClass('d-none');
-      });
-  
-      mymap.on('click',function(){
-        sidebar.hide();
-      });
-
-      $('.showmore').on('click',function(){
-        var att = $(this).attr('data-show').replace(" ","");
-        setTimeout(function(){
-          if($('#'+att).hasClass('d-none')){
-            $('#'+att).removeClass('d-none');
-            $(this).text('hide &#94;');
-          }else{
-            $('#'+att).addClass('d-none');
-            $(this).text('Show More ');
-          }
-        },50); 
-      });
+    
 
 });  
 
@@ -524,4 +525,3 @@ jQuery(document).ready(function() {
 //       alert('ter');
 //   }
 // }); 
-console.log(searates);
