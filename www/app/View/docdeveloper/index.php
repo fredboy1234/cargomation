@@ -340,7 +340,7 @@
                                 foreach ($this->document as $key => $value) { 
                             ?>
                                 <tr>
-                                    <td><?php echo $value->id; ?></td>
+                                    <td><?php echo $value->document_id; ?></td>
                                     <td><?php echo $value->shipment_num; ?></td>
                                     <td><?php echo $value->name; ?></td>
                                     <td><?php echo $value->type; ?></td>
