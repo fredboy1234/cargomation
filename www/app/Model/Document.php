@@ -59,7 +59,9 @@ class Document extends Core\Model {
 
         $last_inserted = $Db->query("SELECT @@IDENTITY AS id")->results();
 
-        return $Db->query("INSERT INTO document_status (document_id, status) VALUES ('" . $last_inserted[0]->id . "', 'pending')");
+        $Db->query("INSERT INTO document_status (document_id, status) VALUES ('" . $last_inserted[0]->id . "', 'pending')");
+
+        return $last_inserted;
     }
 
     public static function getDocumentByShipment($shipment_id, $type = "") {
@@ -446,6 +448,12 @@ class Document extends Core\Model {
         ]);
 
         return json_decode($response->getBody());
+    }
+
+    public function putDocumentRank($doc_id, $json_encode) {
+        $query = "INSERT INTO document_rank (document_id,result) VALUES ('{$doc_id}', '{$json_encode}')";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
     }
 
 }
