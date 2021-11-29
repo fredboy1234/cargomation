@@ -240,7 +240,8 @@ class Docdeveloper extends Core\Controller {
 
             // update database
             $Document->updateDocumentType($data);
-            $Document->updateDocumentRank($doc_id, $result);
+            $json_encode = json_encode($result);
+            $Document->updateDocumentRank($doc_id, $json_encode);
         }
 
         // $response['status_code_header'] = 'HTTP/1.1 200 OK';
