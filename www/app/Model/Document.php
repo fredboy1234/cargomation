@@ -456,4 +456,10 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getDocumentRank($doc_id) {
+        $query = "SELECT * FROM document_rank WHERE document_id = '{$doc_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
 }
