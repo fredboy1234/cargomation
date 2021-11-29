@@ -237,11 +237,6 @@
     $count++;
 } ?>
 <?php $searates = $this->searatesTracking;?>
-<?php if(!empty($searates[0])){
-    //$searates = json_decode($searates[0]->sea_json);
-    //$searates = json_decode($searates); 
-  
-}?>
  
 <section class="content">
         <div class="container-fluid">
@@ -255,94 +250,102 @@
                     <!-- The timeline -->
                     <h5 class="mb-2">Port Calls</h5>
                     <hr>
-                    <div class="row">
-                        <span class="col-md-5 d-inline-block text-center">
-                            <h6>Estimated</h6>
-                        </span>
-                        <span class="col-md-5 d-inline-block text-center">
-                            <h6>Actual</h6>
-                        </span>
-                    </div>         
-                    <div class="timeline timeline-inverse">
-                        <?php if(!empty($searates->data) && $searates->message =="OK"){?>
-                            <?php foreach($searates->data->locations as $vessel){ ?>
-                               
-                                <div class="time-label">
-                                    <div class="head-list timeline-header">
-                                        <span class="col-md-8 d-inline-block">
-                                            <strong><?=$vessel->name.', '.$vessel->country?></strong>
-                                        </span>
-                                    </div>
-                                    <div class="timeline-body pl-5">
-                                        <?php $prepol = $searates->data->route->prepol;?>
-                                        <?php $pol = $searates->data->route->pol;?>
-                                        <?php $pod = $searates->data->route->pod;?>
-                                        <?php $postpod = $searates->data->route->postpod;?>
-
-                                        <?php if($prepol->actual == true){
-                                                $ppolact = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
-                                            }
-                                            if($prepol->actual == false){
-                                                $ppolnot = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
-                                            }
-                                        ?>
-
-                                            <div class="estmd col-md-5 d-inline-block">
-                                                <span>Prepol: <?=$ppolnot?> </span><br>
-                                                <span>Pol:<i class="text-danger">Not Available</i></span><br>
-                                                <span>Pod: <i class="text-danger">Not Available</i></span><br>
-                                                <span>Postpod: <i class="text-danger">Not Available</i></span>
-                                            </div>
-                                            <div class="actual col-md-5 d-inline-block">
-                                                <span>Prepol:<?=$ppolact?> </span><br>
-                                                <span>Pol:<i class="text-danger">Not Available</i></span><br>
-                                                <span>Pod: <i class="text-danger">Not Available</i></span><br>
-                                                <span>Postpod: <i class="text-danger">Not Available</i></span>
-                                            </div>
-                                            <span id="showmore" data-show="<?=str_replace(' ','',$vessel->country)?>" class="d-block mt-3 mb-2 showmore"> Show More  &#8595;</span>
-                                            <div class="more-details d-none" id="<?=str_replace(' ','',$vessel->country)?>">
-                                                <div class="card card-body">
-                                                <table class="table-striped table-dark">
-                                                    <thead>
-                                                        <tr>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Description</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Actual</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach($searates->data->container->events as $det){?>
-                                                        <?php if($det->location == $vessel->id){?>
-                                                            <?php $dateTrack = date_create($det->date);?>
-                                                            <?php $day = date_format($dateTrack,"D");?>
-                                                            <?php $month = date_format($dateTrack,"M. j,y");?>
-                                                            <?php $hour = date_format($dateTrack,'H:i:s')?>
-                                                                    <tr>
-                                                                        <th scope="row"><?=$month?></th>
-                                                                        <td><?=$det->description?></td>
-                                                                        <td><?=$det->status?></td>
-                                                                        <td><?=$det->actual?></td>
-                                                                    </tr>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>          
-                                <!-- END timeline item -->
-                            <?php } ?>
-                        <?php }else{ echo"tew";?> 
-                            
-                        <?php } ?> 
                          
+                    <div class="timeline timeline-inverse rev">
+                        <?php if(!isset($searates->data)){ ?>
+                                <?php foreach($searates as $srate){?>
+                                    <?php $rleg = json_decode($srate->route_leg)?>
+                                    <?php foreach($rleg as $r){?>
+                                        <div class="time-label">
+                                            <div class="head-list timeline-header">
+                                                <span class="col-md-8 d-inline-block">
+                                                    <strong><?php echo $r->VesselName?></strong>
+                                                </span>
+                                            </div>
+                                            <div class="timeline-body pl-5">
+                                                <span>Port of Loading: <?php echo $r->Origin;?></span><br>
+                                                <span>Port of Discharge: <?php echo $r->Destination;?></span>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                    
+                                <?php } ?>
+                        <?php }else{ ?>
+                            <?php if(!empty($searates->data) && $searates->message =="OK"){?>
+                                <?php foreach($searates->data->locations as $vessel){ ?>
+                                    <div class="time-label">
+                                        <div class="head-list timeline-header">
+                                            <span class="col-md-8 d-inline-block">
+                                                <strong><?=$vessel->name.', '.$vessel->country?></strong>
+                                            </span>
+                                        </div>
+                                        <div class="timeline-body pl-5">
+                                            <?php $prepol = $searates->data->route->prepol;?>
+                                            <?php $pol = $searates->data->route->pol;?>
+                                            <?php $pod = $searates->data->route->pod;?>
+                                            <?php $postpod = $searates->data->route->postpod;?>
+
+                                            <?php if($prepol->actual == true){
+                                                    $ppolact = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
+                                                }
+                                                if($prepol->actual == false){
+                                                    $ppolnot = '<i class="text-white"> '.date("d/m/Y", strtotime($prepol->date)).'</i>';
+                                                }
+                                            ?>
+
+                                                <div class="estmd col-md-5 d-inline-block">
+                                                    <span>Prepol: <?=$ppolnot?> </span><br>
+                                                    <span>Pol:<i class="text-danger">Not Available</i></span><br>
+                                                    <span>Pod: <i class="text-danger">Not Available</i></span><br>
+                                                    <span>Postpod: <i class="text-danger">Not Available</i></span>
+                                                </div>
+                                                <div class="actual col-md-5 d-inline-block">
+                                                    <span>Prepol:<?=$ppolact?> </span><br>
+                                                    <span>Pol:<i class="text-danger">Not Available</i></span><br>
+                                                    <span>Pod: <i class="text-danger">Not Available</i></span><br>
+                                                    <span>Postpod: <i class="text-danger">Not Available</i></span>
+                                                </div>
+                                                <span id="showmore" data-show="<?=str_replace(' ','',$vessel->country)?>" class="d-block mt-3 mb-2 showmore"> Show More  &#8595;</span>
+                                                <div class="more-details d-none" id="<?=str_replace(' ','',$vessel->country)?>">
+                                                    <div class="card card-body">
+                                                    <table class="table-striped table-dark">
+                                                        <thead>
+                                                            <tr>
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Description</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Actual</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach($searates->data->container->events as $det){?>
+                                                            <?php if($det->location == $vessel->id){?>
+                                                                <?php $dateTrack = date_create($det->date);?>
+                                                                <?php $day = date_format($dateTrack,"D");?>
+                                                                <?php $month = date_format($dateTrack,"M. j,y");?>
+                                                                <?php $hour = date_format($dateTrack,'H:i:s')?>
+                                                                        <tr>
+                                                                            <th scope="row"><?=$month?></th>
+                                                                            <td><?=$det->description?></td>
+                                                                            <td><?=$det->status?></td>
+                                                                            <td><?=$det->actual?></td>
+                                                                        </tr>
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>          
+                                    <!-- END timeline item -->
+                                <?php } ?>
+                            <?php }else{?> 
+                                
+                            <?php } ?> 
+                        <?php } ?>
                     </div>
-                    <hr>
-                        <h6>Legend:</h6><br>
-                        <span>Prepol: <strong> Port of Dispatch</strong></span> | <span>Pol: <strong> Port of Loading</strong></span><br>
-                        <span>Pod: <strong> Port of Port Of Discharge</strong></span> | <span>Postpod: <strong> Destination/Final</strong></span> 
+                    
                     </div>
                 </div>
             </div>
@@ -398,5 +401,4 @@
     var vnum = <?=json_encode($this->vesselnum)?>;
     var searates =<?=json_encode($searates)?>;
     //console.log($searates);
-    alert();
 </script>
