@@ -749,16 +749,29 @@ function showInfo(shipment_num) {
 
 function macroLink(link) {
   Swal.fire({
-    title: "This action will open CargoWise",
+    title: "This action will open WiseCloud",
     text: "Please make sure you already installed it?",
     icon: "warning",
+    showDenyButton: true,
     showCancelButton: true,
-    confirmButtonText: `Open CargoWise`,
-  }).then((willDelete) => {
-    if (willDelete) {
+    confirmButtonText: `Open WiseCloud`,
+    denyButtonText: 'No',
+    customClass: {
+      actions: 'my-actions',
+      cancelButton: 'order-1 right-gap',
+      confirmButton: 'order-2',
+      denyButton: 'order-3',
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
       window.location.href = link;
-    } else {
+    }
+    if (result.isDenied) {
+      Swal.fire("No action");
+    } else if (result.isDismissed) {
       Swal.fire("You cancel your action!");
+    } else if(res.dismiss == 'esc'){
+      console.log('cancle-esc**strong text**');
     }
   });
 }
