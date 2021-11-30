@@ -457,7 +457,7 @@ jQuery(document).ready(function() {
 
     sidebar.on('hidden', function () {
       $("#refreshButton").removeClass('d-none');
-    });
+    }); 
 
     mymap.on('click',function(){
       sidebar.hide();

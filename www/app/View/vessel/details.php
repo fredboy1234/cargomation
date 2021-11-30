@@ -268,7 +268,7 @@
                                             </div>
                                         </div>
                                     <?php } ?>
-                                    
+                                     
                                 <?php } ?>
                         <?php }else{ ?>
                             <?php if(!empty($searates->data) && $searates->message =="OK"){?>
