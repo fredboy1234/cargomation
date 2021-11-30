@@ -228,9 +228,10 @@ class Document extends Core\Controller {
 
         $result = $this->Document->putDocument($data);
 
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($result);
-        return $response;
+        // $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        // $response['body'] = json_encode($result);
+        // return $response;
+        return $result;
 
     }
 
@@ -342,7 +343,14 @@ class Document extends Core\Controller {
                     ];
                     
                     // save to database
-                    $this->putDocumentByShipment($shipment_num, $type, $fileName);
+                    $result = $this->putDocumentByShipment($shipment_num, $type, $fileName);
+                    
+                    if($type == 'OTHER') {
+                        // save api response to 'document_rank' table
+                        $json_encode = json_encode($obj_type);
+                        $doc_id = $result[0]->id;
+                        $this->Document->putDocumentRank($doc_id, $json_encode);
+                    }
                     // if requestToken cookie is exist
                     if(Utility\Cookie::exists("requestToken")) {
                         $Document = new Model\Document();

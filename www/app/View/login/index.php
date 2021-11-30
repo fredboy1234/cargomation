@@ -166,10 +166,65 @@ h1 {
 <!-- AdminLTE App -->
 <script src="bower_components/admin-lte/dist/js/adminlte.min.js"></script>
 <script>
-$(document).ready(function(){
+  /* LAUNCH */
   var color = '#007bff';
-  var maxParticles = 100;
+  var maxParticles = 65;
 
+  if(window.innerWidth > 1100){ // pJS_desktop and pJS_mobile = my settings functions
+    pJS_desktop(color, maxParticles);
+  }else{
+    pJS_mobile();
+  }
+
+  /* on resize */
+
+  window.addEventListener('resize', function() { // use ".addEventListener", not ".onresize"
+    checkOnResize();
+  }, true);
+
+  function checkOnResize(){
+    if(window.innerWidth > 1100){
+      if(pJS.particles.nb != 150){ // 150 = desktop setting
+        console.log('desktop mode')
+        pJS.fn.vendors.destroy();
+        pJS_desktop();
+      }
+    }else{
+      if(pJS.particles.nb == 150){ // 150 = desktop setting
+        console.log('mobile mode');
+        pJS.fn.vendors.destroy();
+        pJS_mobile();
+      }
+    }
+  }
+$(document).ready(function(){
+  $("#login").submit(function(event){
+      event.preventDefault();
+
+      var email = $('input[type="email"]').val().trim();
+      var password = $('input[type="password"]').val().trim();
+      var remember = $('input[type="checkbox"]').val().trim();
+      var csrf_token = $('input[type="hidden"]').val().trim();
+
+      if( email != "" && password != "" ){
+          $.ajax({
+              url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
+              type:'post',
+              data:{email:email,password:password,csrf_token:csrf_token,remember:remember},
+              beforeSend: function() {
+                $('.card').hide();
+                $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
+                '<span class="sr-only">Loading...</span> </center>');
+              },
+              success:function(response){
+                location.reload();
+              }
+          });
+      }
+  });
+});
+
+function pJS_desktop(color, maxParticles) {
   // ParticlesJS Config.
   particlesJS('body', {
     'particles': {
@@ -276,32 +331,12 @@ $(document).ready(function(){
     },
     'retina_detect': true
   });
-
-  $("#login").submit(function(event){
-      event.preventDefault();
-
-      var email = $('input[type="email"]').val().trim();
-      var password = $('input[type="password"]').val().trim();
-      var remember = $('input[type="checkbox"]').val().trim();
-      var csrf_token = $('input[type="hidden"]').val().trim();
-
-      if( email != "" && password != "" ){
-          $.ajax({
-              url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
-              type:'post',
-              data:{email:email,password:password,csrf_token:csrf_token,remember:remember},
-              beforeSend: function() {
-                $('.card').hide();
-                $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
-                '<span class="sr-only">Loading...</span> </center>');
-              },
-              success:function(response){
-                location.reload();
-              }
-          });
-      }
+}
+function pJS_mobile() {
+  particlesJS.load('body', 'settings/particlesjs-mobile.json', function() {
+    console.log('callback - mobile config loaded');
   });
-});
+}
 </script>
 </body>
 </html>
