@@ -348,9 +348,9 @@
                                             echo
                                                 '<button type="button" class="btn btn-sm btn-success action" data-action="view" data-id="' . $value->document_id . '">
                                                 <i class="fas fa-eye mr-1"></i> View File</button>
-                                                <button type="button" class="btn btn-sm btn-info action" disabled data-action="edit" data-id="' . $value->document_id . '">
+                                                <button type="button" class="btn btn-sm btn-info action d-none" disabled data-action="edit" data-id="' . $value->document_id . '">
                                                 <i class="fas fa-pencil-alt mr-1"></i> Edit</button>
-                                                <button type="button" class="btn btn-sm btn-danger action" disabled data-action="delete" data-id="' . $value->document_id . '">
+                                                <button type="button" class="btn btn-sm btn-danger action d-none" disabled data-action="delete" data-id="' . $value->document_id . '">
                                                 <i class="fas fa-trash-alt mr-1"></i> Delete</button>';
                                         ?>
                                     </td>
