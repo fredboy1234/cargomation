@@ -117,7 +117,7 @@ class Vessel extends Core\Controller {
                             if( $dateformat < $today){
                                 $confirmed++; 
                             }else{
-                        // print_r($statusEnd);
+                        
                             
                             // foreach($datacontainer->events as $cont){
                             //     $dateformat = strtotime($cont->date);
