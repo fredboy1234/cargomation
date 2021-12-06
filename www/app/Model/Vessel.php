@@ -124,7 +124,7 @@ class Vessel extends Core\Model {
                                 where sh.id is not null 
                                 and 
                                 sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
-                                and 
+                                and
                                 b.user_id = {$user}")->results();
        
         return $vessel;
