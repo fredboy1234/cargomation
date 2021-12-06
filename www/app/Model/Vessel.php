@@ -32,7 +32,6 @@ class Vessel extends Core\Model {
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment b
                                 LEFT JOIN users ON users.id = b.user_id
-                                
                                 WHERE b.user_id = '{$user_id}' ")->results();
         if(!empty($vessel)){
             foreach($vessel as $ves){
@@ -122,7 +121,7 @@ class Vessel extends Core\Model {
                                 LEFT JOIN shipment sh on sh.user_id = b.user_id 
                                 LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
                                 and tro.Vessel = sh.vessel_name
-                                where sh.id is not null 
+                                where sh.id is not null and sh.etd between DATEADD(DAY,-60,GETDATE()) and GETDATE()
                                 and 
                                 b.user_id = {$user}")->results();
        

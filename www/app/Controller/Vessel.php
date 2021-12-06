@@ -90,6 +90,7 @@ class Vessel extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
+        // $vessel = $this->Vessel->getSearatesDB($user);
         $vessel = $this->Vessel->getSearatesDB($user);
         $confirmed = 0;
         $departCofirmed = 0;
