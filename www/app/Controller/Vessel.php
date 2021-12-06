@@ -720,7 +720,7 @@ class Vessel extends Core\Controller {
            
             
         }
-        exit();
+        //exit();
         echo json_encode($json_data);
     }
 
