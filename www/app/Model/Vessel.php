@@ -44,15 +44,15 @@ class Vessel extends Core\Model {
 
     public static function getVesselByNumber($vessel_number,$user_id){
         $Db = Utility\Database::getInstance(); 
-        // return $Db->query("SELECT * 
-        //                         FROM transhipment b
-        //                         LEFT JOIN users ON users.id = b.user_id
-        //                         WHERE b.user_id = '{$user_id}' AND b.container_number  = '{$vessel_number}' 
-        //                         ORDER BY b.date_track asc
-        //                         ")->results();
-        return $Db->query("SELECT * FROM shipment s
-            left join vrpt_transhipment vt on vt.shipment_num = s.shipment_num
-            where s.user_id = '{$user_id}' and vt.containernumber = '{$vessel_number}' ")->results();
+        return $Db->query("SELECT * 
+                                FROM transhipment b
+                                LEFT JOIN users ON users.id = b.user_id
+                                WHERE b.user_id = '{$user_id}' AND b.container_number  = '{$vessel_number}' 
+                                ORDER BY b.date_track asc
+                                ")->results();
+        // return $Db->query("SELECT * FROM shipment s
+        //     left join vrpt_transhipment vt on vt.shipment_num = s.shipment_num
+        //     where s.user_id = '{$user_id}' and vt.containernumber = '{$vessel_number}' ")->results();
     }
 
     public function addSeaPort($data){
@@ -120,7 +120,7 @@ class Vessel extends Core\Model {
         $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
                                 LEFT JOIN shipment sh on sh.user_id = b.user_id 
-                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
+                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
                                 and tro.Vessel = sh.vessel_name
                                 where sh.id is not null 
                                 and 

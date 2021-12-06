@@ -703,7 +703,7 @@ class Vessel extends Core\Controller {
                 }
                 if(!in_array($containernumber,$doublechecker) && $containernumber !== 'No Container Number'){
                     
-                    if( strtotime($lastDate) > strtotime('-90 days') ){
+                    if( strtotime($lastDate) > strtotime('-60 days') ){
                         $data[] = $subdata;
                         $doublechecker[]=$containernumber;
                     }
