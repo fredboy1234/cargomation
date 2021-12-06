@@ -118,10 +118,12 @@ class Vessel extends Core\Model {
 
         $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
-                                LEFT JOIN shipment sh on sh.user_id = b.user_id 
-                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
+                                LEFT JOIN shipment sh on sh.shipment_num = b.shipnum 
+                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
                                 and tro.Vessel = sh.vessel_name
-                                where sh.id is not null and sh.etd between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+                                where sh.id is not null 
+                                and 
+                                sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
                                 and 
                                 b.user_id = {$user}")->results();
        
@@ -164,6 +166,7 @@ class Vessel extends Core\Model {
         $sealine = $data['sealine'];
         $eta = $data['eta'];
         $lastDate = '';
+        $shipnum = $data['shipnum'];
         $Db = Utility\Database::getInstance();
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment_searates b
@@ -184,14 +187,14 @@ class Vessel extends Core\Model {
             if($lastDate >= date("Y-m-d") ){
                 echo"update -".$trans_id;
                  $Db->query("UPDATE transhipment_searates 
-                                    SET sea_json = '{$sea_json}',track_ json = '{$track_json}',sealine='{$sealine}'
+                                    SET sea_json = '{$sea_json}',track_ json = '{$track_json}',sealine='{$sealine}',shipnum='{$shipnum}'
                                     WHERE trans_id ={$trans_id} and container_number = {$container_number} ");
             }
            
         }else{
             echo"insert";
-                $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id,sealine)
-                values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}','{$sealine}')");
+                $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id,sealine,shipnum)
+                values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}','{$sealine}','{$shipnum}')");
         }  
 
         //return $vessel;

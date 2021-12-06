@@ -90,8 +90,8 @@ class Vessel extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        // $vessel = $this->Vessel->getSearatesDB($user);
         $vessel = $this->Vessel->getSearatesDB($user);
+        
         $confirmed = 0;
         $departCofirmed = 0;
         $delay = 0;
@@ -706,6 +706,7 @@ class Vessel extends Core\Controller {
                     
                     if( strtotime($lastDate) > strtotime('-60 days') ){
                         $data[] = $subdata;
+                        
                         $doublechecker[]=$containernumber;
                     }
                     
@@ -719,7 +720,7 @@ class Vessel extends Core\Controller {
            
             
         }
-        // exit();
+        exit();
         echo json_encode($json_data);
     }
 
@@ -816,6 +817,7 @@ class Vessel extends Core\Controller {
                 
                 $data['trans_id'] = $trans[0]->id;
                 $data['container_number'] = $trans[0]->containernumber;
+                $data['shipnum'] = $trans[0]->shipment_num;
                 $data['json']  = '';
                 $data['track'] = '';
                 $data['user'] = $trans[0]->user_id;
