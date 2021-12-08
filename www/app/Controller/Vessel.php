@@ -416,10 +416,10 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB($user);
         
-      echo "<pre>";
-      echo $user;
-         print_r($vessel);
-          exit();
+    //   echo "<pre>";
+    //   echo $user;
+    //      print_r($vessel);
+    //       exit();
 
         $data =array();
         $color = array();

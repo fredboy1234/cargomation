@@ -115,8 +115,24 @@ class Vessel extends Core\Model {
         LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
         and tro.Vessel = sh.vessel_name
         where sh.id is not null and b.user_id = {$user} Group By sh.shipment_num")->results();
-
-        $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
+        $accountID = $Db->query("SELECT account_id from vrpt_subaccount where user_id='{$user}'")->results();
+        //print_r($accountID);
+       // exit();
+        if(isset($accountID[0]->account_id)){
+            //$user = $accountID[0]->account_id;
+            $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
+                                FROM transhipment_searates b
+                                LEFT JOIN shipment sh on sh.shipment_num = b.shipnum 
+                                LEFT JOIN shipment_assigned sa on sa.shipment_id = sh.id
+                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
+                                and tro.Vessel = sh.vessel_name
+                                where sh.id is not null 
+                                and 
+                                sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+                                and
+                                sa.id = {$user}")->results();
+        }else{
+            $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
                                 LEFT JOIN shipment sh on sh.shipment_num = b.shipnum 
                                 LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
@@ -126,6 +142,8 @@ class Vessel extends Core\Model {
                                 sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
                                 and
                                 b.user_id = {$user}")->results();
+        }
+        
        
         return $vessel;
     }
