@@ -39,7 +39,7 @@ class Vessel extends Core\Model {
             }
         }
         return $vessel;
-    }
+    } 
 
     public static function getVesselByNumber($vessel_number,$user_id){
         $Db = Utility\Database::getInstance(); 
