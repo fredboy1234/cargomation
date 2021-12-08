@@ -416,9 +416,10 @@ class Vessel extends Core\Controller {
         
         $vessel = $this->Vessel->getSearatesDB($user);
         
-    //   echo "<pre>";
-    //      print_r($vessel);
-    //       exit();
+      echo "<pre>";
+      echo $user;
+         print_r($vessel);
+          exit();
 
         $data =array();
         $color = array();
@@ -792,6 +793,7 @@ class Vessel extends Core\Controller {
     }
 
     public function seaRatesToDB($user=""){
+        header('Access-Control-Allow-Methods: GET, POST');
         Utility\Auth::checkAuthenticated();
 
         // If no user ID has been passed, and a user session exists, display
