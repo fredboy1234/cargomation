@@ -22,7 +22,12 @@
         z-index: 1049;
     } 
 </style>
-<?php //var_dump($this->document); die(); ?>
+<?php //Prepare a section for admin ?>
+<?php if($this->role->id == 1): ?>
+<section class="content">
+
+</section>
+<?php else: ?>
 <section class="content">
     <div class="container-fluid">
         <?php if(false): ?> 
@@ -368,7 +373,7 @@
         <!-- /.row -->
     </div>
 </section>
-
+<?php endif; ?>
 </div>
 
 <div class="modal fade" id="myModal">
