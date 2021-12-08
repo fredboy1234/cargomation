@@ -205,6 +205,7 @@ class Vessel extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT  top(1) *
                         FROM transhipment_searates b
+                        LEFT JOIN shipment s on s.shipment_num = b.shipnum
                         where container_number = '{$vessel_number}' ")->results();
     }
 
