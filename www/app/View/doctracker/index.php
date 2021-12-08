@@ -334,6 +334,7 @@
                             </thead>
                         </table>
                     </div>
+                    <?php if(false): ?>
                     <div class="parent-assign dropdown d-none notransition">
                         <a class="col-md-1 col-sm-1 assign-button" href="#!" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-share-square"></i>
@@ -347,6 +348,7 @@
                             <?php } ?>
                         </div>
                     </div>
+                    <?php endif; ?>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
