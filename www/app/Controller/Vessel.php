@@ -270,7 +270,9 @@ class Vessel extends Core\Controller {
             //     }
             
             // }
-         
+        //     echo "<pre>";
+        //  print_r($this->Vessel->getSearatesByID($vessel_number));
+        //  exit();
         $this->View->addJS("js/vessel.js");
         $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",
@@ -286,7 +288,7 @@ class Vessel extends Core\Controller {
             "polyline" => $color_code_vessel,
             "c_flag" => $c_flag,
             "vesselnum" => $vessel_number,
-            "searatesTracking" =>$vesseeldata , //$this->Vessel->getSearatesByID($vessel_number),
+            "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
             "menu" => Model\User::getUserMenu($role->role_id)
         ]);
