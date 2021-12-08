@@ -32,7 +32,6 @@ class Vessel extends Core\Model {
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment b
                                 LEFT JOIN users ON users.id = b.user_id
-                                
                                 WHERE b.user_id = '{$user_id}' ")->results();
         if(!empty($vessel)){
             foreach($vessel as $ves){
@@ -40,19 +39,19 @@ class Vessel extends Core\Model {
             }
         }
         return $vessel;
-    }
+    } 
 
     public static function getVesselByNumber($vessel_number,$user_id){
         $Db = Utility\Database::getInstance(); 
-        // return $Db->query("SELECT * 
-        //                         FROM transhipment b
-        //                         LEFT JOIN users ON users.id = b.user_id
-        //                         WHERE b.user_id = '{$user_id}' AND b.container_number  = '{$vessel_number}' 
-        //                         ORDER BY b.date_track asc
-        //                         ")->results();
-        return $Db->query("SELECT * FROM shipment s
-            left join vrpt_transhipment vt on vt.shipment_num = s.shipment_num
-            where s.user_id = '{$user_id}' and vt.containernumber = '{$vessel_number}' ")->results();
+        return $Db->query("SELECT * 
+                                FROM transhipment b
+                                LEFT JOIN users ON users.id = b.user_id
+                                WHERE b.user_id = '{$user_id}' AND b.container_number  = '{$vessel_number}' 
+                                ORDER BY b.date_track asc
+                                ")->results(); 
+        // return $Db->query("SELECT * FROM shipment s
+        //     left join vrpt_transhipment vt on vt.shipment_num = s.shipment_num
+        //     where s.user_id = '{$user_id}' and vt.containernumber = '{$vessel_number}' ")->results();
     }
 
     public function addSeaPort($data){
@@ -116,15 +115,35 @@ class Vessel extends Core\Model {
         LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num or tro.Lloyds = sh.vesslloyds) 
         and tro.Vessel = sh.vessel_name
         where sh.id is not null and b.user_id = {$user} Group By sh.shipment_num")->results();
-
-        $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
+        $accountID = $Db->query("SELECT account_id from vrpt_subaccount where user_id='{$user}'")->results();
+        //print_r($accountID);
+       // exit();
+        if(isset($accountID[0]->account_id)){
+            //$user = $accountID[0]->account_id;
+            $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
                                 FROM transhipment_searates b
-                                LEFT JOIN shipment sh on sh.user_id = b.user_id 
+                                LEFT JOIN shipment sh on sh.shipment_num = b.shipnum 
+                                LEFT JOIN shipment_assigned sa on sa.shipment_id = sh.id
                                 LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
                                 and tro.Vessel = sh.vessel_name
                                 where sh.id is not null 
                                 and 
+                                sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+                                and
+                                sa.id = {$user}")->results();
+        }else{
+            $vessel =  $Db->query("SELECT {$arg}, sh.shipment_num     
+                                FROM transhipment_searates b
+                                LEFT JOIN shipment sh on sh.shipment_num = b.shipnum 
+                                LEFT JOIN vrpt_onestop tro on (tro.Voyage = sh.voyage_flight_num and tro.Lloyds = sh.vesslloyds) 
+                                and tro.Vessel = sh.vessel_name
+                                where sh.id is not null 
+                                and 
+                                sh.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+                                and
                                 b.user_id = {$user}")->results();
+        }
+        
        
         return $vessel;
     }
@@ -165,6 +184,7 @@ class Vessel extends Core\Model {
         $sealine = $data['sealine'];
         $eta = $data['eta'];
         $lastDate = '';
+        $shipnum = $data['shipnum'];
         $Db = Utility\Database::getInstance();
         $vessel =  $Db->query("SELECT {$arg} 
                                 FROM transhipment_searates b
@@ -185,14 +205,14 @@ class Vessel extends Core\Model {
             if($lastDate >= date("Y-m-d") ){
                 echo"update -".$trans_id;
                  $Db->query("UPDATE transhipment_searates 
-                                    SET sea_json = '{$sea_json}',track_ json = '{$track_json}',sealine='{$sealine}'
+                                    SET sea_json = '{$sea_json}',track_ json = '{$track_json}',sealine='{$sealine}',shipnum='{$shipnum}'
                                     WHERE trans_id ={$trans_id} and container_number = {$container_number} ");
             }
            
         }else{
             echo"insert";
-                $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id,sealine)
-                values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}','{$sealine}')");
+                $Db->query("INSERT INTO transhipment_searates (trans_id,container_number,sea_json,track_json,user_id,sealine,shipnum)
+                values ('{$trans_id}','{$container_number}','{$sea_json}','{$track_json}','{$userid}','{$sealine}','{$shipnum}')");
         }  
 
         //return $vessel;
@@ -203,6 +223,7 @@ class Vessel extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT  top(1) *
                         FROM transhipment_searates b
+                        LEFT JOIN shipment s on s.shipment_num = b.shipnum
                         where container_number = '{$vessel_number}' ")->results();
     }
 
