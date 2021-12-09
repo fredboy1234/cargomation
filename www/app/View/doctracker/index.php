@@ -61,40 +61,40 @@
                                                 <div class="row">
                                                     <div class="col-md-4" data-select2-id="29">
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Shipment ID</label>
+                                                            <label for="shipment_id" class="col-sm-4 col-form-label">Shipment ID</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
+                                                                <input type="text" class="form-control" id="shipment_id" name="shipment_id" placeholder="Ex.: SHP001">
                                                             </div>
                                                         </div>
                                                         <!-- /.form-group -->
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">ETA</label>
+                                                            <label for="ETA" class="col-sm-4 col-form-label">ETA</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="ETA" placeholder="">
+                                                                <input type="text" class="form-control" id="ETA" name="ETA" placeholder="">
                                                             </div>
                                                         </div>
                                                         <!-- /.form-group -->
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name</label>
+                                                            <label for="client_name" class="col-sm-4 col-form-label">Client Name</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="client_name" placeholder="">
+                                                                <input type="text" class="form-control" id="client_name" name="client_name" placeholder="">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Master Bill</label>
+                                                            <label for="master_bill" class="col-sm-4 col-form-label">Master Bill</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="master_bill" placeholder="">
+                                                                <input type="text" class="form-control" id="master_bill" name="master_bill" placeholder="">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row d-none">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Port of Loading</label>
+                                                            <label for="pol" class="col-sm-4 col-form-label">Port of Loading</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="pol" placeholder="">
+                                                                <input type="text" class="form-control" id="pol" name="pol" placeholder="">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Container Mode</label>
+                                                            <label for="container_mode" class="col-sm-4 col-form-label">Container Mode</label>
                                                             <div class="col-sm-8">
                                                                 <select id="container_mode" class="js-example-basic-multiple" name="states" multiple="multiple">
                                                                     <option value="all">Select All</option>
@@ -111,29 +111,29 @@
                                                     <!-- /.col -->
                                                     <div class="col-md-4" data-select2-id="29">
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Consignee</label>
+                                                            <label for="consignee" class="col-sm-4 col-form-label">Consignee</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="consignee" placeholder="">
+                                                                <input type="text" class="form-control" id="consignee" name="consignee" placeholder="">
                                                             </div>
                                                         </div>
                                                         <!-- /.form-group -->
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Consignor</label>
+                                                            <label for="consignor" class="col-sm-4 col-form-label">Consignor</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="consignor" placeholder="">
+                                                                <input type="text" class="form-control" id="consignor" name="consignor" placeholder="">
                                                             </div>
                                                         </div>
                                                         <!-- /.form-group -->
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">Container #</label>
+                                                            <label for="container" class="col-sm-4 col-form-label">Container #</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="container" placeholder="">
+                                                                <input type="text" class="form-control" id="container" name="container" placeholder="">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-4 col-form-label">House Bill</label>
+                                                            <label for="house_bill" class="col-sm-4 col-form-label">House Bill</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="house_bill" placeholder="">
+                                                                <input type="text" class="form-control" id="house_bill" name="house_bill" placeholder="">
                                                             </div>
                                                         </div>
                                                         <!-- /.form-group -->
@@ -144,7 +144,7 @@
 
                                                             <div class="col-sm-6">
                                                                 <!-- checkbox -->
-                                                                <label for="inputEmail3" class="col-sm-6 col-form-label">Status</label>
+                                                                <label for="status" class="col-sm-6 col-form-label">Status</label>
                                                                 <input id="status" type="hidden" name="status" value="">
                                                                 <div class="form-group">
                                                                     <div class="form-check">
@@ -163,7 +163,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <!-- radio -->
-                                                                <label for="inputEmail3" class="col-sm-6 col-form-label">Origin</label>
+                                                                <label for="origin" class="col-sm-6 col-form-label">Origin</label>
                                                                 <div class="form-group">
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="checkbox" name="origin_cargowise" value="cargowise" checked>
@@ -177,7 +177,7 @@
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <!-- radio -->
-                                                                <label for="inputEmail3" class="col-sm-6 col-form-label">Transport Mode</label>
+                                                                <label for="transport_mode" class="col-sm-6 col-form-label">Transport Mode</label>
                                                                 <div class="form-group">
                                                                     <div class="form-check d-inline-block">
                                                                         <input class="form-check-input" type="checkbox" name="transportmode_sea" value="sea" checked>
@@ -233,7 +233,7 @@
                                             <div class="col-md-2 float-right parent-settings">
                                                 <?php if (isset($this->settings_user[0])) { ?>
                                                     <?php $settings_id = $this->settings_user[0]->id; ?>
-                                                    <button id="reset-settings" type="button" data-setting-id="<?= $settings_id ?>" class="btn btn-block btn-danger">Reset Settings</button>
+                                                    <button id="reset-settings" type="button" data-setting-id="<?= $settings_id ?>" class="btn btn-block btn-danger">Set Default</button>
                                                 <?php } ?>
                                             </div>
                                         </div>
@@ -253,7 +253,7 @@
                                                             </p>
                                                             <div id="drop-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                                 <div class="drop-act-search dropdown-item-text">
-                                                                    <input onkeyup="filterFunction()" id="drop-search" class="mb-3 form-control" type="text" placeholder="Search Shipment">
+                                                                    <input onkeyup="filterFunction()" class="mb-3 form-control" type="text" placeholder="Search Shipment">
                                                                 </div>
                                                                 <?php foreach ($s as $sc) { ?>
                                                                     <a class="dropdown-item" href="#" data-search="<?= $sc->shipment_num ?>">
@@ -334,6 +334,7 @@
                             </thead>
                         </table>
                     </div>
+                    <?php if(false): ?>
                     <div class="parent-assign dropdown d-none notransition">
                         <a class="col-md-1 col-sm-1 assign-button" href="#!" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-share-square"></i>
@@ -347,6 +348,7 @@
                             <?php } ?>
                         </div>
                     </div>
+                    <?php endif; ?>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
