@@ -1,5 +1,5 @@
 $(document).ready(function(){
-   
+   console.log(livedata);
      //This is for live tracking
     var map = L.map('livemap').setView([10.3130247, 123.9471531], 5);
     var livepolyArray = [];

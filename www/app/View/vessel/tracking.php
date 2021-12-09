@@ -1,4 +1,5 @@
-<?php $livedata = json_decode($this->searatesTracking);?>
+<?php $livedata = $this->searatesTracking; //json_decode($this->searatesTracking);?>
+<?php $livedata = json_decode($livedata[0]->track_json);?>
 <style>
     #livemap { height: 760px; }
     .liveIcon{color:#fff;}
@@ -38,5 +39,5 @@
     </section>
 </div>
 <script>
- var livedata = <?=$this->searatesTracking?>;
+ var livedata = <?=json_encode($livedata)?>;
 </script>
