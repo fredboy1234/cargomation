@@ -267,7 +267,7 @@ class Transport extends Core\Controller {
             $subdata['do_release'] = $value->do_release;
             
             $subdata['trans_book_req'] = ($trans_book_req=="01/01/1900"?"No Date Available":$trans_book_req);
-            $subdata['trans_actual_deliver'] = ($trans_actual_deliver=="01/01/19000"?"No Date Available":$trans_actual_deliver);
+            $subdata['trans_actual_deliver'] = ($trans_actual_deliver=="01/01/1900"?"No Date Available":$trans_actual_deliver);
             $subdata['trans_deliverreq_from'] = ($trans_deliverreq_from=="01/01/1900"?"No Date Available":$trans_deliverreq_from);
             $subdata['trans_deliverreq_by'] = ($trans_deliverreq_by=="01/01/1900"?"No Date Available":$trans_deliverreq_by);
             $subdata['trans_estimated_delivery'] = ($trans_estimated_delivery=="01/01/1900"?"No Date Available":$trans_estimated_delivery);
