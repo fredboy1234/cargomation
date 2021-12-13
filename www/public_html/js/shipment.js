@@ -454,7 +454,7 @@ $(document).ready(function () {
 
   //re order column
   table.on('column-reorder', function (e, settings, details) {
-    $('table tbody tr td:first-child').append(`${$(".parent-assign").html()}`);
+    // $('table tbody tr td:first-child').append(`${$(".parent-assign").html()}`);
     $("select[name='settings-dual'] option").each(function () {
       if ($(this).val() == details.from) {
         $(this).val(details.to);
