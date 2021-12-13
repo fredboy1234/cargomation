@@ -36,7 +36,7 @@
         <?php }?>
         </div>
         </div>
-    </section>
+    </section> 
 </div>
 <script>
  var livedata = <?=json_encode($livedata)?>;
