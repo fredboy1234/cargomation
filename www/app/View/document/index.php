@@ -20,20 +20,34 @@ if(!empty($this->document)) {
             $server_file = "http://cargomation.com/filemanager/".$this->email."/CW_FILE/".$file->shipment_num."/".$file->type."/" . $file->name;
             $ext = pathinfo($server_file, PATHINFO_EXTENSION);
 
-            switch ($ext) {
-                case 'pdf':
-                    $ext = "pdf";
-                    break;
-                case 'docx':
-                    $ext = "office";
-                    break;
-                case 'xlsx':
-                    $ext = "office";
-                    break;
-                default:
-                    # code...
-                    break;
+            if($ext == 'txt') {
+                $ext = 'text';
+            } else if (strpos($ext, 'docx') >= 0
+                || strpos($ext, 'xlsx') >= 0
+                || strpos($ext, 'pptx') >= 0 ) {
+                $ext = 'office';
+            } else {
+                $ext = 'pdf';
             }
+
+            // switch (true) {
+            //     case $ext == 'pdf':
+            //         $ext = "pdf";
+            //         break;
+            //     case strpos($ext, 'docx') >= 0:
+            //         $ext = "office";
+            //         break;
+            //     case strpos($ext, 'xlsx') >= 0:
+            //         $ext = "office";
+            //         break;
+            //     // If you want to use the value of strpos
+            //     case ($pos = strpos($field, 'other_ext')) >= 0:
+            //         echo '_term at position ' . $pos;
+            //         break;
+            //     default:
+            //         # code...
+            //         break;
+            // }
 
             if($file->status == 'approved') {
                 $approved++;
