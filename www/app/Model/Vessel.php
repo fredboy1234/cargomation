@@ -157,13 +157,15 @@ class Vessel extends Core\Model {
     }
         
     //for searates api to db
-    public static function getVesselV2($user_id='', $arg = "*") {
-        
+    public static function getVesselV2() {
+        $arg = "*";
         $data = array();
         $data['vessel'] =array();
         $Db = Utility\Database::getInstance();
+        // $vessel =  $Db->query("SELECT {$arg} 
+        //                         FROM vrpt_transhipment b where b.user_id = {$user_id} and eta >=DATEADD(m, -1.5, GETDATE())")->results();
         $vessel =  $Db->query("SELECT {$arg} 
-                                FROM vrpt_transhipment b where b.user_id = {$user_id} and eta >=DATEADD(m, -1.5, GETDATE())")->results();
+                                FROM vrpt_transhipment b where eta >=DATEADD(m, -1.5, GETDATE())")->results();
         if(!empty($vessel)){
             foreach($vessel as $ves){
               if(!array_key_exists($ves->containernumber,$data['vessel'])){
