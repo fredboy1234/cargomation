@@ -1,5 +1,12 @@
 <?php $livedata = $this->searatesTracking; //json_decode($this->searatesTracking);?>
-<?php $livedata = json_decode($livedata[0]->track_json);?>
+<?php
+ if(!isset($livedata[0]->track_json)){
+    $livedata = json_decode($this->searatesTracking);
+ }else{
+    $livedata = json_decode($livedata[0]->track_json);
+ }
+ 
+ ?>
 <style>
     #livemap { height: 760px; }
     .liveIcon{color:#fff;}
