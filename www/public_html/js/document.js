@@ -29,25 +29,24 @@ $(document).ready(function () {
         uploadUrl: document.location.origin + "/api/post/document/upload" + param,
         deleteUrl: document.location.origin + "/api/post/document/delete" + param,
         uploadAsync: false,
-        allowedPreviewMimeTypes: null,
-        initialPreviewAsData: true,
-        initialPreviewFileType: ['pdf', 'office', 'gdocs', 'other'],
+        // allowedPreviewMimeTypes: null,
+        // initialPreviewAsData: true,
+        // initialPreviewFileType: ['pdf', 'office', 'gdocs', 'other'],
         initialPreview: initialPreview,
-        initialPreviewAsData: initialPreviewAsData,
-        initialPreviewFileType: initialPreviewFileType,
+        initialPreviewAsData: true,
         initialPreviewConfig: initialPreviewConfig,
         initialPreviewShowDelete: btn_delete,
         initialPreviewThumbTags: initialPreviewThumbTags,
-        initialPreviewDownloadUrl: '/404.html',
-        previewFileIcon: '<i class="fas fa-file"></i>',
-        previewFileIconSettings: {
-            'docx': '<i class="fas fa-file-word text-primary"></i>',
-            'xlsx': '<i class="fas fa-file-excel text-success"></i>',
-            'pptx': '<i class="fas fa-file-powerpoint text-danger"></i>',
-            'jpg': '<i class="fas fa-file-image text-warning"></i>',
-            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
-            'zip': '<i class="fas fa-file-archive text-muted"></i>',
-        },
+        // initialPreviewDownloadUrl: '/404.html',
+        // previewFileIcon: '<i class="fas fa-file"></i>',
+        // previewFileIconSettings: {
+        //     'docx': '<i class="fas fa-file-word text-primary"></i>',
+        //     'xlsx': '<i class="fas fa-file-excel text-success"></i>',
+        //     'pptx': '<i class="fas fa-file-powerpoint text-danger"></i>',
+        //     'jpg': '<i class="fas fa-file-image text-warning"></i>',
+        //     'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+        //     'zip': '<i class="fas fa-file-archive text-muted"></i>',
+        // },
         showPreview: true,
         initialPreviewDownloadUrl: true,
         actionDownload: true,
@@ -237,6 +236,7 @@ $(document).ready(function () {
         });
         var url = "shipment/document/" + shipment_id + "/" + document_type;
         preloader(url);
+        sessionStorage.setItem("changeTriggered", "1");
         // $('#kv-success-2 ul').append(out);
         // $('#kv-success-2').fadeIn('slow');
     }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {
@@ -302,6 +302,7 @@ $(document).ready(function () {
             showConfirmButton: false,
             timer: 1500
         })
+        sessionStorage.setItem("changeTriggered", "1");
     }).on('filepreupload', function (event, data, previewId, index, fileId) {
         alert('filepreupload');
         // var form = data.form, files = data.files, extra = data.extra,
@@ -443,7 +444,8 @@ $(document).ready(function () {
                             d.toggleClass("b-approved b-pending");
                             $('[data-key="' + doc_id + '"]').attr("data-doc_status", doc_status);
                             d.find('.kv-file-status').children().toggleClass("approved fa-thumbs-up pending fa-thumbs-down");
-                            d.find('.file-footer-caption > #status').toggleClass("approved pending").text(valueSelected);
+                            d.find('.file-footer-caption > #status').toggleClass("approved pending").text(doc_status);
+                            sessionStorage.setItem("changeTriggered", "1");
                         })
                     }).fail(function (response) {
                         console.log('Error: ' + response.responseText);
@@ -459,7 +461,7 @@ $(document).ready(function () {
                     showConfirmButton: false,
                     timer: 1500
                 });
-
+                sessionStorage.setItem("changeTriggered", "1");
                 // alert('Please leave a note for the ' + doc_status + ' document');
                 // if (window.confirm("Do you want to leave a comment?")) {
                 //     var url = "/document/comment/" + doc_id + "/" + doc_status;
@@ -575,7 +577,7 @@ $(document).ready(function () {
         preloader(url);
     });
 
-    // Button Edit
+    // Button Download
     $('button.kv-file-download').click(function (ev) {
         var doc_id = $(this).data("doc_id");
         ev.preventDefault();
@@ -819,6 +821,7 @@ $(document).ready(function () {
                     $('#bulk-action').prop('selectedIndex', 0);
                 }
             });
+            sessionStorage.setItem("changeTriggered", "1");
         }
     });
 

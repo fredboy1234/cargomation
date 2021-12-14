@@ -1,6 +1,5 @@
 {
     "table":[
-        {"index_name": "Transport ID", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Shipment Num", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Container Number", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Voyage Flight Num", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},

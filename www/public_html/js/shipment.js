@@ -319,13 +319,16 @@ $(document).ready(function () {
   // Append loading and redraw datatable
   $('#myModal').on('hidden.bs.modal', function (e) {
     $('#myModal .modal-body').empty().append(loader);
-    table.ajax.reload(function () {
-      setColor();
-      var stId = $('#' + localStorage.getItem("row_id"));
-      // $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
-      $('html, body').animate({ scrollTop: stId.offset() }, 2000);
-      $(stId).addClass('selected');
-    }, false);
+    if (sessionStorage.getItem("changeTriggered") != null) {
+      table.ajax.reload(function () {
+        setColor();
+        var stId = $('#' + localStorage.getItem("row_id"));
+        // $('html, body').animate({ scrollTop: stId.offset().top }, 2000);
+        $('html, body').animate({ scrollTop: stId.offset() }, 2000);
+        $(stId).addClass('selected');
+      }, false);
+      sessionStorage.clear();
+    }
   });
 
   //For Settings
@@ -451,7 +454,7 @@ $(document).ready(function () {
 
   //re order column
   table.on('column-reorder', function (e, settings, details) {
-    $('table tbody tr td:first-child').append(`${$(".parent-assign").html()}`);
+    // $('table tbody tr td:first-child').append(`${$(".parent-assign").html()}`);
     $("select[name='settings-dual'] option").each(function () {
       if ($(this).val() == details.from) {
         $(this).val(details.to);
@@ -663,7 +666,7 @@ function hideShowResetSettings() {
     success: function (res) {
       // for checking only
       if (res) {
-        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Reset Settings</button>`
+        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Set Default</button>`
         $(".parent-settings").html(html);
       }
     }

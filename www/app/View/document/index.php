@@ -15,8 +15,25 @@ if(!empty($this->document)) {
                 $server_file = '/filemanager/' . $this->email . '/CW_FILE/' . $file->shipment_num . '/' . $file->type . '/' . $file->name;
             }
 
-            $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
+            // $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
 
+            $server_file = "http://cargomation.com/filemanager/".$this->email."/CW_FILE/".$file->shipment_num."/".$file->type."/" . $file->name;
+            $ext = pathinfo($server_file, PATHINFO_EXTENSION);
+
+            switch ($ext) {
+                case 'pdf':
+                    $ext = "pdf";
+                    break;
+                case 'docx':
+                    $ext = "office";
+                    break;
+                case 'xlsx':
+                    $ext = "office";
+                    break;
+                default:
+                    # code...
+                    break;
+            }
 
             if($file->status == 'approved') {
                 $approved++;
@@ -35,10 +52,10 @@ if(!empty($this->document)) {
             $initialPreviewConfig[] = [ 'caption' => strlen($file->name) > 20 ? substr($file->name,0,20)."..." : $file->name,
                                         'description' => $file->name,
                                         'width' => '200px',
-                                        'type' => 'pdf',
+                                        'type' => $ext,
                                         'source' => $file->upload_src,
                                         'size' => " ",
-                                        'previewAsData' => true,
+                                        // 'previewAsData' => true,
                                         'frameClass' => 'd-' . $file->document_id . ' b-' . $file->status,
                                         'key' => $file->document_id,
                                         'dataKey' => $file->document_id,
@@ -180,8 +197,8 @@ if(!empty($this->document)) {
 
 <script>
     var initialPreview = <?= (empty($this->document)) ? "''" : json_encode($initialPreview); ?>;
-    var initialPreviewAsData = true;
-    var initialPreviewFileType = 'pdf';
+    // var initialPreviewAsData = true;
+    // var initialPreviewFileType = 'pdf';
     var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
     var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
     var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $this->shipment['type']; ?>";
