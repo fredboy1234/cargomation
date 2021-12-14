@@ -885,6 +885,8 @@ class Vessel extends Core\Controller {
                 }
                     
              }
+        }else{
+            echo "forced exit";
         }
 
         exit;

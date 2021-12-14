@@ -165,7 +165,7 @@ class Vessel extends Core\Model {
         // $vessel =  $Db->query("SELECT {$arg} 
         //                         FROM vrpt_transhipment b where b.user_id = {$user_id} and eta >=DATEADD(m, -1.5, GETDATE())")->results();
         $vessel =  $Db->query("SELECT {$arg} 
-                                FROM vrpt_transhipment b eta >=DATEADD(m, -1.5, GETDATE())")->results();
+                                FROM vrpt_transhipment b where eta >=DATEADD(m, -1.5, GETDATE())")->results();
         if(!empty($vessel)){
             foreach($vessel as $ves){
               if(!array_key_exists($ves->containernumber,$data['vessel'])){
