@@ -797,27 +797,25 @@ class Vessel extends Core\Controller {
     }
 
     public function seaRatesToDB($user=""){
-        header('Access-Control-Allow-Origin: *');   
-        header('Access-Control-Allow-Methods: GET, POST');
-        header("Access-Control-Allow-Headers: X-Requested-With");
-        Utility\Auth::checkAuthenticated();
+        
+        //Utility\Auth::checkAuthenticated();
 
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
+        // if (!$user) {
+        //     $userSession = Utility\Config::get("SESSION_USER");
+        //     if (Utility\Session::exists($userSession)) {
+        //         $user = Utility\Session::get($userSession);
+        //     }
+        // }
 
         // // Get an instance of the user model using the user ID passed to the
         // // controll action. 
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
+        // if (!$User = Model\User::getInstance($user)) {
+        //     Utility\Redirect::to(APP_URL);
+        // }
 
-        $data['transhipment'] = $this->Vessel->getVesselV2($user);
+        $data['transhipment'] = $this->Vessel->getVesselV2();
         // echo "<pre>";
         // print_r($data['transhipment']);
         // exit;
