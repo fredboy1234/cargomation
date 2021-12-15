@@ -631,7 +631,7 @@ class Doctracker extends Core\Controller {
         if ($role_id == 4) {
             // customer
             $sub_account = $User->getSubAccountInfo($user);
-            $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
+            $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
             $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
         } else if ($role_id == 3) {
             // staff 
