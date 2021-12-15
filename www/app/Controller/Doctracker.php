@@ -648,13 +648,13 @@ class Doctracker extends Core\Controller {
             }
         }
         if(!empty($doc_type)){
-            $count = 10;
+            $count = 16;
             foreach ($doc_type as $key => $value) {
                 array_push($userData, (object)[
                     'index_name' => $value->type,
                     // 'index_value' => (string)$count++, // Explicit cast
                     'index_value' => strval($count++), // Function call
-                    'index_check' => 'true',
+                    'index_check' => 'false',
                     'index_lvl' => 'document'
                 ]);
             }
