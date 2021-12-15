@@ -601,6 +601,7 @@ try{
 				$XPATH_PLACEOFRECEIPT = jsonPath($universal_shipment, $path_UniversalShipment.".PlaceOfReceipt.Name");
 				$PLACEOFRECEIPT = $parser->encode($XPATH_PLACEOFRECEIPT);
 				$PLACEOFRECEIPT = node_exist(getArrayName($PLACEOFRECEIPT));
+				$PLACEOFRECEIPT = str_replace("'", "", $PLACEOFRECEIPT);
                 //GET CONTAINER COUNT
 				$XPATH_CONTAINERCOUNT = jsonPath($universal_shipment, $path_UniversalShipment.".ContainerCount");
 				$CONTAINERCOUNT = $parser->encode($XPATH_CONTAINERCOUNT);
@@ -610,6 +611,7 @@ try{
 				$XPATH_PORTOFLOADING = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfLoading.Name");
 				$PORTOFLOADING = $parser->encode($XPATH_PORTOFLOADING);
 				$PORTOFLOADING = node_exist(getArrayName($PORTOFLOADING));
+				$PORTOFLOADING = str_replace("'", "", $PORTOFLOADING);
 
 				$XPATH_PORTOFDISCHARGE = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfDischarge.Name");
 				$PORTOFDISCHARGE = $parser->encode($XPATH_PORTOFDISCHARGE);
@@ -665,6 +667,8 @@ try{
 					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfLoading.Name");
 					$XPATH_TRANSLOADING = $parser->encode($XPATH_TRANSLOADING);
 					$TRANSLOADING = node_exist(getArrayName($XPATH_TRANSLOADING));
+					$TRANSLOADING = str_replace("'", "", $TRANSLOADING);
+
 
 					//GET BOOKING CODE
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].BookingStatus.Code");
@@ -724,6 +728,7 @@ try{
 					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfLoading.Name");
 					$XPATH_TRANSLOADING = $parser->encode($XPATH_TRANSLOADING);
 					$TRANSLOADING = node_exist(getArrayName($XPATH_TRANSLOADING));
+					$TRANSLOADING = str_replace("'", "", $TRANSLOADING);
 
 					//GET BOOKING CODE
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".BookingStatus.Code");
@@ -793,6 +798,7 @@ try{
 						$CONSIGNEE = node_exist(getArrayName($CONSIGNEE));
 
 						$CONSIGNEEADDRESS = $PATH_CONSIGNEEADDRESS1 . ", " . $PATH_CONSIGNEESTATE . ", " . $PATH_CONSIGNEEPOSTCODE . ", " . $PATH_CONSIGNEECOUNTRY;
+						$CONSIGNORADDRESS = str_replace("'", "", $CONSIGNORADDRESS);
 					}
 
 					elseif ($PATH_ADDRESSTYPE == "ConsignorDocumentaryAddress") {
@@ -810,7 +816,7 @@ try{
 						$CONSIGNOR = $parser->encode($XPATH_ORGANIZATIONCODE);
 						$CONSIGNOR = node_exist(getArrayName($CONSIGNOR));
 						$CONSIGNORADDRESS = $PATH_CONSIGNORADDRESS1 . ", " . $PATH_CONSIGNORSTATE . ", " . $PATH_CONSIGNORPOSTCODE . ", " . $PATH_CONSIGNORCOUNTRY;
-						
+						$CONSIGNORADDRESS = str_replace("'", "", $CONSIGNORADDRESS);
 						if(strlen($CONSIGNORADDRESS) < 5){
 							$CONSIGNORADDRESS="";
 						}
@@ -853,6 +859,7 @@ try{
 							$PATH_SENDINGAGENTSTATE = node_exist(getArrayName($XPATH_STATE));
 							$SENDINGAGENTADDRESS = $PATH_SENDINGAGENTADDRESS1 . ", " . $PATH_SENDINGAGENTADDRESSCODE . ", " . $PATH_SENDINGAGENTADDRESS2 . ", " . $PATH_SENDINGAGENTPORTNAME . ", " . $PATH_SENDINGAGENTSTATE;
 							
+							
 						} elseif ($PATH_ADDRESSTYPE_ == "ReceivingForwarderAddress") {
 							$XPATH_ORGANIZATIONCODE_ = $parser->encode($ORGANIZATIONCODE);
 							$PATH_RECEIVINGAGENT = node_exist(getArrayName($XPATH_ORGANIZATIONCODE_));
@@ -890,11 +897,13 @@ try{
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
 				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."') SELECT SCOPE_IDENTITY() as id_ship";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
-						//$sql_getlastshipID = "SELECT top 1 MAX(Id) as ship_id FROM shipment";
-						//$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
-						//while ($row_shipid = sqlsrv_fetch_array($insertRec, SQLSRV_FETCH_ASSOC)) {
-						//	echo $ship_idlast = $row_shipid['id_ship'];
-						//}
+						echo $sql_getlastshipID = "SELECT  *
+						FROM [dbo].[shipment]
+						WHERE [console_id] = '" . $CONSOLNUMBER . "' AND [shipment_num] = '" . $SHIPMENTKEY . "' AND [user_id] = '". $CLIENT_ID ."'";
+						$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
+						while ($row_shipid = sqlsrv_fetch_array($execRecord_getlastshipID, SQLSRV_FETCH_ASSOC)) {
+							 $shipcontainer_id = $row_shipid['id'];
+						}
 				     sqlsrv_next_result($insertRec);
 				     sqlsrv_fetch($insertRec);
 				     $ship_idlast = sqlsrv_get_field($insertRec, 0);
@@ -916,14 +925,14 @@ try{
 					$XPATH_COMPANY = node_exist(getArrayName($XPATH_COMPANY));
 		
 					
-					if(is_null($XPATH_EMAIL_GLOBAL) == false || $XPATH_EMAIL_GLOBAL != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '$ship_idlast' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL'";
+					if(is_null($XPATH_EMAIL_GLOBAL) == 'false' || $XPATH_EMAIL_GLOBAL != ''){
+					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$shipcontainer_id." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL'";
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 					
 					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$ship_idlast."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
+					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
 					}
 				}
@@ -946,14 +955,14 @@ try{
 						$XPATH_COMPANY_ = node_exist(getArrayName($XPATH_COMPANY_));
 					
 					
-					if(is_null($XPATH_EMAIL_GLOBAL_) == false || $XPATH_EMAIL_GLOBAL_ != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '$ship_idlast' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL_'";
+					if(is_null($XPATH_EMAIL_GLOBAL_) == 'false' || $XPATH_EMAIL_GLOBAL_ != ''){
+					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '".$shipcontainer_id."' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL_'";
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 					
 					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$ship_idlast."','".$PATH_ADDRESSTYPE_."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
+					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE_."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
 					}	
 				}
@@ -1070,7 +1079,7 @@ try{
 								
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
 								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
-								Values('".$ship_idlast."','" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
+								Values(".$shipcontainer_id.",'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
 
 							}
@@ -1182,7 +1191,7 @@ try{
 								
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
 								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
-								Values('".$ship_idlast."','" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
+								Values(".$shipcontainer_id.",'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);
 							}
 						}
@@ -1233,14 +1242,14 @@ try{
 					$XPATH_COMPANY = node_exist(getArrayName($XPATH_COMPANY));
 					
 				
-				if(is_null($XPATH_EMAIL_GLOBAL) == false || $XPATH_EMAIL_GLOBAL != ''){
-					 $sql_contact_ = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '$ship_idlast' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL'";
+				if(is_null($XPATH_EMAIL_GLOBAL) == 'false' || $XPATH_EMAIL_GLOBAL != ''){
+					 $sql_contact_ = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL'";
 					$qryResultContact = sqlsrv_query($conn, $sql_contact_);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 					
 					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact_ = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$ship_idlast."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
+					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
 					   $sql_Insert_contact_ = sqlsrv_query($conn, $sql_Insert_contact_);
 					}
 				}
@@ -1264,14 +1273,14 @@ try{
 						$XPATH_COMPANY_ = node_exist(getArrayName($XPATH_COMPANY_));
 						
 					
-					if(is_null($XPATH_EMAIL_GLOBAL_) == false || $XPATH_EMAIL_GLOBAL_ != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '$ship_idlast' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL_'";
+					if(is_null($XPATH_EMAIL_GLOBAL_) == 'false' || $XPATH_EMAIL_GLOBAL_ != ''){
+					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL_'";
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 
 				if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$ship_idlast."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
+					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
 					}	
 				}
@@ -1384,21 +1393,21 @@ try{
 								$DeliveryTruckWaitTime = node_exist(getArrayName($DeliveryTruckWaitTime));
 								
 								
-								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id='$ship_idlast' AND containernumber='$CONTAINERNUMBER'";
+								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
 								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
 								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
 								
-								if($ifContainerIDExist == true)
+								if($ifContainerIDExist == 'true')
 							    {
 								$sqlUpdateRecord_Container = "Update shipment_container SET
 								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE' ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime',length='$TOTALLENGTH',width='$TOTALWIDTH',height='$TOTALHEIGHT'
-								WHERE shipment_id='$ship_idlast' AND containernumber='$CONTAINERNUMBER'";
+								WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
 								$insertRecContainer = sqlsrv_query($conn, $sqlUpdateRecord_Container); 
 								}
 								else{
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
+								Values(".$ship_idlast.",'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);	
 								}        
 							}	
@@ -1498,21 +1507,21 @@ try{
 								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
 								$DeliveryTruckWaitTime = node_exist(getArrayName($DeliveryTruckWaitTime));
 								
-								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id='$ship_idlast' AND containernumber='$CONTAINERNUMBER'";
+								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
 								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
 								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
 								
-								if($ifContainerIDExist === true)
+								if($ifContainerIDExist == 'true')
 							    {
 							    $sqlUpdateRecord_Container = "Update shipment_container SET
 								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE'  ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime',length='$TOTALLENGTH',width='$TOTALWIDTH',height='$TOTALHEIGHT'
-								WHERE shipment_id='$ship_idlast' AND containernumber='$CONTAINERNUMBER'";
+								WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
 								$insertRecContainer = sqlsrv_query($conn, $sqlUpdateRecord_Container); 
 								}
 								else{
 								$sqlInsertRecord_Container = "INSERT INTO shipment_container
-								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time)
-								Values($ship_idlast,'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
+								(shipment_id,containershipnumber, containernumber, containertype, containerdeliverymode, containerdescription,fcl_unload,port_transport_booked,slot_date,wharf_gate_out,estimated_full_delivery,actual_full_deliver,empty_returned_by,empty_readyfor_returned,customs_Ref,port_transport_ref,slot_book_ref,do_release,trans_book_req,trans_actual_deliver,trans_deliverreq_from,trans_deliverreq_by,trans_estimated_delivery,trans_delivery_labour,trans_wait_time,length,width,height)
+								Values(".$ship_idlast.",'" . $SHIPMENTKEY . "','" . $CONTAINERNUMBER . "','" . $CONTAINERTYPE . "','" . $DELIVERYMODE . "','" . $CATEGORYDESCRIPTION . "','".$FCLUNLOADFROMVESSEL."','".$ARRIVALCARTAGEADVISED."','".$SLOTDATE."','".$WHARFOUT."','".$ESTFULLDELIVER."','".$ACTFULLDELIVER."','".$EMPRETURNEDBY."','".$EMPFORRETURNED."','".$CUSTOMSREF."','".$PORTTRANSREF."','".$SLOTTRANSREF."','".$DORELEASE."','".$DeliveryCartageAdvised."','".$DeliveryCartageCompleted."','".$DeliveryRequiredFrom."','".$DeliveryRequiredBy."','".$EstimatedDelivery."','".$DeliveryLabourTime."','".$DeliveryTruckWaitTime."','".$TOTALLENGTH."','".$TOTALWIDTH."','".$TOTALHEIGHT."')";
 								$insertRecContainer = sqlsrv_query($conn, $sqlInsertRecord_Container);	
 					 
 								}  
