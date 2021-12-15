@@ -147,7 +147,9 @@ $(document).ready(function () {
 
   var tableColumnData = [];
   $.each(userData, function (okey, oval) {
+    if (oval.index_name != null){
     tableColumnData.push({ data: oval.index_name.replace(/\s+/g, '_').toLowerCase() });
+    }
   });
 
   var table = $('.table').DataTable({
