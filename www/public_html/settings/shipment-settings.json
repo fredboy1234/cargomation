@@ -9,6 +9,12 @@
         {"index_name": "Vessel Name", "index_value": "6", "index_check": "false", "index_lvl":"shipment"},
         {"index_name": "Place Of Delivery", "index_value": "7", "index_check": "false", "index_lvl":"shipment"},
         {"index_name": "Container Number", "index_value": "8", "index_check": "false", "index_lvl":"shipment"},
-        {"index_name": "All", "index_value": "9", "index_check": "false", "index_lvl":"document"}
+        {"index_name": "All", "index_value": "9", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "PKD", "index_value": "10", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "PKL", "index_value": "11", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "HBL", "index_value": "12", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "MBL", "index_value": "13", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "COO", "index_value": "14", "index_check": "true", "index_lvl":"document"},
+        {"index_name": "CIV", "index_value": "15", "index_check": "true", "index_lvl":"document"}
     ]
 }
