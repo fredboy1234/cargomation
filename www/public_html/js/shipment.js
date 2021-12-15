@@ -146,8 +146,17 @@ $(document).ready(function () {
   }
 
   var tableColumnData = [];
-  $.each(userData, function (okey, oval) {
-    tableColumnData.push({ data: oval.index_name.replace(/\s+/g, '_').toLowerCase() });
+  //console.log(userData);
+  $.each(JSON.parse(userData), function (okey, oval) {
+   
+    if(oval.index_name == null){
+       // alert();
+    }else{
+      if(typeof oval != null || typeof oval != "undefined"){
+        tableColumnData.push({ data: oval.index_name.replace(/\s+/g, '_').toLowerCase() });
+      } 
+    }
+   
   });
 
   var table = $('.table').DataTable({

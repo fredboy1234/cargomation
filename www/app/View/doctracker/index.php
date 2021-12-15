@@ -476,7 +476,7 @@
 
 
 <script>
-    var userData = <?php echo json_encode($settings); ?>;
+    var userData = <?php echo json_encode($this->user_settings); ?>;
     var userReset = <?php echo json_encode($this->user); ?>;
     var userrole = <?php echo json_encode($this->role) ?>;
     var theme = <?php echo json_encode($this->selected_theme) ?>;
