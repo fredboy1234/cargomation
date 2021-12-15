@@ -647,16 +647,19 @@ class Doctracker extends Core\Controller {
                 $defaultCollection[]=$value->index_value;
             }
         }
+        $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
         if(!empty($doc_type)){
             $count = 16;
             foreach ($doc_type as $key => $value) {
-                array_push($userData, (object)[
-                    'index_name' => $value->type,
-                    // 'index_value' => (string)$count++, // Explicit cast
-                    'index_value' => strval($count++), // Function call
-                    'index_check' => 'false',
-                    'index_lvl' => 'document'
-                ]);
+                if(!in_array($value->type,$defaultDocType)){
+                    array_push($userData, (object)[
+                        'index_name' => $value->type,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'false',
+                        'index_lvl' => 'document'
+                    ]);
+                }
             }
         } 
         foreach($defaultSettings->table  as $key=> $value){
