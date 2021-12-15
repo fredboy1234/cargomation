@@ -451,7 +451,7 @@ class User extends Core\Model {
         ON d.shipment_num = s.shipment_num
         WHERE s.user_id = '{$user_key}'";
         if($role_id == 4) {
-            $query .= "AND (s.consignee = 'CONHOASYD' OR s.consignor = 'CONHOASYD')";
+            $query .= "AND (s.consignee = '{$org_code}' OR s.consignor = '{$org_code}')";
         } 
         $query .= "GROUP BY d.type";
 
