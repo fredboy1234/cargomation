@@ -81,6 +81,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 </style>
 
+<?php if(false): ?>
 <button class="open-button" onclick="openForm()"><i class="nav-icon fas fa-comments"></i></button>
 
 <div class="form-popup" id="myForm">
@@ -122,7 +123,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
     </form>
   </div>
 </div>
-
+<?php endif; ?>
 
 
   <!-- /.content-wrapper -->
@@ -142,6 +143,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </div>
 <!-- ./wrapper -->
 
+<!-- LIVE CHAT -->
+<script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: '7008649e-e375-42f7-a899-50df2f76de5f', f: true }); done = true; } }; })();</script>
 <!-- jQuery -->
 <script src="/bower_components/admin-lte/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
