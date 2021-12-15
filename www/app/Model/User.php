@@ -720,4 +720,9 @@ class User extends Core\Model {
 
     }
 
+    public function getUserInfoByUserID($user_id, $args = "*") {
+        $query = "SELECT * FROM user_info WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 }
