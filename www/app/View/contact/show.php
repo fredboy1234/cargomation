@@ -12,7 +12,7 @@ $address .= " " . $this->contact_info->city;
 $address .= " " . $this->contact_info->postcode;
 
 $document_types = "Not set";
-$document_types .= implode(", ", array_column($this->document_type, 'type'));
+$document_types .= ", " . implode(", ", array_column($this->document_type, 'type'));
 
 ?>
 <div class="row">
