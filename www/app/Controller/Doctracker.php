@@ -627,7 +627,14 @@ class Doctracker extends Core\Controller {
 
         $userData = $User->getUserSettings($user);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
-        $doc_type = $User->getUserDocumentType($user, $role_id); // $this->Document->getDocumentType(), 'type');
+
+        if($role_id == 4) {
+            $sub_account = $User->getSubAccountInfo($user);
+            $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
+        } else {
+            $doc_type = $User->getUserDocumentType($user, $role_id);
+        }
 
         // $Role = Model\Role::getInstance($user);
         // $role = $Role->getUserRole($user);
