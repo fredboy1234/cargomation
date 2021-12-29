@@ -148,15 +148,15 @@ $(document).ready(function () {
   var tableColumnData = [];
   //console.log(userData);
   $.each(JSON.parse(userData), function (okey, oval) {
-   
+   $xx = oval.index_name;
     if(oval.index_name == null){
        // alert();
     }else{
       if(typeof oval != null || typeof oval != "undefined"){
-        tableColumnData.push({ data: oval.index_name.replace(/\s+/g, '_').toLowerCase() });
+        $xx = oval.index_name.replace(/\s+/g, '_').toLowerCase();
       } 
     }
-   
+    tableColumnData.push({ data: $xx });
   });
 
   var table = $('.table').DataTable({
