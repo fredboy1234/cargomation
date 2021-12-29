@@ -443,21 +443,26 @@ class User extends Core\Model {
         );
     }
 
-    public function getUserDocumentType($user_key, $role_id) {
+    public function getUserDocumentType($user_key, $role_id, $org_code = "") {
         //$query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
         $query = "SELECT d.type
         FROM document AS d
         LEFT JOIN shipment AS s
         ON d.shipment_num = s.shipment_num
-        WHERE s.user_id = '{$user_key}' GROUP BY d.type";
+        WHERE s.user_id = '{$user_key}'";
         if($role_id == 4) {
-            $query = "SELECT d.type 
-            FROM shipment_contacts sc
-            LEFT JOIN document d
-            ON d.shipment_id = sc.shipment_id
-            WHERE sc.email = '{$user_key}'
-            GROUP BY d.type";
-        }
+            $query .= "AND (s.consignee = '{$org_code}' OR s.consignor = '{$org_code}')";
+        } 
+        $query .= "GROUP BY d.type";
+
+        // if(false) {
+        //     $query = "SELECT d.type 
+        //     FROM shipment_contacts sc
+        //     LEFT JOIN document d
+        //     ON d.shipment_id = sc.shipment_id
+        //     WHERE sc.email = '{$user_key}'
+        //     GROUP BY d.type";
+        // }
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
@@ -715,4 +720,9 @@ class User extends Core\Model {
 
     }
 
+    public function getUserInfoByUserID($user_id, $args = "*") {
+        $query = "SELECT * FROM user_info WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 }

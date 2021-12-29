@@ -170,7 +170,7 @@ class Doctracker extends Core\Controller {
             "document" => $this->Document->getDocumentByShipment($shipment_id),
             "document_per_type" => $docsCollection,
             "child_user" => Model\User::getUsersInstance($user, $role->role_id),
-            "user_settings" =>$this->defaultSettings($user_key, $role->role_id),
+            "user_settings" =>$this->defaultSettings($user, $role->role_id), // $user_key??
             "settings_user" => $User->getUserSettings($user),
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
@@ -627,7 +627,20 @@ class Doctracker extends Core\Controller {
 
         $userData = $User->getUserSettings($user);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
-        $doc_type = $User->getUserDocumentType($user, $role_id); // $this->Document->getDocumentType(), 'type');
+
+        if ($role_id == 4) {
+            // customer
+            $sub_account = $User->getSubAccountInfo($user);
+            $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
+        } else if ($role_id == 3) {
+            // staff 
+            $sub_account = $User->getSubAccountInfo($user);
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id);
+        } else {
+            // client admin
+            $doc_type = $User->getUserDocumentType($user, $role_id);
+        }
 
         // $Role = Model\Role::getInstance($user);
         // $role = $Role->getUserRole($user);
