@@ -662,6 +662,7 @@ try{
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
+					$TRANSDISCHARGE = str_replace("'", "", $TRANSDISCHARGE);
 
 					//GET LOADING NAME
 					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].PortOfLoading.Name");
@@ -723,6 +724,7 @@ try{
 					$XPATH_TRANSDISCHARGE = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfDischarge.Name");
 					$XPATH_TRANSDISCHARGE = $parser->encode($XPATH_TRANSDISCHARGE);
 					$TRANSDISCHARGE = node_exist(getArrayName($XPATH_TRANSDISCHARGE));
+					$TRANSDISCHARGE = str_replace("'", "", $TRANSDISCHARGE);
 
 					//GET LOADING NAME
 					$XPATH_TRANSLOADING = jsonPath($universal_shipment, $path_TransportLegCollection.".PortOfLoading.Name");
@@ -890,16 +892,16 @@ try{
 							 $TRANS_ETD = null;
 						}
 						
-				$sqlInsertRecord = "INSERT INTO shipment
+				echo $sqlInsertRecord = "INSERT INTO shipment
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
 				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
 				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."') SELECT SCOPE_IDENTITY() as id_ship";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
-						echo $sql_getlastshipID = "SELECT  *
-						FROM [dbo].[shipment]
-						WHERE [console_id] = '" . $CONSOLNUMBER . "' AND [shipment_num] = '" . $SHIPMENTKEY . "' AND [user_id] = '". $CLIENT_ID ."'";
+						$sql_getlastshipID = "SELECT  *
+						FROM dbo.shipment
+						WHERE console_id = '" . $CONSOLNUMBER . "' AND shipment_num = '" . $SHIPMENTKEY . "' AND user_id = ". $CLIENT_ID ."";
 						$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
 						while ($row_shipid = sqlsrv_fetch_array($execRecord_getlastshipID, SQLSRV_FETCH_ASSOC)) {
 							 $shipcontainer_id = $row_shipid['id'];
@@ -930,7 +932,7 @@ try{
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 					
-					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
+					if($ifContactExist != 1 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
 					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
@@ -960,7 +962,7 @@ try{
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 					
-					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
+					if($ifContactExist != 1 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
 					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE_."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
@@ -1246,8 +1248,9 @@ try{
 					 $sql_contact_ = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL'";
 					$qryResultContact = sqlsrv_query($conn, $sql_contact_);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
+					$row_count = sqlsrv_num_rows($qryResultContact);
 					
-					if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
+					if($ifContactExist != 1 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact_ = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
 					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
 					   $sql_Insert_contact_ = sqlsrv_query($conn, $sql_Insert_contact_);
@@ -1278,7 +1281,7 @@ try{
 					$qryResultContact = sqlsrv_query($conn, $sql_contact);
 					$ifContactExist = sqlsrv_has_rows($qryResultContact);
 
-				if($ifContactExist === false && strlen($XPATH_EMAIL_GLOBAL) > 5 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
+				if($ifContactExist != 1 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
 					   $sql_Insert_contact = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
 					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
 					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
