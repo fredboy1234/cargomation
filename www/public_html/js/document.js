@@ -271,7 +271,7 @@ $(document).ready(function () {
                 } else if (result.isDismissed) {
                     Swal.fire('File deletion was aborted!', 'File "' + data.name + '" was not deleted.', 'info');
                 }
-            });
+            }); 
             // $.confirm({
             //     title: 'Confirmation!',
             //     content: 'Are you sure you want to delete this file?',
