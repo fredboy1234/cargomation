@@ -702,7 +702,7 @@ $(document).ready(function () {
         // console.log(valueSelected);
         // console.log(textSelected);
 
-        var data = [];
+        var data = []; 
 
         $('div[class*="selected"] > input').each(function () {
             data.push($(this).val().replace('d-', ''));
