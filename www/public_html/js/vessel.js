@@ -427,7 +427,7 @@ jQuery(document).ready(function() {
                     ).addTo(mymap);
                   
                 }
-              });
+              }); 
           });
           legcollection = [];
         });
