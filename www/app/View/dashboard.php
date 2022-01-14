@@ -785,9 +785,10 @@
                 <!-- /.card-tools -->
               </div>
               <div class="card-body p-0">
-                <!-- <div id="world-map" style="height: 250px; width: 100%;"></div> -->
-                <div id="dashmap" class="map" style="position: relative; height: 495px;"></div>
-                <div id="sidebardash">
+                <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
+                 -->
+                <div id="chartdiv" class="map" style="position: relative; height: 495px;"></div>
+                <div id="sidebardash" class="d-none">
                     <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
                     <?php $current = array();?>
                     <ul class="list-group">
