@@ -274,14 +274,83 @@ crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="//cdn.amcharts.com/lib/5/index.js"></script>
+<script src="//cdn.amcharts.com/lib/5/map.js"></script>
+<script src="//cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+<script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 
 <script>
+var shipments = <?=$this->shipment_with_port?>;
+var port_loading_couint = <?=$this->port_loading_count?>;
+console.log(shipments);
+console.log(port_loading_couint);
 $(document).ready(function(){
+  // Create root
+  var root = am5.Root.new("chartdiv"); 
+
+  // Set themes
+  root.setThemes([
+    am5themes_Animated.new(root)
+  ]);
+
+  // Create chart
+  var chart = root.container.children.push(am5map.MapChart.new(root, {
+    panX: "rotateX",
+    panY: "none",
+    projection: am5map.geoMercator()
+  }));
+
+  // Create polygon series
+  var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+    geoJSON: am5geodata_worldLow,
+    exclude: ["AQ"]
+  }));
+
+  // Create point series
+  var pointSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+    latitudeField: "lat",
+    longitudeField: "long"
+  }));
+
+  pointSeries.bullets.push(function() {
+    var circle = am5.Circle.new(root, {
+      radius: 12,
+      fill: am5.color(0xff0000),
+      tooltipText: "{name}"
+    });
+
+    //if want to add click event in future
+    circle.events.on("click", function(ev) {
+      //alert("Clicked on " + ev.target.dataItem.dataContext.name)
+    });
+
+    return am5.Bullet.new(root, {
+      sprite: circle
+    });
+  });
+  var preventer = [];
+  var pointObject=[];
+  $.each(shipments,function(okey,oval){
+    var loading = oval.port_loading; 
+    if ($.inArray(loading, preventer) == -1){
+      preventer.push(loading);
+      var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
+        if(data.status === 'OK'){
+          var ellong = data.results[0].geometry.location.lng;
+          var ellat = data.results[0].geometry.location.lat;
+          pointObject.push({long:ellong,lat:ellat,name:loading});
+        }
+     });
+    }
+  });
   
+  setTimeout(function(){
+    pointSeries.data.setAll(pointObject);
+  },2000);
+  
+
   var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
   var map = L.map('dashmap',{
        //zoomControl: false,
@@ -334,8 +403,7 @@ $(document).ready(function(){
   var route = L.featureGroup().addTo(map);
   var countLoading = [];
   var mapdetails = [];
-  var shipments = <?=$this->shipment_with_port?>;
-  var port_loading_couint = <?=$this->port_loading_count?>;
+  
   var markerarr =[];
   $.each(shipments,function(okey,oval){
     var loading = oval.port_loading; 
