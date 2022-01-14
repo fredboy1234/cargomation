@@ -337,10 +337,11 @@ $(document).ready(function(){
     if ($.inArray(loading, preventer) == -1){
       preventer.push(loading);
       var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
+        var txtcontent = `Location: ${loading}`;
         if(data.status === 'OK'){
           var ellong = data.results[0].geometry.location.lng;
           var ellat = data.results[0].geometry.location.lat;
-          pointObject.push({long:ellong,lat:ellat,name:loading});
+          pointObject.push({long:ellong,lat:ellat,name:txtcontent});
         }
      });
     }
