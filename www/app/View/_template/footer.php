@@ -274,7 +274,8 @@ crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
-
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 
