@@ -2,8 +2,8 @@
     "table":[
         {"index_name": "Shipment ID", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Console ID", "index_value": "1", "index_check": "true", "index_lvl":"shipment"},
-        {"index_name": "ETA", "index_value": "2", "index_check": "true", "index_lvl":"shipment"},
-        {"index_name": "ETD", "index_value": "3", "index_check": "true", "index_lvl":"shipment"},
+        {"index_name": "ET Arrival", "index_value": "2", "index_check": "true", "index_lvl":"shipment"},
+        {"index_name": "ET Departure", "index_value": "3", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Consignee", "index_value": "4", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Consignor", "index_value": "5", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Vessel Name", "index_value": "6", "index_check": "false", "index_lvl":"shipment"},
