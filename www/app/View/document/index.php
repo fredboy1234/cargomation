@@ -20,14 +20,22 @@ if(!empty($this->document)) {
             $server_file = "http://cargomation.com/filemanager/".$this->email."/CW_FILE/".$file->shipment_num."/".$file->type."/" . $file->name;
             $ext = pathinfo($server_file, PATHINFO_EXTENSION);
 
-            if($ext == 'txt') {
-                $ext = 'text';
-            } else if (strpos($ext, 'docx') >= 0
-                || strpos($ext, 'xlsx') >= 0
-                || strpos($ext, 'pptx') >= 0 ) {
-                $ext = 'office';
-            } else {
+            // if($ext == 'txt') {
+            //     $ext = 'text';
+            // } else if (strpos($ext, 'docx') >= 0
+            //     || strpos($ext, 'xlsx') >= 0
+            //     || strpos($ext, 'pptx') >= 0 ) {
+            //     $ext = 'office';
+            // } else {
+            //     $ext = 'pdf';
+            // }
+
+            if ($ext == 'pdf') {
                 $ext = 'pdf';
+            } else if ($ext == 'txt') {
+                $ext = 'text';
+            } else {
+                $ext = 'office';
             }
 
             // switch (true) {
