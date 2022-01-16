@@ -399,7 +399,7 @@ jQuery(document).ready(function() {
               +'</div>'
           ).addTo(mymap);
       });
-    }else{
+    }else{ 
       var gkey = '&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
       var gaddress = 'address=';
       var greq = 'https://maps.googleapis.com/maps/api/geocode/json?';
@@ -427,7 +427,7 @@ jQuery(document).ready(function() {
                     ).addTo(mymap);
                   
                 }
-              });
+              }); 
           });
           legcollection = [];
         });

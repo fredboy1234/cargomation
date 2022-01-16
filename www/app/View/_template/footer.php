@@ -274,13 +274,158 @@ crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
-
+<script src="//cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="//cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+<script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 
 <script>
+var shipments = <?=$this->shipment_with_port?>;
+var port_loading_couint = <?=$this->port_loading_count?>;
+console.log(shipments);
+console.log(port_loading_couint);
 $(document).ready(function(){
+
+  var preventer = [];
+  var pointObject=[];
+  $.each(port_loading_couint,function(okey,oval){
+    var loading = oval.port_loading; 
+    var ccount = oval.count;
+    if(loading !==""){
+      if ($.inArray(loading, preventer) == -1){
+        preventer.push(loading);
+        var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
+          var txtcontent = `Location: ${loading}`;
+          var items = [50, 60, 80];
+          var item = items[Math.floor(Math.random() * items.length)];
+          
+          if(data.status === 'OK'){
+            var ellong = data.results[0].geometry.location.lng;
+            var ellat = data.results[0].geometry.location.lat;
+            // pointObject.push({long:ellong,lat:ellat,name:txtcontent});
+            pointObject.push({
+              title: '',
+              latitude: ellat,
+              longitude: ellong,
+              width: 10,
+              height: 10,
+              value: ccount});
+          }
+        });
+      }  
+    }
+    
+  });
   
+  am5.ready(function() {
+
+// Create root and chart
+var root = am5.Root.new("chartdiv"); 
+
+// Set themes
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+
+// ====================================
+// Create map
+// ====================================
+
+var map = root.container.children.push(
+  am5map.MapChart.new(root, {
+    panX: "none",
+    projection: am5map.geoNaturalEarth1()
+  })
+);
+
+// Create polygon series
+var polygonSeries = map.series.push(
+  am5map.MapPolygonSeries.new(root, {
+    geoJSON: am5geodata_continentsLow,
+    exclude: ["antarctica"],
+    fill: am5.color(0xbbbbbb)
+  })
+);
+
+var pointSeries = map.series.push(
+  am5map.MapPointSeries.new(root, {})
+);
+
+var colorSet = am5.ColorSet.new(root, {step:2});
+
+pointSeries.bullets.push(function(root, series, dataItem) {
+  var value = dataItem.dataContext.value;
+
+  var container = am5.Container.new(root, {});
+  var color = colorSet.next();
+  var radius = 15 + value / 20 * 20;
+  var circle = container.children.push(am5.Circle.new(root, {
+    radius: 20,
+    fill: color,
+    dy: -radius * 2
+  }))
+
+  var pole = container.children.push(am5.Line.new(root, {
+    stroke: color,
+    height: -40,
+    strokeGradient: am5.LinearGradient.new(root, {
+      stops:[
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 0 }
+      ]
+    })
+  }));
+
+  var label = container.children.push(am5.Label.new(root, {
+    text: value + "",
+    fill: am5.color(0xffffff),
+    fontWeight: "400",
+    centerX: am5.p50,
+    centerY: am5.p50,
+    dy: -radius * 2
+  }))
+
+  var titleLabel = container.children.push(am5.Label.new(root, {
+    text: dataItem.dataContext.title,
+    fill: color,
+    fontWeight: "500",
+    fontSize: "1em",
+    centerY: am5.p50,
+    dy: -radius * 2,
+    dx: radius
+  }))
+ 
+  return am5.Bullet.new(root, {
+    sprite: container
+  });
+});
+
+
+
+
+// ====================================
+// Create pins
+// ====================================
+setTimeout(function(){ 
+  for (var i = 0; i < pointObject.length; i++) {
+    var d = pointObject[i];
+    pointSeries.data.push({
+      geometry: { type: "Point", coordinates: [d.longitude, d.latitude] },
+      title: d.title,
+      value: d.value
+    });
+  }
+ }, 3000);
+
+
+}); // end am5.ready()
+  
+
   var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
   var map = L.map('dashmap',{
        //zoomControl: false,
@@ -333,8 +478,7 @@ $(document).ready(function(){
   var route = L.featureGroup().addTo(map);
   var countLoading = [];
   var mapdetails = [];
-  var shipments = <?=$this->shipment_with_port?>;
-  var port_loading_couint = <?=$this->port_loading_count?>;
+  
   var markerarr =[];
   $.each(shipments,function(okey,oval){
     var loading = oval.port_loading; 
