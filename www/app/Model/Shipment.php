@@ -72,15 +72,24 @@ class Shipment extends Core\Model {
         if($data['shipment_id'] !="" ){
             $where .= " and shipment.shipment_num like '%{$data['shipment_id']}%'";
         }
+        if($data['console_id'] !="" ){
+            $where .= " and shipment.console_id like '%{$data['console_id']}%'";
+        }
         if($data['ETA'] != ""){
             $date =  explode(" - ",$data['ETA']);
             $start_date = date_format(date_create($date[0]), "Y/m/d");
             $end_date = date_format(date_create($date[1]), "Y/m/d");
             $where .= " and shipment.eta between '{$start_date}' and '{$end_date}' and shipment.eta <>'1900-01-01 00:00:00'";
         }
-        if($data['client_name'] != ""){
-            $where .= " and concat_ws('',users.first_name,' ',users.last_name) like '%{$data['client_name']}%'";
+        if($data['ETD'] != ""){
+            $date =  explode(" - ",$data['ETD']);
+            $start_date = date_format(date_create($date[0]), "Y/m/d");
+            $end_date = date_format(date_create($date[1]), "Y/m/d");
+            $where .= " and shipment.etd between '{$start_date}' and '{$end_date}' and shipment.etd <>'1900-01-01 00:00:00'";
         }
+        // if($data['client_name'] != ""){
+        //     $where .= " and concat_ws('',users.first_name,' ',users.last_name) like '%{$data['client_name']}%'";
+        // }
 
         if($data['consignee'] !=""){
             $where .= " and shipment.consignee like '%{$data['consignee']}%'";
