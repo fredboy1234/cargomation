@@ -586,7 +586,44 @@ class Shipment extends Core\Controller {
             $subdata['place_of_delivery'] = $value->place_delivery;
             $subdata['consignee'] = $value->consignee;
             $subdata['consignor'] = $value->consignor;
-            $subdata['container_number'] = $value->CONTAINER;
+
+            if(!empty($value->CONTAINER)) {
+                $test = explode(':', trim($value->CONTAINER, ':'));
+
+                // Container Number
+                $container_num = array();
+                foreach ($test as $keye => $valuee) {
+                    $container_num[] = explode(', ', $valuee);
+                }
+
+                $subdata['container_number'] = '
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu">';
+
+                    if(!empty($test)) {
+                        $last_key = array_key_last($container_num);
+                        foreach ($container_num as $key7 => $value7) {
+                            $subdata['container_number'] .= 
+                            '<span class="dropdown-item">'
+                            . 'Container Number: ' . $value7[0] . '<br>'
+                            . 'Container Type: ' . $value7[1] . '<br>'
+                            . 'Container Delivery Mode: ' . $value7[2] . '<br>'
+                            . '</span>';
+                            if($last_key !== $key7) {
+                                $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+                            }
+                        }
+                    }
+
+                $subdata['container_number'] .= '
+                    </div>
+                </div>';
+            } else {
+                $subdata['container_number'] = 'No data';
+            }
 
             $data[] = $subdata;
 
