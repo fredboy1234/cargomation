@@ -222,9 +222,9 @@ $(document).ready(function () {
     //   $(nRow).find('td .datesort').parent().attr('data-sort',selector);
       
     // },
-    columnDefs: [
-      { className: "stats", targets: [4, 5, 6, 7, 8] }
-    ],
+    // columnDefs: [
+    //   { className: "stats", targets: [4, 5, 6, 7, 8] }
+    // ],
     initComplete: setColor,
     "fnPreDrawCallback": function (oSettings) {
       // if ($('#test').val() == 1) {
