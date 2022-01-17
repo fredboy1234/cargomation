@@ -34,6 +34,8 @@ if(!empty($this->document)) {
                 $ext = 'pdf';
             } else if ($ext == 'txt') {
                 $ext = 'text';
+            } else if ($ext == 'tif' || $ext == 'ai' || $ext == 'tiff' || $ext == 'eps') {
+                $ext = 'gdocs';  
             } else {
                 $ext = 'office';
             }
