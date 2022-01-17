@@ -309,8 +309,8 @@ class Shipment extends Core\Model {
 
     public static function countOfPort($user_id){
         $Db = Utility\Database::getInstance();
-        return $Db->query("select count(port_loading) as count ,port_loading
-        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading")->results();
+        return $Db->query("select count(port_loading) as count ,port_loading, transport_mode
+        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading,transport_mode")->results();
     }
 
     public static function getShipmentByOrgCode($org_code, $args = "*") {

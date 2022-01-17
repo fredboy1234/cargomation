@@ -275,10 +275,10 @@ crossorigin=""></script>
 <script src="/bower_components/admin-lte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
 <script src="//cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-<script src="//cdn.amcharts.com/lib/5/map.js"></script>
-<<script src="//cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-<script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
 
@@ -291,12 +291,19 @@ $(document).ready(function(){
 
   var preventer = [];
   var pointObject=[];
+  
   $.each(port_loading_couint,function(okey,oval){
     var loading = oval.port_loading; 
     var ccount = oval.count;
     if(loading !==""){
       if ($.inArray(loading, preventer) == -1){
         preventer.push(loading);
+        var mcolor ="#dc3545";
+        if(oval.transport_mode === "Air"){
+          mcolor = "#007bff";
+        }else if(oval.transport_mode === "Sea"){
+          mcolor = "#28a745";
+        }
         var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
           var txtcontent = `Location: ${loading}`;
           var items = [50, 60, 80];
@@ -305,14 +312,13 @@ $(document).ready(function(){
           if(data.status === 'OK'){
             var ellong = data.results[0].geometry.location.lng;
             var ellat = data.results[0].geometry.location.lat;
-            pointObject.push({long:ellong,lat:ellat,name:txtcontent});
-            // pointObject.push({
-            //   title: loading,
-            //   latitude: ellat,
-            //   longitude: ellong,
-            //   width: 10,
-            //   height: 10,
-            //   value: ccount});
+           // pointObject.push({long:ellong,lat:ellat,name:txtcontent});
+            pointObject.push({
+              title: loading,
+              latitude: ellat,
+              longitude: ellong,
+              color: mcolor
+              });
           }
         });
       }  
@@ -320,51 +326,147 @@ $(document).ready(function(){
     
   });
   
-// Create root
-var root = am5.Root.new("chartdiv"); 
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
 
-// Set themes
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
+// Create map instance
+var chart = am4core.create("chartdiv", am4maps.MapChart);
 
-// Create chart
-var chart = root.container.children.push(am5map.MapChart.new(root, {
-  panX: "rotateX",
-  panY: "none",
-  projection: am5map.geoMercator()
-}));
+// Set map definition
+chart.geodata = am4geodata_worldLow;
+chart.maxZoomLevel = 1;
+chart.seriesContainer.draggable = false;
+chart.chartContainer.wheelable = false;
+// Set projection
+chart.projection = new am4maps.projections.Miller();
 
-// Create polygon series
-var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-  geoJSON: am5geodata_worldLow,
-  exclude: ["AQ"]
-}));
+// Create map polygon series
+var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
-// Create point series
-var pointSeries = chart.series.push(am5map.MapPointSeries.new(root, {
-  latitudeField: "lat",
-  longitudeField: "long"
-}));
+// Exclude Antartica
+polygonSeries.exclude = ["AQ"];
 
-pointSeries.bullets.push(function() {
-  var circle = am5.Circle.new(root, {
-    radius: 5,
-    fill: am5.color(0xff0000),
-    tooltipText: "{name}"
-  });
+// Make map load polygon (like country names) data from GeoJSON
+polygonSeries.useGeodata = true;
 
-  circle.events.on("click", function(ev) {
-    alert("Clicked on " + ev.target.dataItem.dataContext.name)
-  });
+// Configure series
+var polygonTemplate = polygonSeries.mapPolygons.template;
+polygonTemplate.tooltipText = "{name}";
+polygonTemplate.polygon.fillOpacity = 0.6;
 
-  return am5.Bullet.new(root, {
-    sprite: circle
-  });
-});
+
+// Create hover state and set alternative fill color
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = chart.colors.getIndex(0);
+
+// Add image series
+var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+imageSeries.mapImages.template.propertyFields.longitude = "longitude";
+imageSeries.mapImages.template.propertyFields.latitude = "latitude";
+imageSeries.mapImages.template.tooltipText = "{title}";
+imageSeries.mapImages.template.propertyFields.url = "url";
+
+var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
+circle.radius = 3;
+circle.propertyFields.fill = "color";
+circle.nonScaling = true;
+
+var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
+circle2.radius = 3;
+circle2.propertyFields.fill = "color";
+
+
+circle2.events.on("inited", function(event){
+  animateBullet(event.target);
+})
+
+
+function animateBullet(circle) {
+    var animation = circle.animate([{ property: "scale", from: 1 / chart.zoomLevel, to: 5 / chart.zoomLevel }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
+    animation.events.on("animationended", function(event){
+      animateBullet(event.target.object);
+    })
+}
+
+var colorSet = new am4core.ColorSet();
+
 setTimeout(function(){
-  pointSeries.data.setAll(pointObject);
+  imageSeries.data = pointObject;
 },2000);
+
+// imageSeries.data = [ {
+//   "title": "Usa",
+//   "latitude": 37.090240,
+//   "longitude": -95.712891,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "India",
+//   "latitude": 20.593683,
+//   "longitude": 78.962883,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Paris",
+//   "latitude": 48.8588897,
+//   "longitude": 2.320041,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Dubai",
+//   "latitude": 25.2653471,
+//   "longitude": 55.2924914,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "London",
+//   "latitude": 51.507351,
+//   "longitude": -0.127758,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Italy",
+//   "latitude": 41.871941,
+//   "longitude": 12.567380,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Portugal",
+//   "latitude": 40.0332629,
+//   "longitude": -7.8896263,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Japan",
+//   "latitude": 36.5748441,
+//   "longitude": 139.2394179,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "China",
+//   "latitude": 35.000074,
+//   "longitude": 104.999927,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Egypt",
+//   "latitude": 26.2540493,
+//   "longitude": 29.2675469,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Thailand",
+//   "latitude": 14.8971921,
+//   "longitude": 100.83273,
+//   "color":colorSet.next()
+// },
+// {
+//   "title": "Greece",
+//   "latitude": 38.9953683,
+//   "longitude": 21.9877132,
+//   "color":colorSet.next()
+// } ];
 // end am5.ready()
   
 
