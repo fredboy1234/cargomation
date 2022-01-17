@@ -406,7 +406,7 @@ jQuery(document).ready(function() {
       $.each(searates,function(okey,oval){
         var legorder = JSON.parse(oval.route_leg);
         var legcollection =[];
-
+ 
         console.log(legorder);
         $.each(legorder, function(legkey,legval){
           legcollection.push(legval.Destination,legval.Origin);
