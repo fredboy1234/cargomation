@@ -114,7 +114,7 @@ $(document).ready(function () {
     var curr_year = c_date.getFullYear();
     calendar_end_date = curr_month + '/' + curr_date + '/' + curr_year;
     calendar_start_date = parsed_qs.calendar;
-    $("input[name='ETA']").val(calendar_start_date + ' - ' + calendar_end_date);
+    $("input[name='ETA'], input[name='ETD']").val(calendar_start_date + ' - ' + calendar_end_date);
     $("input[name='post_trigger']").val("set");
     setTimeout(function () {
       $("#advance-search-btn").trigger('click');
@@ -187,11 +187,12 @@ $(document).ready(function () {
     },
     serverMethod: 'post',
     ajax: {
-      url: '/shipment/shipmentSSR/',
+      url: '/shipment/shipmentSSR/101',
       data: function (d) {
         d.shipment_id = $("input[name='shipment_id']").val();
         d.ETA = $("input[name='ETA']").val();
-        d.client_name = $("input[name='client_name']").val();
+        d.ETD = $("input[name='ETD']").val();
+        d.console_id = $("input[name='console_id']").val();
         d.consignee = $("input[name='consignee']").val();
         d.consignor = $("input[name='consignor']").val();
         d.container = $("input[name='container']").val();
@@ -255,7 +256,7 @@ $(document).ready(function () {
   var start = moment().subtract(29, 'days');
   var end = moment();
 
-  $('input[name="ETA"]').daterangepicker({
+  $('input[name="ETA"], input[name="ETD"]').daterangepicker({
     //timePicker: true,
     startDate: moment().startOf('hour'),
     endDate: moment().startOf('hour').add(32, 'hour'),
@@ -290,7 +291,7 @@ $(document).ready(function () {
   });
 
   //on hide calendar set start date and end date
-  $('input[name="ETA"]').on('apply.daterangepicker', function (ev, picker) {
+  $('input[name="ETA"], input[name="ETD"]').on('apply.daterangepicker', function (ev, picker) {
     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
   });
 
