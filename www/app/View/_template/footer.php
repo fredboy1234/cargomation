@@ -277,7 +277,7 @@ crossorigin=""></script>
 <script src="//cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
 <script src="//cdn.amcharts.com/lib/5/map.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+<<script src="//cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
 <script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <!-- Custome JS -->
 <?= $this->getJS(); ?>
@@ -305,14 +305,14 @@ $(document).ready(function(){
           if(data.status === 'OK'){
             var ellong = data.results[0].geometry.location.lng;
             var ellat = data.results[0].geometry.location.lat;
-            // pointObject.push({long:ellong,lat:ellat,name:txtcontent});
-            pointObject.push({
-              title: '',
-              latitude: ellat,
-              longitude: ellong,
-              width: 10,
-              height: 10,
-              value: ccount});
+            pointObject.push({long:ellong,lat:ellat,name:txtcontent});
+            // pointObject.push({
+            //   title: loading,
+            //   latitude: ellat,
+            //   longitude: ellong,
+            //   width: 10,
+            //   height: 10,
+            //   value: ccount});
           }
         });
       }  
@@ -320,9 +320,7 @@ $(document).ready(function(){
     
   });
   
-  am5.ready(function() {
-
-// Create root and chart
+// Create root
 var root = am5.Root.new("chartdiv"); 
 
 // Set themes
@@ -330,100 +328,44 @@ root.setThemes([
   am5themes_Animated.new(root)
 ]);
 
-
-// ====================================
-// Create map
-// ====================================
-
-var map = root.container.children.push(
-  am5map.MapChart.new(root, {
-    panX: "none",
-    projection: am5map.geoNaturalEarth1()
-  })
-);
+// Create chart
+var chart = root.container.children.push(am5map.MapChart.new(root, {
+  panX: "rotateX",
+  panY: "none",
+  projection: am5map.geoMercator()
+}));
 
 // Create polygon series
-var polygonSeries = map.series.push(
-  am5map.MapPolygonSeries.new(root, {
-    geoJSON: am5geodata_continentsLow,
-    exclude: ["antarctica"],
-    fill: am5.color(0xbbbbbb)
-  })
-);
+var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+  geoJSON: am5geodata_worldLow,
+  exclude: ["AQ"]
+}));
 
-var pointSeries = map.series.push(
-  am5map.MapPointSeries.new(root, {})
-);
+// Create point series
+var pointSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+  latitudeField: "lat",
+  longitudeField: "long"
+}));
 
-var colorSet = am5.ColorSet.new(root, {step:2});
+pointSeries.bullets.push(function() {
+  var circle = am5.Circle.new(root, {
+    radius: 5,
+    fill: am5.color(0xff0000),
+    tooltipText: "{name}"
+  });
 
-pointSeries.bullets.push(function(root, series, dataItem) {
-  var value = dataItem.dataContext.value;
+  circle.events.on("click", function(ev) {
+    alert("Clicked on " + ev.target.dataItem.dataContext.name)
+  });
 
-  var container = am5.Container.new(root, {});
-  var color = colorSet.next();
-  var radius = 15 + value / 20 * 20;
-  var circle = container.children.push(am5.Circle.new(root, {
-    radius: 20,
-    fill: color,
-    dy: -radius * 2
-  }))
- 
-  var pole = container.children.push(am5.Line.new(root, {
-    stroke: color,
-    height: -40,
-    strokeGradient: am5.LinearGradient.new(root, {
-      stops:[
-        { opacity: 1 },
-        { opacity: 1 },
-        { opacity: 0 }
-      ]
-    })
-  }));
-
-  var label = container.children.push(am5.Label.new(root, {
-    text: value + "",
-    fill: am5.color(0xffffff),
-    fontWeight: "400",
-    centerX: am5.p50,
-    centerY: am5.p50,
-    dy: -radius * 2
-  }))
-
-  var titleLabel = container.children.push(am5.Label.new(root, {
-    text: dataItem.dataContext.title,
-    fill: color,
-    fontWeight: "500",
-    fontSize: "1em",
-    centerY: am5.p50,
-    dy: -radius * 2,
-    dx: radius
-  }))
- 
   return am5.Bullet.new(root, {
-    sprite: container
+    sprite: circle
   });
 });
-
-
-
-
-// ====================================
-// Create pins
-// ====================================
-setTimeout(function(){ 
-  for (var i = 0; i < pointObject.length; i++) {
-    var d = pointObject[i];
-    pointSeries.data.push({
-      geometry: { type: "Point", coordinates: [d.longitude, d.latitude] },
-      title: d.title,
-      value: d.value
-    });
-  }
- }, 3000);
-
-
-}); // end am5.ready()
+setTimeout(function(){
+  pointSeries.data.setAll(pointObject);
+},2000);
+// end am5.ready()
   
 
   var mapboxAccessToken = 'iPr7S2yMM5rvXzDFNlFW35qgk2HTvVSuZTgY6EWcMYgYknPfEnPYAhIbB366OUeC';
