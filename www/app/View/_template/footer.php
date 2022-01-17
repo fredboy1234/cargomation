@@ -368,7 +368,7 @@ pointSeries.bullets.push(function(root, series, dataItem) {
     fill: color,
     dy: -radius * 2
   }))
-
+ 
   var pole = container.children.push(am5.Line.new(root, {
     stroke: color,
     height: -40,
