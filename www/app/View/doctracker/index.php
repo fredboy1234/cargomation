@@ -60,6 +60,7 @@
                                             <form id="addvance-search-form">
                                                 <div class="row">
                                                     <div class="col-md-4" data-select2-id="29">
+                                                        <!-- /.form-group -->
                                                         <div class="form-group row">
                                                             <label for="shipment_id" class="col-sm-4 col-form-label">Shipment ID</label>
                                                             <div class="col-sm-8">
@@ -75,24 +76,64 @@
                                                         </div>
                                                         <!-- /.form-group -->
                                                         <div class="form-group row">
-                                                            <label for="client_name" class="col-sm-4 col-form-label">Client Name</label>
+                                                            <label for="consignee" class="col-sm-4 col-form-label">Consignee</label>
                                                             <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="client_name" name="client_name" placeholder="">
+                                                                <input type="text" class="form-control" id="consignee" name="consignee" placeholder="">
                                                             </div>
                                                         </div>
+                                                        <!-- /.form-group -->
                                                         <div class="form-group row">
                                                             <label for="master_bill" class="col-sm-4 col-form-label">Master Bill</label>
                                                             <div class="col-sm-8">
                                                                 <input type="text" class="form-control" id="master_bill" name="master_bill" placeholder="">
                                                             </div>
                                                         </div>
+                                                        <!-- /.form-group -->
+                                                        <div class="form-group row">
+                                                            <label for="container" class="col-sm-4 col-form-label">Container #</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="container" name="container" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.form-group -->
                                                         <div class="form-group row d-none">
                                                             <label for="pol" class="col-sm-4 col-form-label">Port of Loading</label>
                                                             <div class="col-sm-8">
                                                                 <input type="text" class="form-control" id="pol" name="pol" placeholder="">
                                                             </div>
                                                         </div>
-
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-md-4" data-select2-id="29">
+                                                        <!-- /.form-group -->
+                                                        <div class="form-group row">
+                                                            <label for="client_name" class="col-sm-4 col-form-label">Console ID</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="console_id" name="console_id" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.form-group -->
+                                                        <div class="form-group row">
+                                                            <label for="ETD" class="col-sm-4 col-form-label">ETD</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="ETD" name="ETD" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.form-group -->
+                                                        <div class="form-group row">
+                                                            <label for="consignor" class="col-sm-4 col-form-label">Consignor</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="consignor" name="consignor" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.form-group -->
+                                                        <div class="form-group row">
+                                                            <label for="house_bill" class="col-sm-4 col-form-label">House Bill</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="house_bill" name="house_bill" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.form-group -->
                                                         <div class="form-group row">
                                                             <label for="container_mode" class="col-sm-4 col-form-label">Container Mode</label>
                                                             <div class="col-sm-8">
@@ -105,43 +146,11 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-
-                                                        <!-- /.form-group -->
                                                     </div>
                                                     <!-- /.col -->
                                                     <div class="col-md-4" data-select2-id="29">
                                                         <div class="form-group row">
-                                                            <label for="consignee" class="col-sm-4 col-form-label">Consignee</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="consignee" name="consignee" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="consignor" class="col-sm-4 col-form-label">Consignor</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="consignor" name="consignor" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="container" class="col-sm-4 col-form-label">Container #</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="container" name="container" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="house_bill" class="col-sm-4 col-form-label">House Bill</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="house_bill" name="house_bill" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                    </div>
-                                                    <!-- /.col -->
-                                                    <div class="col-md-4" data-select2-id="29">
-                                                        <div class="form-group row">
-
+                                                            <?php if(false): ?>
                                                             <div class="col-sm-6">
                                                                 <!-- checkbox -->
                                                                 <label for="status" class="col-sm-6 col-form-label">Status</label>
@@ -175,6 +184,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <?php endif; ?>
                                                             <div class="col-sm-12">
                                                                 <!-- radio -->
                                                                 <label for="transport_mode" class="col-sm-6 col-form-label">Transport Mode</label>
