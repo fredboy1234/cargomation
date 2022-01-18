@@ -412,7 +412,7 @@ class Shipment extends Core\Controller {
 
         # Advance search
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
-            $status_search = explode(",",$_POST['status']);
+            // $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user_key,$_POST);
            
             if(!empty($searchResult)){
