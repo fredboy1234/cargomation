@@ -309,8 +309,22 @@ class Shipment extends Core\Model {
 
     public static function countOfPort($user_id){
         $Db = Utility\Database::getInstance();
-        return $Db->query("select count(port_loading) as count ,port_loading, transport_mode
+        $urole = $Db->query("select role_id from vrpt_users where user_id = '{$user_id}'")->results();
+    
+        if($urole[0]->role_id == 2){
+            return $Db->query("select count(port_loading) as count ,port_loading, transport_mode
         from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' ' group by port_loading,transport_mode")->results();
+        }else{
+            return $Db->query("select count(s.port_loading) as count ,s.port_loading, s.transport_mode from 
+            vrpt_subaccount vs 
+            left join 
+            shipment_contacts sc on sc.email = vs.email
+            left join 
+            shipment s on s.consignee = sc.organization_code and vs.account_id = s.user_id
+            where vs.user_id = '{$user_id}'
+            group by s.port_loading,s.transport_mode")->results();
+        }
+        
     }
 
     public static function getShipmentByOrgCode($org_code, $args = "*") {

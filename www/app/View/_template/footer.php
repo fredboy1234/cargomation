@@ -305,7 +305,7 @@ $(document).ready(function(){
           mcolor = "#28a745";
         }
         var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
-          var txtcontent = `Location: ${loading}`;
+          var txtcontent = 'Location:'+loading+' Count:'+oval.count;
           var items = [50, 60, 80];
           var item = items[Math.floor(Math.random() * items.length)];
           
@@ -314,7 +314,7 @@ $(document).ready(function(){
             var ellat = data.results[0].geometry.location.lat;
            // pointObject.push({long:ellong,lat:ellat,name:txtcontent});
             pointObject.push({
-              title: loading,
+              title: txtcontent,
               latitude: ellat,
               longitude: ellong,
               color: mcolor
@@ -395,78 +395,7 @@ setTimeout(function(){
   imageSeries.data = pointObject;
 },2000);
 
-// imageSeries.data = [ {
-//   "title": "Usa",
-//   "latitude": 37.090240,
-//   "longitude": -95.712891,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "India",
-//   "latitude": 20.593683,
-//   "longitude": 78.962883,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Paris",
-//   "latitude": 48.8588897,
-//   "longitude": 2.320041,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Dubai",
-//   "latitude": 25.2653471,
-//   "longitude": 55.2924914,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "London",
-//   "latitude": 51.507351,
-//   "longitude": -0.127758,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Italy",
-//   "latitude": 41.871941,
-//   "longitude": 12.567380,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Portugal",
-//   "latitude": 40.0332629,
-//   "longitude": -7.8896263,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Japan",
-//   "latitude": 36.5748441,
-//   "longitude": 139.2394179,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "China",
-//   "latitude": 35.000074,
-//   "longitude": 104.999927,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Egypt",
-//   "latitude": 26.2540493,
-//   "longitude": 29.2675469,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Thailand",
-//   "latitude": 14.8971921,
-//   "longitude": 100.83273,
-//   "color":colorSet.next()
-// },
-// {
-//   "title": "Greece",
-//   "latitude": 38.9953683,
-//   "longitude": 21.9877132,
-//   "color":colorSet.next()
-// } ];
+
 // end am5.ready()
   
 

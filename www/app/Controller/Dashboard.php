@@ -145,6 +145,7 @@ class Dashboard extends Core\Controller {
             "count_cmode" => count($cmode),
             "count_sea" => $seacount,
             "count_air" => $aircount,
+            "uid"=>$userID,
         ]);
         $this->externalTemp();
     }
