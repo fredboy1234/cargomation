@@ -187,7 +187,7 @@ $(document).ready(function () {
     },
     serverMethod: 'post',
     ajax: {
-      url: '/shipment/shipmentSSR/101',
+      url: '/shipment/shipmentSSR/',
       data: function (d) {
         d.shipment_id = $("input[name='shipment_id']").val();
         d.ETA = $("input[name='ETA']").val();
