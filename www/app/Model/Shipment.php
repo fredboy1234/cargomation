@@ -277,12 +277,13 @@ class Shipment extends Core\Model {
                      VALUES $data");
     }
 
-    public static function getShipmentDynamic($user_id, $arg = "*", $condition = "", $customer = false) {
-        if(is_bool($customer))
+    public static function getShipmentDynamic($user_id, $arg = "*", $condition = "", $data) {
+        if(!$data['is_customer']) {
             $where = " WHERE shipment.user_id =  '{$user_id}' ";
-        else 
-            $where = " WHERE (shipment.consignee = '{$customer}' OR shipment.consignor = '{$customer}')";
-            
+        } else {
+            $where = " WHERE (shipment.consignee = '{$data['org_code']}' OR shipment.consignor = '{$data['org_code']}')";
+        }
+    
         $top ='';
         $oderby = '';
         if($condition === 'not arrived'){

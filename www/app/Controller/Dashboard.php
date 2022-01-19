@@ -38,6 +38,8 @@ class Dashboard extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
+        $Shipment = Model\Shipment::getInstance();
+
         $role = $Role->getUserRole($userID);
 
         // var_dump(Model\User::getUserNotifications($userID));
@@ -50,20 +52,24 @@ class Dashboard extends Core\Controller {
         // assign value by user role
         switch ($role->role_id) {
             case 1: // SUPER ADMIN
-                $is_customer = false;
+                $data['is_customer'] = false;
                 $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 2: // CLIENT ADMIN
-                $is_customer = false;
+                $data['is_customer'] = false;
                 $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 3: // STAFF
-                $is_customer = false;
+                $data['is_customer'] = false;
                 $document_stats = Model\Document::getDocumentStats($userID);
                 break;
             case 4: // CUSTOMER
                 $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
-                $is_customer = $org_code;
+                $data['is_customer'] = true;
+                if($org_code == NULL) {
+                    $org_code = $User->getUserContactInfo($userID)[0]->organization_code;
+                }
+                $data['org_code'] = $org_code;
                 $document_stats = Model\Document::getDocumentStats($userID, $org_code);
                 break;
             
@@ -104,7 +110,7 @@ class Dashboard extends Core\Controller {
             }
         }
 
-        $cmode = Model\Shipment::getShipmentDynamic($userID,'container_mode, transport_mode', 'containermode');
+        $cmode = $Shipment->getShipmentDynamic($userID,'container_mode, transport_mode', 'containermode', $data);
         $cmodeArray = array();
         $seacount = 0;
         $aircount =0;
@@ -134,11 +140,11 @@ class Dashboard extends Core\Controller {
             "dash_photo" => Model\User::getUsersDashPhoto($userID),
             "selected_theme" => $selectedTheme,
             "role" => $role,
-            "total_shipment" => count(Model\Shipment::getShipmentDynamic($userID, 'user_id', '', $is_customer)),
-            "not_arrived" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'not arrived', $is_customer)),
-            "air_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'air', $is_customer)),
-            "sea_shipment" => count(Model\Shipment::getShipmentDynamic($userID,'user_id', 'sea', $is_customer)),
-            "shipment_with_port" => json_encode(Model\Shipment::getShipmentDynamic($userID,'*', 'port')),
+            "total_shipment" => count($Shipment->getShipmentDynamic($userID, 'user_id', '', $data)),
+            "not_arrived" => count($Shipment->getShipmentDynamic($userID,'user_id', 'not arrived', $data)),
+            "air_shipment" => count($Shipment->getShipmentDynamic($userID,'user_id', 'air', $data)),
+            "sea_shipment" => count($Shipment->getShipmentDynamic($userID,'user_id', 'sea', $data)),
+            "shipment_with_port" => json_encode($Shipment->getShipmentDynamic($userID,'*', 'port', $data)),
             "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
             "document_stats" => $document_stats,
             "container_mode" => $cmodeArray,
