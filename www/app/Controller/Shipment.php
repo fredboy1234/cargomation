@@ -405,6 +405,9 @@ class Shipment extends Core\Controller {
                 // $api = $this->Shipment->getClientUserShipment($user);
                 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
                 $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+                if($org_code == NULL) {
+                    $org_code = $User->getUserContactInfo($user)[0]->organization_code;
+                }
                 $shipment_id = $this->Shipment->getShipmentByOrgCode($org_code, "shipment_num");
                 #$api = $this->Shipment->getShipmentByOrgCode($org_code);
                 $api = json_decode(file_get_contents($protocol . $_SERVER['HTTP_HOST'] . '/api/get/shipment/org/'.$org_code));
