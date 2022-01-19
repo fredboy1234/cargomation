@@ -283,13 +283,22 @@ class Shipment extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        $email = $User->data()->email;
+
+        // get client admin email
+        if(!empty($User->getSubAccountInfo($user_id))) {
+            $sub_account = $User->getSubAccountInfo($user_id);
+            // "user email" change to "client email"
+            $email = $sub_account[0]->client_email;
+        }
+
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/document/index", [
             "title" => "Shipment API",
-            "id" => $User->data()->id,
-            "email" => $User->data()->email,
+            "id" => $user_id,
+            "email" => $email,
             "role" => $role,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
