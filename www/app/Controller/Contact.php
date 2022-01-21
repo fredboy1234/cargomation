@@ -134,11 +134,17 @@ class Contact extends Core\Controller {
         $Contact = new Model\Contact;
         $contac_info = $Contact->getContactInfo($contact_id)[0];
 
+        $Shipment = Model\Shipment::getInstance();
+        
+        // CUSTOMER
+        $data['is_customer'] = true;
+        $data['org_code'] = $contac_info->organization_code;
+
         $this->View->renderWithoutHeaderAndFooter("/contact/show", [
             "title" => "Contact Info",
             "contact_id" => $contact_id,
             "contact_info" => $contac_info,
-            "total_shipment" => count(Model\Shipment::getShipmentDynamic($contact_id, 'user_id', '', $contac_info->organization_code)),
+            "total_shipment" => count($Shipment->getShipmentDynamic($contact_id, 'user_id', '', $data)),
             "document_stats" => Model\Document::getDocumentStats($contact_id, $contac_info->organization_code),
             "document_type" => Model\Document::getDocumentTypeByOrg($contac_info->organization_code)
         ]);
