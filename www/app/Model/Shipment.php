@@ -334,7 +334,7 @@ class Shipment extends Core\Model {
             where vs.user_id = '{$user_id}'
             group by s.port_loading,s.transport_mode")->results();
         }
-        
+         
     }
 
     public static function getShipmentByOrgCode($org_code, $args = "*") {
