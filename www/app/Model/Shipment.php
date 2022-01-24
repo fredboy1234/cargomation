@@ -317,7 +317,7 @@ class Shipment extends Core\Model {
         
     }
 
-    public static function countOfPort($user_id){
+    public static function countOfPort($user_id){ 
         $Db = Utility\Database::getInstance();
         $urole = $Db->query("select role_id from vrpt_users where user_id = '{$user_id}'")->results();
     
