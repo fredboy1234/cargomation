@@ -110,6 +110,9 @@ class Role extends Core\Model {
 
     public function getUserRole($user_id) {
         $role = $this->getRole($user_id);
+        if(!isset($role[0])){
+            Utility\Redirect::to(APP_URL . "login");
+        }
         return $role[0];
     }
 
