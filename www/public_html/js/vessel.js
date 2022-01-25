@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  
+   
     var groupColumn = 0;
     var indexCollection = [];
     var earlyCheck = [];
