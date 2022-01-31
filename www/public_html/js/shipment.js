@@ -18,7 +18,7 @@ if (parsed_qs['request'] === 'true') {
   $(document).ready(function (e) {
     console.log("Running....");
     var url = "shipment/document/" + parsed_qs['shipment_num'] + "/" + parsed_qs['type'];
-    preloader(url);
+    preloader(url); 
   });
 
   // Show loader
