@@ -201,7 +201,6 @@ try{
 				} 
 				else
 				{
-		
 					$xpath_AttachedCountSingle = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].FileName");
 					$xpath_AttachedB64 = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].ImageData");
 					$xpath_DocType = jsonPath($json_xpathdoc,$path_AttachedDocument."[$attach].Type.Code");
