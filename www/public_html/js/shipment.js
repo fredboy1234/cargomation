@@ -167,6 +167,7 @@ $(document).ready(function () {
   var table = $('.table').DataTable({
     searching: true,
     paging: true,
+    pagingType: "full_numbers",
     info: true,
     responsive: true,
     autoWidth: false,
@@ -185,28 +186,26 @@ $(document).ready(function () {
     language: {
       processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
     },
+    serverSide: true,
     serverMethod: 'post',
     ajax: {
-      url: '/shipment/shipmentSSR/',
+      url: '/shipment/shipmentData/' + user_id + "/" + role_id,
       data: function (d) {
-        d.shipment_id = $("input[name='shipment_id']").val();
-        d.ETA = $("input[name='ETA']").val();
-        d.ETD = $("input[name='ETD']").val();
-        d.console_id = $("input[name='console_id']").val();
-        d.consignee = $("input[name='consignee']").val();
-        d.consignor = $("input[name='consignor']").val();
-        d.container = $("input[name='container']").val();
-        d.origin_hub = $("input[name='origin_hub']:checked").val();
-        d.origin_cargowise = $("input[name='origin_cargowise']:checked").val();
-        d.status = $("input[name='status']").val();
-        d.transportmode_sea = $("input[name='transportmode_sea']:checked").val();
-        d.transportmode_air = $("input[name='transportmode_air']:checked").val();
-        d.post_trigger = $("input[name='post_trigger']").val();
-        d.container_mode = $("#container_mode").val();
-        d.master_bill = $("input[name='master_bill']").val();
-        d.house_bill = $("input[name='house_bill']").val();
-        d.pol = $("input[name='pol']").val();
-        
+        if(d.post_trigger !== "") {
+          d.shipment_id = $("input[name='shipment_id']").val();
+          d.console_id = $("input[name='console_id']").val();
+          d.ETA = $("input[name='ETA']").val();
+          d.ETD = $("input[name='ETD']").val();
+          d.consignee = $("input[name='consignee']").val();
+          d.consignor = $("input[name='consignor']").val();
+          d.master_bill = $("input[name='master_bill']").val();
+          d.house_bill = $("input[name='house_bill']").val();
+          d.container = $("input[name='container']").val();
+          d.container_mode = $("#container_mode").val();
+          d.transportmode_sea = $("input[name='transportmode_sea']:checked").val();
+          d.transportmode_air = $("input[name='transportmode_air']:checked").val();
+          d.post_trigger = $("input[name='post_trigger']").val();
+        }
       },
     },
     columns: tableColumnData,
