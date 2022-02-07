@@ -175,6 +175,7 @@ class Doctracker extends Core\Controller {
             "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
             'role' => $role,
+            'user_id' => $user,
             'selected_theme' => $selectedTheme,
             'shipment_from_contact'=> $this->Shipment->getShipmentThatHasUser($user)
         ]);

@@ -490,4 +490,6 @@
     var userReset = <?php echo json_encode($this->user); ?>;
     var userrole = <?php echo json_encode($this->role) ?>;
     var theme = <?php echo json_encode($this->selected_theme) ?>;
+    var user_id = <?php echo $this->user_id ?>;
+    var role_id = <?php echo $this->role->role_id ?>;
 </script>
