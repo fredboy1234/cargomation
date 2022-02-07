@@ -140,7 +140,7 @@ try{
 					$Saved_By = $parser->encode($xpath_SavedBy);
 					$IsPublished = $parser->encode($xpath_IsPublished);
 					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
-					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
+					$ctr_1 = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = getArrayName($SingleAttach_ctrb64);
 					$get_valDocType_ = node_exist(getArrayName($DocType));
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
