@@ -65,7 +65,7 @@ class Shipment extends Core\Model {
         
         $Db = Utility\Database::getInstance();
         //$where = "WHERE shipment.id is not null ";
-        $where = "WHERE users.id = '{$user}' and shipment.shipment_num is not null";
+        $where = "WHERE shipment.user_id = '{$user}' and shipment.shipment_num is not null";
         $origin = '';
         $status ='';
 
@@ -122,34 +122,29 @@ class Shipment extends Core\Model {
         if(isset($data['pol']) && !empty($data['pol'])){
             $where .= " and shipment.port_loading  = '{$data['pol']}'";
         }
-         
-        
-        //if($data['origin'] != ""){
-            // if($data['ETA'] == ""){
-            //     $where .= " and document.upload_src = '{$data['origin']}'";
-            // }
-           //$origin = $data['origin'];
-           //$where .= " and document.upload_src in '{$data['origin']}'";
-        //}
-         $data['transportmode_air'] = (isset($data['transportmode_air']) ? $data['transportmode_air'] : '');
-         $data['transportmode_sea'] = (isset($data['transportmode_sea']) ? $data['transportmode_sea']  : '');
+
+        $data['transportmode_air'] = (isset($data['transportmode_air']) ? $data['transportmode_air'] : '');
+        $data['transportmode_sea'] = (isset($data['transportmode_sea']) ? $data['transportmode_sea']  : '');
         $data['transportmode'] = "('{$data['transportmode_sea']}','{$data['transportmode_air']}')";
         if($data['transportmode'] != ""){
             $where .= " and shipment.transport_mode  in {$data['transportmode']}";
         }
        //$results = array();
-        return $Db->query("SELECT
-                                shipment.id
-                            FROM dbo.users
-                            INNER JOIN dbo.shipment
-                            ON dbo.users.id = dbo.shipment.user_id
-                            FULL OUTER JOIN dbo.shipment_container
-                            ON dbo.shipment.id = dbo.shipment_container.shipment_id
-                            FULL OUTER JOIN dbo.document
-                            ON dbo.shipment.id = dbo.document.shipment_id 
-                            FULL OUTER JOIN dbo.document_status
-                            ON document.id = document_status.document_id and document_status.status in('pending','approved')
-                           {$where} group by shipment.id")->results();
+       $sql = "SELECT *
+                    FROM shipment
+                    FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
+                    {$where} ";
+        
+        $totalRecords = $Db->query($sql)->count();
+        $data = $Db->query($sql)->results();
+        
+        $array_data = array(
+            "recordsTotal"    => intval( $totalRecords ),  
+            "recordsFiltered" => intval( $totalRecords ),
+            "data"            => $data
+        );
+        
+        return $array_data;
     }  
 
     public static function shipmentAssign($data,$user){
@@ -355,6 +350,59 @@ class Shipment extends Core\Model {
 
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
+    }
+
+    public function shipmentData($arg = "") {
+        
+        $Db = Utility\Database::getInstance();
+
+        $params = $columns = $totalRecords = $data = array();
+        $params = $_REQUEST;
+        $columns = array(
+            0 => 'shipment_id',
+        );
+        
+        $where_condition = $sqlTot = $sqlRec = "";
+        
+        if( !empty($params['search']['value']) ) {
+            $where_condition .= " AND ";
+            $where_condition .= " ( shipment_num LIKE '%".$params['search']['value']."%' ";    
+            $where_condition .= " OR shipment_num LIKE '%".$params['search']['value']."%' )";
+        }
+        
+        $sql_query = " SELECT * FROM shipment 
+                        FULL OUTER JOIN Merge_Container 
+                            ON shipment.id = Merge_Container.[SHIPMENT ID] ";
+        $sqlTot .= $sql_query;
+        $sqlRec .= $sql_query;
+        
+        if(is_numeric($arg) and !preg_match("/^[a-zA-Z]+$/", $arg)) {
+            $sqlTot .= "WHERE user_id = {$arg}";
+            $sqlRec .= "WHERE user_id = {$arg}";
+        } else {
+            $sqlTot .= "WHERE (shipment.consignee = '{$arg}' OR shipment.consignor = '{$arg}')";
+            $sqlRec .= "WHERE (shipment.consignee = '{$arg}' OR shipment.consignor = '{$arg}')";
+        }
+
+        if(isset($where_condition) && $where_condition != '') {
+            $sqlTot .= $where_condition;
+            $sqlRec .= $where_condition;
+        }
+
+        #$sqlRec .=  " ORDER BY ". $columns[$params['order'][0]['column']]."   ".$params['order'][0]['dir']."  LIMIT ".$params['start']." ,".$params['length']." ";
+        $sqlRec .=  " ORDER BY user_id ".$params['order'][0]['dir']." OFFSET ".$params['start']." ROWS FETCH NEXT ".$params['length']." ROWS ONLY";
+
+        $totalRecords = $Db->query($sqlTot)->count();
+        $data = $Db->query($sqlRec)->results();
+        
+        $array_data = array(
+            "draw"            => intval( $params['draw'] ),   
+            "recordsTotal"    => intval( $totalRecords ),  
+            "recordsFiltered" => intval( $totalRecords ),
+            "data"            => $data
+        );
+        
+        return $array_data;
     }
 
 }
