@@ -140,7 +140,7 @@ try{
 					$Saved_By = $parser->encode($xpath_SavedBy);
 					$IsPublished = $parser->encode($xpath_IsPublished);
 					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
-					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
+					$ctr_1 = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = getArrayName($SingleAttach_ctrb64);
 					$get_valDocType_ = node_exist(getArrayName($DocType));
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
@@ -163,7 +163,7 @@ try{
 					INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
-					AND dbo.document_base64.img_data = '$ctr_b64'
+					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
 					AND dbo.document.type = '$get_valDocType_'
 					AND dbo.document.shipment_id='$ship_idlast'
 					";
@@ -201,7 +201,6 @@ try{
 				} 
 				else
 				{
-		
 					$xpath_AttachedCountSingle = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].FileName");
 					$xpath_AttachedB64 = jsonPath($json_xpathdoc, $path_AttachedDocument."[$attach].ImageData");
 					$xpath_DocType = jsonPath($json_xpathdoc,$path_AttachedDocument."[$attach].Type.Code");
@@ -217,7 +216,7 @@ try{
 					$Saved_By = $parser->encode($xpath_SavedBy);
 					$IsPublished = $parser->encode($xpath_IsPublished);
 					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
-					$ctr_1 = str_replace(['\\','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
+					$ctr_1 = str_replace(['\\','#','+','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = node_exist(getArrayName($SingleAttach_ctrb64));
 					$get_valDocType_ = node_exist(getArrayName($DocType));
 					$get_valSavedDate = node_exist(getArrayName($Saved_date));
@@ -240,7 +239,7 @@ try{
 					INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
-					AND dbo.document_base64.img_data = '$ctr_b64'
+					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
 					AND dbo.document.type = '$get_valDocType_'
 					AND dbo.document.shipment_id='$ship_idlast'";
 					

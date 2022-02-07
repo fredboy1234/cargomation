@@ -1,6 +1,14 @@
 <?php
 /*imap MACRO AUTO SCRIPT
 Author: Fred*/
+if(isset($_GET['email']) && isset($_GET['pass']) && isset($_GET['duration'])){
+	$email  = $_GET['email'];
+	$pass  = $_GET['pass'];
+	$duration  = $_GET['duration'];
+}
+else{
+	die("Invalid Request.");
+}
 
 require_once('connection.php');
 header("Content-Type: text/html");
@@ -15,9 +23,9 @@ $var_col = "(shipment_num,master_bill,house_bill,shipper,client,macro_link,licen
 //The location of the mailbox.
 $mailbox = base64_decode('e2ltYXAuc2VjdXJlc2VydmVyLm5ldDo5OTUvcG9wMy9zc2wvbm92YWxpZGF0ZS1jZXJ0fQ==');
 //The username / email address that we want to login to.
-$username = base64_decode('c3VwcG9ydEBjYXJnb21hdGlvbi5jb20=');
+$username = $email;
 //The password for this email address.
-$password = base64_decode('VSZOeVJ1dns1WlJoNFsuZA==');
+$password = $pass;
 
 
 //Attempt to connect using the imap_open function.
@@ -50,11 +58,13 @@ function get_data($string, $start, $end){
 //connected to our mailbox via IMAP.
   
 //Lets get all emails that were received since a given date.
-$search = 'SINCE "' . date("j F Y", strtotime("-1 day")) . '"';
+$search = 'SINCE "' . date("j F Y", strtotime("-".$duration." day")) . '"';
 $emails = imap_search($imapResource, $search);
+//$emails = imap_search($imapResource, "UNSEEN", SE_UID);
  
 //If the $emails variable is not a boolean FALSE value or
 //an empty array.  
+$ctr = 0;
 if(!empty($emails)){ 
     ##Loop through the emails.
     foreach($emails as $key=>$email){
@@ -65,37 +75,54 @@ if(!empty($emails)){
 		if(strpos(htmlentities($overview->subject),'Shipment - HTML to Hub') !== false){
 			
         ##Print out the subject of the email.
-        echo '<b>' . htmlentities($overview->subject) . '</b><br>';
+        //echo '<b>' . htmlentities($overview->subject) . '</b><br>';
 		
         ##Print out the sender's email address / from email address.
-        echo 'From: ' . $overview->from . '<br><br>';
+        //echo 'From: ' . $overview->from . '<br><br>';
 		
         ##Get the body of the email using UTF-8 encode.
         $message = imap_fetchbody($imapResource, $email, 1);
-        //cho $message = imap_base64($message);
-		//echo $message = imap_8bit($message);
-       // echo $message = quoted_printable_encode($message);
-        
-		$job = 		trim(strval(get_data($message, 'ship</span><span>&gt;<s span=""></pre>', '<span>&lt;</span><span>/</span><span>ship')));		
-		$shipper =  trim(strval(get_data($message, 'shipper</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>shipper')));		
-		$client =   trim(strval(get_data($message, 'client</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>client')));	
-		$mbill = 	trim(strval(get_data($message, 'mbill</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>mbill')));		
-		$hbill = 	trim(strval(get_data($message, 'hbill</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>hbill')));	
-	    $mcode = 	trim(strval(get_data($message, 'macro</span><span>&gt;</span>', '<span>&lt;</span><span>/</span><span>macro')));
-		$code =     trim(strval(str_replace('&amp;', '&', $mcode)));
-		$lcode =	trim(strval(get_data($message, 'LicenceCode=', '&amp;ControllerID')));
+
+
+        //echo $message = quoted_printable_encode($message);
+
+        if($username == 'tcf@cargomation.com'){
+        	$tagLT = "&lt";
+        	$tagGT = "&gt";
+        	$tagSpan = '<s/span>';
+        }
+        elseif($username == 'imageinternational@cargomation.com'){
+        	$tagLT = "&lt;";
+        	$tagGT = "&gt;";
+        	$tagSpan = '<s span="">';
+        }  
+
+         $message = trim(strval($message));
+         //ship</span><span>&gt<s/span></pre>
+         //<span=>&lt</span><span>/</span><span>ship
+
+	     $job = trim(strval(get_data($message, 'ship</span><span>'.$tagGT.''.$tagSpan.'</pre>', '<span>'.$tagLT.'</span><span>/</span><span>ship')));		
+		 $shipper =  trim(strval(get_data($message, 'shipper</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>shipper')));		
+		 $client =   trim(strval(get_data($message, 'client</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>client')));	
+		 $mbill = 	trim(strval(get_data($message, 'mbill</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>mbill')));		
+		 $hbill = 	trim(strval(get_data($message, 'hbill</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>hbill')));	
+	     $mcode = 	trim(strval(get_data($message, 'macro</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>macro')));
+		 $code =     trim(strval(str_replace('&amp;', '&', $mcode)));
+		 $lcode =	trim(strval(get_data($code, 'LicenceCode=', '&ControllerID')));
 		
 		$sql = "Select * from {$link_table} WHERE {$var_ship} LIKE '%{$job}%' AND {$var_code} = '{$lcode}'";
 		$execute_query = sqlsrv_query($conn, $sql);
 		$result = sqlsrv_has_rows($execute_query);
 		
-		if ($result === false) {
+		if ($result === false && trim($mcode) != "") {
 		$sql = "Insert into {$link_table} {$var_col} values('{$job}','{$mbill}','{$hbill}','{$shipper}','{$client}','{$code}','{$lcode}')";
 		$execute_query = sqlsrv_query($conn, $sql);	
+		$ctr++;
 			}
 		}
     }
-} 
+}
+echo "Total Processed: ".$ctr;
 imap_close($imapResource);
 
 ?>
