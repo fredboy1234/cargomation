@@ -36,6 +36,8 @@ if(!empty($this->document)) {
                 $ext = 'text';
             } else if ($ext == 'tif' || $ext == 'ai' || $ext == 'tiff' || $ext == 'eps') {
                 $ext = 'gdocs';  
+            } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                $ext = 'image'; 
             } else {
                 $ext = 'office';
             }
