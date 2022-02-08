@@ -1,7 +1,6 @@
 function Map(data,mcontainer){
     let pointObject = data;
     let mapcontainer = mcontainer;
-    if(pointObject.length > 0){
         // Themes begin
         am4core.useTheme(am4themes_animated);
         // Themes end
@@ -72,5 +71,4 @@ function Map(data,mcontainer){
                 imageSeries.data = pointObject;
             },2000);
         }
-    } 
 }
