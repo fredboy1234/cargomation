@@ -1,7 +1,7 @@
 function Map(data,mcontainer){
     let pointObject = data;
     let mapcontainer = mcontainer;
-    if(map.length > 0){
+    if(pointObject.length > 0){
         // Themes begin
         am4core.useTheme(am4themes_animated);
         // Themes end
