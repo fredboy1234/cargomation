@@ -1110,6 +1110,6 @@
 <script>
   var chart_data = <?=json_encode($this->container_mode);?>;
   var shipments = <?=$this->shipment_with_port?>;
- var port_loading_couint = <?=$this->port_loading_count?>;
+  var port_loading_couint = <?=$this->port_loading_count?>;
 </script>
  
