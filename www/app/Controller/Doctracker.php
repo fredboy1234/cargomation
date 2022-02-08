@@ -62,16 +62,17 @@ class Doctracker extends Core\Controller {
             }
         }
 
-        // // Get an instance of the user model using the user ID passed to the
-        // // controll action. 
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
 
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
+        $doc_by_ship = $this->Document->getDocumentByShipment($shipment_id);
 
         $docsCollection =array();
-        foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
+        foreach($doc_by_ship as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
         }
 
@@ -115,10 +116,6 @@ class Doctracker extends Core\Controller {
         ]);
 
         // Set any dependencies, data and render the view.
-        // $this->initExternals();
-        // $this->View->addCSS("css/google_font.css");
-        // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
         $selectedTheme = $User->getUserSettings($user);
         
         if(isset( $selectedTheme[0]) && !empty($selectedTheme)){
@@ -129,7 +126,6 @@ class Doctracker extends Core\Controller {
 
         $this->View->addCSS("css/shipment.css");
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
-        //$this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/shipment.js");
 
         $imageList = (Object) Model\User::getProfile($user);
@@ -140,44 +136,25 @@ class Doctracker extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        //create use if not exist in users table.
-        $salt = Utility\Hash::generateSalt(32);
-        // echo "<pre>";
-        // print_r($emailList);
-        // echo "</pre>";
-        // exit();
-        if(isset($emailList['list_email']) && !empty($emailList['list_email'])){
-            foreach($emailList['list_email'] as $eKey => $eList){
-                if(!$User->checkUserIfExistByEmail($eList['email'])){
-                    $User->insertUserContact([
-                        "admin_id" => $user,
-                        "email_address" => $eList['email'],
-                        "organization_code" => $eKey,
-                        "company_name"=> $eList['company_name'],
-                        "is_default" => $eList['is_default'],
-                        "status" => 0
-                    ]);
-                }                
-            }
-        } 
+
         $this->View->renderTemplate("/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
-            "user" => (Object) Model\User::getProfile($user),
+            "user" => $imageList,
             "notifications" => Model\User::getUserNotifications($user),
             "menu" => Model\User::getUserMenu($role->role_id),
-            "shipment" => $this->Shipment->getShipment($user),
-            "document" => $this->Document->getDocumentByShipment($shipment_id),
-            "document_per_type" => $docsCollection,
-            "child_user" => Model\User::getUsersInstance($user, $role->role_id),
+            // "shipment" => $this->Shipment->getShipment($user),
+            // "document" => $doc_by_ship,
+            // "document_per_type" => $docsCollection,
+            // "child_user" => Model\User::getUsersInstance($user, $role->role_id),
             "user_settings" =>$this->defaultSettings($user, $role->role_id), // $user_key??
-            "settings_user" => $User->getUserSettings($user),
-            "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
+            "settings_user" => $selectedTheme,
+            // "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
             'role' => $role,
             'user_id' => $user,
             'selected_theme' => $selectedTheme,
-            'shipment_from_contact'=> $this->Shipment->getShipmentThatHasUser($user)
+            // 'shipment_from_contact'=> $emailList
         ]);
     }
 
@@ -597,35 +574,7 @@ class Doctracker extends Core\Controller {
 
     public function defaultSettings($user="", $role_id=""){
 
-        Utility\Auth::checkAuthenticated();
-
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
-        // $settings = json_decode($this->user_settings);
-        // $count = count($settings);
-        // foreach ($doc_type as $key => $value) {
-        //     array_push($settings, (object)[
-        //         'index_name' => $value->type,
-        //         // 'index_value' => (string)$count++, // Explicit cast
-        //         'index_value' => strval($count++), // Function call
-        //         'index_check' => 'true',
-        //         'index_lvl' => 'document'
-        //     ]);
-        // }
-
-        // {"index_name": "HBL", "index_value": "4", "index_check": "true", "index_lvl":"document"},
-        // {"index_name": "CIV", "index_value": "5", "index_check": "true", "index_lvl":"document"},
-        // {"index_name": "PKD", "index_value": "7", "index_check": "true", "index_lvl":"document"},
-        // {"index_name": "PKL", "index_value": "6", "index_check": "true", "index_lvl":"document"},
-        // {"index_name": "ALL", "index_value": "8", "index_check": "true", "index_lvl":"document"},
-
+        $User = Model\User::getInstance($user);
         $userData = $User->getUserSettings($user);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
 
