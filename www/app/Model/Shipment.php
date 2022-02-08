@@ -61,7 +61,7 @@ class Shipment extends Core\Model {
 
     }
 
-    public static function getDocumentBySearch($data,$user){
+    public static function getDocumentBySearch($data, $user){
         
         $Db = Utility\Database::getInstance();
         //$where = "WHERE shipment.id is not null ";
@@ -130,13 +130,17 @@ class Shipment extends Core\Model {
             $where .= " and shipment.transport_mode  in {$data['transportmode']}";
         }
        //$results = array();
-       $sql = "SELECT *
+       $sqlTot = "SELECT *
                     FROM shipment
                     FULL OUTER JOIN Merge_Container on shipment.id = Merge_Container.[SHIPMENT ID]
                     {$where} ";
+
+        $sqlRec =  " ORDER BY user_id ".$data['order'][0]['dir']." 
+            OFFSET ".$data['start']." ROWS 
+            FETCH NEXT ".$data['length']." ROWS ONLY";
         
-        $totalRecords = $Db->query($sql)->count();
-        $data = $Db->query($sql)->results();
+        $totalRecords = $Db->query($sqlTot)->count();
+        $data = $Db->query($sqlTot . $sqlRec)->results();
         
         $array_data = array(
             "recordsTotal"    => intval( $totalRecords ),  

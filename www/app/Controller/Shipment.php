@@ -309,16 +309,16 @@ class Shipment extends Core\Controller {
 
     public function advanceSearch($user ='',$post=""){
         // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
+        // Utility\Auth::checkAuthenticated();
 
-        // If no user ID has been passed, and a user session exists, display
-        // the authenticated users profile.
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
+        // // If no user ID has been passed, and a user session exists, display
+        // // the authenticated users profile.
+        // if (!$user) {
+        //     $userSession = Utility\Config::get("SESSION_USER");
+        //     if (Utility\Session::exists($userSession)) {
+        //         $user = Utility\Session::get($userSession);
+        //     }
+        // }
         
         return $this->Shipment->getDocumentBySearch($post,$user);
     }
@@ -814,22 +814,10 @@ class Shipment extends Core\Controller {
         if(isset($_POST['post_trigger']) && $_POST['post_trigger'] != ""){
             // $status_search = explode(",",$_POST['status']);
             $searchResult = $this->advanceSearch($user_key,$_POST);
-
-            if(!empty($searchResult)){
-                // foreach($searchResult as $id){
-                //     foreach($result['data'] as $val){
-                //         if($id->id == $val->id){
-                //             $searchStore[] = $val;
-                //         }
-                //     }
-                // }
-                $result['draw'] = $_REQUEST['draw'];
-                $result['recordsTotal'] = $searchResult['recordsTotal'];
-                $result['recordsFiltered'] = $searchResult['recordsFiltered'];
-                $result['data'] = $searchResult['data'];
-            }else{
-                $result['data'] = array();
-            }
+            $result['draw'] = $_REQUEST['draw'];
+            $result['recordsTotal'] = $searchResult['recordsTotal'];
+            $result['recordsFiltered'] = $searchResult['recordsFiltered'];
+            $result['data'] = $searchResult['data'];
 
         } 
 
