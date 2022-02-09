@@ -212,8 +212,8 @@ class Vessel extends Core\Controller {
         }
         
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
-        $this->View->addCSS("css/vessel.css");
-        $this->View->addJS("js/vessel.js");
+        $this->View->addCSS("css/vessel.css");  
+        $this->View->addJS("js/vessel/details.js");
         
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
@@ -273,7 +273,7 @@ class Vessel extends Core\Controller {
         //     echo "<pre>";
         //  print_r($this->Vessel->getSearatesByID($vessel_number));
         //  exit();
-        $this->View->addJS("js/vessel.js");
+       
         $this->View->renderTemplate("/vessel/details", [
             "title" => "Vessel Track",
             "vesseldata" => $vesseeldata,
