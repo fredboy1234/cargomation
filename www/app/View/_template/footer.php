@@ -213,8 +213,8 @@ function closeForm() {
 <!-- Sparkline -->
 <script src="/bower_components/admin-lte/plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<script src="/bower_components/admin-lte/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="/bower_components/admin-lte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!--<script src="/bower_components/admin-lte/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="/bower_components/admin-lte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>-->
 <!-- jQuery Knob Chart -->
 <script src="/bower_components/admin-lte/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -280,6 +280,12 @@ crossorigin=""></script>
 <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+
 <!-- Custom JS -->
 <script src="/js/map.js"></script>
 <?= $this->getJS(); ?>
