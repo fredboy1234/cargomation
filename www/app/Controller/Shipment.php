@@ -724,28 +724,11 @@ class Shipment extends Core\Controller {
             }
         }
 
-        // // Get an instance of the user model using the user ID passed to the
-        // // controll action. 
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
         if (!$User = Model\User::getInstance($user_id)) {
             Utility\Redirect::to(APP_URL);
         }
-        
-        // if (!$Shipment = Model\Shipment::getInstance()) {
-        //     Utility\Redirect::to(APP_URL);
-        // }
-
-        if (!$Role = Model\Role::getInstance($user_id)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        $role = $Role->getUserRole($user_id)->role_name;
-
-        if(empty($role)) {
-            Utility\Redirect::to(APP_URL . $role);
-        }
-
-        $this->View->addJS("js/document.js");
-        $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/shipment/info", [
             "title" => "Shipment Info",
