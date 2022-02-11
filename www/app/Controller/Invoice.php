@@ -180,110 +180,155 @@ class Invoice extends Core\Controller {
         return $response;
     }
 
-    /**
-     * Upload: Upload the bootstrap-fileinput files
-     * returns associative array
-     * @access private
-     * 
-     * @return array
-     * @since 1.0.8
-     */
-    public function uploadDocument($param) {
+    public function validateToken($token) {
+        if(isset($token)){
+            return true;
+        }
+        return false;
+    }
 
+    // main upload function used above
+    // upload the bootstrap-fileinput files
+    // returns associative array
+    public function upload($param) {
         $User = Model\User::getInstance($param);
-        // $shipment_num = $param[6];
-        // $type = $param[7];
-        $domain = "https://cargomation.com";
-        $physical_path = "E:/A2BFREIGHT_MANAGER";
-
         $email = $User->data()->email;
         $user_id = $User->data()->id;
-
         // get client admin email
         if(!empty($User->getSubAccountInfo($user_id))) {
             $sub_account = $User->getSubAccountInfo($user_id);
             // "user email" change to "client email"
             $email = $sub_account[0]->client_email;
         }
+        //Setup our new file path
+        $newFilePath = "E:/A2BFREIGHT_MANAGER/" . $email . "/CW_INVOICE/IN/";
+        $newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
         $preview = $config = $errors = [];
-        $input = 'invoice'; // the input name for the fileinput plugin
-        if (empty($_FILES[$input])) {
-            return [];
+        $targetDir = $newFilePath; // uploads
+        // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
+        if (!is_dir($newFilePath)) {
+            // @mkdir($path);
+            mkdir($newFilePath, 0777, true);
         }
-        $total = count($_FILES[$input]['name']); // multiple files
-        // $path = './uploads/'; // your upload path
-        $path = $physical_path . '/' . $email . '/CW_INVOICE/IN';
+        // if (!file_exists($targetDir)) {
+        //     @mkdir($targetDir);
+        // }
 
-        for ($i = 0; $i < $total; $i++) {
-            $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
-            $fileName = $_FILES[$input]['name'][$i]; // the file name
-            $fileSize = $_FILES[$input]['size'][$i]; // the file size
-            $fileType = $_FILES[$input]['type'][$i]; 
-            $fileExtn = pathinfo($fileName, PATHINFO_EXTENSION);
-
-            //Make sure we have a file path
-            if ($tmpFilePath != ""){
-
-                //Setup our new file path
-                $newFilePath = $path . "/" . $fileName;
-                $newFileUrl = $domain . "/filemanager/" . $email . "/CW_INVOICE/IN/" . $fileName;
-
-                // On the other hand, 'is_dir' is a bit faster than 'file_exists'.
-                if (!is_dir($path . "/")) {
-                    // @mkdir($path);
-                    mkdir($path . "/", 0777, true);
-                }
-
-                //Upload the file into the new path
-                if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $fileId = $fileName . $i; // some unique key to identify the file
-                    $preview[] = $newFileUrl;
-                    $config[] = [
-                        'key' => $fileId,
-                        'caption' => $fileName,
-                        'size' => $fileSize,
-                        'downloadUrl' => $newFileUrl, // the url to download the file
-                        'url' => '/delete.php', // server api to delete the file based on key
-                        'type' => $fileExtn
-                    ];
-                    
-                    // save to database
-                    // $result = $this->putInvoice($shipment_num, $type, $fileName);
-
-                    // if requestToken cookie is exist
-                    // if(Utility\Cookie::exists("requestToken")) {
-                    //     $Document = new Model\Document();
-                    //     $requestToken = Utility\Cookie::get("requestToken");
-                    //     $Document->putRequestedStatus("done", $requestToken);
-                    //     Utility\Cookie::delete("requestToken");
-                    // }
-                } else {
-                    $errors[] = $fileName;
-                }
+        $fileBlob = 'fileBlob';                         // the parameter name that stores the file blob
+        if (isset($_FILES[$fileBlob]) && isset($_POST['uploadToken'])) {
+            // $token = $_POST['uploadToken'];          // gets the upload token
+            // if ($validateToken($token)) {            // your access validation routine (not included)
+            //     return [
+            //         'error' => 'Access not allowed'  // return access control error
+            //     ];
+            // }
+            $file = $_FILES[$fileBlob]['tmp_name'];  // the path for the uploaded file chunk 
+            $fileName = $_POST['fileName'];          // you receive the file name as a separate post data
+            $fileSize = $_POST['fileSize'];          // you receive the file size as a separate post data
+            $fileId = $_POST['fileId'];              // you receive the file identifier as a separate post data
+            $index =  $_POST['chunkIndex'];          // the current file chunk index
+            $totalChunks = $_POST['chunkCount'];     // the total number of chunks for this file
+            $targetFile = $targetDir.'/'.$fileName;  // your target file path
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            if ($totalChunks > 1) {                  // create chunk files only if chunks are greater than 1
+                $targetFile .= '_' . str_pad($index, 4, '0', STR_PAD_LEFT); 
+            } 
+            if ($ext == 'pdf') {
+                $ext = 'pdf';
+            } else if ($ext == 'txt') {
+                $ext = 'text';
+            } else if ($ext == 'tif' || $ext == 'ai' || $ext == 'tiff' || $ext == 'eps') {
+                $ext = 'gdocs';  
+            } else if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                $ext = 'image'; 
             } else {
-                $errors[] = $fileName;
+                $ext = 'office';
+            }
+            $thumbnail = 'unknown.jpg';
+            if(move_uploaded_file($file, $targetFile)) {
+                // get list of all chunks uploaded so far to server
+                $chunks = glob("{$targetDir}/{$fileName}_*"); 
+                // check uploaded chunks so far (do not combine files if only one chunk received)
+                $allChunksUploaded = $totalChunks > 1 && count($chunks) == $totalChunks;
+                if ($allChunksUploaded) {           // all chunks were uploaded
+                    $outFile = $targetDir.'/'.$fileName;
+                    // combines all file chunks to one file
+                    combineChunks($chunks, $outFile);
+                } 
+                // if you wish to generate a thumbnail image for the file
+                // $targetUrl = getThumbnailUrl($path, $fileName);
+                $targetUrl = $newFileUrl;
+                // separate link for the full blown image file
+                $zoomUrl = $newFileUrl . $fileName;
+                $out = [
+                    'chunkIndex' => $index,         // the chunk index processed
+                    'initialPreview' => $newFileUrl . $fileName, // the thumbnail preview data (e.g. image)
+                    'initialPreviewConfig' => [
+                        [
+                            'type' => $ext,      // check previewTypes (set it to 'other' if you want no content preview)
+                            'caption' => $fileName, // caption
+                            'key' => $fileId,       // keys for deleting/reorganizing preview
+                            'fileId' => $fileId,    // file identifier
+                            'size' => $fileSize,    // file size
+                            'zoomData' => $zoomUrl, // separate larger zoom data
+                        ]
+                    ],
+                    'append' => true
+                ];
+                echo json_encode($out);
+            } else {
+                return [
+                    'error' => 'Error uploading chunk ' . $_POST['chunkIndex']
+                ];
             }
         }
-
-        // push to cargowise
-        // User setting (tick box) 
-        // $user_settings = $User->getUserSettings($param[5]);
-        // $document_settings = json_decode($user_settings[0]->document);
-        // if(isset($document_settings->doctracker->auto_push)) {
-        //     self::uploadToCargoWise($shipment_num, $email, $config);
-        // }
-        $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
-        if (!empty($errors)) {
-            $img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
-            $out['error'] = 'Oh snap! We could not upload the ' . $img . 'now. Please try again later.';
-        }
-        // return $out;
-
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($out);
-        return $response;
+        return [
+            'error' => 'No file found'
+        ];
     }
+    
+    // combine all chunks
+    // no exception handling included here - you may wish to incorporate that
+    public function combineChunks($chunks, $targetFile) {
+        // open target file handle
+        $handle = fopen($targetFile, 'a+');
+        
+        foreach ($chunks as $file) {
+            fwrite($handle, file_get_contents($file));
+        }
+        
+        // you may need to do some checks to see if file 
+        // is matching the original (e.g. by comparing file size)
+        
+        // after all are done delete the chunks
+        foreach ($chunks as $file) {
+            @unlink($file);
+        }
+        
+        // close the file handle
+        fclose($handle);
+    }
+    
+    // generate and fetch thumbnail for the file
+    public function getThumbnailUrl($path, $fileName) {
+        // assuming this is an image file or video file
+        // generate a compressed smaller version of the file
+        // here and return the status
+        $sourceFile = $path . '/' . $fileName;
+        $targetFile = $path . '/thumbs/' . $fileName;
+        //
+        // generateThumbnail: method to generate thumbnail (not included)
+        // using $sourceFile and $targetFile
+        //
+        if (generateThumbnail($sourceFile, $targetFile) === true) { 
+            return '/uploads/thumbs/' . $fileName;
+        } else {
+            return '/uploads/' . $fileName; // return the original file
+        }
+    }
+
+
 
 
 }

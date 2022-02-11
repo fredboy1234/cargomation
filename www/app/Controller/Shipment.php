@@ -724,28 +724,11 @@ class Shipment extends Core\Controller {
             }
         }
 
-        // // Get an instance of the user model using the user ID passed to the
-        // // controll action. 
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
         if (!$User = Model\User::getInstance($user_id)) {
             Utility\Redirect::to(APP_URL);
         }
-        
-        // if (!$Shipment = Model\Shipment::getInstance()) {
-        //     Utility\Redirect::to(APP_URL);
-        // }
-
-        if (!$Role = Model\Role::getInstance($user_id)) {
-            Utility\Redirect::to(APP_URL);
-        }
-
-        $role = $Role->getUserRole($user_id)->role_name;
-
-        if(empty($role)) {
-            Utility\Redirect::to(APP_URL . $role);
-        }
-
-        $this->View->addJS("js/document.js");
-        $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/shipment/info", [
             "title" => "Shipment Info",
@@ -961,7 +944,7 @@ class Shipment extends Core\Controller {
               <div class="dropdown-menu">
                 <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\'' . $marcoLink. '\')" data-ship-id="'.$value->id.'"> Open Cargowise </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')">Information <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
               </div>
             </div>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);

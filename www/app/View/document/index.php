@@ -16,8 +16,8 @@ if(!empty($this->document)) {
             }
 
             // $server_file = "/document/fileviewer/" . $this->id . "/"  . $file->document_id;
-
-            $server_file = "http://cargomation.com/filemanager/".$this->email."/CW_FILE/".$file->shipment_num."/".$file->type."/" . $file->name;
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
+            $server_file = $protocol . "cargomation.com/filemanager/".$this->email."/CW_FILE/".$file->shipment_num."/".$file->type."/" . $file->name;
             $ext = pathinfo($server_file, PATHINFO_EXTENSION);
 
             // if($ext == 'txt') {

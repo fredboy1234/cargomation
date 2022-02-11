@@ -1,7 +1,13 @@
 <?php
-
-
-
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
 ?>
 <!-- Main content -->
 <section class="content">
@@ -11,7 +17,7 @@
             <div class="col-sm-12 col-md-6 col-lg-6 col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Upload Invoice</h3>
+                        <h3 class="card-title">File Upload</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -29,7 +35,7 @@
             <div class="col-sm-12 col-md-6 col-lg-6 col-6">
                 <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Invoice List</h3>
+                    <h3 class="card-title">File List</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -37,51 +43,55 @@
                     <thead>
                         <tr>
                         <th style="width: 10px">#</th>
-                        <th>File</th>
-                        <th>Progress</th>
-                        <th style="width: 40px">Status</th>
+                        <th>File Name</th>
+                        <th>Date Uploaded</th>
+                        <th>Uploaded By</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                         <td>1.</td>
                         <td>Invoice.pdf</td>
-                        <td>
-                            <div class="progress progress-xs">
+                        <td> November 12, 2021
+                            <div class="progress progress-xs d-none">
                             <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
                             </div>
                         </td>
-                        <td><span class="badge bg-danger">55%</span></td>
+                        <td> Alex
+                            <span class="badge bg-danger d-none">55%</span></td>
                         </tr>
                         <tr>
                         <td>2.</td>
                         <td>Invoice2017.pdf</td>
-                        <td>
-                            <div class="progress progress-xs">
-                            <div class="progress-bar bg-warning" style="width: 70%"></div>
+                        <td> February 3, 2021
+                            <div class="progress progress-xs d-none">
+                            <div class="progress-bar bg-warning d-none" style="width: 70%"></div>
                             </div>
                         </td>
-                        <td><span class="badge bg-warning">70%</span></td>
+                        <td> Ronnel
+                            <span class="badge bg-warning d-none">70%</span></td>
                         </tr>
                         <tr>
                         <td>3.</td>
                         <td>Invoice2018.pdf</td>
-                        <td>
-                            <div class="progress progress-xs progress-striped active">
+                        <td> January 14, 2021
+                            <div class="progress progress-xs progress-striped active d-none">
                             <div class="progress-bar bg-primary" style="width: 30%"></div>
                             </div>
                         </td>
-                        <td><span class="badge bg-primary">30%</span></td>
+                        <td> Neil
+                            <span class="badge bg-primary d-none">30%</span></td>
                         </tr>
                         <tr>
                         <td>4.</td>
                         <td>Invoice2022.pdf</td>
-                        <td>
-                            <div class="progress progress-xs progress-striped active">
+                        <td> January 29, 2021
+                            <div class="progress progress-xs progress-striped active d-none">
                             <div class="progress-bar bg-success" style="width: 90%"></div>
                             </div>
                         </td>
-                        <td><span class="badge bg-success">90%</span></td>
+                        <td> Ninjie
+                            <span class="badge bg-success d-none">90%</span></td>
                         </tr>
                     </tbody>
                     </table>
@@ -103,5 +113,6 @@
 </section>
 </div>
 <script>
-var user_id = <?= $this->user_id; ?>
+var user_id = <?= $this->user_id; ?>;
+var token = "<?= generateRandomString(); ?>";
 </script>
