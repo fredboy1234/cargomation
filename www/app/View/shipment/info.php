@@ -453,6 +453,12 @@ $(document).ready(function() {
 
         var line = lineSeries.mapLines.create();
 
+        // Add a map object to line
+        var arrow = line.arrow;
+        arrow.color = am4core.color("#00ff00");
+        arrow.position = 1;
+        arrow.nonScaling = true;
+
         var test = [];
         test.push(pointObject);
         line.multiGeoLine = test;
