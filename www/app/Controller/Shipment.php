@@ -944,7 +944,7 @@ class Shipment extends Core\Controller {
               <div class="dropdown-menu">
                 <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\'' . $marcoLink. '\')" data-ship-id="'.$value->id.'"> Open Cargowise </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')">Information <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $value->shipment_num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
               </div>
             </div>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
