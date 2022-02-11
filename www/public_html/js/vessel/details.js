@@ -1,230 +1,250 @@
 $(document).ready(function(){
-var searates=[];
-am5.ready(function() {
 
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chartdiv");
+  var route = JSON.parse(searates[0].route_leg);
+  var combineRoute = [];
+  var pointObject = [];
 
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root),
-]);
-
-
-// Create the map chart
-// https://www.amcharts.com/docs/v5/charts/map-chart/
-var chart = root.container.children.push(am5map.MapChart.new(root, {
-  panX: "translateX",
-  panY: "translateY",
-  projection: am5map.geoMercator()
-}));
-
-var cont = chart.children.push(am5.Container.new(root, {
-  layout: root.horizontalLayout,
-  x: 20,
-  y: 40
-}));
-
-
-// Add labels and controls
-cont.children.push(am5.Label.new(root, {
-  centerY: am5.p50,
-  text: "Map"
-}));
-
-var switchButton = cont.children.push(am5.Button.new(root, {
-  themeTags: ["switch"],
-  centerY: am5.p50,
-  icon: am5.Circle.new(root, {
-    themeTags: ["icon"]
-  })
-}));
-
-switchButton.on("active", function() {
-  if (!switchButton.get("active")) {
-    chart.set("projection", am5map.geoMercator());
-    chart.set("panX", "translateX");
-    chart.set("panY", "translateY");
-  }
-  else {
-    chart.set("projection", am5map.geoOrthographic());
-    chart.set("panX", "rotateX");
-    chart.set("panY", "rotateY");
-  }
-});
-
-cont.children.push(am5.Label.new(root, {
-  centerY: am5.p50,
-  text: "Globe"
-}));
-
-// Create main polygon series for countries
-// https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
-var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-  geoJSON: am5geodata_worldLow
-}));
-
-var graticuleSeries = chart.series.push(am5map.GraticuleSeries.new(root, {}));
-graticuleSeries.mapLines.template.setAll({
-  stroke: root.interfaceColors.get("alternativeBackground"),
-  strokeOpacity: 0.08
-});
-
-// Create line series for trajectory lines
-// https://www.amcharts.com/docs/v5/charts/map-chart/map-line-series/
-var lineSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
-lineSeries.mapLines.template.setAll({
-  stroke: root.interfaceColors.get("alternativeBackground"),
-  strokeOpacity: 0.6
-});
-
-// destination series
-var citySeries = chart.series.push(
-  am5map.MapPointSeries.new(root, {})
-);
-
-citySeries.bullets.push(function() {
-  var circle = am5.Circle.new(root, {
-    radius: 5,
-    tooltipText: "{title}",
-    tooltipY: 0,
-    fill: am5.color(0xffba00),
-    stroke: root.interfaceColors.get("background"),
-    strokeWidth: 2
+  $.each(route, function(key, value) {
+    combineRoute.push({
+        "order": parseInt(value.LegOrder),
+        "point": value.Origin
+    });
+    combineRoute.push({
+        "order": parseInt(value.LegOrder),
+        "point": value.Destination
+    });
   });
-
-  return am5.Bullet.new(root, {
-    sprite: circle
-  });
-});
-
-// arrow series
-var arrowSeries = chart.series.push(
-  am5map.MapPointSeries.new(root, {})
-);
-
-arrowSeries.bullets.push(function() {
-  var arrow = am5.Graphics.new(root, {
-    fill: am5.color(0x000000),
-    stroke: am5.color(0x000000),
-    draw: function (display) {
-      display.moveTo(0, -3);
-      display.lineTo(8, 0);
-      display.lineTo(0, 3);
-      display.lineTo(0, -3);
+  $.each(combineRoute, function(key, value) {
+    // If point has back slash
+    if(value.point.includes("/")) {
+        value.point = value.point.split('/')[1];
     }
-  });
-
-  return am5.Bullet.new(root, {
-    sprite: arrow
-  });
+    var data = JSON.parse(getGeoData(value.point));
+    if(data.status === 'OK') {
+        var latitude = data.results[0].geometry.location.lat;
+        var longitude = data.results[0].geometry.location.lng;
+        pointObject.push({
+            "latitude": latitude,
+            "longitude": longitude,
+            "title": value.point,
+            "order": value.order
+        });
+    }
 });
 
-var cities = [
-  {
-    id: "london",
-    title: "London",
-    geometry: { type: "Point", coordinates: [-0.1262, 51.5002] },
-  },
-  {
-    id: "brussels",
-    title: "Brussels",
-    geometry: { type: "Point", coordinates: [4.3676, 50.8371] }
-  }, {
-    id: "prague",
-    title: "Prague",
-    geometry: { type: "Point", coordinates: [14.4205, 50.0878] }
-  }, {
-    id: "athens",
-    title: "Athens",
-    geometry: { type: "Point", coordinates: [23.7166, 37.9792] }
-  }, {
-    id: "reykjavik",
-    title: "Reykjavik",
-    geometry: { type: "Point", coordinates: [-21.8952, 64.1353] }
-  }, {
-    id: "dublin",
-    title: "Dublin",
-    geometry: { type: "Point", coordinates: [-6.2675, 53.3441] }
-  }, {
-    id: "oslo",
-    title: "Oslo",
-    geometry: { type: "Point", coordinates: [10.7387, 59.9138] }
-  }, {
-    id: "lisbon",
-    title: "Lisbon",
-    geometry: { type: "Point", coordinates: [-9.1355, 38.7072] }
-  }, {
-    id: "moscow",
-    title: "Moscow",
-    geometry: { type: "Point", coordinates: [37.6176, 55.7558] }
-  }, {
-    id: "belgrade",
-    title: "Belgrade",
-    geometry: { type: "Point", coordinates: [20.4781, 44.8048] }
-  }, {
-    id: "bratislava",
-    title: "Bratislava",
-    geometry: { type: "Point", coordinates: [17.1547, 48.2116] }
-  }, {
-    id: "ljublana",
-    title: "Ljubljana",
-    geometry: { type: "Point", coordinates: [14.5060, 46.0514] }
-  }, {
-    id: "madrid",
-    title: "Madrid",
-    geometry: { type: "Point", coordinates: [-3.7033, 40.4167] }
-  }, {
-    id: "stockholm",
-    title: "Stockholm",
-    geometry: { type: "Point", coordinates: [18.0645, 59.3328] }
-  }, {
-    id: "bern",
-    title: "Bern",
-    geometry: { type: "Point", coordinates: [7.4481, 46.9480] }
-  }, {
-    id: "kiev",
-    title: "Kiev",
-    geometry: { type: "Point", coordinates: [30.5367, 50.4422] }
-  }, {
-    id: "paris",
-    title: "Paris",
-    geometry: { type: "Point", coordinates: [2.3510, 48.8567] }
-  }, {
-    id: "new york",
-    title: "New York",
-    geometry: { type: "Point", coordinates: [-74, 40.43] }
-  }];
+  function getGeoData( location ) {
+    var result = null;
+    var scriptUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
+    $.ajax({
+        url: scriptUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        } 
+    });
+    return result;
+}
+ 
+pointObject.sort((a, b) => {
+  return a.order - b.order;
+});
 
-citySeries.data.setAll(cities);
+  am4core.ready(function() {
+    // Create map instance
+    var chart = am4core.create("chartdiv", am4maps.MapChart);
 
-// prepare line series data
-var destinations = ["reykjavik", "lisbon", "moscow", "belgrade", "ljublana", "madrid", "stockholm", "bern", "kiev", "new york"];
-// London coordinates
-var originLongitude = -0.1262;
-var originLatitude = 51.5002;
+    // Set map definition
+    chart.geodata = am4geodata_worldLow;
 
-am5.array.each(destinations, function (did) {
-  var destinationDataItem = citySeries.getDataItemById(did);
-  var lineDataItem = lineSeries.pushDataItem({ geometry: { type: "LineString", coordinates: [[originLongitude, originLatitude], [destinationDataItem.get("longitude"), destinationDataItem.get("latitude")]] } });
+    // Set projection
+    chart.projection = new am4maps.projections.Miller();
 
-  arrowSeries.pushDataItem({
-    lineDataItem: lineDataItem,
-    positionOnLine: 0.5,
-    autoRotate: true
+    // Create map polygon series
+    var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
+    // Make map load polygon (like country names) data from GeoJSON
+    polygonSeries.useGeodata = true;
+
+    // Configure series
+    var polygonTemplate = polygonSeries.mapPolygons.template;
+    polygonTemplate.tooltipText = "{name}";
+    // polygonTemplate.fill = am4core.color("#74B266");
+    polygonTemplate.events.on("hit", function(ev) {
+        ev.target.series.chart.zoomToMapObject(ev.target);
+    });
+
+    /* Create hover state and set alternative fill color */
+    var hs = polygonTemplate.states.create("hover");
+    hs.properties.fill = am4core.color("#367B25");
+
+    // Remove Antarctica
+    polygonSeries.exclude = ["AQ"];
+
+    // Add some data
+    // polygonSeries.data = [{
+    //         "id": "US",
+    //         "name": "United States",
+    //         "value": 100
+    //     }, {
+    //         "id": "FR",
+    //         "name": "France",
+    //         "value": 50
+    // }];
+
+    // Add line series
+    var lineSeries = chart.series.push(new am4maps.MapLineSeries());
+    lineSeries.mapLines.template.strokeWidth = 4;
+    lineSeries.mapLines.template.stroke = am4core.color("#00ff00");
+    lineSeries.mapLines.template.nonScalingStroke = true;
+    // lineSeries.mapLines.template.line.strokeOpacity = 0.5;
+    // lineSeries.mapLines.template.line.strokeDasharray = "3,3";
+
+    // Create image series
+    var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+    // Create a circle image in image series template so it gets replicated to all new images
+    var imageSeriesTemplate = imageSeries.mapImages.template;
+    // var circle = imageSeriesTemplate.createChild(am4core.Circle);
+    // circle.radius = 8;
+    // circle.fill = am4core.color("#007bff");
+    // circle.stroke = am4core.color("#FFFFFF");
+    // circle.strokeWidth = 3;
+    // circle.nonScaling = true;
+    // circle.tooltipText = "{title}";
+    var marker = imageSeriesTemplate.createChild(am4core.Image);
+    marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
+    marker.width = 20;
+    marker.height = 20;
+    marker.color = "#333";
+    marker.fill = am4core.color("#007bff");
+    marker.nonScaling = true;
+    marker.tooltipText = "{title}";
+    marker.horizontalCenter = "middle";
+    marker.verticalCenter = "bottom";
+
+    // Set property fields
+    imageSeriesTemplate.propertyFields.latitude = "latitude";
+    imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+    var line = lineSeries.mapLines.create();
+
+    // Add a map object to line
+    var arrow = line.arrow;
+    arrow.color = am4core.color("#00ff00");
+    arrow.position = 1;
+    arrow.nonScaling = true;
+
+    var test = [];
+    test.push(pointObject);
+    line.multiGeoLine = test;
+
+    // Add a map object to line
+    var bullet = line.lineObjects.create();
+    bullet.nonScaling = true;
+    bullet.position = 0;
+    bullet.width = 48;
+    bullet.height = 48;
+
+    // var plane = bullet.createChild(am4core.Sprite);
+    var plane = bullet.createChild(am4core.Image);
+    plane.href = "/svgs/freight/"+transImage+".svg";
+    // plane.scale = 0.15;
+    plane.horizontalCenter = "middle";
+    plane.verticalCenter = "middle";
+    // plane.path = "";
+    // plane.path = "M272 288h-64C163.8 288 128 323.8 128 368C128 376.8 135.2 384 144 384h192c8.836 0 16-7.164 16-16C352 323.8 316.2 288 272 288zM240 256c35.35 0 64-28.65 64-64s-28.65-64-64-64c-35.34 0-64 28.65-64 64S204.7 256 240 256zM496 320H480v96h16c8.836 0 16-7.164 16-16v-64C512 327.2 504.8 320 496 320zM496 64H480v96h16C504.8 160 512 152.8 512 144v-64C512 71.16 504.8 64 496 64zM496 192H480v96h16C504.8 288 512 280.8 512 272v-64C512 199.2 504.8 192 496 192zM384 0H96C60.65 0 32 28.65 32 64v384c0 35.35 28.65 64 64 64h288c35.35 0 64-28.65 64-64V64C448 28.65 419.3 0 384 0zM400 448c0 8.836-7.164 16-16 16H96c-8.836 0-16-7.164-16-16V64c0-8.838 7.164-16 16-16h288c8.836 0 16 7.162 16 16V448z";
+    // plane.fill = am4core.color("#3e96e0");
+    // plane.strokeOpacity = 0;
+
+    function animateMarker() {
+        var from = bullet.position, to;
+        if (from == 0) {
+            to = 1;
+            plane.rotation = 0;
+        }
+        else {
+            to = 0;
+            plane.rotation = 180;
+        }
+        
+        var animation = bullet.animate({
+            from: from,
+            to: to,
+            property: "position"
+        }, 5000, am4core.ease.sinInOut);
+        //animation.events.on("animationended", animateMarker)
+    }
+
+    // zoomed when load
+    chart.homeZoomLevel = 1.5;
+    chart.homeGeoPoint = {
+        latitude: pointObject[0].latitude,
+        longitude: pointObject[1].longitude
+    };
+
+    chart.events.on( "ready", function(){
+        animateMarker();
+        imageSeries.data = pointObject;
+        am4core.options.autoDispose = true;
+    });
+    // setTimeout(function(){
+    //     // Add data for the point
+    //     imageSeries.data = pointObject;
+    //     line.multiGeoLine = test;
+    // },2000);
+
+    // when marker click
+    // imageSeriesTemplate.events.on("hit", (ev)=>{
+    //     console.log(ev.target.dataItem.dataContext.order)
+    //     var id = ev.target.dataItem.dataContext.order;
+    //     $('#collapse' + id).collapse('toggle');
+    // })
+
+    // when collapse shown animate marker
+    // $('.collapse').on('shown.bs.collapse', function () {
+    //     animateMarker();
+    // });
+
+    // var sampleData =
+    // [
+    //     [
+    //         {
+    //             "latitude": 10.8230989,
+    //             "longitude": 106.6296638,
+    //             "title": "Ho Chi Minh City",
+    //             "order": 1
+    //         },
+    //         {
+    //             "latitude": 1.352083,
+    //             "longitude": 103.819836,
+    //             "title": "Singapore",
+    //             "order": 1
+    //         }
+    //     ], 
+    //     [
+    //         {
+    //             "latitude": 1.352083,
+    //             "longitude": 103.819836,
+    //             "title": "Singapore",
+    //             "order": 2
+    //         },
+    //         {
+    //             "latitude": -33.8688197,
+    //             "longitude": 151.2092955,
+    //             "title": "Sydney",
+    //             "order": 2
+    //         }
+    //     ]
+    // ];
+
+    // function groupArrayOfObjects(list, key) {
+    //     return list.reduce(function(rv, x) {
+    //         (rv[x[key]] = rv[x[key]] || []).push(x);
+    //         return rv;
+    //     }, {});
+    // };
+    // var data2 = groupArrayOfObjects(pointObject,"order");
   });
-})
-
-polygonSeries.events.on("datavalidated", function () {
-  chart.zoomToGeoPoint({ longitude: -0.1262, latitude: 51.5002 }, 3);
-})
-
-
-// Make stuff animate on load
-chart.appear(1000, 100);
-
-}); // end am5.ready()
 });
