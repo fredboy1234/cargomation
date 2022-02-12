@@ -18,7 +18,7 @@ switch ($this->searatesTracking[0]->transport_mode) {
     default:
         $transImage = "truck";
         break;
-} ?>
+} ?> 
 <?php $searates = $this->searatesTracking?>
 <section class="content">
 <a class="nav-link active" href="/vessel" data-toggle="tab">Show All Vessels</a>
