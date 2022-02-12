@@ -1,4 +1,21 @@
 $(document).ready(function(){  
+
+    // The Calender
+    $('#calendar').datetimepicker({
+      format: 'L',
+      inline: true
+    });
+  
+    // Make the dashboard widgets sortable Using jquery UI
+    $('.connectedSortable').sortable({
+      placeholder: 'sort-highlight',
+      connectWith: '.connectedSortable',
+      handle: '.card-header, .nav-tabs',
+      forcePlaceholderSize: true,
+      zIndex: 999999
+    });
+    $('.connectedSortable .card-header').css('cursor', 'move');
+
     $(".datepicker-days table").on('click',"td[data-action='selectDay']",function(){
         var day = $(this).data('day');
         window.location.href = "/doctracker?calendar="+day;

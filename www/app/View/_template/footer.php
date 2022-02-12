@@ -229,7 +229,7 @@ function closeForm() {
 <!-- AdminLTE App -->
 <script src="/bower_components/admin-lte/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<?php if($_SERVER['REQUEST_URI'] == '/dashboard'): ?>
+<?php if(false): ?>
 <script src="/bower_components/admin-lte/dist/js/pages/dashboard.js"></script>
 <?php endif; ?>
 <!-- AdminLTE for demo purposes -->
