@@ -241,7 +241,7 @@
                                                 <?php } ?>
                                             </select>
                                             <div class="col-md-2 float-right parent-settings">
-                                                <?php if (isset($this->settings_user[0])) { ?>
+                                                <?php if (is_array($this->settings_user)) { ?>
                                                     <?php $settings_id = $this->settings_user[0]->id; ?>
                                                     <button id="reset-settings" type="button" data-setting-id="<?= $settings_id ?>" class="btn btn-block btn-danger">Set Default</button>
                                                 <?php } ?>
