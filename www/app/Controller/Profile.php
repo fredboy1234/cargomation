@@ -140,14 +140,14 @@ class Profile extends Core\Controller {
             $User->updateUserInfo(array(
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
-                "email"=>$_POST['email'],
+                // "email"=>$_POST['email'],
                 "phone"=>$_POST['contact'],
                 "address"=>$_POST['address'],
                 "city"=>$_POST['city'],
                 "postcode"=>$_POST['zipcode'],
             ),$_POST['info_id']);
             $User->updateUserProfile(array(
-                "email"=>$_POST['email'],
+                // "email"=>$_POST['email'],
                 "first_name"=>$_POST['firstname'],
                 "last_name"=>$_POST['lastname'],
             ),$user);
