@@ -3,9 +3,13 @@
  if(!isset($livedata[0]->track_json)){
     $livedata = json_decode($this->searatesTracking);
  }else{
+    echo "<pre>";
+    print_r($livedata[0]);
+    exit;
     $livedata = json_decode($livedata[0]->track_json);
+   
  }
- 
+
  ?>
 <style>
     #livemap { height: 760px; }

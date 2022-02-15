@@ -315,7 +315,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                         </div>
                     </div>
                     <div class="row card-body table-responsive p-0 ttable" style="height: 500px;">
-                    <?php if(!empty($vessel)){?>
+                    
                         <table class="table table-hover table-head-fixed text-nowrap custom-table">
                         <thead>
                           <tr>
@@ -338,9 +338,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                           </tr>
                         </thead>
                       </table>
-                    <?php }else{ ?>
-                      <span>No Shipment Available!</span>
-                    <?php } ?>       
+                        
                     </div>
                     </div>
                 </div>
