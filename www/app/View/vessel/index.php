@@ -340,7 +340,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                       </table>
                     <?php }else{ ?>
                       <span>No Shipment Available!</span>
-                    <? } ?>       
+                    <?php } ?>       
                     </div>
                     </div>
                 </div>
