@@ -18,7 +18,7 @@
 
                                 switch ($eta_date) {
                                     case ($eta_date > $current_date):
-                                        echo "In Transit" . ' <i class="fas fa-shipping-fast"></i>'; // icon clock
+                                        echo "In Transit" . ' <i class="fas fa-shipping-fast text-primary"></i>'; // icon clock
                                         break;
                                     case (false):
                                         echo '<i class="fas fa-plane-arrival"></i> ' . "At Destination Port"; // icon marker alt
@@ -33,7 +33,7 @@
                                         echo "Delivered" . ' <i class="fas fa-check-circle text-success"></i> '; // icon check
                                         break;
                                     default:
-                                        echo '<i class="fas fa-hourglass-half"></i> ' . "Pending"; // icon hour glass
+                                        echo '<i class="fas fa-hourglass-half text-warning"></i> ' . "Pending"; // icon hour glass
                                         break;
                                 }
                             ?>
@@ -320,20 +320,53 @@ switch ($this->shipment_info[0]->transport_mode) {
 </style>
 <script src="/js/map.js"></script>
 <script>
+
 $(document).ready(function() {  
     var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
     var combineRoute = [];
     var pointObject = [];
     var transImage = "<?= $transImage ?>";
 
+    var tooltipHTML = `<center><strong>{vessel}</strong></center>
+        <hr />
+        <div class="row">
+            <div class="col-lg-6">
+                <table>
+                    <tr>
+                        <th align="left">Route</th>
+                        <td>{order}</td>
+                    </tr>
+                    <tr>
+                        <th align="left">Port: </th>
+                        <td>{title}</td>
+                    </tr>
+                    <tr>
+                        <th align="left">Point</th>
+                        <td>{type}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg">
+            </div>
+        </div>
+        <hr />
+        <center>
+            <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
+        </center>`;
+
     $.each(route, function(key, value) {
         combineRoute.push({
             "order": parseInt(value.LegOrder),
-            "point": value.Origin
+            "point": value.Origin,
+            "vessel": value.VesselName,
+            "type": "Origin",
         });
         combineRoute.push({
             "order": parseInt(value.LegOrder),
-            "point": value.Destination
+            "point": value.Destination,
+            "vessel": value.VesselName,
+            "type": "Destination",
         });
     });
 
@@ -350,7 +383,9 @@ $(document).ready(function() {
                 "latitude": latitude,
                 "longitude": longitude,
                 "title": value.point,
-                "order": value.order
+                "order": value.order,
+                "vessel": value.vessel,
+                "type": value.type
             });
         }
     });
@@ -397,6 +432,8 @@ $(document).ready(function() {
         polygonTemplate.events.on("hit", function(ev) {
             ev.target.series.chart.zoomToMapObject(ev.target);
         });
+        // chart.seriesContainer.draggable = false;
+        // chart.seriesContainer.resizable = false;
 
         /* Create hover state and set alternative fill color */
         var hs = polygonTemplate.states.create("hover");
@@ -427,6 +464,12 @@ $(document).ready(function() {
         // Create image series
         var imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
+        // Lets mouse hover over tooltip without it vanishing
+        imageSeries.tooltip.keepTargetHover = true;
+
+        // Enables interactivity of the tooltips label elements
+        imageSeries.tooltip.label.interactionsEnabled = true;
+
         // Create a circle image in image series template so it gets replicated to all new images
         var imageSeriesTemplate = imageSeries.mapImages.template;
         // var circle = imageSeriesTemplate.createChild(am4core.Circle);
@@ -443,7 +486,8 @@ $(document).ready(function() {
         marker.color = "#333";
         marker.fill = am4core.color("#007bff");
         marker.nonScaling = true;
-        marker.tooltipText = "{title}";
+        // marker.tooltipText = "{title}";
+        
         marker.horizontalCenter = "middle";
         marker.verticalCenter = "bottom";
 
@@ -511,6 +555,7 @@ $(document).ready(function() {
             animateMarker();
             imageSeries.data = pointObject;
             am4core.options.autoDispose = true;
+            marker.tooltipHTML = tooltipHTML;
         });
         // setTimeout(function(){
         //     // Add data for the point
