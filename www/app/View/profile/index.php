@@ -63,22 +63,25 @@
                                 <?php 
                                 switch ($this->user->account_info[0]->status) {
                                     case 0:
-                                        $status = "Verify";
+                                        $status = "Not Verified";
                                         $badge = 'primary';
                                         $attr = '';
                                         $icon = 'fa-user';
+                                        $text = "Verify";
                                     break;
                                     case 1:
                                         $status = "Verified";
                                         $badge = 'success';
                                         $attr = 'disabled';
                                         $icon = 'fa-user-check';
+                                        $text = "Verified";
                                     break;
                                     case 2:
                                         $status = "Pending";
                                         $badge = 'warning';
                                         $attr = '';
                                         $icon = 'fa-user';
+                                        $text = "Pending";
                                     break;
                                     
                                     default:
@@ -90,8 +93,8 @@
                                 
                             </ul>
                             <?php
-                                echo '<a href="/register" class="btn btn-' . $badge . ' btn-block ' . $attr . '">';
-                                echo '    <i class="fas ' . $icon . ' mr-1"></i><b>' . $status . '</b>';
+                                echo '<a href="#" class="btn btn-' . $badge . ' btn-block ' . $attr . '">';
+                                echo '    <i class="fas ' . $icon . ' mr-1"></i><b>' . $text . '</b>';
                                 echo '</a>';
                             ?>
                         </div>
