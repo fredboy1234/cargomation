@@ -586,8 +586,8 @@ class Shipment extends Core\Controller {
               </div>
             </div>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-            $subdata['et_arrival'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
-            $subdata['et_departure'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
+            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
+            $subdata['et_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
             $subdata[strtolower("all")] =  $tableData["all"]['hover'].'<div class="doc-stats">'.$tableData["all"]['badge'].$tableData["all"]['count'].'</div>';
             foreach ($doc_type as $key3 => $value3) {
                 $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
@@ -948,8 +948,8 @@ class Shipment extends Core\Controller {
               </div>
             </div>';
             $subdata['console_id'] = ($value->console_id==""?"No Console ID":$value->console_id);
-            $subdata['et_arrival'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
-            $subdata['et_departure'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
+            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span> '.($eta_date=="01/01/1900"?"No Date Available":$eta_date);
+            $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span> '.($etd_date=="01/01/1900"?"No Date Available":$etd_date);
             $subdata[strtolower("all")] =  $tableData["all"]['hover'].'<div class="doc-stats">'.$tableData["all"]['badge'].$tableData["all"]['count'].'</div>';
             foreach ($doc_type as $key3 => $value3) {
                 $subdata[strtolower($value3)] =  $tableData[$value3]['hover'].'<div class="doc-stats">'.$tableData[$value3]['badge'].$tableData[$value3]['count'].'</div>';
@@ -1014,4 +1014,53 @@ class Shipment extends Core\Controller {
         echo json_encode($json_data);
     }
 
+    public function calculateDuration($date1, $date2) {
+        // Declare and define two dates
+        $date1 = strtotime($date1);
+        $date2 = strtotime($date2);
+
+        // Formulate the Difference between two dates
+        $diff = abs($date2 - $date1);
+
+        // To get the year divide the resultant date into
+        // total seconds in a year (365*60*60*24)
+        $years = floor($diff / (365*60*60*24));
+
+        // To get the month, subtract it with years and
+        // divide the resultant date into
+        // total seconds in a month (30*60*60*24)
+        $months = floor(($diff - $years * 365*60*60*24)
+                                        / (30*60*60*24));
+
+        // To get the day, subtract it with years and
+        // months and divide the resultant date into
+        // total seconds in a days (60*60*24)
+        $days = floor(($diff - $years * 365*60*60*24 -
+                    $months*30*60*60*24)/ (60*60*24));
+
+        // To get the hour, subtract it with years,
+        // months & seconds and divide the resultant
+        // date into total seconds in a hours (60*60)
+        $hours = floor(($diff - $years * 365*60*60*24
+                - $months*30*60*60*24 - $days*60*60*24)
+                                            / (60*60));
+
+        // To get the minutes, subtract it with years,
+        // months, seconds and hours and divide the
+        // resultant date into total seconds i.e. 60
+        $minutes = floor(($diff - $years * 365*60*60*24
+                - $months*30*60*60*24 - $days*60*60*24
+                                    - $hours*60*60)/ 60);
+
+        // To get the minutes, subtract it with years,
+        // months, seconds, hours and minutes
+        $seconds = floor(($diff - $years * 365*60*60*24
+                - $months*30*60*60*24 - $days*60*60*24
+                        - $hours*60*60 - $minutes*60));
+
+        // Print the result
+        printf("%d years, %d months, %d days, %d hours, "
+            . "%d minutes, %d seconds", $years, $months,
+                    $days, $hours, $minutes, $seconds . " ago");
+    }
 }
