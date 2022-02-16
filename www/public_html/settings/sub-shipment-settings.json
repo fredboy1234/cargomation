@@ -1,7 +1,7 @@
 {
     "table":[
         {"index_name": "Shipment ID", "index_value": "0", "index_check": "true", "index_lvl":"shipment"},
-        {"index_name": "Console ID", "index_value": "1", "index_check": "true", "index_lvl":"shipment"},
+        {"index_name": "Consol ID", "index_value": "1", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "ETA Date", "index_value": "2", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "ETD Date", "index_value": "3", "index_check": "true", "index_lvl":"shipment"},
         {"index_name": "Consignee", "index_value": "4", "index_check": "true", "index_lvl":"shipment"},

@@ -379,8 +379,8 @@ $(document).ready(function () {
 
     // Button Status
     $('button.kv-file-status').click(function () {
-        var doc_status = $(this).data("doc_status");
-        var doc_id = $(this).data("doc_id");
+        var doc_status = $(this).attr("data-doc_status");
+        var doc_id = $(this).attr("data-doc_id");
         var btn_color = '#dc3545';
         if (doc_status === 'approved') {
             doc_status = 'pending';
