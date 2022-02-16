@@ -285,13 +285,13 @@ $(document).ready(function () {
     },
     locale: {
       //format: 'M/DD hh:mm A'
-      format: 'M/DD/YYYY'
+      format: 'DD/MM/YYYY'
     }
   });
 
   //on hide calendar set start date and end date
   $('input[name="ETA"], input[name="ETD"]').on('apply.daterangepicker', function (ev, picker) {
-    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
   });
 
   //for advance search.
