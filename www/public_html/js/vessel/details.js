@@ -4,14 +4,46 @@ $(document).ready(function(){
   var combineRoute = [];
   var pointObject = [];
 
+  var tooltipHTML = `<center><strong>{vessel}</strong></center>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6">
+            <table>
+                <tr>
+                    <th align="left">Route</th>
+                    <td>{order}</td>
+                </tr>
+                <tr>
+                    <th align="left">Port: </th>
+                    <td>{title}</td>
+                </tr>
+                <tr>
+                    <th align="left">Point</th>
+                    <td>{type}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6 toolx">
+            <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg">
+        </div>
+    </div>
+    <hr />
+    <center>
+        <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
+    </center>`;
+
   $.each(route, function(key, value) {
     combineRoute.push({
         "order": parseInt(value.LegOrder),
-        "point": value.Origin
+        "point": value.Origin,
+        "vessel": value.VesselName,
+        "type": "Origin",
     });
     combineRoute.push({
         "order": parseInt(value.LegOrder),
-        "point": value.Destination
+        "point": value.Destination,
+        "vessel": value.VesselName,
+        "type": "Destination",
     });
   });
   $.each(combineRoute, function(key, value) {
@@ -27,6 +59,7 @@ $(document).ready(function(){
             "latitude": latitude,
             "longitude": longitude,
             "title": value.point,
+            "vessel": value.vessel,
             "order": value.order
         });
     }
@@ -188,6 +221,7 @@ pointObject.sort((a, b) => {
         animateMarker();
         imageSeries.data = pointObject;
         am4core.options.autoDispose = true;
+        marker.tooltipHTML = tooltipHTML;
     });
     // setTimeout(function(){
     //     // Add data for the point
@@ -246,5 +280,15 @@ pointObject.sort((a, b) => {
     //     }, {});
     // };
     // var data2 = groupArrayOfObjects(pointObject,"order");
+  });
+  $("#show-details").on("click",function(){
+    let sidebar = $(".sidebar-map");
+    let $this = $(this);
+    sidebar.toggleClass("d-none");
+    if(!sidebar.hasClass("d-none")){
+        $this.text("Show Details");
+    }else{
+        $this.text("Hide Details");
+    }
   });
 });

@@ -153,6 +153,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
  }
 
 </style>
+
 <?php $vessel = $this->vessel;?>
 <section class="content">
         <div class="container-fluid">
@@ -314,28 +315,30 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                         </div>
                     </div>
                     <div class="row card-body table-responsive p-0 ttable" style="height: 500px;">
-                    <table class="table table-hover table-head-fixed text-nowrap custom-table">
-                    <thead>
-                      <tr>
-                            <th scope="col" class="btn-search">Container Number <section></section></th>
-                            <th scope="col">Shipment Number<section></section></th>
-                            <!-- <th>House Bill <section></section></th> -->
-                            <th scope="col">Master Bill <section></section></th>
-                            <th scope="col">Voyage <section></section></th>
-                           
-                            <th scope="col">Date <section></section></th>
-                            <!-- <th>Status</th> -->
-                            
-                            <th scope="col">Vessel Name <section></section></th>
-                            <th scope="col">Location <section></section></th>
-                            <th scope="col">1 Stop <section></section></th>
-                            
-                            <th scope="col">Shipping Line <section></section></th>
-                            
-                            <th scope="col">Action <section></section></th>
-                      </tr>
-                    </thead>
-                  </table>
+                    
+                        <table class="table table-hover table-head-fixed text-nowrap custom-table">
+                        <thead>
+                          <tr>
+                                <th scope="col" class="btn-search">Container Number <section></section></th>
+                                <th scope="col">Shipment Number<section></section></th>
+                                <!-- <th>House Bill <section></section></th> -->
+                                <th scope="col">Master Bill <section></section></th>
+                                <th scope="col">Voyage <section></section></th>
+                              
+                                <th scope="col">Date <section></section></th>
+                                <!-- <th>Status</th> -->
+                                
+                                <th scope="col">Vessel Name <section></section></th>
+                                <th scope="col">Location <section></section></th>
+                                <th scope="col">1 Stop <section></section></th>
+                                
+                                <th scope="col">Shipping Line <section></section></th>
+                                
+                                <th scope="col">Action <section></section></th>
+                          </tr>
+                        </thead>
+                      </table>
+                        
                     </div>
                     </div>
                 </div>

@@ -368,9 +368,8 @@ class Vessel extends Core\Controller {
                      $type = $metadata->metadata->type;
                      $sealine = $metadata->metadata->sealine;
                      $cont = file_get_contents('https://tracking.searates.com/route?type='.$type.'&number='.$vessel_number.'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
-                 }
+                    }
              }
-            
          }
          
          if(empty($cont)){
@@ -378,7 +377,14 @@ class Vessel extends Core\Controller {
          }
          
         //exit();
-        $this->View->addJS("js/tracking.js");
+        echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
+        <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+        <script src="https://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>';
+
+        $this->View->addJS("js/vessel/tracking.js");
        $this->View->renderTemplate("/vessel/tracking", [
            "title" => "Vessel Track",
            "vesseldata" => $this->Vessel->getVesselByNumber($vessel_number,$user),
