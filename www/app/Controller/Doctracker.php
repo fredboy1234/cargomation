@@ -136,7 +136,10 @@ class Doctracker extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-
+        $searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
+        // echo "<pre>";
+        // print_r($searchFilter);
+        // exit();
         $this->View->renderTemplate("/doctracker/index", [
             "title" => "Document Tracker",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -154,7 +157,8 @@ class Doctracker extends Core\Controller {
             'role' => $role,
             'user_id' => $user,
             'selected_theme' => $selectedTheme,
-            // 'shipment_from_contact'=> $emailList
+            'searchfilter' =>$searchFilter,
+            //'shipment_from_contact'=> $emailList
         ]);
     }
 

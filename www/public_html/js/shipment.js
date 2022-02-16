@@ -3,6 +3,104 @@
 // if (!window.location.origin) {
 //   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 // }
+
+$(document).ready(function () {
+  $("body").on("click", ".add_node_btn_frm_field",function (e) {
+    var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
+
+    $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+
+    $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+
+    //change id
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("input[type='text']")
+      .attr("id", "mobileb_no_" + index);
+
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("select")
+      .attr("id", "no_type_" + index);
+
+    console.log(cloned_el);
+    //count++;
+  });
+});
+$(document).ready(function(){ 
+  $("body").on("click",".add_new_frm_field_btn", function (e){ 
+    
+    var $this = $(this);
+    var optionHTML = "";
+    var thisval = $this.attr("filname");
+    var selected = "";
+   // console.log(thisval);
+    $.each(searchfilter,function(okey,oval){
+      $.each(oval,function(key,val){
+        if(val.filterName === thisval){
+          optionHTML +=`<option selected>${val.filterID}</option>`;
+        }else{
+          optionHTML +=`<option>${val.filterID}</option>`;
+        }
+      });
+    });
+    
+    e.preventDefault();
+    var index = $(".form_field_outer").find(".form_field_outer_row").length + 1; 
+    $(".form_field_outer").append(`
+      <div class="row form_field_outer_row">
+        <div class="form-group col-md-3">
+          <select name="no_type[]" id="no_type_${$this.val()}" class="form-control" value="${$this.val()}">
+            ${optionHTML}
+          </select>
+        </div>
+        <div class="form-group col-md-2 text-center">
+          <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Filters
+              </button>
+              <div class="dropdown-menu px-2" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="javascript:void(0)">exact</a>
+                <a class="dropdown-item" href="javascript:void(0)">starts with</a>
+                <a class="dropdown-item" href="javascript:void(0)">contains</a>
+                <a class="dropdown-item" href="javascript:void(0)">not equal</a>
+                <a class="dropdown-item" href="javascript:void(0)">not contain</a>
+                <a class="dropdown-item" href="javascript:void(0)">is blank</a>
+                <a class="dropdown-item" href="javascript:void(0)">is not blank</a>
+              </div>
+          </div>
+        </div>
+      <div class="form-group col-md-5">
+        <input type="text" class="form-control w_90" name="ETA" id="ETA" placeholder="" />
+      </div>
+      <button class="btn_round remove_node_btn_frm_field" disabled>
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+`); 
+  $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false); 
+  $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true); });
+
+  $this.val("Search Filter");
+}, testicle());
+
+$("body").on("click", ".remove_node_btn_frm_field", function () {
+  $(this).closest(".form_field_outer_row").remove();
+});
+
+function testicle () {
+$('#no_type_').on('change', function() {
+  $('input[name="ETA"], input[name="ETD"]').daterangepicker();
+})
+}
+
+
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
   '<div class="spinner-border" role="status">' +
   '<span class="sr-only">Loading...</span>' +
