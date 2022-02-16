@@ -170,6 +170,14 @@ $(document).ready(function () {
     pagingType: "full_numbers",
     info: true,
     responsive: true,
+    columnDefs: [
+      {
+        targets: 0,
+        render: function (data, type, row) {
+          return '<span>' + data + '</span>'
+        }
+      }
+    ],
     autoWidth: false,
     lengthChange: false,
     colReorder: true,
@@ -239,6 +247,14 @@ $(document).ready(function () {
     console.log('PAGE: ' + info.page);
     setColor();
     // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
+  });
+
+  // Doing some magic! 
+  $('.table tbody').on('click', 'tr td', function(e) { 
+    if( $(e.target).closest('span').length == 0 ){
+      return;
+    }
+    $(this).click();
   });
 
   if (parsed_qs.doc !== '' && typeof parsed_qs.doc != 'undefined') {
