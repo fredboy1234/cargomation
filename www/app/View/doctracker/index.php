@@ -388,30 +388,32 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <?php if($this->role->role_id != 4): ?>
-                <div class="">
-                    <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="select-all">
-                        <label for="select-all" style="margin-top: 7px;margin-right: 10px;">
-                            Select all
-                        </label>
-                    </div>
-                    <form class="d-inline-block mr-3" action="/action_page.php">
-                        <select name="bulk-action" id="bulk-action" class="form-control">
-                            <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
-                            <optgroup label="Bulk update status:" data-option="status">
-                                <option value="approved">Approve</option>
-                                <option value="pending">Pending</option>
-                            </optgroup>
-                            <optgroup label="Bulk document action" data-option="action">
-                                <option value="push">Push</option>
-                                <option value="deleted">Delete</option>
-                            </optgroup>
-                        </select>
-                    </form>
-                    <button type="button" class="btn btn-success" id="request">Request a document</button>
+                    <div class="">
+                    <?php if($this->role->role_id != 4): ?>
+                        <div class="icheck-primary d-inline">
+                            <input type="checkbox" id="select-all">
+                            <label for="select-all" style="margin-top: 7px;margin-right: 10px;">
+                                Select all
+                            </label>
+                        </div>
+                        <form class="d-inline-block mr-3" action="/action_page.php">
+                            <select name="bulk-action" id="bulk-action" class="form-control">
+                                <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
+                                <optgroup label="Bulk update status:" data-option="status">
+                                    <option value="approved">Approve</option>
+                                    <option value="pending">Pending</option>
+                                </optgroup>
+                                <optgroup label="Bulk document action" data-option="action">
+                                    <option value="push">Push</option>
+                                    <option value="deleted">Delete</option>
+                                </optgroup>
+                            </select>
+                        </form>
+                        <button id="approve_all" data-value="approved" type="button" class="btn btn-default bg-success">Approve All</button>
+                        <button id="pending_all" data-value="pending" type="button" class="btn btn-default bg-danger">Pending All</button>
+                        <button type="button" class="btn btn-primary" id="request">Request a document</button>
+                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
             </div>
         </div>
         <!-- /.modal-content -->
