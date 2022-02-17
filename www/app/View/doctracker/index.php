@@ -148,7 +148,7 @@
                </div>
             </div>
          </div>
-         <div class="col-md-4">
+         <div class="col-md-3">
             <label>Search</label>
          </div>
          <div class="col-md-2">
@@ -158,6 +158,9 @@
             <label>Value</label>
          </div>
          <div class="col-md-1">
+            <label> </label>
+         </div>
+         <div class="col-md-2">
             <label> </label>
          </div>
       </div>
@@ -196,6 +199,7 @@
                 <div class="form-group col-md-4">
                     <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
                         <option>--Add search type--</option>
+                        <option value="shipment_id">--Add search type--</option>
                     </select>
                 </div>
             </div>

@@ -5,39 +5,46 @@
 // }
 
 $(document).ready(function () {
-    invokeFilter();
+    invokeFilter("", 0);
     $("#add_filters").on("change",function (e) { 
-      console.log('test'); 
-
-      addSearchFilter($(this).val());
+      var $option = $(this).find('option:selected');
+      //Added with the EDIT
+      var selected = $option.val();//to get content of "value" attrib
+      var text = $option.text();//to get <option>Text</option> content
+      console.log(selected);
+      addSearchFilter(selected);
     });
 
   });
 
-function invokeFilter() {
-  var $select = $('.search-list'); 
+function invokeFilter(selected, index) {
+  var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
   $.each(data, function(key, value) {
-    console.log(key);
     text += `<optgroup label="${key}">`;
     $.each(value, function(key2, value2) {
-      text += `<option value="${key2}">${value2.filterID}</option>`;
+      text += `<option value="${value2.filterName}" `;
+        if(value2.filterName == selected) {
+          text += `selected`;
+        }
+      text += `>${value2.filterID}</option>`;
     });
     text += `</optgroup>`;
   });
     $select.html(text);
+    $("#add_filters").val("");
   }).fail(function(){
     console.log("Error");
   });
 }
-function addSearchFilter(selectedValue) {
-        console.log("clicked");
+function addSearchFilter(selected) {
+  
         var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
-        $(".form_field_outer").prepend(`
+$(".form_field_outer").prepend(`
 <div class="row form_field_outer_row">
   <div class="form-group col-md-3">
-    <select name="no_type[]" id="no_type_${index}" class="form-control search-list">
+    <select name="no_search[]" id="no_search_${index}" class="form-control search-list">
       <option>--Select type--</option>
     </select>
   </div>
@@ -47,10 +54,10 @@ function addSearchFilter(selectedValue) {
     </select>
   </div>
   <div class="form-group col-md-4">
-    <input type="text" class="form-control w_90" name="mobileb_no[]" id="mobileb_no_${index}" placeholder="Enter search value" />
+    <input type="text" class="form-control w_90" name="no_value[]" id="no_value_${index}" placeholder="Enter search value" />
   </div>
   <div class="form-group col-md-1">
-    <select name="condition" id="condition" class="form-control">
+    <select name="no_cond[]" id="no_cond_${index}" class="form-control">
       <option value="and">AND</option>
       <option value="or">OR</option>
     </select>
@@ -68,8 +75,9 @@ function addSearchFilter(selectedValue) {
 `);
 $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
 $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
-invokeFilter();
-$(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
+// $(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
+invokeFilter(selected, index);
+
 }
 
 
