@@ -67,46 +67,62 @@ function invokeFilter(selected, index) {
 }
 
 function addSearchFilter(selected) {  
-var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
-$(".form_field_outer").prepend(`
-<div class="row form_field_outer_row ${index}">
-  <div class="form-group col-md-3">
-    <select name="no_search[]" id="no_search_${index}" class="form-control search-list">
-      <option>--Select type--</option>
-    </select>
-  </div>
-  <div class="form-group col-md-2">
-    <select name="no_type[]" id="no_type_${index}" class="form-control">
-      <option>--Select type--</option>
-    </select>
-  </div>
-  <div class="form-group col-md-4">
-    <input type="text" class="form-control w_90" name="no_value[]" id="no_value_${index}" placeholder="Enter search value" />
-  </div>
-  <div class="form-group col-md-1">
-    <select name="no_cond[]" id="no_cond_${index}" class="form-control">
-      <option value="and">AND</option>
-      <option value="or">OR</option>
-    </select>
-  </div>
-  <div class="form-group col-md-2 add_del_btn_outer">
-    <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
-      <i class="fas fa-copy"></i>
-    </button>
+  var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+  $(".form_field_outer").append(`
+  <div class="row form_field_outer_row ${index}">
+    <div class="form-group col-md-3">
+      <select name="no_search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
+        <option>--Select type--</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <select name="no_type[]" id="no_type_${index}" class="form-control">
+        <option>--Select type--</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <input type="text" class="form-control w_90" name="no_value[]" id="no_value_${index}" placeholder="Enter search value" />
+    </div>
+    <div class="form-group col-md-1">
+      <select name="no_cond[]" id="no_cond_${index}" class="form-control">
+        <option value="and">AND</option>
+        <option value="or">OR</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 add_del_btn_outer">
+      <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+        <i class="fas fa-copy"></i>
+      </button>
 
-    <button class="btn_round remove_node_btn_frm_field" disabled>
-      <i class="fas fa-trash-alt"></i>
-    </button>
+      <button class="btn_round remove_node_btn_frm_field" disabled>
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
   </div>
-</div>
-`);
-$(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
-$(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
-// $(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
-invokeFilter(selected, index);
-
+  `);
+  $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+  $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+  // $(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
+  invokeFilter(selected, index);ß
 }
 
+$('#addvance-search-form').on("submit", function(ev) {
+  ev.preventDefault();
+  $.ajax({
+    url: "/shipment/searchFilter/"+user_id+"/"+role_id,
+    type: "POST",
+    data: { data: $(this).serializeArray() },
+    success: function (res) {
+      // $(document).Toasts('create', {
+      //   title: 'Success',
+      //   body: 'Shipment was successfully Unassigned',
+      //   autohide: true,
+      //   close: false,
+      //   class: 'bg-success'
+      // })
+    }
+  });
+});
 
 
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +

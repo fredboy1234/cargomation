@@ -134,251 +134,85 @@
                                     <div class="tab-pane text-left fade active show" id="vert-tabs-search" role="tabpanel" aria-labelledby="vert-tabs-search-tab">
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
-                                            <div class="row">
-   <div class="col-md-12 form_sec_outer_task border ">
-      <div class="row">
-         <div class="col-md-12 bg-light p-2 mb-3">
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <h4 class="frm_section_n">Advance Search</h4>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-md-3">
-            <label>Search</label>
-         </div>
-         <div class="col-md-2">
-            <label>Type</label>
-         </div>
-         <div class="col-md-4">
-            <label>Value</label>
-         </div>
-         <div class="col-md-1">
-            <label> </label>
-         </div>
-         <div class="col-md-2">
-            <label> </label>
-         </div>
-      </div>
-      <div class="col-md-12 p-0">
-         <div class="col-md-12 form_field_outer p-0">
-            <div class="row form_field_outer_row">
-               <div class="form-group col-md-3">
-                  <select name="no_seach[]" id="no_search_1" class="form-control search-list">
-                     <option>--Select type--</option>
-                  </select>
-               </div>
-               <div class="form-group col-md-2">
-                  <select name="no_type[]" id="no_type_1" class="form-control">
-                     <option>--Select type--</option>
-                  </select>
-               </div>
-               <div class="form-group col-md-4">
-                  <input type="text" class="form-control w_90" name="no_value[]" id="no_value_1" placeholder="Enter search value">
-               </div>
-               <div class="form-group col-md-1">
-                  <select name="no_cond[]" id="no_cond_1" class="form-control">
-                     <option value="and">AND</option>
-                     <option value="or">OR</option>
-                  </select>
-               </div>
-               <div class="form-group col-md-2 add_del_btn_outer">
-                  <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
-                  <i class="fas fa-copy"></i>
-                  </button>
-                  <button class="btn_round remove_node_btn_frm_field" disabled="">
-                  <i class="fas fa-trash-alt"></i>
-                  </button>
-               </div>
-            </div>
-         </div>
-         <div class="col-md-12 p-0">
-            <div class="row">
-                <div class="form-group col-md-4">
-                    <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
-                        <option>--Select search type--</option>
-                        <option value="shipment_id">--Add search type--</option>
-                    </select>
-                </div>
-            </div>
-         </div>
-      </div>
-
-   </div>
-   <div class="row ml-0 bg-light mt-3 border py-3">
-      <div class="col-md-12">
-         <button class="btn btn-outline-lite py-0"><i class="fas fa-search add_icon"></i> Search Data </button>
-      </div>
-   </div>
-</div>
-
-
-
-
-
-
-
-
-                                                <div class="row d-none">
-                                                    <div class="col-md-4" data-select2-id="29">
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="shipment_id" class="col-sm-4 col-form-label">Shipment ID</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="shipment_id" name="shipment_id" placeholder="Ex.: SHP001">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="ETA" class="col-sm-4 col-form-label">ETA</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="ETA" name="ETA" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="consignee" class="col-sm-4 col-form-label">Consignee</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="consignee" name="consignee" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="master_bill" class="col-sm-4 col-form-label">Master Bill</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="master_bill" name="master_bill" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="container" class="col-sm-4 col-form-label">Container #</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="container" name="container" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row d-none">
-                                                            <label for="pol" class="col-sm-4 col-form-label">Port of Loading</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="pol" name="pol" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.col -->
-                                                    <div class="col-md-4" data-select2-id="29">
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="client_name" class="col-sm-4 col-form-label">Console ID</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="console_id" name="console_id" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="ETD" class="col-sm-4 col-form-label">ETD</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="ETD" name="ETD" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="consignor" class="col-sm-4 col-form-label">Consignor</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="consignor" name="consignor" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="house_bill" class="col-sm-4 col-form-label">House Bill</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" id="house_bill" name="house_bill" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.form-group -->
-                                                        <div class="form-group row">
-                                                            <label for="container_mode" class="col-sm-4 col-form-label">Container Mode</label>
-                                                            <div class="col-sm-8">
-                                                                <select id="container_mode" class="js-example-basic-multiple" name="states" multiple="multiple">
-                                                                    <option value="all">Select All</option>
-                                                                    <option value="BCN">BCN</option>
-                                                                    <option value="FCL">FCL</option>
-                                                                    <option value="LCL">LCL</option>
-                                                                    <option value="LSE">LSE</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.col -->
-                                                    <div class="col-md-4" data-select2-id="29">
-                                                        <div class="form-group row">
-                                                            <?php if(false): ?>
-                                                            <div class="col-sm-6">
-                                                                <!-- checkbox -->
-                                                                <label for="status" class="col-sm-6 col-form-label">Status</label>
-                                                                <input id="status" type="hidden" name="status" value="">
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Approved">
-                                                                        <label class="form-check-label">Approved</label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Pending">
-                                                                        <label class="form-check-label">For Approval</label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input statusC" name="stat" type="checkbox" checked value="Missing">
-                                                                        <label class="form-check-label">Missing</label>
+                                                <div class="row">
+                                                    <div class="col-md-12 form_sec_outer_task border ">
+                                                        <div class="row">
+                                                            <div class="col-md-12 bg-light p-2 mb-3">
+                                                                <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <h4 class="frm_section_n">Advance Search</h4>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <!-- radio -->
-                                                                <label for="origin" class="col-sm-6 col-form-label">Origin</label>
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" name="origin_cargowise" value="cargowise" checked>
-                                                                        <label class="form-check-label">Cargowise</label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" name="origin_hub" value="hub" checked>
-                                                                        <label class="form-check-label">Hub</label>
-                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <?php endif; ?>
-                                                            <div class="col-sm-12">
-                                                                <!-- radio -->
-                                                                <label for="transport_mode" class="col-sm-6 col-form-label">Transport Mode</label>
-                                                                <div class="form-group">
-                                                                    <div class="form-check d-inline-block">
-                                                                        <input class="form-check-input" type="checkbox" name="transportmode_sea" value="sea" checked>
-                                                                        <label class="form-check-label">Sea</label>
-                                                                    </div>
-                                                                    <div class="form-check d-inline-block">
-                                                                        <input class="form-check-input" type="checkbox" name="transportmode_air" value="air" checked>
-                                                                        <label class="form-check-label">Air</label>
-                                                                    </div>
-                                                                    <div class="form-check d-inline-block">
-                                                                        <input class="form-check-input no_trapo" type="checkbox" name="transportmode_none" value="">
-                                                                        <label class="form-check-label">None</label>
+                                                            <div class="col-md-3">
+                                                                <label>Search</label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label>Type</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Value</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <label> </label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label> </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="col-md-12 form_field_outer p-0">
+                                                                <div class="row form_field_outer_row">
+                                                                <div class="form-group col-md-3">
+                                                                    <select name="no_seach[]" id="no_search_1" class="form-control search-list">
+                                                                        <option>--Select type--</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-md-2">
+                                                                    <select name="no_type[]" id="no_type_1" class="form-control">
+                                                                        <option>--Select type--</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <input type="text" class="form-control w_90" name="no_value[]" id="no_value_1" placeholder="Enter search value">
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <select name="no_cond[]" id="no_cond_1" class="form-control">
+                                                                        <option value="and">AND</option>
+                                                                        <option value="or">OR</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-md-2 add_del_btn_outer">
+                                                                    <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+                                                                    <i class="fas fa-copy"></i>
+                                                                    </button>
+                                                                    <button class="btn_round remove_node_btn_frm_field" disabled="">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 p-0">
+                                                                <div class="row">
+                                                                    <div class="form-group col-md-4">
+                                                                        <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
+                                                                            <option>--Select search type--</option>
+                                                                            <option value="shipment_id">--Add search type--</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <input type="hidden" name="post_trigger" value="">
-                                                        <div class="col-sm-6 d-inline-block">
-                                                            <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
-                                                        </div>
-                                                        <div class="col-sm-2 d-inline-block">
-                                                            <button id="reset-search" type="button" class="btn"><i class="fas fa-sync-alt"></i></button>
-                                                        </div>
-                                                        <!-- /.form-group -->
                                                     </div>
-                                                    <!-- /.col -->
+                                                    <div class="row ml-0 bg-light mt-3 border py-3">
+                                                        <div class="col-md-12">
+                                                            <button type="submit" id="searchFilter" class="btn btn-outline-lite py-0"><i class="fas fa-search add_icon"></i> Search Data </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <!-- /.row -->
                                             </form>
