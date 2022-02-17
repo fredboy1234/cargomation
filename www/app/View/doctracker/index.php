@@ -166,24 +166,24 @@
                                                         </div>
                                                         <div class="col-md-12 p-0">
                                                             <div class="col-md-12 form_field_outer p-0">
-                                                                <div class="row form_field_outer_row">
+                                                                <div class="row form_field_outer_row 1">
                                                                 <div class="form-group col-md-3">
-                                                                    <select name="no_seach[]" id="no_search_1" class="form-control search-list">
+                                                                    <select name="search[]" id="no_search_1" class="form-control search-list">
                                                                         <option>--Select type--</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-2">
-                                                                    <select name="no_type[]" id="no_type_1" class="form-control">
+                                                                    <select name="type[]" id="no_type_1" class="form-control">
                                                                         <option>--Select type--</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
-                                                                    <input type="text" class="form-control w_90" name="no_value[]" id="no_value_1" placeholder="Enter search value">
+                                                                    <input  name="value[]" id="no_value_1" type="text" class="form-control w_90" placeholder="Enter search value">
                                                                 </div>
                                                                 <div class="form-group col-md-1">
-                                                                    <select name="no_cond[]" id="no_cond_1" class="form-control">
-                                                                        <option value="and">AND</option>
-                                                                        <option value="or">OR</option>
+                                                                    <select name="cond[]" id="no_cond_1" class="form-control exclude" disabled>
+                                                                        <option value="OR">OR</option>
+                                                                        <option value="AND">AND</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-2 add_del_btn_outer">
@@ -208,10 +208,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row ml-0 bg-light mt-3 border py-3">
-                                                        <div class="col-md-12">
-                                                            <button type="submit" id="searchFilter" class="btn btn-outline-lite py-0"><i class="fas fa-search add_icon"></i> Search Data </button>
-                                                        </div>
+                                                    <div class="col-md-12 p-0 mt-2">
+                                                        <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
                                                     </div>
                                                 </div>
                                                 <!-- /.row -->

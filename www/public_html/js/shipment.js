@@ -15,6 +15,12 @@ $(document).ready(function () {
   $("body").on("click", ".remove_node_btn_frm_field", function () {
     $(this).closest(".form_field_outer_row").remove();
     $(this).closest(".form_field_outer_row").attr('trashid');
+    var elem = $(".form_field_outer").find(".form_field_outer_row");
+    if(elem.length == 1) {
+      elem.find('[id^=no_cond]').prop("disabled", true).addClass('exclude');
+    } else {
+      $('#no_cond_'+elem.length).prop("disabled", true).addClass('exclude');
+    }
     console.log("success");
   });
   // Clone method
@@ -69,26 +75,27 @@ function invokeFilter(selected, index) {
 }
 
 function addSearchFilter(selected) {  
+  $(".form_field_outer").find(".exclude").prop("disabled", false).removeClass('exclude');
   var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
   $(".form_field_outer").append(`
   <div class="row form_field_outer_row ${index}">
     <div class="form-group col-md-3">
-      <select name="no_search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
+      <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
         <option>--Select type--</option>
       </select>
     </div>
     <div class="form-group col-md-2">
-      <select name="no_type[]" id="no_type_${index}" class="form-control">
+      <select name="type[]" id="no_type_${index}" class="form-control">
         <option>--Select type--</option>
       </select>
     </div>
     <div class="form-group col-md-4">
-      <input type="text" class="form-control w_90" name="no_value[]" id="no_value_${index}" placeholder="Enter search value" />
+      <input name="value[]" id="no_value_${index}" type="text" class="form-control w_90" placeholder="Enter search value" />
     </div>
     <div class="form-group col-md-1">
-      <select name="no_cond[]" id="no_cond_${index}" class="form-control">
-        <option value="and">AND</option>
-        <option value="or">OR</option>
+      <select name="cond[]" id="no_cond_${index}" class="form-control exclude" disabled>
+        <option value="OR">OR</option>
+        <option value="AND">AND</option>
       </select>
     </div>
     <div class="form-group col-md-2 add_del_btn_outer">
@@ -104,27 +111,9 @@ function addSearchFilter(selected) {
   `);
   $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
   $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
-  // $(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
-  invokeFilter(selected, index);ß
+  invokeFilter(selected, index);
 }
 
-$('#addvance-search-form').on("submit", function(ev) {
-  ev.preventDefault();
-  $.ajax({
-    url: "/shipment/searchFilter/"+user_id+"/"+role_id,
-    type: "POST",
-    data: { data: $(this).serializeArray() },
-    success: function (res) {
-      // $(document).Toasts('create', {
-      //   title: 'Success',
-      //   body: 'Shipment was successfully Unassigned',
-      //   autohide: true,
-      //   close: false,
-      //   class: 'bg-success'
-      // })
-    }
-  });
-});
 
 
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
@@ -323,21 +312,26 @@ $(document).ready(function () {
     ajax: {
       url: '/shipment/shipmentData/' + user_id + "/" + role_id,
       data: function (d) {
-        if(d.post_trigger !== "") {
-          d.shipment_id = $("input[name='shipment_id']").val();
-          d.console_id = $("input[name='console_id']").val();
-          d.ETA = $("input[name='ETA']").val();
-          d.ETD = $("input[name='ETD']").val();
-          d.consignee = $("input[name='consignee']").val();
-          d.consignor = $("input[name='consignor']").val();
-          d.master_bill = $("input[name='master_bill']").val();
-          d.house_bill = $("input[name='house_bill']").val();
-          d.container = $("input[name='container']").val();
-          d.container_mode = $("#container_mode").val();
-          d.transportmode_sea = $("input[name='transportmode_sea']:checked").val();
-          d.transportmode_air = $("input[name='transportmode_air']:checked").val();
-          d.post_trigger = $("input[name='post_trigger']").val();
-        }
+        var arr = [];
+        $(".form_field_outer_row").each(function(){
+           var search = $(this).find("[name*='search']").val(); //*= means like
+           var type = $(this).find("[name*='type']").val(); 
+           var value = $(this).find("[name*='value']").val(); 
+           var cond = $(this).find("[name*='cond']").val();
+           if($(this).find("[name*='cond']").hasClass('exclude')) {
+              cond = "";
+           }  
+           arr.push({
+              "search": search,
+              "type": type,
+              "value": value,
+              "cond": cond
+           });
+
+           d.data = arr;
+        });
+
+
       },
     },
     columns: tableColumnData,
@@ -371,6 +365,27 @@ $(document).ready(function () {
     console.log('PAGE: ' + info.page);
     setColor();
     // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
+  });
+
+  $('#addvance-search-form').on("submit", function(ev) {
+    ev.preventDefault();
+    // $.ajax({
+    //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
+    //   type: "POST",
+    //   data: {arr},
+    //   beforeSend: function(res) {
+        table.ajax.reload(setColor);
+    //   },
+    //   success: function (res) {
+    //     // $(document).Toasts('create', {
+    //     //   title: 'Success',
+    //     //   body: 'Shipment was successfully Unassigned',
+    //     //   autohide: true,
+    //     //   close: false,
+    //     //   class: 'bg-success'
+    //     // })
+    //   }
+    // });
   });
 
   // Doing some magic! 
@@ -432,32 +447,6 @@ $(document).ready(function () {
   //on hide calendar set start date and end date
   $('input[name="ETA"], input[name="ETD"]').on('apply.daterangepicker', function (ev, picker) {
     $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-  });
-
-  //for advance search.
-  $("#advance-search-btn").on("click", function () {
-    var check_arr = [];
-    $("input[name='post_trigger']").val("set");
-    $("input:checkbox[name=stat]:checked").each(function () {
-      check_arr.push($(this).val());
-    });
-    $("#status").val(check_arr);
-
-    var data = $("#addvance-search-form").serializeArray();
-
-    var query_data = {};
-    console.log(query_data);
-    var html = "";
-    $.each(data, function (key, value) {
-      var index = value.name;
-      var val = value.value;
-      query_data[index] = val;
-    });
-    // $("input[name='origin']").val(query_data.origin);
-    // $("input[name='transportmode']").val(query_data.transportmode);
-    table.ajax.reload(setColor);
-    //table.ajax.reload();
-    //table.draw();
   });
 
   // Toggle document stats view 
@@ -988,18 +977,39 @@ console.log(index);
 });
 
 function triggerType(data){
-  switch(data) {
+  switch(data) {    
     case 'date':
       return `<option value="exact" selected>Exact</option>
-      <option value="contain">contains with</option>
-      <option>equal</option>
-      <option>not equal</option>`;
+      <option value="starts_with">starts with</option>
+      <option value="contains">contains</option>
+      <option value="not_equal">not equal</option>
+      <option value="not_starting">not starting</option>
+      <option value="not_contain">not contain</option>
+      <option value="is_blank">is blank</option>
+      <option value="not_blank">is not blank</option>`;
     break;
     case 'input':
-      return `<option>Exact</option>
-      <option selected>not equal</option>`;
+      return `<option value="exact" selected>Exact</option>
+      <option value="starts_with">starts with</option>
+      <option value="contains">contains</option>
+      <option value="not_equal">not equal</option>
+      <option value="not_starting">not starting</option>
+      <option value="not_contain">not contain</option>
+      <option value="is_blank">is blank</option>
+      <option value="not_blank">is not blank</option>`;
     break;
-  }
+    case 'others':
+      return `<option value="exact" selected>Exact</option>
+      <option value="starts_with">starts with</option>
+      <option value="contains">contains</option>
+      <option value="not_equal">not equal</option>
+      <option value="not_starting">not starting</option>
+      <option value="not_contain">not contain</option>
+      <option value="is_blank">is blank</option>
+      <option value="not_blank">is not blank</option>`;
+    break;
+    
+    }
 }
 
 function appendToSelect(data){

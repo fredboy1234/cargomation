@@ -412,4 +412,77 @@ class Shipment extends Core\Model {
         return $array_data;
     }
 
+    public function searchFilter($post) { 
+        $Db = Utility\Database::getInstance();
+
+        $params = $columns = $totalRecords = $data = array();
+        $params = $_REQUEST;
+        $columns = array(
+            0 => 'shipment_id',
+        );
+        
+        $where_clause = " WHERE ";
+        $sqlTot = $sqlRec = "";
+        
+        foreach ($post as $key => $value) {
+            switch ($value['type']) {
+                case 'exact':
+                    $where_clause .= "{$value['search']} = '{$value['value']}' {$value['cond']} ";
+                    break;
+                case 'start_with':
+                    $where_clause .= "{$value['search']} LIKE '%{$value['value']}%' {$value['cond']} ";
+                    break;
+                case 'contains':
+                    $where_clause .= "CONTAINS({$value['search']},'{$value['value']}' {$value['cond']} ";
+                    break;
+                case 'not_equal':
+                    $where_clause .= "{$value['search']} != '{$value['value']}' {$value['cond']} ";
+                    break;
+                case 'not_starting':
+                    $where_clause .= "{$value['search']} NOT LIKE '%{$value['value']}%' {$value['cond']} ";
+                    break;
+                case 'not_contain':
+                    $where_clause .= "NOT CONTAINS({$value['search']},'{$value['value']}' {$value['cond']} ";
+                    break;
+                case 'is_blank':
+                    $where_clause .= "{$value['search']} IS_NULL '{$value['value']}' {$value['cond']} ";
+                    break;
+                case 'not_blank':
+                    $where_clause .= "{$value['search']} IS NOT NULL '{$value['value']}' {$value['cond']} ";
+                    break;
+                default:
+                    $where_clause .= "{$value['search']} = '{$value['value']}' {$value['cond']} ";
+                    break;
+            }
+        }
+        
+        $sql_query = " SELECT * FROM shipment 
+                        FULL OUTER JOIN Merge_Container 
+                            ON shipment.id = Merge_Container.[SHIPMENT ID] ";
+
+        $sqlTot .= $sql_query;
+        $sqlRec .= $sql_query;
+
+        if(isset($where_clause) && $where_clause != '') {
+            $sqlTot .= $where_clause;
+            $sqlRec .= $where_clause;
+        }
+
+        #$sqlRec .=  " ORDER BY ". $columns[$params['order'][0]['column']]."   ".$params['order'][0]['dir']."  LIMIT ".$params['start']." ,".$params['length']." ";
+        $sqlRec .=  " ORDER BY user_id ".$params['order'][0]['dir']." OFFSET ".$params['start']." ROWS FETCH NEXT ".$params['length']." ROWS ONLY";
+
+        $totalRecords = $Db->query($sqlTot)->count();
+        $data = $Db->query($sqlRec)->results();
+        
+        $array_data = array(
+            "draw"            => intval( $params['draw'] ),   
+            "recordsTotal"    => intval( $totalRecords ),  
+            "recordsFiltered" => intval( $totalRecords ),
+            "data"            => $data
+        );
+        
+        return $array_data;
+
+    }
+
 }
