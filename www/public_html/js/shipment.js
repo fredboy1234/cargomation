@@ -76,9 +76,12 @@ function invokeFilter(selected, index) {
 
 function addSearchFilter(selected) {  
   $(".form_field_outer").find(".exclude").prop("disabled", false).removeClass('exclude');
-  var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+  //var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+  var index = $(".form_field_outer .form_field_outer_row").map(function() {
+        return parseFloat($(this).attr('section'))+1;
+    }).get().sort().pop();
   $(".form_field_outer").append(`
-  <div class="row form_field_outer_row ${index}">
+  <div class="row form_field_outer_row ${index}" section="${index}">
     <div class="form-group col-md-3">
       <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
         <option>--Select type--</option>
@@ -959,6 +962,14 @@ function filterRequest(data){
   //       }
   //     });
 }
+$("#clearFilter").on("click",function(){
+  $(".form_field_outer_row:not(:first)").remove();
+  $("#no_value_1").val("");
+  $("#no_search_1").val("");
+  $("#add_filters option").each(function(){
+    $(this).attr("data-index",1);
+  });
+});
 
 $(document).on("change", ".search-list", function(){
   var index = $('option:selected',this).attr('data-index');
@@ -968,7 +979,7 @@ $(document).on("change", ".search-list", function(){
   if($(this).hasClass("add_new_frm_field_btn")){
     index = parseInt(index)+1;
   }
- 
+ console.log("tttt");
 console.log(index);
   data['id'] = "no_type_"+index;
   data['options'] = triggerType(dataType);
