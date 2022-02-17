@@ -134,78 +134,90 @@
                                     <div class="tab-pane text-left fade active show" id="vert-tabs-search" role="tabpanel" aria-labelledby="vert-tabs-search-tab">
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
-                                                <div class="row">
-                                                <div class="container py-4">
-                                                    <div class="row">
-                                                        <div class="col-md-12 form_sec_outer_task border">
-                                                        <div class="row">
-                                                            <div class="col-md-12 bg-light p-2 mb-3">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                        <h4 class="frm_section_n"></h4>
-                                                                        </div>
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                            <label> </label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                            <label></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12 p-0">
-                                                            <div class="col-md-12 form_field_outer p-0">
-                                                                <div class="row form_field_outer_row">
-                                                                <div class="form-group col-md-4">
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                            Add Filters
-                                                                        </button>
-                                                                        <div class="dropdown-menu px-2" aria-labelledby="dropdownMenuButton">
-                                                                            <?php foreach($searchfilter as $key=>$val){?>
-                                                                                <?php foreach($val as $kval){ ?>
-                                                                                    <a class="dropdown-item add_new_frm_field_btn" href="#" filname="<?php echo $kval->filterName?>">
-                                                                                        <?php echo $kval->filterID?>
-                                                                                    </a>
-                                                                                <?php } ?>
-                                                                            <?php } ?>
-                                                                        </div>
-                                                                    </div>
-                                                                    <select name="no_type[]" id="no_type_1" class="form-control add_new_frm_field_btn d-none">
-                                                                        <option>Select Filters</option>
-                                                                        <?php foreach($searchfilter as $key=>$val){?>
-                                                                            <?php foreach($val as $kval){ ?>
-                                                                                <option filname="<?php echo $kval->filterName?>">
-                                                                                    <?php echo $kval->filterID?>
-                                                                                </option>
-                                                                            <?php } ?>
-                                                                        <?php } ?>
-                                                                    </select>
-                                                                </div>
-                                                                    <div class="d-none form-group col-md-6">
-                                                                    <input type="text" class="form-control w_90" name="ETA" id="mobileb_no_1" placeholder="" />
-                                                                    </div>
-                                                                    <div class="d-none form-group col-md-2 add_del_btn_outer">
-                                                                        <button class="btn_round remove_node_btn_frm_field" disabled>
-                                                                            <i class="fas fa-trash-alt"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                        <div class="d-none row ml-0 bg-light mt-3 border py-3">
-                                                        <div class="col-md-12">
-                                                            <button class="btn btn-outline-lite py-0 add_new_frm_field_btn"><i class="fas fa-plus add_icon"></i> Add New field Search</button>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                            <div class="row">
+   <div class="col-md-12 form_sec_outer_task border ">
+      <div class="row">
+         <div class="col-md-12 bg-light p-2 mb-3">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h4 class="frm_section_n">Advance Search</h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <label>Search</label>
+         </div>
+         <div class="col-md-2">
+            <label>Type</label>
+         </div>
+         <div class="col-md-4">
+            <label>Value</label>
+         </div>
+         <div class="col-md-1">
+            <label> </label>
+         </div>
+      </div>
+      <div class="col-md-12 p-0">
+         <div class="col-md-12 form_field_outer p-0">
+            <div class="row form_field_outer_row">
+               <div class="form-group col-md-3">
+                  <select name="no_type[]" id="no_type_1" class="form-control search-list">
+                     <option>--Select type--</option>
+                  </select>
+               </div>
+               <div class="form-group col-md-2">
+                  <select name="no_type[]" id="no_type_1" class="form-control">
+                     <option>--Select type--</option>
+                  </select>
+               </div>
+               <div class="form-group col-md-4">
+                  <input type="text" class="form-control w_90" name="mobileb_no[]" id="mobileb_no_1" placeholder="Enter search value">
+               </div>
+               <div class="form-group col-md-1">
+                  <select name="condition" id="condition" class="form-control">
+                     <option value="and">AND</option>
+                     <option value="or">OR</option>
+                  </select>
+               </div>
+               <div class="form-group col-md-2 add_del_btn_outer">
+                  <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+                  <i class="fas fa-copy"></i>
+                  </button>
+                  <button class="btn_round remove_node_btn_frm_field" disabled="">
+                  <i class="fas fa-trash-alt"></i>
+                  </button>
+               </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
+                        <option>--Add search type--</option>
+                    </select>
+                </div>
+            </div>
+         </div>
+
+      </div>
+
+   </div>
+   <div class="row ml-0 bg-light mt-3 border py-3">
+      <div class="col-md-12">
+         <button class="btn btn-outline-lite py-0"><i class="fas fa-search add_icon"></i> Search Data </button>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
                                                 <div class="row d-none">
                                                     <div class="col-md-4" data-select2-id="29">
                                                         <!-- /.form-group -->
