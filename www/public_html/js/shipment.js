@@ -9,10 +9,12 @@ $(document).ready(function () {
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
     addSearchFilter(selected);
+    console.log(selected);
   });
   // Delete the form fieed row
   $("body").on("click", ".remove_node_btn_frm_field", function () {
     $(this).closest(".form_field_outer_row").remove();
+    $(this).closest(".form_field_outer_row").attr('trashid');
     console.log("success");
   });
   // Clone method
@@ -51,7 +53,7 @@ function invokeFilter(selected, index) {
   $.each(data, function(key, value) {
     text += `<optgroup label="${key}">`;
     $.each(value, function(key2, value2) {
-      text += `<option value="${value2.filterName}" `;
+      text += `<option data-type="${value2.filterType}" value="${value2.filterName}" data-index="${index}" `;
         if(value2.filterName == selected) {
           text += `selected`;
         }
@@ -929,4 +931,77 @@ function macroLink(link) {
       console.log('cancle-esc**strong text**');
     }
   });
+}
+
+$(".search-fil").on("click",function(e){
+  e.preventDefault();
+  filterRequest($("#addvance-search-form").serializeArray());
+  //console.log($("#addvance-search-form").serializeArray());
+});
+
+function filterRequest(data){
+  console.log(data);
+  var dataHolder = [];
+  var parentDataHolder = [];
+  var counter = 1;
+  $.each(data,function(okey,oval){
+    //console.log(oval);
+    if(counter <= 3 ){
+      dataHolder.push({fieldname:oval.name,fieldval:oval.value,fieldcon:"test3",fielde:"test4"});
+    }else{
+      dataHolder =[];
+      counter = 1;
+    }
+
+    if(counter == 3){
+      parentDataHolder.push(dataHolder);
+    }
+    counter++;
+  });
+  console.log("this is parent");
+   console.log(parentDataHolder);
+
+  // $.ajax({
+  //       url: "/shipment/shipmentData",
+  //       type: "POST",
+  //       data: { "data":data },
+  //       success: function (res) {
+  //         console.log(res);
+  //       }
+  //     });
+}
+
+$(document).on("change", ".search-list", function(){
+  var index = $('option:selected',this).attr('data-index');
+  var dataType = $('option:selected',this).attr("data-type");
+  var data = [];
+  
+  if($(this).hasClass("add_new_frm_field_btn")){
+    index = parseInt(index)+1;
+  }
+ 
+console.log(index);
+  data['id'] = "no_type_"+index;
+  data['options'] = triggerType(dataType);
+
+  appendToSelect(data);
+});
+
+function triggerType(data){
+  switch(data) {
+    case 'date':
+      return `<option value="exact" selected>Exact</option>
+      <option value="contain">contains with</option>
+      <option>equal</option>
+      <option>not equal</option>`;
+    break;
+    case 'input':
+      return `<option>Exact</option>
+      <option selected>not equal</option>`;
+    break;
+  }
+}
+
+function appendToSelect(data){
+  $('#'+data['id']).append(data['options']);
 }

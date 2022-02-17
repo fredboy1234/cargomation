@@ -462,8 +462,8 @@ class Shipment extends Core\Controller {
             $eta_date = date_format(date_create($value->eta), "d/m/Y");
             $etd_date = date_format(date_create($value->etd), "d/m/Y");
             
-            $etd_date_sort = date_format(date_create($value->etd), "m/d/Y");
-            $eta_date_sort = date_format(date_create($value->eta), "m/d/Y");
+            $etd_date_sort = date_format(date_create($value->etd), "d/m/Y");
+            $eta_date_sort = date_format(date_create($value->eta), "d/m/Y");
 
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
@@ -824,8 +824,8 @@ class Shipment extends Core\Controller {
             $eta_date = date_format(date_create($value->eta), "d/m/Y");
             $etd_date = date_format(date_create($value->etd), "d/m/Y");
             
-            $etd_date_sort = date_format(date_create($value->etd), "m/d/Y");
-            $eta_date_sort = date_format(date_create($value->eta), "m/d/Y");
+            $etd_date_sort = date_format(date_create($value->etd), "d/m/Y");
+            $eta_date_sort = date_format(date_create($value->eta), "d/m/Y");
 
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
