@@ -5,40 +5,77 @@
 // }
 
 $(document).ready(function () {
-    invokeFilter();
-    $("#add_filters").on("change",function (e) { 
-      console.log('test'); 
-
-      addSearchFilter($(this).val());
-    });
-
+  invokeFilter("", 1);
+  $("#add_filters").on("change",function (e) { 
+    var selected = $(this).find('option:selected').val();
+    addSearchFilter(selected);
+    console.log(selected);
   });
+  // Delete the form fieed row
+  $("body").on("click", ".remove_node_btn_frm_field", function () {
+    $(this).closest(".form_field_outer_row").remove();
+    $(this).closest(".form_field_outer_row").attr('trashid');
+    console.log("success");
+  });
+  // Clone method
+  $("body").on("click", ".add_node_btn_frm_field", function (e) {
+    var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
 
-function invokeFilter() {
-  var $select = $('.search-list'); 
+    $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+
+    $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+
+    //change id
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("input[type='text']")
+      .attr("id", "mobileb_no_" + index);
+
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("select")
+      .attr("id", "no_type_" + index);
+
+    console.log(cloned_el);
+    //count++;
+  });
+});
+
+function invokeFilter(selected, index) {
+  var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
   $.each(data, function(key, value) {
-    console.log(key);
     text += `<optgroup label="${key}">`;
     $.each(value, function(key2, value2) {
-      text += `<option value="${key2}">${value2.filterID}</option>`;
+      text += `<option data-type="${value2.filterType}" value="${value2.filterName}" data-index="${index}" `;
+        if(value2.filterName == selected) {
+          text += `selected`;
+        }
+      text += `>${value2.filterID}</option>`;
     });
     text += `</optgroup>`;
   });
     $select.html(text);
+    $("#add_filters").val("");
   }).fail(function(){
     console.log("Error");
   });
 }
-function addSearchFilter(selectedValue) {
-        console.log("clicked");
-        var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
-        $(".form_field_outer").prepend(`
-<div class="row form_field_outer_row">
+
+function addSearchFilter(selected) {  
+var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+
+$(".form_field_outer").prepend(`
+<div class="row form_field_outer_row ${index}">
   <div class="form-group col-md-3">
-    <select name="no_type[]" id="no_type_${index}" class="form-control search-list">
-      <option>--Select type--</option>
+    <select name="no_search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
+      <option data-index="${index}">--Select type--</option>
     </select>
   </div>
   <div class="form-group col-md-2">
@@ -47,10 +84,10 @@ function addSearchFilter(selectedValue) {
     </select>
   </div>
   <div class="form-group col-md-4">
-    <input type="text" class="form-control w_90" name="mobileb_no[]" id="mobileb_no_${index}" placeholder="Enter search value" />
+    <input type="text" class="form-control w_90" name="no_value[]" id="no_value_${index}" placeholder="Enter search value" />
   </div>
   <div class="form-group col-md-1">
-    <select name="condition" id="condition" class="form-control">
+    <select name="no_cond[]" id="no_cond_${index}" class="form-control">
       <option value="and">AND</option>
       <option value="or">OR</option>
     </select>
@@ -60,20 +97,19 @@ function addSearchFilter(selectedValue) {
       <i class="fas fa-copy"></i>
     </button>
 
-    <button class="btn_round remove_node_btn_frm_field" disabled>
+    <button class="btn_round remove_node_btn_frm_field" disabled trashid="${index}">
       <i class="fas fa-trash-alt"></i>
     </button>
   </div>
 </div>
 `);
+
 $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
 $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
-invokeFilter();
-$(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
+// $(`#no_type_${index}.select-list option[value="${selectedValue}"]`).attr("selected",true);
+invokeFilter(selected, index);
+
 }
-
-
-
 
 
 
@@ -881,4 +917,77 @@ function macroLink(link) {
       console.log('cancle-esc**strong text**');
     }
   });
+}
+
+$(".search-fil").on("click",function(e){
+  e.preventDefault();
+  filterRequest($("#addvance-search-form").serializeArray());
+  //console.log($("#addvance-search-form").serializeArray());
+});
+
+function filterRequest(data){
+  console.log(data);
+  var dataHolder = [];
+  var parentDataHolder = [];
+  var counter = 1;
+  $.each(data,function(okey,oval){
+    //console.log(oval);
+    if(counter <= 3 ){
+      dataHolder.push({fieldname:oval.name,fieldval:oval.value,fieldcon:"test3",fielde:"test4"});
+    }else{
+      dataHolder =[];
+      counter = 1;
+    }
+
+    if(counter == 3){
+      parentDataHolder.push(dataHolder);
+    }
+    counter++;
+  });
+  console.log("this is parent");
+   console.log(parentDataHolder);
+
+  // $.ajax({
+  //       url: "/shipment/shipmentData",
+  //       type: "POST",
+  //       data: { "data":data },
+  //       success: function (res) {
+  //         console.log(res);
+  //       }
+  //     });
+}
+
+$(document).on("change", ".search-list", function(){
+  var index = $('option:selected',this).attr('data-index');
+  var dataType = $('option:selected',this).attr("data-type");
+  var data = [];
+  
+  if($(this).hasClass("add_new_frm_field_btn")){
+    index = parseInt(index)+1;
+  }
+ 
+console.log(index);
+  data['id'] = "no_type_"+index;
+  data['options'] = triggerType(dataType);
+
+  appendToSelect(data);
+});
+
+function triggerType(data){
+  switch(data) {
+    case 'date':
+      return `<option value="exact" selected>Exact</option>
+      <option value="contain">contains with</option>
+      <option>equal</option>
+      <option>not equal</option>`;
+    break;
+    case 'input':
+      return `<option>Exact</option>
+      <option selected>not equal</option>`;
+    break;
+  }
+}
+
+function appendToSelect(data){
+  $('#'+data['id']).append(data['options']);
 }
