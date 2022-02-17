@@ -5,17 +5,44 @@
 // }
 
 $(document).ready(function () {
-    invokeFilter("", 0);
-    $("#add_filters").on("change",function (e) { 
-      var $option = $(this).find('option:selected');
-      //Added with the EDIT
-      var selected = $option.val();//to get content of "value" attrib
-      var text = $option.text();//to get <option>Text</option> content
-      console.log(selected);
-      addSearchFilter(selected);
-    });
-
+  invokeFilter("", 1);
+  $("#add_filters").on("change",function (e) { 
+    var selected = $(this).find('option:selected').val();
+    addSearchFilter(selected);
   });
+  // Delete the form fieed row
+  $("body").on("click", ".remove_node_btn_frm_field", function () {
+    $(this).closest(".form_field_outer_row").remove();
+    console.log("success");
+  });
+  // Clone method
+  $("body").on("click", ".add_node_btn_frm_field", function (e) {
+    var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
+
+    $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+
+    $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+
+    //change id
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("input[type='text']")
+      .attr("id", "mobileb_no_" + index);
+
+    $(e.target)
+      .closest(".form_field_outer")
+      .find(".form_field_outer_row")
+      .last()
+      .find("select")
+      .attr("id", "no_type_" + index);
+
+    console.log(cloned_el);
+    //count++;
+  });
+});
 
 function invokeFilter(selected, index) {
   var $select = $(`#add_filters, #no_search_${index}`); 
@@ -38,11 +65,11 @@ function invokeFilter(selected, index) {
     console.log("Error");
   });
 }
-function addSearchFilter(selected) {
-  
-        var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+
+function addSearchFilter(selected) {  
+var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
 $(".form_field_outer").prepend(`
-<div class="row form_field_outer_row">
+<div class="row form_field_outer_row ${index}">
   <div class="form-group col-md-3">
     <select name="no_search[]" id="no_search_${index}" class="form-control search-list">
       <option>--Select type--</option>
@@ -79,9 +106,6 @@ $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled
 invokeFilter(selected, index);
 
 }
-
-
-
 
 
 

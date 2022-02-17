@@ -168,7 +168,7 @@
          <div class="col-md-12 form_field_outer p-0">
             <div class="row form_field_outer_row">
                <div class="form-group col-md-3">
-                  <select name="no_type[]" id="no_type_1" class="form-control search-list">
+                  <select name="no_seach[]" id="no_search_1" class="form-control search-list">
                      <option>--Select type--</option>
                   </select>
                </div>
@@ -178,10 +178,10 @@
                   </select>
                </div>
                <div class="form-group col-md-4">
-                  <input type="text" class="form-control w_90" name="mobileb_no[]" id="mobileb_no_1" placeholder="Enter search value">
+                  <input type="text" class="form-control w_90" name="no_value[]" id="no_value_1" placeholder="Enter search value">
                </div>
                <div class="form-group col-md-1">
-                  <select name="condition" id="condition" class="form-control">
+                  <select name="no_cond[]" id="no_cond_1" class="form-control">
                      <option value="and">AND</option>
                      <option value="or">OR</option>
                   </select>
@@ -195,16 +195,17 @@
                   </button>
                </div>
             </div>
+         </div>
+         <div class="col-md-12 p-0">
             <div class="row">
                 <div class="form-group col-md-4">
                     <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
-                        <option>--Add search type--</option>
+                        <option>--Select search type--</option>
                         <option value="shipment_id">--Add search type--</option>
                     </select>
                 </div>
             </div>
          </div>
-
       </div>
 
    </div>
