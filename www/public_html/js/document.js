@@ -379,8 +379,8 @@ $(document).ready(function () {
 
     // Button Status
     $('button.kv-file-status').click(function () {
-        var doc_status = $(this).data("doc_status");
-        var doc_id = $(this).data("doc_id");
+        var doc_status = $(this).attr("data-doc_status");
+        var doc_id = $(this).attr("data-doc_id");
         var btn_color = '#dc3545';
         if (doc_status === 'approved') {
             doc_status = 'pending';
@@ -657,6 +657,16 @@ $(document).ready(function () {
         preloader(url);
     });
 
+    // Button Approve All
+    $('button#approve_all').click(function (ev) {
+        updateDocumentStatus("status", "approved");
+    });
+
+        // 
+    $('button#pending_all').click(function (ev) {
+        updateDocumentStatus("status", "pending");
+    });
+
     // Custom: Add checkbox in each file - preview - frame
     $('.file-preview-thumbnails > .file-preview-frame').each(function () {
         //var id = this.className.match(/d-\d+/);
@@ -923,3 +933,78 @@ $(function () {
         }
     });
 });
+
+function updateDocumentStatus(groupSelected, valueSelected) {
+    var data = [];
+    $('.file-preview-thumbnails > .file-preview-frame > .checkbox').each(function(index, element) {
+        data.push($(element).find('input').val());
+    });
+    var msg = 'This will change the status of the document to "' + valueSelected.charAt(0).toUpperCase() + valueSelected.slice(1) + '". Do you still want to continue?';
+    Swal.fire({
+        title: 'Are you sure?',
+        text: msg,
+        icon: 'warning',
+        showCancelButton: true,
+        showLoaderOnConfirm: true,
+        // reverseButtons: true,
+        preConfirm: () => {
+            return $.post("/document/updateDocumentBulk", { group: groupSelected, value: valueSelected, data: data })
+            .done(function (res) {
+                data.forEach(function (entry) {
+                    var d = $('.d-' + entry);
+                    if (groupSelected === 'status') {
+                        $('[data-key="' + entry + '"]').attr("data-doc_status", valueSelected);
+                        d.find('.file-footer-caption > #status').text(valueSelected);
+                        if(valueSelected === "approved") {
+                            d.find('.file-footer-caption > #status').removeClass('pending');
+                            d.find('.file-footer-caption > #status').addClass('approved');
+                            d.removeClass("b-pending");
+                            d.addClass("b-approved");
+                            d.find('.kv-file-status').children().removeClass('pending');
+                            d.find('.kv-file-status').children().addClass('approved');
+                            d.find('.kv-file-status').children().removeClass('fa-thumbs-down');
+                            d.find('.kv-file-status').children().addClass('fa-thumbs-up');
+                            d.addClass('bg-approved');
+                            d.removeClass('bg-pending');
+                        } else {
+                            d.find('.file-footer-caption > #status').removeClass('approved');
+                            d.find('.file-footer-caption > #status').addClass('pending');
+                            d.removeClass("b-approved");
+                            d.addClass("b-pending");
+                            d.find('.kv-file-status').children().removeClass('approved');
+                            d.find('.kv-file-status').children().addClass('pending');
+                            d.find('.kv-file-status').children().removeClass('fa-thumbs-up');
+                            d.find('.kv-file-status').children().addClass('fa-thumbs-down');
+                            d.addClass('bg-pending');
+                            d.removeClass('bg-approved');
+                        }
+                    }
+                });
+                sessionStorage.setItem("changeTriggered", "1");
+            }).fail(function (response) {
+                console.log('Error: ' + response.responseText);
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'All document was set to ' + valueSelected.charAt(0).toUpperCase() + valueSelected.slice(1),
+                showConfirmButton: false,
+                timer: 1500
+            });
+            sessionStorage.setItem("changeTriggered", "1");
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            Swal.fire(
+                'Cancelled',
+                'No status change in the document',
+                'error'
+            )
+        }
+    });
+}
