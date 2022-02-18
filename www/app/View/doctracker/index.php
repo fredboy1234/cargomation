@@ -157,7 +157,7 @@
                                                         </div>
                                                         <div class="col-md-12 p-0">
                                                             <div class="col-md-12 form_field_outer p-0">
-                                                                <div class="row form_field_outer_row 1">
+                                                                <div class="row form_field_outer_row 1" section="1">
                                                                 <div class="form-group col-md-3">
                                                                     <select name="search[]" id="no_search_1" class="form-control search-list">
                                                                         <option>--Select type--</option>
@@ -201,7 +201,7 @@
                                                     </div>
                                                     <div class="col-md-12 mt-2 p-0">
                                                         <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
-                                                        <button type="submit" id="resetFilter" class="btn btn-danger"><i class="fas fa-undo"></i> Reset Search </button>
+                                                        <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
                                                     </div>
                                                 </div>
                                                 <!-- /.row -->

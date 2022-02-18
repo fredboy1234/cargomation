@@ -7,16 +7,13 @@
         {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n"},
         {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n"},
         {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n"},
-        {"filterID":"Order Reference", "filterName":"order_reference","filterType":"input","placeholder":"","show":"n"}
+        {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n"}
     ],
     "date": [
         {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n"},
         {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n"}
     ],
     "others":[
-        {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n", 
-        "options": {
-            "":""
-        }}
+        {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n"}
     ]
 }
