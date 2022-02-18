@@ -6,6 +6,7 @@
 
 $(document).ready(function () {
   invokeFilter("", 1);
+  
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
     addSearchFilter(selected);
@@ -966,6 +967,7 @@ $("#clearFilter").on("click",function(){
   $(".form_field_outer_row:not(:first)").remove();
   $("#no_value_1").val("");
   $("#no_search_1").val("");
+  $("#no_type_1").val("");
   $("#add_filters option").each(function(){
     $(this).attr("data-index",1);
   });
@@ -979,50 +981,89 @@ $(document).on("change", ".search-list", function(){
   if($(this).hasClass("add_new_frm_field_btn")){
     index = parseInt(index)+1;
   }
- console.log("tttt");
-console.log(index);
+ 
   data['id'] = "no_type_"+index;
-  data['options'] = triggerType(dataType);
+  //data['options'] = triggerType(dataType);
+  data['value'] = index;
+  data['type'] = dataType;
 
-  appendToSelect(data);
+  triggerType(data);
+  if(dataType !== "date"){
+    $("#no_value_"+index).val("");
+    var dateatt = $("#no_value_"+index).data('daterangepicker');
+    if(typeof dateatt !== typeof undefined && dateatt !== false){
+      $("#no_value_"+index).data('daterangepicker').remove();
+    }
+    
+  }
+ 
+ // appendToSelect(data);
 });
 
 function triggerType(data){
-  switch(data) {    
+  console.log(data);
+  switch(data['type']) {    
     case 'date':
-      return `<option value="exact" selected>Exact</option>
-      <option value="starts_with">starts with</option>
-      <option value="contains">contains</option>
-      <option value="not_equal">not equal</option>
-      <option value="not_starting">not starting</option>
-      <option value="not_contain">not contain</option>
-      <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`;
+      $("#no_value_"+data['value']).daterangepicker();
+       
+    $('#'+data['id']).html(`
+        <option class="datepick" data-date="${moment().format("L")}">Today</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'days').format("L")}">Yesterday</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'weeks').format("L")}">Last Week</option>
+        <option class="datepick" data-date="${moment().subtract(7, 'days').format("L")}">Last 7 Days</option>
+        <option class="datepick" data-date="${moment().subtract(14, 'days').format("L")}">Last 14 Days</option>
+        <option class="datepick" data-date="${moment().subtract(30, 'days').format("L")}">Last 30 Days</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'month').format("L")}">Last Month</option>
+        <option class="datepick" data-date="${moment().subtract(2, 'month').format("L")}">Last 2 Months</option>
+        <option class="datepick" data-date="${moment().subtract(3, 'month').format("L")}">Last 3 Months</option>
+        <option class="datepick" data-date="${moment().add(1, 'days').format("L")}">Tomorrow</option>
+        <option class="datepick" data-date="${moment().add(1, 'weeks').format("L")}">Next Week</option>
+        <option class="datepick" data-date="${moment().add(7, 'days').format("L")}">Next 7 Days</option>
+        <option class="datepick" data-date="${moment().add(14, 'days').format("L")}">Next 14 Days</option>
+        <option class="datepick" data-date="${moment().add(1, 'months').format("L")}">Next Month</option>
+        <option class="datepick" data-date="${moment().add(2, 'months').format("L")}">Next 2 Months</option>
+        <option class="datepick" data-date="${moment().add(6, 'months').format("L")}">Next 6 Months</option>
+        <option class="datepick" data-date="${moment().add(12, 'months').format("L")}">Next  12 Months</option>`);
     break;
     case 'input':
-      return `<option value="exact" selected>Exact</option>
+      $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
       <option value="starts_with">starts with</option>
       <option value="contains">contains</option>
       <option value="not_equal">not equal</option>
       <option value="not_starting">not starting</option>
       <option value="not_contain">not contain</option>
       <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`;
+      <option value="not_blank">is not blank</option>`);
     break;
     case 'others':
-      return `<option value="exact" selected>Exact</option>
+        $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
       <option value="starts_with">starts with</option>
       <option value="contains">contains</option>
       <option value="not_equal">not equal</option>
       <option value="not_starting">not starting</option>
       <option value="not_contain">not contain</option>
       <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`;
+      <option value="not_blank">is not blank</option>`);
     break;
-    
     }
 }
 
 function appendToSelect(data){
-  $('#'+data['id']).append(data['options']);
+  $('#'+data['id']).html(data['options']);
 }
+
+function dateFormat(date){
+  return ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+}
+
+$(document).on("change", "[id*='no_type_']",function(){
+ 
+  if($("option:selected",this).hasClass("datepick")){
+    var thisOption = $("option:selected",this);
+    var startdate = thisOption.attr("data-date");
+    var idOfDate = "#no_value_"+thisOption.parent().parent().parent().attr("section");
+      $(idOfDate).daterangepicker({
+        startDate:startdate
+      });
+  }
+});
