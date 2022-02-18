@@ -1035,7 +1035,7 @@ function triggerType(data){
       <option value="is_blank">is blank</option>
       <option value="not_blank">is not blank</option>`);
     break;
-    case 'others':
+    case 'option':
         $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
       <option value="starts_with">starts with</option>
       <option value="contains">contains</option>
