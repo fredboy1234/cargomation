@@ -26,6 +26,7 @@ $(document).ready(function () {
   });
   // Clone method
   $("body").on("click", ".add_node_btn_frm_field", function (e) {
+    e.preventDefault();
     var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
     var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
 
@@ -994,18 +995,15 @@ $(document).on("change", ".search-list", function(){
     if(typeof dateatt !== typeof undefined && dateatt !== false){
       $("#no_value_"+index).data('daterangepicker').remove();
     }
-    
   }
  
  // appendToSelect(data);
 });
 
 function triggerType(data){
-  console.log(data);
   switch(data['type']) {    
     case 'date':
       $("#no_value_"+data['value']).daterangepicker();
-       
     $('#'+data['id']).html(`
         <option class="datepick" data-date="${moment().format("L")}">Today</option>
         <option class="datepick" data-date="${moment().subtract(1, 'days').format("L")}">Yesterday</option>
@@ -1057,7 +1055,6 @@ function dateFormat(date){
 }
 
 $(document).on("change", "[id*='no_type_']",function(){
- 
   if($("option:selected",this).hasClass("datepick")){
     var thisOption = $("option:selected",this);
     var startdate = thisOption.attr("data-date");
