@@ -199,7 +199,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 mt-2 p-0">
+                                                    <div class="col-md-12 mt-2">
                                                         <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
                                                         <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
                                                     </div>
