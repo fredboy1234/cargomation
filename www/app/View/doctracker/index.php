@@ -135,18 +135,9 @@
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
                                                 <div class="row">
-                                                    <div class="col-md-12 form_sec_outer_task border ">
+                                                    <div class="col-md-12 form_sec_outer_task ">
                                                         <div class="row">
-                                                            <div class="col-md-12 bg-light p-2 mb-3">
-                                                                <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <h4 class="frm_section_n">Advance Search</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
+                                                            <div class="col-md-12 p-2 mb-3">
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label>Search</label>
@@ -208,8 +199,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 p-0 mt-2">
+                                                    <div class="col-md-12 mt-2 p-0">
                                                         <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
+                                                        <button type="submit" id="resetFilter" class="btn btn-danger"><i class="fas fa-undo"></i> Reset Search </button>
                                                     </div>
                                                 </div>
                                                 <!-- /.row -->
