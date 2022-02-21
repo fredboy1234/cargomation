@@ -141,7 +141,7 @@ class Doctracker extends Core\Controller {
         // print_r($searchFilter);
         // exit();
         $this->View->renderTemplate("/doctracker/index", [
-            "title" => "Document Tracker",
+            "title" => "Shipment View",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => $imageList,
             "notifications" => Model\User::getUserNotifications($user),

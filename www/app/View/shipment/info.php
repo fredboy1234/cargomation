@@ -90,7 +90,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-4">
-                    <strong>Console ID</strong>
+                    <strong>Consol ID</strong>
                     <p><?= $this->shipment_info[0]->console_id; ?></p>
                 </div>
                 <div class="col-lg-4">
@@ -104,15 +104,15 @@
             </div>
             <div class="row">
                 <div class="col-lg-4">
-                    <strong>Voyage Flight No.:</strong>
+                    <strong>Voyage Flight No.</strong>
                     <p><?= $this->shipment_info[0]->voyage_flight_num; ?></p>
                 </div>
                 <div class="col-lg-4">
-                    <strong>Vessel Name:</strong>
+                    <strong>Vessel Name</strong>
                     <p><?= $this->shipment_info[0]->vessel_name; ?></p>
                 </div>
                 <div class="col-lg-4">
-                    <strong>Vessel Lloyds:</strong>
+                    <strong>Vessel Lloyds</strong>
                     <p><?= $this->shipment_info[0]->vesslloyds; ?></p>
                 </div>
             </div>
@@ -121,17 +121,23 @@
                     <strong>Transport Mode</strong>
                     <p><?= $this->shipment_info[0]->transport_mode; ?></p>
                 </div>
-                <div class="col-lg-3">
-                    <strong>Departured</strong>
+                <div class="col-lg-4">
+                    <strong>Estimated Departure</strong>
                     <p><?php 
-                        $date = date_create( $this->shipment_info[0]->etd);
-                        echo date_format($date,"d/m/Y"); ?></p>
+                        $date = date_create($this->shipment_info[0]->etd);
+                        echo date_format($date,"d F Y H:i"); ?></p>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <strong>Estimated Arrival</strong>
                     <p><?php 
-                        $date = date_create( $this->shipment_info[0]->eta);
-                        echo date_format($date,"F d, Y H:i:s"); ?></p>
+                        $date = date_create($this->shipment_info[0]->eta);
+                        echo date_format($date,"d F Y H:i"); ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong>Order Reference</strong>
+                    <p><?= $this->shipment_info[0]->order_number; ?></p>
                 </div>
             </div>
             <div class="w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
