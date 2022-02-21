@@ -178,7 +178,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-2 add_del_btn_outer">
-                                                                    <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+                                                                    <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="1">
                                                                     <i class="fas fa-copy"></i>
                                                                     </button>
                                                                     <button class="btn_round remove_node_btn_frm_field" disabled="">

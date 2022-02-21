@@ -27,33 +27,58 @@ $(document).ready(function () {
   // Clone method
   $("body").on("click", ".add_node_btn_frm_field", function (e) {
     e.preventDefault();
-    var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    //var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    var index = $(".form_field_outer .form_field_outer_row").map(function() {
+      return parseFloat($(this).attr('section'))+1;
+    }).get().sort().pop();
+    
     var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
 
     $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
 
     $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
-
+   
     //change id
-    $(e.target)
-      .closest(".form_field_outer")
-      .find(".form_field_outer_row")
-      .last()
-      .find("input[type='text']")
-      .attr("id", "mobileb_no_" + index);
+   
+    
+    // $(e.target)
+    //   .closest(".form_field_outer")
+    //   .find(".form_field_outer_row")
+    //   .last()
+    //   .find("input[type='text']")
+    //   .attr("id", "mobileb_no_" + index);
 
-    $(e.target)
-      .closest(".form_field_outer")
-      .find(".form_field_outer_row")
-      .last()
-      .find("select")
-      .attr("id", "no_type_" + index);
+    // $(e.target)
+    //   .closest(".form_field_outer")
+    //   .find(".form_field_outer_row")
+    //   .last()
+    //   .find("select")
+    //   .attr("id", "no_type_" + index);
+    
+    $(cloned_el).attr("section",index);
+    $(cloned_el).find('optgroup option').attr("data-index",index);
+    $(cloned_el).find(".search-list").attr("id","no_search_"+index);
+    $(cloned_el).find("select[name='type[]']").attr("id","no_type_"+index);
+    $(cloned_el).find("input[name='value[]']").attr("id","no_value_"+index);
+    $(cloned_el).find(".add_node_btn_frm_field").attr("section",index);
+    $(e.target).closest(".form_field_outer").find(".exclude").attr("disabled",false);
+    $(e.target).closest(".form_field_outer").find(".exclude").last().attr("disabled",true);
 
-    console.log(cloned_el);
+    var sdex = $(this).attr("section");
+    console.log(sdex);
+    var searchValue = $(e.target).closest(".form_field_outer").find("#no_search_"+sdex+" option:selected").val();
+    $(cloned_el).find(".search-list option[value='"+searchValue+"']").attr("selected", true);
+    
     //count++;
   });
 });
 
+$("input[name='value[]']").keypress(function(e){
+  if(e.which ==13){
+    e.preventDefault();
+    e.stopPropagation();
+  }
+});
 function invokeFilter(selected, index) {
   var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
@@ -90,7 +115,7 @@ function addSearchFilter(selected) {
       </select>
     </div>
     <div class="form-group col-md-2">
-      <select name="type[]" id="no_type_${index}" class="form-control">
+      <select name="type[]" id="no_type_${index}" class="form-control no_type">
         <option>--Select type--</option>
       </select>
     </div>
@@ -104,7 +129,7 @@ function addSearchFilter(selected) {
       </select>
     </div>
     <div class="form-group col-md-2 add_del_btn_outer">
-      <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+      <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
         <i class="fas fa-copy"></i>
       </button>
 
