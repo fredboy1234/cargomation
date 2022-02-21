@@ -73,7 +73,7 @@ $(document).ready(function () {
   });
 });
 
-$("input[name='value[]']").keypress(function(e){
+$("input[name='value[]'], .add_node_btn_frm_field").keypress(function(e){
   if(e.which ==13){
     e.preventDefault();
     e.stopPropagation();
