@@ -415,7 +415,7 @@ $(document).ready(function () {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
                                 Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
-                                var url = "/document/comment/" + doc_id + "/" + doc_status;
+                                var url = "/document/comment/" + doc_id + "/write/" + doc_status;
 
                                 // load the url and show modal on success
                                 preloader(url);
@@ -557,9 +557,19 @@ $(document).ready(function () {
         ev.preventDefault();
         // var target = $(this).attr("href");
         // var target = "document/comment/" + doc_id + "/" + doc_status;
-        var url = "document/comment/" + doc_id + "/view";
+        var url = "document/comment/" + doc_id + "/view/" + doc_status;
 
         // load the url and show modal on success
+        preloader(url);
+    });
+
+    // Button Comment
+    $('button#add_comment').click(function (ev) {
+        var doc_status = $(this).attr("data-doc_status");
+        var doc_id = $(this).data("doc_id");
+        ev.preventDefault();
+        var url = "/document/comment/" + doc_id + "/write/" + doc_status;
+        // load the url and show modal on successs
         preloader(url);
     });
 
@@ -752,7 +762,7 @@ $(document).ready(function () {
                                     /* Read more about isConfirmed, isDenied below */
                                     if (result.isConfirmed) {
                                         Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
-                                        var url = "/document/comment/" + data + "/" + valueSelected;
+                                        var url = "/document/comment/" + data + "/write/" + valueSelected;
 
                                         // load the url and show modal on success
                                         preloader(url);

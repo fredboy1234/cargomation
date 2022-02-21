@@ -204,7 +204,8 @@ class Document extends Core\Model {
         return $Db->query("SELECT dc.*, CONCAT(u.first_name, ' ', u.last_name) AS name
                                 FROM document_comment AS dc
                                 LEFT JOIN users AS u ON u.id = dc.user_id
-                                WHERE dc.document_id = " . $document_id)->results();
+                                WHERE dc.document_id = " . $document_id .
+                                "ORDER BY dc.submitted_date DESC")->results();
     }
 
     public static function putDocumentRequest($data) {

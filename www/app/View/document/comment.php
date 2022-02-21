@@ -1,5 +1,5 @@
 <?= $this->getCSS(); ?>
-<?php if(isset($this->view) && $this->view == 'view'): ?>
+<?php if(isset($this->type) && $this->type == 'view'): ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -24,7 +24,7 @@
                             <tr data-widget="expandable-table" aria-expanded="false" class="bg-<?= $comment->status; ?>">
                                 <td><?= $comment->id; ?></td>
                                 <td><?= $comment->name; ?></td>
-                                <td><?= $comment->submitted_date; ?></td>
+                                <td><?= date_format(date_create($comment->submitted_date), "d/m/Y H:i:s")?></td>
                                 <td><?= $comment->status; ?></td>
                                 <td><?= (empty($comment->message)) ? "<em>No comment</em>" : $comment->title; ?></td>
                             </tr>
@@ -50,8 +50,11 @@
         </div>
         <!-- /.card -->
         <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-default" id="go_back">Go Back</button>
-            </div>
+            <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+            <button type="button" class="btn btn-primary" id="add_comment" 
+            data-doc_id="<?= $this->document_id; ?>"
+            data-doc_status="<?= $this->document_status; ?>">Add Comment</button>
+        </div>
     </div>
 </div>
 <?php else: ?>
@@ -77,6 +80,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status">Template</label>
+                    <?php if(false): ?>
                     <select name="status" class="form-control custom-select">
                         <option selected disabled>Select one</option>
                         <?php $status = array(
@@ -88,6 +92,8 @@
                         <option value="<?php echo $key ?>"<?php if( $key == $this->document_status ): ?> selected="selected"<?php endif; ?>><?php echo $value ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <?php endif; ?>
+                    <input type="text" id="status" name="status" class="form-control" value="<?= $this->document_status; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>

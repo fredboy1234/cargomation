@@ -380,7 +380,7 @@ class Document extends Core\Controller {
             $out['error'] = 'Oh snap! We could not upload the ' . $img . 'now. Please try again later.';
         }
         // return $out;
-
+        $this->putUserNotifications('upload', $_POST);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($out);
         return $response;
@@ -413,7 +413,6 @@ class Document extends Core\Controller {
 
         return json_decode($response->getBody());
     }
-
 
     /**
      * Upload To Cargowise.
@@ -719,6 +718,7 @@ class Document extends Core\Controller {
     }
 
     public function updateDocumentStatus(){
+        $this->putUserNotifications('status', $_POST);
         echo json_encode($this->Document->updateDocumentStatus($_POST));
     }
 
@@ -769,10 +769,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function comment($document_id, $param = "", $user_id = ""){ 
-
-        
-
+    public function comment($document_id, $param = "", $status = "", $user_id = ""){ 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
@@ -784,8 +781,6 @@ class Document extends Core\Controller {
                 $user_id = Utility\Session::get($userSession);
             }
         }
-
-       
 
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
@@ -807,7 +802,11 @@ class Document extends Core\Controller {
         switch ($param) {
             case 'view':
                 $results = $this->Document->getDocumentComment($document_id);
-                $document_status = "";
+                $document_status = $status;
+                break;
+            case 'write':
+                $results = "";
+                $document_status = $status;
                 break;
             
             default:
@@ -820,7 +819,7 @@ class Document extends Core\Controller {
         $this->View->addCSS("css/document.css");
 
         $this->View->renderWithoutHeaderAndFooter("/document/comment", [
-            'view' => $param,
+            'type' => $param,
             'user_id' => $user_id,
             'document_id' => $document_id,
             'document_status' => $document_status,
