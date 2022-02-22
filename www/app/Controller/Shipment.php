@@ -51,6 +51,8 @@ class Shipment extends Core\Controller {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
 
+        Utility\Cookie::delete('redirectLink');
+
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
         if (!$user) {
@@ -60,23 +62,22 @@ class Shipment extends Core\Controller {
             }
         }
 
-        // // Get an instance of the user model using the user ID passed to the
-        // // controll action. 
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        if (!$Role = Model\Role::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
-        $role = $Role->getUserRole($user);
 
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
-        if($role == 'user'){
-            $shipment_id = $this->Shipment->getClientUserShipment($user, "shipment_num");
-        }
+        $doc_by_ship = $this->Document->getDocumentByShipment($shipment_id);
+
         $docsCollection =array();
-        foreach($this->Document->getDocumentByShipment($shipment_id) as $key=>$value){
+        foreach($doc_by_ship as $key=>$value){
             $docsCollection[$value->shipment_num][$value->type][$value->status][] = $value;
+        }
+
+        if (!$Role = Model\Role::getInstance($user)) {
+            Utility\Redirect::to(APP_URL);
         }
 
         $role = $Role->getUserRole($user);
@@ -85,45 +86,79 @@ class Shipment extends Core\Controller {
             Utility\Redirect::to(APP_URL . $role);
         }
 
+        switch ($role->role_id) {
+            case 1:
+                $user_key = $user;
+                break;
+            case 2:
+                $user_key = $user;
+                break;
+            case 3:
+                $sub_account = $User->getSubAccountInfo($user);
+                $user_key = $sub_account[0]->account_id;
+                break;
+            case 4:
+                $sub_account = $User->getSubAccountInfo($user);
+                $user_key = $sub_account[0]->email;
+                break;
+            
+            default:
+                $user_key = $user;
+                break;
+        }
+
+        $User->putUserLog([
+            "user_id" => $user,
+            "ip_address" => $User->getIPAddress(),
+            "log_type" => 3,
+            "log_action" => "Access doctracker",
+            "start_date" => date("Y-m-d H:i:s"),
+        ]);
+
         // Set any dependencies, data and render the view.
-        // $this->initExternals();
-        // $this->View->addCSS("css/google_font.css");
-        // $this->View->addCSS("css/custom.css");
-        // $this->View->addJS("js/custom.js");
         $selectedTheme = $User->getUserSettings($user);
-        if(isset($selectedTheme[0]) && !empty($selectedTheme)){
+        
+        if(isset( $selectedTheme[0]) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
         }else{
-            $selectedTheme = '';
+            $selectedTheme = 'default';
         }
-        
-        $this->View->addCSS("css/theme/".$selectedTheme.".css");
-        //$this->View->addCSS("css/".$selectedTheme.".css");
 
         $this->View->addCSS("css/shipment.css");
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addJS("js/shipment.js");
 
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
+        $emailList = $this->Shipment->getShipmentThatHasUser($user);
         foreach($imageList->user_image as $img){
             if( $img->image_src!="" && $img->image_type=='profile' ){
                 $profileImage = base64_decode($img->image_src);
             }
         }
-
-        $this->View->renderTemplate("/shipment/index", [
-            "title" => "Shipment",
+        $searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
+        // echo "<pre>";
+        // print_r($searchFilter);
+        // exit();
+        $this->View->renderTemplate("/doctracker/index", [
+            "title" => "Shipment View",
             "data" => (new Presenter\Profile($User->data()))->present(),
+            "user" => $imageList,
             "notifications" => Model\User::getUserNotifications($user),
-            "shipment" => $this->Shipment->getShipment($user),
-            "document" => $this->Document->getDocumentByShipment($shipment_id),
-            "document_per_type" => $docsCollection,
-            "child_user" => Model\User::getUsersInstance($user, $role->role_id),
-            "user_settings" =>$this->defaultSettings($user),
-            "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
+            "menu" => Model\User::getUserMenu($role->role_id),
+            // "shipment" => $this->Shipment->getShipment($user),
+            // "document" => $doc_by_ship,
+            // "document_per_type" => $docsCollection,
+            // "child_user" => Model\User::getUsersInstance($user, $role->role_id),
+            "user_settings" =>$this->defaultSettings($user, $role->role_id), // $user_key??
+            "settings_user" => $selectedTheme,
+            // "client_user_shipments" => $this->Shipment->getClientUserShipment($user),
             "image_profile" => $profileImage,
             'role' => $role,
-            'selected_theme' => $selectedTheme
+            'user_id' => $user,
+            'selected_theme' => $selectedTheme,
+            'searchfilter' =>$searchFilter,
+            //'shipment_from_contact'=> $emailList
         ]);
     }
 
