@@ -70,10 +70,14 @@ function secondsToTime($datetime) {
           <div class="dropdown-divider"></div>
           <?php if(isset($results) && !empty($results)) : ?>
             <?php foreach ($results as $key => $value) {
-                    echo '<a href="' . $value->url_link . '" class="dropdown-item">
+
+              $status_class = ($value->read_flag != NULL) ? "" : "bg-gray-light";
+
+
+                    echo '<a href="'.$value->url_link.'" class="dropdown-item '.$status_class.'">
                             <!-- Message Start -->
                             <div class="media">
-                              <img src="/bower_components/admin-lte/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                              <img src="/img/default-profile.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                               <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                 Brad Diesel  
