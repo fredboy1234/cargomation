@@ -350,14 +350,17 @@ $(document).ready(function () {
            var cond = $(this).find("[name*='cond']").val();
            if($(this).find("[name*='cond']").hasClass('exclude')) {
               cond = "";
-           }  
-           arr.push({
-              "search": search.toUpperCase(),
-              "type": type,
-              "value": value,
-              "cond": cond
-           });
-           console.log(arr);
+           } 
+           if(typeof value !== null || value.length > 0){
+              arr.push({
+                "search": search,
+                "type": type,
+                "value": value.toUpperCase(),
+                "cond": cond
+            });
+           } 
+          
+           console.log(value.length);
            d.data = arr;
         });
 
