@@ -470,13 +470,13 @@ $(document).ready(function () {
     },
     locale: {
       //format: 'M/DD hh:mm A'
-      format: 'DD/MM/YYYY'
+      format: defaultDate
     }
   });
 
   //on hide calendar set start date and end date
   $('input[name="ETA"], input[name="ETD"]').on('apply.daterangepicker', function (ev, picker) {
-    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    $(this).val(picker.startDate.format(defaultDate) + ' - ' + picker.endDate.format(defaultDate));
   });
 
   // Toggle document stats view 
@@ -1030,27 +1030,27 @@ function triggerType(data){
     case 'date':
       $("#no_value_"+data['value']).daterangepicker({
         locale: {
-          format: 'DD/MM/YYYY'
+          format:defaultDate
         }
       });
     $('#'+data['id']).html(`
-        <option class="datepick" data-date="${moment().format("DD/MM/YYYY")}">Today</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'days').format("DD/MM/YYYY")}">Yesterday</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'weeks').format("DD/MM/YYYY")}">Last Week</option>
-        <option class="datepick" data-date="${moment().subtract(7, 'days').format("DD/MM/YYYY")}">Last 7 Days</option>
-        <option class="datepick" data-date="${moment().subtract(14, 'days').format("DD/MM/YYYY")}">Last 14 Days</option>
-        <option class="datepick" data-date="${moment().subtract(30, 'days').format("DD/MM/YYYY")}">Last 30 Days</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'month').format("DD/MM/YYYY")}">Last Month</option>
-        <option class="datepick" data-date="${moment().subtract(2, 'month').format("DD/MM/YYYY")}">Last 2 Months</option>
-        <option class="datepick" data-date="${moment().subtract(3, 'month').format("DD/MM/YYYY")}">Last 3 Months</option>
-        <option class="datepick" data-date="${moment().add(1, 'days').format("DD/MM/YYYY")}">Tomorrow</option>
-        <option class="datepick" data-date="${moment().add(1, 'weeks').format("DD/MM/YYYY")}">Next Week</option>
-        <option class="datepick" data-date="${moment().add(7, 'days').format("DD/MM/YYYY")}">Next 7 Days</option>
-        <option class="datepick" data-date="${moment().add(14, 'days').format("DD/MM/YYYY")}">Next 14 Days</option>
-        <option class="datepick" data-date="${moment().add(1, 'months').format("DD/MM/YYYY")}">Next Month</option>
-        <option class="datepick" data-date="${moment().add(2, 'months').format("DD/MM/YYYY")}">Next 2 Months</option>
-        <option class="datepick" data-date="${moment().add(6, 'months').format("DD/MM/YYYY")}">Next 6 Months</option>
-        <option class="datepick" data-date="${moment().add(12, 'months').format("DD/MM/YYYY")}">Next  12 Months</option>`);
+        <option class="datepick" data-date="${moment().format(defaultDate)}">Today</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'days').format(defaultDate)}">Yesterday</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'weeks').format(defaultDate)}">Last Week</option>
+        <option class="datepick" data-date="${moment().subtract(7, 'days').format(defaultDate)}">Last 7 Days</option>
+        <option class="datepick" data-date="${moment().subtract(14, 'days').format(defaultDate)}">Last 14 Days</option>
+        <option class="datepick" data-date="${moment().subtract(30, 'days').format(defaultDate)}">Last 30 Days</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'month').format(defaultDate)}">Last Month</option>
+        <option class="datepick" data-date="${moment().subtract(2, 'month').format(defaultDate)}">Last 2 Months</option>
+        <option class="datepick" data-date="${moment().subtract(3, 'month').format(defaultDate)}">Last 3 Months</option>
+        <option class="datepick" data-date="${moment().add(1, 'days').format(defaultDate)}">Tomorrow</option>
+        <option class="datepick" data-date="${moment().add(1, 'weeks').format(defaultDate)}">Next Week</option>
+        <option class="datepick" data-date="${moment().add(7, 'days').format(defaultDate)}">Next 7 Days</option>
+        <option class="datepick" data-date="${moment().add(14, 'days').format(defaultDate)}">Next 14 Days</option>
+        <option class="datepick" data-date="${moment().add(1, 'months').format(defaultDate)}">Next Month</option>
+        <option class="datepick" data-date="${moment().add(2, 'months').format(defaultDate)}">Next 2 Months</option>
+        <option class="datepick" data-date="${moment().add(6, 'months').format(defaultDate)}">Next 6 Months</option>
+        <option class="datepick" data-date="${moment().add(12, 'months').format(defaultDate)}">Next  12 Months</option>`);
     break;
     case 'input':
       $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
@@ -1091,7 +1091,7 @@ $(document).on("change", "[id*='no_type_']",function(){
       $(idOfDate).daterangepicker({
         startDate:startdate,
         locale: {
-          format: 'DD/MM/YYYY'
+          format: defaultDate
         }
       });
   }

@@ -112,11 +112,11 @@ $(document).ready(function(){
         },
         locale: {
           //format: 'M/DD hh:mm A'
-          format: 'DD/MM/YYYY'
+          format: defaultDate
         }
       });
       $(element).on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        $(this).val(picker.startDate.format(defaultDate) + ' - ' + picker.endDate.format(defaultDate));
       });
     }
 });
