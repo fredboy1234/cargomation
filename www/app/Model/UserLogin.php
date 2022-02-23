@@ -91,6 +91,7 @@ class UserLogin {
             // Write all necessary data into the session as the login has been
             // successful.
             Utility\Session::put(Utility\Config::get("SESSION_USER"), $data->id);
+            Utility\Session::put('date_format', "d/m/Y");
             return true;
         } catch (Exception $ex) {
             Utility\Flash::warning($ex->getMessage());
@@ -129,6 +130,7 @@ class UserLogin {
                 return true;
             }
         }
+        Utility\Session::put('date_format', "d/m/Y");
         Utility\Cookie::delete(Utility\Config::get("COOKIE_USER"));
         return false;
     }

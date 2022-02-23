@@ -376,6 +376,7 @@ class Admin extends Core\Controller {
 
     public function shipmentSSR($user=''){
         $data = array();
+        $dateformat = isset($_SESSION['deate_format']) ? $_SESSION['deate_format'] : 'd/m/Y';
         $docsCollection = array();
         $json_data = array();
         $html = array();
@@ -421,8 +422,8 @@ class Admin extends Core\Controller {
         $doc_type = array('HBL','CIV','PKL','PKD','all');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
-            $eta_date = date_format(date_create($value->eta), "m/d/Y H:i:s");
-            $etd_date = date_format(date_create($value->etd), "m/d/Y H:i:s");
+            $eta_date = date_format(date_create($value->eta),  $dateformat );
+            $etd_date = date_format(date_create($value->etd),  $dateformat );
             $all = "";
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;

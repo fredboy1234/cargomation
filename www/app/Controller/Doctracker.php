@@ -61,13 +61,13 @@ class Doctracker extends Core\Controller {
                 $user = Utility\Session::get($userSession);
             }
         }
-
+       
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-
+        
         $shipment_id = $this->Shipment->getShipment($user, "shipment_num");
         $doc_by_ship = $this->Document->getDocumentByShipment($shipment_id);
 
@@ -368,6 +368,7 @@ class Doctracker extends Core\Controller {
 
     public function shipmentSSR($user=""){
         $data = array();
+        $dateformat = isset($_SESSION['deate_format']) ? $_SESSION['deate_format'] : 'd/m/Y';
         $docsCollection = array();
         $json_data = array();
         $html = array();
@@ -421,8 +422,8 @@ class Doctracker extends Core\Controller {
         $doc_type = array('HBL','CIV','PKL','PKD','all');
         //$settings = array("Shiment ID","Console ID","ETA","HBL","CIV","PKL","PKD","ALL","Comment");
         foreach($api as $key=>$value){
-            $eta_date = date_format(date_create($value->eta), "d/m/Y H:i:s");
-            $etd_date = date_format(date_create($value->etd), "d/m/Y H:i:s");
+            $eta_date = date_format(date_create($value->eta), $dateformat);
+            $etd_date = date_format(date_create($value->etd), $dateformat);
             $all = "";
             $status_arr['all']['pending2'] = 0;
             $status_arr['all']['approved2'] = 0;
