@@ -412,7 +412,7 @@ class Shipment extends Core\Model {
         return $array_data;
     }
 
-    public function searchFilter($post) { 
+    public function searchFilter($user_id, $post) { 
         $Db = Utility\Database::getInstance();
 
         $params = $columns = $totalRecords = $data = array();
@@ -421,7 +421,7 @@ class Shipment extends Core\Model {
             0 => 'shipment_id',
         );
         
-        $where_clause = " WHERE ";
+        $where_clause = " WHERE user_id = {$user_id}";
         $sqlTot = $sqlRec = "";
         
         foreach ($post as $key => $value) {

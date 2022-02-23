@@ -831,7 +831,7 @@ class Shipment extends Core\Controller {
         # Advance search
         if(isset($_POST['data'][0]['value']) && $_POST['data'][0]['value'] != ""){
             // $status_search = explode(",",$_POST['status']);
-            $searchResult = $this->Shipment->searchFilter($_POST['data']);
+            $searchResult = $this->Shipment->searchFilter($user_key, $_POST['data']);
             $result['draw'] = $_REQUEST['draw'];
             $result['recordsTotal'] = $searchResult['recordsTotal'];
             $result['recordsFiltered'] = $searchResult['recordsFiltered'];
@@ -1097,4 +1097,9 @@ class Shipment extends Core\Controller {
             . "%d minutes, %d seconds", $years, $months,
                     $days, $hours, $minutes, $seconds . " ago");
     }
+
+    public function testShipmentData() {
+        // https://cargomation.com:5200/redis/getshipmentview
+    }
+
 }
