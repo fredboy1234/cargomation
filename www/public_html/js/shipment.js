@@ -73,7 +73,8 @@ $(document).ready(function () {
   });
 });
 
-$("input[name='value[]'], .add_node_btn_frm_field").keypress(function(e){
+$(document).on('keypress',"input[name='value[]'], .add_node_btn_frm_field, input[id*='no_value_']",function(e){
+  
   if(e.which ==13){
     e.preventDefault();
     e.stopPropagation();
@@ -360,7 +361,7 @@ $(document).ready(function () {
             });
            } 
           
-           console.log(value.length);
+           console.log(arr);
            d.data = arr;
         });
 
