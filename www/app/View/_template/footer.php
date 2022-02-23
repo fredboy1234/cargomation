@@ -285,8 +285,19 @@ crossorigin=""></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
 <!-- Custom JS -->
+<script src="/js/index.jquery.js"></script>
+<script>
+  var CG = new Cargomation();
+  var ISO = "zh-CN";
+  var defaultDate = CG.getDateFormatString(ISO);
+  
+  // $(".sidenav").on("click",function(e){
+  //   console.log($(this).data("url"));
+  // });
+</script>
 <script src="/js/map.js"></script>
 <?= $this->getJS(); ?>
 
 </body>
 </html>
+<?php print_r($_SESSION)?>
