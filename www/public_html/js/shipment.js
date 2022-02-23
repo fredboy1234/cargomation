@@ -399,12 +399,21 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
+    var allBlank = true;
+      $('input',this).each(function(index, el){
+        if ($(el).val().length != 0) allBlank = false; //they're not all blank anymore
+      });
+      if(allBlank){
+        Swal.fire('Please Add Search Parameter!')
+      }else{
+        table.ajax.reload(setColor);
+      }
     // $.ajax({
     //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
     //   type: "POST",
     //   data: {arr},
     //   beforeSend: function(res) {
-        table.ajax.reload(setColor);
+        //table.ajax.reload(setColor);
     //   },
     //   success: function (res) {
     //     // $(document).Toasts('create', {
