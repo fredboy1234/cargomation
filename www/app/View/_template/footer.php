@@ -288,7 +288,7 @@ crossorigin=""></script>
 <script src="/js/index.jquery.js"></script>
 <script>
   var CG = new Cargomation();
-  var ISO = "zh-CN";
+  var ISO = "en-AU";
   var defaultDate = CG.getDateFormatString(ISO);
   
   // $(".sidenav").on("click",function(e){
@@ -300,4 +300,3 @@ crossorigin=""></script>
 
 </body>
 </html>
-<?php print_r($_SESSION)?>
