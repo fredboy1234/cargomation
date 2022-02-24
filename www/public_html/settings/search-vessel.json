@@ -1,0 +1,16 @@
+{
+    "number_and_preferences":[
+        {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y"},
+        {"filterID":"Console ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y"},
+        {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y"},
+        {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n"},
+        {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n"},
+        {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n"},
+        {"filterID":"Voyage", "filterName":"voyage","filterType":"input","placeholder":"","show":"n"}
+        
+    ],
+    "date": [
+        {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n"},
+        {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n"}
+    ]
+}

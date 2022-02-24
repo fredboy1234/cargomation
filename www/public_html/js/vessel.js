@@ -513,15 +513,257 @@ jQuery(document).ready(function() {
   
     mymap.addLayer(animationMarker );
 
+}); 
+
+$(document).ready(function () {
+  invokeFilter("", 1);
+  
+  $("#add_filters").on("change",function (e) { 
+    var selected = $(this).find('option:selected').val();
+    addSearchFilter(selected);
+    console.log(selected);
+  });
+  // Delete the form fieed row
+  $("body").on("click", ".remove_node_btn_frm_field", function () {
+    $(this).closest(".form_field_outer_row").remove();
+    $(this).closest(".form_field_outer_row").attr('trashid');
+    var elem = $(".form_field_outer").find(".form_field_outer_row");
+    if(elem.length == 1) {
+      elem.find('[id^=no_cond]').prop("disabled", true).addClass('exclude');
+    } else {
+      $('#no_cond_'+elem.length).prop("disabled", true).addClass('exclude');
+    }
+    console.log("success");
+  });
+  // Clone method
+  $("body").on("click", ".add_node_btn_frm_field", function (e) {
+    e.preventDefault();
+    //var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+    var index = $(".form_field_outer .form_field_outer_row").map(function() {
+      return parseFloat($(this).attr('section'))+1;
+    }).get().sort().pop();
     
+    var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
 
-});  
+    $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
 
-// $(document).on({
-//   mouseenter: function () {
-//       alert('tst');
-//   },
-//   mouseleave: function () {
-//       alert('ter');
-//   }
-// }); 
+    $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+   
+    //change id
+   
+    
+    // $(e.target)
+    //   .closest(".form_field_outer")
+    //   .find(".form_field_outer_row")
+    //   .last()
+    //   .find("input[type='text']")
+    //   .attr("id", "mobileb_no_" + index);
+
+    // $(e.target)
+    //   .closest(".form_field_outer")
+    //   .find(".form_field_outer_row")
+    //   .last()
+    //   .find("select")
+    //   .attr("id", "no_type_" + index);
+    
+    $(cloned_el).attr("section",index);
+    $(cloned_el).find('optgroup option').attr("data-index",index);
+    $(cloned_el).find(".search-list").attr("id","no_search_"+index);
+    $(cloned_el).find("select[name='type[]']").attr("id","no_type_"+index);
+    $(cloned_el).find("input[name='value[]']").attr("id","no_value_"+index);
+    $(cloned_el).find(".add_node_btn_frm_field").attr("section",index);
+    $(e.target).closest(".form_field_outer").find(".exclude").attr("disabled",false);
+    $(e.target).closest(".form_field_outer").find(".exclude").last().attr("disabled",true);
+
+    var sdex = $(this).attr("section");
+    console.log(sdex);
+    var searchValue = $(e.target).closest(".form_field_outer").find("#no_search_"+sdex+" option:selected").val();
+    $(cloned_el).find(".search-list option[value='"+searchValue+"']").attr("selected", true);
+    
+    //count++;
+  });
+});
+
+$("input[name='value[]'], .add_node_btn_frm_field").keypress(function(e){
+  if(e.which ==13){
+    e.preventDefault();
+    e.stopPropagation();
+  }
+});
+function invokeFilter(selected, index) {
+  var $select = $(`#add_filters, #no_search_${index}`); 
+  var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
+  $.getJSON('/settings/search-vessel.json', function(data) {
+  $.each(data, function(key, value) {
+    text += `<optgroup label="${key}">`;
+    $.each(value, function(key2, value2) {
+      text += `<option data-type="${value2.filterType}" value="${value2.filterName}" data-index="${index}" `;
+        if(value2.filterName == selected) {
+          text += `selected`;
+        }
+      text += `>${value2.filterID}</option>`;
+    });
+    text += `</optgroup>`;
+  });
+    $select.html(text);
+    $("#add_filters").val("");
+  }).fail(function(){
+    console.log("Error");
+  });
+}
+
+function addSearchFilter(selected) {  
+  $(".form_field_outer").find(".exclude").prop("disabled", false).removeClass('exclude');
+  //var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+  var index = $(".form_field_outer .form_field_outer_row").map(function() {
+        return parseFloat($(this).attr('section'))+1;
+    }).get().sort().pop();
+  $(".form_field_outer").append(`
+  <div class="row form_field_outer_row ${index}" section="${index}">
+    <div class="form-group col-md-3">
+      <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
+        <option>--Select type--</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <select name="type[]" id="no_type_${index}" class="form-control no_type">
+        <option>--Select type--</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <input name="value[]" id="no_value_${index}" type="text" class="form-control w_90" placeholder="Enter search value" />
+    </div>
+    <div class="form-group col-md-1">
+      <select name="cond[]" id="no_cond_${index}" class="form-control exclude" disabled>
+        <option value="OR">OR</option>
+        <option value="AND">AND</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 add_del_btn_outer">
+      <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
+        <i class="fas fa-copy"></i>
+      </button>
+
+      <button class="btn_round remove_node_btn_frm_field" disabled>
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+  `);
+  $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+  $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+  invokeFilter(selected, index);
+}
+
+$("#clearFilter").on("click",function(){
+  $(".form_field_outer_row:not(:first)").remove();
+  $("#no_value_1").val("");
+  $("#no_search_1").val("");
+  $("#no_type_1").val("");
+  $("#add_filters option").each(function(){
+    $(this).attr("data-index",1);
+  });
+});
+
+$('#addvance-search-form').on("submit", function(ev) {
+  ev.preventDefault();
+  var allBlank = true;
+    $('input',this).each(function(index, el){
+      if ($(el).val().length != 0) allBlank = false; //they're not all blank anymore
+    });
+    if(allBlank){
+      Swal.fire('Please Add Search Parameter!')
+    }else{
+      //table.ajax.reload(setColor);
+    }
+});
+
+$(document).on("change", ".search-list", function(){
+  var index = $('option:selected',this).attr('data-index');
+  var dataType = $('option:selected',this).attr("data-type");
+  var data = [];
+  
+  if($(this).hasClass("add_new_frm_field_btn")){
+    index = parseInt(index)+1;
+  }
+ 
+  data['id'] = "no_type_"+index;
+  //data['options'] = triggerType(dataType);
+  data['value'] = index;
+  data['type'] = dataType;
+
+  triggerType(data);
+  if(dataType !== "date"){
+    $("#no_value_"+index).val("");
+    var dateatt = $("#no_value_"+index).data('daterangepicker');
+    if(typeof dateatt !== typeof undefined && dateatt !== false){
+      $("#no_value_"+index).data('daterangepicker').remove();
+    }
+  }
+ 
+ // appendToSelect(data);
+});
+
+function triggerType(data){
+  switch(data['type']) {    
+    case 'date':
+      $("#no_value_"+data['value']).daterangepicker({
+        locale: {
+          format:defaultDate
+        }
+      });
+    $('#'+data['id']).html(`
+        <option class="datepick" data-date="${moment().format(defaultDate)}">Today</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'days').format(defaultDate)}">Yesterday</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'weeks').format(defaultDate)}">Last Week</option>
+        <option class="datepick" data-date="${moment().subtract(7, 'days').format(defaultDate)}">Last 7 Days</option>
+        <option class="datepick" data-date="${moment().subtract(14, 'days').format(defaultDate)}">Last 14 Days</option>
+        <option class="datepick" data-date="${moment().subtract(30, 'days').format(defaultDate)}">Last 30 Days</option>
+        <option class="datepick" data-date="${moment().subtract(1, 'month').format(defaultDate)}">Last Month</option>
+        <option class="datepick" data-date="${moment().subtract(2, 'month').format(defaultDate)}">Last 2 Months</option>
+        <option class="datepick" data-date="${moment().subtract(3, 'month').format(defaultDate)}">Last 3 Months</option>
+        <option class="datepick" data-date="${moment().add(1, 'days').format(defaultDate)}">Tomorrow</option>
+        <option class="datepick" data-date="${moment().add(1, 'weeks').format(defaultDate)}">Next Week</option>
+        <option class="datepick" data-date="${moment().add(7, 'days').format(defaultDate)}">Next 7 Days</option>
+        <option class="datepick" data-date="${moment().add(14, 'days').format(defaultDate)}">Next 14 Days</option>
+        <option class="datepick" data-date="${moment().add(1, 'months').format(defaultDate)}">Next Month</option>
+        <option class="datepick" data-date="${moment().add(2, 'months').format(defaultDate)}">Next 2 Months</option>
+        <option class="datepick" data-date="${moment().add(6, 'months').format(defaultDate)}">Next 6 Months</option>
+        <option class="datepick" data-date="${moment().add(12, 'months').format(defaultDate)}">Next  12 Months</option>`);
+    break;
+    case 'input':
+      $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
+      <option value="starts_with">starts with</option>
+      <option value="contains">contains</option>
+      <option value="not_equal">not equal</option>
+      <option value="not_starting">not starting</option>
+      <option value="not_contain">not contain</option>
+      <option value="is_blank">is blank</option>
+      <option value="not_blank">is not blank</option>`);
+    break;
+    case 'option':
+        $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
+      <option value="starts_with">starts with</option>
+      <option value="contains">contains</option>
+      <option value="not_equal">not equal</option>
+      <option value="not_starting">not starting</option>
+      <option value="not_contain">not contain</option>
+      <option value="is_blank">is blank</option>
+      <option value="not_blank">is not blank</option>`);
+    break;
+    }
+}
+
+$(document).on("change", "[id*='no_type_']",function(){
+  if($("option:selected",this).hasClass("datepick")){
+    var thisOption = $("option:selected",this);
+    var startdate = thisOption.attr("data-date");
+    var idOfDate = "#no_value_"+thisOption.parent().parent().parent().attr("section");
+      $(idOfDate).daterangepicker({
+        startDate:startdate,
+        locale: {
+          format: defaultDate
+        }
+      });
+  }
+});

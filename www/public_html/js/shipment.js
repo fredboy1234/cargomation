@@ -155,7 +155,7 @@ var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
 
 var query_string = window.location.search.substring(1);
 var parsed_qs = parse_query_string(query_string);
-console.log(parsed_qs);
+
 // TEMPORARY
 if (parsed_qs['request'] === 'true') {
   // Button Request

@@ -243,43 +243,9 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                                     <div class="tab-pane text-left fade active show" id="vert-tabs-search" role="tabpanel" aria-labelledby="vert-tabs-search-tab">
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
-                                                <div class="row">
-                                                    <div class="col-md-6" data-select2-id="29">
-                                                        <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Container #:</label>
-                                                            <div class="col-sm-4">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" data-select2-id="29">
-                                                        <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Shipment #:</label>
-                                                            <div class="col-sm-4">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="shipment_id" placeholder="Ex.: SHP001">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" data-select2-id="29">
-                                                        <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Date:</label>
-                                                            <div class="col-sm-4">
-                                                                <input type="text" class="form-control" id="datefilter" name="date" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" data-select2-id="29">
-                                                        <div class="form-group row">
-                                                            <label for="inputEmail3" class="col-sm-2 col-form-label">voyage:</label>
-                                                            <div class="col-sm-4">
-                                                                <input type="text" class="form-control" id="inputEmail3" name="voyage" placeholder="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 d-inline-block">
-                                                        <button id="advance-search-btn" type="button" class="btn btn-block btn-primary">Search</button>
-                                                    </div>
-                                                </div>
+                                            <?php 
+                                              include(VIEW_PATH."_template/module/searchfilter.php");
+                                            ?>
                                             </form>
                                         </div>
                                     </div>
