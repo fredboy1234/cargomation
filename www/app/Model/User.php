@@ -425,22 +425,35 @@ class User extends Core\Model {
         }
     }
 
-    public static function getUserNotifications($user_id) {
+    public static function getUserNotifications($user_id, $account_id = "") {
         $Db = Utility\Database::getInstance();
+
         $query = $Db->query("SELECT * 
             FROM user_notifications 
-            WHERE user_id = '{$user_id}'
-            AND read_flag != 1");
-        
-        // $data['results'] = $query->results();
-        // $data['count'] = $query->count();
-        // $data['error'] = $query->error();
+            WHERE (user_id = '{$user_id}'
+            AND account_id = '{$account_id}') 
+            AND (read_flag != 1 OR read_flag IS NULL) ORDER BY id DESC");
 
         return $data = array(
             'results' => $query->results(),
             'count' => $query->count(),
             'error' => $query->error()
         );
+    }
+
+    public static function putUserNotifications($data) {
+
+        $column = implode(", ", array_keys($data));
+        $values = implode("', '", array_values($data));
+
+        $query = "INSERT
+            INTO user_notifications ({$column})
+            VALUES ('{$values}')";
+        foreach ($data as $key => $value) {
+            $key .= $key . ",";
+        }
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
     }
 
     public function getUserDocumentType($user_key, $role_id, $org_code = "") {

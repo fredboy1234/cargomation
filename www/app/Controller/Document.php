@@ -1023,4 +1023,48 @@ class Document extends Core\Controller {
         return $response;
     }
 
+    private function putUserNotifications($type, $post) {
+
+        // $post['doc_id'];
+        Utility\Auth::checkAuthenticated();
+
+        $user_id = "";
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $user_info = $User->getUserInfoByID($user_id);
+        $data['user_id'] = $user_id;
+        $data['account_id'] = $user_info[0]->account_id;
+        $data['url_link'] = "/shipment";
+        $data['notification_type'] = "document";
+        $data['notification_icon'] = "file";
+        $data['message'] = "";
+        switch ($type) {
+            case 'status':
+                $data['message'] = "Status in file was changed to ". $post['doc_status'] . " by ";
+                $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
+                break;
+            case 'upload':
+                $data['message'] = "New file was uploaded by ";
+                $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
+                break;
+            case 'delete':
+                break;
+                $data['message'] = "File was deleted by ";
+                $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
+            default:
+                # code...
+                break;
+        }
+        $User->putUserNotifications($data);
+    }
+
 }
