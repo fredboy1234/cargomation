@@ -73,7 +73,8 @@ $(document).ready(function () {
   });
 });
 
-$("input[name='value[]'], .add_node_btn_frm_field").keypress(function(e){
+$(document).on('keypress',"input[name='value[]'], .add_node_btn_frm_field, input[id*='no_value_']",function(e){
+  
   if(e.which ==13){
     e.preventDefault();
     e.stopPropagation();
@@ -350,13 +351,16 @@ $(document).ready(function () {
            var cond = $(this).find("[name*='cond']").val();
            if($(this).find("[name*='cond']").hasClass('exclude')) {
               cond = "";
-           }  
-           arr.push({
-              "search": search.toUpperCase(),
-              "type": type,
-              "value": value,
-              "cond": cond
-           });
+           } 
+           if(typeof value !== null || value.length > 0){
+              arr.push({
+                "search": search,
+                "type": type,
+                "value": value.toUpperCase(),
+                "cond": cond
+            });
+           } 
+          
            console.log(arr);
            d.data = arr;
         });
