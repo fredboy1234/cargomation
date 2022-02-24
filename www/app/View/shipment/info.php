@@ -140,11 +140,13 @@
                     <p><?= $this->shipment_info[0]->order_number; ?></p>
                 </div>
             </div>
-            <div class="w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
+            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
                 <h5 class="d-inline-block">Consignee</h5>
-                <span class="float-right"><?= $this->shipment_info[0]->consignee; ?></span>
+                <span class="float-right mt-2"><?= $this->shipment_info[0]->consignee; ?>
+                <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                </span>
             </div>
-            <dl id="consignee" class="row collapse show">
+            <dl id="consignee" class="row collapse">
                 <div class="col-lg-3">
                     <dt>Code:</dt>
                     <dd><?= $this->shipment_info[0]->consignee; ?></dd>
@@ -170,9 +172,11 @@
                     <dd><?= $this->shipment_info[0]->port_loading; ?></dd>
                 </div>
             </dl>
-            <div class="w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
+            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
                 <h5 class="d-inline-block">Consignor</h5>
-                <span class="float-right"><?= $this->shipment_info[0]->consignor; ?></span>
+                <span class="float-right mt-2"><?= $this->shipment_info[0]->consignor; ?>
+                <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                </span>
             </div>
             <dl id="consignor" class="row collapse">
                 <div class="col-lg-3">
@@ -326,8 +330,10 @@ switch ($this->shipment_info[0]->transport_mode) {
 </style>
 <script src="/js/map.js"></script>
 <script>
-
 $(document).ready(function() {  
+    $(".collapse").on("hidden.bs.collapse", toggleChevron);
+    $(".collapse").on("shown.bs.collapse", toggleChevron);
+
     var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
     var combineRoute = [];
     var pointObject = [];
@@ -409,6 +415,13 @@ $(document).ready(function() {
             } 
         });
         return result;
+    }
+
+    function toggleChevron(e) {
+        $(e.target)
+            .prev(".collapse-control")
+            .find("i.chevron")
+            .toggleClass("fa-chevron-down fa-chevron-up");
     }
 
     pointObject.sort((a, b) => {
