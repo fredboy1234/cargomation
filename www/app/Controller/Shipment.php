@@ -1274,4 +1274,36 @@ class Shipment extends Core\Controller {
         return $data;
     }
 
+    /**
+     * Post: uses CURL to call a request to the endpoint and 
+     * return mixed data response.
+     * @access private
+     * @param string $url url of the endpoint
+     * @param mixed $payload  obj,array,string,int
+     * @example $data = json_encode($array, JSON_UNESCAPED_SLASHES);
+     * @param string $headers  curl header options
+     * @example $headers = ["Content-Type: application/json"];
+     * @return mixed response
+     * @since 1.0
+     */
+    private function post($url, $payload, $headers) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $data,
+        ));
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
+    }
 }
