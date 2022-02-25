@@ -421,7 +421,7 @@ class Shipment extends Core\Model {
             0 => 'shipment_id',
         );
         
-        $where_clause = " WHERE user_id = {$user_id}";
+        $where_clause = " WHERE user_id = {$user_id} and ";
         $sqlTot = $sqlRec = "";
         
         foreach ($post as $key => $value) {
@@ -467,10 +467,10 @@ class Shipment extends Core\Model {
             $sqlTot .= $where_clause;
             $sqlRec .= $where_clause;
         }
-
+        
         #$sqlRec .=  " ORDER BY ". $columns[$params['order'][0]['column']]."   ".$params['order'][0]['dir']."  LIMIT ".$params['start']." ,".$params['length']." ";
         $sqlRec .=  " ORDER BY user_id ".$params['order'][0]['dir']." OFFSET ".$params['start']." ROWS FETCH NEXT ".$params['length']." ROWS ONLY";
-
+        
         $totalRecords = $Db->query($sqlTot)->count();
         $data = $Db->query($sqlRec)->results();
         
