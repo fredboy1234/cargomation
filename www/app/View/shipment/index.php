@@ -160,12 +160,12 @@
                                                                 <div class="row form_field_outer_row 1" section="1">
                                                                 <div class="form-group col-md-3">
                                                                     <select name="search[]" id="no_search_1" class="form-control search-list">
-                                                                        <option>--Select type--</option>
+                                                                        <option value selected disabled hidden>--Select type--</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-2">
                                                                     <select name="type[]" id="no_type_1" class="form-control">
-                                                                        <option>--Select type--</option>
+                                                                        <option value selected disabled hidden>--Select type--</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
