@@ -1167,6 +1167,10 @@ class Shipment extends Core\Controller {
             $etd_date = date_format(date_create($shipment->Etd), "d/m/Y");
             $etd_date_sort = date_format(date_create($shipment->Eta), "d/m/Y");
             $eta_date_sort = date_format(date_create($shipment->Etd), "d/m/Y");
+            $marco_link = "";
+            if(!empty($shipment->vrptShipmentlinks)) {
+                $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
+            }
 
             $subdata = array();
             $subdata['real_id_shipment'] = $shipment->Shipment_Num; // remove?
@@ -1176,7 +1180,7 @@ class Shipment extends Core\Controller {
               '.(is_null($shipment->Shipment_Num) ? "0000" : $shipment->Shipment_Num).'
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\'' . $shipment->vrptShipmentlinks[0]->macro_link . '\')" data-ship-id="'.$shipment->Id.'"> Open Cargowise </a>
+                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''.$marco_link.'\')" data-ship-id="'.$shipment->Id.'"> Open Cargowise </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->Shipment_Num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
               </div>
