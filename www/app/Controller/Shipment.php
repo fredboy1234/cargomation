@@ -140,7 +140,7 @@ class Shipment extends Core\Controller {
         // echo "<pre>";
         // print_r($searchFilter);
         // exit();
-        $this->View->renderTemplate("/doctracker/index", [
+        $this->View->renderTemplate("/shipment/index", [
             "title" => "Shipment View",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => $imageList,
@@ -771,7 +771,7 @@ class Shipment extends Core\Controller {
         ]);
     }
 
-    public function shipmentData($user = "", $role = "") {
+    public function shipmentData_old($user = "", $role = "") {
 
         if(empty($_REQUEST['order'])) {
             die('Unauthorized!');
@@ -1098,8 +1098,5 @@ class Shipment extends Core\Controller {
                     $days, $hours, $minutes, $seconds . " ago");
     }
 
-    public function testShipmentData() {
-        // https://cargomation.com:5200/redis/getshipmentview
-    }
 
 }
