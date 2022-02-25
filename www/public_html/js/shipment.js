@@ -342,7 +342,7 @@ $(document).ready(function () {
     serverSide: true,
     serverMethod: 'post',
     ajax: {
-      url: '/shipment/shipmentData/' + user_id + "/" + role_id,
+      url: '/shipment/shipmentData/',
       data: function (d) {
         var arr = [];
         $(".form_field_outer_row").each(function(){
@@ -355,7 +355,7 @@ $(document).ready(function () {
            } 
            if(typeof value !== null || value.length > 0){
               arr.push({
-                "search": search,
+                "columnname": search,
                 "type": type,
                 "value": value.toUpperCase(),
                 "cond": cond
