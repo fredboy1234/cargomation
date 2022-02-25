@@ -1148,4 +1148,130 @@ class Shipment extends Core\Controller {
         echo json_encode($array_data);
     }
 
+    private function sanitizeData($param) {
+        $array_data = json_decode($param);
+        $doc_type = array_column($this->Document->getDocumentType(), 'type');
+        $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
+        $documents = array();
+        foreach ($doc_type as $type) {
+            $documents[strtolower($type)]['text'] = "Empty";
+            $documents[strtolower($type)]['approved'] = 0;
+            $documents[strtolower($type)]['pending'] = 0;
+            $documents[strtolower($type)]['watched'] = 0;
+            $documents[strtolower($type)]['badge'] = '';
+            $documents[strtolower($type)]['count'] = '';
+        }
+
+        foreach($array_data as $shipment_key => $shipment) {
+            $eta_date = date_format(date_create($shipment->Eta), "d/m/Y");
+            $etd_date = date_format(date_create($shipment->Etd), "d/m/Y");
+            $etd_date_sort = date_format(date_create($shipment->Eta), "d/m/Y");
+            $eta_date_sort = date_format(date_create($shipment->Etd), "d/m/Y");
+
+            $subdata = array();
+            $subdata['real_id_shipment'] = $shipment->Shipment_Num; // remove?
+            $subdata['shipment_id'] = '
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              '.(is_null($shipment->Shipment_Num) ? "0000" : $shipment->Shipment_Num).'
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\'' . $shipment->vrptShipmentlinks[0]->macro_link . '\')" data-ship-id="'.$shipment->Id.'"> Open Cargowise </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->Shipment_Num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
+              </div>
+            </div>';
+            $subdata['consol_id'] = (empty($shipment->Console_Id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->Console_Id;
+            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date);
+            $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
+            $subdata['vessel_name'] = (empty($shipment->Vessel_Name)) ? '<span class="text-warning">No Data</span>' : $shipment->Vessel_Name;
+            $subdata['place_of_delivery'] = $shipment->PlaceDelivery;
+            $subdata['consignee'] = $shipment->Consignee;
+            $subdata['consignor'] = $shipment->Consignor;
+            if(!empty($shipment->Containers)) {
+                $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
+                // Container Number
+                $container_num = array();
+                foreach ($test as $keye => $valuee) {
+                    $container_num[] = explode(', ', $valuee);
+                    $subdata['container_number'] = '
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        View
+                        </button>
+                        <div class="dropdown-menu">';
+    
+                        if(!empty($test)) {
+                            $last_key = array_key_last($container_num);
+                            foreach ($container_num as $key7 => $value7) {
+                                $subdata['container_number'] .= 
+                                '<span class="dropdown-item">'
+                                . 'Container Number: ' . $value7[0] . '<br>'
+                                . 'Container Type: ' . $value7[1] . '<br>'
+                                . 'Container Delivery Mode: ' . $value7[2] . '<br>'
+                                . '</span>';
+                                if($last_key !== $key7) {
+                                    $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+                                }
+                            }
+                        }
+    
+                    $subdata['container_number'] .= '
+                        </div>
+                    </div>';
+
+                }
+            } else {
+                $subdata['container_number'] = '<span class="text-warning">No data</span>';
+            }
+            // DOCUMENT LEVEL
+            $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->Shipment_Num . '">View All</span></div>';
+            foreach ($shipment->Documents as $document_key => $document) {
+                // $document->id // $document->shipment_id // $document->type // $document->status
+                // Status Count
+                if($document->status == "approved") {
+                    $documents[strtolower($document->type)]['approved']++;
+                }
+                if($document->status == "pending") {
+                    $documents[strtolower($document->type)]['pending']++;
+                }  
+                if($document->status == "watched") {
+                    $documents[strtolower($document->type)]['watched']++;
+                }
+                // Status Text and Badge
+                if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
+                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
+                    $documents[strtolower($document->type)]['badge'] = "badge-success";
+                    $documents[strtolower($document->type)]['text'] = "Approved"; 
+                } else {
+                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                    $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                    $documents[strtolower($document->type)]['text'] = "Pending";
+                }
+            }
+
+            foreach ($documents as $key => $value) {
+                if(!empty($value['count'])) {
+                    $subdata[$key] = '<div class="doc-stats" style="display: none;">
+                    <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">
+                    '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                    '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
+                    '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                    <div class="doc-stats">
+                        <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">'.$value['text'].'</span>
+                        <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
+                    </div>';
+                } else {
+                    $subdata[$key] = "Empty";
+                }
+            }
+
+            $data[] = $subdata;
+            
+        }
+        return $data;
+    }
+
 }
