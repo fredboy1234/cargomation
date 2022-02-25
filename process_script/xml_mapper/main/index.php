@@ -674,8 +674,13 @@ try{
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection."[$k].BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
+					
+					//GET BOOKING DESC
+					$XPATH_BOOKINGDESC= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].BookingStatus.Description");
+					$XPATH_BOOKINGDESC = $parser->encode($XPATH_BOOKINGDESC);
+					$BOOKINGDESC = node_exist(getArrayName($XPATH_BOOKINGDESC));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC);
 					
                     
 				 }
@@ -735,8 +740,13 @@ try{
 					$XPATH_BOOKINGSTATUS = jsonPath($universal_shipment, $path_TransportLegCollection.".BookingStatus.Code");
 					$XPATH_BOOKINGSTATUS = $parser->encode($XPATH_BOOKINGSTATUS);
 					$BOOKINGSTATUS = node_exist(getArrayName($XPATH_BOOKINGSTATUS));
+					
+					//GET BOOKING DESC
+					$XPATH_BOOKINGDESC= jsonPath($universal_shipment, $path_TransportLegCollection.".BookingStatus.Description");
+					$XPATH_BOOKINGDESC = $parser->encode($XPATH_BOOKINGDESC);
+					$BOOKINGDESC = node_exist(getArrayName($XPATH_BOOKINGDESC));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC);
 				}
 			
 				$routing = json_encode($items);
