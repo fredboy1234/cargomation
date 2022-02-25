@@ -1290,6 +1290,8 @@ class Shipment extends Core\Controller {
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_CUSTOMREQUEST => "POST",
