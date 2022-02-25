@@ -1293,7 +1293,7 @@ class Shipment extends Core\Controller {
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_POSTFIELDS => $payload,
         ));
         if (!empty($headers)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
