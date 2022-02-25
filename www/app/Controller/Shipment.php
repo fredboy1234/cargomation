@@ -1098,5 +1098,54 @@ class Shipment extends Core\Controller {
                     $days, $hours, $minutes, $seconds . " ago");
     }
 
+    public function shipmentData($user_id = "") {
+        // Check if request is not empty
+        if(empty($_REQUEST['order'])) {
+            die('Unauthorized!');
+        }
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $url = 'https://cargomation.com:5200/redis/getshipmentview';
+        $arr = [
+            "draw" => $_POST['draw'],
+            "user_id" => $user_id,
+            "length" => (is_numeric($_POST['length']) ? (int)$_POST['length'] : 0),
+            "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
+        ];
+        if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
+            // NEED TO UPDATE
+            // $arr["sort"] = ["order" => $_POST['order'][0]['column'],
+            //                 "by" => $_POST['order'][0]['dir']];
+            $arr["sort"] = array((object)["order" => "shipment_num",
+                            "by" => "ASC"]);
+
+        }
+        if(isset($_POST['data'][0]['value']) && $_POST['data'][0]['value'] != "") {
+            $arr["filter"] = $_POST['data'];
+        }
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+        $result = $this->post($url, $payload, $headers);
+        $json_data = json_decode($result);
+        $array_data = array(
+            "draw"            => $json_data->draw,  
+            "recordsTotal"    => $json_data->recordsTotal,  
+            "recordsFiltered" => $json_data->recordsTotal,
+            "data"            => $this->sanitizeData($json_data->data)
+        );
+        echo json_encode($array_data);
+    }
 
 }
