@@ -137,8 +137,6 @@
                                                 <div class="row">
                                                     <div class="col-md-12 form_sec_outer_task ">
                                                         <div class="row">
-                                                            <div class="col-md-12 p-2 mb-3">
-                                                            </div>
                                                             <div class="col-md-3">
                                                                 <label>Search</label>
                                                             </div>
@@ -224,7 +222,7 @@
                                                 <?php foreach ($settings as $value) { ?>
                                                     <?php $selected = ($value->index_check == "true" ? "selected='selected'" : ""); ?>
                                                     <?php $level = (isset($value->index_lvl) ? $value->index_lvl : "shipment") ?>
-                                                    <option id="<?= $value->index_value ?>" class="settings-menu" value="<?= $value->index_value ?>" <?= $selected ?> data-text="<?= $value->index_name ?>" lvl="<?= $level ?>">
+                                                    <option id="<?= $value->index_value ?>" index="<?= $value->index ?>" sort="<?= $value->index_sortable ?>" class="settings-menu" value="<?= $value->index_value ?>" <?= $selected ?> data-text="<?= $value->index_name ?>" lvl="<?= $level ?>">
                                                         <?= $value->index_name ?>
                                                     </option>
                                                 <?php } ?>
