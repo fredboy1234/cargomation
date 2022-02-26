@@ -9,9 +9,7 @@ $(document).ready(function () {
   
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
-    //alert(selected);
     addSearchFilter(selected);
-    console.log(selected);
   });
   // Delete the form fieed row
   $("body").on("click", ".remove_node_btn_frm_field", function () {
@@ -23,7 +21,6 @@ $(document).ready(function () {
     } else {
       $('#no_cond_'+elem.length).prop("disabled", true).addClass('exclude');
     }
-    console.log("success");
   });
   // Clone method
   $("body").on("click", ".add_node_btn_frm_field", function (e) {
@@ -64,9 +61,7 @@ $(document).ready(function () {
     $(cloned_el).find(".add_node_btn_frm_field").attr("section",index);
     $(e.target).closest(".form_field_outer").find(".exclude").attr("disabled",false);
     $(e.target).closest(".form_field_outer").find(".exclude").last().attr("disabled",true);
-
     var sdex = $(this).attr("section");
-    console.log(sdex);
     var searchValue = $(e.target).closest(".form_field_outer").find("#no_search_"+sdex+" option:selected").val();
     $(cloned_el).find(".search-list option[value='"+searchValue+"']").attr("selected", true);
     
@@ -192,7 +187,6 @@ $(document).on('click', '.doc', function (e) {
   if ($(this).data('type')) { type = "/" + $(this).data('type'); }
   $('#myModal').modal('show').find('.modal-body').load("/shipment/document/" + $(this).data('id') + type);
   var row_id = $(this).parent().parent().parent().attr('id');
-  console.log(row_id);
   localStorage.setItem("row_id", row_id);
 });
 
@@ -300,14 +294,17 @@ $(document).ready(function () {
   console.log(sortedData);
 
   $.each(sortedData, function (okey, oval) {
-   $xx = oval.index_name;
-    if(oval.index_name != null){
+   $index = oval.index;
+   $sort = (oval.index_sortable === 'true');
+    if(oval.index != null){
       if(typeof oval != null || typeof oval != "undefined") {
-        $xx = oval.index_name.replace(/\s+/g, '_').toLowerCase();
+        $index = oval.index;
       } 
     }
-    tableColumnData.push({ data: $xx });
+    tableColumnData.push({ data: $index, sortable: $sort });
   });
+
+  console.log(tableColumnData);
 
   var table = $('.table').DataTable({
     searching: true,
@@ -326,21 +323,13 @@ $(document).ready(function () {
     autoWidth: false,
     lengthChange: false,
     colReorder: true,
-    // bSort: true,
-    // ordering: true,
-    // bFilter: true,
-    // deferRender: true,
-    // sDom: 'lrtip',
-    // sEcho: true,
-    // stateSave: true,
-    // cache:true,
-    // destroy: true,
     processing: true,
     language: {
       processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
     },
     serverSide: true,
     serverMethod: 'post',
+    columns: tableColumnData,
     ajax: {
       url: '/shipment/shipmentData/',
       data: function (d) {
@@ -361,17 +350,21 @@ $(document).ready(function () {
                 "cond": cond
             });
            } 
-          
-           console.log(arr);
            d.data = arr;
         });
-
-
       },
     },
-    columns: tableColumnData,
     rowId: 'real_id_shipment',
     select: true,
+    // bSort: true,
+    // ordering: true,
+    // bFilter: true,
+    // deferRender: true,
+    // sDom: 'lrtip',
+    // sEcho: true,
+    // stateSave: true,
+    // cache:true,
+    // destroy: true,
     // fnCreatedRow: function (nRow, aData, iDataIndex) {
     //   //$('td', nRow).eq(0).append(`${$(".parent-assign").html()}`);
     //   //$(nRow).attr("ship-assign-id", aData['real_id_shipment']);
@@ -395,9 +388,8 @@ $(document).ready(function () {
     }
   })
   .on('draw.dt', function () {
-
     var info = table.page.info();
-    console.log('PAGE: ' + info.page);
+    // console.log('PAGE: ' + info.page);
     setColor();
     // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
   });
@@ -558,9 +550,6 @@ $(document).ready(function () {
         data: { "settings": Sdata },
         success: function (res) {
           // for checking only
-          console.log('test tes');
-           console.log(Sdata);
-           console.log(res);
           hideShowResetSettings();
         }
       });
@@ -581,7 +570,6 @@ $(document).ready(function () {
         var column = table.column(last);
         column.visible(!column.visible());
       }
-      console.log("last -- " + last);
       byLevel();
     }, 100);
 
@@ -594,21 +582,30 @@ $(document).ready(function () {
     var opt_value = [];
     var temp = [];
     $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function () {
-      console.log($(this).data('text'));
-
       opt_value.push($(this).val());
-      Sdata.push({ index_name: $(this).data('text'), index_value: $(this).val(), index_check: true, index_lvl: $(this).attr('lvl') });
+      Sdata.push({ 
+        index: $(this).attr('index'),
+        index_name: $(this).data('text'), 
+        index_value: $(this).val(), 
+        index_check: true, 
+        index_lvl: $(this).attr('lvl'),
+        index_sortable: $(this).attr('sort'), });
     });
 
     $('#bootstrap-duallistbox-nonselected-list_settings-dual  option').each(function () {
       opt_value.push($(this).val());
-      Sdata.push({ index_name: $(this).data('text'), index_value: $(this).val(), index_check: false, index_lvl: $(this).attr('lvl') });
+      Sdata.push({ 
+        index: $(this).attr('index'),
+        index_name: $(this).data('text'), 
+        index_value: $(this).val(), 
+        index_check: false, 
+        index_lvl: $(this).attr('lvl'),
+        index_sortable: $(this).attr('sort'), });
     });
 
     if (check_arr.length != Sdata.length && check_arr.length != 0) {
       $.each(check_arr, function (k, v) {
         if ($.inArray(v.index_value, opt_value) == -1) {
-          console.log("from the is array");
           temp.push({ index_name: v.index_name, index_value: v.index_value, index_check: v.index_check, index_lvl: v.index_lvl });
         } else {
           $.each(Sdata, function (okey, oval) {
@@ -622,8 +619,6 @@ $(document).ready(function () {
       Sdata = temp;
     }
     check_arr = Sdata;
-
-    //console.log(Sdata);
     return Sdata;
   }
   byLevel();
@@ -668,10 +663,6 @@ $(document).ready(function () {
         dataType: "json",
         data: { "settings": Sdata },
         success: function (res) {
-          // for checking only
-          console.log('test tes');
-           console.log(Sdata);
-           console.log(res);
           hideShowResetSettings();
         }
       });
@@ -705,8 +696,6 @@ $(document).ready(function () {
       dataType: "json",
       data: { "settings_id": id },
       success: function (res) {
-        // for checking only
-        console.log(res);
       }
     });
     window.location.reload();
@@ -729,7 +718,6 @@ $(document).ready(function () {
       $(".js-example-basic-multiple > option").prop("selected", "selected");
 
       $(".js-example-basic-multiple > option").each(function (key, val) {
-        console.log($(val).val());
         if ($(val).val() == 'all') {
           $(this).prop('selected', false);
         }
@@ -806,8 +794,6 @@ function byLevel() {
       }
     });
   }
-  console.log(level);
-
 }
 
 //check and uncheck transport mode
@@ -969,16 +955,13 @@ function macroLink(link) {
 $(".search-fil").on("click",function(e){
   e.preventDefault();
   filterRequest($("#addvance-search-form").serializeArray());
-  //console.log($("#addvance-search-form").serializeArray());
 });
 
 function filterRequest(data){
-  console.log(data);
   var dataHolder = [];
   var parentDataHolder = [];
   var counter = 1;
   $.each(data,function(okey,oval){
-    //console.log(oval);
     if(counter <= 3 ){
       dataHolder.push({fieldname:oval.name,fieldval:oval.value,fieldcon:"test3",fielde:"test4"});
     }else{
@@ -991,17 +974,7 @@ function filterRequest(data){
     }
     counter++;
   });
-  console.log("this is parent");
    console.log(parentDataHolder);
-
-  // $.ajax({
-  //       url: "/shipment/shipmentData",
-  //       type: "POST",
-  //       data: { "data":data },
-  //       success: function (res) {
-  //         console.log(res);
-  //       }
-  //     });
 }
 $("#clearFilter").on("click",function(){
   $(".form_field_outer_row:not(:first)").remove();
@@ -1117,7 +1090,6 @@ $('#savefilter').on("click",function(){
     var $this = $(this);
     if($this.val() && $this.val().length > 0){
       var name = $this.val().replace("_"," ");
-      console.log($('option:selected',this).attr('label'));
       name = name.toLowerCase().replace(/\b[a-z]/g, function(letter) {
         return letter.toUpperCase();
       });
