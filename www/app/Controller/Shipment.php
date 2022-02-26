@@ -694,33 +694,47 @@ class Shipment extends Core\Controller {
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $Shipment = Model\User::getInstance($user);
+        $User = Model\User::getInstance($user);
         $data['user'] = $user;
         $data['settings']['shipment'] = $_POST['settings'];
         $data['settings']['document'] = "";
         $data['settings']['profile'] = "";
         $data['settings']['hub'] = "";
-        $Shipment->addUserSettings($data);
+        $User->addUserSettings($data);
         echo json_encode($_POST['settings']);
     }
 
-    public function defaultSettings($user=""){
+    public function defaultSettings($user="", $role_id=""){
 
-        Utility\Auth::checkAuthenticated();
-
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
+        $User = Model\User::getInstance($user);
         $userData = $User->getUserSettings($user);
-        $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
-        
-        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
+        $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
+
+        if ($role_id == 4) {
+            // customer
+            $sub_account = $User->getSubAccountInfo($user);
+            $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
+        } else if ($role_id == 3) {
+            // staff 
+            $sub_account = $User->getSubAccountInfo($user);
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id);
+        } else {
+            // client admin
+            $doc_type = $User->getUserDocumentType($user, $role_id);
+        }
+
+        // $Role = Model\Role::getInstance($user);
+        // $role = $Role->getUserRole($user);
+        // $role = Model\Role::getInstance($user_id)->getUserRole($user_id);
+
+        $json_setting = '/settings/shipment-settings.json';
+
+        if($role_id == 4 && empty($doc_type)) {
+            $json_setting = '/settings/sub-shipment-settings.json';
+        }
+
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
         
         $defaultCollection = array();
         if(isset($userData) && !empty($userData)){
@@ -728,9 +742,23 @@ class Shipment extends Core\Controller {
                 $defaultCollection[]=$value->index_value;
             }
         }
-        if(empty($defaultCollection)){
-            $userData = array();
-        }
+        $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
+        if(!empty($doc_type)){
+            $count = 16;
+            foreach ($doc_type as $key => $value) {
+                if(!in_array($value->type,$defaultDocType)){
+                    array_push($userData, (object)[
+                        'index' => strtolower($value->type),
+                        'index_name' => $value->type,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'false',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                }
+            }
+        } 
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
                 if(!in_array($value->index_value,$defaultCollection)){
@@ -741,8 +769,13 @@ class Shipment extends Core\Controller {
                 $userData[] = $value;
             }
         }
-        
-       return json_encode($userData);
+
+        if(!empty($User->getUserSettings($user)[0]->shipment)){
+            return $User->getUserSettings($user)[0]->shipment;
+        }else{
+            return json_encode($userData);    
+        }
+
     }
 
     public function info($user_id = "", $shipment_id = "") {
@@ -1100,9 +1133,9 @@ class Shipment extends Core\Controller {
 
     public function shipmentData($user_id = "") {
         // Check if request is not empty
-        if(empty($_REQUEST['order'])) {
-            die('Unauthorized!');
-        }
+        // if(empty($_REQUEST['order'])) {
+        //     die('Unauthorized!');
+        // }
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         if (!$user_id) {
@@ -1124,14 +1157,22 @@ class Shipment extends Core\Controller {
             "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
         ];
         if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
-            // NEED TO UPDATE
-            // $arr["sort"] = ["order" => $_POST['order'][0]['column'],
-            //                 "by" => $_POST['order'][0]['dir']];
-            $arr["sort"] = array((object)["order" => "shipment_num",
-                            "by" => "ASC"]);
-
+            foreach ($_POST['order'] as $key => $value) {
+                // change shipment_id to shipment_num
+                if($_POST['order'][0]['column'] == 0) {
+                    $_POST['columns'][$_POST['order'][0]['column']]['data'] = "shipment_num";
+                }
+                $arr["sort"] = array((object)["order" => $_POST['columns'][$_POST['order'][0]['column']]['data'],
+                                "by" => $value['dir']]);
+            }
         }
-        if(isset($_POST['data'][0]['value']) && $_POST['data'][0]['value'] != "") {
+        if(isset($_POST['search']['value']) && !empty($_POST['search']['value'])) {
+            $arr["filter"] = array((object)["columnname" => "shipment_num",
+                                            "type" => "contains",
+                                            "value" => $_POST['search']['value'],
+                                            "cond" => ""]);
+        }
+        if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
             $arr["filter"] = $_POST['data'];
         }
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
@@ -1139,6 +1180,9 @@ class Shipment extends Core\Controller {
                     "Content-Type: application/json"];
         $result = $this->post($url, $payload, $headers);
         $json_data = json_decode($result);
+        if($json_data->status == 'ERR') {
+            die($json_data->message);
+        }
         $array_data = array(
             "draw"            => $json_data->draw,  
             "recordsTotal"    => $json_data->recordsTotal,  
@@ -1174,7 +1218,7 @@ class Shipment extends Core\Controller {
 
             $subdata = array();
             $subdata['real_id_shipment'] = $shipment->Shipment_Num; // remove?
-            $subdata['shipment_id'] = '
+            $subdata['shipment_num'] = '
             <div class="btn-group">
               <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               '.(is_null($shipment->Shipment_Num) ? "0000" : $shipment->Shipment_Num).'
@@ -1185,11 +1229,11 @@ class Shipment extends Core\Controller {
                 <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->Shipment_Num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
               </div>
             </div>';
-            $subdata['consol_id'] = (empty($shipment->Console_Id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->Console_Id;
+            $subdata['console_id'] = (empty($shipment->Console_Id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->Console_Id;
             $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date);
             $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
             $subdata['vessel_name'] = (empty($shipment->Vessel_Name)) ? '<span class="text-warning">No Data</span>' : $shipment->Vessel_Name;
-            $subdata['place_of_delivery'] = $shipment->PlaceDelivery;
+            $subdata['place_delivery'] = $shipment->PlaceDelivery;
             $subdata['consignee'] = $shipment->Consignee;
             $subdata['consignor'] = $shipment->Consignor;
             if(!empty($shipment->Containers)) {
