@@ -144,10 +144,22 @@ function addSearchFilter(selected) {
   $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
   $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
   invokeFilter(selected, index);
+  console.log(selected,index);
 }
 
-
-
+if(searchfilter.length > 0){
+  $(searchfilter).each(function(k,v){
+    addSearchFilter(v.filterName);
+    var xdex = $(".form_field_outer .form_field_outer_row").map(function() {
+      return parseFloat($(this).attr('section'));
+  }).get().sort().pop();
+    setTimeout(function(){
+      $("#no_search_"+xdex).trigger("change");
+    },300);
+  
+  });
+}
+ 
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
   '<div class="spinner-border" role="status">' +
   '<span class="sr-only">Loading...</span>' +
@@ -1132,29 +1144,10 @@ $('#savefilter').on("click",function(){
           data: {data:settingArray},
           success: function (res) {
             console.log(res);
+            Swal.fire('Settings Save Successfully!');
           }
     });
   }
   
-  console.log(settingArray.length);
+  //console.log(settingArray.length);
 });
-
-// {
-//   "number_and_preferences":[
-//       {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y"},
-//       {"filterID":"Console ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y"},
-//       {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y"},
-//       {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n"},
-//       {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n"},
-//       {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n"},
-//       {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n"},
-//       {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n"}
-//   ],
-//   "date": [
-//       {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n"},
-//       {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n"}
-//   ],
-//   "others":[
-//       {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n"}
-//   ]
-// }

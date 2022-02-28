@@ -136,10 +136,10 @@ class Doctracker extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        $searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
-        // echo "<pre>";
-        // print_r($searchFilter);
-        // exit();
+        //$searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
+        //  echo "<pre>";
+        //  print_r($User->getUserSettings($user)[0]->search);
+        //  exit();
         $this->View->renderTemplate("/doctracker/index", [
             "title" => "Shipment View",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -157,8 +157,8 @@ class Doctracker extends Core\Controller {
             'role' => $role,
             'user_id' => $user,
             'selected_theme' => $selectedTheme,
-            'searchfilter' =>$searchFilter,
-            //'shipment_from_contact'=> $emailList
+            'searchfilter' =>$User->getUserSettings($user)[0]->search,
+            //'shipment_from_contact'=> $emailList,
         ]);
     }
 
@@ -686,4 +686,29 @@ class Doctracker extends Core\Controller {
         }
     }
 
+    public function saveSearchSettings($user=''){
+        
+         Utility\Auth::checkAuthenticated();
+
+         Utility\Cookie::delete('redirectLink');
+ 
+         if (!$user) {
+             $userSession = Utility\Config::get("SESSION_USER");
+             if (Utility\Session::exists($userSession)) {
+                 $user = Utility\Session::get($userSession);
+             }
+         }
+        
+          
+         if (!$User = Model\User::getInstance($user)) {
+            exit();
+         }
+        if(isset($_POST)){
+            $data = array();
+            $data['userid'] = $user;
+            $data['search'] = json_encode($_POST['data']);
+            $User = Model\User::getInstance($user);
+            $User->saveSearchSettings($data);
+        }
+    }
 }

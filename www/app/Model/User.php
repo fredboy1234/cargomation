@@ -738,4 +738,20 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
+
+    public function saveSearchSettings($data){
+        $Db = Utility\Database::getInstance();
+        $userid = $data['userid'];
+        $search = $data['search'];
+        $check = $Db->query("SELECT user_id FROM user_settings WHERE user_id ='{$userid}'")->results();
+        
+        if(empty($check)){
+            echo "empty";
+            $Db->query("INSERT INTO user_settings(user_id,search) values('{$userid}','{$search}')");
+        }else{
+            echo "not";
+            $Db->query("UPDATE user_settings SET search='{$search}' WHERE user_id ='{$userid}'");
+        }
+        
+    }
 }

@@ -134,76 +134,9 @@
                                     <div class="tab-pane text-left fade active show" id="vert-tabs-search" role="tabpanel" aria-labelledby="vert-tabs-search-tab">
                                         <div class="active tab-pane" id="activity">
                                             <form id="addvance-search-form">
-                                                <div class="row">
-                                                    <div class="col-md-12 form_sec_outer_task ">
-                                                        <div class="row">
-                                                            <div class="col-md-12 p-2 mb-3">
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label>Search</label>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Type</label>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Value</label>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <label> </label>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label> </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12 p-0">
-                                                            <div class="col-md-12 form_field_outer p-0">
-                                                                <div class="row form_field_outer_row 1" section="1">
-                                                                <div class="form-group col-md-3">
-                                                                    <select name="search[]" id="no_search_1" class="form-control search-list">
-                                                                        <option>--Select type--</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group col-md-2">
-                                                                    <select name="type[]" id="no_type_1" class="form-control">
-                                                                        <option>--Select type--</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <input  name="value[]" id="no_value_1" type="text" class="form-control w_90" placeholder="Enter search value">
-                                                                </div>
-                                                                <div class="form-group col-md-1">
-                                                                    <select name="cond[]" id="no_cond_1" class="form-control exclude" disabled>
-                                                                        <option value="OR">OR</option>
-                                                                        <option value="AND">AND</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group col-md-2 add_del_btn_outer">
-                                                                    <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="1">
-                                                                    <i class="fas fa-copy"></i>
-                                                                    </button>
-                                                                    <button class="btn_round remove_node_btn_frm_field" disabled="">
-                                                                    <i class="fas fa-trash-alt"></i>
-                                                                    </button>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 p-0">
-                                                                <div class="row">
-                                                                    <div class="form-group col-md-4">
-                                                                        <select name="" id="add_filters" class="form-control search-list add_new_frm_field_btn">
-                                                                            <option>--Select search type--</option>
-                                                                            <option value="shipment_id">--Add search type--</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 mt-2">
-                                                        <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
-                                                        <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
-                                                    </div>
-                                                </div>
+                                            <?php 
+                                              include(VIEW_PATH."_template/module/searchfilter.php");
+                                            ?>
                                                 <!-- /.row -->
                                             </form>
                                         </div>
@@ -483,5 +416,5 @@
     var theme = <?php echo json_encode($this->selected_theme) ?>;
     var user_id = <?php echo $this->user_id ?>;
     var role_id = <?php echo $this->role->role_id ?>;
-    var searchfilter = <?php echo json_encode($this->searchfilter)?>;
+    var searchfilter = JSON.parse(<?php echo json_encode($this->searchfilter)?>);
 </script>
