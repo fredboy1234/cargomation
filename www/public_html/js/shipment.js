@@ -139,11 +139,11 @@ function addSearchFilter(selected) {
   $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
   $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
   invokeFilter(selected, index);
-  console.log(selected,index);
 }
 
 if(searchfilter.length > 0){
-  $(searchfilter).each(function(k,v){
+  
+  $(JSON.parse(searchfilter)).each(function(k,v){
     addSearchFilter(v.filterName);
     var xdex = $(".form_field_outer .form_field_outer_row").map(function() {
       return parseFloat($(this).attr('section'));
@@ -1006,10 +1006,14 @@ $(document).on("change", ".search-list", function(){
   var data = [];
   
   if($(this).hasClass("add_new_frm_field_btn")){
-    index = parseInt(index)+1;
+    index = $(".form_field_outer .form_field_outer_row").map(function() {
+      return parseFloat($(this).attr('section'));
+    }).get().sort().pop();
   }
  
   data['id'] = "no_type_"+index;
+  console.log('from inde');
+  console.log(index);
   //data['options'] = triggerType(dataType);
   data['value'] = index;
   data['type'] = dataType;

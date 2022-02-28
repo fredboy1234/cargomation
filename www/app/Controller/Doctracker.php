@@ -136,7 +136,7 @@ class Doctracker extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        //$searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
+        $searchFilter = isset($User->getUserSettings($user)[0]->search) ? $User->getUserSettings($user)[0]->search : array();
         //  echo "<pre>";
         //  print_r($User->getUserSettings($user)[0]->search);
         //  exit();
@@ -157,7 +157,7 @@ class Doctracker extends Core\Controller {
             'role' => $role,
             'user_id' => $user,
             'selected_theme' => $selectedTheme,
-            'searchfilter' =>$User->getUserSettings($user)[0]->search,
+            'searchfilter' =>$searchFilter,
             //'shipment_from_contact'=> $emailList,
         ]);
     }
