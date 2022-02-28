@@ -1117,7 +1117,6 @@ $('#savefilter').on("click",function(){
           type: "POST",
           data: {data:settingArray},
           success: function (res) {
-            console.log(res);
             Swal.fire('Settings Save Successfully!');
           }
     });
