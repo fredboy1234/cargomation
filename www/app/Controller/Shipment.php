@@ -1297,7 +1297,25 @@ class Shipment extends Core\Controller {
                     $documents[strtolower($document->type)]['text'] = "Pending";
                 }
             }
-
+            // DOCUMENT REQUEST
+            foreach ($shipment->DocumentRequests as $requested_key => $requested) {
+                // $requested->shipment_num // $requested->document_type // $requested->document_id 
+                // $requested->request_type // $requested->expired_date // $requested->status
+                // $requested->sender
+                $documents[strtolower($requested->document_type )]['count'] = $requested->request_type;
+                $documents[strtolower($requested->document_type )]['badge'] = "badge-info";
+                $documents[strtolower($requested->document_type )]['text'] = "Requested"; 
+                // If type already have a document
+                if(!isset($documents[strtolower($requested->document_type )]['approved'])) {
+                    $documents[strtolower($requested->document_type )]['approved'] = 0;
+                }
+                if(!isset($documents[strtolower($requested->document_type )]['pending'])) {
+                    $documents[strtolower($requested->document_type )]['pending'] = 0;
+                }
+                if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
+                    $documents[strtolower($requested->document_type )]['watched'] = 0;
+                }
+            }
             foreach ($documents as $key => $value) {
                 if(!empty($value['count'])) {
                     $subdata[$key] = '<div class="doc-stats" style="display: none;">

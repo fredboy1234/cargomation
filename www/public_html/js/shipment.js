@@ -751,6 +751,8 @@ var setColor = function () {
         $(this).parent().parent().addClass("stats pending-background");
       } else if ($(this).text() == "Approved") {
         $(this).parent().parent().addClass("stats approved-background");
+      } else if ($(this).text() == "Requested") {
+        $(this).parent().parent().addClass("stats requested-background");
       }
     });
   }
