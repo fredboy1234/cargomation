@@ -140,7 +140,7 @@ class Shipment extends Core\Controller {
         // echo "<pre>";
         // print_r($searchFilter);
         // exit();
-        $this->View->renderTemplate("/doctracker/index", [
+        $this->View->renderTemplate("/shipment/index", [
             "title" => "Shipment View",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => $imageList,
@@ -694,33 +694,47 @@ class Shipment extends Core\Controller {
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-        $Shipment = Model\User::getInstance($user);
+        $User = Model\User::getInstance($user);
         $data['user'] = $user;
         $data['settings']['shipment'] = $_POST['settings'];
         $data['settings']['document'] = "";
         $data['settings']['profile'] = "";
         $data['settings']['hub'] = "";
-        $Shipment->addUserSettings($data);
+        $User->addUserSettings($data);
         echo json_encode($_POST['settings']);
     }
 
-    public function defaultSettings($user=""){
+    public function defaultSettings($user="", $role_id=""){
 
-        Utility\Auth::checkAuthenticated();
-
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
-            }
-        }
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
+        $User = Model\User::getInstance($user);
         $userData = $User->getUserSettings($user);
-        $userData = !empty($userData)?json_decode($userData[0]->shipment):array();
-        
-        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/shipment-settings.json'));
+        $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
+
+        if ($role_id == 4) {
+            // customer
+            $sub_account = $User->getSubAccountInfo($user);
+            $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
+        } else if ($role_id == 3) {
+            // staff 
+            $sub_account = $User->getSubAccountInfo($user);
+            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id);
+        } else {
+            // client admin
+            $doc_type = $User->getUserDocumentType($user, $role_id);
+        }
+
+        // $Role = Model\Role::getInstance($user);
+        // $role = $Role->getUserRole($user);
+        // $role = Model\Role::getInstance($user_id)->getUserRole($user_id);
+
+        $json_setting = '/settings/shipment-settings.json';
+
+        if($role_id == 4 && empty($doc_type)) {
+            $json_setting = '/settings/sub-shipment-settings.json';
+        }
+
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
         
         $defaultCollection = array();
         if(isset($userData) && !empty($userData)){
@@ -728,9 +742,23 @@ class Shipment extends Core\Controller {
                 $defaultCollection[]=$value->index_value;
             }
         }
-        if(empty($defaultCollection)){
-            $userData = array();
-        }
+        $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
+        if(!empty($doc_type)){
+            $count = 16;
+            foreach ($doc_type as $key => $value) {
+                if(!in_array($value->type,$defaultDocType)){
+                    array_push($userData, (object)[
+                        'index' => strtolower($value->type),
+                        'index_name' => $value->type,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'false',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                }
+            }
+        } 
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
                 if(!in_array($value->index_value,$defaultCollection)){
@@ -741,8 +769,13 @@ class Shipment extends Core\Controller {
                 $userData[] = $value;
             }
         }
-        
-       return json_encode($userData);
+
+        if(!empty($User->getUserSettings($user)[0]->shipment)){
+            return $User->getUserSettings($user)[0]->shipment;
+        }else{
+            return json_encode($userData);    
+        }
+
     }
 
     public function info($user_id = "", $shipment_id = "") {
@@ -771,7 +804,7 @@ class Shipment extends Core\Controller {
         ]);
     }
 
-    public function shipmentData($user = "", $role = "") {
+    public function shipmentData_old($user = "", $role = "") {
 
         if(empty($_REQUEST['order'])) {
             die('Unauthorized!');
@@ -1098,8 +1131,247 @@ class Shipment extends Core\Controller {
                     $days, $hours, $minutes, $seconds . " ago");
     }
 
-    public function testShipmentData() {
-        // https://cargomation.com:5200/redis/getshipmentview
+    public function shipmentData($user_id = "") {
+        // Check if request is not empty
+        // if(empty($_REQUEST['order'])) {
+        //     die('Unauthorized!');
+        // }
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $url = 'https://cargomation.com:5200/redis/getshipmentview';
+        $arr = [
+            "draw" => $_POST['draw'],
+            "user_id" => $user_id,
+            "length" => (is_numeric($_POST['length']) ? (int)$_POST['length'] : 0),
+            "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
+        ];
+        if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
+            foreach ($_POST['order'] as $key => $value) {
+                // change shipment_id to shipment_num
+                if($_POST['order'][0]['column'] == 0) {
+                    $_POST['columns'][$_POST['order'][0]['column']]['data'] = "shipment_num";
+                }
+                $arr["sort"] = array((object)["order" => $_POST['columns'][$_POST['order'][0]['column']]['data'],
+                                "by" => $value['dir']]);
+            }
+        }
+        if(isset($_POST['search']['value']) && !empty($_POST['search']['value'])) {
+            $arr["filter"] = array((object)["columnname" => "shipment_num",
+                                            "type" => "contains",
+                                            "value" => $_POST['search']['value'],
+                                            "cond" => ""]);
+        }
+        if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
+            $arr["filter"] = $_POST['data'];
+        }
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+        $result = $this->post($url, $payload, $headers);
+        $json_data = json_decode($result);
+        if($json_data->status == 'ERR') {
+            die($json_data->message);
+        }
+        $array_data = array(
+            "draw"            => $json_data->draw,  
+            "recordsTotal"    => $json_data->recordsTotal,  
+            "recordsFiltered" => $json_data->recordsTotal,
+            "data"            => $this->sanitizeData($json_data->data)
+        );
+        echo json_encode($array_data);
     }
 
+    private function sanitizeData($param) {
+        $array_data = json_decode($param);
+        $doc_type = array_column($this->Document->getDocumentType(), 'type');
+        $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
+        $documents = array();
+        foreach ($doc_type as $type) {
+            $documents[strtolower($type)]['text'] = "Empty";
+            $documents[strtolower($type)]['approved'] = 0;
+            $documents[strtolower($type)]['pending'] = 0;
+            $documents[strtolower($type)]['watched'] = 0;
+            $documents[strtolower($type)]['badge'] = '';
+            $documents[strtolower($type)]['count'] = '';
+        }
+
+        foreach($array_data as $shipment_key => $shipment) {
+            $eta_date = date_format(date_create($shipment->Eta), "d/m/Y");
+            $etd_date = date_format(date_create($shipment->Etd), "d/m/Y");
+            $etd_date_sort = date_format(date_create($shipment->Eta), "d/m/Y");
+            $eta_date_sort = date_format(date_create($shipment->Etd), "d/m/Y");
+            $marco_link = "";
+            if(!empty($shipment->vrptShipmentlinks)) {
+                $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
+            }
+
+            $subdata = array();
+            $subdata['real_id_shipment'] = $shipment->Shipment_Num; // remove?
+            $subdata['shipment_num'] = '
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              '.(is_null($shipment->Shipment_Num) ? "0000" : $shipment->Shipment_Num).'
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''.$marco_link.'\')" data-ship-id="'.$shipment->Id.'"> Open Cargowise </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->Shipment_Num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
+              </div>
+            </div>';
+            $subdata['console_id'] = (empty($shipment->Console_Id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->Console_Id;
+            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date);
+            $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
+            $subdata['vessel_name'] = (empty($shipment->Vessel_Name)) ? '<span class="text-warning">No Data</span>' : $shipment->Vessel_Name;
+            $subdata['place_delivery'] = $shipment->PlaceDelivery;
+            $subdata['consignee'] = $shipment->Consignee;
+            $subdata['consignor'] = $shipment->Consignor;
+            if(!empty($shipment->Containers)) {
+                $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
+                // Container Number
+                $container_num = array();
+                foreach ($test as $keye => $valuee) {
+                    $container_num[] = explode(', ', $valuee);
+                    $subdata['container_number'] = '
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        View
+                        </button>
+                        <div class="dropdown-menu">';
+    
+                        if(!empty($test)) {
+                            $last_key = array_key_last($container_num);
+                            foreach ($container_num as $key7 => $value7) {
+                                $subdata['container_number'] .= 
+                                '<span class="dropdown-item">'
+                                . 'Container Number: ' . $value7[0] . '<br>'
+                                . 'Container Type: ' . $value7[1] . '<br>'
+                                . 'Container Delivery Mode: ' . $value7[2] . '<br>'
+                                . '</span>';
+                                if($last_key !== $key7) {
+                                    $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+                                }
+                            }
+                        }
+    
+                    $subdata['container_number'] .= '
+                        </div>
+                    </div>';
+
+                }
+            } else {
+                $subdata['container_number'] = '<span class="text-warning">No data</span>';
+            }
+            // DOCUMENT LEVEL
+            $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->Shipment_Num . '">View All</span></div>';
+            foreach ($shipment->Documents as $document_key => $document) {
+                // $document->id // $document->shipment_id // $document->type // $document->status
+                // Status Count
+                if($document->status == "approved") {
+                    $documents[strtolower($document->type)]['approved']++;
+                }
+                if($document->status == "pending") {
+                    $documents[strtolower($document->type)]['pending']++;
+                }  
+                if($document->status == "watched") {
+                    $documents[strtolower($document->type)]['watched']++;
+                }
+                // Status Text and Badge
+                if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
+                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
+                    $documents[strtolower($document->type)]['badge'] = "badge-success";
+                    $documents[strtolower($document->type)]['text'] = "Approved"; 
+                } else {
+                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                    $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                    $documents[strtolower($document->type)]['text'] = "Pending";
+                }
+            }
+            // DOCUMENT REQUEST
+            foreach ($shipment->DocumentRequests as $requested_key => $requested) {
+                // $requested->shipment_num // $requested->document_type // $requested->document_id 
+                // $requested->request_type // $requested->expired_date // $requested->status
+                // $requested->sender
+                $documents[strtolower($requested->document_type )]['count'] = $requested->request_type;
+                $documents[strtolower($requested->document_type )]['badge'] = "badge-info";
+                $documents[strtolower($requested->document_type )]['text'] = "Requested"; 
+                // If type already have a document
+                if(!isset($documents[strtolower($requested->document_type )]['approved'])) {
+                    $documents[strtolower($requested->document_type )]['approved'] = 0;
+                }
+                if(!isset($documents[strtolower($requested->document_type )]['pending'])) {
+                    $documents[strtolower($requested->document_type )]['pending'] = 0;
+                }
+                if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
+                    $documents[strtolower($requested->document_type )]['watched'] = 0;
+                }
+            }
+            foreach ($documents as $key => $value) {
+                if(!empty($value['count'])) {
+                    $subdata[$key] = '<div class="doc-stats" style="display: none;">
+                    <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">
+                    '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                    '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
+                    '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                    </span>
+                    </div>
+                    <div class="doc-stats">
+                        <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">'.$value['text'].'</span>
+                        <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
+                    </div>';
+                } else {
+                    $subdata[$key] = "Empty";
+                }
+            }
+
+            $data[] = $subdata;
+            
+        }
+        return $data;
+    }
+
+    /**
+     * Post: uses CURL to call a request to the endpoint and 
+     * return mixed data response.
+     * @access private
+     * @param string $url url of the endpoint
+     * @param mixed $payload  obj,array,string,int
+     * @example $data = json_encode($array, JSON_UNESCAPED_SLASHES);
+     * @param string $headers  curl header options
+     * @example $headers = ["Content-Type: application/json"];
+     * @return mixed response
+     * @since 1.0
+     */
+    private function post($url, $payload, $headers) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
+    }
 }

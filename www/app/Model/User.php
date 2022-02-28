@@ -293,7 +293,7 @@ class User extends Core\Model {
         ];
     }
 
-    public  function addUserSettings($data) {
+    public function addUserSettings($data) {
         $fields = array(
             $user_id = $data['user'],
             $hub =json_encode($data['settings']['hub']),
@@ -706,11 +706,13 @@ class User extends Core\Model {
             $count = 10;
             foreach ($doc_type as $key => $value) {
                 array_push($userData, (object)[
+                    'index' => strtolower($value->type),
                     'index_name' => $value->type,
                     // 'index_value' => (string)$count++, // Explicit cast
                     'index_value' => strval($count++), // Function call
                     'index_check' => 'true',
-                    'index_lvl' => 'document'
+                    'index_lvl' => 'document',
+                    'index_sortable' => 'false',
                 ]);
             }
         } 

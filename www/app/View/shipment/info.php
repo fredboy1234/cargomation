@@ -225,60 +225,88 @@
                     <div id="chartdiv" class="" style="position: relative; height: 300px;"></div>
                 </div>
                 <div class="col-md-12">
-                <div id="accordion" class="mt-2">
-                    <?php if(true):
-                        $json = json_decode($this->shipment_info[0]->route_leg);
-                        foreach ($json as $key => $value):
-                    ?>
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                            <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $value->LegOrder; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
-                                    <div class="row">
-                                        <div class="col-sm-5"><?php echo $value->Origin; ?></div>
-                                        <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
-                                        <div class="col-sm-5"><?php echo $value->Destination; ?></div>
+                    <div id="accordion" class="mt-2">
+                        <?php if($this->shipment_info[0]->route_leg !== "[]"):
+                            $json = json_decode($this->shipment_info[0]->route_leg); ?>
+                        <?php foreach ($json as $key => $value): ?>
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $value->LegOrder; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
+                                        <div class="row">
+                                            <div class="col-sm-5"><?php echo $value->Origin; ?></div>
+                                            <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
+                                            <div class="col-sm-5"><?php echo $value->Destination; ?></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </h5>
-                        </div>
+                                </h5>
+                            </div>
 
-                        <div id="collapse<?= $value->LegOrder; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <strong>Shipment Leg </strong>
-                                        <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
+                            <div id="collapse<?= $value->LegOrder; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Shipment Leg </strong>
+                                            <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>Origin Port</strong>
+                                            <p><?=  $value->Origin ?></p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>Destination Port</strong>
+                                            <p><?=  $value->Destination ?></p>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <strong>Origin Port</strong>
-                                        <p><?=  $value->Origin ?></p>
+                                    <div class="row">
+                                        <?php if(isset($value->ETD)): ?>
+                                        <div class="col-lg-6">
+                                            <strong>Estimated Departure </strong>
+                                            <p><?= $value->ETD; ?></p>
+                                        </div>
+                                        <?php endif; ?>
+                                        <?php if(isset($value->ETA)): ?>
+                                        <div class="col-lg-6">
+                                            <strong>Estimated Arrival</strong>
+                                            <p><?= $value->ETA; ?></p>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <strong>Destination Port</strong>
-                                        <p><?=  $value->Destination ?></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <strong>Vessel Name</strong>
-                                        <p><?= $value->VesselName; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Type</strong>
-                                        <p><?= $value->LegType; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Status</strong>
-                                        <p><?=  $value->BookingStatus ?></p>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Vessel Name</strong>
+                                            <p><?= $value->VesselName; ?></p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>Type</strong>
+                                            <p><?= $value->LegType; ?></p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>Status</strong>
+                                            <?php 
+                                                switch ($value->BookingStatus) {
+                                                    case 'CNF':
+                                                        $value = "Confirmed (".$value->BookingStatus.")";
+                                                        $class = "text-success";
+                                                        break;
+                                                    
+                                                    default:
+                                                        $value = "No Status";
+                                                        $class = "";
+                                                        break;
+                                                }
+                                            ?>
+                                            <p class="<?= $class; ?>"><?= $value; ?></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <span>No route data</span>
+                        <?php endif; ?>
                     </div>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
                 </div>
             </div>
             <div class="row">
