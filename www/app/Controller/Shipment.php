@@ -136,7 +136,7 @@ class Shipment extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-        $searchFilter = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/search-filter.json'));
+        $searchFilter = isset($User->getUserSettings($user)[0]->search) ? $User->getUserSettings($user)[0]->search : array();
         // echo "<pre>";
         // print_r($searchFilter);
         // exit();

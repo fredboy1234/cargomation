@@ -81,7 +81,11 @@ function invokeFilter(selected, index) {
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
   $.each(data, function(key, value) {
-    text += `<optgroup label="${key}">`;
+    var parseText = key.replace(/_/g," ");
+    parseText =  parseText.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+      return letter.toUpperCase();
+    });
+    text += `<optgroup label="${parseText}">`;
     $.each(value, function(key2, value2) {
       text += `<option data-type="${value2.filterType}" value="${value2.filterName}" data-index="${index}" `;
         if(value2.filterName == selected) {
@@ -524,8 +528,8 @@ $(document).ready(function () {
 
   //For Settings
   $('select[name="settings-dual"]').bootstrapDualListbox({
-    nonSelectedListLabel: 'Non-selected Settings',
-    selectedListLabel: 'Selected Settings',
+    nonSelectedListLabel: 'Available Columns',
+    selectedListLabel: 'Showing Columns',
     preserveSelectionOnMove: 'all',
     helperSelectNamePostfix: '_helper',
     sortByInputOrder: false,
@@ -1127,4 +1131,11 @@ $('#savefilter').on("click",function(){
   }
   
   //console.log(settingArray.length);
+});
+$(".fsearch").on("click",function(){
+  if($("#fsearch").hasClass("collapsed-card")){
+    $(".colp button").text("hide");
+  }else{
+    $(".colp button").text("show");
+  }
 });
