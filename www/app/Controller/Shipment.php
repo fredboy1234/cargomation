@@ -135,10 +135,7 @@ class Shipment extends Core\Controller {
             if( $img->image_src!="" && $img->image_type=='profile' ){
                 $profileImage = base64_decode($img->image_src);
             }
-        }
-        $searchFilter = isset($User->getUserSettings($user)[0]->search) ? $User->getUserSettings($user)[0]->search : array();
-        // echo "<pre>";
-        // print_r($searchFilter);
+        }// echo "<pre>";
         // exit();
         $this->View->renderTemplate("/shipment/index", [
             "title" => "Shipment View",
@@ -157,7 +154,6 @@ class Shipment extends Core\Controller {
             'role' => $role,
             'user_id' => $user,
             'selected_theme' => $selectedTheme,
-            'searchfilter' =>$searchFilter,
             //'shipment_from_contact'=> $emailList
         ]);
     }
@@ -1132,10 +1128,6 @@ class Shipment extends Core\Controller {
     }
 
     public function shipmentData($user_id = "") {
-        // Check if request is not empty
-        // if(empty($_REQUEST['order'])) {
-        //     die('Unauthorized!');
-        // }
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         if (!$user_id) {
@@ -1174,6 +1166,7 @@ class Shipment extends Core\Controller {
         }
         if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
             $arr["filter"] = $_POST['data'];
+            $User->putRecentSearch($user_id, $arr["filter"]);
         }
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
@@ -1373,5 +1366,20 @@ class Shipment extends Core\Controller {
         }
         curl_close($curl);
         return $response;
+    }
+
+    public function putSaveSearch() {
+        $user_id = $_POST['user_id'];
+        $data = $_POST['search'];
+        $User = Model\User::getInstance($user_id);
+        $test = $User->putSaveSearch($user_id, $data);
+        echo json_encode($test);
+    }
+
+    public function getRecentSave() {
+        $user_id = $_POST['user_id'];
+        $User = Model\User::getInstance($user_id);
+        $test = $User->getSaveSearch($user_id)[0];
+        echo json_encode($test);
     }
 }
