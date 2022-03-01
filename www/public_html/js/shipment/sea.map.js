@@ -1,6 +1,7 @@
+
 $(document).ready(function(){
 
-am4core.ready(function() {
+am4core.ready(function() {  
     // Create map instance
     var chart = am4core.create("chartdiv", am4maps.MapChart);
     // Set map definition
@@ -112,7 +113,7 @@ am4core.ready(function() {
     bullet.width = 48;
     bullet.height = 48;
 
-     var plane = bullet.createChild(am4core.Sprite);
+    var plane = bullet.createChild(am4core.Sprite);
     //var plane = bullet.createChild(am4core.Image);
     //plane.href = "svgs/freight/"+transImage+".svg";
     plane.scale = 0.004;
@@ -144,9 +145,9 @@ am4core.ready(function() {
         }, 5000, am4core.ease.sinInOut);
         //animation.events.on("animationended", animateMarker)
     }
-
+    
     chart.events.on( "ready", function(){
-         // zoomed when load
+        // zoomed when load
         chart.homeZoomLevel = 1.5;
         chart.homeGeoPoint = {
             latitude: pointObject[0].latitude,
@@ -156,6 +157,7 @@ am4core.ready(function() {
         imageSeries.data = pointObject;
         am4core.options.autoDispose = true;
         marker.tooltipHTML = tooltipHTML;
+
         
     });
 });

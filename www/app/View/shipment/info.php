@@ -222,7 +222,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="chartdiv" class="" style="position: relative; height: 300px;"></div>
+                    <div id="chartdiv" class="" style="position: relative; height: 300px;">
+                        <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <div id="accordion" class="mt-2">
@@ -359,6 +363,7 @@ switch ($transMode) {
 </style>
 <script src="/js/map.js"></script>
 <script>
+
 var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
 var combineRoute = [];
 var pointObject = [];
@@ -395,7 +400,9 @@ $(document).ready(function() {
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
 
-    $.each(route, function(key, value) {
+    var bar = new Promise((resolve, reject) => {
+        var cnt =0;
+        $.each(route, function(key, value) {
         combineRoute.push({
             "order": parseInt(value.LegOrder),
             "point": value.Origin,
@@ -408,42 +415,43 @@ $(document).ready(function() {
             "vessel": value.VesselName,
             "type": "Destination",
         });
-    });
-
-    $.each(combineRoute, function(key, value) {
-        // If point has back slash
-        if(value.point.includes("/")) {
-            value.point = value.point.split('/')[1];
-        }
-        var data = JSON.parse(getGeoData(value.point));
-        if(data.status === 'OK') {
-            var latitude = data.results[0].geometry.location.lat;
-            var longitude = data.results[0].geometry.location.lng;
-            pointObject.push({
-                "latitude": latitude,
-                "longitude": longitude,
-                "title": value.point,
-                "order": value.order,
-                "vessel": value.vessel,
-                "type": value.type
-            });
-        }
-    });
-
-    function getGeoData( location ) {
-        var result = null;
-        var scriptUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo';
-        $.ajax({
-            url: scriptUrl,
-            type: 'get',
-            dataType: 'html',
-            async: false,
-            success: function(data) {
-                result = data;
-            } 
         });
-        return result;
-    }
+        $.each(combineRoute, function(key, value) {
+            // If point has back slash
+            if(value.point.includes("/")) {
+                value.point = value.point.split('/')[1];
+            }
+            var data = null;
+            cnt++;
+            $.ajax({
+                url: document.location.origin + '/shipment/getCity/',
+                type: "POST",
+                dataType: "json",
+                data: { location: value.point },
+                success: function (res) {
+                    data = res;
+                    
+                    if(typeof data != null) {
+                        var latitude = data[0].lat
+                        var longitude = data[0].lng;
+                        pointObject.push({
+                            "latitude": latitude,
+                            "longitude": longitude,
+                            "title": value.point,
+                            "order": value.order,
+                            "vessel": value.vessel,
+                            "type": value.type
+                        });
+                    }
+                }
+            }); 
+            if(combineRoute.length ===cnt){
+                resolve();
+            }
+        });
+        
+    });
+
 
     function toggleChevron(e) {
         $(e.target)
@@ -451,16 +459,18 @@ $(document).ready(function() {
             .find("i.chevron")
             .toggleClass("fa-chevron-down fa-chevron-up");
     }
-
-    pointObject.sort((a, b) => {
-        return a.order - b.order;
+   
+    bar.then(() => {
+        setTimeout(function(){
+                pointObject.sort((a, b) => { return a.order - b.order;});
+                
+                if(transmode === "Sea"){
+                    $.getScript("/js/shipment/sea.map.js", function() {}); 
+                }else{
+                    $.getScript("/js/shipment/air.map.js", function() {}); 
+                } 
+        },2500);
     });
+     
 });
 </script>
-<?php
-    if($transMode === 'Sea'){
-        echo '<script src="/js/shipment/sea.map.js"></script>';
-    }else{
-        echo '<script src="/js/shipment/air.map.js"></script>';
-    }
-?>

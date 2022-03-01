@@ -32,34 +32,59 @@ $(document).ready(function(){
         // Remove Antarctica
         polygonSeries.exclude = ["AQ"];
       
-      
-        // Add line series
-        var lineSeries = chart.series.push(new am4maps.MapLineSeries());
-        lineSeries.mapLines.template.strokeWidth = 2;
-        lineSeries.mapLines.template.stroke = am4core.color("#00ff00");
-        lineSeries.mapLines.template.nonScalingStroke = true;
-        // lineSeries.mapLines.template.line.strokeOpacity = 0.5;
-        // lineSeries.mapLines.template.line.strokeDasharray = "3,3";
+      // Create image series
+      var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+        
+      // Create a circle image in image series template so it gets replicated to all new images
+      var imageSeriesTemplate = imageSeries.mapImages.template;
+      // var circle = imageSeriesTemplate.createChild(am4core.Circle);
+      // circle.radius = 8;
+      // circle.fill = am4core.color("#007bff");
+      // circle.stroke = am4core.color("#FFFFFF");
+      // circle.strokeWidth = 3;
+      // circle.nonScaling = true;
+      // circle.tooltipText = "{title}";
+      var marker = imageSeriesTemplate.createChild(am4core.Image);
+      marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
+      marker.width = 20;
+      marker.height = 20;
+      marker.color = "#333";
+      marker.fill = am4core.color("#007bff");
+      marker.nonScaling = true;
+      marker.tooltipText = "{title}";
+      marker.horizontalCenter = "middle";
+      marker.verticalCenter = "bottom";
+    
+      // Set property fields
+      imageSeriesTemplate.propertyFields.latitude = "latitude";
+      imageSeriesTemplate.propertyFields.longitude = "longitude";
+       
+    // Add line series
+    var lineSeries = chart.series.push(new am4maps.MapLineSeries());
+    lineSeries.mapLines.template.strokeWidth = 2;
+    lineSeries.mapLines.template.stroke = am4core.color("#00ff00");
+    lineSeries.mapLines.template.nonScalingStroke = true;
+    // lineSeries.mapLines.template.line.strokeOpacity = 0.5;
+    // lineSeries.mapLines.template.line.strokeDasharray = "3,3";
         
         // Add line bullets
-      var cities = chart.series.push(new am4maps.MapImageSeries());
-      cities.mapImages.template.nonScaling = true;
+    var cities = chart.series.push(new am4maps.MapImageSeries());
+    cities.mapImages.template.nonScaling = true;
       
-      var city = cities.mapImages.template.createChild(am4core.Circle);
-      city.radius = 0;
-      city.fill = chart.colors.getIndex(0).brighten(-0.2);
-      city.strokeWidth = 2;
-      city.stroke = am4core.color("#fff");
-      
-      function addCity(coords, title) {
-          var city = cities.mapImages.create();
-          city.latitude = coords.latitude;
-          city.longitude = coords.longitude;
-          city.tooltipText = title;
-          return city;
-      }
-      
-      
+    var city = cities.mapImages.template.createChild(am4core.Circle);
+    city.radius = 0;
+    city.fill = chart.colors.getIndex(0).brighten(-0.2);
+    city.strokeWidth = 2;
+    city.stroke = am4core.color("#fff");
+    
+    function addCity(coords, title) {
+        var city = cities.mapImages.create();
+        city.latitude = coords.latitude;
+        city.longitude = coords.longitude;
+        city.tooltipText = title;
+        return city;
+    }
+     
       // Add lines
       var lineSeries = chart.series.push(new am4maps.MapArcSeries());
       lineSeries.mapLines.template.line.strokeWidth = 2;
@@ -87,14 +112,13 @@ $(document).ready(function(){
       }
       
       $.each(groupArrayOfObjects(pointObject,"order"),function(gkey,gval){
-          //console.log(gval);
           var l1 = addCity({ "latitude": gval[0].latitude, "longitude": gval[0].longitude }, tooltipHTML);
           var l2 = addCity({ "latitude": gval[1].latitude, "longitude": gval[1].longitude }, tooltipHTML);
           addlinearray.push({from:l1,to:l2});
       });
       
       $.each(addlinearray,function(adkey,adval){
-       // console.log(adval);
+       console.log(adval);
         addLine(adval['from'], adval['to']);
       });
       
@@ -109,7 +133,7 @@ $(document).ready(function(){
       })
       
       var planeImage = plane.createChild(am4core.Sprite);
-      planeImage.scale = 0.02;
+      planeImage.scale = 0.3;
       planeImage.horizontalCenter = "middle";
       planeImage.verticalCenter = "middle";
       planeImage.path = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
@@ -122,7 +146,7 @@ $(document).ready(function(){
       shadowPlane.height = 48;
       
       var shadowPlaneImage = shadowPlane.createChild(am4core.Sprite);
-      shadowPlaneImage.scale = 0.02;
+      shadowPlaneImage.scale = 0.1;
       shadowPlaneImage.horizontalCenter = "middle";
       shadowPlaneImage.verticalCenter = "middle";
       shadowPlaneImage.path = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
@@ -187,48 +211,19 @@ $(document).ready(function(){
           }
       
       }
-      
-      
-        // Create image series
-        var imageSeries = chart.series.push(new am4maps.MapImageSeries());
-        
-        // Create a circle image in image series template so it gets replicated to all new images
-        var imageSeriesTemplate = imageSeries.mapImages.template;
-        // var circle = imageSeriesTemplate.createChild(am4core.Circle);
-        // circle.radius = 8;
-        // circle.fill = am4core.color("#007bff");
-        // circle.stroke = am4core.color("#FFFFFF");
-        // circle.strokeWidth = 3;
-        // circle.nonScaling = true;
-        // circle.tooltipText = "{title}";
-        var marker = imageSeriesTemplate.createChild(am4core.Image);
-        marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
-        marker.width = 20;
-        marker.height = 20;
-        marker.color = "#333";
-        marker.fill = am4core.color("#007bff");
-        marker.nonScaling = true;
-        marker.tooltipText = "{title}";
-        marker.horizontalCenter = "middle";
-        marker.verticalCenter = "bottom";
-      
-        // Set property fields
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-      
-      
-        // zoomed when load
-        chart.homeZoomLevel = 1.5;
-        chart.homeGeoPoint = {
-            latitude: pointObject[0].latitude,
-            longitude: pointObject[1].longitude
-        };
-      
+      console.log(pointObject);
         chart.events.on( "ready", function(){
+            chart.homeZoomLevel = 1.5;
+            chart.homeGeoPoint = {
+                latitude: pointObject[0].latitude,
+                longitude: pointObject[1].longitude
+            };
             flyPlane();
             imageSeries.data = pointObject;
             am4core.options.autoDispose = true;
             marker.tooltipHTML = tooltipHTML;
+
+            
         });
         
       });

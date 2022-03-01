@@ -485,4 +485,9 @@ class Shipment extends Core\Model {
 
     }
 
+    public function getCity($location){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT top(1) * FROM worldcities WHERE city like '{$location}' ";
+        return $Db->query($query)->results();
+    }
 }
