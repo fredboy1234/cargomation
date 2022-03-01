@@ -317,15 +317,16 @@
 </div>
 <?php
 $transImage = "";
-switch ($this->shipment_info[0]->transport_mode) {
+$transMode = $this->shipment_info[0]->transport_mode;
+switch ($transMode) {
     case 'Sea':
-        $transImage = "ship";
+        $transImage = "M1320 5720 l0 -320 -301 0 c-316 0 -329 -2 -329 -45 0 -22 -281 -679 -292 -683 -4 -2 -8 -12 -8 -22 0 -10 -4 -20 -10 -22 -5 -1 -14 -23 -19 -48 -5 -25 -37 -120 -70 -212 -119 -327 -164 -544 -164 -798 0 -256 36 -436 159 -795 41 -121 78 -232 81 -248 3 -15 9 -27 14 -27 5 0 9 -10 9 -22 0 -13 7 -36 16 -53 17 -33 261 -631 278 -682 6 -18 14 -33 18 -33 5 0 8 -7 8 -15 0 -13 41 -15 305 -15 l305 0 0 -290 0 -290 405 0 405 0 0 290 0 290 3510 0 3510 0 29 28 c16 15 161 103 323 196 623 361 1044 620 1308 806 67 47 142 100 168 117 26 18 79 61 117 95 197 176 309 313 355 435 28 72 37 185 20 261 -28 132 -149 307 -313 454 -50 45 -99 90 -108 100 -9 10 -19 18 -22 18 -3 0 -63 44 -133 97 -245 184 -646 442 -1289 828 -209 126 -384 235 -388 242 -4 7 -16 13 -27 13 -10 0 -20 6 -22 13 -4 9 -719 13 -3521 15 l-3517 2 0 320 0 320 -405 0 -405 0 0 -320z m6760 -1005 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-5140 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m400 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m380 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m2470 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m450 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m1830 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-2740 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m1460 -230 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m390 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-2430 -80 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-860 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m430 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m5007 -141 c151 -31 260 -90 368 -199 283 -286 231 -746 -110 -974 -351 -234 -843 -112 -1025 255 -66 132 -85 268 -56 404 76 357 451 591 823 514z m-1647 -279 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-4340 -20 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m4760 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-5590 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m420 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m3330 -40 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-980 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m510 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m1420 -420 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-2470 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m2070 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-2510 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-440 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-530 -320 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-410 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-430 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m5180 -160 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m400 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-1800 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-1000 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m480 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-970 -290 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-500 -20 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-450 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m2940 -110 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m410 0 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-3850 -160 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-410 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205z m-450 -10 l0 -205 -125 0 -125 0 0 205 0 205 125 0 125 0 0 -205zM9435 3788 c-3 -8 -4 -97 -3 -198 l3 -185 40 0 40 0 3 83 3 82 74 0 75 0 0 -86 0 -85 38 3 37 3 0 195 0 195 -37 3 -38 3 0 -80 0 -81 -75 0 -74 0 -3 78 -3 77 -38 3 c-24 2 -39 -1 -42 -10z";
         break;
     case 'Air':
-        $transImage = "plane";
+        $transImage = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
         break;    
     default:
-        $transImage = "truck";
+        $transImage = "M34.533,390.596c-10.214,8.754-17.231,21.053-19.316,35.02H6.949c-3.822,0-6.949-3.127-6.949-6.949v-21.123   c0-3.822,3.126-6.947,6.949-6.947H34.533L34.533,390.596z M114.159,425.615c0.556,2.709,0.834,5.418,0.834,8.268   c0,23.832-19.316,43.217-43.218,43.217c-23.832,0-43.218-19.385-43.218-43.217c0-2.85,0.277-5.559,0.833-8.268   c3.821-19.943,21.331-35.02,42.384-35.02S110.407,405.672,114.159,425.615z M93.384,433.883c0-2.918-0.555-5.768-1.667-8.268   c-3.196-7.852-10.909-13.342-19.941-13.342c-9.033,0-16.745,5.49-19.942,13.342c-1.112,2.5-1.667,5.35-1.667,8.268   c0,11.881,9.658,21.609,21.609,21.609C83.727,455.492,93.384,445.764,93.384,433.883z M17.106,362.873V155.745   c0-11.512,9.333-20.845,20.845-20.845h332.125c11.513,0,20.845,9.333,20.845,20.845v207.128c0,3.82-3.126,6.947-6.948,6.947H24.055   C20.233,369.82,17.106,366.693,17.106,362.873z M340.476,339.488c0,3.299,2.674,5.973,5.973,5.973h0.186   c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186c-3.299,0-5.973,2.674-5.973,5.972V339.488z    M284.314,339.488c0,3.299,2.673,5.973,5.971,5.973h0.186c3.299,0,5.972-2.674,5.972-5.973V167.625   c0-3.298-2.673-5.972-5.972-5.972h-0.186c-3.298,0-5.971,2.674-5.971,5.972V339.488z M228.151,339.488   c0,3.299,2.674,5.973,5.972,5.973h0.186c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186   c-3.298,0-5.972,2.674-5.972,5.972V339.488z M171.99,339.488c0,3.299,2.674,5.973,5.972,5.973h0.186   c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186c-3.298,0-5.972,2.674-5.972,5.972V339.488z    M115.828,339.488c0,3.299,2.673,5.973,5.972,5.973h0.186c3.298,0,5.971-2.674,5.971-5.973V167.625   c0-3.298-2.673-5.972-5.971-5.972H121.8c-3.299,0-5.972,2.674-5.972,5.972V339.488z M59.666,339.488   c0,3.299,2.674,5.973,5.972,5.973h0.186c3.299,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.673-5.972-5.972-5.972h-0.186   c-3.298,0-5.972,2.674-5.972,5.972V339.488z M220.815,425.615c0.556,2.709,0.834,5.418,0.834,8.268   c0,23.832-19.316,43.217-43.218,43.217c-23.833,0-43.218-19.385-43.218-43.217c0-2.85,0.278-5.559,0.833-8.268   c3.822-19.943,21.332-35.02,42.385-35.02S217.063,405.672,220.815,425.615z M200.04,433.883c0-2.918-0.556-5.768-1.598-8.268   c-3.266-7.852-10.979-13.342-20.011-13.342s-16.746,5.49-20.011,13.342c-1.042,2.5-1.598,5.35-1.598,8.268   c0,11.881,9.658,21.609,21.61,21.609C190.382,455.492,200.04,445.764,200.04,433.883z M141.188,390.596h-32.169   c7.087,6.113,12.715,13.965,16.12,22.859C128.473,404.562,134.101,396.709,141.188,390.596z M612,397.543v21.123   c0,3.822-3.127,6.949-6.948,6.949h-56.28c-4.03-27.586-27.724-48.916-56.42-48.916s-52.459,21.33-56.489,48.916H234.989   c-2.084-13.967-9.102-26.266-19.316-35.02H410.78V191.876c0-7.644,6.183-13.897,13.896-13.897h65.592   c18.482,0,35.714,9.172,46.065,24.458l42.315,62.673c6.184,9.172,9.519,20.011,9.519,31.058v94.427h16.884   C608.873,390.596,612,393.721,612,397.543z M541.545,266.708l-33.838-48.082c-1.32-1.806-3.404-2.918-5.697-2.918h-52.736   c-3.821,0-6.949,3.126-6.949,6.949v48.012c0,3.891,3.128,6.948,6.949,6.948h86.574   C541.477,277.617,544.741,271.294,541.545,266.708z M535.569,433.883c0,23.832-19.385,43.217-43.218,43.217   c-23.902,0-43.218-19.385-43.218-43.217c0-23.902,19.316-43.287,43.218-43.287C516.185,390.596,535.569,409.98,535.569,433.883z    M513.961,433.883c0-11.951-9.658-21.609-21.609-21.609s-21.609,9.658-21.609,21.609c0,11.881,9.658,21.609,21.609,21.609   S513.961,445.764,513.961,433.883z";
         break;
 } ?>
 </div>
@@ -358,16 +359,12 @@ switch ($this->shipment_info[0]->transport_mode) {
 </style>
 <script src="/js/map.js"></script>
 <script>
-$(document).ready(function() {  
-    $(".collapse").on("hidden.bs.collapse", toggleChevron);
-    $(".collapse").on("shown.bs.collapse", toggleChevron);
-
-    var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
-    var combineRoute = [];
-    var pointObject = [];
-    var transImage = "<?= $transImage ?>";
-
-    var tooltipHTML = `<center><strong>{vessel}</strong></center>
+var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
+var combineRoute = [];
+var pointObject = [];
+var transImage = "<?= $transImage ?>";
+var transmode = "<?=$transMode?>";
+var tooltipHTML = `<center><strong>{vessel}</strong></center>
         <hr />
         <div class="row">
             <div class="col-lg-6">
@@ -394,6 +391,9 @@ $(document).ready(function() {
         <center>
             <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
         </center>`;
+$(document).ready(function() {  
+    $(".collapse").on("hidden.bs.collapse", toggleChevron);
+    $(".collapse").on("shown.bs.collapse", toggleChevron);
 
     $.each(route, function(key, value) {
         combineRoute.push({
@@ -455,212 +455,12 @@ $(document).ready(function() {
     pointObject.sort((a, b) => {
         return a.order - b.order;
     });
-
-    am4core.ready(function() {
-        // Create map instance
-        var chart = am4core.create("chartdiv", am4maps.MapChart);
-
-        // Set map definition
-        chart.geodata = am4geodata_worldLow;
-
-        // Set projection
-        chart.projection = new am4maps.projections.Miller();
-
-        // Create map polygon series
-        var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-
-        // Make map load polygon (like country names) data from GeoJSON
-        polygonSeries.useGeodata = true;
-
-        // Configure series
-        var polygonTemplate = polygonSeries.mapPolygons.template;
-        polygonTemplate.tooltipText = "{name}";
-        // polygonTemplate.fill = am4core.color("#74B266");
-        polygonTemplate.events.on("hit", function(ev) {
-            ev.target.series.chart.zoomToMapObject(ev.target);
-        });
-        // chart.seriesContainer.draggable = false;
-        // chart.seriesContainer.resizable = false;
-
-        /* Create hover state and set alternative fill color */
-        var hs = polygonTemplate.states.create("hover");
-        hs.properties.fill = am4core.color("#367B25");
-
-        // Remove Antarctica
-        polygonSeries.exclude = ["AQ"];
-
-        // Add some data
-        // polygonSeries.data = [{
-        //         "id": "US",
-        //         "name": "United States",
-        //         "value": 100
-        //     }, {
-        //         "id": "FR",
-        //         "name": "France",
-        //         "value": 50
-        // }];
-
-        // Add line series
-        var lineSeries = chart.series.push(new am4maps.MapLineSeries());
-        lineSeries.mapLines.template.strokeWidth = 4;
-        lineSeries.mapLines.template.stroke = am4core.color("#00ff00");
-        lineSeries.mapLines.template.nonScalingStroke = true;
-        // lineSeries.mapLines.template.line.strokeOpacity = 0.5;
-        // lineSeries.mapLines.template.line.strokeDasharray = "3,3";
-
-        // Create image series
-        var imageSeries = chart.series.push(new am4maps.MapImageSeries());
-
-        // Lets mouse hover over tooltip without it vanishing
-        imageSeries.tooltip.keepTargetHover = true;
-
-        // Enables interactivity of the tooltips label elements
-        imageSeries.tooltip.label.interactionsEnabled = true;
-
-        // Create a circle image in image series template so it gets replicated to all new images
-        var imageSeriesTemplate = imageSeries.mapImages.template;
-        // var circle = imageSeriesTemplate.createChild(am4core.Circle);
-        // circle.radius = 8;
-        // circle.fill = am4core.color("#007bff");
-        // circle.stroke = am4core.color("#FFFFFF");
-        // circle.strokeWidth = 3;
-        // circle.nonScaling = true;
-        // circle.tooltipText = "{title}";
-        var marker = imageSeriesTemplate.createChild(am4core.Image);
-        marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
-        marker.width = 20;
-        marker.height = 20;
-        marker.color = "#333";
-        marker.fill = am4core.color("#007bff");
-        marker.nonScaling = true;
-        // marker.tooltipText = "{title}";
-        
-        marker.horizontalCenter = "middle";
-        marker.verticalCenter = "bottom";
-
-        // Set property fields
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-
-        var line = lineSeries.mapLines.create();
-
-        // Add a map object to line
-        var arrow = line.arrow;
-        arrow.color = am4core.color("#00ff00");
-        arrow.position = 1;
-        arrow.nonScaling = true;
-
-        var test = [];
-        test.push(pointObject);
-        line.multiGeoLine = test;
-
-        // Add a map object to line
-        var bullet = line.lineObjects.create();
-        bullet.nonScaling = true;
-        bullet.position = 0;
-        bullet.width = 48;
-        bullet.height = 48;
-
-        // var plane = bullet.createChild(am4core.Sprite);
-        var plane = bullet.createChild(am4core.Image);
-        plane.href = "svgs/freight/"+transImage+".svg";
-        // plane.scale = 0.15;
-        plane.horizontalCenter = "middle";
-        plane.verticalCenter = "middle";
-        // plane.path = "";
-        // plane.path = "M272 288h-64C163.8 288 128 323.8 128 368C128 376.8 135.2 384 144 384h192c8.836 0 16-7.164 16-16C352 323.8 316.2 288 272 288zM240 256c35.35 0 64-28.65 64-64s-28.65-64-64-64c-35.34 0-64 28.65-64 64S204.7 256 240 256zM496 320H480v96h16c8.836 0 16-7.164 16-16v-64C512 327.2 504.8 320 496 320zM496 64H480v96h16C504.8 160 512 152.8 512 144v-64C512 71.16 504.8 64 496 64zM496 192H480v96h16C504.8 288 512 280.8 512 272v-64C512 199.2 504.8 192 496 192zM384 0H96C60.65 0 32 28.65 32 64v384c0 35.35 28.65 64 64 64h288c35.35 0 64-28.65 64-64V64C448 28.65 419.3 0 384 0zM400 448c0 8.836-7.164 16-16 16H96c-8.836 0-16-7.164-16-16V64c0-8.838 7.164-16 16-16h288c8.836 0 16 7.162 16 16V448z";
-        // plane.fill = am4core.color("#3e96e0");
-        // plane.strokeOpacity = 0;
-
-        function animateMarker() {
-            var from = bullet.position, to;
-            if (from == 0) {
-                to = 1;
-                plane.rotation = 0;
-            }
-            else {
-                to = 0;
-                plane.rotation = 180;
-            }
-            
-            var animation = bullet.animate({
-                from: from,
-                to: to,
-                property: "position"
-            }, 5000, am4core.ease.sinInOut);
-            //animation.events.on("animationended", animateMarker)
-        }
-
-        // zoomed when load
-        chart.homeZoomLevel = 1.5;
-        chart.homeGeoPoint = {
-            latitude: pointObject[0].latitude,
-            longitude: pointObject[1].longitude
-        };
-
-        chart.events.on( "ready", function(){
-            animateMarker();
-            imageSeries.data = pointObject;
-            am4core.options.autoDispose = true;
-            marker.tooltipHTML = tooltipHTML;
-        });
-        // setTimeout(function(){
-        //     // Add data for the point
-        //     imageSeries.data = pointObject;
-        //     line.multiGeoLine = test;
-        // },2000);
-
-        // when marker click
-        // imageSeriesTemplate.events.on("hit", (ev)=>{
-        //     console.log(ev.target.dataItem.dataContext.order)
-        //     var id = ev.target.dataItem.dataContext.order;
-        //     $('#collapse' + id).collapse('toggle');
-        // })
-
-        // when collapse shown animate marker
-        // $('.collapse').on('shown.bs.collapse', function () {
-        //     animateMarker();
-        // });
-
-        // var sampleData =
-        // [
-        //     [
-        //         {
-        //             "latitude": 10.8230989,
-        //             "longitude": 106.6296638,
-        //             "title": "Ho Chi Minh City",
-        //             "order": 1
-        //         },
-        //         {
-        //             "latitude": 1.352083,
-        //             "longitude": 103.819836,
-        //             "title": "Singapore",
-        //             "order": 1
-        //         }
-        //     ], 
-        //     [
-        //         {
-        //             "latitude": 1.352083,
-        //             "longitude": 103.819836,
-        //             "title": "Singapore",
-        //             "order": 2
-        //         },
-        //         {
-        //             "latitude": -33.8688197,
-        //             "longitude": 151.2092955,
-        //             "title": "Sydney",
-        //             "order": 2
-        //         }
-        //     ]
-        // ];
-
-        // function groupArrayOfObjects(list, key) {
-        //     return list.reduce(function(rv, x) {
-        //         (rv[x[key]] = rv[x[key]] || []).push(x);
-        //         return rv;
-        //     }, {});
-        // };
-        // var data2 = groupArrayOfObjects(pointObject,"order");
-    });
 });
 </script>
+<?php
+    if($transMode === 'Sea'){
+        echo '<script src="/js/shipment/sea.map.js"></script>';
+    }else{
+        echo '<script src="/js/shipment/air.map.js"></script>';
+    }
+?>
