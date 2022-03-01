@@ -6,6 +6,7 @@
 
 $(document).ready(function () {
   invokeFilter("", 1);
+  loadRecentSave();
   
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
@@ -145,20 +146,6 @@ function addSearchFilter(selected) {
   invokeFilter(selected, index);
 }
 
-if(searchfilter.length > 0){
-  
-  $(JSON.parse(searchfilter)).each(function(k,v){
-    addSearchFilter(v.filterName);
-    var xdex = $(".form_field_outer .form_field_outer_row").map(function() {
-      return parseFloat($(this).attr('section'));
-  }).get().sort().pop();
-    setTimeout(function(){
-      $("#no_search_"+xdex).trigger("change");
-    },300);
-  
-  });
-}
- 
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
   '<div class="spinner-border" role="status">' +
   '<span class="sr-only">Loading...</span>' +
@@ -1108,22 +1095,29 @@ $(document).on("change", "[id*='no_type_']",function(){
 
 $('#savefilter').on("click",function(){
   var settingArray = [];
-  $('[id*="no_search_"]').each(function(key,value){
-    var $this = $(this);
-    if($this.val() && $this.val().length > 0){
-      var name = $this.val().replace("_"," ");
-      name = name.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-        return letter.toUpperCase();
+  $(".form_field_outer_row").each(function(){
+    var search = $(this).find("[name*='search']").val(); //*= means like
+    var type = $(this).find("[name*='type']").val(); 
+    var value = $(this).find("[name*='value']").val(); 
+    var cond = $(this).find("[name*='cond']").val();
+    if($(this).find("[name*='cond']").hasClass('exclude')) {
+        cond = "";
+    } 
+    if(typeof value !== null || value.length > 0){
+      settingArray.push({
+          "columnname": search,
+          "type": type,
+          "value": value.toUpperCase(),
+          "cond": cond
       });
-      settingArray.push({filterID:name,filterName:$this.val()});
-    }  
+    } 
   });
 
   if(settingArray.length > 0){
     $.ajax({
-          url: "/doctracker/saveSearchSettings",
+          url: "/shipment/putSaveSearch",
           type: "POST",
-          data: {data:settingArray},
+          data: {user_id:user_id, search:settingArray},
           success: function (res) {
             Swal.fire('Settings Save Successfully!');
           }
@@ -1139,3 +1133,130 @@ $(".fsearch").on("click",function(){
     $(".colp button").text("show");
   }
 });
+
+// vert-tabs-save-tab
+$('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
+  loadRecentSave();
+});
+
+// Load Recent/Save Search
+$('#loadSearch').on('click', function() {
+  var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
+  const myArray = text.split(",");
+  if(myArray.length > 0){
+    $(".form_field_outer_row:not(:first)").remove();
+    $("#no_value_1").val("");
+    $("#no_search_1").val("");
+    $("#no_type_1").val("");
+    $("#add_filters option").each(function(){
+      $(this).attr("data-index",1);
+    });
+    var length = myArray.length;
+    $(myArray).each(function(k,v){
+      var field = v.split(':');
+      if(k < (length - 1)) {
+        addSearchFilter(field[0]);
+      }
+      var xdex = k + 1; // 0 
+      setTimeout(function(){
+        $("#no_search_"+xdex).change();
+        $("#no_search_"+xdex)
+            .val(field[0])
+            .trigger('change');
+        $("#no_value_"+xdex).val(field[1]);
+      },300);
+ 
+    });
+  }
+  console.log(myArray);
+  $('a[href="#vert-tabs-search"]').tab('show');
+});
+
+// Reset Recent/Save Search
+$('#resetSearch').on('click', function() {
+  $("#save_search, #recent_search").prop('selectedIndex', -1);
+});
+
+// Toggle when select
+$("#save_search").on('change', function(e) {
+  // alert( $(this).find(":selected").val() );
+  $("#recent_search").prop('selectedIndex', -1);
+  $('#query_text').html(this.value);
+});
+$("#recent_search").on('change', function(e) {
+  $("#save_search").prop('selectedIndex', -1);
+  $('#query_text').html(this.value);
+});
+
+// Delete Recent/Save Search
+$('#deleteSearch').on('click', function() {
+  $('select').find(":selected").hide();
+});
+
+// Func Recent/Save Search
+function loadRecentSave() {
+  $.ajax({
+    url: "/shipment/getRecentSave/",
+    type: "post",
+    data: {user_id:user_id},
+    dataType: "json",
+    beforeSend: function (res) {
+      console.log("loading...");
+      $("body").append(loader);
+    },
+    success: function (res) {
+      $('#loader-wrapper').remove();
+      const search_obj = JSON.parse(res.search);
+      const recent_obj = JSON.parse(res.recent);
+      var search_html = "";
+      var recent_html = "";
+      for (const key in search_obj) {
+        if (Object.hasOwnProperty.call(search_obj, key)) {
+          const search = search_obj[key].search_query;
+          var search_value = "";
+          var search_data = "";
+          for (const key2 in search) {
+            if (Object.hasOwnProperty.call(search, key2)) {
+              var columnname = search[key2].columnname;
+              var value = search[key2].value;
+              search_value += columnname + " : " + value + "<br>";
+              search_data += columnname + ":" + value + ",";
+            }
+          }
+          const text_save = search[0].columnname;
+          search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+          text_save.replaceAll('_', ' ').toUpperCase() + 
+          " ("+search[0].value+")" +
+          '</option>';
+        }
+      }
+      for (const key in recent_obj) {
+        if (Object.hasOwnProperty.call(recent_obj, key)) {
+          const recent = recent_obj[key].search_query;
+          var recent_value = "";
+          var recent_data = "";
+          for (const key2 in recent) {
+            if (Object.hasOwnProperty.call(recent, key2)) {
+              var columnname = recent[key2].columnname;
+              var value = recent[key2].value;
+              recent_value += columnname + " : " + value + "<br>";
+              recent_data += columnname + ":" + value + ",";
+            }
+          }
+          const text_recent = recent[0].columnname;
+          recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+          text_recent.replaceAll('_', ' ').toUpperCase() + 
+          " ("+recent[0].value+")" +
+          '</option>';
+          
+        }
+      }
+      $('#save_search').html(search_html);
+      $('#recent_search').html(recent_html);
+      
+    }
+  }).done(function() {
+    $('#loader-wrapper').remove();
+  });;
+}
+loadRecentSave()

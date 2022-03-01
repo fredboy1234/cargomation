@@ -98,7 +98,6 @@
   font-size: 18px;
 }
 </style>
-<?php $searchfilter = $this->searchfilter?>
 <section class="content">
     <div class="container-fluid">
         <div id="fsearch" class="card card-default collapsed-card">
@@ -120,12 +119,12 @@
                             <div class="col-12 col-lg-2 col-md-2 col-sm-12">
                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="vert-tabs-search-tab" data-toggle="pill" href="#vert-tabs-search" role="tab" aria-controls="vert-tabs-search" aria-selected="true">Advanced Search</a>
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
+                                    <a class="nav-link" id="vert-tabs-save-tab" data-toggle="pill" href="#vert-tabs-save" role="tab" aria-controls="vert-tabs-save" aria-selected="false">Save/Recent Search List</a>
                                     <!-- 
                                     <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Profile</a>
                                     <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
                                     -->
-                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
-                                    <a class="nav-link d-none" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-assign" role="tab" aria-controls="vert-tabs-assign" aria-selected="false">Assign Shipment</a>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-10 col-md-10 col-sm-12">
@@ -136,19 +135,10 @@
                                             <?php 
                                               include(VIEW_PATH."_template/module/searchfilter.php");
                                             ?>
-                                                <!-- /.row -->
                                             </form>
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>
-                                    <!--
-                                    <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
-                                        Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
-                                    </div>
-                                    <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
-                                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna. 
-                                    </div>
-                                    -->
                                     <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
                                         <div class="tab-pane" id="settings">
                                             <select multiple="multiple" size="10" name="settings-dual" title="settings-dual">
@@ -170,48 +160,57 @@
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>
-                                    <div class="tab-pane fade" id="vert-tabs-assign" role="tabpanel" aria-labelledby="vert-tabs-assign-tab">
-                                        <div class="tab-pane" id="assign">
-                                            <span>Available User with Shipment:</span><br>
-                                            <?php if (!empty($this->shipment_from_contact['shipment_contact'])) { ?>
-                                                <?php $sh = $this->shipment_from_contact['shipment_contact']; ?>
-                                                <?php $random_color = array("btn-primary", "btn-secondary", "btn-warning", "btn-success", "btn-danger"); ?>
-                                                <ul>
-                                                    <?php foreach ($sh as $k => $s) { ?>
-                                                        <li class="dropdown  dropright">
-                                                            <p class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <?php echo $k ?>
-                                                            </p>
-                                                            <div id="drop-list" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                <div class="drop-act-search dropdown-item-text">
-                                                                    <input onkeyup="filterFunction()" class="mb-3 form-control" type="text" placeholder="Search Shipment">
-                                                                </div>
-                                                                <?php foreach ($s as $sc) { ?>
-                                                                    <a class="dropdown-item" href="#" data-search="<?= $sc->shipment_num ?>">
-                                                                        <span> <?= $sc->shipment_num ?></span>
-                                                                        <?php if ($sc->shipment_assigned == 'not-assigned') { ?>
-                                                                            <button type="button" class="btn-assign btn d-inline-block btn-success btn-sm" data-userid="<?= $sc->userid ?>" data-shipid="<?= $sc->shipmentid ?>">
-                                                                                Assign
-                                                                            </button>
-                                                                        <?php } else { ?>
-                                                                            <button type="button" class="btn-unassign btn d-inline-block btn-danger btn-sm" data-userid="<?= $sc->userid ?>" data-shipid="<?= $sc->shipmentid ?>">Unassign</button>
-                                                                        <?php } ?>
-
-                                                                    </a>
-                                                                <?php } ?>
-                                                                <div class="drop-act dropdown-item-text">
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <button type="button" class="btn d-inline-block btn-primary btn-sm" id="assignall">Assign All</button>
-                                                                    <button type="button" class="btn d-inline-block btn-danger btn-sm" id="unassign">Unassign All</button>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    <?php } ?>
-                                                </ul>
-                                            <?php } ?>
+                                    <div class="tab-pane fade" id="vert-tabs-save" role="tabpanel" aria-labelledby="vert-tabs-save-tab">
+                                        <div class="tab-pane" id="save">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Save Search</label>
+                                                        <select id="save_search" multiple="" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Search Query</label>
+                                                        <div id="query_text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Recent Search</label>
+                                                        <select id="recent_search" multiple="" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mt-2">
+                                                    <button type="button" id="resetSearch" class="btn btn-warning">
+                                                        <i class="fas fa-undo"></i> Reset Selection
+                                                    </button>
+                                                    <button type="button" id="deleteSearch" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i> Delete Query
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6 mt-2 text-right">
+                                                    <button type="button" id="loadSearch" class="btn btn-success">
+                                                        <i class="fas fa-search"></i> Load Search
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>
+                                    <!--
+                                    <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+                                        Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
+                                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna. 
+                                    </div>
+                                    -->
                                 </div>
                             </div>
                         </div>
@@ -415,5 +414,4 @@
     var theme = <?php echo json_encode($this->selected_theme) ?>;
     var user_id = <?php echo $this->user_id ?>;
     var role_id = <?php echo $this->role->role_id ?>;
-    var searchfilter = <?php echo json_encode($this->searchfilter)?>;
 </script>
