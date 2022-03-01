@@ -745,7 +745,7 @@ class Shipment extends Core\Controller {
                 if(!in_array($value->type,$defaultDocType)){
                     array_push($userData, (object)[
                         'index' => strtolower($value->type),
-                        'index_name' => $value->type,
+                        'index_name' => $value->type . " - " . $value->description,
                         // 'index_value' => (string)$count++, // Explicit cast
                         'index_value' => strval($count++), // Function call
                         'index_check' => 'false',
