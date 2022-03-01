@@ -83,8 +83,6 @@
 <div class="row">
     <div class="col-md-12 form_sec_outer_task ">
         <div class="row">
-            <div class="col-md-12 p-2 mb-3">
-            </div>
             <div class="col-md-3">
                 <label>Search</label>
             </div>
@@ -146,10 +144,10 @@
         </div>
     </div>
     <div class="col-md-6 mt-2">
-        <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
+        <button type="button" id="savefilter" class="btn btn-warning"><i class="fas fa-save"></i> Save Search </button>
         <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
     </div>
     <div class="col-md-6 mt-2 text-right">
-        <button type="button" id="savefilter" class="btn btn-success"><i class="fas fa-save"></i> Save Search Settings </button>
+        <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
     </div>
 </div> 
