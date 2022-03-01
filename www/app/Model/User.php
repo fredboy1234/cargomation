@@ -741,19 +741,54 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function saveSearchSettings($data){
+    public function putSaveSearch($user_id, $data){
         $Db = Utility\Database::getInstance();
-        $userid = $data['userid'];
-        $search = $data['search'];
-        $check = $Db->query("SELECT user_id FROM user_settings WHERE user_id ='{$userid}'")->results();
-        
-        if(empty($check)){
-            echo "empty";
-            $Db->query("INSERT INTO user_settings(user_id,search) values('{$userid}','{$search}')");
-        }else{
-            echo "not";
-            $Db->query("UPDATE user_settings SET search='{$search}' WHERE user_id ='{$userid}'");
+        $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $query = "";
+        if(is_null($result[0]->search)) {
+            $arr_data = [];
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
+        } else {
+            $arr_data = json_decode($result[0]->search);
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
         }
-        
+        $query = "UPDATE user_settings SET search='{$json_data}' WHERE user_id ='{$user_id}'";
+        return $Db->query($query)->error();
+    }
+
+    public function putRecentSearch($user_id, $data){
+        $Db = Utility\Database::getInstance();
+        $result = $Db->query("SELECT recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $query = "";
+        if(is_null($result[0]->recent)) {
+            $arr_data = [];
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
+        } else {
+            $arr_data = json_decode($result[0]->recent);
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
+        }
+        $query = "UPDATE user_settings SET recent='{$json_data}' WHERE user_id ='{$user_id}'";
+        return $Db->query($query)->error();
+    }
+
+    public function getSaveSearch($user_id) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT search, recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
     }
 }
