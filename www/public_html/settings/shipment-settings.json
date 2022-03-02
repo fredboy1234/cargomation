@@ -9,12 +9,12 @@
         {"index": "vessel_name","index_name": "Vessel Name", "index_value": "6", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "place_delivery","index_name": "Place Of Delivery", "index_value": "7", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "container_number","index_name": "Container Number", "index_value": "8", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
-        {"index": "all","index_name": "All", "index_value": "9", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "pkd","index_name": "PKD", "index_value": "10", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "pkl","index_name": "PKL", "index_value": "11", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "hbl","index_name": "HBL", "index_value": "12", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "mbl","index_name": "MBL", "index_value": "13", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "coo","index_name": "COO", "index_value": "14", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
-        {"index": "civ","index_name": "CIV", "index_value": "15", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"}
+        {"index": "all","index_name": "All Documents", "index_value": "9", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "pkd","index_name": "PKD - Packing Declaration", "index_value": "10", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "pkl","index_name": "PKL - Packing List", "index_value": "11", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "hbl","index_name": "HBL - House Waybill/Bill of Lading", "index_value": "12", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "mbl","index_name": "MBL - Airway Bill/Ocean Bill of Lading", "index_value": "13", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "coo","index_name": "COO - Certificate of Origin", "index_value": "14", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"},
+        {"index": "civ","index_name": "CIV - Commercial Invoice", "index_value": "15", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"}
     ]
 }

@@ -458,15 +458,29 @@ class User extends Core\Model {
 
     public function getUserDocumentType($user_key, $role_id, $org_code = "") {
         //$query = "SELECT ISNULL(type, 'OTHER') as type FROM document GROUP BY type";
-        $query = "SELECT d.type
-        FROM document AS d
-        LEFT JOIN shipment AS s
-        ON d.shipment_num = s.shipment_num
-        WHERE s.user_id = '{$user_key}'";
+        // $query = "SELECT d.type
+        // FROM document AS d
+        // LEFT JOIN shipment AS s
+        // ON d.shipment_num = s.shipment_num
+        // WHERE s.user_id = '{$user_key}'";
+        // if($role_id == 4) {
+        //     $query .= "AND (s.consignee = '{$org_code}' OR s.consignor = '{$org_code}')";
+        // } 
+        // $query .= "GROUP BY d.type";
+
+        $query = "SELECT r.typer AS type, ISNULL(cd.description, 'no description yet') AS description
+                    FROM (SELECT d.type as typer
+                            FROM document d
+                            LEFT JOIN shipment AS s
+                    ON d.shipment_num = s.shipment_num
+                    WHERE s.user_id = '101'
+                    GROUP BY type ) as r
+                LEFT JOIN cargowise_document_type cd
+                ON cd.doc_type = r.typer";
         if($role_id == 4) {
             $query .= "AND (s.consignee = '{$org_code}' OR s.consignor = '{$org_code}')";
         } 
-        $query .= "GROUP BY d.type";
+        $query .= " ORDER BY typer ASC";
 
         // if(false) {
         //     $query = "SELECT d.type 
