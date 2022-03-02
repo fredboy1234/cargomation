@@ -755,13 +755,14 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function putSaveSearch($user_id, $data){
+    public function putSaveSearch($user_id, $search_title, $data){
         $Db = Utility\Database::getInstance();
         $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();
         $query = "";
         if(is_null($result[0]->search)) {
             $arr_data = [];
             array_push($arr_data, array(
+                "search_title"=> $search_title,
                 "created_date"=> date("d-m-Y H:i:s"),
                 "search_query"=> $data
             ));
@@ -769,6 +770,7 @@ class User extends Core\Model {
         } else {
             $arr_data = json_decode($result[0]->search);
             array_push($arr_data, array(
+                "search_title"=> $search_title,
                 "created_date"=> date("d-m-Y H:i:s"),
                 "search_query"=> $data
             ));

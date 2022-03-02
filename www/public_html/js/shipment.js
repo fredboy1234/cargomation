@@ -1093,6 +1093,15 @@ $(document).on("change", "[id*='no_type_']",function(){
   }
 });
 
+$(".fsearch").on("click",function(){
+  if($("#fsearch").hasClass("collapsed-card")){
+    $(".colp button").text("hide");
+  }else{
+    $(".colp button").text("show");
+  }
+});
+
+// On Click Save Search
 $('#savefilter').on("click",function(){
   var settingArray = [];
   $(".form_field_outer_row").each(function(){
@@ -1105,40 +1114,45 @@ $('#savefilter').on("click",function(){
     } 
     if(typeof value !== null || value.length > 0){
       settingArray.push({
-          "columnname": search,
-          "type": type,
-          "value": value.toUpperCase(),
-          "cond": cond
+        "columnname": search,
+        "type": type,
+        "value": value.toUpperCase(),
+        "cond": cond
       });
     } 
   });
-
   if(settingArray.length > 0){
-    $.ajax({
-          url: "/shipment/putSaveSearch",
-          type: "POST",
-          data: {user_id:user_id, search:settingArray},
-          success: function (res) {
-            Swal.fire('Settings Save Successfully!');
-          }
-    });
+    Swal.fire({
+      title: 'Search Query Title',
+      html: `<input type="text" id="search_title" class="swal2-input" placeholder="Search Title">`,
+      confirmButtonText: 'Save',
+      focusConfirm: false,
+      preConfirm: () => {
+        const search_title = Swal.getPopup().querySelector('#search_title').value
+        if (!search_title) {
+          Swal.showValidationMessage(`Please enter login and password`)
+        }
+        $.post( "/shipment/putSaveSearch", { user_id:user_id, search_title:search_title, search:settingArray } );
+        return { search_title: search_title }
+      }
+    }).then((result) => {
+      Swal.fire('Settings Save Successfully!');
+    })
+    // $.ajax({
+    //     url: "/shipment/putSaveSearch",
+    //     type: "POST",
+    //     data: {user_id:user_id, search:settingArray},
+    //     success: function (res) {
+    //       Swal.fire('Settings Save Successfully!');
+    //     }
+    // });
   }
-  
   //console.log(settingArray.length);
 });
-$(".fsearch").on("click",function(){
-  if($("#fsearch").hasClass("collapsed-card")){
-    $(".colp button").text("hide");
-  }else{
-    $(".colp button").text("show");
-  }
-});
-
-// vert-tabs-save-tab
+// On Shown Load Recent/Save
 $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
   loadRecentSave();
 });
-
 // Load Recent/Save Search
 $('#loadSearch').on('click', function() {
   var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
@@ -1165,34 +1179,30 @@ $('#loadSearch').on('click', function() {
             .trigger('change');
         $("#no_value_"+xdex).val(field[1]);
       },300);
- 
     });
   }
   console.log(myArray);
   $('a[href="#vert-tabs-search"]').tab('show');
 });
-
 // Reset Recent/Save Search
 $('#resetSearch').on('click', function() {
   $("#save_search, #recent_search").prop('selectedIndex', -1);
 });
-
 // Toggle when select
 $("#save_search").on('change', function(e) {
   // alert( $(this).find(":selected").val() );
   $("#recent_search").prop('selectedIndex', -1);
   $('#query_text').html(this.value);
 });
+// Toggle when select
 $("#recent_search").on('change', function(e) {
   $("#save_search").prop('selectedIndex', -1);
   $('#query_text').html(this.value);
 });
-
 // Delete Recent/Save Search
 $('#deleteSearch').on('click', function() {
   $('select').find(":selected").hide();
 });
-
 // Func Recent/Save Search
 function loadRecentSave() {
   $.ajax({
@@ -1202,7 +1212,7 @@ function loadRecentSave() {
     dataType: "json",
     beforeSend: function (res) {
       console.log("loading...");
-      $("body").append(loader);
+      // $("body").append(loader);
     },
     success: function (res) {
       $('#loader-wrapper').remove();
@@ -1223,11 +1233,12 @@ function loadRecentSave() {
               search_data += columnname + ":" + value + ",";
             }
           }
-          const text_save = search[0].columnname;
+          var text_save = search_obj[key].search_title;
+          text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+              return letter.toUpperCase();
+          });
           search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-          text_save.replaceAll('_', ' ').toUpperCase() + 
-          " ("+search[0].value+")" +
-          '</option>';
+          text_save + '</option>';
         }
       }
       for (const key in recent_obj) {
@@ -1253,10 +1264,9 @@ function loadRecentSave() {
       }
       $('#save_search').html(search_html);
       $('#recent_search').html(recent_html);
-      
     }
-  }).done(function() {
+  }).done(function(ev) {
+    console.log(ev);
     $('#loader-wrapper').remove();
   });;
 }
-loadRecentSave()

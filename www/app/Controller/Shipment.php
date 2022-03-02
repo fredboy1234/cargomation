@@ -1377,16 +1377,19 @@ class Shipment extends Core\Controller {
     }
     public function putSaveSearch() {
         $user_id = $_POST['user_id'];
+        $search_title = $_POST['search_title'];
         $data = $_POST['search'];
         $User = Model\User::getInstance($user_id);
-        $test = $User->putSaveSearch($user_id, $data);
+        $test = $User->putSaveSearch($user_id, $search_title, $data);
         echo json_encode($test);
     }
 
     public function getRecentSave() {
         $user_id = $_POST['user_id'];
         $User = Model\User::getInstance($user_id);
-        $test = $User->getSaveSearch($user_id)[0];
-        echo json_encode($test);
+        $test = $User->getSaveSearch($user_id);
+        if(!empty($test)) {
+            echo json_encode($test[0]);
+        }
     }
 }
