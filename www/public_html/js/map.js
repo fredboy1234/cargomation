@@ -1,4 +1,5 @@
 function Map(data,mcontainer){
+    console.log(data);
     let pointObject = data;
     let mapcontainer = mcontainer;
         // Themes begin
@@ -67,9 +68,7 @@ function Map(data,mcontainer){
         var colorSet = new am4core.ColorSet();
 
         this.executeMap = function(){
-            setTimeout(function(){
-                imageSeries.data = pointObject;
-            },2000);
+            imageSeries.data = pointObject;
         }
 }
 
@@ -107,17 +106,6 @@ function simpleMap(data, mcontainer){
     // Remove Antarctica
     polygonSeries.exclude = ["AQ"];
 
-    // Add some data
-    // polygonSeries.data = [{
-    // "id": "US",
-    // "name": "United States",
-    // "value": 100
-    // }, {
-    // "id": "FR",
-    // "name": "France",
-    // "value": 50
-    // }];
-
     // Create image series
     var imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
@@ -142,35 +130,7 @@ function simpleMap(data, mcontainer){
     lineSeries.mapLines.template.nonScalingStroke = true;
     var geoLine = [];
     geoLine.push(pointObject);
-    // line.multiGeoLine = geoLine;
-    // [
-    //     [
-    //         {
-    //             "latitude": -33.8688197,
-    //             "longitude": 151.2092955,
-    //             "title": "Sydney",
-    //             "order": "2"
-    //         },
-    //         {
-    //             "latitude": 1.352083,
-    //             "longitude": 103.819836,
-    //             "title": "Singapore",
-    //             "order": "1"
-    //         },
-    //         {
-    //             "latitude": 10.8230989,
-    //             "longitude": 106.6296638,
-    //             "title": "Ho Chi Minh City",
-    //             "order": "1"
-    //         },
-    //         {
-    //             "latitude": 1.352083,
-    //             "longitude": 103.819836,
-    //             "title": "Singapore",
-    //             "order": "2"
-    //         }
-    //     ]
-    // ]
+    
     var line = lineSeries.mapLines.create();
     line.id = "myline";
     line.setClassName();
@@ -181,6 +141,6 @@ function simpleMap(data, mcontainer){
             lineSeries.data = [{
                 "multiGeoLine": geoLine
               }];
-        },2000);
+        },500);
     }
 }

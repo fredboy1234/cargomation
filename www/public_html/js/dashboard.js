@@ -23,43 +23,72 @@ $(document).ready(function(){
     
     var preventer = [];
     var pointObject=[];
-
-    $.each(port_loading_couint,function(okey,oval){
-      var loading = oval.port_loading; 
-      var ccount = oval.count;
-      if(loading !==""){
-        if ($.inArray(loading, preventer) == -1){
-          preventer.push(loading);
-          var mcolor ="#dc3545";
-          if(oval.transport_mode === "Air"){
-            mcolor = "#007bff";
-          }else if(oval.transport_mode === "Sea"){
-            mcolor = "#28a745";
-          }
-          var req1 = $.get('https://maps.googleapis.com/maps/api/geocode/json?address='+loading+'&key=AIzaSyA89i4Tuzrby4Dg-ZxnelPs-U3uvHoR9eo', function(data){ 
+    var counter =0;
+    var stoper = 0;
+    var bar = new Promise((resolve, reject) => {
+      $.each(port_loading_couint,function(okey,oval){
+        var loading = oval.port_loading; 
+        var ccount = oval.count;
+    
+        if(loading !==""){
+          if ($.inArray(loading, preventer) == -1){
+            preventer.push(loading);
+            var mcolor ="#dc3545";
+            if(oval.transport_mode === "Air"){
+              mcolor = "#007bff";
+            }else if(oval.transport_mode === "Sea"){
+              mcolor = "#28a745";
+            }
             var txtcontent = 'Location:'+loading+' Count:'+oval.count;
             var items = [50, 60, 80];
             var item = items[Math.floor(Math.random() * items.length)];
-            
-            if(data.status === 'OK'){
-              var ellong = data.results[0].geometry.location.lng;
-              var ellat = data.results[0].geometry.location.lat;
-             // pointObject.push({long:ellong,lat:ellat,name:txtcontent});
-              pointObject.push({
-                title: txtcontent,
-                latitude: ellat,
-                longitude: ellong,
-                color: mcolor
-                });
-            }
-          });
-        }  
-      }
-      
+            var data = [];
+              $.ajax({
+                url: document.location.origin + '/shipment/getCity/',
+                type: "POST",
+                dataType: "json",
+                data: { location: loading },
+                success: function (res) {
+                    data = res;
+                    if(data.length > 0) {
+                      var latitude = parseFloat( data[0].lat);
+                      var longitude = parseFloat(data[0].lng);
+                      pointObject.push({
+                        title: txtcontent,
+                        latitude: latitude,
+                        longitude: longitude,
+                        color: mcolor
+                        });
+                        counter++;
+                    }
+                }
+            }); 
+          }  
+        }
+        resolve();
+      });
     });
+
+    bar.then(() => {
+      var waiter = 0;
+      let map = new Map(pointObject,"chartdiv");
+      var recheckObject = setInterval(function(){
     
-    let map = new Map(pointObject,"chartdiv");
-    map.executeMap();
+        //cancel interval if push is done
+        if(stoper == counter){
+          waiter++;
+          if(waiter == 10 && stoper == counter){
+            clearInterval(recheckObject);
+          }
+        }else{
+          waiter = 0;
+        }
+        
+        console.log(stoper + " ---- " + counter + ' -waiter- '+waiter);
+        map.executeMap();
+        stoper = counter;
+      }, 1000);
+    });
 });
 
 //on click wont work need to check so we use this javascript temporarily
