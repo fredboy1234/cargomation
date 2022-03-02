@@ -1126,13 +1126,13 @@ $('#savefilter').on("click",function(){
   
   //console.log(settingArray.length);
 });
-$(".fsearch").on("click",function(){
-  if($("#fsearch").hasClass("collapsed-card")){
-    $(".colp button").text("hide");
-  }else{
-    $(".colp button").text("show");
-  }
-});
+// $(".fsearch").on("click",function(){
+//   if($("#fsearch").hasClass("collapsed-card")){
+//     $(".colp button").text("hide");
+//   }else{
+//     $(".colp button").text("show");
+//   }
+// });
 
 // vert-tabs-save-tab
 $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
