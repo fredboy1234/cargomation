@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+console.log(pointObject);
 am4core.ready(function() {  
     // Create map instance
     var chart = am4core.create("chartdiv", am4maps.MapChart);

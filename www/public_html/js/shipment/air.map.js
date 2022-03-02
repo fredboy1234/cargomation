@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var addlinearray = [];
-   
+   console.log(pointObject);
     am4core.ready(function() {
         // Create map instance
         var chart = am4core.create("chartdiv", am4maps.MapChart);
@@ -35,29 +35,29 @@ $(document).ready(function(){
       // Create image series
       var imageSeries = chart.series.push(new am4maps.MapImageSeries());
         
-      // Create a circle image in image series template so it gets replicated to all new images
       var imageSeriesTemplate = imageSeries.mapImages.template;
-      // var circle = imageSeriesTemplate.createChild(am4core.Circle);
-      // circle.radius = 8;
-      // circle.fill = am4core.color("#007bff");
-      // circle.stroke = am4core.color("#FFFFFF");
-      // circle.strokeWidth = 3;
-      // circle.nonScaling = true;
-      // circle.tooltipText = "{title}";
-      var marker = imageSeriesTemplate.createChild(am4core.Image);
-      marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
-      marker.width = 20;
-      marker.height = 20;
-      marker.color = "#333";
-      marker.fill = am4core.color("#007bff");
-      marker.nonScaling = true;
-      marker.tooltipText = "{title}";
-      marker.horizontalCenter = "middle";
-      marker.verticalCenter = "bottom";
+    // var circle = imageSeriesTemplate.createChild(am4core.Circle);
+    // circle.radius = 8;
+    // circle.fill = am4core.color("#007bff");
+    // circle.stroke = am4core.color("#FFFFFF");
+    // circle.strokeWidth = 3;
+    // circle.nonScaling = true;
+    // circle.tooltipText = "{title}";
+    var marker = imageSeriesTemplate.createChild(am4core.Image);
+    marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
+    marker.width = 20;
+    marker.height = 20;
+    marker.color = "#333";
+    marker.fill = am4core.color("#007bff");
+    marker.nonScaling = true;
+    // marker.tooltipText = "{title}";
     
-      // Set property fields
-      imageSeriesTemplate.propertyFields.latitude = "latitude";
-      imageSeriesTemplate.propertyFields.longitude = "longitude";
+    marker.horizontalCenter = "middle";
+    marker.verticalCenter = "bottom";
+
+    // Set property fields
+    imageSeriesTemplate.propertyFields.latitude = "latitude";
+    imageSeriesTemplate.propertyFields.longitude = "longitude";
        
     // Add line series
     var lineSeries = chart.series.push(new am4maps.MapLineSeries());
@@ -112,13 +112,14 @@ $(document).ready(function(){
       }
       
       $.each(groupArrayOfObjects(pointObject,"order"),function(gkey,gval){
-          var l1 = addCity({ "latitude": gval[0].latitude, "longitude": gval[0].longitude }, tooltipHTML);
+          
+          var l1 = addCity({ "latitude":  gval[0].latitude, "longitude": gval[0].longitude }, tooltipHTML);
           var l2 = addCity({ "latitude": gval[1].latitude, "longitude": gval[1].longitude }, tooltipHTML);
           addlinearray.push({from:l1,to:l2});
       });
       
       $.each(addlinearray,function(adkey,adval){
-       console.log(adval);
+       //console.log(adval);
         addLine(adval['from'], adval['to']);
       });
       
@@ -225,7 +226,7 @@ $(document).ready(function(){
 
             
         });
-        
+        marker.tooltipHTML = tooltipHTML;
       });
 });
 function groupArrayOfObjects(list, key) {

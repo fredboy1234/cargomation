@@ -403,19 +403,20 @@ $(document).ready(function() {
     var bar = new Promise((resolve, reject) => {
         var cnt =0;
         $.each(route, function(key, value) {
-        combineRoute.push({
-            "order": parseInt(value.LegOrder),
-            "point": value.Origin,
-            "vessel": value.VesselName,
-            "type": "Origin",
+            combineRoute.push({
+                "order": parseInt(value.LegOrder),
+                "point": value.Origin,
+                "vessel": value.VesselName,
+                "type": "Origin",
+            });
+            combineRoute.push({
+                "order": parseInt(value.LegOrder),
+                "point": value.Destination,
+                "vessel": value.VesselName,
+                "type": "Destination",
+            });
         });
-        combineRoute.push({
-            "order": parseInt(value.LegOrder),
-            "point": value.Destination,
-            "vessel": value.VesselName,
-            "type": "Destination",
-        });
-        });
+        
         $.each(combineRoute, function(key, value) {
             // If point has back slash
             if(value.point.includes("/")) {
@@ -430,13 +431,12 @@ $(document).ready(function() {
                 data: { location: value.point },
                 success: function (res) {
                     data = res;
-                    
                     if(typeof data != null) {
                         var latitude = data[0].lat
                         var longitude = data[0].lng;
                         pointObject.push({
-                            "latitude": latitude,
-                            "longitude": longitude,
+                            "latitude": parseFloat(latitude),
+                            "longitude":parseFloat( longitude),
                             "title": value.point,
                             "order": value.order,
                             "vessel": value.vessel,
@@ -463,7 +463,7 @@ $(document).ready(function() {
     bar.then(() => {
         setTimeout(function(){
                 pointObject.sort((a, b) => { return a.order - b.order;});
-                
+
                 if(transmode === "Sea"){
                     $.getScript("/js/shipment/sea.map.js", function() {}); 
                 }else{
