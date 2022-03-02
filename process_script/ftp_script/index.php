@@ -42,10 +42,6 @@ else
             $username = $_POST['ftuser'];
             $password = random_password(8);
             $date_added = date("Ymd");
-<<<<<<< HEAD
-=======
-			
->>>>>>> b3f5ca72695563ad1c71544212452da5df730e0b
 			$seed = str_split("!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 			shuffle($seed);
 			$rand = '';
