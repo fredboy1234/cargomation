@@ -155,7 +155,14 @@
                                                 <?php foreach ($settings as $value) { ?>
                                                     <?php $selected = ($value->index_check == "true" ? "selected='selected'" : ""); ?>
                                                     <?php $level = (isset($value->index_lvl) ? $value->index_lvl : "shipment") ?>
-                                                    <option id="<?= $value->index_value ?>" class="settings-menu" value="<?= $value->index_value ?>" <?= $selected ?> data-text="<?= $value->index_name ?>" lvl="<?= $level ?>">
+                                                    <option id="<?= $value->index_value ?>" 
+                                                    class="settings-menu" 
+                                                    value="<?= $value->index_value ?>" 
+                                                    <?= $selected ?> 
+                                                    data-index="<?= $value->index; ?>"
+                                                    data-sort="<?= $value->index_sortable; ?>"
+                                                    data-text="<?= $value->index_name ?>" 
+                                                    lvl="<?= $level ?>">
                                                         <?= $value->index_name ?>
                                                     </option>
                                                 <?php } ?>
@@ -258,7 +265,11 @@
                             <thead>
                                 <tr>
                                     <?php foreach ($settings as $key => $value) { ?>
-                                        <th><?= $value->index_name ?></th>
+                                        <?php if($value->index_lvl == "document"): ?>
+                                            <th><?= strtoupper($value->index) ?></th>
+                                        <?php else:  ?>
+                                            <th><?= $value->index_name ?></th>
+                                        <?php endif;  ?>
                                     <?php } ?>
                                 </tr>
                             </thead>

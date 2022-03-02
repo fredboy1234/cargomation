@@ -587,23 +587,23 @@ $(document).ready(function () {
     $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function () {
       opt_value.push($(this).val());
       Sdata.push({ 
-        index: $(this).attr('index'),
+        index: $(this).data('index'),
         index_name: $(this).data('text'), 
         index_value: $(this).val(), 
         index_check: true, 
         index_lvl: $(this).attr('lvl'),
-        index_sortable: $(this).attr('sort'), });
+        index_sortable: $(this).data('sort'), });
     });
 
     $('#bootstrap-duallistbox-nonselected-list_settings-dual  option').each(function () {
       opt_value.push($(this).val());
       Sdata.push({ 
-        index: $(this).attr('index'),
+        index: $(this).data('index'),
         index_name: $(this).data('text'), 
         index_value: $(this).val(), 
         index_check: false, 
         index_lvl: $(this).attr('lvl'),
-        index_sortable: $(this).attr('sort'), });
+        index_sortable: $(this).data('sort'), });
     });
 
     if (check_arr.length != Sdata.length && check_arr.length != 0) {
