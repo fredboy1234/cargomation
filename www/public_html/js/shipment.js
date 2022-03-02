@@ -1101,6 +1101,17 @@ $(".fsearch").on("click",function(){
   }
 });
 
+// $(".fsearch").on("click",function(){
+//   if($("#fsearch").hasClass("collapsed-card")){
+//     $(".colp button").text("hide");
+//   }else{
+//     $(".colp button").text("show");
+//   }
+// });
+
+/**********************
+ * SAVE/RECENT SEARCH
+ **********************/
 // On Click Save Search
 $('#savefilter').on("click",function(){
   var settingArray = [];
@@ -1138,14 +1149,6 @@ $('#savefilter').on("click",function(){
     }).then((result) => {
       Swal.fire('Settings Save Successfully!');
     })
-    // $.ajax({
-    //     url: "/shipment/putSaveSearch",
-    //     type: "POST",
-    //     data: {user_id:user_id, search:settingArray},
-    //     success: function (res) {
-    //       Swal.fire('Settings Save Successfully!');
-    //     }
-    // });
   }
   //console.log(settingArray.length);
 });
