@@ -1368,6 +1368,13 @@ class Shipment extends Core\Controller {
         return $response;
     }
 
+    function getCity(){
+        if(isset($_POST)){
+            //$cities = json_decode(file_get_contents(PUBLIC_ROOT.'/settings/cityinfo.json'));
+            $cities =  $this->Shipment->getCity($_POST['location']); 
+            echo json_encode($cities);
+        }
+    }
     public function putSaveSearch() {
         $user_id = $_POST['user_id'];
         $data = $_POST['search'];
