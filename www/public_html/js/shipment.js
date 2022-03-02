@@ -1093,25 +1093,9 @@ $(document).on("change", "[id*='no_type_']",function(){
   }
 });
 
-$(".fsearch").on("click",function(){
-  if($("#fsearch").hasClass("collapsed-card")){
-    $(".colp button").text("hide");
-  }else{
-    $(".colp button").text("show");
-  }
-});
-
-// $(".fsearch").on("click",function(){
-//   if($("#fsearch").hasClass("collapsed-card")){
-//     $(".colp button").text("hide");
-//   }else{
-//     $(".colp button").text("show");
-//   }
-// });
-
-/**********************
- * SAVE/RECENT SEARCH
- **********************/
+/**************************
+ * SAVE AND RECENT SEARCH
+ *************************/
 // On Click Save Search
 $('#savefilter').on("click",function(){
   var settingArray = [];

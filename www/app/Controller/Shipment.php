@@ -1200,35 +1200,35 @@ class Shipment extends Core\Controller {
         }
 
         foreach($array_data as $shipment_key => $shipment) {
-            $eta_date = date_format(date_create($shipment->Eta), "d/m/Y");
-            $etd_date = date_format(date_create($shipment->Etd), "d/m/Y");
-            $etd_date_sort = date_format(date_create($shipment->Eta), "d/m/Y");
-            $eta_date_sort = date_format(date_create($shipment->Etd), "d/m/Y");
+            $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
+            $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
+            $etd_date_sort = date_format(date_create($shipment->eta), "d/m/Y");
+            $eta_date_sort = date_format(date_create($shipment->etd), "d/m/Y");
             $marco_link = "";
             if(!empty($shipment->vrptShipmentlinks)) {
                 $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
             }
 
             $subdata = array();
-            $subdata['real_id_shipment'] = $shipment->Shipment_Num; // remove?
+            $subdata['real_id_shipment'] = $shipment->shipment_num; // remove?
             $subdata['shipment_num'] = '
             <div class="btn-group">
               <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              '.(is_null($shipment->Shipment_Num) ? "0000" : $shipment->Shipment_Num).'
+              '.(is_null($shipment->shipment_num) ? "0000" : $shipment->shipment_num).'
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''.$marco_link.'\')" data-ship-id="'.$shipment->Id.'"> Open Cargowise </a>
+                <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''.$marco_link.'\')" data-ship-id="'.$shipment->id.'"> Open Cargowise </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->Shipment_Num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\'' . $shipment->shipment_num . '\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>
               </div>
             </div>';
-            $subdata['console_id'] = (empty($shipment->Console_Id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->Console_Id;
+            $subdata['console_id'] = (empty($shipment->console_id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->console_id;
             $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date);
             $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
-            $subdata['vessel_name'] = (empty($shipment->Vessel_Name)) ? '<span class="text-warning">No Data</span>' : $shipment->Vessel_Name;
-            $subdata['place_delivery'] = $shipment->PlaceDelivery;
-            $subdata['consignee'] = $shipment->Consignee;
-            $subdata['consignor'] = $shipment->Consignor;
+            $subdata['vessel_name'] = (empty($shipment->vessel_name)) ? '<span class="text-warning">No Data</span>' : $shipment->vessel_name;
+            $subdata['place_delivery'] = $shipment->place_delivery;
+            $subdata['consignee'] = $shipment->consignee;
+            $subdata['consignor'] = $shipment->consignor;
             if(!empty($shipment->Containers)) {
                 $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
                 // Container Number
@@ -1266,7 +1266,7 @@ class Shipment extends Core\Controller {
                 $subdata['container_number'] = '<span class="text-warning">No data</span>';
             }
             // DOCUMENT LEVEL
-            $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->Shipment_Num . '">View All</span></div>';
+            $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
             foreach ($shipment->Documents as $document_key => $document) {
                 // $document->id // $document->shipment_id // $document->type // $document->status
                 // Status Count
@@ -1312,14 +1312,14 @@ class Shipment extends Core\Controller {
             foreach ($documents as $key => $value) {
                 if(!empty($value['count'])) {
                     $subdata[$key] = '<div class="doc-stats" style="display: none;">
-                    <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">
+                    <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">
                     '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
                     '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
                     '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
                     </span>
                     </div>
                     <div class="doc-stats">
-                        <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->Shipment_Num.'">'.$value['text'].'</span>
+                        <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">'.$value['text'].'</span>
                         <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
                     </div>';
                 } else {
