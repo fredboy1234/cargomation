@@ -3,6 +3,10 @@ require_once ('../../main/connection.php');
 require_once ('../../main/jsonpath-0.8.1.php');
 require_once ('../../main/json.php');
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b3f5ca72695563ad1c71544212452da5df730e0b
 $json = file_get_contents('https://www.cargomation.com/exchangerate/');
 $data = json_decode($json,true);
 $json_url = "$.data.Brands.WBC.Portfolios['Foreign Exchange Currencies'].Products";
