@@ -402,43 +402,43 @@ $(document).ready(function() {
     var cnt =0;
     var stoper=0;
     var keycount =0;
-    var bar = new Promise((resolve, reject) => {
-        
-        $.each(route, function(key, value) {
-            combineRoute.push({
-                "order": parseInt(value.LegOrder),
-                "point": value.Origin,
-                "vessel": value.VesselName,
-                "type": "Origin",
-                "keycount":keycount++
-            });
-            combineRoute.push({
-                "order": parseInt(value.LegOrder),
-                "point": value.Destination,
-                "vessel": value.VesselName,
-                "type": "Destination",
-                "keycount":keycount++
-            });
+    var promises = [];
+    
+    $.each(route, function(key, value) {
+        combineRoute.push({
+            "order": parseInt(value.LegOrder),
+            "point": value.Origin,
+            "vessel": value.VesselName,
+            "type": "Origin",
+            "keycount":keycount++
         });
-        
-        $.each(combineRoute, function(key, value) {
-            console.log(value.point);
+        combineRoute.push({
+            "order": parseInt(value.LegOrder),
+            "point": value.Destination,
+            "vessel": value.VesselName,
+            "type": "Destination",
+            "keycount":keycount++
+        });
+    });
+
+    $.each(combineRoute, function(key, value) {
             // If point has back slash
             if(value.point.includes("/")) {
                 value.point = value.point.split('/')[1];
             }
             var data = null;
-            $.ajax({
+            var promise  = $.ajax({
                 url: document.location.origin + '/shipment/getCity/',
                 type: "POST",
                 dataType: "json",
                 data: { location: value.point },
                 success: function (res) {
+                    console.log(res);
                     data = res;
                     if(data.length > 0) {
                         var latitude = data[0].lat
                         var longitude = data[0].lng;
-                    
+    
                         pointObject.push({
                             "latitude": parseFloat(latitude),
                             "longitude":parseFloat( longitude),
@@ -452,41 +452,26 @@ $(document).ready(function() {
                     }
                 }
             }); 
+            promises.push(promise);
         });
-        resolve();
-    });
 
+        $.when.apply($, promises).done(function() {
+            pointObject.sort((a, b) => { return a.keycount - b.keycount;});
+            if(transmode === "Sea"){
+                $.getScript("/js/shipment/sea.map.js", function() {}); 
+            }else{ 
+                $.getScript("/js/shipment/air.map.js", function() {}); 
+            }
+        }).fail(function() {
+            console.log("fail");
+        });
+    
     function toggleChevron(e) {
         $(e.target)
             .prev(".collapse-control")
             .find("i.chevron")
             .toggleClass("fa-chevron-down fa-chevron-up");
     }
-   
-    bar.then(() => {
-        var waiter = 0;
-        var recheckObject = setInterval(function(){
-
-        //cancel interval if push is done
-        if(stoper == cnt){
-          waiter++;
-          if(waiter == 5 && stoper == cnt){
-            pointObject.sort((a, b) => { return a.keycount - b.keycount;});
-            
-                if(transmode === "Sea"){
-                    $.getScript("/js/shipment/sea.map.js", function() {}); 
-                }else{
-                    
-                    $.getScript("/js/shipment/air.map.js", function() {}); 
-                } 
-            clearInterval(recheckObject);
-          }
-        }else{
-          waiter = 0;
-        }
-        stoper = cnt;
-      }, 1000);         
-    });
      
 });
 </script>
