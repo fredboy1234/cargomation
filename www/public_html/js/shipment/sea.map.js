@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-console.log(pointObject);
+
 am4core.ready(function() {  
     // Create map instance
     var chart = am4core.create("chartdiv", am4maps.MapChart);
@@ -145,19 +145,26 @@ am4core.ready(function() {
         }, 5000, am4core.ease.sinInOut);
         //animation.events.on("animationended", animateMarker)
     }
-    
+    // polygonSeries.dataFields.zoomLevel = 2.5;
+    // polygonSeries.dataFields.zoomGeoPoint = {
+    //     latitude: pointObject[0].latitude,
+    //     longitude: pointObject[1].longitude
+    // };
+    // zoomed when load
+    chart.homeZoomLevel = 1;
+    chart.homeGeoPoint = {
+        latitude: pointObject[0].latitude,
+        longitude: pointObject[0].longitude
+    };
     chart.events.on( "ready", function(){
-        // zoomed when load
-        chart.homeZoomLevel = 1.5;
-        chart.homeGeoPoint = {
-            latitude: pointObject[0].latitude,
-            longitude: pointObject[1].longitude
-        };
+        $.each(pointObject,function(zoomkey,zoomval){
+            chart.zoomToGeoPoint({latitude:zoomval.latitude,longitude:zoomval.longitude},1.5);
+        });
+        
         animateMarker();
         imageSeries.data = pointObject;
         am4core.options.autoDispose = true;
         marker.tooltipHTML = tooltipHTML;
-
         
     });
 });

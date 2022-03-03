@@ -399,31 +399,35 @@ var tooltipHTML = `<center><strong>{vessel}</strong></center>
 $(document).ready(function() {  
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
-
+    var cnt =0;
+    var stoper=0;
+    var keycount =0;
     var bar = new Promise((resolve, reject) => {
-        var cnt =0;
+        
         $.each(route, function(key, value) {
             combineRoute.push({
                 "order": parseInt(value.LegOrder),
                 "point": value.Origin,
                 "vessel": value.VesselName,
                 "type": "Origin",
+                "keycount":keycount++
             });
             combineRoute.push({
                 "order": parseInt(value.LegOrder),
                 "point": value.Destination,
                 "vessel": value.VesselName,
                 "type": "Destination",
+                "keycount":keycount++
             });
         });
         
         $.each(combineRoute, function(key, value) {
+            console.log(value.point);
             // If point has back slash
             if(value.point.includes("/")) {
                 value.point = value.point.split('/')[1];
             }
             var data = null;
-            cnt++;
             $.ajax({
                 url: document.location.origin + '/shipment/getCity/',
                 type: "POST",
@@ -431,27 +435,26 @@ $(document).ready(function() {
                 data: { location: value.point },
                 success: function (res) {
                     data = res;
-                    if(typeof data != null) {
+                    if(data.length > 0) {
                         var latitude = data[0].lat
                         var longitude = data[0].lng;
+                    
                         pointObject.push({
                             "latitude": parseFloat(latitude),
                             "longitude":parseFloat( longitude),
                             "title": value.point,
                             "order": value.order,
                             "vessel": value.vessel,
-                            "type": value.type
+                            "type": value.type,
+                            "keycount":value.keycount
                         });
+                        cnt++;
                     }
                 }
             }); 
-            if(combineRoute.length ===cnt){
-                resolve();
-            }
         });
-        
+        resolve();
     });
-
 
     function toggleChevron(e) {
         $(e.target)
@@ -461,15 +464,28 @@ $(document).ready(function() {
     }
    
     bar.then(() => {
-        setTimeout(function(){
-                pointObject.sort((a, b) => { return a.order - b.order;});
+        var waiter = 0;
+        var recheckObject = setInterval(function(){
 
+        //cancel interval if push is done
+        if(stoper == cnt){
+          waiter++;
+          if(waiter == 5 && stoper == cnt){
+            pointObject.sort((a, b) => { return a.keycount - b.keycount;});
+            
                 if(transmode === "Sea"){
                     $.getScript("/js/shipment/sea.map.js", function() {}); 
                 }else{
+                    
                     $.getScript("/js/shipment/air.map.js", function() {}); 
                 } 
-        },2500);
+            clearInterval(recheckObject);
+          }
+        }else{
+          waiter = 0;
+        }
+        stoper = cnt;
+      }, 1000);         
     });
      
 });
