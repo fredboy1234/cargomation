@@ -211,13 +211,17 @@ $(document).ready(function(){
           }
       
       }
-      
+        chart.homeZoomLevel = 1;
+        chart.homeGeoPoint = {
+            latitude: pointObject[0].latitude,
+            longitude: pointObject[0].longitude
+        };
         chart.events.on( "ready", function(){
-            chart.homeZoomLevel = 1.5;
-            chart.homeGeoPoint = {
-                latitude: pointObject[0].latitude,
-                longitude: pointObject[1].longitude
-            };
+            $.each(pointObject,function(zoomkey,zoomval){
+                
+                chart.zoomToGeoPoint({latitude:zoomval.latitude,longitude:zoomval.longitude},1.5);
+            });
+          
             flyPlane();
             imageSeries.data = pointObject;
             am4core.options.autoDispose = true;
