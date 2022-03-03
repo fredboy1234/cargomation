@@ -42,7 +42,7 @@ table.dataTable>tbody>tr.child ul.dtr-details {
     top: -13px;
 }
 td.stats {
-    width: 75px;
+    /* width: 75px; */
     text-align: center;
 }
 td.stats:hover {
@@ -54,7 +54,7 @@ td.stats .doc-stats:first-child > span {
 }
 .doc-stats {
     max-width: 100%;
-    width: 75px;
+    width: 80px;
     display: inline-block;
 }
 .fa-spinner {
