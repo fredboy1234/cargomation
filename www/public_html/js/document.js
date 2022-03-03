@@ -845,6 +845,10 @@ $(document).ready(function () {
         }
     });
 
+    $('.file-preview-frame').on('click', function(ev) {
+        var checkBoxes = $(this).find('.checkbox > input');
+        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+    });
 
     // Other functions
     function file_ext(filename) {
