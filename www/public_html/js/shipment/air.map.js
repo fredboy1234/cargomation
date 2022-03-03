@@ -112,9 +112,12 @@ $(document).ready(function(){
       }
       
       $.each(groupArrayOfObjects(pointObject,"order"),function(gkey,gval){
-          var l1 = addCity({ "latitude":  gval[0].latitude, "longitude": gval[0].longitude }, tooltipHTML);
+          if(gval.length > 1){
+            var l1 = addCity({ "latitude":  gval[0].latitude, "longitude": gval[0].longitude }, tooltipHTML);
           var l2 = addCity({ "latitude": gval[1].latitude, "longitude": gval[1].longitude }, tooltipHTML);
           addlinearray.push({from:l1,to:l2});
+          }
+          
       });
       
       $.each(addlinearray,function(adkey,adval){
