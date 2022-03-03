@@ -1096,6 +1096,11 @@ $(document).on("change", "[id*='no_type_']",function(){
 /**************************
  * SAVE AND RECENT SEARCH
  *************************/
+ var mini_loader = '<div id="loader-wrapper" class="d-flex justify-content-center position-absolute">' +
+ '<div class="spinner-border" role="status">' +
+ '<span class="sr-only">Loading...</span>' +
+ '</div>' +
+ '</div>';
 // On Click Save Search
 $('#savefilter').on("click",function(){
   var settingArray = [];
@@ -1107,7 +1112,7 @@ $('#savefilter').on("click",function(){
     if($(this).find("[name*='cond']").hasClass('exclude')) {
         cond = "";
     } 
-    if(typeof value !== null || value.length > 0){
+    if(typeof search !== null && search !== null){
       settingArray.push({
         "columnname": search,
         "type": type,
@@ -1119,22 +1124,60 @@ $('#savefilter').on("click",function(){
   if(settingArray.length > 0){
     Swal.fire({
       title: 'Search Query Title',
-      html: `<input type="text" id="search_title" class="swal2-input" placeholder="Search Title">`,
+      // html: `<input type="text" id="search_title" class="swal2-input" placeholder="Search Title">`,
+      input: 'text',
+      inputPlaceholder: 'Enter search title',
+      inputAttributes: {
+        maxlength: 50,
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
       confirmButtonText: 'Save',
       focusConfirm: false,
-      preConfirm: () => {
-        const search_title = Swal.getPopup().querySelector('#search_title').value
+      focusDeny: false,
+      focusCancel: false,
+      showCloseButton: true,
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+      preConfirm: (search_title) => {
         if (!search_title) {
-          Swal.showValidationMessage(`Please enter login and password`)
+          Swal.showValidationMessage(`Please enter search title`)
+        } else {
+          const api = "/shipment/putSaveSearch";
+          var payload = {user_id:user_id, search_title:search_title, search:settingArray};
+          $.post(api,payload)
+          .done(function (result, status, xhr) {
+            console.log(status);
+          })
+          .fail(function (xhr, status, error) {
+              console.log("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+          });
+          return { search_title: search_title }
         }
-        $.post( "/shipment/putSaveSearch", { user_id:user_id, search_title:search_title, search:settingArray } );
-        return { search_title: search_title }
-      }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
-      Swal.fire('Settings Save Successfully!');
+      if(result.isDismissed == true || result.isDenied == true) {
+        Swal.fire(
+          'Failed to saved!',
+          `Search Title: ${result.value.search_title}`,
+          'error'
+        )
+      } else {
+        Swal.fire(
+          'Saved Successfully!',
+          `Search Title: ${result.value.search_title}`,
+          'success'
+        )
+      }
     })
+  } else {
+    Swal.fire(
+      'Failed to saved!',
+      `No search filter to be save.`,
+      'error'
+    )
   }
-  //console.log(settingArray.length);
 });
 // On Shown Load Recent/Save
 $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
@@ -1158,13 +1201,22 @@ $('#loadSearch').on('click', function() {
       if(k < (length - 1)) {
         addSearchFilter(field[0]);
       }
+      console.log(field);
       var xdex = k + 1; // 0 
       setTimeout(function(){
-        $("#no_search_"+xdex).change();
-        $("#no_search_"+xdex)
-            .val(field[0])
-            .trigger('change');
-        $("#no_value_"+xdex).val(field[1]);
+        $("#no_search_"+xdex).change(); // column
+        $("#no_search_"+xdex).val(field[0]).trigger('change');
+      },300);
+      setTimeout(function(){
+        $("#no_type_"+xdex).change();
+        $("#no_type_"+xdex).val(field[1]).trigger('change');
+      },300);
+      setTimeout(function(){
+        $("#no_cond_"+xdex).change();
+        $("#no_cond_"+xdex).val(field[3]).trigger('change');
+      },300);
+      setTimeout(function(){
+        $("#no_value_"+xdex).val(field[2]); // value
       },300);
     });
   }
@@ -1199,7 +1251,7 @@ function loadRecentSave() {
     dataType: "json",
     beforeSend: function (res) {
       console.log("loading...");
-      // $("body").append(loader);
+      $("#fsearch > .card-body").append(mini_loader);
     },
     success: function (res) {
       $('#loader-wrapper').remove();
@@ -1215,9 +1267,11 @@ function loadRecentSave() {
           for (const key2 in search) {
             if (Object.hasOwnProperty.call(search, key2)) {
               var columnname = search[key2].columnname;
+              var type = search[key2].type;
               var value = search[key2].value;
-              search_value += columnname + " : " + value + "<br>";
-              search_data += columnname + ":" + value + ",";
+              var cond = search[key2].cond;
+              search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+              search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
             }
           }
           var text_save = search_obj[key].search_title;
@@ -1236,9 +1290,11 @@ function loadRecentSave() {
           for (const key2 in recent) {
             if (Object.hasOwnProperty.call(recent, key2)) {
               var columnname = recent[key2].columnname;
+              var type = recent[key2].type;
               var value = recent[key2].value;
-              recent_value += columnname + " : " + value + "<br>";
-              recent_data += columnname + ":" + value + ",";
+              var cond = recent[key2].cond;
+              recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+              recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
             }
           }
           const text_recent = recent[0].columnname;
@@ -1246,12 +1302,19 @@ function loadRecentSave() {
           text_recent.replaceAll('_', ' ').toUpperCase() + 
           " ("+recent[0].value+")" +
           '</option>';
-          
         }
       }
       $('#save_search').html(search_html);
       $('#recent_search').html(recent_html);
-    }
+    },
+    error: function (res) {
+      console.log(res);
+      $('#loader-wrapper').remove();
+    },
+    complete: function (res) {
+      console.log(res);
+      $('#loader-wrapper').remove();
+    },
   }).done(function(ev) {
     console.log(ev);
     $('#loader-wrapper').remove();
