@@ -784,6 +784,7 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $result = $Db->query("SELECT recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
         $query = "";
+        
         if(isset($result[0])){
             if(is_null($result[0]->recent)) {
                 $arr_data = [];
@@ -808,7 +809,7 @@ class User extends Core\Model {
                 "search_query"=> $data
             ));
             $json_data = json_encode($arr_data);
-            $query = "INSERT INTO user_settings(recent) VALUES('{$json_data}')";
+            $query = "INSERT INTO user_settings(user_id,recent) VALUES('{$user_id}','{$json_data}')";
         }
         
         return $Db->query($query)->error();
