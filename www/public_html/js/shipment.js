@@ -7,7 +7,7 @@
 $(document).ready(function () {
   invokeFilter("", 1);
   loadRecentSave();
-  
+  var searchJson = [];
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
     addSearchFilter(selected);
@@ -81,6 +81,7 @@ function invokeFilter(selected, index) {
   var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
+    searchJson = data;
   $.each(data, function(key, value) {
     var parseText = key.replace(/_/g," ");
     parseText =  parseText.toLowerCase().replace(/\b[a-z]/g, function(letter) {
@@ -1003,11 +1004,11 @@ $(document).on("change", ".search-list", function(){
   }
  
   data['id'] = "no_type_"+index;
-  console.log('from inde');
-  console.log(index);
+  
   //data['options'] = triggerType(dataType);
   data['value'] = index;
   data['type'] = dataType;
+  data['keyindex'] = $(this).val();
 
   triggerType(data);
   if(dataType !== "date"){
@@ -1022,6 +1023,9 @@ $(document).on("change", ".search-list", function(){
 });
 
 function triggerType(data){
+  console.log("from trigg");
+  console.log(data);
+  var optionHTML = "";
   switch(data['type']) {    
     case 'date':
       $("#no_value_"+data['value']).daterangepicker({
@@ -1049,26 +1053,27 @@ function triggerType(data){
         <option class="datepick" data-date="${moment().add(12, 'months').format(defaultDate)}">Next  12 Months</option>`);
     break;
     case 'input':
-      $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
-      <option value="starts_with">starts with</option>
-      <option value="contains">contains</option>
-      <option value="not_equal">not equal</option>
-      <option value="not_starting">not starting</option>
-      <option value="not_contain">not contain</option>
-      <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`);
+      $('#'+data['id']).html(createSelect('number_and_preferences',data));
     break;
     case 'option':
-        $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
-      <option value="starts_with">starts with</option>
-      <option value="contains">contains</option>
-      <option value="not_equal">not equal</option>
-      <option value="not_starting">not starting</option>
-      <option value="not_contain">not contain</option>
-      <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`);
+        $('#'+data['id']).html(createSelect('others',data));
     break;
     }
+}
+
+//create dynamic select option base on serch title
+function createSelect(key,data){
+  var optionHTML = "";
+   var handler = $.grep(searchJson[key], function(obj) { 
+    if(obj.filterName === data['keyindex']){   
+        return obj; 
+      }
+  });
+  $.each(handler[0].options,function(okey,oval){
+    var select = (okey==0 ? 'selected' :'');
+    optionHTML +=`<option value="${oval.value}" ${select}>${oval.name}</option>`;
+  });
+  return optionHTML;
 }
 
 function appendToSelect(data){
