@@ -784,22 +784,33 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $result = $Db->query("SELECT recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
         $query = "";
-        if(is_null($result[0]->recent)) {
+        if(isset($result[0])){
+            if(is_null($result[0]->recent)) {
+                $arr_data = [];
+                array_push($arr_data, array(
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            } else {
+                $arr_data = json_decode($result[0]->recent);
+                array_push($arr_data, array(
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            }
+            $query = "UPDATE user_settings SET recent='{$json_data}' WHERE user_id ='{$user_id}'";
+        }else{
             $arr_data = [];
             array_push($arr_data, array(
                 "created_date"=> date("d-m-Y H:i:s"),
                 "search_query"=> $data
             ));
             $json_data = json_encode($arr_data);
-        } else {
-            $arr_data = json_decode($result[0]->recent);
-            array_push($arr_data, array(
-                "created_date"=> date("d-m-Y H:i:s"),
-                "search_query"=> $data
-            ));
-            $json_data = json_encode($arr_data);
+            $query = "INSERT INTO user_settings(recent) VALUES('{$json_data}')";
         }
-        $query = "UPDATE user_settings SET recent='{$json_data}' WHERE user_id ='{$user_id}'";
+        
         return $Db->query($query)->error();
     }
 
