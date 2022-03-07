@@ -473,7 +473,7 @@ class User extends Core\Model {
                             FROM document d
                             LEFT JOIN shipment AS s
                     ON d.shipment_num = s.shipment_num
-                    WHERE s.user_id = '101'
+                    WHERE s.user_id = '{$user_key}'
                     GROUP BY type ) as r
                 LEFT JOIN cargowise_document_type cd
                 ON cd.doc_type = r.typer";
