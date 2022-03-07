@@ -714,23 +714,6 @@ $(document).ready(function () {
     var searchval = $(this).val().toLowerCase();
   });
 
-  $('.js-example-basic-multiple').select2();
-  $('.js-example-basic-multiple').on("select2:select", function (e) {
-    var data = e.params.data.text;
-
-    if (data == 'Select All') {
-      $(".js-example-basic-multiple > option").prop("selected", "selected");
-
-      $(".js-example-basic-multiple > option").each(function (key, val) {
-        if ($(val).val() == 'all') {
-          $(this).prop('selected', false);
-        }
-      });
-
-      $(".js-example-basic-multiple").trigger("change");
-    }
-  });
-
   var height = $(window).height();
   $('.ttable, #DataTables_Table_0_wrapper').height(height);
 });
@@ -1028,6 +1011,11 @@ function triggerType(data){
   var optionHTML = "";
   switch(data['type']) {    
     case 'date':
+      $("#no_value_"+data['value']).val('');
+      $("#container_mode_"+data['value']).select2('destroy');
+      $("#no_value_"+data['value']).parent().empty().html(`
+        <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
+
       $("#no_value_"+data['value']).daterangepicker({
         locale: {
           format:defaultDate
@@ -1053,12 +1041,47 @@ function triggerType(data){
         <option class="datepick" data-date="${moment().add(12, 'months').format(defaultDate)}">Next  12 Months</option>`);
     break;
     case 'input':
+      $("#no_value_"+data['value']).val('');
+      $("#container_mode_"+data['value']).select2('destroy');
+      $("#no_value_"+data['value']).parent().empty().html(`
+        <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
+
       $('#'+data['id']).html(createSelect('number_and_preferences',data));
     break;
     case 'option':
         $('#'+data['id']).html(createSelect('others',data));
+        selectTrigger(data['value'],'select2');
     break;
-    }
+  }
+}
+
+function selectTrigger(index,inputType){
+  if(inputType === "select2"){
+    $('#container_mode_'+index).select2();
+    $('#container_mode_'+index).on("select2:select", function (e) {
+      var text = e.params.data.text;
+      if (text == 'Select All') {
+        $("#container_mode_"+index+" > option").prop("selected", "selected");
+        $("#container_mode_"+index+" > option").each(function (key, val) {
+          if ($(val).val() == 'all') {
+            $(this).prop('selected', false);
+          }
+        });
+        $("#container_mode_"+index).trigger("change");
+      } 
+      var array = $(this).select2('data');
+      var element = [];
+      for (const key in array) {
+        if (Object.hasOwnProperty.call(array, key)) {
+          element.push(array[key].text);
+        }
+      }
+      $("#no_value_"+index).val(element.join());
+    });
+  }else if(type==="date"){
+
+  }
+  
 }
 
 //create dynamic select option base on serch title
@@ -1069,11 +1092,25 @@ function createSelect(key,data){
         return obj; 
       }
   });
-  $.each(handler[0].options,function(okey,oval){
+  $.each(handler[0].type,function(okey,oval){
     var select = (okey==0 ? 'selected' :'');
-    optionHTML +=`<option value="${oval.value}" ${select}>${oval.name}</option>`;
+    optionHTML +=`<option value="${oval.value}" ${select}>${oval.option}</option>`;
   });
+  if(handler[0].value.length > 0){
+    createSelectValue(data['value'],handler[0].value);
+  }
+  
   return optionHTML;
+}
+
+function createSelectValue(index,value){
+  var optionHTML="";
+  $.each(value,function(key,val){
+    optionHTML+=`<option value="${val.value}">${val.name}</option>`;
+  });
+  $("#no_value_"+index).parent().empty().html(`
+        <input name="value[]" id="no_value_${index}" type="hidden"> 
+        <select id="container_mode_${index}" class="form-control w_90" multiple="multiple">${optionHTML}</select>`);
 }
 
 function appendToSelect(data){
@@ -1247,81 +1284,81 @@ $("#recent_search").on('change', function(e) {
 $('#deleteSearch').on('click', function() {
   $('select').find(":selected").hide();
 });
-// Func Recent/Save Search
-function loadRecentSave() {
-  $.ajax({
-    url: "/shipment/getRecentSave/",
-    type: "post",
-    data: {user_id:user_id},
-    dataType: "json",
-    beforeSend: function (res) {
-      console.log("loading...");
-      $("#fsearch > .card-body").append(mini_loader);
-    },
-    success: function (res) {
-      $('#loader-wrapper').remove();
-      const search_obj = JSON.parse(res.search);
-      const recent_obj = JSON.parse(res.recent);
-      var search_html = "";
-      var recent_html = "";
-      for (const key in search_obj) {
-        if (Object.hasOwnProperty.call(search_obj, key)) {
-          const search = search_obj[key].search_query;
-          var search_value = "";
-          var search_data = "";
-          for (const key2 in search) {
-            if (Object.hasOwnProperty.call(search, key2)) {
-              var columnname = search[key2].columnname;
-              var type = search[key2].type;
-              var value = search[key2].value;
-              var cond = search[key2].cond;
-              search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-              search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+  // Func Recent/Save Search
+  function loadRecentSave() {
+    $.ajax({
+      url: "/shipment/getRecentSave/",
+      type: "post",
+      data: {user_id:user_id},
+      dataType: "json",
+      beforeSend: function (res) {
+        console.log("loading...");
+        $("#fsearch > .card-body").append(mini_loader);
+      },
+      success: function (res) {
+        $('#loader-wrapper').remove();
+        const search_obj = JSON.parse(res.search);
+        const recent_obj = JSON.parse(res.recent);
+        var search_html = "";
+        var recent_html = "";
+        for (const key in search_obj) {
+          if (Object.hasOwnProperty.call(search_obj, key)) {
+            const search = search_obj[key].search_query;
+            var search_value = "";
+            var search_data = "";
+            for (const key2 in search) {
+              if (Object.hasOwnProperty.call(search, key2)) {
+                var columnname = search[key2].columnname;
+                var type = search[key2].type;
+                var value = search[key2].value;
+                var cond = search[key2].cond;
+                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
             }
+            var text_save = search_obj[key].search_title;
+            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                return letter.toUpperCase();
+            });
+            search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+            text_save + '</option>';
           }
-          var text_save = search_obj[key].search_title;
-          text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-              return letter.toUpperCase();
-          });
-          search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-          text_save + '</option>';
         }
-      }
-      for (const key in recent_obj) {
-        if (Object.hasOwnProperty.call(recent_obj, key)) {
-          const recent = recent_obj[key].search_query;
-          var recent_value = "";
-          var recent_data = "";
-          for (const key2 in recent) {
-            if (Object.hasOwnProperty.call(recent, key2)) {
-              var columnname = recent[key2].columnname;
-              var type = recent[key2].type;
-              var value = recent[key2].value;
-              var cond = recent[key2].cond;
-              recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-              recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+        for (const key in recent_obj) {
+          if (Object.hasOwnProperty.call(recent_obj, key)) {
+            const recent = recent_obj[key].search_query;
+            var recent_value = "";
+            var recent_data = "";
+            for (const key2 in recent) {
+              if (Object.hasOwnProperty.call(recent, key2)) {
+                var columnname = recent[key2].columnname;
+                var type = recent[key2].type;
+                var value = recent[key2].value;
+                var cond = recent[key2].cond;
+                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
             }
+            const text_recent = recent[0].columnname;
+            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+            text_recent.replaceAll('_', ' ').toUpperCase() + 
+            " ("+recent[0].value+")" +
+            '</option>';
           }
-          const text_recent = recent[0].columnname;
-          recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
-          text_recent.replaceAll('_', ' ').toUpperCase() + 
-          " ("+recent[0].value+")" +
-          '</option>';
         }
-      }
-      $('#save_search').html(search_html);
-      $('#recent_search').html(recent_html);
-    },
-    error: function (res) {
-      console.log(res);
+        $('#save_search').html(search_html);
+        $('#recent_search').html(recent_html);
+      },
+      error: function (res) {
+        console.log(res);
+        $('#loader-wrapper').remove();
+      },
+      complete: function (res) {
+        console.log(res);
+        $('#loader-wrapper').remove();
+      },
+    }).done(function(ev) {
+      console.log(ev);
       $('#loader-wrapper').remove();
-    },
-    complete: function (res) {
-      console.log(res);
-      $('#loader-wrapper').remove();
-    },
-  }).done(function(ev) {
-    console.log(ev);
-    $('#loader-wrapper').remove();
-  });;
-}
+    });
+  }
