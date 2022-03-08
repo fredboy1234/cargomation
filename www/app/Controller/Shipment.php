@@ -316,11 +316,13 @@ class Shipment extends Core\Controller {
 
         $email = $User->data()->email;
 
+        $document_type = "";
         // get client admin email
         if(!empty($User->getSubAccountInfo($user_id))) {
             $sub_account = $User->getSubAccountInfo($user_id);
             // "user email" change to "client email"
             $email = $sub_account[0]->client_email;
+            $document_type = $this->Document->getDocumentTypeByUserID($sub_account[0]->account_id);
         }
 
         $this->View->addJS("js/document.js");
@@ -334,6 +336,7 @@ class Shipment extends Core\Controller {
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
             "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
+            "document_type" => $document_type,
             "user_settings" => $User->getUserSettings($user_id)
         ]);
     }
@@ -1128,6 +1131,9 @@ class Shipment extends Core\Controller {
     }
 
     public function shipmentData($user_id = "") {
+        if(!isset($_POST['draw'])) {
+            die('Unauthorized Access');
+        }
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         if (!$user_id) {
@@ -1173,8 +1179,9 @@ class Shipment extends Core\Controller {
                     "Content-Type: application/json"];
         $result = $this->post($url, $payload, $headers);
         $json_data = json_decode($result);
-        if($json_data->status == 'ERR') {
-            die($json_data->message);
+        if($json_data->status != '200') {
+            echo json_encode($json_data);
+            exit;
         }
         $array_data = array(
             "draw"            => $json_data->draw,  
