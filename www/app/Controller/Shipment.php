@@ -800,6 +800,7 @@ class Shipment extends Core\Controller {
         $this->View->renderWithoutHeaderAndFooter("/shipment/info", [
             "title" => "Shipment Info",
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id),
+            "container_details" => $this->Shipment->getContainerByShipID($shipment_id)
         ]);
     }
 
