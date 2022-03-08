@@ -208,25 +208,35 @@
     </section>
     <section class="col-lg-6 connectedSortable ui-sortable">
         <div class="card">
-            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                <h3 class="card-title">
-                    <i class="fas fa-map mr-1"></i>
-                    Route Details
-                </h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="chartdiv" class="" style="position: relative; height: 300px;">
+          <div class="card card-primary card-outline card-tabs">
+              <div class="card-header p-0 pt-1 border-bottom-0">
+                  <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                       <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false"><i class="fas fa-map mr-1"></i>
+                        Route Details</a>
+                      </li>
+                           <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-bullseye mr-1"></i>
+                        Live Tracking</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+           <div class="card-body">
+                <div class="tab-content" id="custom-tabs-three-tabContent">
+                  <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                     <div id="chartdiv" class="" style="position: relative; height: 300px;">
                         <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
+                    
+                  </div>
+
+                  <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+                     <div style="background-color:white;position:relative;top:-15px;z-index: 1">&nbsp;</div>
+                        <iframe style="position: relative;top: -35px;" name="vesselfinder" id="vesselfinder" src="https://www.vesselfinder.com/aismap?zoom=undefined&amp;lat=undefined&amp;lon=undefined&amp;width=100%&amp;height=500&amp;names=false&amp;imo=<?php echo $this->shipment_info[0]->vesslloyds;?>&amp;track=false&amp;fleet=false&amp;fleet_name=false&amp;fleet_hide_old_positions=false&amp;clicktoact=false&amp;store_pos=false&amp;ra=livetracking_" width="100%" height="352" frameborder="0"></iframe>
+                  </div>
                 </div>
                 <div class="col-md-12">
                     <div id="accordion" class="mt-2">
@@ -312,10 +322,8 @@
                         <?php endif; ?>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+              </div>
 
-            </div>
         </div>
     </section>
 </div>
@@ -389,7 +397,7 @@ var tooltipHTML = `<center><strong>{vessel}</strong></center>
                 </table>
             </div>
             <div class="col-lg-6">
-                <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg">
+                <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg" onerror="this.onerror=null;this.src='https://cargomation.com/img/vessel/noimg.png';">
             </div>
         </div>
         <hr />

@@ -1,19 +1,217 @@
 {
     "number_and_preferences":[
-        {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y"},
-        {"filterID":"Console ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y"},
-        {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y"},
-        {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n"},
-        {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n"},
-        {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n"},
-        {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n"},
-        {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n"}
+        {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Console ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        },
+        {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"EXACT","value":"EXACT"},
+                {"option":"Not Exact","value":"NOTEXACT"},
+                {"option":"Starts With","value":"STARTSWITH"},
+                {"option":"Ends With","value":"ENDSWITH"},
+                {"option":"Contains","value":"CONTAINS"},
+                {"option":"Not Contain","value":"NOTCONTAINS"},
+                {"option":"Equals","value":"EQUALS"},
+                {"option":"Not Equals","value":"NOTEQUALS"},
+                {"option":">","value":"GREATERTHAN"},
+                {"option":"=>","value":"GREATERTHANEQUAL"},
+                {"option":"<","value":"LESSTHAN"},
+                {"option":"<=","value":"LESSTHANOREQUAL"},
+                {"option":"not_starting","value":"not_starting"},
+                {"option":"is_blank","value":"is_blank"},
+                {"option":"not_blank","value":"not_blank"}
+            ]
+        }
     ],
     "date": [
-        {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n"},
-        {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n"}
+        {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n",
+            "options":[{"name":"Sea","value":"sea"},{"name":"Air","value":"air"}]
+        },
+        {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n",
+            "value":[],
+            "type":[
+                {"option":"Today","value":"${[moment().format(defaultDate),moment().format(defaultDate)]}"},
+                {"option":"Yesterday","value":"${[moment().subtract(1, 'days').format(defaultDate),moment().subtract(1, 'days').format(defaultDate)]}"},
+                {"option":"Last Week","value":"${[moment().subtract(1, 'weeks').format(defaultDate),moment().format(defaultDate)]}"},
+                {"option":"Last 7 Days","value":"${[moment().subtract(6, 'days').format(defaultDate),moment().format(defaultDate)]}"},
+                {"option":"Last 14 Days","value":"${[moment().subtract(13, 'days').format(defaultDate),moment().format(defaultDate)]}"},
+                {"option":"Last 30 Days","value":"${[moment().subtract(29, 'days').format(defaultDate),moment().format(defaultDate)]}"},
+                {"option":"Last Month","value":"${[moment().subtract(1, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}"},
+                {"option":"Last 2 Months","value":"${[moment().subtract(2, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}"},
+                {"option":"Last 3 Months","value":"${[moment().subtract(3, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}"},
+                {"option":"Tomorrow","value":"${[moment().add(1, 'days').format(defaultDate),moment().add(1, 'days').format(defaultDate)]}"},
+                {"option":"Next Week","value":"${[moment().add(6, 'days').format(defaultDate),moment().add(12, 'days').format(defaultDate)]}"},
+                {"option":"Next 7 Days","value":"${[moment().format(defaultDate),moment().add(6, 'days').format(defaultDate)]}"},
+                {"option":"Next 14 Days","value":"${[moment().format(defaultDate),moment().add(13, 'days').format(defaultDate)]}"},
+                {"option":"Next Month","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(2, 'month').format(defaultDate)]}"},
+                {"option":"Next 2 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(3, 'month').format(defaultDate)]}"},
+                {"option":"Next 6 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(6, 'month').format(defaultDate)]}"},
+                {"option":"Next  12 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}"}
+            ]
+        }
     ],
     "others":[
-        {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n"}
+        {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n",
+            "value":[
+                {"name":"Select All","value":"ALL"},
+                {"name":"OTH","value":"OTH"},
+                {"name":"BBK","value":"BBK"},
+                {"name":"FCL","value":"FCL"},
+                {"name":"BCN","value":"BCN"},
+                {"name":"LCL","value":"LCL"},
+                {"name":"LSE","value":"LSE"},
+                {"name":"OBC","value":"OBC"}
+            ],
+            "type":[
+                {"option":"IN","value":"in"}
+            ]
+        },
+        {"filterID":"Transport Mode", "filterName":"transport_mode","filterType":"option","placeholder":"","show":"n",
+            "value":[
+                {"name":"Sea","value":"sea"},
+                {"name":"Air","value":"air"}
+            ],
+            "type":[
+                {"option":"IN","value":"in"}
+            ]
+        }
     ]
 }

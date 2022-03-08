@@ -7,7 +7,7 @@
 $(document).ready(function () {
   invokeFilter("", 1);
   loadRecentSave();
-  
+  var searchJson = [];
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
     addSearchFilter(selected);
@@ -81,6 +81,7 @@ function invokeFilter(selected, index) {
   var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
+    searchJson = data;
   $.each(data, function(key, value) {
     var parseText = key.replace(/_/g," ");
     parseText =  parseText.toLowerCase().replace(/\b[a-z]/g, function(letter) {
@@ -307,8 +308,6 @@ $(document).ready(function () {
     tableColumnData.push({ data: $index, sortable: $sort });
   });
 
-  console.log(tableColumnData);
-
   var table = $('.table').DataTable({
     searching: true,
     paging: true,
@@ -345,6 +344,19 @@ $(document).ready(function () {
            if($(this).find("[name*='cond']").hasClass('exclude')) {
               cond = "";
            } 
+           //convert date to mm/dd/yyyy for api request format
+           
+           if(search === "ETA" || search === "ETD"){
+            var dateString = value;
+            var dateParts = dateString.split("-");
+            var datePartsChild1 = dateParts[0].split("/");
+            var datePartsChild2 = dateParts[1].split("/");
+              var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+              var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+              value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+              type = 'DATERANGE';
+           }
+           
            if(typeof value !== null || value.length > 0){
               arr.push({
                 "columnname": search,
@@ -426,7 +438,7 @@ $(document).ready(function () {
     //   }
     // });
   });
-
+  $.fn.dataTable.ext.errMode = 'none';
   // Doing some magic! 
   $('.table tbody').on('click', 'tr td', function(e) { 
     if( $(e.target).closest('span').length == 0 ){
@@ -713,23 +725,6 @@ $(document).ready(function () {
     var searchval = $(this).val().toLowerCase();
   });
 
-  $('.js-example-basic-multiple').select2();
-  $('.js-example-basic-multiple').on("select2:select", function (e) {
-    var data = e.params.data.text;
-
-    if (data == 'Select All') {
-      $(".js-example-basic-multiple > option").prop("selected", "selected");
-
-      $(".js-example-basic-multiple > option").each(function (key, val) {
-        if ($(val).val() == 'all') {
-          $(this).prop('selected', false);
-        }
-      });
-
-      $(".js-example-basic-multiple").trigger("change");
-    }
-  });
-
   var height = $(window).height();
   $('.ttable, #DataTables_Table_0_wrapper').height(height);
 });
@@ -1003,11 +998,11 @@ $(document).on("change", ".search-list", function(){
   }
  
   data['id'] = "no_type_"+index;
-  console.log('from inde');
-  console.log(index);
+  
   //data['options'] = triggerType(dataType);
   data['value'] = index;
   data['type'] = dataType;
+  data['keyindex'] = $(this).val();
 
   triggerType(data);
   if(dataType !== "date"){
@@ -1022,53 +1017,112 @@ $(document).on("change", ".search-list", function(){
 });
 
 function triggerType(data){
+  console.log("from trigg");
+  console.log(data);
+  var optionHTML = "";
   switch(data['type']) {    
     case 'date':
+      $("#no_value_"+data['value']).val('');
+      $("#container_mode_"+data['value']).select2('destroy');
+      $("#no_value_"+data['value']).parent().empty().html(`
+        <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
+
       $("#no_value_"+data['value']).daterangepicker({
         locale: {
           format:defaultDate
         }
       });
+
     $('#'+data['id']).html(`
-        <option class="datepick" data-date="${moment().format(defaultDate)}">Today</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'days').format(defaultDate)}">Yesterday</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'weeks').format(defaultDate)}">Last Week</option>
-        <option class="datepick" data-date="${moment().subtract(7, 'days').format(defaultDate)}">Last 7 Days</option>
-        <option class="datepick" data-date="${moment().subtract(14, 'days').format(defaultDate)}">Last 14 Days</option>
-        <option class="datepick" data-date="${moment().subtract(30, 'days').format(defaultDate)}">Last 30 Days</option>
-        <option class="datepick" data-date="${moment().subtract(1, 'month').format(defaultDate)}">Last Month</option>
-        <option class="datepick" data-date="${moment().subtract(2, 'month').format(defaultDate)}">Last 2 Months</option>
-        <option class="datepick" data-date="${moment().subtract(3, 'month').format(defaultDate)}">Last 3 Months</option>
-        <option class="datepick" data-date="${moment().add(1, 'days').format(defaultDate)}">Tomorrow</option>
-        <option class="datepick" data-date="${moment().add(1, 'weeks').format(defaultDate)}">Next Week</option>
-        <option class="datepick" data-date="${moment().add(7, 'days').format(defaultDate)}">Next 7 Days</option>
-        <option class="datepick" data-date="${moment().add(14, 'days').format(defaultDate)}">Next 14 Days</option>
-        <option class="datepick" data-date="${moment().add(1, 'months').format(defaultDate)}">Next Month</option>
-        <option class="datepick" data-date="${moment().add(2, 'months').format(defaultDate)}">Next 2 Months</option>
-        <option class="datepick" data-date="${moment().add(6, 'months').format(defaultDate)}">Next 6 Months</option>
-        <option class="datepick" data-date="${moment().add(12, 'months').format(defaultDate)}">Next  12 Months</option>`);
+        <option class="datepick" data-date="${[moment().format(defaultDate),moment().format(defaultDate)]}">Today</option>
+        <option class="datepick" data-date="${[moment().subtract(1, 'days').format(defaultDate),moment().subtract(1, 'days').format(defaultDate)]}">Yesterday</option>
+        <option class="datepick" data-date="${[moment().subtract(1, 'weeks').format(defaultDate),moment().format(defaultDate)]}">Last Week</option>
+        <option class="datepick" data-date="${[moment().subtract(6, 'days').format(defaultDate),moment().format(defaultDate)]}">Last 7 Days</option>
+        <option class="datepick" data-date="${[moment().subtract(13, 'days').format(defaultDate),moment().format(defaultDate)]}">Last 14 Days</option>
+        <option class="datepick" data-date="${[moment().subtract(29, 'days').format(defaultDate),moment().format(defaultDate)]}">Last 30 Days</option>
+        <option class="datepick" data-date="${[moment().subtract(1, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}">Last Month</option>
+        <option class="datepick" data-date="${[moment().subtract(2, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}">Last 2 Months</option>
+        <option class="datepick" data-date="${[moment().subtract(3, 'month').startOf('month').format(defaultDate),moment().subtract(1, 'month').endOf('month').format(defaultDate)]}">Last 3 Months</option>
+        <option class="datepick" data-date="${[moment().add(1, 'days').format(defaultDate),moment().add(1, 'days').format(defaultDate)]}">Tomorrow</option>
+        <option class="datepick" data-date="${[moment().add(6, 'days').format(defaultDate),moment().add(12, 'days').format(defaultDate)]}">Next Week</option>
+        <option class="datepick" data-date="${[moment().format(defaultDate),moment().add(6, 'days').format(defaultDate)]}">Next 7 Days</option>
+        <option class="datepick" data-date="${[moment().format(defaultDate),moment().add(13, 'days').format(defaultDate)]}">Next 14 Days</option>
+        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(2, 'month').format(defaultDate)]}">Next Month</option>
+        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(3, 'month').format(defaultDate)]}">Next 2 Months</option>
+        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(6, 'month').format(defaultDate)]}">Next 6 Months</option>
+        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}">Next  12 Months</option>`);
     break;
     case 'input':
-      $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
-      <option value="starts_with">starts with</option>
-      <option value="contains">contains</option>
-      <option value="not_equal">not equal</option>
-      <option value="not_starting">not starting</option>
-      <option value="not_contain">not contain</option>
-      <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`);
+      $("#no_value_"+data['value']).val('');
+      $("#container_mode_"+data['value']).select2('destroy');
+      $("#no_value_"+data['value']).parent().empty().html(`
+        <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
+
+      $('#'+data['id']).html(createSelect('number_and_preferences',data));
     break;
     case 'option':
-        $('#'+data['id']).html(`<option value="exact" selected>Exact</option>
-      <option value="starts_with">starts with</option>
-      <option value="contains">contains</option>
-      <option value="not_equal">not equal</option>
-      <option value="not_starting">not starting</option>
-      <option value="not_contain">not contain</option>
-      <option value="is_blank">is blank</option>
-      <option value="not_blank">is not blank</option>`);
+        $('#'+data['id']).html(createSelect('others',data));
+        selectTrigger(data['value'],'select2');
     break;
-    }
+  }
+}
+
+function selectTrigger(index,inputType){
+  if(inputType === "select2"){
+    $('#container_mode_'+index).select2();
+    $('#container_mode_'+index).on("select2:select", function (e) {
+      var text = e.params.data.text;
+      if (text == 'Select All') {
+        $("#container_mode_"+index+" > option").prop("selected", "selected");
+        $("#container_mode_"+index+" > option").each(function (key, val) {
+          if ($(val).val() == 'all') {
+            $(this).prop('selected', false);
+          }
+        });
+        $("#container_mode_"+index).trigger("change");
+      } 
+      var array = $(this).select2('data');
+      var element = [];
+      for (const key in array) {
+        if (Object.hasOwnProperty.call(array, key)) {
+          element.push(array[key].text);
+        }
+      }
+      $("#no_value_"+index).val(element.join());
+    });
+  }else if(type==="date"){
+
+  }
+  
+}
+
+//create dynamic select option base on serch title
+function createSelect(key,data){
+  var optionHTML = "";
+   var handler = $.grep(searchJson[key], function(obj) { 
+    if(obj.filterName === data['keyindex']){   
+        return obj; 
+      }
+  });
+  $.each(handler[0].type,function(okey,oval){
+    var select = (okey==0 ? 'selected' :'');
+    optionHTML +=`<option value="${oval.value}" ${select}>${oval.option}</option>`;
+  });
+  if(handler[0].value.length > 0){
+    createSelectValue(data['value'],handler[0].value);
+  }
+  
+  return optionHTML;
+}
+
+function createSelectValue(index,value){
+  var optionHTML="";
+  $.each(value,function(key,val){
+    optionHTML+=`<option value="${val.value}">${val.name}</option>`;
+  });
+  $("#no_value_"+index).parent().empty().html(`
+        <input name="value[]" id="no_value_${index}" type="hidden"> 
+        <select id="container_mode_${index}" class="form-control w_90" multiple="multiple">${optionHTML}</select>`);
 }
 
 function appendToSelect(data){
@@ -1082,10 +1136,11 @@ function dateFormat(date){
 $(document).on("change", "[id*='no_type_']",function(){
   if($("option:selected",this).hasClass("datepick")){
     var thisOption = $("option:selected",this);
-    var startdate = thisOption.attr("data-date");
+    var fetchDate = thisOption.attr("data-date").split(",");
     var idOfDate = "#no_value_"+thisOption.parent().parent().parent().attr("section");
       $(idOfDate).daterangepicker({
-        startDate:startdate,
+        startDate:fetchDate[0],
+        endDate: fetchDate[1],
         locale: {
           format: defaultDate
         }
@@ -1242,81 +1297,81 @@ $("#recent_search").on('change', function(e) {
 $('#deleteSearch').on('click', function() {
   $('select').find(":selected").hide();
 });
-// Func Recent/Save Search
-function loadRecentSave() {
-  $.ajax({
-    url: "/shipment/getRecentSave/",
-    type: "post",
-    data: {user_id:user_id},
-    dataType: "json",
-    beforeSend: function (res) {
-      console.log("loading...");
-      $("#fsearch > .card-body").append(mini_loader);
-    },
-    success: function (res) {
-      $('#loader-wrapper').remove();
-      const search_obj = JSON.parse(res.search);
-      const recent_obj = JSON.parse(res.recent);
-      var search_html = "";
-      var recent_html = "";
-      for (const key in search_obj) {
-        if (Object.hasOwnProperty.call(search_obj, key)) {
-          const search = search_obj[key].search_query;
-          var search_value = "";
-          var search_data = "";
-          for (const key2 in search) {
-            if (Object.hasOwnProperty.call(search, key2)) {
-              var columnname = search[key2].columnname;
-              var type = search[key2].type;
-              var value = search[key2].value;
-              var cond = search[key2].cond;
-              search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-              search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+  // Func Recent/Save Search
+  function loadRecentSave() {
+    $.ajax({
+      url: "/shipment/getRecentSave/",
+      type: "post",
+      data: {user_id:user_id},
+      dataType: "json",
+      beforeSend: function (res) {
+        console.log("loading...");
+        $("#fsearch > .card-body").append(mini_loader);
+      },
+      success: function (res) {
+        $('#loader-wrapper').remove();
+        const search_obj = JSON.parse(res.search);
+        const recent_obj = JSON.parse(res.recent);
+        var search_html = "";
+        var recent_html = "";
+        for (const key in search_obj) {
+          if (Object.hasOwnProperty.call(search_obj, key)) {
+            const search = search_obj[key].search_query;
+            var search_value = "";
+            var search_data = "";
+            for (const key2 in search) {
+              if (Object.hasOwnProperty.call(search, key2)) {
+                var columnname = search[key2].columnname;
+                var type = search[key2].type;
+                var value = search[key2].value;
+                var cond = search[key2].cond;
+                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
             }
+            var text_save = search_obj[key].search_title;
+            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                return letter.toUpperCase();
+            });
+            search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+            text_save + '</option>';
           }
-          var text_save = search_obj[key].search_title;
-          text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-              return letter.toUpperCase();
-          });
-          search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-          text_save + '</option>';
         }
-      }
-      for (const key in recent_obj) {
-        if (Object.hasOwnProperty.call(recent_obj, key)) {
-          const recent = recent_obj[key].search_query;
-          var recent_value = "";
-          var recent_data = "";
-          for (const key2 in recent) {
-            if (Object.hasOwnProperty.call(recent, key2)) {
-              var columnname = recent[key2].columnname;
-              var type = recent[key2].type;
-              var value = recent[key2].value;
-              var cond = recent[key2].cond;
-              recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-              recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+        for (const key in recent_obj) {
+          if (Object.hasOwnProperty.call(recent_obj, key)) {
+            const recent = recent_obj[key].search_query;
+            var recent_value = "";
+            var recent_data = "";
+            for (const key2 in recent) {
+              if (Object.hasOwnProperty.call(recent, key2)) {
+                var columnname = recent[key2].columnname;
+                var type = recent[key2].type;
+                var value = recent[key2].value;
+                var cond = recent[key2].cond;
+                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
             }
+            const text_recent = recent[0].columnname;
+            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+            text_recent.replaceAll('_', ' ').toUpperCase() + 
+            " ("+recent[0].value+")" +
+            '</option>';
           }
-          const text_recent = recent[0].columnname;
-          recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
-          text_recent.replaceAll('_', ' ').toUpperCase() + 
-          " ("+recent[0].value+")" +
-          '</option>';
         }
-      }
-      $('#save_search').html(search_html);
-      $('#recent_search').html(recent_html);
-    },
-    error: function (res) {
-      console.log(res);
+        $('#save_search').html(search_html);
+        $('#recent_search').html(recent_html);
+      },
+      error: function (res) {
+        console.log(res);
+        $('#loader-wrapper').remove();
+      },
+      complete: function (res) {
+        console.log(res);
+        $('#loader-wrapper').remove();
+      },
+    }).done(function(ev) {
+      console.log(ev);
       $('#loader-wrapper').remove();
-    },
-    complete: function (res) {
-      console.log(res);
-      $('#loader-wrapper').remove();
-    },
-  }).done(function(ev) {
-    console.log(ev);
-    $('#loader-wrapper').remove();
-  });;
-}
+    });
+  }
