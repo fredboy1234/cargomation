@@ -10,7 +10,7 @@ if(isset($parts['query']) && !empty($parts['query'])) {
 }
 
 ?>
-<body id="body" class="hold-transition login-page">
+<body id="body" class="hold-transition login-page" style="overflow-y: hidden;">
 <div id="feedback" class="container">
 <?php if (($danger = Flash::danger())): ?>
     <div class="alert alert-danger" role="alert"><strong>Oh snap!</strong> <?= $this->escapeHTML($danger); ?></div>
@@ -98,13 +98,15 @@ h1 {
   left: 30%;
   right: 30%;
 }
+.login-page {
+  overflow-y: hidden;
+}
 </style>
 
 <div class="login-box">
   <div class="login-logo">
     <a href="/" style="color: #FFF;font-weight:900;font-size:3rem;">
-    <i class="fas fa-ship"></i>
-    <br><strong><?=APP_NAME?></strong></b></a>
+    <img src="/img/logo.png" width="80px" alt="Cargomation Logo"><strong><?=APP_NAME?></strong></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
