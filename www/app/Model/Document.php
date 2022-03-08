@@ -268,6 +268,28 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getDocumentTypeByUserID($user_id, $arg = "") {
+        // $query = "SELECT ISNULL(type, 'OTHER') as type {$arg}
+        // FROM document
+        // LEFT JOIN shipment ON shipment.id = document.shipment_id
+        // WHERE shipment.user_id = '{$user_id}'
+        // GROUP BY type ";
+
+        $query = "SELECT r.typer AS type, ISNULL(cd.description, 'no description yet') AS description
+        FROM (SELECT ISNULL(d.type, 'OTHER') as typer
+                FROM document d
+                LEFT JOIN shipment AS s
+        ON d.shipment_num = s.shipment_num
+        WHERE s.user_id = '{$user_id}'
+        GROUP BY type ) as r
+        LEFT JOIN cargowise_document_type cd
+        ON cd.doc_type = r.typer";
+        $query .= " ORDER BY typer ASC";
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
     public function getDocumentStatus() {
         // 
     }
