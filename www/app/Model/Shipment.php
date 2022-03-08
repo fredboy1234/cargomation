@@ -322,7 +322,7 @@ class Shipment extends Core\Model {
     
         if($urole[0]->role_id == 2){
             return $Db->query("select count(port_loading) as count ,port_loading, transport_mode
-        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null or port_loading <>' '
+        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null and port_loading <>' '
         and shipment.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
         group by port_loading,transport_mode")->results();
         }else{
