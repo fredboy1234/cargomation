@@ -123,8 +123,11 @@ if(!empty($this->document)) {
 
     <div class="card card-outline card-primary collapsed-card" style="transition: all 0.15s ease 0s; height: inherit; width: inherit;">
         <div class="card-header">
+            <?php if($this->shipment['type'] == ""): ?>
+            <h3 class="card-title">Request a document</h3>
+            <?php else: ?>
             <h3 class="card-title">More Shipment Info</h3>
-
+            <?php endif; ?>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
                 <i class="fas fa-sync-alt"></i>
@@ -144,6 +147,23 @@ if(!empty($this->document)) {
         <!-- /.card-header -->
         <div class="card-body" style="display: none;">
             <div class="row">
+            <?php if($this->shipment['type'] == ""): ?>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">Document Types</label>
+                        <select class="multiple-document" name="doc_type[]" multiple="multiple">
+                        <?php foreach ($this->document_type as $key => $value): ?>
+                            <option value="<?= $value->type; ?>">
+                            <?= $value->type . " - " . $value->description; ?>
+                            </option>
+                        <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="multi_request">Request document</button>
+                    </div>
+                </div>
+            <?php else: ?>
                 <div class="col-md-6">
                     <p><b>Shipment ID: </b><span><?= $this->shipment_info[0]->shipment_num; ?></span></p>
                     <p><b>House Bill: </b><span><?= $this->shipment_info[0]->house_bill; ?></span></p>
@@ -168,6 +188,7 @@ if(!empty($this->document)) {
                     <p><b>Receiving Agent: </b><span><?= $this->shipment_info[0]->receiving_agent; ?></span></p>
                     <p><b>Receiving Agent Address: </b><span><?= $this->shipment_info[0]->receiving_agent_addr; ?></span></p>
                 </div>
+            <?php endif; ?>
             </div>
         </div>
         <!-- /.card-body -->

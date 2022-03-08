@@ -882,6 +882,21 @@ $(document).ready(function () {
 
 });
 
+$(document).ready(function() {
+    $('.multiple-document').select2();
+    // Button Request
+    $('button#multi_request').click(function (e) {
+        var data = $('.multiple-document').select2('data');
+        var element = [];
+        for (let index = 0; index < data.length; index++) {
+            element.push(data[index].id); 
+        }
+        let document_type = element.join();
+        var url = "/document/request/" + shipment_id + "/" + document_type;
+        preloader(url);
+    });
+});
+
 $(function () {
 
     var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
