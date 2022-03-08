@@ -308,8 +308,6 @@ $(document).ready(function () {
     tableColumnData.push({ data: $index, sortable: $sort });
   });
 
-  console.log(tableColumnData);
-
   var table = $('.table').DataTable({
     searching: true,
     paging: true,
@@ -346,6 +344,20 @@ $(document).ready(function () {
            if($(this).find("[name*='cond']").hasClass('exclude')) {
               cond = "";
            } 
+           //convert date to mm/dd/yyyy for api request format
+           
+           if(search === "ETA" || search === "ETD"){
+
+            var dateString = value;
+            var dateParts = dateString.split("-");
+            var datePartsChild1 = dateParts[0].split("/");
+            var datePartsChild2 = dateParts[1].split("/");
+              var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+              var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+              value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+              type = 'DATERANGE';
+           }
+           
            if(typeof value !== null || value.length > 0){
               arr.push({
                 "columnname": search,
@@ -427,7 +439,7 @@ $(document).ready(function () {
     //   }
     // });
   });
-
+  $.fn.dataTable.ext.errMode = 'none';
   // Doing some magic! 
   $('.table tbody').on('click', 'tr td', function(e) { 
     if( $(e.target).closest('span').length == 0 ){
