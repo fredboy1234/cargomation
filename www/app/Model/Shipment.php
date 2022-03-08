@@ -490,4 +490,10 @@ class Shipment extends Core\Model {
         $query = "SELECT top(1) * FROM worldcities WHERE city like '{$location}' ";
         return $Db->query($query)->results();
     }
+
+    public function getContainerByShipID($shipment_id) {
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM shipment_container WHERE containershipnumber = '{$shipment_id}' ";
+        return $Db->query($query)->results();
+    }
 }
