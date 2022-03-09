@@ -25,70 +25,59 @@ $(document).ready(function(){
     var pointObject=[];
     var counter =0;
     var stoper = 0;
-    var bar = new Promise((resolve, reject) => {
-      $.each(port_loading_couint,function(okey,oval){
-        var loading = oval.port_loading; 
-        var ccount = oval.count;
-    
-        if(loading !==""){
-          if ($.inArray(loading, preventer) == -1){
-            preventer.push(loading);
-            var mcolor ="#dc3545";
-            if(oval.transport_mode === "Air"){
-              mcolor = "#007bff";
-            }else if(oval.transport_mode === "Sea"){
-              mcolor = "#28a745";
-            }
-            var txtcontent = 'Location:'+loading+' Count:'+oval.count;
-            var items = [50, 60, 80];
-            var item = items[Math.floor(Math.random() * items.length)];
-            var data = [];
-              $.ajax({
-                url: document.location.origin + '/shipment/getCity/',
-                type: "POST",
-                dataType: "json",
-                data: { location: loading },
-                success: function (res) {
-                    data = res;
-                    if(data.length > 0) {
-                      var latitude = parseFloat( data[0].lat);
-                      var longitude = parseFloat(data[0].lng);
-                      pointObject.push({
-                        title: txtcontent,
-                        latitude: latitude,
-                        longitude: longitude,
-                        color: mcolor
-                        });
-                        counter++;
-                    }
-                }
-            }); 
-          }  
-        }
-        resolve();
-      });
+    var promises = [];
+    var tooltipHTML = '<p>Test from test</p>';
+
+    $.each(port_loading_couint,function(okey,oval){
+      var loading = oval.port_loading; 
+      var ccount = oval.count;
+  
+      if(loading !==""){
+        if ($.inArray(loading, preventer) == -1){
+          preventer.push(loading);
+          var mcolor ="#dc3545";
+          if(oval.transport_mode === "Air"){
+            mcolor = "#007bff";
+          }else if(oval.transport_mode === "Sea"){
+            mcolor = "#28a745";
+          }
+          var txtcontent = `<span><strong>Location:</strong> ${loading}</span><br>
+          <span><strong>Shipment Count:</strong> ${oval.count}</span><br>
+          <span><strong>Type:</strong>${oval.transport_mode}</span>`;
+          var items = [50, 60, 80];
+          var item = items[Math.floor(Math.random() * items.length)];
+          var data = [];
+          var promise = $.ajax({
+              url: document.location.origin + '/shipment/getCity/',
+              type: "POST",
+              dataType: "json",
+              data: { location: loading },
+              success: function (res) {
+                  data = res;
+                  if(data.length > 0) {
+                    var latitude = parseFloat( data[0].lat);
+                    var longitude = parseFloat(data[0].lng);
+                    pointObject.push({
+                      title: txtcontent,
+                      latitude: latitude,
+                      longitude: longitude,
+                      color: mcolor
+                      });
+                      counter++;
+                  }
+              }
+          }); 
+        }  
+      }
+      promises.push(promise);
     });
 
-    bar.then(() => {
-      var waiter = 0;
+    $.when.apply($, promises).done(function() {
       let map = new Map(pointObject,"chartdiv");
-      var recheckObject = setInterval(function(){
-    
-        //cancel interval if push is done
-        if(stoper == counter){
-          waiter++;
-          if(waiter == 10 && stoper == counter){
-            clearInterval(recheckObject);
-          }
-        }else{
-          waiter = 0;
-        }
-        
-        console.log(stoper + " ---- " + counter + ' -waiter- '+waiter);
-        map.executeMap();
-        stoper = counter;
-      }, 1000);
-    });
+      map.executeMap();
+  }).fail(function() {
+      console.log("fail");
+  });
 });
 
 //on click wont work need to check so we use this javascript temporarily

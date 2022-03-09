@@ -787,7 +787,11 @@
               <div class="card-body p-0">
                 <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
                  -->
-                <div id="chartdiv" class="map" style="position: relative; height: 495px;"></div>
+                <div id="chartdiv" class="map" style="position: relative; height: 495px;">
+                <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                </div>
                 <div id="sidebardash" class="d-none">
                     <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
                     <?php $current = array();?>
