@@ -777,7 +777,7 @@ class Shipment extends Core\Controller {
 
     }
 
-    public function info($user_id = "", $shipment_id = "") {
+    public function info($user_id = "", $shipment_num = "") {
 
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
@@ -797,10 +797,15 @@ class Shipment extends Core\Controller {
             Utility\Redirect::to(APP_URL);
         }
 
+        $shipment_info = $this->Shipment->getShipmentByShipNum($shipment_num);
+        $container_detail = $this->Shipment->getContainerByShipNum($shipment_num);
+        $shipment_contact = $this->Shipment->getShipmentContactByShipID($shipment_info[0]->id);
+
         $this->View->renderWithoutHeaderAndFooter("/shipment/info", [
             "title" => "Shipment Info",
-            "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id),
-            "container_details" => $this->Shipment->getContainerByShipID($shipment_id)
+            "shipment_info" => $shipment_info,
+            "container_detail" => $container_detail,
+            "shipment_contact" => $shipment_contact
         ]);
     }
 
