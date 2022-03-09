@@ -23,6 +23,8 @@ $CLIENT_ID = $_GET['user_id'];
 $sqlSearchRecord = "SELECT TOP (1) * FROM [dbo].[user_webservice] WHERE [user_id] = '$CLIENT_ID' AND isactive='Y'";
 $execRecord = sqlsrv_query($conn, $sqlSearchRecord);
 $return = sqlsrv_has_rows($execRecord);
+
+
 }
 else
 {
@@ -45,7 +47,7 @@ if ($return === true) {
 	function process_shipment($key,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code)
 	{
 try{		
-		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bfreighthub_db";}
+		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bcargomation_db";}
 		$serverName = "a2bserver.database.windows.net"; 
 		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
 		$conn = sqlsrv_connect( $serverName, $connectionInfo);
@@ -89,7 +91,7 @@ try{
 				)
 			)
 		);
-		$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+		$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 		curl_setopt($curl_, CURLOPT_SSL_VERIFYPEER, false);
 		$document_request = curl_exec($curl_);
 		curl_close($curl_);
@@ -363,8 +365,9 @@ try{
 	if ($return_user == true) {
 		while ($row_user = sqlsrv_fetch_array($execRecord_userinfo, SQLSRV_FETCH_ASSOC)) {
 			$client_email = $row_user['email'];
+		    $_GET['get_email'] = $client_email;
 		}
-		$myarray = glob("E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/*");
+		$myarray = glob("E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/*.xml");
 		//usort($myarray, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
 		usort($myarray, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray as $filename) {
@@ -401,7 +404,7 @@ try{
 			$TOTALWIDTH="";
 			$TOTALLENGTH="";
 	
-			$parser = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+			$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
 			$universalshipment = json_encode($xml, JSON_PRETTY_PRINT);
@@ -415,11 +418,11 @@ try{
 		    $XPATH_EVENTYPE = jsonPath($universal_shipment, $path_EventSource.".Description");
 			$EVENTYPE = $parser->encode($XPATH_EVENTYPE);
 		    $EVENTYPE = node_exist(getArrayName($EVENTYPE));
-
+			
 		    $SHIPKEY = false;
 		    $CONSOLKEY = false;
 		    $CUSTOMEKEY = false;
-	
+
 			if ($SHIPMENTTYPE != "") {
 				if ($SHIPMENTTYPE == "ForwardingShipment") {
 					$XPATH_SHIPMENTKEY = jsonPath($universal_shipment, $path_DataSource.".Key");
@@ -498,10 +501,13 @@ try{
 					}
 				}
 			}
-	
-            
+	         
+
+	         //require_once('order.php');
+
+
 			if ($CONSOLNUMBER == "" || $CONSOLNUMBER != "") {
-                
+
 				//XML PATH
 				$path_UniversalShipment = "$.Body.UniversalShipment.Shipment";
 				$path_UniversalShipmentContext = "$.Body.UniversalShipment.Shipment.DataContext";
@@ -518,7 +524,13 @@ try{
 				else{
 					$path_SubUniversalSubShipment = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection";
 				 }
-				$items = array();  
+				$items = array();
+
+				//GET ESTIMATED DELIVERY DATE NUMBER
+				$XPATH_WAYBILLNUMBER = jsonPath($universal_shipment, $path_UniversalShipment.".LocalProcessing.EstimatedDelivery");
+				$WAYBILLNUMBER = $parser->encode($XPATH_WAYBILLNUMBER);
+				$WAYBILLNUMBER = node_exist(getArrayName($WAYBILLNUMBER));
+
 				//GET WAYBLL NUMBER
 				$XPATH_WAYBILLNUMBER = jsonPath($universal_shipment, $path_UniversalShipment.".WayBillNumber");
 				$WAYBILLNUMBER = $parser->encode($XPATH_WAYBILLNUMBER);
@@ -680,8 +692,22 @@ try{
 					$XPATH_BOOKINGDESC = $parser->encode($XPATH_BOOKINGDESC);
 					$BOOKINGDESC = node_exist(getArrayName($XPATH_BOOKINGDESC));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC);
-					
+					//GET CARRIER DETAILS
+					$XPATH_CARRIERTYPE= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].Carrier.AddressType");
+					$XPATH_CARRIERTYPE = $parser->encode($XPATH_CARRIERTYPE);
+					$XPATH_CARRIERTYPE = node_exist(getArrayName($XPATH_CARRIERTYPE));
+
+					//GET CARRIER COMPANY NAME
+					$XPATH_CARRIERNAME= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].Carrier.CompanyName");
+					$XPATH_CARRIERNAME = $parser->encode($XPATH_CARRIERNAME);
+					$CARRIERNAME = node_exist(getArrayName($XPATH_CARRIERNAME));
+
+					//GET CARRIER COMPANY NAME
+					$XPATH_CARRIERORG= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].Carrier.OrganizationCode");
+					$XPATH_CARRIERORG = $parser->encode($XPATH_CARRIERORG);
+					$CARRIERORG = node_exist(getArrayName($XPATH_CARRIERORG));
+
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierCompanyName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG);	
                     
 				 }
 				 else
@@ -746,11 +772,25 @@ try{
 					$XPATH_BOOKINGDESC = $parser->encode($XPATH_BOOKINGDESC);
 					$BOOKINGDESC = node_exist(getArrayName($XPATH_BOOKINGDESC));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC);
+					//GET CARRIER DETAILS
+					$XPATH_CARRIERTYPE= jsonPath($universal_shipment, $path_TransportLegCollection.".Carrier.AddressType");
+					$XPATH_CARRIERTYPE = $parser->encode($XPATH_CARRIERTYPE);
+					$CARRIERTYPE = node_exist(getArrayName($XPATH_CARRIERTYPE));
+
+					//GET CARRIER COMPANY NAME
+					$XPATH_CARRIERNAME= jsonPath($universal_shipment, $path_TransportLegCollection.".Carrier.CompanyName");
+					$XPATH_CARRIERNAME = $parser->encode($XPATH_CARRIERNAME);
+					$CARRIERNAME = node_exist(getArrayName($XPATH_CARRIERNAME));
+
+					//GET CARRIER COMPANY NAME
+					$XPATH_CARRIERORG= jsonPath($universal_shipment, $path_TransportLegCollection.".Carrier.OrganizationCode");
+					$XPATH_CARRIERORG = $parser->encode($XPATH_CARRIERORG);
+					$CARRIERORG = node_exist(getArrayName($XPATH_CARRIERORG));
+
+					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG);
 				}
 			
-				$routing = json_encode($items);
-				    
+				 $routing = json_encode($items);
 
 				if ($CONTAINERctr == 1) {
 					$CONTAINERctr = 1;
@@ -772,6 +812,9 @@ try{
 				} else {
 					$OrganizationAddress_ctr1 = 0;
 				}
+
+				/*get all organization type*/
+				$orgaddress_array = array();  
 				for ($a = 0; $a <= $OrganizationAddress_ctr - 1; $a++) {
 					$XPATH_ORGANIZATIONCODE = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].OrganizationCode");
 					$XPATH_ADDRESS1 = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].Address1");
@@ -783,6 +826,8 @@ try{
 					$XPATH_POSTCODE = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].Postcode");
 					$XPATH_COUNTRY = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].Country.Name");
 					$XPATH_ADDRESSTYPE = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].AddressType");
+					$XPATH_COMPNAME= jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].CompanyName");
+
 					$PATH_ADDRESSTYPE = $parser->encode($XPATH_ADDRESSTYPE);
 					$PATH_ADDRESSTYPE = node_exist(getArrayName($PATH_ADDRESSTYPE));
 					
@@ -791,6 +836,11 @@ try{
 					$XPATH_EMAIL_GLOBAL = node_exist(getArrayName($XPATH_EMAIL_GLOBAL));
 					$XPATH_ORGCODE_GLOBAL = $parser->encode($XPATH_COMPANYNAME);
 					$XPATH_ORGCODE_GLOBAL = node_exist(getArrayName($XPATH_ORGCODE_GLOBAL));
+
+					/*store to json for organization details*/
+					$orgaddress_array[] = array("AddressType"=>getArrayName($PATH_ADDRESSTYPE),"Address1"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS1))),"Address2"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS2))),"AddressShortCode"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESSCODE))),"CompanyName"=>node_exist(getArrayName($parser->encode($XPATH_COMPNAME))),"OrganizationCode"=>node_exist(getArrayName($parser->encode($XPATH_ORGANIZATIONCODE))));
+		    		
+
 					
 					
 					if ($PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress") {
@@ -833,7 +883,8 @@ try{
 						}
 					}
 				}
-				
+				$organization = json_encode($orgaddress_array);
+
 				for ($b = 0; $b <= $OrganizationAddress_ctr1 - 1; $b++) {
 						$ORGANIZATIONCODE = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].OrganizationCode");
 						$ADDRESS1 = jsonPath($universal_shipment,$path_AddressUniversalShipment.".OrganizationAddress[$b].Address1");
@@ -886,6 +937,7 @@ try{
 							$PATH_RECEIVINGAGENTSTATE = node_exist(getArrayName($XPATH_STATE));
 							$RECEIVINGAGENTADDRESS = $PATH_RECEIVINGAGENTADDRESS1 . ", " . $PATH_RECEIVINGAGENTADDRESSCODE . ", " . $PATH_RECEIVINGAGENTADDRESS2 . ", " . $PATH_RECEIVINGAGENTPORTNAME . ", " . $PATH_RECEIVINGAGENTSTATE;
 						}
+			
 					}
 				
             
@@ -901,12 +953,12 @@ try{
 							 $TRANS_ETD = null;
 						}
 						
-				echo $sqlInsertRecord = "INSERT INTO shipment
+				$sqlInsertRecord = "INSERT INTO shipment
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
-				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg)
+				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg,organization)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
-				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."') SELECT SCOPE_IDENTITY() as id_ship";
+				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."') SELECT SCOPE_IDENTITY() as id_ship";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
 						$sql_getlastshipID = "SELECT  *
 						FROM dbo.shipment
@@ -1228,7 +1280,7 @@ try{
 				        Set console_id='$CONSOLNUMBER', master_bill ='$WAYBILLNUMBER', house_bill='$HOUSEWAYBILLNUMBER', transport_mode='$TRANSMODE',
 				        vessel_name='$VESSELNAME', voyage_flight_num='$VOYAGEFLIGHTNO', vesslloyds='$VESSELLOYDSIMO', eta='$TRANS_ETA', etd='$TRANS_ETD', place_delivery='$PLACEOFDELIVERY', place_receipt='$PLACEOFRECEIPT',
 				        consignee='$CONSIGNEE',consignor='$CONSIGNOR',sending_agent='$PATH_SENDINGAGENT',receiving_agent='$PATH_RECEIVINGAGENT',receiving_agent_addr='$RECEIVINGAGENTADDRESS',
-				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE', order_number='$ORDER_NUMBER', totalvolume='$TOTALVOLUME', ata='$ACTUAL_ARRIVAL', atd='$ACTUAL_DEPARTURE', route_leg='$routing'
+				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE', order_number='$ORDER_NUMBER', totalvolume='$TOTALVOLUME', ata='$ACTUAL_ARRIVAL', atd='$ACTUAL_DEPARTURE', route_leg='$routing', organization='$organization'
 				        WHERE shipment_num = '$SHIPMENTKEY' AND user_id = '$CLIENT_ID'";
 						$updateRec = sqlsrv_query($conn, $sqlUpdateRecord);
 	
@@ -1548,7 +1600,6 @@ try{
 					}
 				}
                 //END OF DATA MANAGEMENT
-
 			}
 			else
 			{
@@ -1558,6 +1609,8 @@ try{
 				}
 			}
 		}
+		/*call order module details*/
+		require_once('order.php');
 	}
 } 
 else{die("eAdaptor not found");}
