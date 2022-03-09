@@ -533,7 +533,7 @@ $(document).ready(function () {
     helperSelectNamePostfix: '_helper',
     sortByInputOrder: false,
     filterTextClear: "",
-    selectorMinimalHeight: 300
+    selectorMinimalHeight: 300 
   });
   CustomizeDuallistbox('settings');
   function CustomizeDuallistbox(listboxID) {
