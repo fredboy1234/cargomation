@@ -491,9 +491,27 @@ class Shipment extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function getContainerByShipID($shipment_id) {
+    public function getContainerByShipNum($shipment_id, $arg = "*") {
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM shipment_container WHERE containershipnumber = '{$shipment_id}' ";
+        $query = "SELECT {$arg} 
+                FROM shipment_container 
+                WHERE containershipnumber = '{$shipment_id}' ";
+        return $Db->query($query)->results();
+    }
+
+    public function getShipmentByShipNum($shipment_num, $arg = "*") {
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT {$arg}
+                FROM shipment
+                WHERE shipment_num = '{$shipment_num}'";
+        return $Db->query($query)->results();
+    }
+
+    public function getShipmentContactByShipID($shipment_id, $arg = "*") {
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT {$arg}
+                FROM shipment_contacts
+                WHERE shipment_id = '{$shipment_id}'";
         return $Db->query($query)->results();
     }
 }
