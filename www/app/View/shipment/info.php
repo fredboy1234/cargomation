@@ -220,13 +220,13 @@
                 </span>
             </div>
             <div id="container_details" class="collapse">  
-            <?php if(empty($this->container_details)): ?>   
+            <?php if(empty($this->container_detail)): ?>   
                 <span> No Container Data </span>
             <?php else: ?>
-                <?php foreach ($this->container_details as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
+                <?php foreach ($this->container_detail as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
                     <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
                         <span class="d-inline-block"><?= $value->containernumber; ?>
-                            <?php if(true): ?>
+                            <?php if(false): ?>
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                             <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
                             <?php endif; ?>
