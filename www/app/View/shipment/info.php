@@ -137,7 +137,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <strong>Order Reference</strong>
-                    <p><?= $this->shipment_info[0]->order_number; ?></p>
+                    <p><?= (empty($this->shipment_info[0]->order_number)) ? '<span class="text-danger"> - </span>' : $this->shipment_info[0]->order_number; ?></p>
                 </div>
                 <div class="col-lg-4">
                     <strong>Container Mode</strong>
@@ -151,11 +151,15 @@
                 </span>
             </div>
             <dl id="consignee" class="row collapse">
-                <div class="col-lg-3">
-                    <dt>Code:</dt>
+                <div class="col-lg-6">
+                    <dt>Company Name:</dt>
+                    <dd><?=  (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Organization Code:</dt>
                     <dd><?= $this->shipment_info[0]->consignee; ?></dd>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <dt>Address:</dt>
                     <dd><?= $this->shipment_info[0]->consignee_addr; ?></dd>
                 </div>
@@ -183,11 +187,11 @@
                 </span>
             </div>
             <dl id="consignor" class="row collapse">
-                <div class="col-lg-3">
-                    <dt>Code:</dt>
+                <div class="col-lg-12">
+                    <dt>Organization Code:</dt>
                     <dd><?= $this->shipment_info[0]->consignor; ?></dd>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <dt>Address:</dt>
                     <dd><?= $this->shipment_info[0]->consignor_addr; ?></dd>
                 </div>
@@ -215,71 +219,72 @@
                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
                 </span>
             </div>
-            <div id="container_details" class="collapse">        
-            <?php foreach ($this->container_details as $key => $value): $value->no_data = '<span class="text-danger">NO DATA</span>'; ?>
-                <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
-                    <span class="d-inline-block"><?= $value->containernumber; ?>
-                        <?php if(true): ?>
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
-                        <?php endif; ?>
-                    </span>
-                    <span class="float-right mt-2">
-                        <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
-                    </span>
-                </div>
-                <dl id="cd-<?= $value->id ?>" class="row collapse">
-                    <div class="col-lg-3">
-                        <dt>Container Type:</dt>
-                        <dd><?= $value->containertype; ?></dd>
+            <div id="container_details" class="collapse">  
+            <?php if(empty($this->container_details)): ?>   
+                <span> No Container Data </span>
+            <?php else: ?>
+                <?php foreach ($this->container_details as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
+                    <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
+                        <span class="d-inline-block"><?= $value->containernumber; ?>
+                            <?php if(true): ?>
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
+                            <?php endif; ?>
+                        </span>
+                        <span class="float-right mt-2">
+                            <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                        </span>
                     </div>
-                    <div class="col-lg-3">
-                        <dt>Delivery Mode:</dt>
-                        <dd><?= $value->containerdeliverymode; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Gross Wt.:</dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Volume:</dt>
-                        <dd><?php
-                        $length = floatval($value->length);
-                        $width = floatval($value->width);
-                        $height = floatval($value->height); 
-                        $volume = $length * $width * $height;
-                        echo number_format($volume, 2, '.', ',') . "cm³"; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Packs:</dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Gate In: </dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>FCL Available: </dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>FCL Loaded In: </dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Storage Date:</dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                    <div class="col-lg-3">
-                        <dt>Empty Req. By:</dt>
-                        <dd><?= $value->no_data; ?></dd>
-                    </div>
-                </dl>
-            <?php endforeach; ?>
+                    <dl id="cd-<?= $value->id ?>" class="row collapse">
+                        <div class="col-lg-3">
+                            <dt>Container Type:</dt>
+                            <dd><?= $value->containertype; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Delivery Mode:</dt>
+                            <dd><?= $value->containerdeliverymode; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Gross Wt.:</dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Volume:</dt>
+                            <dd><?php
+                            $length = floatval($value->length);
+                            $width = floatval($value->width);
+                            $height = floatval($value->height); 
+                            $volume = $length * $width * $height;
+                            echo number_format($volume, 2, '.', ',') . "cm³"; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Packs:</dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Gate In: </dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>FCL Available: </dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>FCL Loaded In: </dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Storage Date:</dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                        <div class="col-lg-3">
+                            <dt>Empty Req. By:</dt>
+                            <dd><?= $value->no_data; ?></dd>
+                        </div>
+                    </dl>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </div>
-
-
-
         </div>
     </section>
     <section class="col-lg-6 connectedSortable ui-sortable">
