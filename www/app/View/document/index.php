@@ -124,21 +124,25 @@ if(!empty($this->document)) {
     <div class="card card-outline card-primary collapsed-card" style="transition: all 0.15s ease 0s; height: inherit; width: inherit;">
         <div class="card-header">
             <?php if($this->shipment['type'] == ""): ?>
-            <h3 class="card-title">Request a document</h3>
+            <h3 class="card-title">
+                <button type="button" class="btn btn-default bg-primary btn-sm" data-card-widget="collapse">
+                Request a document
+                </button>
+            </h3>
             <?php else: ?>
             <h3 class="card-title">More Shipment Info</h3>
             <?php endif; ?>
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
+                <button type="button" class="btn btn-tool d-none" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
                 <i class="fas fa-sync-alt"></i>
                 </button>
-                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                <button type="button" class="btn btn-tool d-none" data-card-widget="maximize">
                 <i class="fas fa-expand"></i>
                 </button>
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-plus"></i>
                 </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" disabled>
+                <button type="button" class="btn btn-tool d-none" data-card-widget="remove" disabled>
                 <i class="fas fa-times"></i>
                 </button>
             </div>
