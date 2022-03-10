@@ -695,7 +695,7 @@ try{
 					//GET CARRIER DETAILS
 					$XPATH_CARRIERTYPE= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].Carrier.AddressType");
 					$XPATH_CARRIERTYPE = $parser->encode($XPATH_CARRIERTYPE);
-					$XPATH_CARRIERTYPE = node_exist(getArrayName($XPATH_CARRIERTYPE));
+					$CARRIERTYPE = node_exist(getArrayName($XPATH_CARRIERTYPE));
 
 					//GET CARRIER COMPANY NAME
 					$XPATH_CARRIERNAME= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].Carrier.CompanyName");
