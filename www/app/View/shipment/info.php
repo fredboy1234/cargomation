@@ -408,6 +408,57 @@
         </div>
     </section>
 </div>
+
+<div class="row">
+    <section class="col-lg-12 connectedSortable ui-sortable">
+    <div class="card">
+            <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                    <i class="fas fa-file-invoice"></i>
+                    Invoice Details
+                </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body table-responsive p-0 ttable" style="height: auto;">
+            <table id="example" class="table table-hover table-head-fixed text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th>Type</th>
+                        <th>Trans.#</th>
+                        <th>Job Inv.#</th>
+                        <th>Post Date</th>
+                        <th>Invoice Date</th>
+                        <th>Fully Paid Date</th>
+                        <th>Payment Status</th>
+                        <th>Invoice Amount</th>
+                        <th>Currency</th>
+                        <th>Outstanding Bal</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Account</th>
+                        <th>Type</th>
+                        <th>Trans.#</th>
+                        <th>Job Inv.#</th>
+                        <th>Post Date</th>
+                        <th>Invoice Date</th>
+                        <th>Fully Paid Date</th>
+                        <th>Payment Status</th>
+                        <th>Invoice Amount</th>
+                        <th>Currency</th>
+                        <th>Outstanding Bal</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+</div>
 <?php
 $transImage = "";
 $transMode = $this->shipment_info[0]->transport_mode;
@@ -448,6 +499,42 @@ switch ($transMode) {
   100% {
     stroke-dashoffset: 0%;
   }
+}
+/* Data Tables */
+table.dataTable {
+    margin-top: 0 !important;
+}
+table.dataTable>tbody>tr.child ul.dtr-details {
+    width: 100%;
+}
+#DataTables_Table_0_processing{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    display: block;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.dataTables_empty{
+    text-align: center;
+}
+.dataTables_filter{
+    display: none !important;
+}
+.dataTables_wrapper {
+    position: relative;
+}
+.dataTables_info {
+    padding-left: 1em;
+}
+.dataTables_paginate {
+    padding-right: 1em;
+}
+#example_length {
+    display: none;
 }
 </style>
 <script src="/js/map.js"></script>
@@ -563,4 +650,11 @@ $(document).ready(function() {
     }
      
 });
+
+$(document).ready(function() {
+    $('#example').DataTable( { 
+        responsive: true,
+        ajax: "/uploads/sample.json"
+    } );
+})
 </script>

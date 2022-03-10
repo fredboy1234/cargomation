@@ -19,14 +19,17 @@ if(is_numeric($this->document)) {
     // $this->results[0]->name;
     $title = 'Request to edit document: ID [#' . $this->document . "]";
     $request_type = 'edit';
-    $subject_ph = 'Cargomation | Request for Document Update';
+    $subject_ph = 'Request for Document Update';
     $template_msg = 'Please provide the updated document with ID #' . $this->document . ' for this shipment.';
 } else {
     $title = 'Request for missing document: TYPE [' . $this->document  . "]";
     $request_type = 'new';
-    $subject_ph = 'Cargomation | Request for Missing Document';
-    $master_bill = " with a master bill " . $this->shipment[0]->master_bill;
-    $template_msg = 'Please provide the missing [' . $this->document . '] documents for this shipment' . $master_bill;
+    $order_num = $this->shipment[0]->order_number;
+    $shipment_num = $this->shipment[0]->shipment_num;
+    $house_bill = $this->shipment[0]->house_bill;
+    $subject_ph = 'Request for Missing Document for (' . $order_num . ')/(' . $house_bill . ')';
+    $shipment_text = "(" . $shipment_num . ") under Order Number ( " . $order_num . ")";
+    $template_msg = 'Please provide the missing ' . $this->document . ' for Shipment ' . $shipment_text;
 } ?>
  
 <div id="document-request" style="display: block;">
