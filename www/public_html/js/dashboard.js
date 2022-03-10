@@ -28,22 +28,41 @@ $(document).ready(function(){
     var promises = [];
     var tooltipHTML = '<p>Test from test</p>';
 
+    console.log("port count");
+    console.log(port_loading_couint);
+
     $.each(port_loading_couint,function(okey,oval){
       var loading = oval.port_loading; 
       var ccount = oval.count;
   
       if(loading !==""){
-        if ($.inArray(loading, preventer) == -1){
-          preventer.push(loading);
+        // if ($.inArray(loading, preventer) == -1){
+          //preventer.push(loading);
           var mcolor ="#dc3545";
+  
           if(oval.transport_mode === "Air"){
             mcolor = "#007bff";
           }else if(oval.transport_mode === "Sea"){
             mcolor = "#28a745";
+           
           }
-          var txtcontent = `<span><strong>Location:</strong> ${loading}</span><br>
-          <span><strong>Shipment Count:</strong> ${oval.count}</span><br>
-          <span><strong>Type:</strong>${oval.transport_mode}</span>`;
+          var txtcontent = '';
+          
+          if ($.inArray(loading, preventer) === 0){
+            console.log(loading);
+            $.grep(port_loading_couint, function(obj) { 
+              if(obj.port_loading === loading){   
+                txtcontent += `<span><strong>Location:</strong> ${loading}</span><br>
+                  <span><strong>Shipment Count:</strong> ${obj.count}</span><br>
+                  <span><strong>Type:</strong>${obj.transport_mode}</span><br><hr>`;
+              }
+            });
+          }else{
+            txtcontent=`<span><strong>Location:</strong> ${loading}</span><br>
+              <span><strong>Shipment Count:</strong> ${oval.count}</span><br>
+              <span><strong>Type:</strong>${oval.transport_mode}</span>`;
+          }
+          preventer.push(loading);
           var items = [50, 60, 80];
           var item = items[Math.floor(Math.random() * items.length)];
           var data = [];
@@ -61,13 +80,14 @@ $(document).ready(function(){
                       title: txtcontent,
                       latitude: latitude,
                       longitude: longitude,
-                      color: mcolor
+                      color: mcolor,
+                      idport: loading
                       });
                       counter++;
                   }
               }
           }); 
-        }  
+       // }  
       }
       promises.push(promise);
     });

@@ -11,9 +11,9 @@ function Map(data,mcontainer){
 
         // Set map definition
         chart.geodata = am4geodata_worldLow;
-        chart.maxZoomLevel = 1;
-        chart.seriesContainer.draggable = false;
-        chart.chartContainer.wheelable = false;
+        //chart.maxZoomLevel = 1;
+        chart.seriesContainer.draggable = true;
+        chart.chartContainer.wheelable = true;
         // Set projection
         chart.projection = new am4maps.projections.Miller();
 
@@ -48,10 +48,12 @@ function Map(data,mcontainer){
         circle.radius = 3;
         circle.propertyFields.fill = "color";
         circle.nonScaling = true;
+        
 
         var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
         circle2.radius = 3;
         circle2.propertyFields.fill = "color";
+       
 
 
         circle2.events.on("inited", function(event){
@@ -66,19 +68,22 @@ function Map(data,mcontainer){
             })
         }
 
-        // var imageSeriesTemplate = imageSeries.mapImages.template;
-        // var marker = imageSeriesTemplate.createChild(am4core.Image);
-        // marker.href = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/marker.svg";
-        // marker.width = 20;
-        // marker.height = 20;
-        // marker.color = "#333";
-        // marker.fill = am4core.color("#007bff");
-        // marker.nonScaling = true; 
         
-        
-        // marker.horizontalCenter = "middle";
-        // marker.verticalCenter = "bottom";
+       // Add zoom control
+        chart.zoomControl = new am4maps.ZoomControl();
 
+        // Add button
+        var button = chart.chartContainer.createChild(am4core.Button);
+        button.padding(5, 5, 5, 5);
+        button.align = "right";
+        button.marginRight = 15;
+        button.events.on("hit", function() {
+        chart.goHome();
+        });
+
+        button.icon = new am4core.Sprite();
+        button.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+      
 
         var colorSet = new am4core.ColorSet();
         var data = [];
@@ -89,16 +94,14 @@ function Map(data,mcontainer){
             //     latitude: pointObject[0].latitude,
             //     longitude: pointObject[0].longitude
             // };
-            console.log(pointObject);
-            console.log(imageSeries.mapImages.template);
-            
+           console.log(pointObject);
             imageSeries.data = pointObject;
             am4core.options.autoDispose = true;
-            imageSeries.mapImages.template.tooltipHTML = dashboardTollTip(pointObject);
+            imageSeries.mapImages.template.tooltipHTML = `{title}`
+           
         }
 }
 
 function dashboardTollTip(data){
-
-    return `{title}`;
+    console.log(data);
 }

@@ -125,7 +125,7 @@ class Dashboard extends Core\Controller {
            
         }
             // echo"<pre>";
-            // print_r($seacount .''. $aircount);
+            // print_r(count($Shipment->getShipmentDynamic($userID,'user_id', 'air', $data)));
             // exit;
         
         $this->View->renderTemplate("/dashboard", [
@@ -145,7 +145,7 @@ class Dashboard extends Core\Controller {
             "air_shipment" => count($Shipment->getShipmentDynamic($userID,'user_id', 'air', $data)),
             "sea_shipment" => count($Shipment->getShipmentDynamic($userID,'user_id', 'sea', $data)),
             "shipment_with_port" => json_encode($Shipment->getShipmentDynamic($userID,'*', 'port', $data)),
-            "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID)),
+            "port_loading_count" => json_encode(Model\Shipment::countOfPort($userID,$data)),
             "document_stats" => $document_stats,
             "container_mode" => $cmodeArray,
             "count_cmode" => count($cmode),

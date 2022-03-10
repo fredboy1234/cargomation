@@ -280,7 +280,7 @@ class Shipment extends Core\Model {
         if(!$data['is_customer']) {
             $where = " WHERE shipment.user_id =  '{$user_id}' ";
         } else {
-            $where = " WHERE (shipment.consignee = '{$data['org_code']}' OR shipment.consignor = '{$data['org_code']}')";
+            $where = " WHERE (shipment.consignee = '{$data['org_code']}' OR shipment.consignor = '{$data['org_code']}') and shipment.transport_mode <>''";
         }
     
         $top ='';
@@ -316,24 +316,18 @@ class Shipment extends Core\Model {
         
     }
 
-    public static function countOfPort($user_id){ 
+    public static function countOfPort($user_id,$data){ 
         $Db = Utility\Database::getInstance();
         $urole = $Db->query("select role_id from vrpt_users where user_id = '{$user_id}'")->results();
     
         if($urole[0]->role_id == 2){
             return $Db->query("select count(port_loading) as count ,port_loading, transport_mode
-        from shipment where shipment.user_id = '{$user_id}' and port_loading is not null and port_loading <>' '
-        and shipment.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+        from shipment where shipment.user_id = '{$user_id}' 
         group by port_loading,transport_mode")->results();
         }else{
             return $Db->query("select count(s.port_loading) as count ,s.port_loading, s.transport_mode from 
-            vrpt_subaccount vs 
-            left join 
-            shipment_contacts sc on sc.email = vs.email
-            left join 
-            shipment s on s.consignee = sc.organization_code and vs.account_id = s.user_id
-            where vs.user_id = '{$user_id}' 
-            and s.eta between DATEADD(DAY,-60,GETDATE()) and GETDATE()
+            shipment s 
+            WHERE (s.consignee = '{$data['org_code']}' OR s.consignor = '{$data['org_code']}')
             group by s.port_loading,s.transport_mode")->results();
         }
          

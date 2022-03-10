@@ -110,7 +110,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-primary"><?=$this->count_air?></h3>
+                <h3 class="text-primary"><?=$this->air_shipment?></h3>
 
                 <p>Air Shipments</p>
               </div>
