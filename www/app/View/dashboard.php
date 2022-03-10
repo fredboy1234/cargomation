@@ -214,8 +214,8 @@
             </div>
             <!-- /.card -->
             <?php endif; ?>
-			
-			<?php if(true): ?>
+      
+      <?php if(false): ?>
             <!-- Calendar -->
             <div class="card bg-gradient-white">
               <div class="card-header border-0">
@@ -787,7 +787,11 @@
               <div class="card-body p-0">
                 <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
                  -->
-                <div id="chartdiv" class="map" style="position: relative; height: 495px;"></div>
+                <div id="chartdiv" class="map" style="position: relative; height: 495px;">
+                <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                </div>
                 <div id="sidebardash" class="d-none">
                     <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
                     <?php $current = array();?>
@@ -825,282 +829,43 @@
             </div>
             <!-- /.card -->
             <?php endif; ?>
-            <div class="card-body p-1 mb-1 mt-1">
-            <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button onclick="tablueshipment()" class="nav-link tablue mr-1 btn  btn-outline-info btn-xs border" id="navshipment" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
-                <i class="fas fa-ship"></i> Total Volume of Shipments
-                </button>
-                <button onclick="tablueContainer()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navcontainer" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
-                <i class="fas fa-box-open"></i> Total Count of Container Modes
-                </button>
-                <button onclick="tablueImport()" class="nav-link tablue btn  btn-outline-info btn-xs border" id="navimport" data-bs-toggle="tab" data-bs-target="#nav-import" type="button" role="tab" aria-controls="nav-import" aria-selected="false">
-                <i class="fas fa-box-open"></i> Import/Export
-                </button>
-              </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade navshipment" id="navshipment" role="tabpanel" aria-labelledby="nav-home-tab">
-                <!--<img src="http://cargomation.com/img/reports/101/report_2.png" class="img-fluid" alt="Responsive image">-->
-                <div class='tableauPlaceholder' id='viz1631607706629' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;vo&#47;volumesreport&#47;Dashboard1&#47;1_rss.png' style='border: none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/> <param name='embed_code_version' value='3'/> <param name='site_root' value=''/><param name='name' value='volumesreport&#47;Dashboard1'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;vo&#47;volumesreport&#47;Dashboard1&#47;1.png'/> <param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/></object></div><script type='text/javascript'> var divElement=document.getElementById('viz1631607706629'); var vizElement=divElement.getElementsByTagName('object')[0]; if ( divElement.offsetWidth > 800 ){vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else if ( divElement.offsetWidth > 500 ){vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else{vizElement.style.width='100%';vizElement.style.height='877px';}var scriptElement=document.createElement('script'); scriptElement.src='https://public.tableau.com/javascripts/api/viz_v1.js'; vizElement.parentNode.insertBefore(scriptElement, vizElement); </script>
-              </div>
-              <div class="tab-pane fade navcontainer show active" id="navcontainer" role="tabpanel" aria-labelledby="nav-profile-tab">
-                <!--<div class='tableauPlaceholder' id='viz1631607727579' style='position: relative'><noscript><a href='#'><img alt='Shipment Counter Dashboard ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;sh&#47;shipment_counter&#47;ShipmentCounterDashboard&#47;1_rss.png' style='border: none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/> <param name='embed_code_version' value='3'/> <param name='site_root' value=''/><param name='name' value='shipment_counter&#47;ShipmentCounterDashboard'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;sh&#47;shipment_counter&#47;ShipmentCounterDashboard&#47;1.png'/> <param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/></object></div><script type='text/javascript'> var divElement=document.getElementById('viz1631607727579'); var vizElement=divElement.getElementsByTagName('object')[0]; if ( divElement.offsetWidth > 800 ){vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else if ( divElement.offsetWidth > 500 ){vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else{vizElement.style.width='100%';vizElement.style.height='1577px';}var scriptElement=document.createElement('script'); scriptElement.src='https://public.tableau.com/javascripts/api/viz_v1.js'; vizElement.parentNode.insertBefore(scriptElement, vizElement); </script>!-->
-                <div class='tableauPlaceholder' id='viz1632296265265' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;sh&#47;shipment_counter&#47;ShipmentCounterDashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /><param name='embed_code_version' value='3' /><param name='site_root' value='' /><param name='name' value='shipment_counter&#47;ShipmentCounterDashboard' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;sh&#47;shipment_counter&#47;ShipmentCounterDashboard&#47;1.png' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /><param name='filter' value='User Id=<?php echo $this->uid?>' /> <!--THIS WILL FILTER USER ID IN CARGOMATION--></object></div>               <script type='text/javascript'>var divElement = document.getElementById('viz1632296265265');var vizElement = divElement.getElementsByTagName('object')[0];if ( divElement.offsetWidth > 800 ){ vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else if ( divElement.offsetWidth > 500 ){ vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';}else{ vizElement.style.width='100%';vizElement.style.height='1627px';}var scriptElement = document.createElement('script');scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';vizElement.parentNode.insertBefore(scriptElement, vizElement);</script></div>
-              <div class="tab-pane fade navimport" id="navimport" role="tabpanel" aria-labelledby="nav-import-tab">
-                 <div class='tableauPlaceholder' id='viz1644298363031' style='position: relative'> <object class='tableauViz' style='display:none;'> <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/> <param name='embed_code_version' value='3'/> <param name='site_root' value=''/> <param name='name' value='importexport_16328847574690&#47;importdashboard'/> <param name='tabs' value='no'/> <param name='toolbar' value='yes'/> <param name='animate_transition' value='yes'/> <param name='display_static_image' value='yes'/> <param name='display_spinner' value='yes'/> <param name='display_overlay' value='yes'/> <param name='display_count' value='yes'/> <param name='language' value='en-US'/> <param name='filter' value='publish=yes'/> <param name='filter' value='User Id=<?php echo $this->uid?>'/> </object> </div><script type='text/javascript'> var divElement=document.getElementById('viz1644298363031'); var vizElement=divElement.getElementsByTagName('object')[0]; if (divElement.offsetWidth > 800){vizElement.style.width='100%'; vizElement.style.height=(divElement.offsetWidth * 0.75) + 'px';}else if (divElement.offsetWidth > 500){vizElement.style.width='100%'; vizElement.style.height=(divElement.offsetWidth * 0.75) + 'px';}else{vizElement.style.width='100%'; vizElement.style.height='1727px';}var scriptElement=document.createElement('script'); scriptElement.src='https://public.tableau.com/javascripts/api/viz_v1.js'; vizElement.parentNode.insertBefore(scriptElement, vizElement); </script>
-            </div>
-            </div>
-            <div class="card-body p-0" style="display:none;">
-                  <div class="card">
-                    <div class="card-header">
-                      <div class="d-flex justify-content-between">
-                        <h3 class="card-title"></h3>
-                        
-                      </div>
-                      <h3 class="card-title">
-                        <i class="fa fa-chart-line mr-1"></i>
-                        Container Mode Statistics
-                      </h3>
-                      <!-- card tools -->
-                      <div class="card-tools">
-                        <!-- button with a dropdown -->
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-118">
-                          <i class="fas fa-bars"></i></button>
-                          <div class="dropdown-menu" role="menu">
-                            <a href="/vessel" class="dropdown-item">Visit Vessel</a>
-                            <a href="/transport" class="dropdown-item">Transport</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="/doctracker" class="dropdown-item">View Report</a>
-                          </div>
-                        </div>
-                        <button type="button"
-                                class="btn btn-primary btn-sm daterange d-none"
-                                data-toggle="tooltip"
-                                title="Date range">
-                          <i class="far fa-calendar-alt"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-primary btn-sm"
-                                data-card-widget="collapse"
-                                data-toggle="tooltip"
-                                title="Collapse">
-                          <i class="fas fa-minus "></i>
-                        </button>
-                      </div>
-                      <!-- /.card-tools -->
-                    </div>
-                    <div class="card-body">
-                      <div class="d-flex">
-                        <p class="d-flex flex-column">
-                          <span>Total Count of all Container Modes</span>
-                          <span class="text-bold text-xl"><?=$this->count_cmode?></span>
-                        </p>
-                        <p class="ml-auto d-flex flex-column text-right">
-                          <span class="text-success">
-                            <i class="fas fa-arrow-up"></i> <?=$this->count_sea?>
-                          </span>
-                          <span class="text-muted">Sea Total</span>
-                        </p>
-                        <p class="ml-3 d-flex flex-column text-right">
-                          <span class="text-success">
-                            <i class="fas fa-arrow-up"></i> <?=$this->count_air?>
-                          </span>
-                          <span class="text-muted">Air Total</span>
-                        </p>
-                      </div>
-                      <!-- /.d-flex -->
-
-                      <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <canvas id="sea-chart" height="400" width="1064" style="display: block; height: 200px; width: 532px;" class="chartjs-render-monitor"></canvas>
-                      </div>
-                    </div>
-                    <div class="card-footer clearfix">
-                      <div class="d-flex flex-row justify-content-end">
-                          <span class="mr-2">
-                            <i class="fas fa-square text-primary" style="color: rgba(52, 255, 93, 0.5) !important;"></i> Sea Container Mode
-                          </span>
-
-                          <span>
-                            <i class="fas fa-square text-gray" style="color: rgba(60, 150, 247, 0.5) !important;"></i> Air Container Mode
-                          </span>
-                        </div>
-                    </div>
-
-                </div>
-              </div>
-
-            <?php if(false): ?>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Sales
-                </h3>
-                <div class="card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                    </li>
-                  </ul>
-                </div>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content p-0">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart"
-                       style="position: relative; height: 300px;">
-                      <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
-                   </div>
-                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>                         
-                  </div>  
-                </div>
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <?php endif; ?>
-
-            <?php if(false): ?>
-            <!-- TO DO List -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ion ion-clipboard mr-1"></i>
-                  To Do List
-                </h3>
-
-                <div class="card-tools">
-                  <ul class="pagination pagination-sm">
-                    <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
-                  </ul>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <ul class="todo-list" data-widget="todo-list">
-                  <li>
-                    <!-- drag handle -->
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <!-- checkbox -->
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                      <label for="todoCheck1"></label>
-                    </div>
-                    <!-- todo text -->
-                    <span class="text">Design a nice theme</span>
-                    <!-- Emphasis label -->
-                    <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                    <!-- General tools such as edit or delete-->
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
-                      <label for="todoCheck2"></label>
-                    </div>
-                    <span class="text">Make the theme responsive</span>
-                    <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                      <label for="todoCheck3"></label>
-                    </div>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                      <label for="todoCheck4"></label>
-                    </div>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                      <label for="todoCheck5"></label>
-                    </div>
-                    <span class="text">Check your messages and notifications</span>
-                    <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                    <div  class="icheck-primary d-inline ml-2">
-                      <input type="checkbox" value="" name="todo6" id="todoCheck6">
-                      <label for="todoCheck6"></label>
-                    </div>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
-                    <div class="tools">
-                      <i class="fas fa-edit"></i>
-                      <i class="fas fa-trash-o"></i>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <button type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Add item</button>
-              </div>
-            </div>
-            <!-- /.card -->
-            <?php endif; ?>
-
           </section>
-          <!-- Right col -->
-        </div>
+          <!--start of section report-->
+          <section class="col-lg-12 connectedSortable" style="max-height: 50px;">
+            <div class="card bg-gradient-default" style="display: block;">
+              <div class="card-header border-0">
+                <h3 class="card-title">
+                  <i class="far fa-map mr-1"></i>
+                  Analytics
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button"
+                          class="btn btn-primary btn-sm daterange invisible"
+                          data-toggle="tooltip"
+                          title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button"
+                          class="btn btn-primary btn-sm"
+                          data-card-widget="collapse"
+                          data-toggle="tooltip"
+                          title="Collapse">
+                    <i class="fas fa-minus "></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <div class="card-body p-0">
+                <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
+                 -->
+                 <div style=position:relative><div class=tableauPlaceholder id=viz1646066982039 style=position:relative><object class=tableauViz style=display:none><param name=host_url value=https%3A%2F%2Fpublic.tableau.com%2F><param name=embed_code_version value=3><param name=site_root value=""><param name=name value=Cargomation_ReportHub&#47;Dashboard1><param name=tabs value=no><param name=toolbar value=yes><param name=animate_transition value=yes><param name=display_static_image value=yes><param name=display_spinner value=yes><param name=display_overlay value=yes><param name=display_count value=yes><param name=language value=en-US><param name=filter value="publish=yes"><param name=filter value="User Id=<?php echo $this->uid?>"></object></div><div class=toolbarWorkaround style=position:absolute;background-color:#fff;width:100%;bottom:0;z-index:10;height:35px></div></div><script>var divElement=document.getElementById("viz1646066982039"),vizElement=divElement.getElementsByTagName("object")[0];800<divElement.offsetWidth||500<divElement.offsetWidth?(vizElement.style.width="100%",vizElement.style.height=.75*divElement.offsetWidth+"px"):(vizElement.style.width="100%",vizElement.style.height="2627px");var scriptElement=document.createElement("script");scriptElement.src="https://public.tableau.com/javascripts/api/viz_v1.js",vizElement.parentNode.insertBefore(scriptElement,vizElement)</script>
+              </div>
+              <!-- /.card-body-->
+            </div>   
+      </section>
+           <!--end of section report-->
+
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>

@@ -532,9 +532,20 @@ $(document).ready(function () {
     preserveSelectionOnMove: 'all',
     helperSelectNamePostfix: '_helper',
     sortByInputOrder: false,
-    filterTextClear: ""
+    filterTextClear: "",
+    selectorMinimalHeight: 300 
   });
-
+  CustomizeDuallistbox('settings');
+  function CustomizeDuallistbox(listboxID) {
+    var customSettings = $('#' + listboxID).bootstrapDualListbox('getContainer');
+    var buttons = customSettings.find('.btn.moveall, .btn.move, .btn.remove, .btn.removeall');
+  
+    customSettings.find('.box1, .box2').removeClass('col-md-6').addClass('col-md-4');
+    customSettings.find('.box1').after('<div class="customButtonBox col-md-2 text-center"></div>');
+   // customSettings.find('.customButtonBox').append(buttons);
+  
+    //customSettings.find('.btn-group.buttons').remove();
+  }
   //chick on click button all 
   var wasClicked = false;
   $(document).on('click', '.moveall, .removeall', function (e) {
