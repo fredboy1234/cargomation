@@ -151,6 +151,15 @@
                 </span>
             </div>
             <dl id="consignee" class="row collapse">
+                <?php if(false): ?>
+                <div class="col-lg-12">
+                    <dt>Sending Agent:</dt>
+                    <dd><?= $this->shipment_info[0]->sending_agent; ?></dd>
+                </div>
+                <div class="col-lg-12">
+                    <dt>Sending Agent Address:</dt>
+                    <dd><?= $this->shipment_info[0]->sending_agent_addr; ?></dd>
+                </div>
                 <div class="col-lg-6">
                     <dt>Company Name:</dt>
                     <dd><?=  (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
@@ -163,13 +172,45 @@
                     <dt>Address:</dt>
                     <dd><?= $this->shipment_info[0]->consignee_addr; ?></dd>
                 </div>
+                <?php endif; ?>
+                <?php 
+                    $json_org = json_decode($this->shipment_info[0]->organization);
+                    foreach ($json_org as $key => $value) {
+                        if ($value->AddressType == "ConsigneePickupDeliveryAddress") {
+                ?>
                 <div class="col-lg-12">
-                    <dt>Sending Agent:</dt>
-                    <dd><?= $this->shipment_info[0]->sending_agent; ?></dd>
+                    <dt>Company Name:</dt>
+                    <dd> <?= $value->CompanyName; ?> </dd>
                 </div>
-                <div class="col-lg-12">
-                    <dt>Sending Agent Address:</dt>
-                    <dd><?= $this->shipment_info[0]->sending_agent_addr; ?></dd>
+                <div class="col-lg-6">
+                    <dt>Organization Code:</dt>
+                    <dd> <?= $value->OrganizationCode; ?> </dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Organization Name:</dt>
+                    <dd><?=  (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Delivery Address:</dt>
+                    <dd> <?= $value->Address1; ?> </dd>
+                </div>
+                <?php 
+                        }
+                    }
+                ?>
+                <div class="col-lg-6">
+                    <dt>Delivery Date:</dt>
+                    <dd>
+                    <?php if(empty($this->container_detail)): ?>   
+                    <span> - </span>
+                    <?php else: ?>  
+                    <span><?= date("d F Y H:i", strtotime($this->container_detail[0]->trans_estimated_delivery)); ?></span>
+                    <?php endif; ?>
+                    <?php 
+                        // $date = date_create($this->shipment_info[0]->etd);
+                        // echo date_format($date,"d F Y H:i"); 
+                    ?>
+                    </dd>
                 </div>
                 <div class="col-lg-6">
                     <dt>Delivery Place:</dt>
@@ -345,10 +386,20 @@
                                             <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
                                         </div>
                                         <div class="col-lg-4">
+                                            <strong>Leg Type</strong>
+                                            <p><?= $value->LegType; ?></p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>Vessel Name</strong>
+                                            <p><?= $value->VesselName; ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
                                             <strong>Origin Port</strong>
                                             <p><?=  $value->Origin ?></p>
                                         </div>
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <strong>Destination Port</strong>
                                             <p><?=  $value->Destination ?></p>
                                         </div>
@@ -369,29 +420,22 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <strong>Vessel Name</strong>
-                                            <p><?= $value->VesselName; ?></p>
+                                            <strong>Carrier Org</strong>
+                                            <p><?= $value->CarrierOrg; ?></p>
                                         </div>
                                         <div class="col-lg-4">
-                                            <strong>Type</strong>
-                                            <p><?= $value->LegType; ?></p>
+                                            <strong>Carrier Name</strong>
+                                            <p><?= $value->CarrierName; ?></p>
                                         </div>
                                         <div class="col-lg-4">
+                                            <strong>Address Type</strong>
+                                            <p><?= $value->AddressType; ?></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
                                             <strong>Status</strong>
-                                            <?php 
-                                                switch ($value->BookingStatus) {
-                                                    case 'CNF':
-                                                        $value = "Confirmed (".$value->BookingStatus.")";
-                                                        $class = "text-success";
-                                                        break;
-                                                    
-                                                    default:
-                                                        $value = "No Status";
-                                                        $class = "";
-                                                        break;
-                                                }
-                                            ?>
-                                            <p class="<?= $class; ?>"><?= $value; ?></p>
+                                            <p class="<?= $value->BookingStatus; ?>"><?= $value->BookingDesc; ?> (<?= $value->BookingStatus; ?>)</p>
                                         </div>
                                     </div>
                                 </div>
