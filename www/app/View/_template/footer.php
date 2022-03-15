@@ -228,12 +228,12 @@ function closeForm() {
 <script src="/bower_components/admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/bower_components/admin-lte/dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <?php if(false): ?>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/bower_components/admin-lte/dist/js/pages/dashboard.js"></script>
-<?php endif; ?>
 <!-- AdminLTE for demo purposes -->
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
+<?php endif; ?>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
 <!-- Selectize JS -->
 <script src="/bower_components/selectize/dist/js/standalone/selectize.js"></script>
