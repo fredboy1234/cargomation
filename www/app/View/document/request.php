@@ -93,7 +93,7 @@ if(is_numeric($this->document)) {
                     <?php endif; ?>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+                    <button type="button" class="btn btn-default d-none" id="go_back">Go Back</button>
                     <button type="button" class="btn btn-primary" id="submit">Send Request</button>
                 </div>
             </form>
