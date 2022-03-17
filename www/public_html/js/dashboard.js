@@ -124,7 +124,7 @@ $(window).on("load", function() {
         dataType: "json",
         data:{userid:uid},
         success: function (data) {
-          console.log(JSON.parse(data));
+          console.log(JSON.parse(data.port_loading_count));
           $.each(JSON.parse(data.port_loading_count),function(okey,oval){
             var loading = oval.port_loading; 
             var ccount = oval.count;
