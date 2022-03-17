@@ -31,24 +31,14 @@
 	else
 	{
 	 if($_SERVER["REQUEST_METHOD"]	== "POST"){
-	 	if(isset($_POST['name'])){
+	 	if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['message']) && isset($_POST['request']) ){
 			$name = $_POST['name'];
+			$email=$_POST['email'];
+			$messagecontent=$_POST['message'];
+			$requesttype=$_POST['request'];
 		}
-		else{$name ="";}
+		else{$response = array("data"=>$error,"status"=>"200","message"=>"Invalid request");die(json_encode($response));}
 		
-		$email=$_POST['email'];
-		$messagecontent=$_POST['message'];
-		$requesttype=$_POST['request'];
-		
-		
-		// if(validate_email($email) == false){
-		  	// $response_code = http_response_code(200);
-			// $response = array("data"=>$error,"status"=>200,"message"=>"Invalid Email Address.");
-		    // echo json_encode($response);
-			// die();
-		// }
-
-		// default
 		$sender = "no-reply@cargomation.com";
 
 		// if the checkbox is checked, use the email provided
@@ -69,6 +59,12 @@
 		$mail->Host = "mail.smtp2go.com";
 		$mail->Port = "80"; // 8025, 587 and 25 can also be used. Use Port 465 for SSL.
 		$mail->SMTPAuth = true;
+		$mail->SMTPOptions = array(
+	    'ssl' => array(
+	        'verify_peer' => false,
+	        'verify_peer_name' => false,
+	        'allow_self_signed' => true)
+		);
 		$mail->SMTPSecure = 'tls'; 
 		$mail->Username = "info@a2bsolutiongroup.com";
 		$mail->Password = "YkblwuN7hBSL";
