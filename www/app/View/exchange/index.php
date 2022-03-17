@@ -116,17 +116,46 @@
                       </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($this->currency as $key => $value) : ?>
+                    <?php 
+                    $buy_prev = 0;
+                    $sell_prev = 0;
+                    $arrow_buy = "";
+                    $arrow_sell = "";
+                    ?>
+                    <?php foreach ($this->currency as $key => $value) : 
+                      $buy = round($value->TTBuy, 4);
+                      $sell = round($value->TTSell, 4);
+
+                      // old > new
+                      if($sell_prev < $sell) {
+                        $arrow_sell = "fa fa-arrow-up text-success";
+                      } else {
+                        $arrow_sell = "fa fa-arrow-up text-danger";
+                      }
+                      //  10.7235 < 10.7352 = true (up)
+                      if($buy_prev > $buy) {
+                        $arrow_buy = "fa fa-arrow-up text-danger";
+                      } else {
+                        $arrow_buy = "fa fa-arrow-down text-success";
+                      }
+
+                      if($buy == 0 ) {
+                        $arrow_buy = "";
+                      }
+                      if($sell == 0) {
+                        $arrow_sell = "";
+                      } 
+                    ?>
                       <tr>
                         <td><img src="https://cargomation.com/img/flag/flag-<?= strtolower($value->currency_code) ?>.png" alt="<?= strtolower($value->currency_code) ?>" style="width: 28px"> 
                         <?= $value->currency_code . " - " . $value->currency_desc; ?></td>
-                        <td><?= round($value->TTBuy, 4) ?></td>
-                        <td><?= round($value->TTSell, 4) ?></td>
+                        <td><i class="<?= $arrow_buy ?>"></i> <?= ($buy != 0)?$buy:"-"; ?></td>
+                        <td><i class="<?= $arrow_sell ?>"></i> <?= ($sell != 0)?$sell:"-"; ?></td>
 
                         <td><?= date_format(date_create($value->EffectiveDate), 'j F Y') ?></td>
                         <td><?= date_format(date_create($value->EffectiveTime), 'H:i:s A') ?></td>
                       </tr>
-                    <?php endforeach; ?>
+                    <?php $buy_prev = $buy; $sell_prev = $sell; endforeach; ?>
                     </tbody>
                   </table>
                 </div>
