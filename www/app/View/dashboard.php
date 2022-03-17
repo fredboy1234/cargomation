@@ -886,4 +886,6 @@
   var shipments = [];
   var port_loading_couint = [];
   var uid = <?=$this->uid?>;
+  var rolename = <?=json_encode($this->role->role_name)?>;
+  console.log(rolename);
 </script>
