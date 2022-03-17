@@ -32,10 +32,10 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- Selectize CSS -->
-  <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.css">
-  <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.legacy.css">
-  <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.default.css">
-  <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.bootstrap4.css">
+  <!-- <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.css"> -->
+  <!-- <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.legacy.css"> -->
+  <!-- <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.default.css"> -->
+  <!-- <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.bootstrap4.css"> -->
   <!-- Bootstrap4 Duallistbox -->
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <!-- DataTables -->

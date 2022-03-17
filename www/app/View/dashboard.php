@@ -70,7 +70,6 @@
   border: 1px solid;
 }
 </style>
-<?php $mode = $this->container_mode;?>
   <!-- Main content -->
     <section class="content" style="padding-bottom: 5em;">
       <div class="container-fluid">
@@ -80,7 +79,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-dark"><?php echo $this->total_shipment?></h3>
+                <h3 class="text-dark total-shipment"></h3>
 
                 <p>Total Shipments</p>
               </div>
@@ -95,7 +94,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-success"><?=$this->sea_shipment?></h3>
+                <h3 class="text-success sea-shipment"></h3>
 
                 <p>Sea Shipments</p>
               </div>
@@ -110,7 +109,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-primary"><?=$this->air_shipment?></h3>
+                <h3 class="text-primary air-shipment"></h3>
 
                 <p>Air Shipments</p>
               </div>
@@ -125,7 +124,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-danger"><?=$this->not_arrived?><sup style="font-size: 20px"></sup></h3>
+                <h3 class="text-danger not-shipment"><sup style="font-size: 20px"></sup></h3>
 
                 <p>Shipments Pending Arrival</p>
               </div>
@@ -171,7 +170,7 @@
 
                     <div class="info-box-content">
                       <span class="info-box-text">Total Uploaded Files</span>
-                      <span class="info-box-number"><?= $this->document_stats['total_files'][0]->count; ?></span>
+                      <span class="info-box-number uploaded"><?php //$this->document_stats['total_files'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -181,7 +180,7 @@
 
                     <div class="info-box-content">
                       <span class="info-box-text">Document for Approval</span>
-                      <span class="info-box-number"><?= $this->document_stats['pending_files'][0]->count; ?></span>
+                      <span class="info-box-number approval"><?php //$this->document_stats['pending_files'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -191,7 +190,7 @@
 
                     <div class="info-box-content">
                       <span class="info-box-text">Requested Documents</span>
-                      <span class="info-box-number"><?= $this->document_stats['new_request'][0]->count; ?></span>
+                      <span class="info-box-number requested"><?php //$this->document_stats['new_request'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -201,7 +200,7 @@
 
                     <div class="info-box-content">
                       <span class="info-box-text">Document for Update</span>
-                      <span class="info-box-number"><?= $this->document_stats['update_request'][0]->count; ?></span>
+                      <span class="info-box-number updated"><?php //$this->document_stats['update_request'][0]->count; ?></span>
                     </div>
                     <!-- /.info-box-content -->
                   </div>
@@ -792,18 +791,6 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                 </div>
-                <div id="sidebardash" class="d-none">
-                    <?php $dashSHIP = json_decode( $this->shipment_with_port) ?>
-                    <?php $current = array();?>
-                    <ul class="list-group">
-                      <?php foreach($dashSHIP as $shipe){?>
-                        <?php if( !in_array($shipe->port_loading,$current)){ ?>
-                          <?php $outclass = str_replace(' ','_',strtolower($shipe->port_loading));?>
-                          <li id="<?=$outclass?>" class="list-group-item mapside-list"><a href="javascript:void(0)" class="text-white"><?=$shipe->port_loading?></a></li>
-                        <?php $current[] = $shipe->port_loading; } ?>
-                      <?php } ?>
-                    </ul>
-                </div>
               </div>
               <!-- /.card-body-->
               <div class="card-footer bg-transparent invisible d-none">
@@ -831,7 +818,7 @@
             <?php endif; ?>
           </section>
           <!--start of section report-->
-          <section class="col-lg-12 connectedSortable" style="max-height: 50px;">
+          <section id="lazy-tablue" class="col-lg-12 connectedSortable" style="max-height: 50px;">
             <div class="card bg-gradient-default" style="display: block;">
               <div class="card-header border-0">
                 <h3 class="card-title">
@@ -859,7 +846,29 @@
               <div class="card-body p-0">
                 <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
                  -->
-                 <div style=position:relative><div class=tableauPlaceholder id=viz1646066982039 style=position:relative><object class=tableauViz style=display:none><param name=host_url value=https%3A%2F%2Fpublic.tableau.com%2F><param name=embed_code_version value=3><param name=site_root value=""><param name=name value=Cargomation_ReportHub&#47;Dashboard1><param name=tabs value=no><param name=toolbar value=yes><param name=animate_transition value=yes><param name=display_static_image value=yes><param name=display_spinner value=yes><param name=display_overlay value=yes><param name=display_count value=yes><param name=language value=en-US><param name=filter value="publish=yes"><param name=filter value="User Id=<?php echo $this->uid?>"></object></div><div class=toolbarWorkaround style=position:absolute;background-color:#fff;width:100%;bottom:0;z-index:10;height:35px></div></div><script>var divElement=document.getElementById("viz1646066982039"),vizElement=divElement.getElementsByTagName("object")[0];800<divElement.offsetWidth||500<divElement.offsetWidth?(vizElement.style.width="100%",vizElement.style.height=.75*divElement.offsetWidth+"px"):(vizElement.style.width="100%",vizElement.style.height="2627px");var scriptElement=document.createElement("script");scriptElement.src="https://public.tableau.com/javascripts/api/viz_v1.js",vizElement.parentNode.insertBefore(scriptElement,vizElement)</script>
+                <div style=position:relative>
+                  <div class=tableauPlaceholder id=viz1646066982039 style=position:relative>
+                   <object class=tableauViz style=display:none>
+                    <param name=host_url value=https%3A%2F%2Fpublic.tableau.com%2F>
+                    <param name=embed_code_version value=3>
+                    <param name=site_root value="">
+                    <param name=name value=Cargomation_ReportHub&#47;Dashboard1>
+                    <param name=tabs value=no>
+                    <param name=toolbar value=yes>
+                    <param name=animate_transition value=yes>
+                    <param name=display_static_image value=yes>
+                    <param name=display_spinner value=yes>
+                    <param name=display_overlay value=yes>
+                    <param name=display_count value=yes>
+                    <param name=language value=en-US>
+                    <param name=filter value="publish=yes">
+                    <param name=filter value="User Id=<?php echo $this->uid?>">
+                    </object>
+                  </div>
+                  <div class=toolbarWorkaround style=position:absolute;background-color:#fff;width:100%;bottom:0;z-index:10;height:35px>
+                </div>
+              </div>
+              
               </div>
               <!-- /.card-body-->
             </div>   
@@ -873,7 +882,8 @@
     <!-- /.content -->
   </div>
 <script>
-  var chart_data = <?=json_encode($this->container_mode);?>;
-  var shipments = <?=$this->shipment_with_port?>;
-  var port_loading_couint = <?=$this->port_loading_count?>;
+ 
+  var shipments = [];
+  var port_loading_couint = [];
+  var uid = <?=$this->uid?>;
 </script>

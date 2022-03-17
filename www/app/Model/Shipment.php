@@ -316,6 +316,21 @@ class Shipment extends Core\Model {
         
     }
 
+    public function getShipmentnotArrived($user_id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT  count(shipment.id) as count
+                        FROM shipment 
+                        where shipment.eta > getdate() and user_id='{$user_id}' ")->results();
+    }
+    
+    public function getShipmentCount($user_id){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT count(transport_mode) as count, transport_mode  from shipment 
+        where user_id='{$user_id}' group by transport_mode
+        ")->results();
+        
+    }
+
     public static function countOfPort($user_id,$data){ 
         $Db = Utility\Database::getInstance();
         $urole = $Db->query("select role_id from vrpt_users where user_id = '{$user_id}'")->results();
