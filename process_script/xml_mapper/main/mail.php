@@ -12,6 +12,7 @@ else{
 
 require_once('connection.php');
 header("Content-Type: text/html");
+date_default_timezone_set("Australia/Sydney");
 ini_set('max_execution_time', 0); //0=NOLIMIT
 ini_set('memory_limit', '-1');
 
@@ -68,6 +69,9 @@ $emails = imap_search($imapResource, $search);
 //If the $emails variable is not a boolean FALSE value or
 //an empty array.  
 $ctr = 0;
+$tempID = "";
+$new_array = array();
+
 if(!empty($emails)){ 
     ##Loop through the emails.
     foreach($emails as $key=>$email){
