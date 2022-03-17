@@ -149,56 +149,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <script src="/bower_components/admin-lte/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="/bower_components/admin-lte/plugins/jquery-ui/jquery-ui.min.js"></script>
-<script>
-$(document).ready(function () {
-  $("#contact-form").submit(function (e) {
 
-      var data = $(this).serializeArray();
-      var email = data[0]['value'];
-      var name = data[1]['value'];
-      var message = data[2]['value'];
-
-      $.ajax({
-          url: '/contact/sendEmailAPI',
-          type: "POST",
-          dataType: "json",
-          data: {
-              'name': name,
-              'email': email,
-              'message': message
-          },
-          beforeSend: function () {
-              $("#contact-form").find(":submit").prop('disabled', true);
-              $("#contact-form .card-body").append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>');
-          }, success: function (result) {
-              $('#loader').remove();
-              Swal.fire({
-                  icon: 'success',
-                  title: 'Message Sent!',
-                  text: 'Your message was sent!',
-                  timer: 3000
-              });
-              $('#myForm').find('input:text, input:password, input, select, textarea')
-                          .each(function () {
-                              $(this).val('');
-                          });
-              $("#contact-form").find(":submit").prop('disabled', false);
-              closeForm();
-          }
-      });
-      e.preventDefault();
-  });
-
-});
-
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-</script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
@@ -236,7 +187,7 @@ function closeForm() {
 <script src="/bower_components/admin-lte/dist/js/demo.js"></script>
 <script src="/bower_components/admin-lte/plugins/select2/js/select2.full.min.js"></script>
 <!-- Selectize JS -->
-<script src="/bower_components/selectize/dist/js/standalone/selectize.js"></script>
+<!-- <script src="/bower_components/selectize/dist/js/standalone/selectize.js"></script> -->
 <!-- DataTables -->
 <script src="/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/bower_components/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -287,13 +238,15 @@ crossorigin=""></script>
 <!-- Custom JS -->
 <script src="/js/index.jquery.js"></script>
 <script>
-  var CG = new Cargomation();
+   var CG = new Cargomation();
+  $(window).on('load',function(){
+   
   var ISO = "en-AU";
   var defaultDate = CG.getDateFormatString(ISO);
+  CG.chatsubmit();
+  });
   
-  // $(".sidenav").on("click",function(e){
-  //   console.log($(this).data("url"));
-  // });
+
 </script>
 <script src="/js/map.js"></script>
 <?= $this->getJS(); ?>
