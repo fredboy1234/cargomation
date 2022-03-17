@@ -905,6 +905,7 @@ $(document).ready(function() {
         let document_type = element.join();
         var url = "/document/request/" + shipment_id + "/" + document_type;
         preloader(url);
+        $('#document_action, #go_back').toggle();
     });
 });
 
