@@ -23,7 +23,7 @@ class SendMail extends Core\Model {
 
         // $link = "https://cargomation.com/request?token=" . $data['token'];
         // $link = "https://cargomation.com/doctracker?request=true&shipment_num=" . $data['shipment_num'] . "&type=" . $data['document_type'];
-        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        $link = "https://cargomation.com/shipment/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
@@ -45,7 +45,7 @@ class SendMail extends Core\Model {
       if($data['request_type'] == 'new') {
         $request = 'missing';
 
-        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        $link = "https://cargomation.com/shipment/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
@@ -54,7 +54,7 @@ class SendMail extends Core\Model {
       } else {
         $request = 'edit';
 
-        $link = "https://cargomation.com/doctracker/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
+        $link = "https://cargomation.com/shipment/request/" . $data['shipment_num'] . "/" . $data['document_type'] . "/" . $data['token'];
         $message .= "<br><br>";
         $message .= "Thank you.";
         $message .= "<br><br>";
