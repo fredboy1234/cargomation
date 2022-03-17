@@ -241,11 +241,13 @@ class Dashboard extends Core\Controller {
 
     public function processShipmentCount(){
         $userID = $_POST['userid'];
+        $rolename = $_POST['rolename'];
+        $data = $this->docstats($userID);
         $Shipment = Model\Shipment::getInstance();
-        $shipmentcount = $Shipment->getShipmentCount($userID);
+        $shipmentcount = $Shipment->getShipmentCount($userID,$rolename,$data);
         $shiparr = array();
         $ctotal = 0;
-
+        
         foreach($shipmentcount as $ship){
             $ctotal += $ship->count;
             $shiparr[$ship->transport_mode] = $ship->count;    
@@ -270,6 +272,23 @@ class Dashboard extends Core\Controller {
 
     public function processDocStats(){
         $userID = $_POST['userid'];
+        
+        $document_stats = $this->docstats($userID)['doctstats'];
+
+        $uploaded= isset($document_stats['total_files'][0]->count) ? $document_stats['total_files'][0]->count : 0;
+        $approval = isset($document_stats['pending_files'][0]->count) ? $document_stats['pending_files'][0]->count : 0;
+        $requested= isset($document_stats['new_request'][0]->count) ?$document_stats['new_request'][0]->count : 0;
+        $updated= isset($document_stats['update_request'][0]->count) ? $document_stats['update_request'][0]->count : 0;
+        
+        echo json_encode([
+            "uploaded" => $uploaded,
+            "approval" => $approval,
+            "requested" => $requested,
+            "updated" => $updated,
+        ]);
+    }
+
+    public function docstats($userID){
         if (!$Role = Model\Role::getInstance($userID)) {
             Utility\Redirect::to(APP_URL);
         }
@@ -301,18 +320,8 @@ class Dashboard extends Core\Controller {
                 die('Error in getting the user role');
                 break;
         }
-       
-        $uploaded= isset($document_stats['total_files'][0]->count) ? $document_stats['total_files'][0]->count : 0;
-        $approval = isset($document_stats['pending_files'][0]->count) ? $document_stats['pending_files'][0]->count : 0;
-        $requested= isset($document_stats['new_request'][0]->count) ?$document_stats['new_request'][0]->count : 0;
-        $updated= isset($document_stats['update_request'][0]->count) ? $document_stats['update_request'][0]->count : 0;
-        
-        echo json_encode([
-            "uploaded" => $uploaded,
-            "approval" => $approval,
-            "requested" => $requested,
-            "updated" => $updated,
-        ]);
+        $data['doctstats'] = $document_stats;
+        return $data;
     }
 
     public function externalTemp(){

@@ -322,13 +322,23 @@ class Shipment extends Core\Model {
                         FROM shipment 
                         where shipment.eta > getdate() and user_id='{$user_id}' ")->results();
     }
-    
-    public function getShipmentCount($user_id){
+
+    public function getShipmentCount($user_id,$rolename,$data){
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT count(transport_mode) as count, transport_mode  from shipment 
-        where user_id='{$user_id}' group by transport_mode
-        ")->results();
+
+        if(!$data['is_customer']) {
+            return $Db->query("SELECT count(transport_mode) as count, transport_mode  from shipment 
+            where user_id='{$user_id}' group by transport_mode
+            ")->results();
+        } else {
+            return $Db->query("SELECT count(transport_mode) as count, transport_mode  from shipment 
+            where 
+            (consignee = '{$data['org_code']}' OR consignor = '{$data['org_code']}') and transport_mode <>'' 
+            group by transport_mode
+            ")->results();
+        }
         
+
     }
 
     public static function countOfPort($user_id,$data){ 

@@ -94,7 +94,7 @@ $(window).on("load", function() {
         url: document.location.origin + '/dashboard/processShipmentCount/',
         type: "POST",
         dataType: "json",
-        data:{userid:uid},
+        data:{userid:uid,rolename:rolename},
         success: function (data) {
           $(".total-shipment").text(data.total_shipment);
           $(".sea-shipment").text(data.sea);
@@ -124,7 +124,7 @@ $(window).on("load", function() {
         dataType: "json",
         data:{userid:uid},
         success: function (data) {
-          console.log(JSON.parse(data.port_loading_count));
+          console.log(JSON.parse(data));
           $.each(JSON.parse(data.port_loading_count),function(okey,oval){
             var loading = oval.port_loading; 
             var ccount = oval.count;
