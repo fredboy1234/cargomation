@@ -168,23 +168,21 @@ h1 {
 <!-- AdminLTE App -->
 <script src="bower_components/admin-lte/dist/js/adminlte.min.js"></script>
 <script>
-  /* LAUNCH */
-  var color = '#007bff';
-  var maxParticles = 65;
+/* LAUNCH */
+var color = '#007bff';
+var maxParticles = 65;
 
-  if(window.innerWidth > 1100){ // pJS_desktop and pJS_mobile = my settings functions
-    pJS_desktop(color, maxParticles);
-  }else{
-    pJS_mobile();
-  }
-
-  /* on resize */
-
-  window.addEventListener('resize', function() { // use ".addEventListener", not ".onresize"
-    checkOnResize();
-  }, true);
-
-  function checkOnResize(){
+if(window.innerWidth > 1100){ // pJS_desktop and pJS_mobile = my settings functions
+  pJS_desktop(color, maxParticles);
+}else{
+  pJS_mobile();
+}
+/* on resize */
+window.addEventListener('resize', function() { // use ".addEventListener", not ".onresize"
+  checkOnResize();
+}, true);
+function checkOnResize(){
+  if(pJS.particles.nb) {
     if(window.innerWidth > 1100){
       if(pJS.particles.nb != 150){ // 150 = desktop setting
         console.log('desktop mode')
@@ -199,33 +197,7 @@ h1 {
       }
     }
   }
-$(document).ready(function(){
-  $("#login").submit(function(event){
-      event.preventDefault();
-
-      var email = $('input[type="email"]').val().trim();
-      var password = $('input[type="password"]').val().trim();
-      var remember = $('input[type="checkbox"]').val().trim();
-      var csrf_token = $('input[type="hidden"]').val().trim();
-
-      if( email != "" && password != "" ){
-          $.ajax({
-              url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
-              type:'post',
-              data:{email:email,password:password,csrf_token:csrf_token,remember:remember},
-              beforeSend: function() {
-                $('.card').hide();
-                $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
-                '<span class="sr-only">Loading...</span> </center>');
-              },
-              success:function(response){
-                location.reload();
-              }
-          });
-      }
-  });
-});
-
+}
 function pJS_desktop(color, maxParticles) {
   // ParticlesJS Config.
   particlesJS('body', {
@@ -339,6 +311,33 @@ function pJS_mobile() {
     console.log('callback - mobile config loaded');
   });
 }
+$(document).ready(function(){
+  $("#login").submit(function(event){
+      event.preventDefault();
+      var email = $('input[type="email"]').val().trim();
+      var password = $('input[type="password"]').val().trim();
+      var remember = $('input[type="checkbox"]').val().trim();
+      var csrf_token = $('input[type="hidden"]').val().trim();
+      if( email != "" && password != "" ){
+        $.ajax({
+            url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
+            type:'post',
+
+            data:{email:email,password:password,csrf_token:csrf_token,remember:remember},
+            beforeSend: function() {
+              $('.card').hide();
+              $('.login-logo').append('<center id="loader"><i class="fa fa-spinner fa-spin fa-3x fa-fw text-primary"></i>'+
+              '<span class="sr-only">Loading...</span> </center>');
+            },
+            success:function(response){
+              location.href = response;
+              console.log(response);
+              // location.reload();
+            }
+        });
+      }
+  });
+});
 </script>
 </body>
 </html>

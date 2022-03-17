@@ -22,6 +22,9 @@ class Auth {
         Session::init();
         if (!Session::exists(Config::get("SESSION_USER"))) {
             Session::destroy();
+            if(!empty($_SERVER['REDIRECT_URL'])) {
+                Cookie::put("redirectLink", str_replace("/", "", $_SERVER['REDIRECT_URL']), 3600);
+            }
             Redirect::to(APP_URL . $redirect);
         }
     }

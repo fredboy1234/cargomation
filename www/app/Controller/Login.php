@@ -47,7 +47,7 @@ class Login extends Core\Controller {
      * @return void
      * @since 1.0.2
      */
-    public function _login($redirect = "") {
+    public function _login() {
 
         // Check that the user is unauthenticated.
         Utility\Auth::checkUnauthenticated();
@@ -55,14 +55,17 @@ class Login extends Core\Controller {
         // Process the login request, redirecting to the home controller if
         // successful or back to the login controller if not.
         if (Model\UserLogin::login()) {
-            if($redirect != "") {
-                $redirect = str_replace('redirect=', '', $redirect);
-                Utility\Redirect::to(APP_URL . $redirect);
-            } else {
-                Utility\Redirect::to(APP_URL . 'dashboard');
+            if(Utility\Cookie::exists('redirectLink')) {
+                $redirect = str_replace('redirect=', '', Utility\Cookie::get('redirectLink'));
+                // Utility\Redirect::to(APP_URL . $redirect);
+                $url = $redirect;
+            } 
+            else {
+                $url = 'dashboard';
+                // Utility\Redirect::to(APP_URL . 'dashboard');
             }
         }
-        echo 'false';
+        echo $url;
         // Utility\Redirect::to(APP_URL . "login");
     }
 
