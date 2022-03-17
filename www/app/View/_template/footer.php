@@ -142,9 +142,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
-<!-- LIVE CHAT -->
-<script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: '7008649e-e375-42f7-a899-50df2f76de5f', f: true }); done = true; } }; })();</script>
 <!-- jQuery -->
 <script src="/bower_components/admin-lte/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -239,10 +236,9 @@ crossorigin=""></script>
 <script src="/js/index.jquery.js"></script>
 <script>
    var CG = new Cargomation();
-  $(window).on('load',function(){
-   
-  var ISO = "en-AU";
+   var ISO = "en-AU";
   var defaultDate = CG.getDateFormatString(ISO);
+  $(window).on('load',function(){
   CG.chatsubmit();
   });
   
@@ -250,6 +246,7 @@ crossorigin=""></script>
 </script>
 <script src="/js/map.js"></script>
 <?= $this->getJS(); ?>
-
+<!-- LIVE CHAT -->
+<script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: '7008649e-e375-42f7-a899-50df2f76de5f', f: true }); done = true; } }; })();</script>
 </body>
 </html>
