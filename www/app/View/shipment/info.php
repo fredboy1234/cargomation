@@ -174,7 +174,8 @@
                 </div>
                 <?php endif; ?>
                 <?php 
-                    $json_org = json_decode($this->shipment_info[0]->organization);
+                $json_org = json_decode($this->shipment_info[0]->organization);
+                if(!empty($this->shipment_info[0]->organization)) {
                     foreach ($json_org as $key => $value) {
                         if ($value->AddressType == "ConsigneePickupDeliveryAddress") {
                 ?>
@@ -188,7 +189,7 @@
                 </div>
                 <div class="col-lg-6">
                     <dt>Organization Name:</dt>
-                    <dd><?=  (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
+                    <dd><?= (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
                 </div>
                 <div class="col-lg-6">
                     <dt>Delivery Address:</dt>
@@ -197,6 +198,7 @@
                 <?php 
                         }
                     }
+                }
                 ?>
                 <div class="col-lg-6">
                     <dt>Delivery Date:</dt>
@@ -421,21 +423,24 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <strong>Carrier Org</strong>
-                                            <p><?= $value->CarrierOrg; ?></p>
+                                            <p><?= (!empty($value->CarrierOrg))?$value->CarrierOrg:" - "; ?></p>
                                         </div>
                                         <div class="col-lg-4">
                                             <strong>Carrier Name</strong>
-                                            <p><?= $value->CarrierName; ?></p>
+                                            <p><?= (!empty($value->CarrierName))?$value->CarrierName:" - "; ?></p>
                                         </div>
                                         <div class="col-lg-4">
                                             <strong>Address Type</strong>
-                                            <p><?= $value->AddressType; ?></p>
+                                            <p><?= (!empty($value->AddressType))?$value->AddressType:" - "; ?></p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <strong>Status</strong>
-                                            <p class="<?= $value->BookingStatus; ?>"><?= $value->BookingDesc; ?> (<?= $value->BookingStatus; ?>)</p>
+                                            <p class="<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>">
+                                            <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
+                                            (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
+                                        </p>
                                         </div>
                                     </div>
                                 </div>
