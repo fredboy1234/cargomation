@@ -155,7 +155,7 @@ if(!empty($this->document)) {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="">Document Types</label>
-                        <select class="multiple-document" name="doc_type[]" multiple="multiple">
+                        <select class="multiple-document" name="doc_type[]" multiple="multiple" data-placeholder="Select a document type">
                         <?php foreach ($this->document_type as $key => $value): ?>
                             <option value="<?= $value->type; ?>">
                             <?= $value->type . " - " . $value->description; ?>

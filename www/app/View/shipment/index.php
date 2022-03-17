@@ -319,31 +319,46 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <div class="">
-                    <?php if($this->role->role_id != 4): ?>
-                        <div class="icheck-primary d-inline">
-                            <input type="checkbox" id="select-all">
-                            <label for="select-all" style="margin-top: 7px;margin-right: 10px;">
-                                Select all
-                            </label>
-                        </div>
-                        <form class="d-inline-block mr-3" action="/action_page.php">
-                            <select name="bulk-action" id="bulk-action" class="form-control">
-                                <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
-                                <optgroup label="Bulk update status:" data-option="status">
-                                    <option value="approved">Approve</option>
-                                    <option value="pending">Pending</option>
-                                </optgroup>
-                                <optgroup label="Bulk document action" data-option="action">
-                                    <option value="push">Push</option>
-                                    <option value="deleted">Delete</option>
-                                </optgroup>
-                            </select>
-                        </form>
-                        <button id="approve_all" data-value="approved" type="button" class="btn btn-default bg-success">Approve All</button>
-                        <button id="pending_all" data-value="pending" type="button" class="btn btn-default bg-danger">Pending All</button>
-                        <button type="button" class="btn btn-primary" id="request">Request a document</button>
+                <div id="document_action">
+                <?php if($this->role->role_id != 4): ?>
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="select-all">
+                        <label for="select-all" style="margin-top: 7px;margin-right: 10px;">
+                            Select all
+                        </label>
+                    </div>
+                    <?php if(false): ?>
+                    <form class="d-inline-block mr-3" action="/action_page.php">
+                        <select name="bulk-action" id="bulk-action" class="form-control">
+                            <option value="" selected="" disabled="" hidden="">Choose bulk action</option>
+                            <optgroup label="Bulk update status:" data-option="status">
+                                <option value="approved">Approve</option>
+                                <option value="pending">Pending</option>
+                            </optgroup>
+                            <optgroup label="Bulk document action" data-option="action">
+                                <option value="push">Push</option>
+                                <option value="deleted">Delete</option>
+                            </optgroup>
+                        </select>
+                    </form>
                     <?php endif; ?>
+                    <button id="push_selected" 
+                        data-action="push" data-text="Push" data-option="action" 
+                        data-toggle="tooltip" data-placement="top" 
+                        class="btn btn-default bg-primary" type="button" title="Push Selected"><i class="fas fa-upload"></i></button>
+                    <button id="delete_selected" 
+                        data-action="deleted" data-text="Delete" data-option="action" 
+                        data-toggle="tooltip" data-placement="top" 
+                        class="btn btn-default bg-danger" type="button" title="Delete Selected"><i class="fas fa-trash"></i></button>
+                    <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" class="btn btn-default bg-success">Accept Selected</button>
+                    <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" class="btn btn-default bg-danger">Pending Selected</button>
+                    <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn btn-default bg-success">Approve All</button>
+                    <button id="pending_all" data-action="pending" data-text="Pending All" data-option="status_all" type="button" class="btn btn-default bg-danger">Pending All</button>
+                    <button type="button" class="btn btn-primary" id="request">Request a document</button>
+                <?php endif; ?>
+                </div>
+                <div id="go_back" style="display:none">
+                    <button type="button" class="btn btn-default" onClick="goBack()">Go Back</button>
                 </div>
             </div>
         </div>

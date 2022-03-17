@@ -118,7 +118,7 @@
                     <input type="hidden" id="document_id" name="document_id" class="form-control" value="<?= $this->document_id; ?>">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+                    <button type="button" class="btn btn-default d-none" id="go_back">Go Back</button>
                     <button type="button" class="btn btn-primary" id="submit">Send Comment</button>
                 </div>
             </form>

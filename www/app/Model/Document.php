@@ -158,7 +158,7 @@ class Document extends Core\Model {
 
             }
         }
-        return $Db->query($query)->results();
+        return $Db->query($query)->error();
     }
 
     public static function updateDocumentType($data){
@@ -173,26 +173,34 @@ class Document extends Core\Model {
 
         // Sanitize array and implode
         if(is_array($data)) {
-            $value = implode("','", array_values($data));
-            $column = implode(", ", array_keys($data));
-        }
 
-        // check if there is a multiple document_id
-        if( strpos($data['document_id'], ",") === false ) {
-            $value_string = "('" . $value . "')";
-        } else {
-            $data_id = explode(",", $data['document_id']);
             $value_array = array();
-            foreach ($data_id as $key => $id) {
-                $value_array[$key] = "('" . $data['title'] . "', '" . $data['message'] . "', '" . $data['status'] . "'";
-                $value_array[$key] .= ", '" . $data['user_id'] . "', '" . $id . "', '" . $data['submitted_date'] . "')";
-            };
-            
-            $value_string = implode(",", $value_array);
+            $column = implode(", ", array_keys($data));
+
+            // check if there is a multiple document_id
+            if(is_array($data['document_id']) || (strpos($data['document_id'], ",") != false)) {
+
+                if(is_string($data['document_id'])) {
+                    $data_id = explode(",", $data['document_id']);
+                } else {
+                    $data_id = $data['document_id'];
+                }
+
+                foreach ($data_id as $key => $id) {
+                    $value_array[$key] = "('" . $data['title'] . "', '" . $data['message'] . "', '" . $data['status'] . "'";
+                    $value_array[$key] .= ", '" . $data['user_id'] . "', '" . $id . "', '" . $data['submitted_date'] . "')";
+                };
+
+                $value = implode(",", $value_array);
+            } else {
+                // $column = implode(", ", array_keys($data));
+                // $value = implode("','", array_values($data));
+                $value = "('" . implode("','", array_values($data)) . "')";
+            } 
         }
 
         $Db = Utility\Database::getInstance();
-        $results = $Db->query("INSERT INTO document_comment (" . $column . ") VALUES " . $value_string )->error();
+        $results = $Db->query("INSERT INTO document_comment (" . $column . ") VALUES " . $value )->error();
 
         if($results === false) 
             return true;

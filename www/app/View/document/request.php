@@ -24,12 +24,13 @@ if(is_numeric($this->document)) {
 } else {
     $title = 'Request for missing document: TYPE [' . $this->document  . "]";
     $request_type = 'new';
-    $order_num = $this->shipment[0]->order_number;
     $shipment_num = $this->shipment[0]->shipment_num;
+    $order_num = $this->shipment[0]->order_number;
     $house_bill = $this->shipment[0]->house_bill;
-    $subject_ph = 'Request for Missing Document for (' . $order_num . ')/(' . $house_bill . ')';
-    $shipment_text = "(" . $shipment_num . ") under Order Number ( " . $order_num . ")";
-    $template_msg = 'Please provide the missing ' . $this->document . ' for Shipment ' . $shipment_text;
+    $separator = (empty($order_num) || empty($house_bill)) ? "" : "/";
+    $subject_ph = 'Request for Missing Document for ' . $order_num . $separator . $house_bill;
+    $order_text = (empty($order_num)) ? "" : " under Order Number " . $order_num;
+    $template_msg = 'Please provide the missing ' . $this->document . ' for Shipment ' . $shipment_num . $order_text;
 } ?>
  
 <div id="document-request" style="display: block;">
@@ -92,7 +93,7 @@ if(is_numeric($this->document)) {
                     <?php endif; ?>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+                    <button type="button" class="btn btn-default d-none" id="go_back">Go Back</button>
                     <button type="button" class="btn btn-primary" id="submit">Send Request</button>
                 </div>
             </form>

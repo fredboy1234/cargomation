@@ -1281,7 +1281,10 @@ class Shipment extends Core\Controller {
             // DOCUMENT LEVEL
             $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
             foreach ($shipment->Documents as $document_key => $document) {
-                // $document->id // $document->shipment_id // $document->type // $document->status
+                // Default Empty Value (DEV)
+                $documents[strtolower($document->type)]['count'] = 0;
+                $documents[strtolower($document->type)]['badge'] = "";
+                $documents[strtolower($document->type)]['text'] = "Empty"; 
                 // Status Count
                 if($document->status == "approved") {
                     $documents[strtolower($document->type)]['approved']++;
@@ -1323,7 +1326,7 @@ class Shipment extends Core\Controller {
                 }
             }
             foreach ($documents as $key => $value) {
-                if(!empty($value['count'])) {
+                #if(!empty($value['count'])) {
                     $subdata[$key] = '<div class="doc-stats" style="display: none;">
                     <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">
                     '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
@@ -1335,9 +1338,9 @@ class Shipment extends Core\Controller {
                         <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">'.$value['text'].'</span>
                         <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
                     </div>';
-                } else {
-                    $subdata[$key] = "Empty";
-                }
+                #} else {
+                    # $subdata[$key] = "Empty";
+                #}
             }
 
             $data[] = $subdata;

@@ -68,6 +68,8 @@ $(document).ready(function () {
     
     //count++;
   });
+
+  $('[data-toggle="tooltip"]').tooltip()
 });
 
 $(document).on('keypress',"input[name='value[]'], .add_node_btn_frm_field, input[id*='no_value_']",function(e){
@@ -819,6 +821,7 @@ $( "input[name='transportmode_sea'], input[name='transportmode_air']" ).on('clic
 $('button#request').click(function (e) {
   var url = "/document/request/" + shipment_id + "/" + document_type;
   preloader(url);
+  $('#document_action, #go_back').toggle();
 });
 
 // Show loader
