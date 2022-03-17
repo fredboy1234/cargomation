@@ -1,7 +1,7 @@
 	<?php
 	use PHPMailer\PHPMailer\PHPMailer;
 	use PHPMailer\PHPMailer\Exception;
-
+ 
 	require("Exception.php");
 	require("PHPMailer.php");
 	require("SMTP.php");
@@ -13,7 +13,7 @@
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 	$valid_passwords = array ("a2badmin" => "]i%v*K:{pL8C{(w");
 	$valid_users = array_keys($valid_passwords);
-	$user="";
+	$user="";$name="";
 
 	if(isset($_SERVER['PHP_AUTH_USER']) || isset($_SERVER['PHP_AUTH_PW'])){
 	$user = $_SERVER['PHP_AUTH_USER'];
@@ -31,7 +31,7 @@
 	else
 	{
 	 if($_SERVER["REQUEST_METHOD"]	== "POST"){
-	 	if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['message']) && isset($_POST['request']) ){
+	 	if(isset($_POST['name']) || isset($_POST['email']) && isset($_POST['message']) && isset($_POST['request']) ){
 			$name = $_POST['name'];
 			$email=$_POST['email'];
 			$messagecontent=$_POST['message'];
