@@ -22,7 +22,7 @@ $var_code = "license_code";
 $var_col = "(shipment_num,master_bill,house_bill,shipper,client,macro_link,license_code)";
 
 //The location of the mailbox.
-$mailbox = "{imap.secureserver.net:995/pop3/ssl/novalidate-cert}INBOX";
+$mailbox = "{imap.secureserver.net:995/pop3/ssl/novalidate-cert}";
 //The username / email address that we want to login to.
 $username = $email;
 //The password for this email address.
@@ -33,7 +33,6 @@ $password = $pass;
 try{
 $start = microtime(true); // start timer	
 $imapResource = imap_open($mailbox, $username, $password);
-
 }
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -70,6 +69,7 @@ $emails = imap_search($imapResource, $search);
 //an empty array.  
 $ctr = 0;
 $tempID = "";
+$totalMail = 0;
 $new_array = array();
 
 if(!empty($emails)){ 
@@ -102,8 +102,8 @@ if(!empty($emails)){
 						 $lcode =	trim(strval(get_data($code, 'LicenceCode=', '&ControllerID')));
 						 
 					$new_array[] = array("shipment"=>$job, "shipper"=>$shipper,"client"=>$client,"mbill"=>$mbill,"hbill"=>$hbill,"mcode"=>$mcode,"code"=>$code,"lcode"=>$lcode);
-
-			}
+		}
+		$totalMail++;
     }
 }
 		$sql = "Select * from {$link_table} WHERE {$var_code} = '{$tempID}'";
@@ -115,6 +115,8 @@ if(!empty($emails)){
 		$json_array = json_decode(json_encode ($new_array));
 		$ship_insert = "";
 		$value_query = "";
+		
+		if(count($new_array)>= 1){
 		for ($i = 0; $i < count($new_array); $i++) {
 			 if(!in_array($json_array[$i]->shipment,$ship_array)){
 				 if(count($new_array) == 1){
@@ -125,16 +127,17 @@ if(!empty($emails)){
 				 }
 				 $ctr++;
 			 }
+		  }
 		}
-		if(substr($ship_insert, -1) == ","){
-			$value_query = $insert_link.substr($ship_insert, 0, -1);
-		}
+		if(substr($ship_insert, -1) == ","){$value_query = $insert_link.substr($ship_insert, 0, -1);}
+		else{$value_query = $insert_link.$ship_insert;}
+		
 		if(!empty($value_query)){
 			sqlsrv_query($conn,$value_query);
 		}
 
 echo 'connection: '.(microtime(true)-$start).' seconds'."\r\n"; // show results
-echo "Total Processed: ".$ctr;
+echo "Total Processed: ".$ctr." Total Fetched Emails:".$totalMail;
+$errors = imap_errors();
 imap_close($imapResource);
-
 ?>
