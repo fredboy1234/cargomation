@@ -130,7 +130,7 @@
                       if($sell_prev < $sell) {
                         $arrow_sell = "fa fa-arrow-up text-success";
                       } else {
-                        $arrow_sell = "fa fa-arrow-up text-danger";
+                        $arrow_sell = "fa fa-arrow-down text-danger";
                       }
                       //  10.7235 < 10.7352 = true (up)
                       if($buy_prev > $buy) {
