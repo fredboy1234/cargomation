@@ -572,7 +572,7 @@ $(document).ready(function () {
         var url = "/document/comment/" + doc_id + "/write/" + doc_status;
         // load the url and show modal on successs
         preloader(url);
-        $('#document_action, #go_back').toggle();
+        // $('#document_action, #go_back').toggle();
     });
 
     // Button Edit
@@ -978,7 +978,8 @@ $(function () {
 // updateDocumentStatus("status", "pending");
 function updateDocumentStatus(option, action, text) {
     var data = [];
-    var msg = "";
+    var warning_msg = "";
+    var success_msg = "";
     if(option == "status_all") {
         $('.file-preview-thumbnails > .file-preview-frame > .checkbox').each(function(index, element) {
             data.push($(element).find('input').val());
@@ -992,135 +993,143 @@ function updateDocumentStatus(option, action, text) {
         warning_msg = "This action will <b>" + text + "</b> the selected document. <br>Do you still want to continue?";
         success_msg =  "Successfully <b>" + text + "</b> the selected document!";
     }
-    Swal.fire({
-        title: "Are you sure?",
-        html: warning_msg,
-        icon: "warning",
-        showLoaderOnConfirm: true,
-        confirmButtonText: 'Yes, continue!',
-        showCancelButton: true,
-        cancelButtonText: 'No, cancel!',
-        reverseButtons: true,
-        preConfirm: () => {
-            return $.post("/document/updateDocumentBulk", { group: option, value: action, data: data })
-            .done(function (res) {
-                if(res == "false") {
-                    if (option == 'status') {
-                        Swal.fire({
-                            title: 'It is better to leave a comment',
-                            text: 'Do you want to leave a comment?',
-                            icon: 'info',
-                            showDenyButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: `Leave comment`,
-                            denyButtonText: `No`,
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
-                                var url = "/document/comment/" + data + "/write/" + action;
-                                // load the url and show modal on success
-                                preloader(url);
-                            // } else if (result.isDenied) {
-                            //     Swal.fire('Status changed!', 'Save but no comment made.', 'info')
-                            //     $.post("/document/putDocumentComment", {
-                            //         title: "",
-                            //         message: "",
-                            //         status: action,
-                            //         user_id: user_id,
-                            //         document_id: data
-                            //     });
-                            $('#document_action, #go_back').toggle();
+    if (data.length === 0) {
+        Swal.fire(
+            'No file was selected!',
+            'Please select a file(s) by ticking the checkbox.',
+            'error'
+        );
+    } else {
+        Swal.fire({
+            title: "Are you sure?",
+            html: warning_msg,
+            icon: "warning",
+            showLoaderOnConfirm: true,
+            confirmButtonText: 'Yes, continue!',
+            showCancelButton: true,
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            preConfirm: () => {
+                return $.post("/document/updateDocumentBulk", { group: option, value: action, data: data })
+                .done(function (res) {
+                    if(res == "false") {
+                        if (option == 'status') {
+                            Swal.fire({
+                                title: 'It is better to leave a comment',
+                                text: 'Do you want to leave a comment?',
+                                icon: 'info',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: `Leave comment`,
+                                denyButtonText: `No`,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    Swal.fire('Status changed!', 'You will be redirected to comment form.', 'success');
+                                    var url = "/document/comment/" + data + "/write/" + action;
+                                    // load the url and show modal on success
+                                    preloader(url);
+                                // } else if (result.isDenied) {
+                                //     Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                //     $.post("/document/putDocumentComment", {
+                                //         title: "",
+                                //         message: "",
+                                //         status: action,
+                                //         user_id: user_id,
+                                //         document_id: data
+                                //     });
+                                $('#document_action, #go_back').toggle();
+                                } else {
+                                    Swal.fire('Status changed!', 'Save but no comment made.', 'info')
+                                    $.post("/document/putDocumentComment", {
+                                        title: "",
+                                        message: "",
+                                        status: action,
+                                        user_id: user_id,
+                                        document_id: data
+                                    });
+                                }
+                            });
+                        }
+                        // update document preview
+                        data.forEach(function (entry) {
+                            var d = $('.d-' + entry);
+                            if (option === 'status') {
+                                $('[data-key="' + entry + '"]').attr("data-doc_status", action);
+                                d.find('.file-footer-caption > #status').text(action);
+                                if(action === "approved") {
+                                    d.find('.file-footer-caption > #status').removeClass('pending');
+                                    d.find('.file-footer-caption > #status').addClass('approved');
+                                    d.removeClass("b-pending");
+                                    d.addClass("b-approved");
+                                    d.find('.kv-file-status').children().removeClass('pending');
+                                    d.find('.kv-file-status').children().addClass('approved');
+                                    d.find('.kv-file-status').children().removeClass('fa-thumbs-down');
+                                    d.find('.kv-file-status').children().addClass('fa-thumbs-up');
+                                    d.addClass('bg-approved');
+                                    d.removeClass('bg-pending');
+                                } else {
+                                    d.find('.file-footer-caption > #status').removeClass('approved');
+                                    d.find('.file-footer-caption > #status').addClass('pending');
+                                    d.removeClass("b-approved");
+                                    d.addClass("b-pending");
+                                    d.find('.kv-file-status').children().removeClass('approved');
+                                    d.find('.kv-file-status').children().addClass('pending');
+                                    d.find('.kv-file-status').children().removeClass('fa-thumbs-up');
+                                    d.find('.kv-file-status').children().addClass('fa-thumbs-down');
+                                    d.addClass('bg-pending');
+                                    d.removeClass('bg-approved');
+                                }
                             } else {
-                                Swal.fire('Status changed!', 'Save but no comment made.', 'info')
-                                $.post("/document/putDocumentComment", {
-                                    title: "",
-                                    message: "",
-                                    status: action,
-                                    user_id: user_id,
-                                    document_id: data
-                                });
+                                switch (action) {
+                                    case 'deleted':
+                                        d.fadeOut(3000, function () { $(this).remove(); });
+                                        break;
+                                    case 'push':
+                                        d.find('.kv-file-push').remove();
+                                        break;
+                                    default:
+                                        console.log('Error: value = ' + action);
+                                        break;
+                                }
                             }
                         });
+                        $('#select-all').prop('checked', false);
+                        sessionStorage.setItem("changeTriggered", "1");
                     }
-                    // update document preview
-                    data.forEach(function (entry) {
-                        var d = $('.d-' + entry);
-                        if (option === 'status') {
-                            $('[data-key="' + entry + '"]').attr("data-doc_status", action);
-                            d.find('.file-footer-caption > #status').text(action);
-                            if(action === "approved") {
-                                d.find('.file-footer-caption > #status').removeClass('pending');
-                                d.find('.file-footer-caption > #status').addClass('approved');
-                                d.removeClass("b-pending");
-                                d.addClass("b-approved");
-                                d.find('.kv-file-status').children().removeClass('pending');
-                                d.find('.kv-file-status').children().addClass('approved');
-                                d.find('.kv-file-status').children().removeClass('fa-thumbs-down');
-                                d.find('.kv-file-status').children().addClass('fa-thumbs-up');
-                                d.addClass('bg-approved');
-                                d.removeClass('bg-pending');
-                            } else {
-                                d.find('.file-footer-caption > #status').removeClass('approved');
-                                d.find('.file-footer-caption > #status').addClass('pending');
-                                d.removeClass("b-approved");
-                                d.addClass("b-pending");
-                                d.find('.kv-file-status').children().removeClass('approved');
-                                d.find('.kv-file-status').children().addClass('pending');
-                                d.find('.kv-file-status').children().removeClass('fa-thumbs-up');
-                                d.find('.kv-file-status').children().addClass('fa-thumbs-down');
-                                d.addClass('bg-pending');
-                                d.removeClass('bg-approved');
-                            }
-                        } else {
-                            switch (action) {
-                                case 'deleted':
-                                    d.fadeOut(3000, function () { $(this).remove(); });
-                                    break;
-                                case 'push':
-                                    d.find('.kv-file-push').remove();
-                                    break;
-                                default:
-                                    console.log('Error: value = ' + action);
-                                    break;
-                            }
-                        }
-                    });
-                    $('#select-all').prop('checked', false);
-                    sessionStorage.setItem("changeTriggered", "1");
-                }
-                return { response: res }
-            }).fail(function (response) {
-                console.log('Error: ' + response.responseText);
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-        if (result.isConfirmed) {
-            if(result.value.response == "false") {
-                Swal.fire({
-                    // position: 'top-end',
-                    title: "Success",
-                    icon: 'success',
-                    title: success_msg,
-                    showConfirmButton: false,
-                    timer: 1500
+                    return { response: res }
+                }).fail(function (response) {
+                    console.log('Error: ' + response.responseText);
                 });
-                sessionStorage.setItem("changeTriggered", "1");
-            } else {
-                console.log('Error: ' + result.value.response);
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if(result.value.response == "false") {
+                    Swal.fire({
+                        // position: 'top-end',
+                        title: "Success",
+                        icon: 'success',
+                        title: success_msg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    sessionStorage.setItem("changeTriggered", "1");
+                } else {
+                    console.log('Error: ' + result.value.response);
+                }
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                    'Cancelled',
+                    'No status change in the document',
+                    'error'
+                )
             }
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            Swal.fire(
-                'Cancelled',
-                'No status change in the document',
-                'error'
-            )
-        }
-    });
+        });
+    }
 }
 
 function goBack() {

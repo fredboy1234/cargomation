@@ -50,7 +50,7 @@
         </div>
         <!-- /.card -->
         <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-default" id="go_back">Go Back</button>
+            <button type="button" class="btn btn-default d-none" id="go_back">Go Back</button>
             <button type="button" class="btn btn-primary" id="add_comment" 
             data-doc_id="<?= $this->document_id; ?>"
             data-doc_status="<?= $this->document_status; ?>">Add Comment</button>
