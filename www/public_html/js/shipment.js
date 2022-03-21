@@ -338,37 +338,56 @@ $(document).ready(function () {
       url: '/shipment/shipmentData/',
       data: function (d) {
         var arr = [];
-        $(".form_field_outer_row").each(function(){
-           var search = $(this).find("[name*='search']").val(); //*= means like
-           var type = $(this).find("[name*='type']").val(); 
-           var value = $(this).find("[name*='value']").val(); 
-           var cond = $(this).find("[name*='cond']").val();
-           if($(this).find("[name*='cond']").hasClass('exclude')) {
-              cond = "";
-           } 
-           //convert date to mm/dd/yyyy for api request format
-           
-           if(search === "ETA" || search === "ETD"){
-            var dateString = value;
-            var dateParts = dateString.split("-");
-            var datePartsChild1 = dateParts[0].split("/");
-            var datePartsChild2 = dateParts[1].split("/");
-              var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
-              var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
-              value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
-              type = 'DATERANGE';
-           }
-           
-           if(typeof value !== null || value.length > 0){
+        console.log(parsed_qs);
+        if (typeof parsed_qs['value'] !== "undefined") {
+          var search = parsed_qs['search'];
+          var type = parsed_qs['type'];
+          var value = parsed_qs['value'];
+          var cond = "";
+          if(typeof parsed_qs['value'] !== "undefined") {
+            cond = parsed_qs['con'];
+          }
+          arr.push({
+            "columnname": search,
+            "type": type,
+            "value": value.toUpperCase(),
+            "cond": cond
+          });
+          d.data = arr;
+        } else {
+          $(".form_field_outer_row").each(function(){
+            var search = $(this).find("[name*='search']").val(); //*= means like
+            var type = $(this).find("[name*='type']").val(); 
+            var value = $(this).find("[name*='value']").val(); 
+            var cond = $(this).find("[name*='cond']").val();
+            if($(this).find("[name*='cond']").hasClass('exclude')) {
+               cond = "";
+            } 
+            //convert date to mm/dd/yyyy for api request format
+            
+            if(search === "ETA" || search === "ETD"){
+             var dateString = value;
+             var dateParts = dateString.split("-");
+             var datePartsChild1 = dateParts[0].split("/");
+             var datePartsChild2 = dateParts[1].split("/");
+               var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+               var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+               value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+               type = 'DATERANGE';
+            }
+            
+            if(typeof value !== null || value.length > 0){
               arr.push({
-                "columnname": search,
-                "type": type,
-                "value": value.toUpperCase(),
-                "cond": cond
-            });
-           } 
-           d.data = arr;
-        });
+                 "columnname": search,
+                 "type": type,
+                 "value": value.toUpperCase(),
+                 "cond": cond
+              });
+            } 
+            d.data = arr;
+          });
+        }
+
       },
     },
     rowId: 'real_id_shipment',

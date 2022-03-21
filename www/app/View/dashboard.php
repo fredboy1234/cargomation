@@ -86,7 +86,7 @@
               <div class="icon">
                 <i class="ion ion-cube text-dark"></i>
               </div>
-              <a href="/doctracker" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/shipment" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -101,7 +101,7 @@
               <div class="icon">
                 <i class="ion ion-android-boat text-success"></i>
               </div>
-              <a href="/doctracker?transport_mode=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/shipment?search=transport_mode&type=in&value=sea" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -116,7 +116,7 @@
               <div class="icon">
                 <i class="ion ion-android-plane text-primary"></i>
               </div>
-              <a href="/doctracker?transport_mode=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/shipment?search=transport_mode&type=in&value=air" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
