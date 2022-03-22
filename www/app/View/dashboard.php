@@ -124,12 +124,12 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-danger not-shipment"><sup style="font-size: 20px"></sup></h3>
+                <h3 class="text-warning not-shipment"><sup style="font-size: 20px"></sup></h3>
 
-                <p>Shipments Pending Arrival</p>
+                <p>Order Pending Shipment</p>
               </div>
               <div class="icon">
-                <i class="ion ion-android-warning text-danger"></i>
+                <i class="fas fa-hourglass-end text-warning"></i>
               </div>
               <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>

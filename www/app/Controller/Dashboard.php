@@ -264,6 +264,7 @@ class Dashboard extends Core\Controller {
 
     public function processMapCount(){
         $userID = $_POST['userid'];
+        
         echo json_encode([
             "port_loading_count" =>  $this->getMapCount($userID)
         ]);

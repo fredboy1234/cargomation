@@ -94,6 +94,7 @@ function Map(data,mcontainer){
             //     latitude: pointObject[0].latitude,
             //     longitude: pointObject[0].longitude
             // };
+            console.log("from map");
            console.log(pointObject);
             imageSeries.data = pointObject;
             am4core.options.autoDispose = true;
