@@ -350,7 +350,7 @@
                         data-action="deleted" data-text="Delete" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
                         class="btn btn-default bg-danger" type="button" title="Delete Selected"><i class="fas fa-trash"></i></button>
-                    <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" class="btn btn-default bg-success">Accept Selected</button>
+                    <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" class="btn btn-default bg-success">Approve Selected</button>
                     <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" class="btn btn-default bg-danger">Pending Selected</button>
                     <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn btn-default bg-success">Approve All</button>
                     <button id="pending_all" data-action="pending" data-text="Pending All" data-option="status_all" type="button" class="btn btn-default bg-danger">Pending All</button>
