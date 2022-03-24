@@ -590,8 +590,9 @@ class Shipment extends Core\Controller {
             $documents[strtolower($type)]['badge'] = '';
             $documents[strtolower($type)]['count'] = '';
         }
-
+        
         foreach($array_data as $shipment_key => $shipment) {
+        
             $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
             $etd_date_sort = date_format(date_create($shipment->eta), "d/m/Y");
@@ -659,11 +660,19 @@ class Shipment extends Core\Controller {
             }
             // DOCUMENT LEVEL
             $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
+           
+            foreach($documents as $dockey => $docdoc){
+                $documents[$dockey]['approved']=0;
+                $documents[$dockey]['pending']=0;
+            }
+
             foreach ($shipment->Documents as $document_key => $document) {
+               
                 // Default Empty Value (DEV)
                 $documents[strtolower($document->type)]['count'] = 0;
                 $documents[strtolower($document->type)]['badge'] = "";
                 $documents[strtolower($document->type)]['text'] = "Empty"; 
+                
                 // Status Count
                 if($document->status == "approved") {
                     $documents[strtolower($document->type)]['approved']++;
@@ -674,6 +683,7 @@ class Shipment extends Core\Controller {
                 if($document->status == "watched") {
                     $documents[strtolower($document->type)]['watched']++;
                 }
+                
                 // Status Text and Badge
                 if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
                     $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
@@ -684,6 +694,7 @@ class Shipment extends Core\Controller {
                     $documents[strtolower($document->type)]['badge'] = "badge-warning";
                     $documents[strtolower($document->type)]['text'] = "Pending";
                 }
+
             }
             // DOCUMENT REQUEST
             foreach ($shipment->DocumentRequests as $requested_key => $requested) {
