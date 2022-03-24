@@ -582,17 +582,7 @@ class Shipment extends Core\Controller {
         $doc_type = array_column($this->Document->getDocumentType(), 'type');
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
-        foreach ($doc_type as $type) {
-            $documents[strtolower($type)]['text'] = "Empty";
-            $documents[strtolower($type)]['approved'] = 0;
-            $documents[strtolower($type)]['pending'] = 0;
-            $documents[strtolower($type)]['watched'] = 0;
-            $documents[strtolower($type)]['badge'] = '';
-            $documents[strtolower($type)]['count'] = '';
-        }
-        
         foreach($array_data as $shipment_key => $shipment) {
-        
             $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
             $etd_date_sort = date_format(date_create($shipment->eta), "d/m/Y");
@@ -601,7 +591,6 @@ class Shipment extends Core\Controller {
             if(!empty($shipment->vrptShipmentlinks)) {
                 $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
             }
-
             $subdata = array();
             $subdata['real_id_shipment'] = $shipment->shipment_num; // remove?
             $subdata['shipment_num'] = '
@@ -634,7 +623,6 @@ class Shipment extends Core\Controller {
                         View
                         </button>
                         <div class="dropdown-menu">';
-    
                         if(!empty($test)) {
                             $last_key = array_key_last($container_num);
                             foreach ($container_num as $key7 => $value7) {
@@ -649,30 +637,25 @@ class Shipment extends Core\Controller {
                                 }
                             }
                         }
-    
                     $subdata['container_number'] .= '
                         </div>
                     </div>';
-
                 }
             } else {
                 $subdata['container_number'] = '<span class="text-warning">No data</span>';
             }
             // DOCUMENT LEVEL
             $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
-           
-            foreach($documents as $dockey => $docdoc){
-                $documents[$dockey]['approved']=0;
-                $documents[$dockey]['pending']=0;
+            // Default Empty Value (DEV)
+            foreach ($doc_type as $type) {
+                $documents[strtolower($type)]['text'] = "Empty";
+                $documents[strtolower($type)]['approved'] = 0;
+                $documents[strtolower($type)]['pending'] = 0;
+                $documents[strtolower($type)]['watched'] = 0;
+                $documents[strtolower($type)]['badge'] = "";
+                $documents[strtolower($type)]['count'] = "";
             }
-
             foreach ($shipment->Documents as $document_key => $document) {
-               
-                // Default Empty Value (DEV)
-                $documents[strtolower($document->type)]['count'] = 0;
-                $documents[strtolower($document->type)]['badge'] = "";
-                $documents[strtolower($document->type)]['text'] = "Empty"; 
-                
                 // Status Count
                 if($document->status == "approved") {
                     $documents[strtolower($document->type)]['approved']++;
@@ -683,18 +666,20 @@ class Shipment extends Core\Controller {
                 if($document->status == "watched") {
                     $documents[strtolower($document->type)]['watched']++;
                 }
-                
                 // Status Text and Badge
                 if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
                     $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
                     $documents[strtolower($document->type)]['badge'] = "badge-success";
                     $documents[strtolower($document->type)]['text'] = "Approved"; 
-                } else {
+                } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
                     $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
                     $documents[strtolower($document->type)]['badge'] = "badge-warning";
                     $documents[strtolower($document->type)]['text'] = "Pending";
+                } else {
+                    // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                    // $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                    // $documents[strtolower($document->type)]['text'] = "Pending";
                 }
-
             }
             // DOCUMENT REQUEST
             foreach ($shipment->DocumentRequests as $requested_key => $requested) {
@@ -732,9 +717,7 @@ class Shipment extends Core\Controller {
                     # $subdata[$key] = "Empty";
                 #}
             }
-
             $data[] = $subdata;
-            
         }
         return $data;
     }
