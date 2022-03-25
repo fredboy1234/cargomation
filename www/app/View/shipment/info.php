@@ -92,7 +92,7 @@
     </div>
     <div class="card-body">
         <div class="tab-content" id="custom-tabs-tabContent">
-            <div class="tab-pane fade" id="custom-tabs-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
+            <div class="tab-pane fade active show" id="custom-tabs-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
                 <div class="row">
                     <section class="col-lg-6 connectedSortable ui-sortable">
                         <div class="card">
@@ -482,7 +482,7 @@
                     </section>
                 </div>
             </div>
-            <div class="tab-pane fade active show" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
+            <div class="tab-pane fade" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
                 <div class="row">
                     <section class="col-lg-12 connectedSortable ui-sortable">
                         <div class="card">
