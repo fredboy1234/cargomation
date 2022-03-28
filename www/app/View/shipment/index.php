@@ -319,7 +319,6 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="create_charges" type="button" class="btn btn-default bg-info">Create Charges</button>
                 <div id="document_action">
                 <?php if($this->role->role_id != 4): ?>
                     <div class="icheck-primary d-inline">
