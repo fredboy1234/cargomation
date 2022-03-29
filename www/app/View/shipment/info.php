@@ -77,10 +77,10 @@
     <div class="card-header p-0 border-bottom-0">
         <ul class="nav nav-tabs" id="custom-tabs-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-info-tab" data-toggle="pill" href="#custom-tabs-info" role="tab" aria-controls="custom-tabs-info" aria-selected="true">Info</a>
+                <a class="nav-link active" id="custom-tabs-info-tab" data-toggle="pill" href="#custom-tabs-info" role="tab" aria-controls="custom-tabs-info" aria-selected="true">Info</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" id="custom-tabs-invoice-tab" data-toggle="pill" href="#custom-tabs-invoice" role="tab" aria-controls="custom-tabs-invoice" aria-selected="false">Invoice</a>
+                <a class="nav-link" id="custom-tabs-invoice-tab" data-toggle="pill" href="#custom-tabs-invoice" role="tab" aria-controls="custom-tabs-invoice" aria-selected="false">Invoice</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-timeline-tab" data-toggle="pill" href="#custom-tabs-timeline" role="tab" aria-controls="custom-tabs-timeline" aria-selected="false">Timeline</a>
@@ -92,7 +92,7 @@
     </div>
     <div class="card-body">
         <div class="tab-content" id="custom-tabs-tabContent">
-            <div class="tab-pane fade" id="custom-tabs-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
+            <div class="tab-pane fade active show" id="custom-tabs-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
                 <div class="row">
                     <section class="col-lg-6 connectedSortable ui-sortable">
                         <div class="card">
@@ -482,7 +482,7 @@
                     </section>
                 </div>
             </div>
-            <div class="tab-pane fade active show" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
+            <div class="tab-pane fade" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
                 <div class="row">
                     <section class="col-lg-12 connectedSortable ui-sortable">
                         <div class="card">

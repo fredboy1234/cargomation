@@ -192,6 +192,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <script src="/bower_components/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="/bower_components/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="/bower_components/admin-lte/plugins/datatables-select/js/select.bootstrap4.min.js"></script>
+<!-- flot table -->
+<script src="/bower_components/admin-lte/plugins/flot/jquery.flot.js"></script>
 <!-- Bootstrap File Input -->
 <script src="/bower_components/bootstrap-fileinput/js/plugins/piexif.js" type="text/javascript"></script>
 <script src="/bower_components/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
