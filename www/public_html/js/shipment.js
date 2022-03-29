@@ -393,7 +393,7 @@ $(document).ready(function () {
     rowId: 'real_id_shipment',
     select: true,
     // bSort: true,
-    // ordering: true,
+    ordering: true,
     // bFilter: true,
     // deferRender: true,
     // sDom: 'lrtip',

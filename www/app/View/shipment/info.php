@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-3">
-         <h1 class="p-3"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
+         <h1 class="p-3 shipment-num" data-toggle="tooltip" data-placement="bottom" title="<?= $this->shipment_info[0]->shipment_num; ?>"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
     </div>
     <div class="col-lg-9">
         <div>
@@ -77,7 +77,7 @@
     <div class="card-header p-0 border-bottom-0">
         <ul class="nav nav-tabs" id="custom-tabs-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="custom-tabs-info-tab" data-toggle="pill" href="#custom-tabs-info" role="tab" aria-controls="custom-tabs-info" aria-selected="true">Info</a>
+                <a class="nav-link active" id="custom-tabs-info-tab" data-toggle="pill" href="#custom-tabs-info" role="tab" aria-controls="custom-tabs-info" aria-selected="true">Information</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-invoice-tab" data-toggle="pill" href="#custom-tabs-invoice" role="tab" aria-controls="custom-tabs-invoice" aria-selected="false">Invoice</a>
@@ -538,7 +538,41 @@
             Comming soon...
             </div>
             <div class="tab-pane fade" id="custom-tabs-documents" role="tabpanel" aria-labelledby="custom-tabs-documents-tab">
-            Comming soon...
+                <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mt-4">
+                                <div class="card-header">Document Status</div>
+                                <div class="card-body">
+                                    <div class="chart-container pie-chart">
+                                        <canvas id="pie_chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mt-4">
+                                <div class="card-header">Document Request</div>
+                                <div class="card-body">
+                                    <div class="chart-container pie-chart">
+                                        <canvas id="doughnut_chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mt-4 mb-4">
+                                <div class="card-header">Comments</div>
+                                <div class="card-body">
+                                    <div class="chart-container pie-chart">
+                                        <canvas id="bar_chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -624,16 +658,25 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 #chartdiv > div > svg > g > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g > g:nth-child(6) > g > g:nth-child(3) > g > g:nth-child(4) > g > g{
     transform: rotate(-90deg);
 }
+.shipment-num {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>
 <script src="/js/map.js"></script>
 <script>
-
+var cnt = 0;
+var stoper = 0;
+var keycount = 0;
+var promises = [];
 var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
 var combineRoute = [];
 var pointObject = [];
 var transImage = "<?= $transImage ?>";
 var transmode = "<?=$transMode?>";
-var tooltipHTML = `<center><strong>{vessel}</strong></center>
+$(document).ready(function() { 
+    var tooltipHTML = `<center><strong>{vessel}</strong></center>
         <hr />
         <div class="row">
             <div class="col-lg-6">
@@ -660,14 +703,9 @@ var tooltipHTML = `<center><strong>{vessel}</strong></center>
         <center>
             <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
         </center>`;
-$(document).ready(function() {  
+ 
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
-    var cnt =0;
-    var stoper=0;
-    var keycount =0;
-    var promises = [];
-    
     $.each(route, function(key, value) {
         combineRoute.push({
             "order": parseInt(value.LegOrder),
@@ -684,7 +722,6 @@ $(document).ready(function() {
             "keycount":keycount++
         });
     });
-
     $.each(combineRoute, function(key, value) {
             // If point has back slash
             if(value.point.includes("/")) {
@@ -730,19 +767,73 @@ $(document).ready(function() {
             console.log("fail");
         });
     
+
+    $('#example').DataTable( { 
+        responsive: true,
+        ajax: "/uploads/sample.json"
+    });
+    $('.shipment-num').tooltip();
+    makechart();
+	function makechart() {
+		$.ajax({
+			url:"document/getDocumentData/<?= $this->shipment_info[0]->shipment_num; ?>",
+			method:"POST",
+			data:{action:'fetch', column:'type'},
+			dataType:"JSON",
+			success:function(data) {
+				var type = [];
+				var total = [];
+				var color = [];
+
+				for(var count = 0; count < data.length; count++) {
+					type.push(data[count].type);
+					total.push(data[count].total);
+					color.push(data[count].color);
+                    // color.push('#' + Math.floor(Math.random()*16777215).toString(16));
+				}
+
+				var donutData = {
+					labels:type,
+					datasets:[
+						{
+							label:'Document',
+							backgroundColor:color,
+							color:'#fff',
+							data:total
+						}
+					]
+				};
+
+                var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+
+                var donutOptions     = {
+                    maintainAspectRatio : false,
+                    responsive : true,
+                }
+
+                new Chart(donutChartCanvas, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                });
+
+
+			}
+		})
+	}
     function toggleChevron(e) {
         $(e.target)
             .prev(".collapse-control")
             .find("i.chevron")
             .toggleClass("fa-chevron-down fa-chevron-up");
     }
-     $("#custom-tabs-info-tab").on('click',function(){
-        if(transmode === "Sea"){
-                $.getScript("/js/shipment/sea.map.js", function() {}); 
-            }else{ 
-                $.getScript("/js/shipment/air.map.js", function() {}); 
-            }
-     });
+    //  $("#custom-tabs-info-tab").on('click',function(){
+    //     if(transmode === "Sea"){
+    //             $.getScript("/js/shipment/sea.map.js", function() {}); 
+    //         }else{ 
+    //             $.getScript("/js/shipment/air.map.js", function() {}); 
+    //         }
+    //  });
 });
 
 $(document).ready(function() {

@@ -1067,4 +1067,29 @@ class Document extends Core\Controller {
         $User->putUserNotifications($data);
     }
 
+    public function getDocumentData($shipment_num = "", $column = "*", $group_by = '') {
+        if(!empty($_POST['column'])) {
+            if($_POST['column'] == 'type') {
+                $column = 'type, COUNT(type) as count';
+                $group_by = 'type';
+            }
+        } else {
+            die('Invalid request');
+        }
+        $document_data = $this->Document->getDocumentDataByShipmentNum($shipment_num, $column, $group_by);
+        $data = array();
+        foreach ($document_data as $key => $value) {
+            if($_POST['column'] == 'type') {
+                $data[] = array(
+                    'type'		=>	$value->type,
+                    'total'			=>	$value->count,
+                    'color'			=>	'#' . rand(100000, 999999) . ''
+                ); 
+            } else {
+                $data[] = array($key => $value);
+            }
+        }
+		echo json_encode($data);
+    }
+
 }

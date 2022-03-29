@@ -95,6 +95,16 @@ class Document extends Core\Model {
                                 WHERE shipment_num IN ('" . $shipment_id . "') ")->results();
     }
 
+    public function getDocumentDataByShipmentNum($shipment_num, $column, $group_by) {
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT {$column} FROM document WHERE shipment_num = '{$shipment_num}'";
+        if(!empty($group_by)) {
+            $query .= ' GROUP BY ' . $group_by;
+        }
+        // var_dump($query); die(); 
+        return $Db->query($query)->results();
+    }
+
     public static function getDocumentByDocID($document_id, $args = "*") {
         if(is_numeric(strpos($args, "id")))
             $args = str_replace("id", "d.id", $args);
