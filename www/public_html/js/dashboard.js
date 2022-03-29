@@ -125,6 +125,7 @@ $(window).on("load", function() {
       data:{userid:uid},
       success: function (data) {
         JSON.parse(data.port_loading_count)
+        console.log(JSON.parse(data.port_loading_count));
         //console.log(JSON.parse(data.port_loading_count));
         $.each(JSON.parse(data.port_loading_count),function(okey,oval){
           var promise = new $.Deferred();
@@ -169,8 +170,7 @@ $(window).on("load", function() {
         });
 
         $.when.apply($, promises).done(function() {
-          console.log('hehe');
-          console.log(pointObject);
+          
           let map = new Map(pointObject,"chartdiv");
           map.executeMap();
         }).fail(function() {

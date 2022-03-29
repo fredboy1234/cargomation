@@ -264,9 +264,32 @@ class Dashboard extends Core\Controller {
 
     public function processMapCount(){
         $userID = $_POST['userid'];
+        $mapcount = json_decode($this->getMapCount($userID));
+        $loadingCol=array();
+        $loading = array(); 
+        $sea=array();
+        $air=array();
+        $others = array();
         
+        foreach($mapcount as $mc){
+            
+            if($mc->mode === "Sea"){
+                if(!isset($loading['sea'][$mc->port_loading])){
+                    array_push($loadingCol,$mc);
+                }
+                $loading['sea'][$mc->port_loading]=$mc;
+            }else if($mc->mode === "Air"){
+                if(!isset($loading['air'][$mc->port_loading])){
+                    array_push($loadingCol,$mc);
+                }
+                $loading['air'][$mc->port_loading]=$mc;
+            }else{
+                $loading['others'][$mc->port_loading]=$mc;
+            }
+        }
+
         echo json_encode([
-            "port_loading_count" =>  $this->getMapCount($userID)
+            "port_loading_count" =>  json_encode($loadingCol)
         ]);
        
     }

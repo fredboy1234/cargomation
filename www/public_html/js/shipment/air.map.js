@@ -136,7 +136,7 @@ $(document).ready(function(){
       })
       
       var planeImage = plane.createChild(am4core.Sprite);
-      planeImage.scale = 0.3;
+      planeImage.scale = 0.02;
       planeImage.horizontalCenter = "middle";
       planeImage.verticalCenter = "middle";
       planeImage.path = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
@@ -149,7 +149,7 @@ $(document).ready(function(){
       shadowPlane.height = 48;
       
       var shadowPlaneImage = shadowPlane.createChild(am4core.Sprite);
-      shadowPlaneImage.scale = 0.1;
+      shadowPlaneImage.scale = 0.01;
       shadowPlaneImage.horizontalCenter = "middle";
       shadowPlaneImage.verticalCenter = "middle";
       shadowPlaneImage.path = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
@@ -198,7 +198,7 @@ $(document).ready(function(){
               to: to,
               property: "position"
           }, 5000, am4core.ease.sinInOut);
-          animation.events.on("animationended", flyPlane)
+          //animation.events.on("animationended", flyPlane)
       
           shadowPlane.animate({
               from: from,
@@ -220,8 +220,7 @@ $(document).ready(function(){
             longitude: pointObject[0].longitude
         };
         chart.events.on( "ready", function(){
-            $.each(pointObject,function(zoomkey,zoomval){
-                
+            $.each(pointObject,function(zoomkey,zoomval){ 
                 chart.zoomToGeoPoint({latitude:zoomval.latitude,longitude:zoomval.longitude},1.5);
             });
           

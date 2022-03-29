@@ -621,6 +621,9 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 #example_length {
     display: none;
 }
+#chartdiv > div > svg > g > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g > g:nth-child(6) > g > g:nth-child(3) > g > g:nth-child(4) > g > g{
+    transform: rotate(-90deg);
+}
 </style>
 <script src="/js/map.js"></script>
 <script>
@@ -733,7 +736,13 @@ $(document).ready(function() {
             .find("i.chevron")
             .toggleClass("fa-chevron-down fa-chevron-up");
     }
-     
+     $("#custom-tabs-info-tab").on('click',function(){
+        if(transmode === "Sea"){
+                $.getScript("/js/shipment/sea.map.js", function() {}); 
+            }else{ 
+                $.getScript("/js/shipment/air.map.js", function() {}); 
+            }
+     });
 });
 
 $(document).ready(function() {
