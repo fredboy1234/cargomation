@@ -1,6 +1,8 @@
 
+<?php
+$table_header=array("Container","BOL","Carrier","Arrival@POD","POL","POD","Path","Status","Current Vessel","Carrier ETA");
+?>
 <style>
-
  .mismatch,
  .mismatchvsl,
  .mismatchVo,
@@ -158,65 +160,49 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
 <section class="content">
         <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box box-search" id="confirmedvessels">
-              <div class="inner">
-                <h3 class="text-primary"><?= $this->confirmed;?></h3>
-                <p>Confirmed Vessels</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-android-boat  text-primary"></i>
-              </div>
-              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <!--Box 1-->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-ship"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text"><h5>Confirmed Vessels</h5></span>
+                <span class="info-box-number">503</span>
+                </div>
             </div>
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box box-search" id="departure">
-              <div class="inner">
-                <h3 class="text-success"><?= $this->departCOnfirmed;?></h3>
 
-                <p>Confirmed Departure</p>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-double"></i></span>
+              <div class="info-box-content">
+              <span class="info-box-text"><h5>Confirmed Departure</h5></span>
+              <span class="info-box-number">41,410</span>
               </div>
-              <div class="icon">
-                <i class="ion ion-ios-checkmark-outline text-success"></i>
-              </div>
-              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box box-search" id="delay">
-              <div class="inner">
-                <h3 class="text-danger"><?= $this->delay;?></h3>
 
-                <p>Delays</p>
+          <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-clock"></i></span>
+              <div class="info-box-content">
+              <span class="info-box-text"><h5>Delays</h5></span>
+              <span class="info-box-number">760</span>
               </div>
-              <div class="icon">
-                <i class="ion ion-alert-circled text-danger"></i>
               </div>
-              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box box-search" id="pending">
-              <div class="inner">
-                <h3 class="date text-warning"><?= $this->pending;?><sup style="font-size: 20px"></sup></h3>
 
-                <p>Pending Transhipment </p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-navigate text-warning"></i>
-              </div>
-              <a href="#" class="small-box-footer text-dark d-none">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-hourglass"></i></span>
+            <div class="info-box-content">
+            <span class="info-box-text"><h5>Pending Transhipment</h5></span>
+            <span class="info-box-number">2000</span>
             </div>
-          </div>
-          <!-- ./col -->
+            </div>
+        </div>
+
+
         </div> 
         <div class="card card-default collapsed-card f">
             <div class="card-header">
@@ -229,13 +215,14 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
-            <div class="card-body" style="display: none;">
+            <div class="card-body">
                 <div class="tab-content2" id="">
                     <div class="tab-pane" id="vert-tabs">
                         <div class="row">
                             <div class="col-12 col-lg-2 col-md-2 col-sm-12">
                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="vert-tabs-search-tab" data-toggle="pill" href="#vert-tabs-search" role="tab" aria-controls="vert-tabs-search" aria-selected="true">Advanced Search</a>
+                                    <a class="nav-link" id="vert-tabs-save-tab" data-toggle="pill" href="#vert-tabs-save" role="tab" aria-controls="vert-tabs-save" aria-selected="false">Save/Recent Search List</a>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-10 col-md-10 col-sm-12">
@@ -249,6 +236,49 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                                             </form>
                                         </div>
                                     </div>
+                                    <div class="tab-pane fade" id="vert-tabs-save" role="tabpanel" aria-labelledby="vert-tabs-save-tab">
+                                        <div class="tab-pane" id="save">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Save Search</label>
+                                                        <select id="save_search" multiple="" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Search Query</label>
+                                                        <div id="query_text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Recent Search</label>
+                                                        <select id="recent_search" multiple="" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mt-2">
+                                                    <button type="button" id="resetSearch" class="btn btn-warning">
+                                                        <i class="fas fa-undo"></i> Reset Selection
+                                                    </button>
+                                                    <button type="button" id="deleteSearch" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i> Delete Query
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6 mt-2 text-right">
+                                                    <button type="button" id="loadSearch" class="btn btn-success">
+                                                        <i class="fas fa-search"></i> Load Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                    </div>
                                 </div>
                             </div>
                            
@@ -258,57 +288,114 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
             </div>
         </div>
             <div class="row">
-                <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                    <div class="col-md-3 d-inline-block">
-                        <h3 class="card-title d-block">List of Containers</h3><br>
-                        <span>Click each container to check details.</span>
-                    </div>
-                    <div class="col-md-8  float-right d-none">
-                        <h6 class="d-inline-block">Legend:</h6>
-                        <div class="l-done d-inline-block">
-                            <span class="d-inline-block">Already Completed Shipment:</span><div class="d-inline-block"></div>
-                        </div>
-                        <div class="l-almost d-inline-block">
-                        <span class="d-inline-block">Shipment Nearly Completed:</span><div class="d-inline-block"></div>
-                        </div>
-                        <div class="l-completed d-inline-block">
-                        <span class="d-inline-block">Newly Completed Shipment:</span><div class="d-inline-block"></div>
-                        </div>
-                        <div class="l-not-done d-inline-block">
-                        <span class="d-inline-block">Not Completed Shipment:</span><div class="d-inline-block"></div>
-                        </div>
-                    </div>
-                    <div class="row card-body table-responsive p-0 ttable" style="height: 500px;">
-                    
-                        <table class="table table-hover table-head-fixed text-nowrap custom-table">
-                        <thead>
-                          <tr>
-                                <th scope="col" class="btn-search">Container Number <section></section></th>
-                                <th scope="col">Shipment Number<section></section></th>
-                                <!-- <th>House Bill <section></section></th> -->
-                                <th scope="col">Master Bill <section></section></th>
-                                <th scope="col">Voyage <section></section></th>
-                              
-                                <th scope="col">Date <section></section></th>
-                                <!-- <th>Status</th> -->
-                                
-                                <th scope="col">Vessel Name <section></section></th>
-                                <th scope="col">Location <section></section></th>
-                                <th scope="col">1 Stop <section></section></th>
-                                
-                                <th scope="col">Shipping Line <section></section></th>
-                                
-                                <th scope="col">Action <section></section></th>
-                          </tr>
-                        </thead>
-                      </table>
-                        
-                    </div>
-                    </div>
+            <div class="col-lg-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Quick Search</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+              </div>
+          </div>
+
+          <div class="card-body p-0">
+              <form method="POST" action="#">
+              <ul class="nav nav-pills flex-column">
+                <li class="nav-item active">
+                <a href="#" class="nav-link">
+                <i class="fas fa-ship"></i> Shipment
+                <input class="form-control form-control-sm" type="text" placeholder="">
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="fas fa-box"></i> Container
+                <input class="form-control form-control-sm" type="text" placeholder="">
+                </a>
+              </li>
+
+               <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="fas fa-file"></i> Mbill
+                <input class="form-control form-control-sm" type="text" placeholder="">
+                </a>
+              </li>
+
+               <li>
+                <a href="#" class="nav-link">
+                <i class="fas fa-ship"></i> Voyage
+                <input class="form-control form-control-sm" type="text" placeholder="">
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="nav-link">
+                <i class="fas fa-calendar"></i> ETA
+                <input class="form-control form-control-sm" type="date" placeholder="">
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="nav-link">
+                <i class="fas fa-calendar"></i> ETD
+                <input class="form-control form-control-sm" type="date" placeholder="">
+                </a>
+              </li>
+
+              <li>
+              <div class="btn-group">
+                <a href="#" class="nav-link">
+                <button class="btn btn-info">
+                    <i class="icon-in-button"></i>  
+                    Search
+                </button>
+                <button class="btn btn-danger">
+                    <i class="icon-in-button"></i>  
+                    Clear
+                </button>
+                <button class="btn btn-success">
+                    <i class="icon-in-button"></i>  
+                    Save Search
+                </button>
+              </a>
+            </div>
+          </li>
+
+              </ul>
+             </form>
+          </div>
+          </div>
+        </div>
+          <!--start of order table-->
+          <div class="col-lg-10">
+            <div class="card card-primary card-outline card-tabs">
+              <div class="card-header p-0 pt-1 border-bottom-0">
+                
+              </div>
+              <div class="card-body">
+                <div class="tab-content" id="custom-tabs-three-tabContent">
+                  <div class="tab-pane fade active show" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
+                     <table id="myTable1" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <?php foreach ($table_header as $key => $value) { ?>
+                                    <th><?php echo $value;?></th>
+                                    <?php }?>
+                                </tr>
+                            </thead>
+                        </table>
+                  </div>
                 </div>
-                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+          <!--end of order table-->
+
+        </div><!--end of row class-->
+    </div>
             </div>
         </div>
 </section>
@@ -335,6 +422,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
     var mapToken = <?php echo json_encode($this->mapToken);?>;
     var searates = <?php echo json_encode($this->sea_rates)?>;
     var doublechecker =<?php echo json_encode($this->doublechecker)?> ;
+    var user_id = <?php echo $this->user_id ?>;
     var statsCode = {
         UNK : 'Unknown',
         LTS : 'Land transshipment',

@@ -1,5 +1,7 @@
 
 $(document).ready(function(){
+    console.log("test test");
+console.log(pointObject);
 
 am4core.ready(function() {  
     // Create map instance

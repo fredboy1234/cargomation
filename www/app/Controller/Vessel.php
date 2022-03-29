@@ -19,6 +19,8 @@ class Vessel extends Core\Controller {
         $this->Vessel = Model\Vessel::getInstance();
         // Create a new instance of the model document class.
         $this->Document = Model\Document::getInstance();
+         // Create a new instance of the model shipment class.
+         $this->Shipment = Model\Shipment::getInstance();
         // Create a new instance of the core view class.
         $this->View = new Core\View;
 
@@ -82,6 +84,8 @@ class Vessel extends Core\Controller {
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/vessel.css");
         $this->View->addJS("js/vessel.js");
+        $this->View->addJS("js/searchfilter.js");
+
         
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
@@ -168,6 +172,9 @@ class Vessel extends Core\Controller {
             "departCOnfirmed" => $departCofirmed,
             "delay" => $delay,
             'doublechecker'=>$this->Vessel->getOnestop(),
+            "user_id" =>$user,
+            "user_settings" =>$User->defaultSettings($user, $role->role_id),
+           
         ]);
 
         $this->externalTemp();
@@ -290,7 +297,8 @@ class Vessel extends Core\Controller {
             "vesselnum" => $vessel_number,
             "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
-            "menu" => Model\User::getUserMenu($role->role_id)
+            "menu" => Model\User::getUserMenu($role->role_id),
+            //"shipment_info" => $this->Shipment->getShipmentByShipID($user),
         ]);
         $this->externalTemp();
     }
@@ -361,6 +369,8 @@ class Vessel extends Core\Controller {
         $trck = $this->Vessel->getSearatesByID($vessel_number);
         
         $_SESSION['vessel_num']=  $this->searatesRoute($vessel_number);
+        print_r($this->searatesRoute($vessel_number));
+        exit();
          if(isset( $_SESSION['vessel_num'])){
              if($_SESSION['vessel_num']->message ==='OK'){
                  if(!empty($_SESSION['vessel_num']->data)){
@@ -375,9 +385,12 @@ class Vessel extends Core\Controller {
          if(empty($cont)){
             $cont = $trck;
          }
-         
-        //exit();
-        echo '<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+         print_r('https://tracking.searates.com/route?type='.$type.'&number='.$vessel_number.'&sealine='.$sealine.'&api_key=OEHZ-7YIN-1P9R-T8X4-F632');
+        exit();
+        echo '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
         <script src="https://cdn.jsdelivr.net/npm/Leaflet-MovingMaker@0.0.1/MovingMarker.js"></script>
@@ -845,7 +858,6 @@ class Vessel extends Core\Controller {
                    
                     $_SESSION['vessel_num'] =  $this->searatesRoute($data["container_number"]);
                     if(isset( $_SESSION['vessel_num'])){
-                        
                         if($_SESSION['vessel_num']->message ==='OK'){
                             if(!empty($_SESSION['vessel_num']->data)){
                                 $metadata = $_SESSION['vessel_num']->data;
@@ -911,5 +923,22 @@ class Vessel extends Core\Controller {
             echo 'Message: ' . $e->getMessage();
         }
         
+    }
+
+    public function putSaveSearch() {
+        $user_id = $_POST['user_id'];
+        $search_title = $_POST['search_title'];
+        $data = $_POST['search'];
+        
+        $test = $this->Vessel->putSaveSearch($user_id, $search_title, $data);
+        echo json_encode($test);
+    }
+
+    public function getRecentSave() {
+        $user_id = $_POST['user_id'];
+        $test = $this->Vessel->getSaveSearch($user_id);
+        if(!empty($test)) {
+            echo json_encode($test[0]);
+        }
     }
 }

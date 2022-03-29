@@ -251,4 +251,81 @@ class Vessel extends Core\Model {
             "CER" => 'Container empty return to depot',
         );
     }
+
+    public function getSaveSearch($user_id) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT vesselsearch, vesselrecent FROM user_settings WHERE user_id ='{$user_id}'")->results();
+    }
+
+    public function putSaveSearch($user_id, $search_title, $data){
+       
+        $Db = Utility\Database::getInstance();
+        $result = $Db->query("SELECT vesselsearch FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $query = "";
+        if(isset($result[0])) {
+            if(is_null($result[0]->vesselsearch)) {
+                $arr_data = [];
+                array_push($arr_data, array(
+                    "search_title"=> $search_title,
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            }else{
+                $arr_data = json_decode($result[0]->vesselsearch);
+                array_push($arr_data, array(
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            }
+            $query = "UPDATE user_settings SET vesselsearch='{$json_data}' WHERE user_id ='{$user_id}'";
+        } else {
+            $arr_data = json_decode($result[0]->vesselsearch);
+            array_push($arr_data, array(
+                "search_title"=> $search_title,
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
+            $query = "INSERT INTO user_settings(user_id,vesselsearch) VALUES('{$user_id}','{$json_data}')";
+        }
+        
+        return $Db->query($query)->error();
+    }
+
+    public function putRecentSearch($user_id, $data){
+        $Db = Utility\Database::getInstance();
+        $result = $Db->query("SELECT vesselrecent FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $query = "";
+        
+        if(isset($result[0])){
+            if(is_null($result[0]->vesselrecent)) {
+                $arr_data = [];
+                array_push($arr_data, array(
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            } else {
+                $arr_data = json_decode($result[0]->vesselrecent);
+                array_push($arr_data, array(
+                    "created_date"=> date("d-m-Y H:i:s"),
+                    "search_query"=> $data
+                ));
+                $json_data = json_encode($arr_data);
+            }
+            $query = "UPDATE user_settings SET vesselrecent='{$json_data}' WHERE user_id ='{$user_id}'";
+        }else{
+            $arr_data = [];
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
+            $query = "INSERT INTO user_settings(user_id,vesselrecent) VALUES('{$user_id}','{$json_data}')";
+        }
+        
+        return $Db->query($query)->error();
+    }
 }
