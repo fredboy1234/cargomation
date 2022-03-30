@@ -69,7 +69,8 @@ canvas {
 	top: 50%;
 	right: 50%;
 	transform: translate(50%,-50%);
-	font-family: 'Open Sans', sans-serif;
+	/*font-family: 'Open Sans', sans-serif;*/
+	font-family:'Poppins';
 }
 
 .card {
