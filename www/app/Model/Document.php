@@ -95,14 +95,45 @@ class Document extends Core\Model {
                                 WHERE shipment_num IN ('" . $shipment_id . "') ")->results();
     }
 
-    public function getDocumentDataByShipmentNum($shipment_num, $column, $group_by) {
+    public function getDocumentDataByShipmentNum($shipment_num = '', $column = '*', $group_by = '', $req_data = '') {
         $Db = Utility\Database::getInstance();
-        $query = "SELECT {$column} FROM document WHERE shipment_num = '{$shipment_num}'";
+        $query = "SELECT {$column}
+            FROM document 
+            LEFT JOIN document_status
+                ON document_status.document_id = document.id
+            LEFT JOIN document_comment
+                ON document_comment.document_id = document.id
+            WHERE shipment_num = '{$shipment_num}'";
+
+        $query_total = $Db->query($query)->count();
+
+        if(!empty($req_data)) {
+
+            $array = array(
+                0 => 'type',
+                1 => 'status',
+                2 => 'saved_date',
+                3 => 'message',
+            );
+
+            $query .=  " ORDER BY ".$array[$req_data['order'][0]['column']]." ".$req_data['order'][0]['dir']." 
+            OFFSET ".$req_data['start']." ROWS 
+            FETCH NEXT ".$req_data['length']." ROWS ONLY";
+        }
+
+        // $query = "SELECT {$column} FROM document WHERE shipment_num = '{$shipment_num}'";
         if(!empty($group_by)) {
             $query .= ' GROUP BY ' . $group_by;
         }
-        // var_dump($query); die(); 
-        return $Db->query($query)->results();
+
+        $response = array(
+            "draw"            => $req_data['draw'], 
+            "recordsTotal"    => $query_total, 
+            "recordsFiltered" => $query_total, 
+            "data"            => $Db->query($query)->results()
+        );
+
+        return $response;
     }
 
     public static function getDocumentByDocID($document_id, $args = "*") {
@@ -153,14 +184,15 @@ class Document extends Core\Model {
             $insert_val = rtrim($insert_val,',');
         }
 
+        $query = "";
         if($data['group'] == 'status') {
-            $query = "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
+            $query .= "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
             UPDATE document_status SET status='{$data['value']}' WHERE document_id IN ('{$document_id}')
             ELSE
             INSERT INTO document_status (document_id,status) VALUES {$insert_val}";
         } elseif ($data['group'] == 'action') {
             if($data['value'] == 'deleted') {
-                $query = "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
+                $query .= "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
                 UPDATE document_status SET status='{$data['value']}' WHERE document_id IN ('{$document_id}')
                 ELSE
                 INSERT INTO document_status (document_id,status) VALUES {$insert_val}";
