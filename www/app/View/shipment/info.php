@@ -538,8 +538,19 @@
             Comming soon...
             </div>
             <div class="tab-pane fade" id="custom-tabs-documents" role="tabpanel" aria-labelledby="custom-tabs-documents-tab">
-                <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <table id="doc_table" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Document Type</th>
+                            <th>Status</th>
+                            <th>Date Received</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                </table>
+                <canvas id="donutChart" style="display:none; min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                 <div class="container-fluid">
+                    <?php if(false): ?>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card mt-4">
@@ -572,6 +583,7 @@
                             </div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -675,35 +687,35 @@ var combineRoute = [];
 var pointObject = [];
 var transImage = "<?= $transImage ?>";
 var transmode = "<?=$transMode?>";
-$(document).ready(function() { 
-    var tooltipHTML = `<center><strong>{vessel}</strong></center>
-        <hr />
-        <div class="row">
-            <div class="col-lg-6">
-                <table>
-                    <tr>
-                        <th align="left">Route</th>
-                        <td>{order}</td>
-                    </tr>
-                    <tr>
-                        <th align="left">Port: </th>
-                        <td>{title}</td>
-                    </tr>
-                    <tr>
-                        <th align="left">Point</th>
-                        <td>{type}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-lg-6">
-                <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg" onerror="this.onerror=null;this.src='https://cargomation.com/img/vessel/noimg.png';">
-            </div>
+var tooltipHTML = `<center><strong>{vessel}</strong></center>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6">
+            <table>
+                <tr>
+                    <th align="left">Route</th>
+                    <td>{order}</td>
+                </tr>
+                <tr>
+                    <th align="left">Port: </th>
+                    <td>{title}</td>
+                </tr>
+                <tr>
+                    <th align="left">Point</th>
+                    <td>{type}</td>
+                </tr>
+            </table>
         </div>
-        <hr />
-        <center>
-            <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
-        </center>`;
- 
+        <div class="col-lg-6">
+            <img width="200px" src="https://cargomation.com/img/vessel/{vessel}.jpg" onerror="this.onerror=null;this.src='https://cargomation.com/img/vessel/noimg.png';">
+        </div>
+    </div>
+    <hr />
+    <center>
+        <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
+    </center>`;
+
+$(document).ready(function() { 
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
     $.each(route, function(key, value) {
@@ -773,7 +785,7 @@ $(document).ready(function() {
         ajax: "/uploads/sample.json"
     });
     $('.shipment-num').tooltip();
-    makechart();
+    // makechart();
 	function makechart() {
 		$.ajax({
 			url:"document/getDocumentData/<?= $this->shipment_info[0]->shipment_num; ?>",
@@ -827,6 +839,7 @@ $(document).ready(function() {
             .find("i.chevron")
             .toggleClass("fa-chevron-down fa-chevron-up");
     }
+
     //  $("#custom-tabs-info-tab").on('click',function(){
     //     if(transmode === "Sea"){
     //             $.getScript("/js/shipment/sea.map.js", function() {}); 
@@ -834,6 +847,24 @@ $(document).ready(function() {
     //             $.getScript("/js/shipment/air.map.js", function() {}); 
     //         }
     //  });
+ 
+    $('#doc_table').DataTable( {
+        processing: true,
+        language: {
+            processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
+        },
+        serverSide: true,
+        serverMethod: 'post',
+        ajax: {
+            url: 'document/getDocumentData/<?= $this->shipment_info[0]->shipment_num; ?>',
+        },
+        columns: [
+            { data: 'type', defaultContent: "OTHER" },
+            { data: 'status', defaultContent: "-" },
+            { data: 'saved_date', defaultContent: "-" },
+            { data: 'message', defaultContent: "-" }
+        ]
+    } );
 });
 
 $(document).ready(function() {
