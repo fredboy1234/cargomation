@@ -159,7 +159,7 @@ h1 {
 </div>
 <!-- /.login-box -->
 <div class="footer-logo" style="position: fixed;bottom: 0;margin-bottom: 20px;text-align: center;color: #FFF;">
-  Copyright © 2020 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
+  Copyright © 2022 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
 </div>
 
 <!-- jQuery -->
