@@ -107,7 +107,7 @@ h1 {
 <div class="login-box">
   <div class="login-logo">
     <a href="/" style="color: #FFF;font-weight:900;font-size:3rem;">
-    <img src="/img/logo.png" width="80px" alt="Cargomation Logo"><strong><?=APP_NAME?></strong></b></a>
+    <img src="/img/logo_cargomation.png" width="350px" alt="Cargomation Logo"><!--<strong><?=APP_NAME?></strong>--></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
