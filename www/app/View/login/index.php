@@ -80,6 +80,7 @@ canvas {
 
 .card-body {
 	background: transparent;
+	color:#FFFFFF;
 }
 
 .input-group-text {
