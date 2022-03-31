@@ -20,8 +20,8 @@ use App\Utility\Flash;
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/bower_components/admin-lte/dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Google Font: Poppins -->
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   <!-- Particle JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.js"></script>
 </head>
