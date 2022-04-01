@@ -362,7 +362,7 @@
                                     <?php if(!empty($this->shipment_info[0]->vesslloyds)) : ?>
                                     <li class="nav-item">
                                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-bullseye mr-1"></i>
-                                        Live Tracking</a>
+                                        GPS Tracking</a>
                                     </li>
                                     <?php endif; ?>
                                 </ul>
