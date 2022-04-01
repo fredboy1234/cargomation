@@ -726,6 +726,17 @@ $(document).ready(function () {
     //table.ajax.reload();
   });
 
+  $("#clearFilter").on("click",function(){
+    $(".form_field_outer_row:not(:first)").remove();
+    $("#no_value_1").val("");
+    $("#no_search_1").val("");
+    $("#no_type_1").val("");
+    $("#add_filters option").each(function(){
+      $(this).attr("data-index",1);
+    });
+    table.ajax.reload(setColor);
+  });
+  
   // $(document).on('click', 'tr td', function (e) {
   //   var cl = $(e.target).attr("class");
   //   var indx = $(this).index();
@@ -1009,15 +1020,6 @@ function filterRequest(data){
   });
    console.log(parentDataHolder);
 }
-$("#clearFilter").on("click",function(){
-  $(".form_field_outer_row:not(:first)").remove();
-  $("#no_value_1").val("");
-  $("#no_search_1").val("");
-  $("#no_type_1").val("");
-  $("#add_filters option").each(function(){
-    $(this).attr("data-index",1);
-  });
-});
 
 $(document).on("change", ".search-list", function(){
   var index = $('option:selected',this).attr('data-index');
