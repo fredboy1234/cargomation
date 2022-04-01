@@ -1054,7 +1054,7 @@ function updateDocumentStatus(option, action, text) {
                         // update document preview
                         data.forEach(function (entry) {
                             var d = $('.d-' + entry);
-                            if (option === 'status') {
+                            if (option === 'status' || option === 'status_all') {
                                 $('[data-key="' + entry + '"]').attr("data-doc_status", action);
                                 d.find('.file-footer-caption > #status').text(action);
                                 if(action === "approved") {

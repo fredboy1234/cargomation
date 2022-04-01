@@ -173,8 +173,6 @@ class Document extends Core\Model {
     public static function updateDocumentBulk($data){
         $Db = Utility\Database::getInstance();
 
-        //var_dump($data['data']);
-
         if(is_array($data['data'])) {
             $document_id = implode("','", array_values($data['data']));
             $insert_val = '';
@@ -185,7 +183,7 @@ class Document extends Core\Model {
         }
 
         $query = "";
-        if($data['group'] == 'status') {
+        if($data['group'] == 'status' || $data['group'] == 'status_all') {
             $query .= "IF EXISTS (SELECT * FROM document_status WHERE document_id IN ('{$document_id}'))
             UPDATE document_status SET status='{$data['value']}' WHERE document_id IN ('{$document_id}')
             ELSE
