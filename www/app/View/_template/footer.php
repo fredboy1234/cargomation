@@ -79,6 +79,24 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
+  
+  .cookie-alert {
+  position: fixed;
+  bottom: 15px;
+  left: 11px;
+  width: 320px;
+  margin: 0 !important;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 500ms ease-out;
+}
+
+.cookie-alert.show {
+  opacity: 1;
+  transform: translateY(0%);
+  transition-delay: 1000ms;
+}
 </style>
 
 <?php if(false): ?>
