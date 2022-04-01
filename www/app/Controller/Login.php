@@ -54,7 +54,7 @@ class Login extends Core\Controller {
 
         // Process the login request, redirecting to the home controller if
         // successful or back to the login controller if not.
-        $url = 'login';
+        $url = '/';
         if (Model\UserLogin::login()) {
             if(Utility\Cookie::exists('redirectLink')) {
                 $redirect = str_replace('redirect=', '', Utility\Cookie::get('redirectLink'));
@@ -65,6 +65,8 @@ class Login extends Core\Controller {
                 $url = 'dashboard';
                 // Utility\Redirect::to(APP_URL . 'dashboard');
             }
+        } else {
+            $url = 'login';
         }
         echo $url;
         // Utility\Redirect::to(APP_URL . "login");
