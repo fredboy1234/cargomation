@@ -57,7 +57,7 @@ $status = array("error","success");
             </div>
           </div>
           <div class="card-body">
-            <div id="shipcount-chart" style="height: 475px; padding: 0px; position: relative;"></div>
+            <div id="invoice-chart" style="height: 475px; padding: 0px; position: relative;"></div>
           </div>
         </div>
       </div>
