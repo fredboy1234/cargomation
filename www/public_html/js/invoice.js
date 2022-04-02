@@ -6,7 +6,7 @@
       data : [[1,96], [2,83], [3,89], [4,75], [5,43], [6,62], [7,42]],
       bars: { show: true }
     }
-    $.plot('#shipcount-chart', [bar_data], {
+    $.plot('#invoice-chart', [bar_data], {
       grid  : {
         borderWidth: 1,
         borderColor: '#f3f3f3',
