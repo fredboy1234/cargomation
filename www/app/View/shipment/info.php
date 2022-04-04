@@ -675,8 +675,7 @@ var combineRoute = [];
 var pointObject = [];
 var transImage = "<?= $transImage ?>";
 var transmode = "<?=$transMode?>";
-$(document).ready(function() { 
-    var tooltipHTML = `<center><strong>{vessel}</strong></center>
+var tooltipHTML = `<center><strong>{vessel}</strong></center>
         <hr />
         <div class="row">
             <div class="col-lg-6">
@@ -704,6 +703,8 @@ $(document).ready(function() {
             <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
         </center>`;
  
+$(document).ready(function() { 
+    
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
     $.each(route, function(key, value) {

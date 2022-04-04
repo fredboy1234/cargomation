@@ -850,8 +850,27 @@ $(document).ready(function () {
     });
 
     // Do action in selected documents
-    $("#push_selected, #delete_selected, #approve_all, #approve_selected, #pending_all, #pending_selected ").on("click", function() {
+    $("#push_selected, #delete_selected, #approve_all, #approve_selected, #pending_all, #pending_selected").on("click", function() {
         updateDocumentStatus($(this).data('option'), $(this).data('action'), $(this).data('text'));
+    });
+    
+    $("#compare_selected").on("click", function() {
+        var data = ""; 
+        var check = [];
+            $('div[class*="selected"] > input').each(function () {
+                data += $(this).val().replace('d-', '')+",";
+                check.push($(this).val().replace('d-', ''));
+            });
+           
+           if(check.length == 2){
+            $("#myModal").addClass("compare-modal");
+            preloader('document/getDocCompare/'+user_id+"/"+data.slice(0,-1));
+           }else{
+            Swal.fire(
+                'Only Two Documents Allowed!'
+              )
+           }
+           
     });
 
     // 
@@ -1137,3 +1156,7 @@ function goBack() {
     preloader(url);
     $('#document_action, #go_back').toggle();
 }
+
+$('#myModal').on('hidden.bs.modal', function (e) {
+    $(this).removeClass("compare-modal");
+  })
