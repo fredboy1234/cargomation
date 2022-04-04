@@ -517,6 +517,7 @@ try{
 				$path_TransportLegCollection = "$.Body.UniversalShipment.Shipment.TransportLegCollection.TransportLeg";
 				$path_ContainerCollection = "$.Body.UniversalShipment.Shipment.ContainerCollection.Container";
 				$path_OrderNumberCollection ="$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.RelatedShipmentCollection.RelatedShipment.Order";
+				$path_PackingLineCollection ="$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine";
 				
 				if($CONSOLNUMBER == ""){
 					$path_SubUniversalSubShipment = "$.Body.UniversalShipment.Shipment.OrganizationAddressCollection"; 
@@ -627,6 +628,22 @@ try{
 				$XPATH_PORTOFDISCHARGE = jsonPath($universal_shipment, $path_UniversalShipment.".PortOfDischarge.Name");
 				$PORTOFDISCHARGE = $parser->encode($XPATH_PORTOFDISCHARGE);
 				$PORTOFDISCHARGE = node_exist(getArrayName($PORTOFDISCHARGE));
+
+				$XPATH_PACKCONTAINER = jsonPath($universal_shipment, $path_PackingLineCollection.".ContainerNumber");
+				$XPATH_PACKCONTAINER = $parser->encode($XPATH_PACKCONTAINER);
+				$PACKCONTAINER = node_exist(getArrayName($XPATH_PACKCONTAINER));
+
+				$XPATH_PACKVOL = jsonPath($universal_shipment, $path_PackingLineCollection.".VolumeUnit.Code");
+				$XPATH_PACKVOL = $parser->encode($XPATH_PACKVOL);
+				$PACKVOL = node_exist(getArrayName($XPATH_PACKVOL));
+
+				$XPATH_PACKVOLDESC = jsonPath($universal_shipment, $path_PackingLineCollection.".VolumeUnit.Description");
+				$XPATH_PACKVOLDESC = $parser->encode($XPATH_PACKVOLDESC);
+				$VOLDESC = node_exist(getArrayName($XPATH_PACKVOLDESC));
+
+
+				$pack_collection = array(); 
+				$pack_collection[] = array("ContainerNumber"=>$PACKCONTAINER,"VolumeUnit"=>$XPATH_PACKVOL,"Description"=>$VOLDESC);	
 
 				
 				if ($XPATH_TRANSMODE == "" || $XPATH_SHIP_ETD == "" || $XPATH_SHIP_ETA == "") {        
@@ -956,9 +973,9 @@ try{
 				$sqlInsertRecord = "INSERT INTO shipment
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
-				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg,organization)
+				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg,organization,packingline)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
-				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."') SELECT SCOPE_IDENTITY() as id_ship";
+				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."','".$pack_collection."') SELECT SCOPE_IDENTITY() as id_ship";
 						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
 						$sql_getlastshipID = "SELECT  *
 						FROM dbo.shipment
@@ -1280,7 +1297,7 @@ try{
 				        Set console_id='$CONSOLNUMBER', master_bill ='$WAYBILLNUMBER', house_bill='$HOUSEWAYBILLNUMBER', transport_mode='$TRANSMODE',
 				        vessel_name='$VESSELNAME', voyage_flight_num='$VOYAGEFLIGHTNO', vesslloyds='$VESSELLOYDSIMO', eta='$TRANS_ETA', etd='$TRANS_ETD', place_delivery='$PLACEOFDELIVERY', place_receipt='$PLACEOFRECEIPT',
 				        consignee='$CONSIGNEE',consignor='$CONSIGNOR',sending_agent='$PATH_SENDINGAGENT',receiving_agent='$PATH_RECEIVINGAGENT',receiving_agent_addr='$RECEIVINGAGENTADDRESS',
-				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE', order_number='$ORDER_NUMBER', totalvolume='$TOTALVOLUME', ata='$ACTUAL_ARRIVAL', atd='$ACTUAL_DEPARTURE', route_leg='$routing', organization='$organization'
+				        sending_agent_addr='$SENDINGAGENTADDRESS',consignee_addr='$CONSIGNEEADDRESS',consignor_addr='$CONSIGNORADDRESS',trigger_date='$SHIP_TRIGGERDATE', container_mode='$CONTAINERMODE', port_loading='$PORTOFLOADING', port_discharge='$PORTOFDISCHARGE', order_number='$ORDER_NUMBER', totalvolume='$TOTALVOLUME', ata='$ACTUAL_ARRIVAL', atd='$ACTUAL_DEPARTURE', route_leg='$routing', organization='$organization',packingline='$pack_collection'
 				        WHERE shipment_num = '$SHIPMENTKEY' AND user_id = '$CLIENT_ID'";
 						$updateRec = sqlsrv_query($conn, $sqlUpdateRecord);
 	
