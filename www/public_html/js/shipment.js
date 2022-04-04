@@ -727,14 +727,18 @@ $(document).ready(function () {
   });
 
   $("#clearFilter").on("click",function(){
+    var search = $('#no_search_1').val();
+    var value = $('#no_value_1').val();
     $(".form_field_outer_row:not(:first)").remove();
     $("#no_value_1").val("");
     $("#no_search_1").val("");
-    $("#no_type_1").val("");
+    $("#no_type_1").prop("selectedIndex", 0);
     $("#add_filters option").each(function(){
       $(this).attr("data-index",1);
     });
-    table.ajax.reload(setColor);
+    if(typeof search !== null && search !== null && value == '') {
+      table.ajax.reload(setColor);
+    }
   });
   
   // $(document).on('click', 'tr td', function (e) {
