@@ -1,3 +1,4 @@
+//const { readyException } = require("jquery");
 
 $(document).ready(function () {
 
@@ -850,8 +851,41 @@ $(document).ready(function () {
     });
 
     // Do action in selected documents
-    $("#push_selected, #delete_selected, #approve_all, #approve_selected, #pending_all, #pending_selected ").on("click", function() {
+    $("#push_selected, #delete_selected, #approve_all, #approve_selected, #pending_all, #pending_selected").on("click", function() {
         updateDocumentStatus($(this).data('option'), $(this).data('action'), $(this).data('text'));
+    });
+    
+    $("#compare_selected").on("click", function() {
+        var data = ""; 
+        var check = [];
+            $('div[class*="selected"] > input').each(function () {
+                data += $(this).val().replace('d-', '')+",";
+                check.push($(this).val().replace('d-', ''));
+            });
+           
+           if(check.length !== 2){
+            Swal.fire(
+                'Only Two Documents Allowed!'
+              )
+            return false;
+            } else {
+            $("#compare-modal .modal-body").append(loader);
+            //$("#myModal").addClass("compare-modal");
+            //preloader('document/getDocCompare/'+user_id+"/"+data.slice(0,-1));
+            // load the url and show modal on success
+            $("#compare-modal .modal-body").load('document/getDocCompare/'+user_id+"/"+data.slice(0,-1),
+            function (response, status, xhr) {
+                if (xhr.status == 200) {
+                    $('#loader-wrapper').remove();
+                    $("#compare-modal").modal("show");
+                } else {
+                    alert("Error: " + xhr.status + ": " + xhr.statusText);
+                    $('#loader-wrapper').remove();
+                }
+            });
+            return false;
+           }
+           
     });
 
     // 
@@ -1137,3 +1171,7 @@ function goBack() {
     preloader(url);
     $('#document_action, #go_back').toggle();
 }
+
+// $('#myModal').on('hidden.bs.modal', function (e) {
+//     $(this).data('bs.modal', null);
+//   })

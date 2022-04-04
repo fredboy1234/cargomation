@@ -1094,4 +1094,15 @@ class Document extends Core\Controller {
         echo json_encode($response);
     }
 
+    public function getDocCompare($user_id, $doc_id){
+        $User = Model\User::getInstance($user_id);
+        $email = $User->data()->email;
+        $doc_array = explode(",", $doc_id);
+        $this->View->renderWithoutHeaderAndFooter("/document/compare", [
+           "user_id" => $user_id,
+           "doc_id" => $doc_array,
+           "email" => $email
+        ]);
+    }
+
 }

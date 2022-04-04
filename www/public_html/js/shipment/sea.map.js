@@ -118,7 +118,7 @@ am4core.ready(function() {
     var plane = bullet.createChild(am4core.Sprite);
     //var plane = bullet.createChild(am4core.Image);
     //plane.href = "svgs/freight/"+transImage+".svg";
-    plane.scale = 1.9;
+    plane.scale = 3.3;
     plane.horizontalCenter = "middle";
     plane.verticalCenter = "middle";
     plane.path = "m16 31.36c-0.064 0-0.128-0.018-0.185-0.052-0.211-0.126-5.175-3.152-5.175-7.308v-20c0-0.071 0.021-0.141 0.061-0.2l2-3c0.066-0.1 0.178-0.16 0.299-0.16h6c0.12 0 0.232 0.06 0.3 0.16l2 3c0.039 0.059 0.06 0.129 0.06 0.2v20c0 4.156-4.964 7.182-5.175 7.309-0.057 0.034-0.121 0.051-0.185 0.051zm-4.64-9v1.64c0 3.321 3.754 5.989 4.64 6.573 0.886-0.584 4.64-3.252 4.64-6.573v-1.64h-9.28zm8-0.72h1.279v-3.28h-1.279v3.28zm-2 0h1.279v-7.28h-1.279v7.28zm-2 0h1.28v-3.28h-1.28v3.28zm-2 0h1.28v-3.28h-1.28v3.28zm-2 0h1.28v-7.28h-1.28v7.28zm8-4h1.279v-11.28h-1.279v11.28zm-4 0h1.28v-7.28h-1.28v7.28zm-2 0h1.28v-3.28h-1.28v3.28zm4-4h1.279v-3.28h-1.279v3.28zm-4 0h1.28v-7.28h-1.28v7.28zm-2 0h1.28v-3.28h-1.28v3.28zm6-4h1.279v-3.28h-1.279v3.28zm-2 0h1.28v-3.28h-1.28v3.28zm-4 0h1.28v-3.28h-1.28v3.28zm0-4h9.28v-1.531l-1.832-2.749h-0.448v1.64c0 0.199-0.161 0.36-0.36 0.36h-4c-0.199 0-0.36-0.161-0.36-0.36v-1.64h-0.447l-1.833 2.749v1.531zm3-3h3.28v-1.28h-3.28v1.28zm3.14 23.72h-3c-0.199 0-0.36-0.161-0.36-0.36v-0.64h-1.14v-0.72h1.14v-0.64c0-0.199 0.161-0.36 0.36-0.36h3c0.199 0 0.36 0.161 0.36 0.36v0.64h1.14v0.721h-1.14v0.639c0 0.199-0.161 0.36-0.36 0.36zm-2.64-0.72h2.28v-1.28h-2.28v1.28z";
@@ -168,7 +168,18 @@ am4core.ready(function() {
         imageSeries.data = pointObject;
         am4core.options.autoDispose = true;
         marker.tooltipHTML = tooltipHTML;
-        
+        getSVG();
     });
 });
 });
+
+function getSVG(){
+    return $.get("/img/shipsvg.svg", function(data){
+        var svgNode = $("svg", data);
+        var docNode = document.adoptNode(svgNode[0]);
+        var pageNode = $("#svg");
+        pageNode.html(docNode);
+        console.log("010");
+        console.log($(docNode).find('path'));
+    });
+}
