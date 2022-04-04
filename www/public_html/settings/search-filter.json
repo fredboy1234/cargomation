@@ -3,6 +3,7 @@
         {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -20,9 +21,10 @@
                 {"option":"not_blank","value":"not_blank"}
             ]
         },
-        {"filterID":"Console ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y",
+        {"filterID":"Consol ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -43,6 +45,7 @@
         {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -63,6 +66,7 @@
         {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -83,6 +87,7 @@
         {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -103,6 +108,7 @@
         {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -123,6 +129,7 @@
         {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -143,6 +150,7 @@
         {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
                 {"option":"Not Exact","value":"NOTEXACT"},
                 {"option":"Starts With","value":"STARTSWITH"},
@@ -163,11 +171,12 @@
     ],
     "date": [
         {"filterID":"ETA", "filterName":"ETA","filterType":"date","placeholder":"","show":"n",
-            "options":[{"name":"Sea","value":"sea"},{"name":"Air","value":"air"}]
+            "options":[{"option":"--Select mode--","value":""},{"name":"Sea","value":"sea"},{"name":"Air","value":"air"}]
         },
         {"filterID":"ETD", "filterName":"ETD","filterType":"date","placeholder":"","show":"n",
             "value":[],
             "type":[
+                {"option":"--Select date--","value":""},
                 {"option":"Today","value":"${[moment().format(defaultDate),moment().format(defaultDate)]}"},
                 {"option":"Yesterday","value":"${[moment().subtract(1, 'days').format(defaultDate),moment().subtract(1, 'days').format(defaultDate)]}"},
                 {"option":"Last Week","value":"${[moment().subtract(1, 'weeks').format(defaultDate),moment().format(defaultDate)]}"},
@@ -201,6 +210,7 @@
                 {"name":"OBC","value":"OBC"}
             ],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"IN","value":"in"}
             ]
         },
@@ -210,6 +220,7 @@
                 {"name":"Air","value":"air"}
             ],
             "type":[
+                {"option":"--Select type--","value":""},
                 {"option":"IN","value":"in"}
             ]
         }
