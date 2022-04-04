@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Google Font: Source Poppins Bold-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
   <!-- Select2 -->

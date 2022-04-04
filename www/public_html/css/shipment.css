@@ -98,3 +98,6 @@ td.stats .doc-stats:first-child > span {
     position: absolute;
     top: 50%;
 }
+.no-doc {
+    cursor: pointer;
+}

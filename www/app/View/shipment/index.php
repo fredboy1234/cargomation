@@ -350,6 +350,10 @@
                         data-action="deleted" data-text="Delete" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
                         class="btn btn-default bg-danger" type="button" title="Delete Selected"><i class="fas fa-trash"></i></button>
+                    <button id="compare_selected" 
+                        data-action="compare" data-text="Compare" data-option="action" 
+                        data-toggle="tooltip" data-placement="top" 
+                        class="btn btn-default bg-primary" type="button" title="Compare Selected"><i class="fas fa-eye"></i></button>
                     <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" class="btn btn-default bg-success">Approve Selected</button>
                     <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" class="btn btn-default bg-danger">Pending Selected</button>
                     <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn btn-default bg-success">Approve All</button>
@@ -431,6 +435,28 @@
 </div>
 <!-- /.modal -->
 
+<!-- Shipment info modal -->
+<div class="modal fade" id="compare-modal">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Shipment Info</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Loading&hellip;</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 <script>

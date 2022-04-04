@@ -79,6 +79,24 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
+  
+  .cookie-alert {
+  position: fixed;
+  bottom: 15px;
+  left: 11px;
+  width: 320px;
+  margin: 0 !important;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 500ms ease-out;
+}
+
+.cookie-alert.show {
+  opacity: 1;
+  transform: translateY(0%);
+  transition-delay: 1000ms;
+}
 </style>
 
 <?php if(false): ?>
@@ -125,6 +143,18 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </div>
 <?php endif; ?>
 
+
+<!-- cookie card-->
+<div class="card cookie-alert">
+  <div class="card-body">
+    <p class="card-text">We use cookies to ensure you get the best experience on our website.</p>
+    <div class="btn-toolbar justify-content-end">
+      <a href="https://cargomation.com/" target="_blank" class="btn btn-link">Learn more</a>
+      <a href="#" class="btn btn-primary accept-cookies">Accept</a>
+    </div>
+  </div>
+</div>
+<!-- end cookie card-->
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -244,6 +274,47 @@ crossorigin=""></script>
   CG.chatsubmit();
   });
   
+  (function () {
+    "use strict";
+
+    var cookieAlert = document.querySelector(".cookie-alert");
+    var acceptCookies = document.querySelector(".accept-cookies");
+
+    cookieAlert.offsetHeight; 
+
+    if (!getCookie("acceptCookies")) {
+        cookieAlert.classList.add("show");
+    }
+
+    acceptCookies.addEventListener("click", function () {
+        setCookie("acceptCookies", true, 60);
+        cookieAlert.classList.remove("show");
+        });
+    })();
+
+  // Cookie functions stolen from w3schools
+  function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      var expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+  }
 
 </script>
 <script src="/js/map.js"></script>

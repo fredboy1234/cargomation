@@ -1067,29 +1067,31 @@ class Document extends Core\Controller {
         $User->putUserNotifications($data);
     }
 
-    public function getDocumentData($shipment_num = "", $column = "*", $group_by = '') {
-        if(!empty($_POST['column'])) {
-            if($_POST['column'] == 'type') {
-                $column = 'type, COUNT(type) as count';
-                $group_by = 'type';
-            }
+    public function getDocumentData($shipment_num = "") {
+        if(!empty($_POST['draw'])) {
+            // if(isset($_POST['column']) && $_POST['column'] == 'type') {
+            //     $column = 'type, COUNT(type) as count';
+            //     $group_by = 'type';
+            // }
+            $column = "*";
+            $group_by = "";
+            $req_data = $_POST;
         } else {
             die('Invalid request');
         }
-        $document_data = $this->Document->getDocumentDataByShipmentNum($shipment_num, $column, $group_by);
-        $data = array();
-        foreach ($document_data as $key => $value) {
-            if($_POST['column'] == 'type') {
-                $data[] = array(
-                    'type'		=>	$value->type,
-                    'total'			=>	$value->count,
-                    'color'			=>	'#' . rand(100000, 999999) . ''
-                ); 
-            } else {
-                $data[] = array($key => $value);
-            }
-        }
-		echo json_encode($data);
+        $response = $this->Document->getDocumentDataByShipmentNum($shipment_num, $column, $group_by, $req_data);
+        // $data = array();
+        // if($_POST['column'] == 'type') {
+        //     foreach ($response as $key => $value) {
+        //         $data[] = array(
+        //             'type'		=>	$value->type,
+        //             'total'			=>	$value->count,
+        //             'color'			=>	'#' . rand(100000, 999999) . ''
+        //         ); 
+        //     } 
+        //     $response = $data;
+        // }
+        echo json_encode($response);
     }
 
     public function getDocCompare($user_id, $doc_id){

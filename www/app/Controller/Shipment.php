@@ -645,7 +645,9 @@ class Shipment extends Core\Controller {
                 $subdata['container_number'] = '<span class="text-warning">No data</span>';
             }
             // DOCUMENT LEVEL
-            $subdata['all'] = (empty($shipment->Documents)) ? '<span class="text-warning">No Document</span>' :'<div class="doc-stats"><span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
+            $subdata['all'] = (empty($shipment->Documents)) ? '<div class="doc-stats">
+            <span class="doc text-warning no-doc" data-id="' . $shipment->shipment_num . '">No Document</span></div>' :'<div class="doc-stats">
+            <span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
             // Default Empty Value (DEV)
             foreach ($doc_type as $type) {
                 $documents[strtolower($type)]['text'] = "Empty";

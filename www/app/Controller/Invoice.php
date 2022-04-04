@@ -7,12 +7,6 @@ use App\Model;
 use App\Utility;
 use App\Presenter;
 
-/**
- * Docdeveloper Controller:
- *
- * @author John Alex
- * @since 1.0.8
- */
 
 class Invoice extends Core\Controller {
 
@@ -89,7 +83,7 @@ class Invoice extends Core\Controller {
         }
 
         $this->View->renderTemplate("/invoice/index", [
-            "title" => "AP Invoice (MOCK UP)",
+            "title" => "Upload AP Invoice",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "notifications" => Model\User::getUserNotifications($user),

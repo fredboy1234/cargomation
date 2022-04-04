@@ -69,7 +69,8 @@ canvas {
 	top: 50%;
 	right: 50%;
 	transform: translate(50%,-50%);
-	font-family: 'Open Sans', sans-serif;
+	/*font-family: 'Open Sans', sans-serif;*/
+	font-family:'Poppins';
 }
 
 .card {
@@ -79,6 +80,7 @@ canvas {
 
 .card-body {
 	background: transparent;
+	color:#FFFFFF;
 }
 
 .input-group-text {
@@ -106,7 +108,7 @@ h1 {
 <div class="login-box">
   <div class="login-logo">
     <a href="/" style="color: #FFF;font-weight:900;font-size:3rem;">
-    <img src="/img/logo.png" width="80px" alt="Cargomation Logo"><strong><?=APP_NAME?></strong></b></a>
+    <img src="/img/logo_cargomation.png" width="350px" alt="Cargomation Logo"><!--<strong><?=APP_NAME?></strong>--></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -158,7 +160,7 @@ h1 {
 </div>
 <!-- /.login-box -->
 <div class="footer-logo" style="position: fixed;bottom: 0;margin-bottom: 20px;text-align: center;color: #FFF;">
-  Copyright © 2020 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
+  Copyright © 2022 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
 </div>
 
 <!-- jQuery -->
