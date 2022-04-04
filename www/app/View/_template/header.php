@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Google Font: Source Sans Pro -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
   <!-- Google Font: Source Poppins Bold-->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   <!-- Bootstrap Color Picker -->
@@ -61,6 +63,9 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- CSS -->
   <?= $this->getCSS(); ?>
+  <style>
+    html *{font-family: 'Lato', sans-serif;}.h1-cus{color: #3778be !important;font-size: 2rem !important;}
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed text-sm">
