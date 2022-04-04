@@ -184,13 +184,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <!--<div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label>Recent Search</label>
                                                         <select id="recent_search" multiple="" class="form-control">
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 mt-2">
@@ -201,11 +201,11 @@
                                                         <i class="fas fa-trash"></i> Delete Query
                                                     </button>
                                                 </div>
-                                                <div class="col-md-6 mt-2 text-right">
+                                                <!--<div class="col-md-6 mt-2 text-right">
                                                     <button type="button" id="loadSearch" class="btn btn-success">
                                                         <i class="fas fa-search"></i> Load Search
                                                     </button>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->
