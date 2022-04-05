@@ -64,7 +64,7 @@
   <!-- CSS -->
   <?= $this->getCSS(); ?>
   <!-- Custom Head CSS -->
-  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/head.css">
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed text-sm">
