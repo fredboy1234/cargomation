@@ -74,11 +74,14 @@
    #vert-tabs .nav-link{
    border: none !important;
    }
+   #row_head{
+      color:#3778be !important;
+   }
  
 </style>
 <div class="row">
    <div class="col-md-8 form_sec_outer_task ">
-      <div class="row">
+      <div id ="row_head" class="row">
          <div class="col-md-3">
             <label>Search</label>
          </div>
