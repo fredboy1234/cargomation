@@ -76,6 +76,7 @@
    }
    #row_head{
       color:#3778be !important;
+      font-size: 13pt;
    }
  
 </style>
