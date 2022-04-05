@@ -342,10 +342,10 @@
                         </select>
                     </form>
                     <?php endif; ?>
-                    <button id="push_selected" 
+                     <button id="push_selected" 
                         data-action="push" data-text="Push" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
-                        class="btn btn-default bg-primary" type="button" title="Push Selected"><i class="fas fa-upload"></i></button>
+                        class="btn badge-primary" type="button" title="Push Selected"><i class="fas fa-upload"></i></button>
                     <button id="delete_selected" 
                         data-action="deleted" data-text="Delete" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
@@ -353,10 +353,10 @@
                     <button id="compare_selected" 
                         data-action="compare" data-text="Compare" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
-                        class="btn btn-default bg-primary" type="button" title="Compare Selected"><i class="fas fa-eye"></i></button>
-                    <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" class="btn btn-default bg-success">Approve Selected</button>
-                    <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" class="btn btn-default bg-danger">Pending Selected</button>
-                    <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn btn-default bg-success">Approve All</button>
+                        class="btn badge-primary" type="button" title="Compare Selected"><i class="fas fa-eye"></i></button>
+                    <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" title="Approve Selected" data-toggle="tooltip" data-placement="top" class="btn badge-primary"><i id="custom_thumb" class="fas fa-thumbs-up cust"></i></button>
+                    <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" title="Pending Selected" data-toggle="tooltip" data-placement="top" class="btn btn-default bg-danger"><i id="custom_thumb" class="fas fa-thumbs-down"></i></button>
+                    <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn badge-primary">Approve All</button>
                     <button id="pending_all" data-action="pending" data-text="Pending All" data-option="status_all" type="button" class="btn btn-default bg-danger">Pending All</button>
                     <button type="button" class="btn btn-primary" id="request">Request a document</button>
                 <?php endif; ?>
