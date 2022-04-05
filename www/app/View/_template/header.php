@@ -68,6 +68,7 @@
     .small-box > .small-box-footer { background-color: #515254 !important ; }
     a.text-dark:focus, a.text-dark{color:#FFFFFF !important;}a.text-dark:focus, a.text-dark:hover{color:#FFFFFF !important;}
     h1{color:#3778be !important;}
+   .nav-tabs .nav-link.active {background-color:#3778be !important;color:#FFFFFF !important;}
   </style>
 </head>
 
