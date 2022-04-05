@@ -64,7 +64,7 @@ switch ($transMode) {
                             <strong><i class="fas fa-history text-primary"></i> Last Updated</strong>
                             <p><?php 
                                 $date = date_create($this->shipment_info[0]->trigger_date);
-                                echo date_format($date,"d/m/Y H:i:s");
+                                echo date_format($date,"d M Y H:i:s");
                             ?></p>
                         </div>
                     </div>
@@ -174,13 +174,13 @@ switch ($transMode) {
                                     <strong>Estimated Departure</strong>
                                     <p><?php 
                                         $date = date_create($this->shipment_info[0]->etd);
-                                        echo date_format($date,"d F Y H:i"); ?></p>
+                                        echo date_format($date,"d M Y H:i"); ?></p>
                                 </div>
                                 <div class="col-lg-6">
                                     <strong>Estimated Arrival</strong>
                                     <p><?php 
                                         $date = date_create($this->shipment_info[0]->eta);
-                                        echo date_format($date,"d F Y H:i"); ?></p>
+                                        echo date_format($date,"d M Y H:i"); ?></p>
                                 </div>
                             </div>
                             <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
