@@ -13,7 +13,7 @@
         border-right: 5px solid #1343e6;
     }
 </style>
-<div class="row" style="height:420px;">
+<div class="row" style="height:540px;">
 <?php 
 $imglist = ['jpeg','png','jpg'];
 if(!empty($this->doc_id)) {
@@ -32,15 +32,17 @@ foreach ($this->doc_id as $key => $value) {
     $exp = explode(".",$file_name);
     $ftype = end($exp);
 ?>
-<div class="col-md-6 embed-responsive embed-responsive-21by9">
     <?php if($ftype ==="pdf"){?>
-        <iframe class="embed-responsive-item" src="<?php echo "https://docs.google.com/gview?url=https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name."&embedded=true";?>"></iframe>
+        <div class="col-md-6 embed-responsive embed-responsive-21by9">
+            <iframe class="embed-responsive-item" src="<?php echo "https://docs.google.com/gview?url=https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name."&embedded=true";?>"></iframe>
+        </div>
     <?php } ?>
-
+   
     <?php if(in_array($ftype,$imglist)){?>
-        <img src='<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name?>'/>
+        <div class="col-md-6" style="max-height: 100%;">
+        <img class="w-100 h-100 img-thumbnail" src='<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name?>'/>
+        </div>
     <?php } ?>
-</div>
 <?php 
     }
 }
