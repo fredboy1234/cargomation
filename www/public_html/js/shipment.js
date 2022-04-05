@@ -950,8 +950,7 @@ $(document).on('click','.stats',function(){
 });
 
 function showInfo(shipment_num) {
-  var url = "shipment/info/101/" + shipment_num;
-
+  var url = "shipment/info/"+ user_id +"/" + shipment_num;
   // $("#shipmentModal .modal-body").append(loader);
   $(loader).insertAfter('#shipmentModal');
 
