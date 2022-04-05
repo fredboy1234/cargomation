@@ -70,7 +70,7 @@
     h1{color:#3778be !important;}
    .nav-tabs .nav-link.active {background-color:#3778be !important;color:#FFFFFF !important;}
    #loadSearch,#searchFilter {background-color:#3778be !important;border:1px solid #3778be;}
-   #savefilter, #clearFilter{background-color:#b0bec5;color:#FFFFFF !important;border:1px solid #3778be;}
+   #savefilter, #clearFilter, #resetSearch, #deleteSearch{background-color:#b0bec5;color:#FFFFFF !important;border:1px solid #3778be;}
    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {background-color:#3778be;}
    .btn-primary {background-color:#3778be !important;border:1px solid #3778be;}
    .btn-primary.dropdown-toggle{background-color:#3778be !important;}
