@@ -106,7 +106,7 @@ if(!empty($this->document)) {
 <div id="document-upload" style="display: block;">
     <div class="row">
         <div class="col-md-5">
-            <h5><b>Shipment ID: </b><span><?= $this->shipment_info[0]->shipment_num; ?></span></h5>
+            <h5><b></b><span><?= $this->shipment_info[0]->shipment_num; ?></span></h5>
         </div>
         <div class="col-md-5">
             <!-- <h5><b>Status: </b><span>
