@@ -1024,7 +1024,7 @@ function updateDocumentStatus(option, action, text) {
         $('div[class*="selected"] > input').each(function () {
             data.push($(this).val().replace('d-', ''));
         });
-        warning_msg = "This action will <b>" + text + "</b> the selected document. <br>Do you still want to continue?";
+        warning_msg = "This action will change the status of the selected documents to <b>" + text + "</b>. <br>Do you still want to continue?";
         success_msg =  "Successfully <b>" + text + "</b> the selected document!";
     }
     if (data.length === 0) {
@@ -1049,7 +1049,8 @@ function updateDocumentStatus(option, action, text) {
                     if(res == "false") {
                         if (option == 'status') {
                             Swal.fire({
-                                title: 'It is better to leave a comment',
+                                // title: 'It is better to leave a comment',
+                                title: 'Comment',
                                 text: 'Do you want to leave a comment?',
                                 icon: 'info',
                                 showDenyButton: true,
