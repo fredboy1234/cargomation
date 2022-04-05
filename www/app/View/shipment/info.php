@@ -339,11 +339,12 @@ switch ($transMode) {
                                         <div class="col-lg-3">
                                             <dt>Volume:</dt>
                                             <dd><?php
-                                            $length = floatval($value->length);
-                                            $width = floatval($value->width);
-                                            $height = floatval($value->height); 
-                                            $volume = $length * $width * $height;
-                                            echo number_format($volume, 2, '.', ',') . "cm³"; ?></dd>
+                                            $volume = $this->shipment_info[0]->totalvolume;
+                                            // $length = floatval($value->length);
+                                            // $width = floatval($value->width);
+                                            // $height = floatval($value->height); 
+                                            // $volume = $length * $width * $height;
+                                            echo number_format($volume, 2, '.', ',') . "m³"; ?></dd>
                                         </div>
                                         <div class="col-lg-3">
                                             <dt>Packs:</dt>
@@ -432,19 +433,33 @@ switch ($transMode) {
                                             <div id="collapse<?= $value->LegOrder; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <strong>Shipment Leg </strong>
+                                                        <div class="col-lg-12">
+                                                            <strong>Status</strong>
+                                                            <p class="<?= (!empty($value->BookingStatus))?strtolower($value->BookingStatus):" - "; ?>">
+                                                            <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
+                                                            (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
+                                                        </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <strong>Routing Leg 
+                                                            <?= (!empty($value->LegType))?"(".$value->LegType.")":""; ?>
+                                                            </strong>
                                                             <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
                                                         </div>
+                                                        <?php if(false): ?>
                                                         <div class="col-lg-4">
                                                             <strong>Leg Type</strong>
                                                             <p><?= $value->LegType; ?></p>
                                                         </div>
-                                                        <div class="col-lg-4">
+                                                        <?php endif; ?>
+                                                        <div class="col-lg-6">
                                                             <strong>Vessel Name</strong>
                                                             <p><?= $value->VesselName; ?></p>
                                                         </div>
                                                     </div>
+                                                    <?php if(false): ?>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <strong>Origin Port</strong>
@@ -455,6 +470,7 @@ switch ($transMode) {
                                                             <p><?=  $value->Destination ?></p>
                                                         </div>
                                                     </div>
+                                                    <?php endif; ?>
                                                     <div class="row">
                                                         <?php if(isset($value->ETD)): ?>
                                                         <div class="col-lg-6">
@@ -481,15 +497,6 @@ switch ($transMode) {
                                                         <div class="col-lg-4">
                                                             <strong>Address Type</strong>
                                                             <p><?= (!empty($value->AddressType))?$value->AddressType:" - "; ?></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <strong>Status</strong>
-                                                            <p class="<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>">
-                                                            <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
-                                                            (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
-                                                        </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -686,6 +693,19 @@ table.dataTable>tbody>tr.child ul.dtr-details {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+/* Route Status */
+.cnf {
+    color: #28a745!important;
+}
+.pnd {
+    color: #ffc107!important;
+}
+.pln {
+    color: #17a2b8!important;
+}
+.err {
+    color: #dc3545!important;
 }
 </style>
 <script src="/js/map.js"></script>
