@@ -38,7 +38,7 @@ foreach ($this->doc_id as $key => $value) {
     <?php } ?>
 
     <?php if(in_array($ftype,$imglist)){?>
-        <img src='"https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name'/>
+        <img src='<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name?>'/>
     <?php } ?>
 </div>
 <?php 
