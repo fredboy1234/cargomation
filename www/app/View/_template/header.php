@@ -67,7 +67,7 @@
     html *{font-family: 'Lato', sans-serif;}.h1-cus{color: #3778be !important;font-size: 2rem !important;}
     .small-box > .small-box-footer { background-color: #515254 !important ; }
     a.text-dark:focus, a.text-dark{color:#FFFFFF !important;}a.text-dark:focus, a.text-dark:hover{color:#FFFFFF !important;}
-    h1{color:#3778be !important;}
+    h1,h2,h3,h4,h5{color:#3778be !important;}
    .nav-tabs .nav-link.active {background-color:#3778be !important;color:#FFFFFF !important;}
    #loadSearch,#searchFilter {background-color:#3778be !important;border:1px solid #3778be;}
    #savefilter, #clearFilter, #resetSearch, #deleteSearch{background-color:#b0bec5;color:#FFFFFF !important;border:1px solid #3778be;}
