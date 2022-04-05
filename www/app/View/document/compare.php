@@ -15,7 +15,8 @@
 </style>
 <div class="row" style="height:540px;">
 <?php 
-$imglist = ['jpeg','png','jpg'];
+$imglist = ['jpeg','png','jpg','tif'];
+$excel = ["xls","xlsx"];
 if(!empty($this->doc_id)) {
 
 foreach ($this->doc_id as $key => $value) {
@@ -37,10 +38,16 @@ foreach ($this->doc_id as $key => $value) {
             <embed class="embed-responsive-item" src="<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;?>">
         </div>
     <?php } ?>
+
+    <?php if(in_array($ftype,$excel)){?>
+        <div class="col-md-6 embed-responsive embed-responsive-21by9">
+            <iframe class="embed-responsive-item" src="<?php echo "https://view.officeapps.live.com/op/embed.aspx?src=https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;?>"></iframe>
+        </div>
+    <?php } ?>
    
     <?php if(in_array($ftype,$imglist)){?>
         <div class="col-md-6" style="max-height: 100%;">
-        <embed class="w-100 h-100 img-thumbnail" src='<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name?>'/>
+        <img  class="w-100 h-100 img-thumbnail" src='<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name?>'/>
         </div>
     <?php } ?>
 <?php 
