@@ -432,15 +432,29 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
+    var reqHandler = ['is_blank','not_blank'];
+    var reqIdentity = '';
     var allBlank = true;
+    var checkInput = [];
       $('input',this).each(function(index, el){
         if ($(el).val().length != 0) allBlank = false;
+        checkInput.push($(el).val());
       });
-      if(allBlank){
-        Swal.fire('Please Add Search Parameter!')
-      }else{
+
+      $("[id*='no_type_']").each(function(){
+        reqIdentity = $(this).val();
+      });
+      
+      if($.inArray(reqIdentity, reqHandler) !== -1 && checkInput.length ==1){
         table.ajax.reload(setColor);
+      }else{
+        if(allBlank){
+          Swal.fire('Please Add Search Parameter!')
+        }else{
+          table.ajax.reload(setColor);
+        }
       }
+      
     // $.ajax({
     //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
     //   type: "POST",
