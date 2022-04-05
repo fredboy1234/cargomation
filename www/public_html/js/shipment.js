@@ -562,7 +562,7 @@ $(document).ready(function () {
     var buttons = customSettings.find('.btn.moveall, .btn.move, .btn.remove, .btn.removeall');
   
     customSettings.find('.box1, .box2').removeClass('col-md-6').addClass('col-md-4');
-    customSettings.find('.box1').after('<div class="customButtonBox col-md-2 text-center"></div>');
+    customSettings.find('.box1').after('<div class="customButtonBox col-md-1 text-center"></div>');
    // customSettings.find('.customButtonBox').append(buttons);
   
     //customSettings.find('.btn-group.buttons').remove();
