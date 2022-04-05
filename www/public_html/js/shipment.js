@@ -432,15 +432,29 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
+    var reqHandler = ['is_blank','not_blank'];
+    var reqIdentity = '';
     var allBlank = true;
+    var checkInput = [];
       $('input',this).each(function(index, el){
         if ($(el).val().length != 0) allBlank = false;
+        checkInput.push($(el).val());
       });
-      if(allBlank){
-        Swal.fire('Please Add Search Parameter!')
-      }else{
+
+      $("[id*='no_type_']").each(function(){
+        reqIdentity = $(this).val();
+      });
+      
+      if($.inArray(reqIdentity, reqHandler) !== -1 && checkInput.length ==1){
         table.ajax.reload(setColor);
+      }else{
+        if(allBlank){
+          Swal.fire('Please Add Search Parameter!')
+        }else{
+          table.ajax.reload(setColor);
+        }
       }
+      
     // $.ajax({
     //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
     //   type: "POST",
@@ -562,7 +576,7 @@ $(document).ready(function () {
     var buttons = customSettings.find('.btn.moveall, .btn.move, .btn.remove, .btn.removeall');
   
     customSettings.find('.box1, .box2').removeClass('col-md-6').addClass('col-md-4');
-    customSettings.find('.box1').after('<div class="customButtonBox col-md-2 text-center"></div>');
+    customSettings.find('.box1').after('<div class="customButtonBox col-md-1 text-center"></div>');
    // customSettings.find('.customButtonBox').append(buttons);
   
     //customSettings.find('.btn-group.buttons').remove();

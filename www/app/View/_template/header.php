@@ -63,9 +63,8 @@
   <link rel="stylesheet" href="/bower_components/admin-lte/plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- CSS -->
   <?= $this->getCSS(); ?>
-  <style>
-    html *{font-family: 'Lato', sans-serif;}.h1-cus{color: #3778be !important;font-size: 2rem !important;}
-  </style>
+  <!-- Custom Head CSS -->
+  <link rel="stylesheet" href="/css/head.css">
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed text-sm">

@@ -164,7 +164,7 @@
                                     <p><?= $this->shipment_info[0]->container_mode; ?></p>
                                 </div>
                             </div>
-                            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
+                            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
                                 <h5 class="d-inline-block">Consignee</h5>
                                 <span class="float-right mt-2"><?= $this->shipment_info[0]->consignee; ?>
                                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
@@ -243,7 +243,7 @@
                                     <dd><?= $this->shipment_info[0]->port_loading; ?></dd>
                                 </div>
                             </dl>
-                            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
+                            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
                                 <h5 class="d-inline-block">Consignor</h5>
                                 <span class="float-right mt-2"><?= $this->shipment_info[0]->consignor; ?>
                                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
@@ -276,7 +276,7 @@
                                 </div>
                             </dl>
                 
-                            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #eee;" data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
+                            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
                                 <h5 class="d-inline-block">Container Details</h5>
                                 <span class="float-right mt-2"><?= $this->shipment_info[0]->shipment_num; ?>
                                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
