@@ -643,7 +643,7 @@ try{
 
 
 				$pack_collection = array(); 
-				$pack_collection[] = array("ContainerNumber"=>$PACKCONTAINER,"VolumeUnit"=>$XPATH_PACKVOL,"Description"=>$VOLDESC);	
+				$pack_collection[] = array("ContainerNumber"=>$PACKCONTAINER,"VolumeUnit"=>$PACKVOL,"Description"=>$VOLDESC);	
 
 				 $pack_line = json_encode($pack_collection);
 
