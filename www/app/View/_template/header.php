@@ -65,6 +65,8 @@
   <?= $this->getCSS(); ?>
   <style>
     html *{font-family: 'Lato', sans-serif;}.h1-cus{color: #3778be !important;font-size: 2rem !important;}
+    .small-box > .small-box-footer { background-color: #515254 !important ; }
+    a.text-dark:focus, a.text-dark{color:#FFFFFF !important;}a.text-dark:focus, a.text-dark:hover{color:#FFFFFF !important;}
   </style>
 </head>
 
