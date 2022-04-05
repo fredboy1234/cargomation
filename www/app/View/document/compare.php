@@ -34,7 +34,7 @@ foreach ($this->doc_id as $key => $value) {
 ?>
     <?php if($ftype ==="pdf"){?>
         <div class="col-md-6 embed-responsive embed-responsive-21by9">
-            <embed class="embed-responsive-item" src="<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name."&embedded=true";?>">
+            <embed class="embed-responsive-item" src="<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;?>">
         </div>
     <?php } ?>
    
