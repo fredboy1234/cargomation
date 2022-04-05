@@ -161,26 +161,26 @@ switch ($transMode) {
                                     <p><?= $this->shipment_info[0]->transport_mode; ?></p>
                                 </div>
                                 <div class="col-lg-4">
-                                    <strong>Estimated Departure</strong>
-                                    <p><?php 
-                                        $date = date_create($this->shipment_info[0]->etd);
-                                        echo date_format($date,"d F Y H:i"); ?></p>
-                                </div>
-                                <div class="col-lg-4">
-                                    <strong>Estimated Arrival</strong>
-                                    <p><?php 
-                                        $date = date_create($this->shipment_info[0]->eta);
-                                        echo date_format($date,"d F Y H:i"); ?></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4">
                                     <strong>Order Reference</strong>
                                     <p><?= (empty($this->shipment_info[0]->order_number)) ? '<span class="text-danger"> - </span>' : $this->shipment_info[0]->order_number; ?></p>
                                 </div>
                                 <div class="col-lg-4">
                                     <strong>Container Mode</strong>
                                     <p><?= $this->shipment_info[0]->container_mode; ?></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <strong>Estimated Departure</strong>
+                                    <p><?php 
+                                        $date = date_create($this->shipment_info[0]->etd);
+                                        echo date_format($date,"d F Y H:i"); ?></p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <strong>Estimated Arrival</strong>
+                                    <p><?php 
+                                        $date = date_create($this->shipment_info[0]->eta);
+                                        echo date_format($date,"d F Y H:i"); ?></p>
                                 </div>
                             </div>
                             <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
@@ -222,10 +222,12 @@ switch ($transMode) {
                                     <dt>Company Name:</dt>
                                     <dd> <?= $value->CompanyName; ?> </dd>
                                 </div>
+                                <?php if(false): ?>
                                 <div class="col-lg-6">
                                     <dt>Organization Code:</dt>
                                     <dd> <?= $value->OrganizationCode; ?> </dd>
                                 </div>
+                                <?php endif; ?>
                                 <div class="col-lg-6">
                                     <dt>Organization Name:</dt>
                                     <dd><?= (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
@@ -269,14 +271,17 @@ switch ($transMode) {
                                 </span>
                             </div>
                             <dl id="consignor" class="row collapse">
+                                <?php if(false): ?>
                                 <div class="col-lg-12">
                                     <dt>Organization Code:</dt>
                                     <dd><?= $this->shipment_info[0]->consignor; ?></dd>
                                 </div>
+                                <?php endif; ?>
                                 <div class="col-lg-12">
                                     <dt>Address:</dt>
                                     <dd><?= $this->shipment_info[0]->consignor_addr; ?></dd>
                                 </div>
+                                <?php if(false): ?>
                                 <div class="col-lg-12">
                                     <dt>Receiving Agent:</dt>
                                     <dd><?= $this->shipment_info[0]->receiving_agent; ?></dd>
@@ -285,6 +290,7 @@ switch ($transMode) {
                                     <dt>Receiving Agent Address:</dt>
                                     <dd><?= $this->shipment_info[0]->receiving_agent_addr; ?></dd>
                                 </div>
+                                <?php endif; ?>
                                 <div class="col-lg-6">
                                     <dt>Receipt Place:</dt>
                                     <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
