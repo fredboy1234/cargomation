@@ -865,7 +865,7 @@ $(document).ready(function () {
            
            if(check.length !== 2){
             Swal.fire(
-                'Only Two Documents Allowed!'
+                'Please select two documents to compare.'
               )
             return false;
             } else {

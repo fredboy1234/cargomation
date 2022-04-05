@@ -10,7 +10,7 @@
         display: flex;
     }
     #compare-modal > div > div > div.modal-body > div > div:nth-child(1){
-        border-right: 5px solid #1343e6;
+        border-right: 5px solid #3778be;
     }
 </style>
 <div class="row" style="height:540px;">
