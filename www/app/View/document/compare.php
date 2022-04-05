@@ -15,7 +15,7 @@
 </style>
 <div class="row" style="height:420px;">
 <?php 
-
+$imglist = ['jpeg','png','jpg'];
 if(!empty($this->doc_id)) {
 
 foreach ($this->doc_id as $key => $value) {
@@ -29,12 +29,20 @@ foreach ($this->doc_id as $key => $value) {
     if(!empty($this->subacc_info)) {
         $email = $this->subacc_info[0]->client_email;
     }
+    $exp = explode(".",$file_name);
+    $ftype = end($exp);
 ?>
 <div class="col-md-6 embed-responsive embed-responsive-21by9">
-  <iframe class="embed-responsive-item" src="<?php echo "https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name;?>"></iframe>
+    <?php if($ftype ==="pdf"){?>
+        <iframe class="embed-responsive-item" src="<?php echo "https://docs.google.com/gview?url=https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name."&embedded=true";?>"></iframe>
+    <?php } ?>
+
+    <?php if(in_array($ftype,$imglist)){?>
+        <img src='"https://cargomation.com/filemanager/".$email."/CW_FILE/".$shipment_num."/".$file_type."/" . $file_name'/>
+    <?php } ?>
 </div>
 <?php 
-}
+    }
 }
 ?>
 </div>
