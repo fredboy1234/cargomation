@@ -328,10 +328,12 @@ switch ($transMode) {
                                             <dt>Container Type:</dt>
                                             <dd><?= $value->containertype; ?></dd>
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="col-lg-3">
                                             <dt>Delivery Mode:</dt>
                                             <dd><?= $value->containerdeliverymode; ?></dd>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="col-lg-3">
                                             <dt>Gross Wt.:</dt>
                                             <dd><?= $value->no_data; ?></dd>
@@ -350,6 +352,7 @@ switch ($transMode) {
                                             <dt>Packs:</dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="col-lg-3">
                                             <dt>Gate In: </dt>
                                             <dd><?= $value->no_data; ?></dd>
@@ -362,14 +365,17 @@ switch ($transMode) {
                                             <dt>FCL Loaded In: </dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="col-lg-3">
                                             <dt>Storage Date:</dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
+                                        <?php if(false): ?>
                                         <div class="col-lg-3">
                                             <dt>Empty Req. By:</dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
+                                        <?php endif; ?>
                                     </dl>
                                 <?php endforeach; ?>
                             <?php endif; ?>
