@@ -165,6 +165,33 @@
             ]
         }
     ],
+    "document":[
+        {"filterID":"Type", "filterName":"type","filterType":"document","placeholder":"","show":"y",
+            "value":[
+                {"name":"Select All","value":"ALL"},
+                {"name":"PKD","value":"PKD"},
+                {"name":"PKL","value":"PKL"},
+                {"name":"HBL","value":"HBL"},
+                {"name":"MBL","value":"MBL"},
+                {"name":"COO","value":"COO"},
+                {"name":"CIV","value":"CIV"}
+            ],
+            "type":[
+                {"option":"--Select type--","value":""},
+                {"option":"IN","value":"in"}
+            ]
+        },
+        {"filterID":"Status", "filterName":"status","filterType":"document","placeholder":"","show":"y",
+            "value":[
+                {"name":"Approved","value":"approved"},
+                {"name":"Pending","value":"pending"}
+            ],
+            "type":[
+                {"option":"--Select type--","value":""},
+                {"option":"IN","value":"in"}
+            ]
+        }
+    ],
     "others":[
         {"filterID":"Container Mode", "filterName":"container_mode","filterType":"option","placeholder":"","show":"n",
             "value":[

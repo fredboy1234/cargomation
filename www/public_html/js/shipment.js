@@ -83,6 +83,7 @@ function invokeFilter(selected, index) {
   var $select = $(`#add_filters, #no_search_${index}`); 
   var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
   $.getJSON('/settings/search-filter.json', function(data) {
+    
     searchJson = data;
   $.each(data, function(key, value) {
     var parseText = key.replace(/_/g," ");
@@ -441,20 +442,22 @@ $(document).ready(function () {
         checkInput.push($(el).val());
       });
 
+      
       $("[id*='no_type_']").each(function(){
         reqIdentity = $(this).val();
+        var comp = $(this).attr('id').split("_");
+        var lastcomp = $(comp).get(-1);
+        if(!$.inArray(reqIdentity, reqHandler) && $("#no_value_"+lastcomp).val().length == 0){
+          allBlank = false;
+        }
       });
       
-      if($.inArray(reqIdentity, reqHandler) !== -1 && checkInput.length ==1){
-        table.ajax.reload(setColor);
+      if(allBlank){
+        Swal.fire('Please Add Search Parameter!')
       }else{
-        if(allBlank){
-          Swal.fire('Please Add Search Parameter!')
-        }else{
-          table.ajax.reload(setColor);
-        }
+        table.ajax.reload(setColor);
       }
-      
+  
     // $.ajax({
     //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
     //   type: "POST",
@@ -1070,7 +1073,7 @@ $(document).on("change", ".search-list", function(){
 
 function triggerType(data){
   console.log("from trigg");
-  console.log(data);
+  console.log(data['type']);
   var optionHTML = "";
   switch(data['type']) {    
     case 'date':
@@ -1116,6 +1119,11 @@ function triggerType(data){
         $('#'+data['id']).html(createSelect('others',data));
         selectTrigger(data['value'],'select2');
     break;
+
+    case 'document':
+        $('#'+data['id']).html(createSelect('document',data));
+        selectTrigger(data['value'],'select2');
+    break;
   }
 }
 
@@ -1150,12 +1158,15 @@ function selectTrigger(index,inputType){
 
 //create dynamic select option base on serch title
 function createSelect(key,data){
+  console.log(data);
+  console.log(key);
   var optionHTML = "";
    var handler = $.grep(searchJson[key], function(obj) { 
     if(obj.filterName === data['keyindex']){   
         return obj; 
       }
   });
+ 
   $.each(handler[0].type,function(okey,oval){
     var select = (okey==0 ? 'selected' :'');
     optionHTML +=`<option value="${oval.value}" ${select}>${oval.option}</option>`;
