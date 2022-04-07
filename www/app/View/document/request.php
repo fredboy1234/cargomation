@@ -35,7 +35,7 @@ if(is_numeric($this->document)) {
  
 <div id="document-request" style="display: block;">
     <div class="card card-primary">
-        <div class="card-header">
+        <div class="card-header badge-primary">
             <h3 style="color: #f3f6f9 !important;" class="card-title"> <?= $title; ?> </h3>
             <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
