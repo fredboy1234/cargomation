@@ -57,7 +57,7 @@ function Map(data,mcontainer){
 
 
         circle2.events.on("inited", function(event){
-            animateBullet(event.target);
+            //animateBullet(event.target);
         })
 
 
