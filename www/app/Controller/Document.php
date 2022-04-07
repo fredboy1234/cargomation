@@ -1105,4 +1105,47 @@ class Document extends Core\Controller {
         ]);
     }
 
+    public function getDocumentTypeByUserID($user_id = "") {
+        // Check that the user is authenticated.
+        // Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        // if (!$user_id) {
+        //     $userSession = Utility\Config::get("SESSION_USER");
+        //     if (Utility\Session::exists($userSession)) {
+        //         $user_id = Utility\Session::get($userSession);
+        //     }
+        // }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user_id);
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+
+        $email = $User->data()->email;
+
+        $document_type = "";
+        // get client admin email
+        if(!empty($User->getSubAccountInfo($user_id))) {
+            $sub_account = $User->getSubAccountInfo($user_id);
+            // "user email" change to "client email"
+            $email = $sub_account[0]->client_email;
+            $document_type = $this->Document->getDocumentTypeByUserID($sub_account[0]->account_id);
+        }
+
+        echo json_encode($document_type);
+    }
+
 }
