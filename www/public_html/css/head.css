@@ -80,3 +80,9 @@ h4{
 #custom_card_title{
   color: #f3f6f9 !important;
 }
+
+.btn-outline-info:not(:disabled):not(.disabled).active, .btn-outline-info:not(:disabled):not(.disabled):active, .show > .btn-outline-info.dropdown-toggle {
+  color: #fffff;
+  background-color: #3778be;
+  border-color: #3778be;
+}
