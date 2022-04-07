@@ -11,7 +11,7 @@
       <div class="modal-body">
           <div class="row">
             <div class="col-lg-6">
-             <iframe src="https://docs.google.com/gview?url=https://cargomation.com:5002/PDF_AI/BL6227048630.pdf&embedded=true" style="width:100%; height:500px;" frameborder="0"></iframe>
+             <embed src="https://cargomation.com:5002/PDF_AI/BL6227048630.pdf" style="width:100%; height:500px;" frameborder="0"></embed>
               </div>
             <div class="col-lg-2">
               <div class="card-header">
