@@ -14,7 +14,9 @@ $status = array("error","success");
   .custom {
     width: 130px !important;
   }
+
 </style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -83,41 +85,32 @@ $status = array("error","success");
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>File Name</th>
-                  <th>Type</th>
-                  <th>Date Uploaded</th>
-                  <th>Preview</th>
-                  <th>Actions</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody> <?php for ($x = 0; $x <= 5; $x++) { ?> <tr>
-                  <td> <?php print_r($x); ?> </td>
-                  <td>AP_Inv <?php print_r(generateRandomString());?>.xls </td>
-                  <td>AP_Inv <?php print_r(generateRandomString());?> </td>
-                  <td>2022-03-02 04:03:00PM</td>
-                  <td><button type="button" class="btn btn-block btn-outline-primary" data-toggle='modal' data-target='#modal-lg-prev'>Preview Parsed</button></td>
-                  <td>
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default">Action</button>
-                      <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <div class="dropdown-menu" role="menu" style="">
-                        <a class="dropdown-item" href="#">Push to Cargowise</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-xl">View File</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                  <td><small class="badge badge-warning">Queue</small></td>
-                </tr> <?php } ?> </tbody>
-            </table>
+              <table id="example" class="display" style="width:100%">
+                  <thead>
+                      <tr>
+                          <th></th>
+                          <th>Process ID</th>
+                          <th>File Name</th>
+                          <th>Job Number</th>
+                          <th>Date Uploaded</th>
+                          <th>Uploaded By</th>
+                          <th>Action</th>
+                          <th>Status</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                          <th></th>
+                          <th>Process ID</th>
+                          <th>File Name</th>
+                          <th>Job Number</th>
+                          <th>Date Uploaded</th>
+                          <th>Uploaded By</th>
+                          <th>Action</th>
+                          <th>Status</th>
+                      </tr>
+                  </tfoot>
+              </table>
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
