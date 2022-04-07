@@ -26,8 +26,7 @@ a.text-dark:hover {
 h1,
 h2,
 h3,
-h4,
-h5 {
+h4{
   color: #3778be !important;
 }
 
@@ -70,3 +69,10 @@ h5 {
   border: 1px solid #3778be;
 }
 
+#custom_thumb{
+  color: #ffffff !important;
+}
+
+#custom_glass{
+  color: #808080 !important;
+}

@@ -129,7 +129,7 @@
                 <p>Order Pending Shipment</p>
               </div>
               <div class="icon">
-                <i class="fas fa-hourglass-end text-warning"></i>
+                <i id="custom_glass" class="fas fa-hourglass-end"></i>
               </div>
               <!-- <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a> -->
               <a href="#" class="small-box-footer text-dark">Coming Soon</i></a>
