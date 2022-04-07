@@ -68,7 +68,7 @@ $status = array("error","success");
       <div class="col-sm-12 col-md-6 col-lg-12 col-6">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Upload List</h3>
+            <h3 class="card-title">AP Invoice List/h3>
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
