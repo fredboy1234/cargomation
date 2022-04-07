@@ -319,11 +319,15 @@ $(document).ready(function () {
     responsive: true,
     columnDefs: [
       {
-        targets: 0,
+        targets: 1,
         render: function (data, type, row) {
           return '<span>' + data + '</span>'
         }
-      }
+      },{
+        targets: 0,
+        visible: false,
+        searchable: false
+      },
     ],
     autoWidth: false,
     lengthChange: false,
@@ -335,6 +339,7 @@ $(document).ready(function () {
     serverSide: true,
     serverMethod: 'post',
     columns: tableColumnData,
+    order: [[0, 'desc']],
     ajax: {
       url: '/shipment/shipmentData/',
       data: function (d) {

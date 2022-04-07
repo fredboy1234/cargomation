@@ -399,7 +399,7 @@ class Shipment extends Core\Controller {
         }
         $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
         if(!empty($doc_type)){
-            $count = 16;
+            $count = 17;
             foreach ($doc_type as $key => $value) {
                 if(!in_array($value->type,$defaultDocType)){
                     array_push($userData, (object)[
@@ -543,7 +543,7 @@ class Shipment extends Core\Controller {
             foreach ($_POST['order'] as $key => $value) {
                 // change shipment_id to shipment_num
                 if($_POST['order'][0]['column'] == 0) {
-                    $_POST['columns'][$_POST['order'][0]['column']]['data'] = "shipment_num";
+                    $_POST['columns'][$_POST['order'][0]['column']]['data'] = "id";
                 }
                 $arr["sort"] = array((object)["order" => $_POST['columns'][$_POST['order'][0]['column']]['data'],
                                 "by" => $value['dir']]);
@@ -593,6 +593,7 @@ class Shipment extends Core\Controller {
             }
             $subdata = array();
             $subdata['real_id_shipment'] = $shipment->shipment_num; // remove?
+            $subdata['id'] = $shipment->id; // remove?
             $subdata['shipment_num'] = '
             <div class="btn-group">
               <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
