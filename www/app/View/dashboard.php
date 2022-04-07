@@ -124,7 +124,7 @@
             <!-- small box -->
             <div class="small-box bg-white">
               <div class="inner">
-                <h3 class="text-warning not-shipment"><sup style="font-size: 20px"></sup></h3>
+                <h3 class="not-shipment"><sup style="font-size: 20px"></sup></h3>
 
                 <p>Order Pending Shipment</p>
               </div>
