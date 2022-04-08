@@ -316,7 +316,7 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function getDocumentTypeByUserID($user_id, $arg = "") {
+    public function getDocumentTypeByUserID($user, $arg = "") {
         // $query = "SELECT ISNULL(type, 'OTHER') as type {$arg}
         // FROM document
         // LEFT JOIN shipment ON shipment.id = document.shipment_id
@@ -328,7 +328,7 @@ class Document extends Core\Model {
                 FROM document d
                 LEFT JOIN shipment AS s
         ON d.shipment_num = s.shipment_num
-        WHERE s.user_id = '{$user_id}'
+        WHERE s.user_id IN ('{$user['user_id']}','{$user['client_id']}')
         GROUP BY type ) as r
         LEFT JOIN cargowise_document_type cd
         ON cd.doc_type = r.typer";
