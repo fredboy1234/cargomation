@@ -316,7 +316,9 @@ class Shipment extends Core\Controller {
             $sub_account = $User->getSubAccountInfo($user_id);
             // "user email" change to "client email"
             $email = $sub_account[0]->client_email;
-            $document_type = $this->Document->getDocumentTypeByUserID($sub_account[0]->account_id);
+            $sub_id = array('user_id' => $sub_account[0]->user_id,
+                            'client_id' => $sub_account[0]->account_id);
+            $document_type = $this->Document->getDocumentTypeByUserID($sub_id);
         }
 
         $this->View->addJS("js/document.js");
@@ -702,6 +704,23 @@ class Shipment extends Core\Controller {
                     }
                     if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
                         $documents[strtolower($requested->document_type )]['watched'] = 0;
+                    }
+                } else {
+                    $doc_array = explode(",", $requested->document_type);
+                    foreach ($doc_array as $key => $value) {
+                        $documents[strtolower($value)]['count'] = $requested->request_type;
+                        $documents[strtolower($value)]['badge'] = "badge-info";
+                        $documents[strtolower($value)]['text'] = "Requested"; 
+                        // If type already have a document
+                        if(!isset($documents[strtolower($value)]['approved'])) {
+                            $documents[strtolower($value)]['approved'] = 0;
+                        }
+                        if(!isset($documents[strtolower($value)]['pending'])) {
+                            $documents[strtolower($value)]['pending'] = 0;
+                        }
+                        if(!isset($documents[strtolower($value)]['watched'])) {
+                            $documents[strtolower($value)]['watched'] = 0;
+                        }
                     }
                 }
             }

@@ -1142,7 +1142,9 @@ class Document extends Core\Controller {
             $sub_account = $User->getSubAccountInfo($user_id);
             // "user email" change to "client email"
             $email = $sub_account[0]->client_email;
-            $document_type = $this->Document->getDocumentTypeByUserID($sub_account[0]->account_id);
+            $sub_id = array('user_id' => $sub_account[0]->user_id,
+            'client_id' => $sub_account[0]->account_id);
+            $document_type = $this->Document->getDocumentTypeByUserID($sub_id);
         }
 
         echo json_encode($document_type);
