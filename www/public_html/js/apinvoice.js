@@ -19,40 +19,40 @@ function format ( d ) {
             '<td><b>Invoice:  </b> '+ parsed1[0] + '</td>'+
             '<td><b>Match Report:  </b> '+ parsed1[1] + '</td>'+
             '<td><b>Response:  </b> '+ parsed1[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview Parsed</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed1[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Push to CW1</button></td>'+
+            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
+            '<td><button onclick="pushtocw(\'' + parsed1[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
             '<td><b>Status:  </b> '+ parsed1[3] + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td><b>Invoice:</b> '+ parsed2[0] + '</td>'+
             '<td><b>Match Report:</b> '+ parsed2[1] + '</td>'+
             '<td><b>Response:</b> '+ parsed2[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview Parsed</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed2[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Push to CW1</button></td>'+
+            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
+            '<td><button onclick="pushtocw(\'' + parsed2[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
             '<td><b>Status:  </b> '+ parsed2[3] + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td><b>Invoice:</b> '+ parsed3[0] + '</td>'+
             '<td><b>Match Report:</b> '+ parsed3[1] + '</td>'+
             '<td><b>Response:</b> '+ parsed3[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview Parsed</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed3[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Push to CW1</button></td>'+
+            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
+            '<td><button onclick="pushtocw(\'' + parsed3[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
             '<td><b>Status:  </b> '+ parsed3[3] + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td><b>Invoice:</b> '+ parsed4[0] + '</td>'+
             '<td><b>Match Report:</b> '+ parsed4[1] + '</td>'+
             '<td><b>Response:</b> '+ parsed4[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview Parsed</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed4[0]  + '\')" type="button" class="btn btn-block btn-outline-danger"">Push to CW1</button></td>'+
+            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
+            '<td><button onclick="pushtocw(\'' + parsed4[0]  + '\')" type="button" class="btn btn-block btn-outline-danger"">Send to CargoWise</button></td>'+
             '<td><b>Status:  </b> '+ parsed4[3] + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td><b>Invoice:</b> '+ parsed5[0] + '</td>'+
             '<td><b>Match Report:</b> '+ parsed5[1] + '</td>'+
             '<td><b>Response:</b> '+ parsed5[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview Parsed</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed5[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Push to CW1</button></td>'+
+            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
+            '<td><button onclick="pushtocw(\'' + parsed5[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
             '<td><b>Status:  </b> '+ parsed5[3] + '</td>'+
         '</tr>'+
     '</table>';
