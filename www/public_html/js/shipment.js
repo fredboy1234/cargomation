@@ -319,14 +319,15 @@ $(document).ready(function () {
     responsive: true,
     columnDefs: [
       {
-        targets: 1,
+        targets: [0],
+        visible: false,
+        searchable: false
+      },
+      {
+        targets: [1],
         render: function (data, type, row) {
           return '<span>' + data + '</span>'
         }
-      },{
-        targets: 0,
-        visible: false,
-        searchable: false
       },
     ],
     autoWidth: false,
