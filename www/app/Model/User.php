@@ -761,21 +761,15 @@ class User extends Core\Model {
         $query = "";
         if(is_null($result[0]->search)) {
             $arr_data = [];
-            array_push($arr_data, array(
-                "search_title"=> $search_title,
-                "created_date"=> date("d-m-Y H:i:s"),
-                "search_query"=> $data
-            ));
-            $json_data = json_encode($arr_data);
         } else {
             $arr_data = json_decode($result[0]->search);
-            array_push($arr_data, array(
-                "search_title"=> $search_title,
-                "created_date"=> date("d-m-Y H:i:s"),
-                "search_query"=> $data
-            ));
-            $json_data = json_encode($arr_data);
         }
+        array_push($arr_data, array(
+            "search_title"=> $search_title,
+            "created_date"=> date("d-m-Y H:i:s"),
+            "search_query"=> $data
+        ));
+        $json_data = json_encode($arr_data);
         $query = "UPDATE user_settings SET search='{$json_data}' WHERE user_id ='{$user_id}'";
         return $Db->query($query)->error();
     }
@@ -788,19 +782,14 @@ class User extends Core\Model {
         if(isset($result[0])){
             if(is_null($result[0]->recent)) {
                 $arr_data = [];
-                array_push($arr_data, array(
-                    "created_date"=> date("d-m-Y H:i:s"),
-                    "search_query"=> $data
-                ));
-                $json_data = json_encode($arr_data);
             } else {
                 $arr_data = json_decode($result[0]->recent);
-                array_push($arr_data, array(
-                    "created_date"=> date("d-m-Y H:i:s"),
-                    "search_query"=> $data
-                ));
-                $json_data = json_encode($arr_data);
             }
+            array_push($arr_data, array(
+                "created_date"=> date("d-m-Y H:i:s"),
+                "search_query"=> $data
+            ));
+            $json_data = json_encode($arr_data);
             $query = "UPDATE user_settings SET recent='{$json_data}' WHERE user_id ='{$user_id}'";
         }else{
             $arr_data = [];
