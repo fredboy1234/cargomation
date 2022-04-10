@@ -118,8 +118,8 @@ switch ($transMode) {
                                     <i class="fas fa-chart-pie mr-1"></i>
                                     Shipment Details
                                 </h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                            <div class="card-tools m-0">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
@@ -384,8 +384,8 @@ switch ($transMode) {
                     </section>
                     <section class="col-lg-6 connectedSortable ui-sortable">
                         <div class="card">
-                        <div class="card card-primary card-outline card-tabs">
-                            <div class="card-header p-0 pt-1 border-bottom-0">
+                        <div class="card">
+                            <div class="card-header p-0 border-bottom-0">
                                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false"><i class="fas fa-map mr-1"></i>
