@@ -271,7 +271,7 @@ tr.completed.fromLeft:after{  transform-origin:  0% 50%; }
                                                     </button>
                                                 </div>
                                                 <div class="col-md-6 mt-2 text-right">
-                                                    <button type="button" id="loadSearch" class="btn btn-success">
+                                                    <button type="button" id="loadSaved" class="btn btn-success">
                                                         <i class="fas fa-search"></i> Load Search
                                                     </button>
                                                 </div>

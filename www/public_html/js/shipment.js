@@ -1309,7 +1309,7 @@ $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
   loadRecentSave();
 });
 // Load Recent/Save Search
-$('#loadSearch').on('click', function() {
+$('#loadSaved, #loadRecent').on('click', function() {
   var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
   const myArray = text.split(",");
   if(myArray.length > 0){

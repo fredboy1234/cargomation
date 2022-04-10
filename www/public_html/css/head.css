@@ -35,7 +35,7 @@ h4{
   color: #FFFFFF !important;
 }
 
-#loadSearch,
+#loadSaved, #loadRecent,
 #searchFilter {
   background-color: #3778be !important;
   border: 1px solid #3778be;
@@ -81,8 +81,9 @@ h4{
   color: #f3f6f9 !important;
 }
 
-.btn-outline-info:not(:disabled):not(.disabled).active, .btn-outline-info:not(:disabled):not(.disabled):active, .show > .btn-outline-info.dropdown-toggle {
-  color: #fffff;
+.btn-outline-info:not(:disabled):not(.disabled).active, .btn-outline-info:not(:disabled):not(.disabled):active, 
+.show > .btn-outline-info.dropdown-toggle {
+  color: #ffff;
   background-color: #3778be;
   border-color: #3778be;
 }
