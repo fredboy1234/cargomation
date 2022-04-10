@@ -435,6 +435,7 @@ $(document).ready(function () {
     // console.log('PAGE: ' + info.page);
     setColor();
     // $('#pageInfo').html('Showing page: ' + info.page + ' of ' + info.pages);
+    loadRecentSave();
   });
 
   $('#addvance-search-form').on("submit", function(ev) {
@@ -1381,6 +1382,12 @@ $('#deleteSearch').on('click', function() {
         $('#loader-wrapper').remove();
         const search_obj = JSON.parse(res.search);
         const recent_obj = JSON.parse(res.recent);
+        search_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
+        recent_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
         var search_html = "";
         var recent_html = "";
         for (const key in search_obj) {
