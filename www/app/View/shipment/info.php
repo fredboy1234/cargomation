@@ -328,7 +328,7 @@ switch ($transMode) {
                                             <dt>Container Type:</dt>
                                             <dd><?= $value->containertype; ?></dd>
                                         </div>
-                                        <?php if($transMode == 'Air'): ?>
+                                        <?php if($transMode == 'Sea'): ?>
                                         <div class="col-lg-3">
                                             <dt>Delivery Mode:</dt>
                                             <dd><?= $value->containerdeliverymode; ?></dd>
@@ -352,7 +352,7 @@ switch ($transMode) {
                                             <dt>Packs:</dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
-                                        <?php if($transMode == 'Air'): ?>
+                                        <?php if($transMode == 'Sea'): ?>
                                         <div class="col-lg-3">
                                             <dt>Gate In: </dt>
                                             <dd><?= $value->no_data; ?></dd>
@@ -370,7 +370,7 @@ switch ($transMode) {
                                             <dt>Storage Date:</dt>
                                             <dd><?= $value->no_data; ?></dd>
                                         </div>
-                                        <?php if($transMode == 'Air'): ?>
+                                        <?php if($transMode == 'Sea'): ?>
                                         <div class="col-lg-3">
                                             <dt>Empty Req. By:</dt>
                                             <dd><?= $value->no_data; ?></dd>
