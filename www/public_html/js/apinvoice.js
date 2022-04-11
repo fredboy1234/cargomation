@@ -57,7 +57,13 @@ function format ( d ) {
         '</tr>'+
     '</table>';
 }
- 
+$.extend( true, $.fn.dataTable.defaults, {
+  "searching": true,
+  "responsive": false,
+  "paging":   false,
+  "ordering": false,
+  "info":     false
+} );
 $(document).ready(function() {
     var table = $('#example').DataTable( {
         "ajax": '../settings/apinvoiceparse.json',
@@ -78,6 +84,62 @@ $(document).ready(function() {
         ],
         "order": [[1, 'asc']]
     } );
+    
+    $(document).on('click',"#example > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(1) > td:nth-child(4) > button",function(){
+
+      // $('#headerTable').DataTable({
+      //   "processing": true,
+      //   "serverSide": true,
+      //   "ajax": "apinvoice/headerData",
+      // });
+
+       $('#headerTable').DataTable({
+        "ajax": "/apinvoice/headerData",
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" }
+        ]
+      });
+
+      $('#parsedTable').DataTable({
+        "ajax": "/apinvoice/parsedData",
+        "createdRow": function (row, data, rowIndex) {
+          $.each($('td', row), function (colIndex) {
+              $(this).attr('data-index',rowIndex);
+          });
+        },
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" },
+          {
+            "data": null,
+            "className": "dt-center editor-edit",
+            "defaultContent": '<i class="fas fa-pencil-alt"></i>',
+            "orderable": false
+          },
+        ]
+      });
+
+    });
+    
+
+    
      
     // Add event listener for opening and closing details
     $('#example tbody').on('click', 'td.dt-control', function () {
@@ -94,8 +156,8 @@ $(document).ready(function() {
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }
-    } );
-} );
+    });
+});
 
 
   /*
@@ -142,3 +204,24 @@ Swal.fire({
     )
   }
 })}
+
+var editor;
+$(document).ready(function(){
+  var url = "/apinvoice/edit";
+  //var parsedData = [];
+  $(document).on("click","tr .editor-edit",function(){
+    var indexTD = $(this).parent().find("td").attr('data-index');
+    $("#edit-ap .modal-body").load(url,{data:parsedData,index:indexTD, apinvoice: apinvoice},
+      function (response, status, xhr) {
+          if (xhr.status == 200) {
+              $('#loader-wrapper').remove();
+              $("#edit-ap").modal("show");
+          } else {
+              alert("Error: " + xhr.status + ": " + xhr.statusText);
+              $('#loader-wrapper').remove();
+          }
+      });
+  });
+
+});
+

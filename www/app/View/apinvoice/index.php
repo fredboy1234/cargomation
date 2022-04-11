@@ -141,6 +141,6 @@ $status = array("error","success");
 </section>
  <?php require_once('preview.php');?>
 <script>
-  var user_id = < ? = $this - > user_id; ? > ;
+  var user_id = '< ? = $this - > user_id; ? >' ;
   var token = " < ? = generateRandomString(); ? > ";
 </script>

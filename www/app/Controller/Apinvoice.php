@@ -19,6 +19,7 @@ class Apinvoice extends Core\Controller {
      * @since 1.0
      */
     public function index($user = "") {
+        
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         // If no user ID has been passed, and a user session exists, display
@@ -81,6 +82,35 @@ class Apinvoice extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
+        $headerMatched = array();
+        $headerParsed = array();
+
+        $data['apinvoice'] = json_decode($this->geTempData());
+        $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
+        $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
+
+        //echo "<pre>";
+        foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+            foreach($m as $mkey=>$mval){
+                if(!in_array($mkey,$headerMatched)){
+                    $headerMatched[] = $mkey;
+                }
+                 
+            }   
+        }
+
+        foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
+            foreach($m as $mkey=>$mval){
+                if(!in_array($mkey,$headerParsed)){
+                    $headerParsed[] = $mkey;
+                }  
+            }  
+        }
+       
+        // echo "<pre>";
+        // print_r(count((array)$data['apinvoice']->HubJSONOutput));
+        // print_r( $headerMatched);
+        // exit();
 
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
@@ -94,9 +124,47 @@ class Apinvoice extends Core\Controller {
             'selected_theme' => $selectedTheme,
             "user_settings" =>$User->defaultSettings($user_key, $role->role_id),
             "settings_user" => $User->getUserSettings($user),
+            "apinvoice" =>  $data['apinvoice'],
+            "headerMatched"=>$headerMatched,
+            "headerParsed" =>$headerParsed,
+            "parsedData" => json_encode($parsed),
         ]);
     }
 
+    public function headerData(){
+        $header=array();
+        $columnMatched = array();
+        $data['apinvoice'] = json_decode($this->geTempData());
+        $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
+        
+        foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+            foreach($m as $mkey=>$mval){
+                if(!in_array($mkey,$columnMatched)){
+                    $columnMatched[] = array("data"=>$mkey);
+                }  
+            }  
+        }
+        $header['data'] =  $matched->CWChargeLines->ChargeLine;
+       
+       // $header['columns'] =  $columnMatched;      
+    //    $header = array(
+    //         "draw"            => 1,   
+    //         "recordsTotal"    => 2,  
+    //         "recordsFiltered" => 2,
+    //         "data"            => $matched->CWChargeLines->ChargeLine,
+    //     );
+        echo json_encode($header);
+    }
+
+    public function parsedData(){
+        $parsed = array();
+        $data['apinvoice'] = json_decode($this->geTempData());
+        $columnMatched = array();
+        $data['apinvoice']->HubJSONOutput->ParsedPDFData;
+        
+        $parsed['data'] = $data['apinvoice']->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines->ChargeLine;
+        echo json_encode($parsed);
+    }
     public function processInvoice() {
         // Processing request.. 
         switch (strtoupper($this->requestMethod)) {
@@ -322,6 +390,139 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    public function edit(){
+        $data = array();
+        if(isset($_POST)){
+          $data =  $_POST['data']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']];
+        }
+        $this->View->addJS("js/apinvoice.js");
+       
+        $this->View->renderWithoutHeaderAndFooter("/apinvoice/edit", [
+            "data" => $data,
+            "apinvoice"=>$_POST['apinvoice'],
+            "index"=>$_POST['index'],
+         ]);
+    }
+
+    public function sendToAPI(){
+        $toPass = array();
+        $APinvoice = Model\Apinvoice::getInstance();
+        if(isset($_POST)){
+            foreach($_POST['data'] as $key=>$val){
+                foreach($val as $vkey=>$vval){
+                    $toPass[$vkey]=$vval;
+                }
+            }
+            
+            $_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
+           $APinvoice->addToCGM_Response(json_encode($_POST['apinvoice']));
+        }
+    }
+
+    public function geTempData(){
+        return '{
+            "HubJSONOutput": {
+              "CargoWiseMatchedData": {
+                "CWHeader": {
+                  "JobType": "Shipment",
+                  "JobNumber": "S00001489"
+                },
+                "CWChargeLines": {
+                  "ChargeLine": [
+                    {
+                      "ChargeCode": "DDOC",
+                      "InvoiceNumber": "4261992797",
+                      "InvoiceDate": "2020-12-17T00:00:00",
+                      "Container": "TLLU2879641",
+                      "ExchangeRate": "1.000000000",
+                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
+                      "InvoiceTo": "TEST FWD ORG",
+                      "SubTotal": "90.0000",
+                      "GST": "9.00",
+                      "Discrepancy": "-10.00"
+                    },
+                    {
+                      "ChargeCode": "CTHC",
+                      "InvoiceNumber": "4261992797",
+                      "InvoiceDate": "2020-12-17T00:00:00",
+                      "Container": "TLLU2879641",
+                      "ExchangeRate": "1.000000000",
+                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
+                      "InvoiceTo": "TEST FWD ORG",
+                      "SubTotal": "530.0000",
+                      "GST": "53.00",
+                      "Discrepancy": "0.00"
+                    },
+                    {
+                      "ChargeCode": "DISCR",
+                      "InvoiceNumber": "4261992797",
+                      "InvoiceDate": "2020-12-17T00:00:00",
+                      "Container": "TLLU2879641",
+                      "ExchangeRate": "1.000000000",
+                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
+                      "InvoiceTo": "TEST FWD ORG",
+                      "SubTotal": "10.0000",
+                      "GST": "1.00",
+                      "Discrepancy": "0.00"
+                    }
+                  ]
+                }
+              },
+              "ParsedPDFData": {
+                "ParsedPDFHeader": {
+                  "JobNumber": "S00001489"
+                },
+                "ParsedPDFChargeLines": {
+                  "ChargeLine": [
+                    {
+                      "ChargeCode": "DDOC",
+                      "InvoiceNumber": "4261992797",
+                      "InvoiceDate": "2020-12-17 00:00:00",
+                      "Container": "TLLU2879641",
+                      "ExchangeRate": "1.00000",
+                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
+                      "InvoiceTo": "TEST FWD ORG",
+                      "SubTotal": "100.00",
+                      "GST": "0.00",
+                      "Discrepancy": "10.00"
+                    },
+                    {
+                      "ChargeCode": "CTHC",
+                      "InvoiceNumber": "4261992797",
+                      "InvoiceDate": "2020-12-17 00:00:00",
+                      "Container": "TLLU2879641",
+                      "ExchangeRate": "1.00000",
+                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
+                      "InvoiceTo": "TEST FWD ORG",
+                      "SubTotal": "530.00",
+                      "GST": "0.00",
+                      "Discrepancy": "0.00"
+                    }
+                  ]
+                }
+              },
+              "MatchReport": {
+                "Information": {
+                  "InformationHeader": "\r\n    Information: Total Vendor invoice amount does NOT match\r\n    Vendor Invoice Total Amount: 630.00\r\n    CargoWise Total Amount: 620.00\r\n    Total Discrepancy Amount: 10.00\r\n    Please confirm if this is a revised invoice.\r\n    ",
+                  "InformationDetail": [
+                    "ChargeLine in Vender Invoice matched to CargoWise.\r\n                            Charge Description: DEST. DOC FEE\r\n                            CargoWise value: 90.00\r\n                            Vendor Invoice value: 100.00",
+                    "ChargeLine in Vender Invoice matched to CargoWise.\r\n                            Charge Description: DEST TRML HANDLG\r\n                            CargoWise value: 530.00\r\n                            Vendor Invoice value: 530.00"
+                  ]
+                },
+                "Warnings": {
+                  "WarningsDetail": [
+                    "\r\n                            Warning - CostLocalAmount not matching - \r\n                            Charge Description: DEST. DOC FEE\r\n                            CargoWise value: 90.00\r\n                            Vendor Invoice value: 100.00",
+                    "There is no matching CustomsDeclaration in CargoWise."
+                  ]
+                },
+                "Errors": null,
+                "Actions": {
+                  "Action": "\r\n     There are Vendor Invoice chargelines have discrepancy in CargoWise job. \r\n     Please confirm if you want to push them to CargoWise."
+                }
+              }
+            }
+          }';
+    }
 
 
 
