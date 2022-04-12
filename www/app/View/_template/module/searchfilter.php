@@ -141,11 +141,10 @@
                </div>
             </div>
          </div>
-         <div class="col-md-8 mt-2">
+         <div class="col-md-12 p-0">
             <button type="button" id="savefilter" class="btn btn-warning"><i class="fas fa-save"></i> Save Search </button>
             <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit" id="searchFilter" class="btn btn-primary"><i class="fas fa-search"></i> Search Data </button>
+            <button type="submit" id="searchFilter" class="btn btn-primary float-right"><i class="fas fa-search"></i> Search Data </button>
          </div>
 
       </div>
@@ -156,8 +155,8 @@
          <select id="recent_search" multiple="" class="form-control"></select>
       </div>
       <div class="col-md-12 mt-2 text-left">
-         <button type="button" id="loadSearch" class="btn btn-success">
-         <i class="fas fa-search"></i> Load Search
+         <button type="button" id="loadRecent" class="btn btn-success">
+         <i class="fas fa-search"></i> Load Recent Search
          </button>
       </div>
    </div>

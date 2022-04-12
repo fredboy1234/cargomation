@@ -120,7 +120,7 @@
                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="vert-tabs-search-tab" data-toggle="pill" href="#vert-tabs-search" role="tab" aria-controls="vert-tabs-search" aria-selected="true">Advanced Search</a>
                                     <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Column Filters</a>
-                                    <a class="nav-link" id="vert-tabs-save-tab" data-toggle="pill" href="#vert-tabs-save" role="tab" aria-controls="vert-tabs-save" aria-selected="false">Save/Recent Search List</a>
+                                    <a class="nav-link" id="vert-tabs-save-tab" data-toggle="pill" href="#vert-tabs-save" role="tab" aria-controls="vert-tabs-save" aria-selected="false">Saved Searches</a>
                                     <!-- 
                                     <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Profile</a>
                                     <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Messages</a>
@@ -193,7 +193,7 @@
                                                 </div>-->
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 mt-2">
+                                                <div class="col-md-4">
                                                     <button type="button" id="resetSearch" class="btn btn-warning">
                                                         <i class="fas fa-undo"></i> Reset Selection
                                                     </button>
@@ -201,11 +201,11 @@
                                                         <i class="fas fa-trash"></i> Delete Query
                                                     </button>
                                                 </div>
-                                                <!--<div class="col-md-6 mt-2 text-right">
-                                                    <button type="button" id="loadSearch" class="btn btn-success">
-                                                        <i class="fas fa-search"></i> Load Search
+                                                <div class="col-md-4">
+                                                    <button type="button" id="loadSaved" class="btn btn-success">
+                                                        <i class="fas fa-search"></i> Load Saved Search
                                                     </button>
-                                                </div>-->
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->
@@ -311,7 +311,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loader-wrapper" class="d-flex justify-content-center">
+                <div id="loader-wrapper2" class="d-flex justify-content-center">
                     <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>

@@ -7,7 +7,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100vh;
+  /*height: 100vh;*/
   display: flex;
 }
 </style>
@@ -21,52 +21,58 @@
         </button>
       </div>
       <div class="modal-body">
-          <div class="row" style="overflow: scroll;">
-            <div class="col-lg-5">
-             <embed src="https://cargomation.com:5002/PDF_AI/BL6227048630.pdf" style="width:100%; height:500px;" frameborder="0"></embed>
+        <div class="row">
+          <div class="grid-container_custom">
+            <div class="custom_sidebar">
+              <button onclick="customside()" id="view">
+                <i class="nav-icon fas fa-exchange-alt"></i>
+              </button>
+              <div class="col-lg-12">
+                <embed src="https://cargomation.com:5002/PDF_AI/BL6227048630.pdf" style="width:100%; height:500px;" frameborder="0"></embed>
               </div>
-            <div class="col-lg-7">
-              <div class="card-header">
-                    <h3 class="card-title">Cargowise Data</h3>
-                </div>
-                 <table id="headerTable" class="table card-primary card-outline" style="overflow-x:auto;">
-                    <thead>
-                      <tr>
-                        <?php foreach($this->headerMatched as $hval){ ?>
-                        <th scope="col"><?php echo $hval?></th>
-                        <?php } ?>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                    </tbody>
-                  </table>
-
-                  <div class="card-header">
-                    <h3 class="card-title">Extracted Data</h3>
-                </div>
-                  <table id="parsedTable" class="table card-danger card-outline" style="overflow-x:auto;">
-                    <thead>
-                      <tr>
-                        <?php foreach($this->headerParsed as $parsehead){?>
-                          <th scope="col"><?php echo $parsehead?></th>
-                        <?php } ?>
-                         <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-          
-                    </tbody>
-                  </table>
             </div>
-            <div class="col-lg-8">
-              <button type="button" class="btn btn-danger">Raise Query</button>
-              <button type="button" class="btn btn-success">Tag as Validated</button>
-              <button type="button" class="btn btn-info">Add to CW1</button>
-              <button type="button" class="btn btn-info">Update to CW1</button>
-              <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+            <div class="main-content_custom">
+              <div class="col-lg-12">
+                <div class="card-header">
+                  <h3 class="card-title">Cargowise Data</h3>
+                </div>
+                <table id="headerTable" class="table card-primary card-outline" style="overflow-x:auto;">
+                  <thead>
+                    <tr>
+                      <?php foreach($this->headerMatched as $matchVal){?>
+                        <th scope="col"><?php echo $matchVal?></th>
+                      <?php } ?>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <div class="card-header">
+                  <h3 class="card-title">Extracted Data</h3>
+                </div>
+                <table id="parsedTable" class="table card-danger card-outline" style="overflow-x:auto;">
+                  <thead>
+                    <tr>
+                      <?php foreach($this->headerParsed as $headparsed){?>
+                        <th scope="col"><?php echo $headparsed ?></th>
+                      <?php } ?>
+                        <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+          <div class="col-lg-9">
+            <button type="button" class="btn btn-danger">Raise Query</button>
+            <button type="button" class="btn btn-success">Tag as Validated</button>
+            <button type="button" class="btn btn-info">Add to CW1</button>
+            <button type="button" class="btn btn-info">Update to CW1</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
