@@ -263,7 +263,7 @@ class Apinvoice extends Core\Controller {
             $email = $sub_account[0]->client_email;
         }
         //Setup our new file path
-        $newFilePath = "E:/A2BFREIGHT_MANAGER/" . $email . "/CW_INVOICE/IN/";
+        $newFilePath = "E:/A2BFREIGHT_MANAGER/" . $email . "/AP_INVOICE/IN/";
         $newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
         $preview = $config = $errors = [];
