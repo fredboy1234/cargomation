@@ -249,11 +249,33 @@ class Apinvoice extends Core\Controller {
         return false;
     }
 
+    public function customUpload(){
+        if($_FILES['file']['name'] != ''){
+            $test = explode('.', $_FILES['file']['name']);
+            $extension = end($test);    
+            $name = rand(100,999).'.'.$extension;
+            
+            $User = Model\User::getInstance($_SESSION['user']);
+            $email = $User->data()->email;
+           // $user_id = $User->data()->id;
+            
+            $newFilePath = "E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/";
+            //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
+
+            $location = $newFilePath.$name;
+            move_uploaded_file($_FILES['file']['tmp_name'], $location);
+        
+            echo '<img src="'.$location.'" height="100" width="100" />';
+        }
+    }
+
     // main upload function used above
     // upload the bootstrap-fileinput files
     // returns associative array
-    public function upload($param) {
-        $User = Model\User::getInstance($param);
+    public function upload() {
+        print_r($_POST);
+        exit();
+        $User = Model\User::getInstance($_POST['user_id']);
         $email = $User->data()->email;
         $user_id = $User->data()->id;
         // get client admin email
@@ -417,6 +439,26 @@ class Apinvoice extends Core\Controller {
             $_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
            $APinvoice->addToCGM_Response(json_encode($_POST['apinvoice']));
         }
+    }
+
+    public function parsedInvoice(){
+        // $curl = curl_init();
+        // curl_setopt_array($curl, array(
+        // CURLOPT_URL => 'https://cargomation.com:8001/compare',
+        // CURLOPT_RETURNTRANSFER => true,
+        // CURLOPT_ENCODING => '',
+        // CURLOPT_MAXREDIRS => 10,
+        // CURLOPT_TIMEOUT => 0,
+        // CURLOPT_FOLLOWLOCATION => true,
+        // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        // CURLOPT_CUSTOMREQUEST => 'POST',
+        // CURLOPT_POSTFIELDS => array(,'file'=> new CURLFILE('/C:/Users/User/Downloads/OOCL14.pdf'),),
+        // ));
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        // $response = curl_exec($curl);
+
+        // curl_close($curl);
+        // echo $response;
     }
 
     public function geTempData(){
