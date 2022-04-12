@@ -265,18 +265,17 @@ class Apinvoice extends Core\Controller {
             $location = $newFilePath.$name;
             move_uploaded_file($_FILES['file']['tmp_name'], $location);
         
-            $arr = [
-                "file" =>'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
-                'client' => 'A2B',
-                'user_id' => $_SESSION['user']
-            ];
+            $arr  = array('file'=> 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+            'client' => 'A2B',
+            'user_id' => $_SESSION['user']
+            );
 
-            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+           // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
             $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
             $url ='https://cargomation.com:8001/compare'; 
             
-            $result = $this->post($url, $payload, $headers);
+            $result = $this->post($url, $arr, $headers);
 
            print_r($result);
            return "success man bai";
