@@ -264,11 +264,13 @@ class Apinvoice extends Core\Controller {
 
             $location = $newFilePath.$name;
             move_uploaded_file($_FILES['file']['tmp_name'], $location);
-            
-
+        
             $arr = [
-                "file" =>'E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+                "file" =>'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+                'client' => 'A2B',
+                'user_id' => $_SESSION['user']
             ];
+
             $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
             $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
@@ -283,28 +285,26 @@ class Apinvoice extends Core\Controller {
 
     
     private function post($url, $payload, $headers) {
+        
         $curl = curl_init();
-        
+
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $payload,
         ));
-        
-        if (!empty($headers)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        }
+
         $response = curl_exec($curl);
-        $errno = curl_errno($curl);
-        if ($errno) {
-            return false;
-        }
+
         curl_close($curl);
-        return $response;
+        echo $response;
+    
     }
 
     // main upload function used above
