@@ -278,7 +278,7 @@ class Apinvoice extends Core\Controller {
             
             $result = $this->post($url, $payload, $headers);
 
-            print_r($result);
+           print_r($result);
            return "success man bai";
         }
     }
@@ -303,7 +303,7 @@ class Apinvoice extends Core\Controller {
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
+        return $response;
     
     }
 
