@@ -253,7 +253,7 @@ class Apinvoice extends Core\Controller {
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
             $extension = end($test);    
-            $name = rand(100,999).'.'.$extension;
+            $name = $_FILES['file']['name'].'.'.$extension;
             
             $User = Model\User::getInstance($_SESSION['user']);
             $email = $User->data()->email;
@@ -264,9 +264,47 @@ class Apinvoice extends Core\Controller {
 
             $location = $newFilePath.$name;
             move_uploaded_file($_FILES['file']['tmp_name'], $location);
-        
-            echo '<img src="'.$location.'" height="100" width="100" />';
+            
+
+            $arr = [
+                "file" =>'E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+            ];
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+            $url ='https://cargomation.com:8001/compare'; 
+            
+            $result = $this->post($url, $payload, $headers);
+
+            print_r($result);
+           return "success man bai";
         }
+    }
+
+    
+    private function post($url, $payload, $headers) {
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+        
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
     }
 
     // main upload function used above
@@ -441,25 +479,27 @@ class Apinvoice extends Core\Controller {
         }
     }
 
-    public function parsedInvoice(){
-        // $curl = curl_init();
-        // curl_setopt_array($curl, array(
-        // CURLOPT_URL => 'https://cargomation.com:8001/compare',
-        // CURLOPT_RETURNTRANSFER => true,
-        // CURLOPT_ENCODING => '',
-        // CURLOPT_MAXREDIRS => 10,
-        // CURLOPT_TIMEOUT => 0,
-        // CURLOPT_FOLLOWLOCATION => true,
-        // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        // CURLOPT_CUSTOMREQUEST => 'POST',
-        // CURLOPT_POSTFIELDS => array(,'file'=> new CURLFILE('/C:/Users/User/Downloads/OOCL14.pdf'),),
-        // ));
-        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        // $response = curl_exec($curl);
+    // public function parsedInvoice(){
+    //     $url ='https://cargomation.com:8001/compare';
+    //     $curl = curl_init();
+    //     curl_setopt_array($curl, array(
+    //     CURLOPT_URL => $url,
+    //     CURLOPT_RETURNTRANSFER => true,
+    //     CURLOPT_ENCODING => '',
+    //     CURLOPT_MAXREDIRS => 10,
+    //     CURLOPT_TIMEOUT => 0,
+    //     CURLOPT_FOLLOWLOCATION => true,
+    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //     CURLOPT_CUSTOMREQUEST => 'POST',
+    //     CURLOPT_POSTFIELDS => array(,'file'=> new CURLFILE('/C:/Users/User/Downloads/OOCL14.pdf'),),
+    //     ));
+    //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    //     $response = curl_exec($curl);
 
-        // curl_close($curl);
-        // echo $response;
-    }
+    //     curl_close($curl);
+    //     echo $response;
+    // }
+
 
     public function geTempData(){
         return '{
