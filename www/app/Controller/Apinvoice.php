@@ -253,7 +253,7 @@ class Apinvoice extends Core\Controller {
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
             $extension = end($test);    
-            $name = $_FILES['file']['name'].'.'.$extension;
+            $name = $_FILES['file']['name'];
             
             $User = Model\User::getInstance($_SESSION['user']);
             $email = $User->data()->email;
