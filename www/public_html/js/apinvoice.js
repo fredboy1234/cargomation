@@ -249,22 +249,22 @@ $(document).ready(function(){
       success:function(data)
       {
         table.ajax.url( '/apinvoice/invoicesData' ).load();
+         //call Compare api after upload
+        $.ajax({
+          url: document.location.origin+"/apinvoice/customUpload/",
+          contentType:false,
+              cache:false,
+              processData:false,
+          type: "POST",
+          data:form_data,
+          success:function(data)
+          {
+            
+          }
+        });
       }
     });
 
-    //call Compare api after upload
-    $.ajax({
-      url: document.location.origin+"/apinvoice/customUpload/",
-      contentType:false,
-          cache:false,
-          processData:false,
-      type: "POST",
-      data:form_data,
-      success:function(data)
-      {
-        
-      }
-    });
   });
   var $el1 = $("#invoice");
   $el1.fileinput({
