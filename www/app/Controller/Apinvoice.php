@@ -321,7 +321,7 @@ class Apinvoice extends Core\Controller {
             //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
             $location = $newFilePath.$name;
-           //move_uploaded_file($_FILES['file']['tmp_name'], $location);
+            move_uploaded_file($_FILES['file']['tmp_name'], $location);
             
            // $file_server_path = realpath($newFileUrl.$name);
             // $data['user_id'] = $_SESSION['user'];
@@ -360,12 +360,9 @@ class Apinvoice extends Core\Controller {
            // $user_id = $User->data()->id;
             
             $newFilePath = "E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/";
-            //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
             $location = $newFilePath.$name;
-            move_uploaded_file($_FILES['file']['tmp_name'], $location);
             
-           // $file_server_path = realpath($newFileUrl.$name);
             $data['user_id'] = $_SESSION['user'];
             $data['filename'] = $name;
             $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
@@ -374,18 +371,6 @@ class Apinvoice extends Core\Controller {
             
             $APinvoice->insertMatchHeader($data);
 
-            //print_r($file_server_path);
-            // $arr  = array(
-            //     'file'=> 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
-            //     'client' => 'A2B',
-            //     'user_id' => $_SESSION['user']
-            // );
-           
-           // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-           
-            //$url ='https://cargomation.com:8001/compare'; 
-            
-            //$result = $this->post($url, $arr, '');
 
            return "success";
         }
