@@ -66,7 +66,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 } );
 $(document).ready(function() {
     var table = $('#example').DataTable( {
-        "ajax": '../settings/apinvoiceparse.json',
+        "ajax": '/apinvoice/invoicesData',
         "columns": [
             {
                 "className":      'dt-control',
@@ -157,7 +157,7 @@ $(document).ready(function() {
             tr.addClass('shown');
         }
     });
-});
+
 
 
   /*
@@ -242,10 +242,11 @@ $(document).ready(function(){
       success:function(data)
       {
         console.log(data);
+        table.ajax.url( '/apinvoice/invoicesData' ).load();
+        //table.ajax.reload();
       }
     });
   });
-  
 });
 
 /*collapse custom js*/
@@ -256,3 +257,5 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
+
+});

@@ -84,11 +84,34 @@ class Apinvoice extends Core\Controller {
         }
         $headerMatched = array();
         $headerParsed = array();
+        $invoicesHeader = array();
 
-        $data['apinvoice'] = json_decode($this->geTempData());
+        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+        $data['invoices'] = $this->getInvoices();
         $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
         $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
 
+        // echo"<pre>";
+        // print_r( $data['invoices']);
+        // exit();
+        $notin = array("sec_ref","id");
+        $invoicesHeader =array(
+            "Process ID",
+            "File Name",
+            "Job Number",
+            "Date Uploaded",
+            "Uploaded By",
+            "Action",
+            "Status");
+        // foreach($data['invoices'] as $val){
+        //     foreach($val as $key=>$cval){
+        //         if(!in_array($key,$invoicesHeader) && !in_array($key,$notin)){
+        //             $invoicesHeader[] = $key;
+        //         }
+        //     }
+                
+        // }
+        
         //echo "<pre>";
         foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
             foreach($m as $mkey=>$mval){
@@ -106,12 +129,9 @@ class Apinvoice extends Core\Controller {
                 }  
             }  
         }
-       
-        // echo "<pre>";
-        // print_r(count((array)$data['apinvoice']->HubJSONOutput));
-        // print_r( $headerMatched);
-        // exit();
-
+    //    echo"<pre>";
+    //     print_r($data['invoices']);
+    //     exit();
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -128,13 +148,51 @@ class Apinvoice extends Core\Controller {
             "headerMatched"=>$headerMatched,
             "headerParsed" =>$headerParsed,
             "parsedData" => json_encode($parsed),
+            "invoicesHeader" =>$invoicesHeader,
         ]);
+    }
+
+    public function invoicesData(){
+        $retData = array();
+        $data['invoices'] = $this->getInvoices();
+        foreach($data['invoices'] as $value){
+            $retData['data'][] = array(
+                "Process ID" => $value->process_id,
+                "File Name" => $value->filename,
+                "Job Number" => "empty",
+                "Date Uploaded"=> date("d/m/Y"),
+                "Uploaded By" => $value->uploadedby,
+                "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
+                "Status"=> "Processing",
+            );
+        }
+        echo json_encode($retData);
+    }
+
+    public function invoiceSuccess(){
+        $retData = array();
+        $data['invoices'] = $this->getInvoicesSuccess();
+        // echo"<pre>";
+        // print_r($data['invoices']);
+        // exit();
+        foreach($data['invoices'] as $value){
+            $retData['data'][] = array(
+                "Process ID" => $value->prim_ref,
+                "File Name" => $value->filename,
+                "Job Number" => $value->sec_ref,
+                "Date Uploaded"=> date("d/m/Y"),
+                "Uploaded By" => "not added to table",
+                "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
+                "Status"=> $value->status,
+            );
+        }
+        echo json_encode($retData);
     }
 
     public function headerData(){
         $header=array();
         $columnMatched = array();
-        $data['apinvoice'] = json_decode($this->geTempData());
+        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
         $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
         
         foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
@@ -158,7 +216,7 @@ class Apinvoice extends Core\Controller {
 
     public function parsedData(){
         $parsed = array();
-        $data['apinvoice'] = json_decode($this->geTempData());
+        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
         $columnMatched = array();
         $data['apinvoice']->HubJSONOutput->ParsedPDFData;
         
@@ -263,19 +321,29 @@ class Apinvoice extends Core\Controller {
             //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
             $location = $newFilePath.$name;
-            move_uploaded_file($_FILES['file']['tmp_name'], $location);
-        
-            $arr  = array('file'=> 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
-            'client' => 'A2B',
-            'user_id' => $_SESSION['user']
-            );
+           // move_uploaded_file($_FILES['file']['tmp_name'], $location);
+            
+           // $file_server_path = realpath($newFileUrl.$name);
+            $data['user_id'] = $_SESSION['user'];
+            $data['filename'] = $name;
+            $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
+            $data['uploadedby']= $email;
+            $APinvoice = Model\Apinvoice::getInstance();
+            
+            $APinvoice->insertMatchHeader($data);
 
+            //print_r($file_server_path);
+            $arr  = array(
+                'file'=> 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+                'client' => 'A2B',
+                'user_id' => $_SESSION['user']
+            );
+           
            // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
-                    "Content-Type: application/json"];
+           
             $url ='https://cargomation.com:8001/compare'; 
             
-            $result = $this->post($url, $arr, $headers);
+            $result = $this->post($url, $arr, '');
 
            print_r($result);
            return "success man bai";
@@ -284,23 +352,25 @@ class Apinvoice extends Core\Controller {
 
     
     private function post($url, $payload, $headers) {
-        
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => $url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
         ));
 
         $response = curl_exec($curl);
-
+        
         curl_close($curl);
         return $response;
     
@@ -478,133 +548,20 @@ class Apinvoice extends Core\Controller {
         }
     }
 
-    // public function parsedInvoice(){
-    //     $url ='https://cargomation.com:8001/compare';
-    //     $curl = curl_init();
-    //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => $url,
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'POST',
-    //     CURLOPT_POSTFIELDS => array(,'file'=> new CURLFILE('/C:/Users/User/Downloads/OOCL14.pdf'),),
-    //     ));
-    //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    //     $response = curl_exec($curl);
-
-    //     curl_close($curl);
-    //     echo $response;
-    // }
-
-
     public function geTempData(){
-        return '{
-            "HubJSONOutput": {
-              "CargoWiseMatchedData": {
-                "CWHeader": {
-                  "JobType": "Shipment",
-                  "JobNumber": "S00001489"
-                },
-                "CWChargeLines": {
-                  "ChargeLine": [
-                    {
-                      "ChargeCode": "DDOC",
-                      "InvoiceNumber": "4261992797",
-                      "InvoiceDate": "2020-12-17T00:00:00",
-                      "Container": "TLLU2879641",
-                      "ExchangeRate": "1.000000000",
-                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
-                      "InvoiceTo": "TEST FWD ORG",
-                      "SubTotal": "90.0000",
-                      "GST": "9.00",
-                      "Discrepancy": "-10.00"
-                    },
-                    {
-                      "ChargeCode": "CTHC",
-                      "InvoiceNumber": "4261992797",
-                      "InvoiceDate": "2020-12-17T00:00:00",
-                      "Container": "TLLU2879641",
-                      "ExchangeRate": "1.000000000",
-                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
-                      "InvoiceTo": "TEST FWD ORG",
-                      "SubTotal": "530.0000",
-                      "GST": "53.00",
-                      "Discrepancy": "0.00"
-                    },
-                    {
-                      "ChargeCode": "DISCR",
-                      "InvoiceNumber": "4261992797",
-                      "InvoiceDate": "2020-12-17T00:00:00",
-                      "Container": "TLLU2879641",
-                      "ExchangeRate": "1.000000000",
-                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
-                      "InvoiceTo": "TEST FWD ORG",
-                      "SubTotal": "10.0000",
-                      "GST": "1.00",
-                      "Discrepancy": "0.00"
-                    }
-                  ]
-                }
-              },
-              "ParsedPDFData": {
-                "ParsedPDFHeader": {
-                  "JobNumber": "S00001489"
-                },
-                "ParsedPDFChargeLines": {
-                  "ChargeLine": [
-                    {
-                      "ChargeCode": "DDOC",
-                      "InvoiceNumber": "4261992797",
-                      "InvoiceDate": "2020-12-17 00:00:00",
-                      "Container": "TLLU2879641",
-                      "ExchangeRate": "1.00000",
-                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
-                      "InvoiceTo": "TEST FWD ORG",
-                      "SubTotal": "100.00",
-                      "GST": "0.00",
-                      "Discrepancy": "10.00"
-                    },
-                    {
-                      "ChargeCode": "CTHC",
-                      "InvoiceNumber": "4261992797",
-                      "InvoiceDate": "2020-12-17 00:00:00",
-                      "Container": "TLLU2879641",
-                      "ExchangeRate": "1.00000",
-                      "Creditor": "COSCO SHIPPING LINES (OCEANIA) PTY LTD",
-                      "InvoiceTo": "TEST FWD ORG",
-                      "SubTotal": "530.00",
-                      "GST": "0.00",
-                      "Discrepancy": "0.00"
-                    }
-                  ]
-                }
-              },
-              "MatchReport": {
-                "Information": {
-                  "InformationHeader": "\r\n    Information: Total Vendor invoice amount does NOT match\r\n    Vendor Invoice Total Amount: 630.00\r\n    CargoWise Total Amount: 620.00\r\n    Total Discrepancy Amount: 10.00\r\n    Please confirm if this is a revised invoice.\r\n    ",
-                  "InformationDetail": [
-                    "ChargeLine in Vender Invoice matched to CargoWise.\r\n                            Charge Description: DEST. DOC FEE\r\n                            CargoWise value: 90.00\r\n                            Vendor Invoice value: 100.00",
-                    "ChargeLine in Vender Invoice matched to CargoWise.\r\n                            Charge Description: DEST TRML HANDLG\r\n                            CargoWise value: 530.00\r\n                            Vendor Invoice value: 530.00"
-                  ]
-                },
-                "Warnings": {
-                  "WarningsDetail": [
-                    "\r\n                            Warning - CostLocalAmount not matching - \r\n                            Charge Description: DEST. DOC FEE\r\n                            CargoWise value: 90.00\r\n                            Vendor Invoice value: 100.00",
-                    "There is no matching CustomsDeclaration in CargoWise."
-                  ]
-                },
-                "Errors": null,
-                "Actions": {
-                  "Action": "\r\n     There are Vendor Invoice chargelines have discrepancy in CargoWise job. \r\n     Please confirm if you want to push them to CargoWise."
-                }
-              }
-            }
-          }';
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getMatchReport(2);
     }
 
+    public function getInvoices(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getInvoices();
+    }
+
+    public function getInvoicesSuccess(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getInvoicesSuccess();
+    }
 
 
 }

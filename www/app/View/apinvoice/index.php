@@ -89,25 +89,31 @@ $status = array("error","success");
                   <thead>
                       <tr>
                           <th></th>
-                          <th>Process ID</th>
+                          <?php foreach($this->invoicesHeader as $inhead){?>
+                            <th><?=$inhead?></th>
+                          <?php } ?>
+                          <!-- <th>Process ID</th>
                           <th>File Name</th>
                           <th>Job Number</th>
                           <th>Date Uploaded</th>
                           <th>Uploaded By</th>
                           <th>Action</th>
-                          <th>Status</th>
+                          <th>Status</th> -->
                       </tr>
                   </thead>
                   <tfoot>
                       <tr>
                           <th></th>
-                          <th>Process ID</th>
+                          <?php foreach($this->invoicesHeader as $inhead){?>
+                            <th><?=$inhead?></th>
+                          <?php } ?>
+                          <!-- <th>Process ID</th>
                           <th>File Name</th>
                           <th>Job Number</th>
                           <th>Date Uploaded</th>
                           <th>Uploaded By</th>
                           <th>Action</th>
-                          <th>Status</th>
+                          <th>Status</th> -->
                       </tr>
                   </tfoot>
               </table>
