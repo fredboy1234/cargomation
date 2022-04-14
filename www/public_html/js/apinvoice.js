@@ -290,6 +290,8 @@ $(document).ready(function(){
   })
 });
 
+});
+
 /*collapse custom js*/
 const sidebar = document.querySelector('.custom_sidebar');
 const mainContent = document.querySelector('.main-content_custom');
@@ -298,5 +300,3 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
-
-});

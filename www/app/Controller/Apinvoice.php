@@ -345,8 +345,7 @@ class Apinvoice extends Core\Controller {
             
             $result = $this->post($url, $arr, '');
 
-           print_r($result);
-           return "success man bai";
+           return "success";
         }
     }
 
