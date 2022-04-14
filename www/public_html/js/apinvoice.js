@@ -237,7 +237,22 @@ $(document).ready(function(){
     form_data.append('file', file_data);
     data['user_id'] = user_id;
     data['form_data'] = form_data;
-    console.log(data);
+
+    //auto insert after upload separated for some reason
+    $.ajax({
+      url: document.location.origin+"/apinvoice/uploadAndInsert/",
+      contentType:false,
+          cache:false,
+          processData:false,
+      type: "POST",
+      data:form_data,
+      success:function(data)
+      {
+        table.ajax.url( '/apinvoice/invoicesData' ).load();
+      }
+    });
+
+    //call Compare api after upload
     $.ajax({
       url: document.location.origin+"/apinvoice/customUpload/",
       contentType:false,
@@ -247,9 +262,7 @@ $(document).ready(function(){
       data:form_data,
       success:function(data)
       {
-        console.log(data);
-        table.ajax.url( '/apinvoice/invoicesData' ).load();
-        //table.ajax.reload();
+        
       }
     });
   });
