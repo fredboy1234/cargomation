@@ -321,7 +321,7 @@ class Apinvoice extends Core\Controller {
             //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
             $location = $newFilePath.$name;
-           // move_uploaded_file($_FILES['file']['tmp_name'], $location);
+           move_uploaded_file($_FILES['file']['tmp_name'], $location);
             
            // $file_server_path = realpath($newFileUrl.$name);
             $data['user_id'] = $_SESSION['user'];

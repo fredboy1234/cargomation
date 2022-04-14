@@ -95,6 +95,9 @@ $(document).ready(function() {
 
        $('#headerTable').DataTable({
         "ajax": "/apinvoice/headerData",
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
         "columns": [
           { "data": "ChargeCode" },
           { "data": "InvoiceNumber" },
@@ -111,6 +114,9 @@ $(document).ready(function() {
 
       $('#parsedTable').DataTable({
         "ajax": "/apinvoice/parsedData",
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
         "createdRow": function (row, data, rowIndex) {
           $.each($('td', row), function (colIndex) {
               $(this).attr('data-index',rowIndex);
@@ -247,6 +253,41 @@ $(document).ready(function(){
       }
     });
   });
+  var $el1 = $("#invoice");
+  $el1.fileinput({
+      theme: 'fas',
+      uploadUrl: document.location.origin + "/apinvoice/upload" + param,
+      //deleteUrl: document.location.origin + "/api/post/apinvoice/delete" + param,
+      uploadAsync: false,
+
+      minFileCount: 1,
+      maxFileCount: 5,
+      browseOnZoneClick: true,
+  }).on('filepreupload', function (event, data, previewId, index, fileId) {
+      alert('filepreupload');
+      // var form = data.form, files = data.files, extra = data.extra,
+      //     response = data.response, reader = data.reader;
+      // console.log('File pre upload triggered', fileId);
+  }).on('fileuploaded', function (event, data, id, index) {
+      alert('THIS IS BATCH');
+
+  }).on('fileuploaderror', function (event, data, msg) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<a href>Why do I have this issue?</a>'
+      });
+      console.log('File upload error: ' + msg);
+  }).on('filecustomerror', function (event, data, msg) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: msg,
+          footer: '<a href>Why do I have this issue?</a>'
+      });
+      console.log('File upload error: ' + msg);
+  })
 });
 
 /*collapse custom js*/

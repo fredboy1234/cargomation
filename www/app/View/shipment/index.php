@@ -97,6 +97,10 @@
   text-align: center;
   font-size: 18px;
 }
+#s_headcus{
+    background-color: #3778be !important;
+    color: #ffffff;
+}
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -266,9 +270,9 @@
                                 <tr>
                                     <?php foreach ($settings as $key => $value) { ?>
                                         <?php if($value->index_lvl == "document"): ?>
-                                            <th><?= strtoupper($value->index) ?></th>
+                                            <th id="s_headcus"><?= strtoupper($value->index) ?></th>
                                         <?php else:  ?>
-                                            <th><?= $value->index_name ?></th>
+                                            <th id="s_headcus"><?= $value->index_name ?></th>
                                         <?php endif;  ?>
                                     <?php } ?>
                                 </tr>
