@@ -222,6 +222,10 @@ $(document).ready(function(){
       {
         //table.ajax.url( '/apinvoice/invoicesData' ).load();
          //call Compare api after upload
+         Swal.fire(
+          "",
+          "Your Was File Uploaded!",
+          );
         $.ajax({
           url: document.location.origin+"/apinvoice/customUpload/",
           contentType:false,
