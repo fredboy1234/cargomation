@@ -69,7 +69,7 @@
 .tablue{
   border: 1px solid;
 }
-#not-shipment{
+.not-shipment{
 color:#808080 !important;
 }
 </style>
