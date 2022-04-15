@@ -51,6 +51,28 @@ class Apinvoice extends Core\Model {
         $query = "SELECT * FROM match_report ";
         return  $Db->query($query)->results();
     }
+
+    public function getMatchReportWidthID($prim_ref){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM match_report WHERE prim_ref = '{$prim_ref}' ";
+        return  $Db->query($query)->results();
+    }
+
+    public function getSingleInvoice(){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT 
+            ma.process_id as process_id,
+            ma.filename as maAPFIlename,  
+            ma.filepath,
+            ma.status,
+            mr.status,
+            *
+        FROM match_apinvoice ma
+        LEFT JOIN match_report mr
+        ON mr.prim_ref = ma.process_id
+        ";
+        return  $Db->query($query)->results();
+    }
     public function insertMatchHeader($data){
         $user_id = $data['user_id'];
         $filename = $data['filename'];

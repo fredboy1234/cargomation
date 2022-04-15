@@ -1,62 +1,34 @@
 // d  = data object of the row from json take note :)
 
 function format ( d ) {
-  let output1 = d.Parsed01 + '';
-  let output2 = d.Parsed02 + '';
-  let output3 = d.Parsed03 + '';
-  let output4 = d.Parsed04 + '';
-  let output5 = d.Parsed05 + '';
-
-  const parsed1 = output1.split(",");
-  const parsed2 = output2.split(",");
-  const parsed3 = output3.split(",");
-  const parsed4 = output4.split(",");
-  const parsed5 = output5.split(",");
-
-
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td><b>Invoice:  </b> '+ parsed1[0] + '</td>'+
-            '<td><b>Match Report:  </b> '+ parsed1[1] + '</td>'+
-            '<td><b>Response:  </b> '+ parsed1[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed1[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
-            '<td><b>Status:  </b> '+ parsed1[3] + '</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td><b>Invoice:</b> '+ parsed2[0] + '</td>'+
-            '<td><b>Match Report:</b> '+ parsed2[1] + '</td>'+
-            '<td><b>Response:</b> '+ parsed2[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed2[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
-            '<td><b>Status:  </b> '+ parsed2[3] + '</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td><b>Invoice:</b> '+ parsed3[0] + '</td>'+
-            '<td><b>Match Report:</b> '+ parsed3[1] + '</td>'+
-            '<td><b>Response:</b> '+ parsed3[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed3[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
-            '<td><b>Status:  </b> '+ parsed3[3] + '</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td><b>Invoice:</b> '+ parsed4[0] + '</td>'+
-            '<td><b>Match Report:</b> '+ parsed4[1] + '</td>'+
-            '<td><b>Response:</b> '+ parsed4[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed4[0]  + '\')" type="button" class="btn btn-block btn-outline-danger"">Send to CargoWise</button></td>'+
-            '<td><b>Status:  </b> '+ parsed4[3] + '</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td><b>Invoice:</b> '+ parsed5[0] + '</td>'+
-            '<td><b>Match Report:</b> '+ parsed5[1] + '</td>'+
-            '<td><b>Response:</b> '+ parsed5[2] + '</td>'+
-            '<td><button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>'+
-            '<td><button onclick="pushtocw(\'' + parsed5[0]  + '\')" type="button" class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>'+
-            '<td><b>Status:  </b> '+ parsed5[3] + '</td>'+
-        '</tr>'+
-    '</table>';
+  console.log(d);
+  var invoiceData = [];
+  var htmlinvoice = '';
+  var process_ID = d.pid; 
+  $.each(d,function(okey,oval){
+    if(okey === "invoices"){
+      invoiceData =  oval;
+    }
+  });
+ 
+  $.each(invoiceData,function(okey,oval){
+    var inval = oval.split(",");
+    htmlinvoice+=`<tr>
+      <td><b>Invoice: </b> ${inval[0]} </td>
+      <td><b>Match Report: </b> ${inval[1]} </td>
+      <td><b>Response: </b> ${inval[2]} </td>
+      <td><button type="button" id="${process_ID}_view"  data-pid="${process_ID}" class="btn btn-block btn-outline-primary viewdoc" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>
+      <td><button  type="button" id="${process_ID}_delete"class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>
+      <td><b>Status: </b> ${inval[3]} </td>
+    </tr>`; 
+  });
+  
+  if(invoiceData.length ==0){
+    htmlinvoice = "<tr><td> No Results</tr></td>";
+  }
+    return `<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">${htmlinvoice}</table>`;
 }
+
 $.extend( true, $.fn.dataTable.defaults, {
   "searching": true,
   "responsive": false,
@@ -66,7 +38,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 } );
 $(document).ready(function() {
     var table = $('#example').DataTable( {
-        "ajax": '/apinvoice/invoicesData',
+        "ajax": '/apinvoice/invoiceSuccess',
         "columns": [
             {
                 "className":      'dt-control',
@@ -93,7 +65,7 @@ $(document).ready(function() {
       //   "ajax": "apinvoice/headerData",
       // });
 
-       $('#headerTable').DataTable({
+       var headertable = $('#headerTable').DataTable({
         "ajax": "/apinvoice/headerData",
         "scrollX": true,
         "scrollY":        "250px",
@@ -112,7 +84,7 @@ $(document).ready(function() {
         ]
       });
 
-      $('#parsedTable').DataTable({
+      var parsedTable = $('#parsedTable').DataTable({
         "ajax": "/apinvoice/parsedData",
         "scrollX": true,
         "scrollY":        "250px",
@@ -248,7 +220,7 @@ $(document).ready(function(){
       data:form_data,
       success:function(data)
       {
-        table.ajax.url( '/apinvoice/invoicesData' ).load();
+        //table.ajax.url( '/apinvoice/invoicesData' ).load();
          //call Compare api after upload
         $.ajax({
           url: document.location.origin+"/apinvoice/customUpload/",
@@ -302,6 +274,46 @@ $(document).ready(function(){
       console.log('File upload error: ' + msg);
   })
 });
+
+
+setInterval(function () {
+  $.ajax({
+    url: document.location.origin+"/apinvoice/invoiceSuccess/",
+    type: "POST",
+    success:function(data)
+    {
+      //console.log(data);
+      table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
+    }
+  });
+}, 20000);
+
+//on click priview documents get specific match report
+$(document).on('click','.viewdoc',function(){
+  var pid = $(this).attr('data-pid');
+  //need to change this two ajax if have temporary because need to Demo
+  $.ajax({
+    url: document.location.origin+"/apinvoice/headerData/",
+    type: "POST",
+    data:{prim_ref:pid},
+    success:function(data)
+    {
+      headertable.ajax.reload; 
+    }
+  });
+  //need to change this two ajax if have temporary because need to present
+  $.ajax({
+    url: document.location.origin+"/apinvoice/parsedData/",
+    type: "POST",
+    data:{prim_ref:pid},
+    success:function(data)
+    {
+      parsedTable.ajax.reload; 
+    }
+  });
+
+});
+
 
 });
 

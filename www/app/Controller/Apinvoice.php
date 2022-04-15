@@ -154,7 +154,11 @@ class Apinvoice extends Core\Controller {
 
     public function invoicesData(){
         $retData = array();
+        
         $data['invoices'] = $this->getInvoices();
+        // echo"<pre>";
+        // print_r($data['invoices']);
+        // exit();
         foreach($data['invoices'] as $value){
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
@@ -164,6 +168,7 @@ class Apinvoice extends Core\Controller {
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
                 "Status"=> "Processing",
+                "invoices"=>''
             );
         }
         echo json_encode($retData);
@@ -171,28 +176,59 @@ class Apinvoice extends Core\Controller {
 
     public function invoiceSuccess(){
         $retData = array();
-        $data['invoices'] = $this->getInvoicesSuccess();
-        // echo"<pre>";
-        // print_r($data['invoices']);
-        // exit();
+        $invoiceHeader = array();
+        $data['invoices'] = $this->getSingleInvoice();
+        
         foreach($data['invoices'] as $value){
+            $invoiceHeader['invoice'] = array();
+            if(!empty($value->match_report)){
+                $parsed = json_decode($value->match_report);
+                $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
+               
+                if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
+                 
+                    foreach($parsedChargline ->ChargeLine as $chline){
+                        $invoiceHeader['invoice_num'] = $chline->InvoiceNumber;
+                        $invoiceHeader['invoice_report'] = "Match Found";
+                        $invoiceHeader['invoice_response'] = "ready";
+                        $invoiceHeader['invoice_status'] = "complete";
+
+                        $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
+                                                    {$invoiceHeader['invoice_report']},
+                                                    <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
+                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>";
+                    }
+                }
+            } 
+            
             $retData['data'][] = array(
-                "Process ID" => $value->prim_ref,
-                "File Name" => $value->filename,
-                "Job Number" => $value->sec_ref,
-                "Date Uploaded"=> date("d/m/Y"),
-                "Uploaded By" => "not added to table",
+                "Process ID" => $value->process_id,
+                "File Name" => $value->maAPFIlename,
+                "Job Number" => is_null($value->sec_ref) ? 'Empty' : $value->sec_ref,
+                "Date Uploaded"=> $value->dateuploaded,
+                "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
-                "Status"=> $value->status,
+                "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : $value->status,
+                "invoices" => $invoiceHeader['invoice'],
+                "pid" =>$value->process_id
             );
         }
+       
         echo json_encode($retData);
     }
 
     public function headerData(){
         $header=array();
         $columnMatched = array();
-        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+       
+        if(isset($_POST['prim_ref'])){
+            $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);
+        }else{
+            $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+        }
+        if(!isset( $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData)){
+            exit;
+        }
         $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
         
         foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
@@ -204,25 +240,25 @@ class Apinvoice extends Core\Controller {
         }
         $header['data'] =  $matched->CWChargeLines->ChargeLine;
        
-       // $header['columns'] =  $columnMatched;      
-    //    $header = array(
-    //         "draw"            => 1,   
-    //         "recordsTotal"    => 2,  
-    //         "recordsFiltered" => 2,
-    //         "data"            => $matched->CWChargeLines->ChargeLine,
-    //     );
         echo json_encode($header);
     }
 
     public function parsedData(){
         $parsed = array();
-        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+       
+        if(isset($_POST['prim_ref'])){
+            $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);   
+        }else{
+            $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+        }
+        
         $columnMatched = array();
         $data['apinvoice']->HubJSONOutput->ParsedPDFData;
         
         $parsed['data'] = $data['apinvoice']->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines->ChargeLine;
         echo json_encode($parsed);
     }
+
     public function processInvoice() {
         // Processing request.. 
         switch (strtoupper($this->requestMethod)) {
@@ -573,7 +609,7 @@ class Apinvoice extends Core\Controller {
            $APinvoice->addToCGM_Response(json_encode($_POST['apinvoice']));
         }
     }
-
+    
     public function geTempData(){
         $APinvoice = Model\Apinvoice::getInstance();
         return $APinvoice->getMatchReport(2);
@@ -584,10 +620,19 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getInvoices();
     }
 
+    public function getMatchReportWidthID($prim_ref){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getMatchReportWidthID($prim_ref);
+    }
+
     public function getInvoicesSuccess(){
         $APinvoice = Model\Apinvoice::getInstance();
         return $APinvoice->getInvoicesSuccess();
     }
 
+    public function getSingleInvoice(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getSingleInvoice(); 
+    }
 
 }
