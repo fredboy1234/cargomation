@@ -353,9 +353,13 @@ class Apinvoice extends Core\Controller {
             $email = $User->data()->email;
            // $user_id = $User->data()->id;
             
-            $newFilePath = "E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/";
+            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_APINVOICE/IN/";
             //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
 
+            if (!file_exists($newFilePath)) {
+                mkdir($newFilePath, 0777, true);
+            }
+            
             $location = $newFilePath.$name;
             move_uploaded_file($_FILES['file']['tmp_name'], $location);
             
@@ -370,7 +374,7 @@ class Apinvoice extends Core\Controller {
 
             //print_r($file_server_path);
             $arr  = array(
-                'file'=> 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name,
+                'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_APINVOICE/IN/'.$name,
                 'client' => 'A2B',
                 'user_id' => $_SESSION['user']
             );
