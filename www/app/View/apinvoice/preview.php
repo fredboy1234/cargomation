@@ -37,6 +37,7 @@
                         <div class="card-header">
                            <h3 class="card-title">Cargowise Data</h3>
                         </div>
+                        <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">
                            <thead>
                               <tr>
@@ -48,9 +49,11 @@
                            <tbody>
                            </tbody>
                         </table>
+                        <?php } ?>
                         <div class="card-header">
                            <h3 class="card-title">Extracted Data</h3>
                         </div>
+                        <?php if(!empty($this->headerParsed)){?>
                         <table style="width:100%" id="parsedTable" class="table card-danger card-outline">
                            <thead>
                               <tr>
@@ -63,6 +66,7 @@
                            <tbody>
                            </tbody>
                         </table>
+                        <?php } ?>
                      </div>
                   </div>
                </div>
