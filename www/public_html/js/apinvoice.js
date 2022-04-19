@@ -57,113 +57,64 @@ $(document).ready(function() {
         "order": [[1, 'asc']]
     } );
     
-    var headertable = $('#headerTable').DataTable({
-      "ajax": "/apinvoice/headerData",
-      "scrollX": true,
-      "scrollY":        "250px",
-      "fixedColumns": false,
-      "columns": [
-        { "data": "ChargeCode" },
-        { "data": "InvoiceNumber" },
-        { "data": "InvoiceDate" },
-        { "data": "Container" },
-        { "data": "ExchangeRate" },
-        { "data": "Creditor" },
-        { "data": "InvoiceTo" },
-        { "data": "SubTotal" },
-        { "data": "GST" },
-        { "data": "Discrepancy" }
-      ]
-    });
+    $(document).on('click',".viewdoc",function(){
 
-    var parsedTable = $('#parsedTable').DataTable({
-      "ajax": "/apinvoice/parsedData",
-      "scrollX": true,
-      "scrollY":        "250px",
-      "fixedColumns": false,
-      "createdRow": function (row, data, rowIndex) {
-        $.each($('td', row), function (colIndex) {
-            $(this).attr('data-index',rowIndex);
-        });
-      },
-      "columns": [
-        { "data": "ChargeCode" },
-        { "data": "InvoiceNumber" },
-        { "data": "InvoiceDate" },
-        { "data": "Container" },
-        { "data": "ExchangeRate" },
-        { "data": "Creditor" },
-        { "data": "InvoiceTo" },
-        { "data": "SubTotal" },
-        { "data": "GST" },
-        { "data": "Discrepancy" },
-        {
-          "data": null,
-          "className": "dt-center editor-edit",
-          "defaultContent": '<i class="fas fa-pencil-alt"></i>',
-          "orderable": false
+      // $('#headerTable').DataTable({
+      //   "processing": true,
+      //   "serverSide": true,
+      //   "ajax": "apinvoice/headerData",
+      // });
+
+       var headertable = $('#headerTable').DataTable({
+        "ajax": "/apinvoice/headerData",
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" }
+        ]
+      });
+
+      var parsedTable = $('#parsedTable').DataTable({
+        "ajax": "/apinvoice/parsedData",
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
+        "createdRow": function (row, data, rowIndex) {
+          $.each($('td', row), function (colIndex) {
+              $(this).attr('data-index',rowIndex);
+          });
         },
-      ]
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" },
+          {
+            "data": null,
+            "className": "dt-center editor-edit",
+            "defaultContent": '<i class="fas fa-pencil-alt"></i>',
+            "orderable": false
+          },
+        ]
+      });
+
     });
-    
-    // $(document).on('click',"#example > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(1) > td:nth-child(4) > button",function(){
-
-    //   // $('#headerTable').DataTable({
-    //   //   "processing": true,
-    //   //   "serverSide": true,
-    //   //   "ajax": "apinvoice/headerData",
-    //   // });
-
-    //    var headertable = $('#headerTable').DataTable({
-    //     "ajax": "/apinvoice/headerData",
-    //     "scrollX": true,
-    //     "scrollY":        "250px",
-    //     "fixedColumns": false,
-    //     "columns": [
-    //       { "data": "ChargeCode" },
-    //       { "data": "InvoiceNumber" },
-    //       { "data": "InvoiceDate" },
-    //       { "data": "Container" },
-    //       { "data": "ExchangeRate" },
-    //       { "data": "Creditor" },
-    //       { "data": "InvoiceTo" },
-    //       { "data": "SubTotal" },
-    //       { "data": "GST" },
-    //       { "data": "Discrepancy" }
-    //     ]
-    //   });
-
-    //   var parsedTable = $('#parsedTable').DataTable({
-    //     "ajax": "/apinvoice/parsedData",
-    //     "scrollX": true,
-    //     "scrollY":        "250px",
-    //     "fixedColumns": false,
-    //     "createdRow": function (row, data, rowIndex) {
-    //       $.each($('td', row), function (colIndex) {
-    //           $(this).attr('data-index',rowIndex);
-    //       });
-    //     },
-    //     "columns": [
-    //       { "data": "ChargeCode" },
-    //       { "data": "InvoiceNumber" },
-    //       { "data": "InvoiceDate" },
-    //       { "data": "Container" },
-    //       { "data": "ExchangeRate" },
-    //       { "data": "Creditor" },
-    //       { "data": "InvoiceTo" },
-    //       { "data": "SubTotal" },
-    //       { "data": "GST" },
-    //       { "data": "Discrepancy" },
-    //       {
-    //         "data": null,
-    //         "className": "dt-center editor-edit",
-    //         "defaultContent": '<i class="fas fa-pencil-alt"></i>',
-    //         "orderable": false
-    //       },
-    //     ]
-    //   });
-
-    // });
     
 
     
@@ -345,6 +296,8 @@ setInterval(function () {
 //on click priview documents get specific match report
 $(document).on('click','.viewdoc',function(){
   var pid = $(this).attr('data-pid');
+  console.log('pid');
+  console.log(pid);
   //need to change this two ajax if have temporary because need to Demo
   $.ajax({
     url: document.location.origin+"/apinvoice/headerData/",
@@ -352,7 +305,7 @@ $(document).on('click','.viewdoc',function(){
     data:{prim_ref:pid},
     success:function(data)
     {
-      console.log();
+      console.log(data);
       headertable.ajax.reload; 
     }
   });
@@ -363,6 +316,7 @@ $(document).on('click','.viewdoc',function(){
     data:{prim_ref:pid},
     success:function(data)
     {
+      console.log(data);
       parsedTable.ajax.reload; 
     }
   });
