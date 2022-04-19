@@ -35,14 +35,15 @@ class Apinvoice extends Core\Model {
     }
 
     public function getMatchReport($processID){
+        
         $Db = Utility\Database::getInstance();
         $query = "SELECT match_report FROM match_report where prim_ref ='{$processID}' ";
         return  $Db->query($query)->results();
     }
 
-    public function getInvoices(){
+    public function getInvoices($user_id){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM match_apinvoice ";
+        $query = "SELECT * FROM match_apinvoice WHERE user_id = '{$user_id}'";
         return  $Db->query($query)->results();
     }
 
@@ -58,7 +59,7 @@ class Apinvoice extends Core\Model {
         return  $Db->query($query)->results();
     }
 
-    public function getSingleInvoice(){
+    public function getSingleInvoice($user_id){
         $Db = Utility\Database::getInstance();
         $query = "SELECT 
             ma.process_id as process_id,
@@ -70,6 +71,7 @@ class Apinvoice extends Core\Model {
         FROM match_apinvoice ma
         LEFT JOIN match_report mr
         ON mr.prim_ref = ma.process_id
+        WHERE user_id = '{$user_id}'
         ";
         return  $Db->query($query)->results();
     }

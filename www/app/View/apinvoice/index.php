@@ -86,7 +86,7 @@ $status = array("error","success");
           <!-- /.card-header -->
           <div class="card-body">
               <table id="example" class="display" style="width:100%">
-                  <thead>
+                  <thead id="s_headcus">
                       <tr>
                           <th></th>
                           <?php foreach($this->invoicesHeader as $inhead){?>

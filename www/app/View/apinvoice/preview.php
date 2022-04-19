@@ -24,7 +24,7 @@
                         <div id="cusdiv" class="success">
                            <p><strong>Job # Matched: </strong> Some text...</p>
                         </div>
-                        <div id="cusdiv" class="info">
+                        <div id="cusdiv" class="info_1">
                            <p><strong>Charge code Matched: </strong> Some text...</p>
                         </div>
                         <div id="cusdiv" class="warning">

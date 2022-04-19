@@ -69,6 +69,9 @@
 .tablue{
   border: 1px solid;
 }
+.not-shipment{
+color:#808080 !important;
+}
 </style>
   <!-- Main content -->
     <section class="content" style="padding-bottom: 5em;">

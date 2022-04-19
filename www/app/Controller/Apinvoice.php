@@ -87,7 +87,7 @@ class Apinvoice extends Core\Controller {
         $invoicesHeader = array();
 
         $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
-        $data['invoices'] = $this->getInvoices();
+        $data['invoices'] = $this->getInvoices($_SESSION['user']);
         $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
         $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
 
@@ -155,7 +155,7 @@ class Apinvoice extends Core\Controller {
     public function invoicesData(){
         $retData = array();
         
-        $data['invoices'] = $this->getInvoices();
+        $data['invoices'] = $this->getInvoices($_SESSION['user']);
         // echo"<pre>";
         // print_r($data['invoices']);
         // exit();
@@ -177,7 +177,7 @@ class Apinvoice extends Core\Controller {
     public function invoiceSuccess(){
         $retData = array();
         $invoiceHeader = array();
-        $data['invoices'] = $this->getSingleInvoice();
+        $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
         
         foreach($data['invoices'] as $value){
             $invoiceHeader['invoice'] = array();
@@ -619,9 +619,9 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getMatchReport(2);
     }
 
-    public function getInvoices(){
+    public function getInvoices($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getInvoices();
+        return $APinvoice->getInvoices($user_id);
     }
 
     public function getMatchReportWidthID($prim_ref){
@@ -634,9 +634,9 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getInvoicesSuccess();
     }
 
-    public function getSingleInvoice(){
+    public function getSingleInvoice($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getSingleInvoice(); 
+        return $APinvoice->getSingleInvoice($user_id); 
     }
 
 }
