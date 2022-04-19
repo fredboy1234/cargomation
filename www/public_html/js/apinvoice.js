@@ -57,32 +57,26 @@ $(document).ready(function() {
         "order": [[1, 'asc']]
     } );
     
-    var headertable = $('#headerTable').DataTable({
-      "ajax": "/apinvoice/headerData",
-      "scrollX": true,
-      "scrollY":        "250px",
-      "fixedColumns": false,
-      "columns": [
-        { "data": "ChargeCode" },
-        { "data": "InvoiceNumber" },
-        { "data": "InvoiceDate" },
-        { "data": "Container" },
-        { "data": "ExchangeRate" },
-        { "data": "Creditor" },
-        { "data": "InvoiceTo" },
-        { "data": "SubTotal" },
-        { "data": "GST" },
-        { "data": "Discrepancy" }
-      ]
-    });
-
     $(document).on('click',".viewdoc",function(){
 
-      // $('#headerTable').DataTable({
-      //   "processing": true,
-      //   "serverSide": true,
-      //   "ajax": "apinvoice/headerData",
-      // });
+      var headertable = $('#headerTable').DataTable({
+        "ajax": "/apinvoice/headerData",
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" }
+        ]
+      });
 
       var parsedTable = $('#parsedTable').DataTable({
         "ajax": "/apinvoice/parsedData",
@@ -114,6 +108,31 @@ $(document).ready(function() {
         ]
       });
 
+      var pid = $(this).attr('data-pid');
+      console.log('pid');
+      console.log(pid);
+      //need to change this two ajax if have temporary because need to Demo
+      $.ajax({
+        url: document.location.origin+"/apinvoice/headerData/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+          console.log(data);
+          headertable.ajax.reload; 
+        }
+      });
+      //need to change this two ajax if have temporary because need to present
+      $.ajax({
+        url: document.location.origin+"/apinvoice/parsedData/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+          console.log(data);
+          parsedTable.ajax.reload; 
+        }
+      });
     });
     
 
@@ -293,34 +312,34 @@ setInterval(function () {
   });
 }, 20000);
 
-//on click priview documents get specific match report
-$(document).on('click','.viewdoc',function(){
-  var pid = $(this).attr('data-pid');
-  console.log('pid');
-  console.log(pid);
-  //need to change this two ajax if have temporary because need to Demo
-  $.ajax({
-    url: document.location.origin+"/apinvoice/headerData/",
-    type: "POST",
-    data:{prim_ref:pid},
-    success:function(data)
-    {
-      console.log(data);
-      headertable.ajax.reload; 
-    }
-  });
-  //need to change this two ajax if have temporary because need to present
-  $.ajax({
-    url: document.location.origin+"/apinvoice/parsedData/",
-    type: "POST",
-    data:{prim_ref:pid},
-    success:function(data)
-    {
-      console.log(data);
-      parsedTable.ajax.reload; 
-    }
-  });
-});
+// //on click priview documents get specific match report
+// $(document).on('click','.viewdoc',function(){
+//   var pid = $(this).attr('data-pid');
+//   console.log('pid');
+//   console.log(pid);
+//   //need to change this two ajax if have temporary because need to Demo
+//   $.ajax({
+//     url: document.location.origin+"/apinvoice/headerData/",
+//     type: "POST",
+//     data:{prim_ref:pid},
+//     success:function(data)
+//     {
+//       console.log(data);
+//       headertable.ajax.reload; 
+//     }
+//   });
+//   //need to change this two ajax if have temporary because need to present
+//   $.ajax({
+//     url: document.location.origin+"/apinvoice/parsedData/",
+//     type: "POST",
+//     data:{prim_ref:pid},
+//     success:function(data)
+//     {
+//       console.log(data);
+//       parsedTable.ajax.reload; 
+//     }
+//   });
+// });
 
 $('#modal-lg-prev').on('hidden.bs.modal', function () {
   headertable.destroy();
