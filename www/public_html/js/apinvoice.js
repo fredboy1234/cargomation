@@ -65,7 +65,7 @@ $(document).ready(function() {
       //   "ajax": "apinvoice/headerData",
       // });
 
-       var headertable = $('#headerTable').DataTable({
+      var headertable = $('#headerTable').DataTable({
         "ajax": "/apinvoice/headerData",
         "scrollX": true,
         "scrollY":        "250px",
@@ -320,9 +320,12 @@ $(document).on('click','.viewdoc',function(){
       parsedTable.ajax.reload; 
     }
   });
-
 });
 
+$('#modal-lg-prev').on('hidden.bs.modal', function () {
+  headertable.destroy();
+  parsedTable.destroy();
+});
 
 });
 
