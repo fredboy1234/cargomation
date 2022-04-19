@@ -62,6 +62,32 @@ $(document).ready(function() {
       var pid = $(this).attr('data-pid');
       console.log('pid');
       console.log(pid);
+
+      var headertable = $('#headerTable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        "scrollY":        "250px",
+        "fixedColumns": false,
+        "ajax": {
+            "url":  document.location.origin+"/apinvoice/headerData/",
+            "type": "POST",
+            "data":{prim_ref:pid},
+        },
+        "columns": [
+          { "data": "ChargeCode" },
+          { "data": "InvoiceNumber" },
+          { "data": "InvoiceDate" },
+          { "data": "Container" },
+          { "data": "ExchangeRate" },
+          { "data": "Creditor" },
+          { "data": "InvoiceTo" },
+          { "data": "SubTotal" },
+          { "data": "GST" },
+          { "data": "Discrepancy" }
+        ]
+      });
+
       // var headertable = $('#headerTable').DataTable({
       //   "ajax": "/apinvoice/headerData",
       //   "scrollX": true,
@@ -111,60 +137,18 @@ $(document).ready(function() {
         ]
       });
 
-      
-      //need to change this two ajax if have temporary because need to Demo
-      var headertable = $('#headerTable').DataTable({
-        ajax: function (data, callback, settings) {
-          $.ajax({
-            url: document.location.origin+"/apinvoice/headerData/",
-            type: "POST",
-            data:{prim_ref:pid},
-          }).then ( function( json, textStatus, jqXHR ) {
-          json["data"] = json["data"];
-          delete json["data"];
-              callback(json);
-            });
-        },
-        columns: [
-          { "data": "ChargeCode" },
-          { "data": "InvoiceNumber" },
-          { "data": "InvoiceDate" },
-          { "data": "Container" },
-          { "data": "ExchangeRate" },
-          { "data": "Creditor" },
-          { "data": "InvoiceTo" },
-          { "data": "SubTotal" },
-          { "data": "GST" },
-          { "data": "Discrepancy" }
-        ]
+      $.ajax({
+        url: document.location.origin+"/apinvoice/headerData/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+          console.log(data);
+          headertable.ajax.reload; 
+        }
       });
-    
-      // $.ajax({
-      //   url: document.location.origin+"/apinvoice/headerData/",
-      //   type: "POST",
-      //   data:{prim_ref:pid},
-      //   success:function(data)
-      //   {
-      //     $('#headerTable').DataTable({
-      //       "ajax": "/apinvoice/headerData",
-      //       "scrollX": true,
-      //       "scrollY":        "250px",
-      //       "fixedColumns": false,
-      //       "columns": [
-      //         { "data": "ChargeCode" },
-      //         { "data": "InvoiceNumber" },
-      //         { "data": "InvoiceDate" },
-      //         { "data": "Container" },
-      //         { "data": "ExchangeRate" },
-      //         { "data": "Creditor" },
-      //         { "data": "InvoiceTo" },
-      //         { "data": "SubTotal" },
-      //         { "data": "GST" },
-      //         { "data": "Discrepancy" }
-      //       ]
-      //     });
-      //   }
-      // });
+
+      
       //need to change this two ajax if have temporary because need to present
       $.ajax({
         url: document.location.origin+"/apinvoice/parsedData/",

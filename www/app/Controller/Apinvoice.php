@@ -226,8 +226,9 @@ class Apinvoice extends Core\Controller {
         
         if(isset($_POST['prim_ref'])){
             $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);
+        }else{
+            $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
         }
-        
         if(!isset( $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData)){
             exit;
         }
