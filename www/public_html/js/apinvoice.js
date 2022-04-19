@@ -57,6 +57,25 @@ $(document).ready(function() {
         "order": [[1, 'asc']]
     } );
     
+    var headertable = $('#headerTable').DataTable({
+      "ajax": "/apinvoice/headerData",
+      "scrollX": true,
+      "scrollY":        "250px",
+      "fixedColumns": false,
+      "columns": [
+        { "data": "ChargeCode" },
+        { "data": "InvoiceNumber" },
+        { "data": "InvoiceDate" },
+        { "data": "Container" },
+        { "data": "ExchangeRate" },
+        { "data": "Creditor" },
+        { "data": "InvoiceTo" },
+        { "data": "SubTotal" },
+        { "data": "GST" },
+        { "data": "Discrepancy" }
+      ]
+    });
+
     $(document).on('click',".viewdoc",function(){
 
       // $('#headerTable').DataTable({
@@ -64,25 +83,6 @@ $(document).ready(function() {
       //   "serverSide": true,
       //   "ajax": "apinvoice/headerData",
       // });
-
-      var headertable = $('#headerTable').DataTable({
-        "ajax": "/apinvoice/headerData",
-        "scrollX": true,
-        "scrollY":        "250px",
-        "fixedColumns": false,
-        "columns": [
-          { "data": "ChargeCode" },
-          { "data": "InvoiceNumber" },
-          { "data": "InvoiceDate" },
-          { "data": "Container" },
-          { "data": "ExchangeRate" },
-          { "data": "Creditor" },
-          { "data": "InvoiceTo" },
-          { "data": "SubTotal" },
-          { "data": "GST" },
-          { "data": "Discrepancy" }
-        ]
-      });
 
       var parsedTable = $('#parsedTable').DataTable({
         "ajax": "/apinvoice/parsedData",
