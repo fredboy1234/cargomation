@@ -85,53 +85,55 @@ class Apinvoice extends Core\Controller {
         $headerMatched = array();
         $headerParsed = array();
         $invoicesHeader = array();
+        $data['invoices'] = array();
+        $data['apinvoice'] = array();
+        $parsed = array();
 
-        $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
-        $data['invoices'] = $this->getInvoices($_SESSION['user']);
-        $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
-        $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
+        if(isset($this->geTempData()[0])){
+            $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
+            $data['invoices'] = $this->getInvoices($_SESSION['user']);
+            $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
+            $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
+            // echo"<pre>";
+            // print_r( $data['invoices']);
+            // exit();
+            $notin = array("sec_ref","id");
+            $invoicesHeader =array(
+                "Process ID",
+                "File Name",
+                "Job Number",
+                "Date Uploaded",
+                "Uploaded By",
+                "Action",
+                "Status");
+            // foreach($data['invoices'] as $val){
+            //     foreach($val as $key=>$cval){
+            //         if(!in_array($key,$invoicesHeader) && !in_array($key,$notin)){
+            //             $invoicesHeader[] = $key;
+            //         }
+            //     }
+                    
+            // }
+            
+            //echo "<pre>";
+            foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+                foreach($m as $mkey=>$mval){
+                    if(!in_array($mkey,$headerMatched)){
+                        $headerMatched[] = $mkey;
+                    }
+                    
+                }   
+            }
 
-        // echo"<pre>";
-        // print_r( $data['invoices']);
-        // exit();
-        $notin = array("sec_ref","id");
-        $invoicesHeader =array(
-            "Process ID",
-            "File Name",
-            "Job Number",
-            "Date Uploaded",
-            "Uploaded By",
-            "Action",
-            "Status");
-        // foreach($data['invoices'] as $val){
-        //     foreach($val as $key=>$cval){
-        //         if(!in_array($key,$invoicesHeader) && !in_array($key,$notin)){
-        //             $invoicesHeader[] = $key;
-        //         }
-        //     }
-                
-        // }
-        
-        //echo "<pre>";
-        foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
-            foreach($m as $mkey=>$mval){
-                if(!in_array($mkey,$headerMatched)){
-                    $headerMatched[] = $mkey;
-                }
-                 
-            }   
-        }
-
-        foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
-            foreach($m as $mkey=>$mval){
-                if(!in_array($mkey,$headerParsed)){
-                    $headerParsed[] = $mkey;
+            foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
+                foreach($m as $mkey=>$mval){
+                    if(!in_array($mkey,$headerParsed)){
+                        $headerParsed[] = $mkey;
+                    }  
                 }  
-            }  
+            }
         }
-    //    echo"<pre>";
-    //     print_r($data['invoices']);
-    //     exit();
+   
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -618,7 +620,7 @@ class Apinvoice extends Core\Controller {
     
     public function geTempData(){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getMatchReport(2);
+        return $APinvoice->getMatchReport(2);;
     }
 
     public function getInvoices($user_id){
