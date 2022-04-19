@@ -368,6 +368,11 @@ setInterval(function () {
 //   });
 // });
 
+$('#modal-lg-prev').on('hidden.bs.modal', function (e) {
+  $('#headerTable').DataTable().destroy();
+  $('#parsedTable').DataTable().destroy();
+})
+
 });
 
 /*collapse custom js*/
