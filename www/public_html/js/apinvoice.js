@@ -209,7 +209,7 @@ $(document).ready(function(){
     form_data.append('file', file_data);
     data['user_id'] = user_id;
     data['form_data'] = form_data;
-
+   
     //auto insert after upload separated for some reason
     $.ajax({
       url: document.location.origin+"/apinvoice/uploadAndInsert/",

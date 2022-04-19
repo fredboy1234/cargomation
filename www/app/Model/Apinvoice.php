@@ -35,7 +35,6 @@ class Apinvoice extends Core\Model {
     }
 
     public function getMatchReport($processID){
-        
         $Db = Utility\Database::getInstance();
         $query = "SELECT match_report FROM match_report where prim_ref ='{$processID}' ";
         return  $Db->query($query)->results();
@@ -88,5 +87,10 @@ class Apinvoice extends Core\Model {
                     VALUES('{$user_id}','{$filename}','{$filepath}',getdate(),'{$uploadedby}','{$status}')";
                     
         return  $Db->query($query);
+    }
+
+    public function getLastID(){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT IDENT_CURRENT('match_apinvoice') as lastid")->results();
     }
 }

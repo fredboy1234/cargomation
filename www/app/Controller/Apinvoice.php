@@ -342,7 +342,7 @@ class Apinvoice extends Core\Controller {
         }
         return false;
     }
-
+    
     public function customUpload(){
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
@@ -361,8 +361,9 @@ class Apinvoice extends Core\Controller {
             }
             
             $location = $newFilePath.$name;
+           
             move_uploaded_file($_FILES['file']['tmp_name'], $location);
-            
+        
            // $file_server_path = realpath($newFileUrl.$name);
             // $data['user_id'] = $_SESSION['user'];
             // $data['filename'] = $name;
@@ -376,7 +377,8 @@ class Apinvoice extends Core\Controller {
             $arr  = array(
                 'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_APINVOICE/IN/'.$name,
                 'client' => 'A2B',
-                'user_id' => $_SESSION['user']
+                'user_id' => $_SESSION['user'],
+                'process_id' => $this->getLastID()
             );
            
            // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
@@ -384,7 +386,7 @@ class Apinvoice extends Core\Controller {
             $url ='https://cargomation.com:8001/compare'; 
             
             $result = $this->post($url, $arr, '');
-
+            print_r($result);
            return "success";
         }
     }
@@ -629,14 +631,20 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getMatchReportWidthID($prim_ref);
     }
 
-    public function getInvoicesSuccess(){
+    public function getInvoicesSuccess($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getInvoicesSuccess();
+        return $APinvoice->getInvoicesSuccess($user_id);
     }
 
     public function getSingleInvoice($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
         return $APinvoice->getSingleInvoice($user_id); 
+    }
+
+    public function getLastID(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $lastID = $APinvoice->getLastID();
+        return $lastID[0]->lastid;
     }
 
 }
