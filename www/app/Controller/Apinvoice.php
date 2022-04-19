@@ -207,7 +207,7 @@ class Apinvoice extends Core\Controller {
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
                 "Job Number" => is_null($value->sec_ref) ? 'Empty' : $value->sec_ref,
-                "Date Uploaded"=> $value->dateuploaded,
+                "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
                 "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : $value->status,
