@@ -37,7 +37,7 @@ $status = array("error","success");
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <button type="button" class="btn btn-block btn-outline-info btn-lg">
+            <button id="upload-btn" type="button" class="btn btn-block btn-outline-info btn-lg">
               <i style="font-size:15px" class="fa">&#xf085;</i>&nbsp; <b style="font-size: 15pt;">Upload</b>
             </button>
           </div>
@@ -87,19 +87,26 @@ $status = array("error","success");
           <div class="card-body">
               <table id="example" class="display" style="width:100%">
                   <thead id="s_headcus">
+                    <?php if(!empty($this->invoicesHeader)){?>
                       <tr>
                           <th></th>
                           <?php foreach($this->invoicesHeader as $inhead){?>
                             <th><?=$inhead?></th>
                           <?php } ?>
-                          <!-- <th>Process ID</th>
+                      </tr>
+                    <?php }else{ ?>
+                      <tr>
+                      <th></th>
+                        <th>Process ID</th>
                           <th>File Name</th>
                           <th>Job Number</th>
                           <th>Date Uploaded</th>
                           <th>Uploaded By</th>
                           <th>Action</th>
-                          <th>Status</th> -->
+                          <th>Status</th>
                       </tr>
+                    <?php } ?>
+                      
                   </thead>
                   <tfoot>
                       <tr>
@@ -118,6 +125,7 @@ $status = array("error","success");
                   </tfoot>
               </table>
           </div>
+          
           <!-- /.card-body -->
           <div class="card-footer clearfix">
             <ul class="pagination pagination-sm m-0 float-right">
