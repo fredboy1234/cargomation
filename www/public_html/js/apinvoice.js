@@ -341,11 +341,6 @@ setInterval(function () {
 //   });
 // });
 
-$('#modal-lg-prev').on('hidden.bs.modal', function () {
-  headertable.destroy();
-  parsedTable.destroy();
-});
-
 });
 
 /*collapse custom js*/
