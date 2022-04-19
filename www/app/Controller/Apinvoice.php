@@ -202,11 +202,12 @@ class Apinvoice extends Core\Controller {
                     }
                 }
             } 
+            $jobnum = json_decode($value->sec_ref);
             
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
-                "Job Number" => is_null($value->sec_ref) ? 'Empty' : $value->sec_ref,
+                "Job Number" => is_null($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
@@ -247,7 +248,6 @@ class Apinvoice extends Core\Controller {
 
     public function parsedData(){
         $parsed = array();
-       
         if(isset($_POST['prim_ref'])){
             $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);   
         }else{
@@ -619,7 +619,7 @@ class Apinvoice extends Core\Controller {
     
     public function geTempData(){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getMatchReport(2);;
+        return $APinvoice->getMatchReport(52);
     }
 
     public function getInvoices($user_id){
