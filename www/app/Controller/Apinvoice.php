@@ -223,13 +223,11 @@ class Apinvoice extends Core\Controller {
     public function headerData(){
         $header=array();
         $columnMatched = array();
-        print_r($_POST);
-        exit();
+        
         if(isset($_POST['prim_ref'])){
             $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);
-        }else{
-            $data['apinvoice'] = json_decode($this->geTempDataV2($_POST['prim_ref'])[0]->match_report);
         }
+        
         if(!isset( $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData)){
             exit;
         }
