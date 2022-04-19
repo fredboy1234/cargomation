@@ -388,7 +388,7 @@ class Apinvoice extends Core\Controller {
             $url ='https://cargomation.com:8001/compare'; 
             
             $result = $this->post($url, $arr, '');
-            print_r($result);
+           
            return "success";
         }
     }
@@ -450,8 +450,7 @@ class Apinvoice extends Core\Controller {
     // upload the bootstrap-fileinput files
     // returns associative array
     public function upload() {
-        print_r($_POST);
-        exit();
+        
         $User = Model\User::getInstance($_POST['user_id']);
         $email = $User->data()->email;
         $user_id = $User->data()->id;

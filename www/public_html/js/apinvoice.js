@@ -1,45 +1,5 @@
-$(".fileinput-upload, #upload-btn").on("click",function(){
-    alert();
-  var file_data = $('#invoice').prop('files')[0];   
-  var form_data = new FormData(); 
-  var data=[];
-  form_data.append('file', file_data);
-  data['user_id'] = user_id;
-  data['form_data'] = form_data;
- 
-  //auto insert after upload separated for some reason
-  $.ajax({
-    url: document.location.origin+"/apinvoice/uploadAndInsert/",
-    contentType:false,
-        cache:false,
-        processData:false,
-    type: "POST",
-    data:form_data,
-    success:function(data)
-    {
-      //table.ajax.url( '/apinvoice/invoicesData' ).load();
-       //call Compare api after upload
-       Swal.fire(
-        "",
-        "Your Was File Uploaded!",
-        );
-      $.ajax({
-        url: document.location.origin+"/apinvoice/customUpload/",
-        contentType:false,
-            cache:false,
-            processData:false,
-        type: "POST",
-        data:form_data,
-        success:function(data)
-        {
-          
-        }
-      });
-    }
-  });
-
-});
 // d  = data object of the row from json take note :)
+
 function format ( d ) {
   console.log(d);
   var invoiceData = [];
@@ -242,7 +202,47 @@ $(document).ready(function(){
   });
 
   // Bootstrap File Input
-  
+  $(".fileinput-upload, #upload-btn").on("click",function(){
+    
+    var file_data = $('#invoice').prop('files')[0];   
+    var form_data = new FormData(); 
+    var data=[];
+    form_data.append('file', file_data);
+    data['user_id'] = user_id;
+    data['form_data'] = form_data;
+   
+    //auto insert after upload separated for some reason
+    $.ajax({
+      url: document.location.origin+"/apinvoice/uploadAndInsert/",
+      contentType:false,
+          cache:false,
+          processData:false,
+      type: "POST",
+      data:form_data,
+      success:function(data)
+      {
+        //table.ajax.url( '/apinvoice/invoicesData' ).load();
+         //call Compare api after upload
+         Swal.fire(
+          "",
+          "Your Was File Uploaded!",
+          );
+        $.ajax({
+          url: document.location.origin+"/apinvoice/customUpload/",
+          contentType:false,
+              cache:false,
+              processData:false,
+          type: "POST",
+          data:form_data,
+          success:function(data)
+          {
+            
+          }
+        });
+      }
+    });
+
+  });
   var $el1 = $("#invoice");
   $el1.fileinput({
       theme: 'fas',
