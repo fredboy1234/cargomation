@@ -760,7 +760,7 @@ $(document).ready(function () {
     $("#add_filters option").each(function(){
       $(this).attr("data-index",1);
     });
-    if(typeof search !== null && search !== null && value == '') {
+    if((typeof search !== null || search !== null) && value !== '') {
       table.ajax.reload(setColor);
     }
   });

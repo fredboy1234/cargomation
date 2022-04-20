@@ -1067,7 +1067,7 @@ class Document extends Core\Controller {
         $User->putUserNotifications($data);
     }
 
-    public function getDocumentData($shipment_num = "") {
+    public function getDocumentData2($shipment_num = "") {
         if(!empty($_POST['draw'])) {
             // if(isset($_POST['column']) && $_POST['column'] == 'type') {
             //     $column = 'type, COUNT(type) as count';
@@ -1092,6 +1092,114 @@ class Document extends Core\Controller {
         //     $response = $data;
         // }
         echo json_encode($response);
+    }
+
+    public function getDocumentData($user_id = "") {
+        if(!isset($_POST['draw'])) {
+            die('Unauthorized Access');
+        }
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $url = 'https://cargomation.com:5200/redis/getdocuments';
+        $arr = [
+            "draw" => $_POST['draw'],
+            "user_id" => $user_id,
+            "length" => (is_numeric($_POST['length']) ? (int)$_POST['length'] : 0),
+            "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
+        ];
+        $arr["filter"] = array((object)["columnname" => "shipment_num",
+            "type" => "equals",
+            "value" => $_POST['shipment_num'],
+            "cond" => ""]);
+        $arr["sort"] = array((object)["order" => $_POST['columns'][$_POST['order'][0]['column']]['data'],
+                "by" => $_POST['order'][0]['dir']]);
+        // if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
+        //     foreach ($_POST['order'] as $key => $value) {
+        //         // change shipment_id to shipment_num
+        //         if($_POST['order'][0]['column'] == 0) {
+        //             $_POST['columns'][$_POST['order'][0]['column']]['data'] = "id";
+        //         }
+        //         $arr["sort"] = array((object)["order" => $_POST['columns'][$_POST['order'][0]['column']]['data'],
+        //                         "by" => $value['dir']]);
+        //     }
+        // }
+        // if(isset($_POST['search']['value']) && !empty($_POST['search']['value'])) {
+        //     $arr["filter"] = array((object)["columnname" => "shipment_num",
+        //                                     "type" => "contains",
+        //                                     "value" => $_POST['search']['value'],
+        //                                     "cond" => ""]);
+        // }
+        // if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
+        //     $arr["filter"] = $_POST['data'];
+        //     $User->putRecentSearch($user_id, $arr["filter"]);
+        // }
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+        $result = $this->post($url, $payload, $headers);
+        $json_data = json_decode($result);
+        if($json_data->status != '200') {
+            echo json_encode($json_data);
+            exit;
+        }
+        $array_data = array(
+            "draw"            => $_POST['draw'],  
+            "recordsTotal"    => $json_data->recordsTotal,  
+            "recordsFiltered" => $json_data->recordsFiltered,
+            "data"            => $this->sanitizeData($json_data->data)
+        );
+        echo json_encode($array_data);
+    }
+
+    private function sanitizeData($param) {
+        $array_data = json_decode($param); $data = array();
+        foreach ($array_data as $key => $value) {
+            $subdata = array();
+            $subdata["id"] = $value->id;
+            $subdata["shipment_id"] = $value->shipment_id;
+            $subdata["shipment_num"] = $value->shipment_num;
+            $subdata["type"] = $value->type;
+            $subdata["name"] = $value->name;
+            $subdata["saved_by"] = $value->saved_by;
+            $subdata["saved_date"] = $value->saved_date;
+            $subdata["event_date"] = $value->event_date;
+            $subdata["path"] = $value->path;
+            $subdata["upload_src"] = $value->upload_src;
+            $subdata["is_published"] = $value->is_published;
+            $subdata["status"] = $value->status;
+            $subdata["user_id"] = $value->user_id;
+            $subdata["consignee"] = $value->consignee;
+            $subdata["consignor"] = $value->consignor;
+            $subdata["url_file"] = $value->url_file;
+            $subdata["doc_comments"] = "No commments";
+            if(!empty($value->doc_comments)) {
+                // foreach ($value->doc_comments as $key => $value) {
+                //     # code...
+                // }
+                $subdata["doc_comments"] = '<button type="button" class="file-comment btn btn-sm" 
+                    title="View Comment" data-doc_id="'.$value->id.'" 
+                    data-doc_status="'.$value->doc_comments[0]->status.'">
+                    <i class="fas fa-comment"></i></button>';
+            }
+            $subdata["doc_requests"] = "No request";
+            if(!empty($value->doc_requests)) {
+                $subdata["doc_comments"] = "Has Comments";
+            }
+            
+            $data[] = $subdata;
+        }
+        return $data;
     }
 
     public function getDocCompare($user_id, $doc_id){
@@ -1150,4 +1258,38 @@ class Document extends Core\Controller {
         echo json_encode($document_type);
     }
 
+    /**
+     * Post: uses CURL to call a request to the endpoint and 
+     * return mixed data response.
+     * @access private
+     * @param string $url url of the endpoint
+     * @param mixed $payload  obj,array,string,int
+     * @example $data = json_encode($array, JSON_UNESCAPED_SLASHES);
+     * @param string $headers  curl header options
+     * @example $headers = ["Content-Type: application/json"];
+     * @return mixed response
+     * @since 1.0
+     */
+    private function post($url, $payload, $headers) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
+    }
 }
