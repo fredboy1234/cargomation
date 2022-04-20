@@ -108,7 +108,13 @@ $(document).ready(function() {
       // });
 
       var parsedTable = $('#parsedTable').DataTable({
-        "ajax": "/apinvoice/parsedData",
+        "serverSide": true,
+        "processing": true,
+        "ajax": {
+          "url":  document.location.origin+"/apinvoice/parsedData",
+          "type": "POST",
+          "data":{prim_ref:pid},
+        },
         "scrollX": true,
         "scrollY":        "250px",
         "fixedColumns": false,
@@ -369,8 +375,10 @@ setInterval(function () {
 // });
 
 $('#modal-lg-prev').on('hidden.bs.modal', function (e) {
-  $('#headerTable').DataTable().destroy();
-  $('#parsedTable').DataTable().destroy();
+  $('#headerTable').DataTable().clear();
+  $('#parsedTable').DataTable().clear();
+  $('#headerTable').dataTable().fnDestroy();
+  $('#parsedTable').dataTable().fnDestroy();
 })
 
 });
