@@ -753,6 +753,12 @@ var tooltipHTML = `<center><strong>{vessel}</strong></center>
         <input class="btn btn-default btn-xs mb-2" type="button" value="More info" onclick="routeBtn({order})" />
     </center>`;
 
+var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+    '<div class="spinner-border" role="status">' +
+    '<span class="sr-only">Loading...</span>' +
+    '</div>' +
+    '</div>';
+
 $(document).ready(function() { 
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
@@ -894,15 +900,59 @@ $(document).ready(function() {
         serverSide: true,
         serverMethod: 'post',
         ajax: {
-            url: 'document/getDocumentData/<?= $this->shipment_info[0]->shipment_num; ?>',
+            url: 'document/getDocumentData',
+            data: function(outData){
+                outData.shipment_num = "<?= $this->shipment_info[0]->shipment_num; ?>";
+                console.log(outData);
+                return outData;
+            },
+            dataFilter:function(inData){
+                // what is being sent back from the server (if no error)
+                // console.log(inData);
+                return inData;
+            },
+            error:function(err, status){
+                // what error is seen(it could be either server side or client side.
+                // console.log(err);
+         },
         },
         columns: [
             { data: 'type', defaultContent: "OTHER" },
             { data: 'status', defaultContent: "-" },
             { data: 'saved_date', defaultContent: "-" },
-            { data: 'message', defaultContent: "-" }
-        ]
-    } );
+            { data: 'doc_comments', defaultContent: "-" }
+        ],
+        initComplete: function( settings, json ) {
+        },
+        drawCallback: function( settings, json ) {
+            // Button Comment
+            $('button.file-comment').click(function (ev) {
+                var doc_status = $(this).data("doc_status");
+                var doc_id = $(this).data("doc_id");
+                //$('#document-upload, #document-comment').toggle();
+                ev.preventDefault();
+                // var target = $(this).attr("href");
+                // var target = "document/comment/" + doc_id + "/" + doc_status;
+                var url = "document/comment/" + doc_id + "/view/" + doc_status;
+                console.log(url);
+                // load the url and show modal on success
+                // preloader(url);
+                $("#shipmentModal .modal-body").append(loader);
+                // load the url and show modal on success
+                $("#shipmentModal .modal-body").load(url,
+                function (response, status, xhr) {
+                    if (xhr.status == 200) {
+                        $('#loader-wrapper').remove();
+                        $("#shipmentModal").modal("show");
+                    } else {
+                        alert("Error: " + xhr.status + ": " + xhr.statusText);
+                        $('#loader-wrapper').remove();
+                    }
+                });
+                // $('#document_action, #go_back').toggle();
+            });
+        }
+    });
 });
 
 $(document).ready(function() {
