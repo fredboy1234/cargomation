@@ -181,8 +181,6 @@ class Apinvoice extends Core\Controller {
         $invoiceHeader = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
         
-        
-        
         foreach($data['invoices'] as $value){
             $invoiceHeader['invoice'] = array();
             
@@ -197,15 +195,14 @@ class Apinvoice extends Core\Controller {
                         $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
                         $invoiceHeader['invoice_response'] = "ready";
                         $invoiceHeader['invoice_status'] = "complete";
-
-                        $invoiceHeader['invoice']  = "INVOICE_{$invoiceHeader['invoice_num']},
+                    }
+                }
+                $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
                                                     {$invoiceHeader['invoice_report']},
                                                     <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
                                                     <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>";
-                    }
-                }
             } 
-            
+           
             $jobnum = json_decode($value->sec_ref);
             
             $retData['data'][] = array(
