@@ -660,66 +660,70 @@ class Shipment extends Core\Controller {
                 $documents[strtolower($type)]['badge'] = "";
                 $documents[strtolower($type)]['count'] = "";
             }
-            foreach ($shipment->Documents as $document_key => $document) {
-                // Status Count
-                if($document->status == "approved") {
-                    $documents[strtolower($document->type)]['approved']++;
-                }
-                if($document->status == "pending") {
-                    $documents[strtolower($document->type)]['pending']++;
-                }  
-                if($document->status == "watched") {
-                    $documents[strtolower($document->type)]['watched']++;
-                }
-                // Status Text and Badge
-                if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
-                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
-                    $documents[strtolower($document->type)]['badge'] = "badge-success";
-                    $documents[strtolower($document->type)]['text'] = "Approved"; 
-                } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
-                    $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
-                    $documents[strtolower($document->type)]['badge'] = "badge-warning";
-                    $documents[strtolower($document->type)]['text'] = "Pending";
-                } else {
-                    // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
-                    // $documents[strtolower($document->type)]['badge'] = "badge-warning";
-                    // $documents[strtolower($document->type)]['text'] = "Pending";
+            if(!empty($shipment->Documents)) {
+                foreach ($shipment->Documents as $document_key => $document) {
+                    // Status Count
+                    if($document->status == "approved") {
+                        $documents[strtolower($document->type)]['approved']++;
+                    }
+                    if($document->status == "pending") {
+                        $documents[strtolower($document->type)]['pending']++;
+                    }  
+                    if($document->status == "watched") {
+                        $documents[strtolower($document->type)]['watched']++;
+                    }
+                    // Status Text and Badge
+                    if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-success";
+                        $documents[strtolower($document->type)]['text'] = "Approved"; 
+                    } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        $documents[strtolower($document->type)]['text'] = "Pending";
+                    } else {
+                        // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        // $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        // $documents[strtolower($document->type)]['text'] = "Pending";
+                    }
                 }
             }
             // DOCUMENT REQUEST
-            foreach ($shipment->DocumentRequests as $requested_key => $requested) {
-                // $requested->shipment_num // $requested->document_type // $requested->document_id 
-                // $requested->request_type // $requested->expired_date // $requested->status
-                // $requested->sender
-                if(strpos($requested->document_type, ',') === false) {
-                    $documents[strtolower($requested->document_type )]['count'] = $requested->request_type;
-                    $documents[strtolower($requested->document_type )]['badge'] = "badge-info";
-                    $documents[strtolower($requested->document_type )]['text'] = "Requested"; 
-                    // If type already have a document
-                    if(!isset($documents[strtolower($requested->document_type )]['approved'])) {
-                        $documents[strtolower($requested->document_type )]['approved'] = 0;
-                    }
-                    if(!isset($documents[strtolower($requested->document_type )]['pending'])) {
-                        $documents[strtolower($requested->document_type )]['pending'] = 0;
-                    }
-                    if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
-                        $documents[strtolower($requested->document_type )]['watched'] = 0;
-                    }
-                } else {
-                    $doc_array = explode(",", $requested->document_type);
-                    foreach ($doc_array as $key => $value) {
-                        $documents[strtolower($value)]['count'] = $requested->request_type;
-                        $documents[strtolower($value)]['badge'] = "badge-info";
-                        $documents[strtolower($value)]['text'] = "Requested"; 
+            if(!empty($shipment->DocumentRequests)) {
+                foreach ($shipment->DocumentRequests as $requested_key => $requested) {
+                    // $requested->shipment_num // $requested->document_type // $requested->document_id 
+                    // $requested->request_type // $requested->expired_date // $requested->status
+                    // $requested->sender
+                    if(strpos($requested->document_type, ',') === false) {
+                        $documents[strtolower($requested->document_type )]['count'] = $requested->request_type;
+                        $documents[strtolower($requested->document_type )]['badge'] = "badge-info";
+                        $documents[strtolower($requested->document_type )]['text'] = "Requested"; 
                         // If type already have a document
-                        if(!isset($documents[strtolower($value)]['approved'])) {
-                            $documents[strtolower($value)]['approved'] = 0;
+                        if(!isset($documents[strtolower($requested->document_type )]['approved'])) {
+                            $documents[strtolower($requested->document_type )]['approved'] = 0;
                         }
-                        if(!isset($documents[strtolower($value)]['pending'])) {
-                            $documents[strtolower($value)]['pending'] = 0;
+                        if(!isset($documents[strtolower($requested->document_type )]['pending'])) {
+                            $documents[strtolower($requested->document_type )]['pending'] = 0;
                         }
-                        if(!isset($documents[strtolower($value)]['watched'])) {
-                            $documents[strtolower($value)]['watched'] = 0;
+                        if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
+                            $documents[strtolower($requested->document_type )]['watched'] = 0;
+                        }
+                    } else {
+                        $doc_array = explode(",", $requested->document_type);
+                        foreach ($doc_array as $key => $value) {
+                            $documents[strtolower($value)]['count'] = $requested->request_type;
+                            $documents[strtolower($value)]['badge'] = "badge-info";
+                            $documents[strtolower($value)]['text'] = "Requested"; 
+                            // If type already have a document
+                            if(!isset($documents[strtolower($value)]['approved'])) {
+                                $documents[strtolower($value)]['approved'] = 0;
+                            }
+                            if(!isset($documents[strtolower($value)]['pending'])) {
+                                $documents[strtolower($value)]['pending'] = 0;
+                            }
+                            if(!isset($documents[strtolower($value)]['watched'])) {
+                                $documents[strtolower($value)]['watched'] = 0;
+                            }
                         }
                     }
                 }
