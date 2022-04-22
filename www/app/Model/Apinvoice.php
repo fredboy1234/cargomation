@@ -25,12 +25,16 @@ class Apinvoice extends Core\Model {
     }
 
     public function addToCGM_Response($data){
-        
+        $cgm = $data['cgm'];
+        $prim_ref = $data['prim_ref'];
         $Db = Utility\Database::getInstance();
-        $query = "INSERT
-            INTO match_report(cgm_response)
-            VALUES('{$data}')
-        ";
+        // $query = "INSERT
+        //     INTO match_report(cgm_response)
+        //     VALUES('{$data}')
+        // ";
+        $query = "UPDATE match_report 
+               SET cgm_response = '{$cgm}'
+               WHERE prim_ref = '{$prim_ref}'";
         return  $Db->query($query);
     }
 

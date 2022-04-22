@@ -57,10 +57,10 @@
                         <table style="width:100%" id="parsedTable" class="table card-danger card-outline">
                            <thead>
                               <tr>
+                                 <th></th>
                                  <?php foreach($this->headerParsed as $headparsed){?>
                                  <th scope="col"><?php echo $headparsed ?></th>
                                  <?php } ?>
-                                 <th></th>
                               </tr>
                            </thead>
                            <tbody>
