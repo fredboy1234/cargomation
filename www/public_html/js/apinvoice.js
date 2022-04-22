@@ -62,7 +62,7 @@ $(document).ready(function() {
       var pid = $(this).attr('data-pid');
       console.log('pid');
       console.log(pid);
-
+      
       var headertable = $('#headerTable').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -124,6 +124,12 @@ $(document).ready(function() {
           });
         },
         "columns": [
+          {
+            "data": null,
+            "className": "dt-center editor-edit",
+            "defaultContent": '<i class="fas fa-pencil-alt"></i>',
+            "orderable": false
+          },
           { "data": "ChargeCode" },
           { "data": "InvoiceNumber" },
           { "data": "InvoiceDate" },
@@ -134,15 +140,9 @@ $(document).ready(function() {
           { "data": "SubTotal" },
           { "data": "GST" },
           { "data": "Discrepancy" },
-          {
-            "data": null,
-            "className": "dt-center editor-edit",
-            "defaultContent": '<i class="fas fa-pencil-alt"></i>',
-            "orderable": false
-          },
         ]
       });
-
+      $("#parsedTable_wrapper").attr("data-prim",pid);
       $.ajax({
         url: document.location.origin+"/apinvoice/headerData/",
         type: "POST",
@@ -267,8 +267,8 @@ $(document).ready(function(){
     $.ajax({
       url: document.location.origin+"/apinvoice/uploadAndInsert/",
       contentType:false,
-          cache:false,
-          processData:false,
+      cache:false,
+      processData:false,
       type: "POST",
       data:form_data,
       success:function(data)
@@ -390,4 +390,28 @@ const mainContent = document.querySelector('.main-content_custom');
 function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
+}
+
+var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+  '<div class="spinner-border" role="status">' +
+  '<span class="sr-only">Loading...</span>' +
+  '</div>' +
+  '</div>';
+// Show loader
+function preloader(url) {
+
+  $("#myModal .modal-body").append(loader);
+
+  // load the url and show modal on success
+  $("#myModal .modal-body").load(url, function (response, status, xhr) {
+    if (xhr.status == 200) {
+      $('#loader-wrapper').remove();
+      $("#myModal").modal("show");
+    } else {
+      alert("Error: " + xhr.status + ": " + xhr.statusText);
+      $('#loader-wrapper').remove();
+    }
+  });
+
+  $('button#request').toggle();
 }

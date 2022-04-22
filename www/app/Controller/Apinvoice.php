@@ -614,7 +614,10 @@ class Apinvoice extends Core\Controller {
             }
             
             $_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
-           $APinvoice->addToCGM_Response(json_encode($_POST['apinvoice']));
+            $data['cgm'] = json_encode($_POST['apinvoice']);
+            $data['prim_ref'] = $_POST['prim_ref'];
+            
+            $APinvoice->addToCGM_Response($data);
         }
     }
     
