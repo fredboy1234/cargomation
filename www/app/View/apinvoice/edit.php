@@ -18,12 +18,12 @@
     
   $(".sendToData").on("click",function(){
     var formData = [];
+    var prim_ref = $("#parsedTable_wrapper").attr("data-prim");
 
     $('#parsedForm .form-group input').each(function(){
       var tobj ={};
       var tvalue = $(this).val();
       var tname = $(this).attr("name");
-      var prim_ref = $("#parsedTable_wrapper").attr("data-prim");
       tobj[tname] = tvalue;
       formData.push(tobj);
     });
@@ -35,6 +35,11 @@
       success:function(data)
       {
         console.log(data);
+        $("#edit-ap .close").trigger("click");
+        Swal.fire(
+          "",
+          "Edit Success!",
+          );
       }
     });
   });

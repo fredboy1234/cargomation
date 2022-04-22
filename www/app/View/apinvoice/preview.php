@@ -140,7 +140,7 @@
    <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Document</h4>
+            <h4 class="modal-title">Invoice</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
