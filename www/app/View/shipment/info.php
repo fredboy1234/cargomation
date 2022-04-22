@@ -919,14 +919,21 @@ $(document).ready(function() {
         columns: [
             { data: 'type', defaultContent: "OTHER" },
             { data: 'status', defaultContent: "-" },
-            { data: 'saved_date', defaultContent: "-" },
+            { data: 'saved_date', defaultContent: "-",
+                render: function(data, type, row){
+                    if(type === "sort" || type === "type"){
+                        return data;
+                    }
+                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                }
+            },
             { data: 'doc_comments', defaultContent: "-" }
         ],
         initComplete: function( settings, json ) {
         },
         drawCallback: function( settings, json ) {
             // Button Comment
-            $('button.file-comment').click(function (ev) {
+            $('button.file-comment, span.file-comment').click(function (ev) {
                 var doc_status = $(this).data("doc_status");
                 var doc_id = $(this).data("doc_id");
                 //$('#document-upload, #document-comment').toggle();
