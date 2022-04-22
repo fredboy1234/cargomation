@@ -424,9 +424,9 @@ switch ($transMode) {
                                             $json = json_decode($this->shipment_info[0]->route_leg); ?>
                                         <?php foreach ($json as $key => $value): ?>
                                         <div class="card">
-                                            <div class="card-header" id="headingOne">
+                                            <div class="card-header" id="heading<?=$key;?>">
                                                 <h5 class="mb-0">
-                                                <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $value->LegOrder; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
+                                                <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $key; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
                                                         <div class="row">
                                                             <div class="col-sm-5"><?php echo $value->Origin; ?></div>
                                                             <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
@@ -436,7 +436,7 @@ switch ($transMode) {
                                                 </h5>
                                             </div>
 
-                                            <div id="collapse<?= $value->LegOrder; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div id="collapse<?= $key; ?>" class="collapse" aria-labelledby="heading<?=$key;?>" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -504,6 +504,20 @@ switch ($transMode) {
                                                             <strong>Address Type</strong>
                                                             <p><?= (!empty($value->AddressType))?$value->AddressType:" - "; ?></p>
                                                         </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <?php if(!empty($value->LCLAvailability)) : ?>
+                                                        <div class="col-lg-4">
+                                                            <strong>CFS Availability</strong>
+                                                            <p><?= date("d F Y H:i", strtotime($value->LCLAvailability)); ?></p>
+                                                        </div>
+                                                        <?php endif; ?>
+                                                        <?php if(!empty($value->LCLStorageDate)) : ?>
+                                                        <div class="col-lg-4">
+                                                            <strong>CFS Storage Date</strong>
+                                                            <p><?= date("d F Y H:i", strtotime($value->LCLStorageDate)); ?></p>
+                                                        </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>
