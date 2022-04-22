@@ -726,7 +726,17 @@ try{
 					$XPATH_CARRIERORG = $parser->encode($XPATH_CARRIERORG);
 					$CARRIERORG = node_exist(getArrayName($XPATH_CARRIERORG));
 
-					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierCompanyName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG);	
+					//GET LCL DATE AVAILABILITY
+					$XPATH_LCLAvailability= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].LCLAvailability");
+					$XPATH_LCLAvailability = $parser->encode($XPATH_LCLAvailability);
+					$LCLAvailability = node_exist(getArrayName($XPATH_LCLAvailability));
+
+					//GET LCL DATE STORAGE
+					$XPATH_LCLStorageDate= jsonPath($universal_shipment, $path_TransportLegCollection."[$k].LCLStorageDate");
+					$XPATH_LCLStorageDate = $parser->encode($XPATH_LCLStorageDate);
+					$LCLStorageDate = node_exist(getArrayName($XPATH_LCLStorageDate));
+
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierCompanyName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$XPATH_LCLAvailability,"LCLStorageDate"=>$XPATH_LCLStorageDate);	
                     
 				 }
 				 else
@@ -806,7 +816,17 @@ try{
 					$XPATH_CARRIERORG = $parser->encode($XPATH_CARRIERORG);
 					$CARRIERORG = node_exist(getArrayName($XPATH_CARRIERORG));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG);
+					//GET LCL DATE AVAILABILITY
+					$XPATH_LCLAvailability= jsonPath($universal_shipment, $path_TransportLegCollection.".LCLAvailability");
+					$XPATH_LCLAvailability = $parser->encode($XPATH_LCLAvailability);
+					$LCLAvailability = node_exist(getArrayName($XPATH_LCLAvailability));
+
+					//GET LCL DATE STORAGE
+					$XPATH_LCLStorageDate= jsonPath($universal_shipment, $path_TransportLegCollection.".LCLStorageDate");
+					$XPATH_LCLStorageDate = $parser->encode($XPATH_LCLStorageDate);
+					$LCLStorageDate = node_exist(getArrayName($XPATH_LCLStorageDate));
+
+					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$XPATH_LCLAvailability,"LCLStorageDate"=>$XPATH_LCLStorageDate);
 				}
 			
 				 $routing = json_encode($items);
