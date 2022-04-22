@@ -183,6 +183,7 @@ class Apinvoice extends Core\Controller {
         
         foreach($data['invoices'] as $value){
             $invoiceHeader['invoice'] = array();
+            
             if(!empty($value->match_report)){
                 $parsed = json_decode($value->match_report);
                 $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
@@ -191,23 +192,23 @@ class Apinvoice extends Core\Controller {
                  
                     foreach($parsedChargline ->ChargeLine as $chline){
                         $invoiceHeader['invoice_num'] = $chline->InvoiceNumber;
-                        $invoiceHeader['invoice_report'] = "Match Found";
+                        $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
                         $invoiceHeader['invoice_response'] = "ready";
                         $invoiceHeader['invoice_status'] = "complete";
-
-                        $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
+                    }
+                }
+                $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
                                                     {$invoiceHeader['invoice_report']},
                                                     <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
                                                     <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>";
-                    }
-                }
             } 
+           
             $jobnum = json_decode($value->sec_ref);
             
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
-                "Job Number" => is_null($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
+                "Job Number" => !isset($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
