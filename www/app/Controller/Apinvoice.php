@@ -399,7 +399,7 @@ class Apinvoice extends Core\Controller {
         $process_id = '';
         
         if(isset($_POST)){
-            $process_id = $_POST['prim_ref'];
+            $process_id = $this->getMatchReportWidthID($_POST['prim_ref'])[0]->id;
             $arr = array(
                 "user_id" => $user_id,
                 "id" => $process_id
@@ -412,6 +412,8 @@ class Apinvoice extends Core\Controller {
             $url ='https://cargomation.com:5200/redis/apinvoice/APCargowiseChargeCode'; 
     
             $result = $this->post($url,$payload,$headers);
+
+            print_r($result);
         }
          
     }
