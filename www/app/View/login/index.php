@@ -125,9 +125,10 @@ h1 {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control password" placeholder="Password" autocomplete="on">
           <div class="input-group-append">
             <div class="input-group-text">
+              <i class="fa fa-eye"></i> &nbsp;
               <span class="fas fa-lock"></span>
             </div>
           </div>
@@ -338,6 +339,11 @@ $(document).ready(function(){
             }
         });
       }
+  });
+  $('form i').click(function(){
+    $(this).toggleClass('fa-eye-slash fa-eye');
+    let input = $('form input.password');
+    input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
   });
 });
 </script>
