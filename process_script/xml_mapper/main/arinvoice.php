@@ -49,35 +49,44 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 			$OutstandingAmount = $parser->encode($OutstandingAmount);
 			$OutstandingAmount = node_exist(getArrayName($OutstandingAmount));
 
+			  /*GET if 1 COUNT*/
+		    $Chargectr = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine.SellPostedTransactionNumber");
+			$ChargeBoolean = $parser->encode($Chargectr);
+
 			  /*GET ChargeLine COUNT*/
 		    $Chargeline = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[*]");
 			$ChargelineCTR = $Chargeline;
-				if ($ChargelineCTR != false) {
+			$a = 0;
+				if ($ChargeBoolean == 'false') {
 					$ChargelineCTR = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[*]");
 					$ChargelineCTR = count($ChargelineCTR);
+					$ChargeLineArr = ".ChargeLine[$a].";
 					
 				}
 				else
 				{
-					$ChargelineCTR = 0;
+					$ChargelineCTR = 1;
+					$ChargeLineArr = ".ChargeLine.";
+
 				}
 
             for ($a = 0; $a <= $ChargelineCTR-1; $a++) {
-            	$SellPostedTransactionNumber = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[$a].SellPostedTransactionNumber");
+
+            	$SellPostedTransactionNumber = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellPostedTransactionNumber");
 				$SellPostedTransactionNumber = $parser->encode($SellPostedTransactionNumber);
 		    	$SellPostedTransactionNumber = node_exist(getArrayName($SellPostedTransactionNumber));
 
 		    	if(strval($TransactionNumber) == strval($SellPostedTransactionNumber)){
 
-		    		$SellInvoiceType = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[$a].SellInvoiceType");
+		    		$SellInvoiceType = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellInvoiceType");
 					$SellInvoiceType = $parser->encode($SellInvoiceType);
 			    	$SellInvoiceType = node_exist(getArrayName($SellInvoiceType));
 
-			    	$Debtor = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[$a].Debtor.Key");
+			    	$Debtor = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."Debtor.Key");
 					$Debtor = $parser->encode($Debtor);
 			    	$Debtor = node_exist(getArrayName($Debtor));
 
-			    	$FullyPaidDate = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[$a].SellPostedTransaction.FullyPaidDate");
+			    	$FullyPaidDate = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellPostedTransaction.FullyPaidDate");
 					$FullyPaidDate = $parser->encode($FullyPaidDate);
 			    	$FullyPaidDate = node_exist(getArrayName($FullyPaidDate));
 
@@ -94,13 +103,14 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 				 $qryArInvoice = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 				 $ctr_qryArInvoice = sqlsrv_num_rows($qryArInvoice);
 
+            /*if not exist insert AR Details*/
 				 if($ctr_qryArInvoice<=0){
 				  	 $sqlarinsert = "INSERT INTO dbo.shipment_arinvoice (user_id,shipment_num,job_invoicenum,transaction_num,inv_type,debtor,post_date,invoice_date,fullypaid_date,invoice_amount,outstanding_amount) Values
 				  	 ($CLIENT_ID,'".$ShipmentKey."','".$JobInvoiceNumber."','".$TransactionNumber."','".$SellInvoiceType."','".$Debtor."','".$PostDate."','".$InvoiceDate."','".$FullyPaidDate."',".$InvoiceAmount.",".$OutstandingAmount.")";
 				  	$qryOrder = sqlsrv_query($conn, $sqlarinsert, array(), array( "Scrollable" => 'static'));
 				  }
 				  else{
-				  	/* updates fields to existing orders*/
+				  	/* updates fields to existing ar invoice details*/
 				  	 $sqlarupdate="UPDATE dbo.shipment_arinvoice
 				  	SET inv_type='$SellInvoiceType',debtor='$Debtor',post_date='$PostDate',invoice_date='$InvoiceDate',fullypaid_date='$FullyPaidDate',invoice_amount=$InvoiceAmount,outstanding_amount=$OutstandingAmount
 				  	WHERE dbo.shipment_arinvoice.user_id = '".$CLIENT_ID."' AND dbo.shipment_arinvoice.shipment_num ='".$ShipmentKey."' AND dbo.shipment_arinvoice.job_invoicenum ='".$JobInvoiceNumber."' AND dbo.shipment_arinvoice.transaction_num ='".$TransactionNumber."'";
