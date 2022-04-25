@@ -101,7 +101,7 @@ class Apinvoice extends Core\Controller {
             $invoicesHeader =array(
                 "Process ID",
                 "File Name",
-                "Job Number",
+                "Doc Number",
                 "Date Uploaded",
                 "Uploaded By",
                 "Action",
@@ -165,7 +165,7 @@ class Apinvoice extends Core\Controller {
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->filename,
-                "Job Number" => "empty",
+                "Doc Number" => "empty",
                 "Date Uploaded"=> date("d/m/Y"),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
@@ -208,7 +208,7 @@ class Apinvoice extends Core\Controller {
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
-                "Job Number" => !isset($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
+                "Doc Number" => !isset($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
@@ -392,6 +392,28 @@ class Apinvoice extends Core\Controller {
            
            return "success";
         }
+    }
+
+    public function pushTOCW(){
+        $user_id = $_SESSION['user'];
+        $process_id = '';
+        
+        if(isset($_POST)){
+            $process_id = $_POST['prim_ref'];
+            $arr = array(
+                "user_id" => $user_id,
+                "id" => $process_id
+            );
+    
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
+    
+            $url ='https://cargomation.com:5200/redis/apinvoice/APCargowiseChargeCode'; 
+    
+            $result = $this->post($url,$payload,$headers);
+        }
+         
     }
 
     public function uploadAndInsert(){
@@ -616,7 +638,7 @@ class Apinvoice extends Core\Controller {
             $_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
             $data['cgm'] = json_encode($_POST['apinvoice']);
             $data['prim_ref'] = $_POST['prim_ref'];
-            
+
             $APinvoice->addToCGM_Response($data);
         }
     }

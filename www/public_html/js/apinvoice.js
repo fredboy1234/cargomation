@@ -271,8 +271,13 @@ $(document).ready(function(){
       processData:false,
       type: "POST",
       data:form_data,
+      beforeSend: function(){
+        $("#modalloader .modal-body").append(loader);
+        $("#modalloader").modal("show");
+      },
       success:function(data)
       {
+        $("#modalloader").modal("hide");
         //table.ajax.url( '/apinvoice/invoicesData' ).load();
          //call Compare api after upload
          Swal.fire(
@@ -379,7 +384,26 @@ $('#modal-lg-prev').on('hidden.bs.modal', function (e) {
   $('#parsedTable').DataTable().clear();
   $('#headerTable').dataTable().fnDestroy();
   $('#parsedTable').dataTable().fnDestroy();
-})
+});
+
+$("#addtocw").on('click',function(){
+  var prim_ref = $("#parsedTable_wrapper").attr("data-prim");
+
+  $.ajax({
+    url: document.location.origin+"/apinvoice/pushTOCW/",
+    type: "POST",
+    data:{"prim_ref":prim_ref},
+    success:function(data)
+    {
+      console.log(data);
+      Swal.fire(
+        "",
+        "Push Success!",
+        );
+    }
+  });
+
+});
 
 });
 

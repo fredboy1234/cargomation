@@ -157,6 +157,21 @@ $status = array("error","success");
     </div>
     <!--end of row class-->
   </div>
+  <div class="modal fade" id="modalloader">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p>Loading&hellip;</p>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 </section>
  <?php require_once('preview.php');?>
 <script>

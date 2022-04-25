@@ -71,11 +71,11 @@
                   </div>
                </div>
                <div class="col-lg-9">
-                  <button type="button" class="btn btn-danger">Raise Query</button>
-                  <button type="button" class="btn btn-success">Tag as Validated</button>
-                  <button type="button" class="btn btn-info">Add to CW1</button>
-                  <button type="button" class="btn btn-info">Update to CW1</button>
-                  <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-danger d-none">Raise Query</button>
+                  <button type="button" class="btn btn-success d-none">Tag as Validated</button>
+                  <button id="addtocw"  type="button" class="btn btn-info">Add to CW</button>
+                  <button type="button" class="btn btn-info d-none">Update to CW1</button>
+                  <button type="button" class="btn btn-warning d-none" data-dismiss="modal">Cancel</button>
                </div>
             </div>
          </div>

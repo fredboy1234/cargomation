@@ -2,10 +2,13 @@
   .modal-footer{display: none;}
 </style>
 <form id="parsedForm">
-  <?php foreach($this->data as $key=>$val){ ?>
+  <?php foreach($this->data as $key=>$val){ $disable="";?>
+    <?php if($key==="InvoiceNumber"){
+      $disable = "disabled";
+    }?>
     <div class="form-group">
       <label for="<?=$key?>"><?php echo $key?></label>
-      <input name="<?=$key?>" type="text" class="form-control" id="<?=$key?>" aria-describedby="<?=$key?>Help" placeholder="Enter <?=$key?>" value="<?=$val?>">
+      <input name="<?=$key?>" type="text" class="form-control" id="<?=$key?>" aria-describedby="<?=$key?>Help" placeholder="Enter <?=$key?>" value="<?=$val?>"  <?=$disable?>>
       <small id="<?=$key?>Help" class="form-text text-muted"></small>
     </div>
   <?php } ?>
