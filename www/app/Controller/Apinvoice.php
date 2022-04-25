@@ -401,8 +401,8 @@ class Apinvoice extends Core\Controller {
         if(isset($_POST)){
             $process_id = $this->getMatchReportWidthID($_POST['prim_ref'])[0]->id;
             $arr = array(
-                "user_id" => $user_id,
-                "id" => $process_id
+                "user_id" => (int)$user_id,
+                "id" => (int)$process_id
             );
     
             $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
