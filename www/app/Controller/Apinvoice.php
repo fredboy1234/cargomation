@@ -411,7 +411,7 @@ class Apinvoice extends Core\Controller {
     
             $url ='https://cargomation.com:5200/redis/apinvoice/APCargowiseChargeCode'; 
     
-            $result = $this->post($url,$payload,$headers);
+            $result = $this->postAuth($url,$payload,$headers);
 
             print_r($result);
         }
@@ -445,6 +445,28 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    private function postAuth($url, $payload, $headers) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
+    }
     
     private function post($url, $payload, $headers) {
 
