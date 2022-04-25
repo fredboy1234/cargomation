@@ -117,7 +117,7 @@ h1 {
 
       <form id="login" method="post">
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="email" name="email" class="form-control email" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -125,9 +125,10 @@ h1 {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control password" placeholder="Password" autocomplete="on">
           <div class="input-group-append">
             <div class="input-group-text">
+              <i class="fa fa-eye"></i> &nbsp;
               <span class="fas fa-lock"></span>
             </div>
           </div>
@@ -135,7 +136,7 @@ h1 {
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember" name="remember">
+              <input type="checkbox" id="remember" class="checkbox" name="remember">
               <label for="remember">
                 Remember Me
               </label>
@@ -143,7 +144,7 @@ h1 {
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <input type="hidden" name="csrf_token" value="<?php echo App\Utility\Token::generate(); ?>" />
+            <input type="hidden" name="csrf_token" class="hidden" value="<?php echo App\Utility\Token::generate(); ?>" />
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
@@ -316,10 +317,10 @@ function pJS_mobile() {
 $(document).ready(function(){
   $("#login").submit(function(event){
       event.preventDefault();
-      var email = $('input[type="email"]').val().trim();
-      var password = $('input[type="password"]').val().trim();
-      var remember = $('input[type="checkbox"]').val().trim();
-      var csrf_token = $('input[type="hidden"]').val().trim();
+      var email = $('input[type="email"], input.email').val().trim();
+      var password = $('input[type="password"], input.password').val().trim();
+      var remember = $('input[type="checkbox"], input.checkbox').val().trim();
+      var csrf_token = $('input[type="hidden"], input.hidden').val().trim();
       if( email != "" && password != "" ){
         $.ajax({
             url:'<?= $this->makeUrl("/login/_login") . '/' . $redirectTo; ?>',
@@ -338,6 +339,11 @@ $(document).ready(function(){
             }
         });
       }
+  });
+  $('form i').click(function(){
+    $(this).toggleClass('fa-eye-slash fa-eye');
+    let input = $('form input.password');
+    input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
   });
 });
 </script>

@@ -14,7 +14,14 @@ switch ($transMode) {
         $transImage = "M34.533,390.596c-10.214,8.754-17.231,21.053-19.316,35.02H6.949c-3.822,0-6.949-3.127-6.949-6.949v-21.123   c0-3.822,3.126-6.947,6.949-6.947H34.533L34.533,390.596z M114.159,425.615c0.556,2.709,0.834,5.418,0.834,8.268   c0,23.832-19.316,43.217-43.218,43.217c-23.832,0-43.218-19.385-43.218-43.217c0-2.85,0.277-5.559,0.833-8.268   c3.821-19.943,21.331-35.02,42.384-35.02S110.407,405.672,114.159,425.615z M93.384,433.883c0-2.918-0.555-5.768-1.667-8.268   c-3.196-7.852-10.909-13.342-19.941-13.342c-9.033,0-16.745,5.49-19.942,13.342c-1.112,2.5-1.667,5.35-1.667,8.268   c0,11.881,9.658,21.609,21.609,21.609C83.727,455.492,93.384,445.764,93.384,433.883z M17.106,362.873V155.745   c0-11.512,9.333-20.845,20.845-20.845h332.125c11.513,0,20.845,9.333,20.845,20.845v207.128c0,3.82-3.126,6.947-6.948,6.947H24.055   C20.233,369.82,17.106,366.693,17.106,362.873z M340.476,339.488c0,3.299,2.674,5.973,5.973,5.973h0.186   c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186c-3.299,0-5.973,2.674-5.973,5.972V339.488z    M284.314,339.488c0,3.299,2.673,5.973,5.971,5.973h0.186c3.299,0,5.972-2.674,5.972-5.973V167.625   c0-3.298-2.673-5.972-5.972-5.972h-0.186c-3.298,0-5.971,2.674-5.971,5.972V339.488z M228.151,339.488   c0,3.299,2.674,5.973,5.972,5.973h0.186c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186   c-3.298,0-5.972,2.674-5.972,5.972V339.488z M171.99,339.488c0,3.299,2.674,5.973,5.972,5.973h0.186   c3.298,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.674-5.972-5.972-5.972h-0.186c-3.298,0-5.972,2.674-5.972,5.972V339.488z    M115.828,339.488c0,3.299,2.673,5.973,5.972,5.973h0.186c3.298,0,5.971-2.674,5.971-5.973V167.625   c0-3.298-2.673-5.972-5.971-5.972H121.8c-3.299,0-5.972,2.674-5.972,5.972V339.488z M59.666,339.488   c0,3.299,2.674,5.973,5.972,5.973h0.186c3.299,0,5.972-2.674,5.972-5.973V167.625c0-3.298-2.673-5.972-5.972-5.972h-0.186   c-3.298,0-5.972,2.674-5.972,5.972V339.488z M220.815,425.615c0.556,2.709,0.834,5.418,0.834,8.268   c0,23.832-19.316,43.217-43.218,43.217c-23.833,0-43.218-19.385-43.218-43.217c0-2.85,0.278-5.559,0.833-8.268   c3.822-19.943,21.332-35.02,42.385-35.02S217.063,405.672,220.815,425.615z M200.04,433.883c0-2.918-0.556-5.768-1.598-8.268   c-3.266-7.852-10.979-13.342-20.011-13.342s-16.746,5.49-20.011,13.342c-1.042,2.5-1.598,5.35-1.598,8.268   c0,11.881,9.658,21.609,21.61,21.609C190.382,455.492,200.04,445.764,200.04,433.883z M141.188,390.596h-32.169   c7.087,6.113,12.715,13.965,16.12,22.859C128.473,404.562,134.101,396.709,141.188,390.596z M612,397.543v21.123   c0,3.822-3.127,6.949-6.948,6.949h-56.28c-4.03-27.586-27.724-48.916-56.42-48.916s-52.459,21.33-56.489,48.916H234.989   c-2.084-13.967-9.102-26.266-19.316-35.02H410.78V191.876c0-7.644,6.183-13.897,13.896-13.897h65.592   c18.482,0,35.714,9.172,46.065,24.458l42.315,62.673c6.184,9.172,9.519,20.011,9.519,31.058v94.427h16.884   C608.873,390.596,612,393.721,612,397.543z M541.545,266.708l-33.838-48.082c-1.32-1.806-3.404-2.918-5.697-2.918h-52.736   c-3.821,0-6.949,3.126-6.949,6.949v48.012c0,3.891,3.128,6.948,6.949,6.948h86.574   C541.477,277.617,544.741,271.294,541.545,266.708z M535.569,433.883c0,23.832-19.385,43.217-43.218,43.217   c-23.902,0-43.218-19.385-43.218-43.217c0-23.902,19.316-43.287,43.218-43.287C516.185,390.596,535.569,409.98,535.569,433.883z    M513.961,433.883c0-11.951-9.658-21.609-21.609-21.609s-21.609,9.658-21.609,21.609c0,11.881,9.658,21.609,21.609,21.609   S513.961,445.764,513.961,433.883z";
         $transTitle = "Voyage/Flight";
         break;
-} ?>
+} 
+// Universal checker for empty data value
+foreach ($this->shipment_info[0] as $key => $value) {
+    if(empty($value) || $value == NULL) {
+        $this->shipment_info[0]->$key = "-";
+    }
+}
+?>
 <div class="row">
     <div class="col-lg-3">
          <h1 class="p-3 shipment-num" data-toggle="tooltip" data-placement="bottom" title="<?= $this->shipment_info[0]->shipment_num; ?>"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
@@ -424,9 +431,9 @@ switch ($transMode) {
                                             $json = json_decode($this->shipment_info[0]->route_leg); ?>
                                         <?php foreach ($json as $key => $value): ?>
                                         <div class="card">
-                                            <div class="card-header" id="headingOne">
+                                            <div class="card-header" id="heading<?=$key;?>">
                                                 <h5 class="mb-0">
-                                                <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $value->LegOrder; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
+                                                <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $key; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
                                                         <div class="row">
                                                             <div class="col-sm-5"><?php echo $value->Origin; ?></div>
                                                             <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
@@ -436,7 +443,7 @@ switch ($transMode) {
                                                 </h5>
                                             </div>
 
-                                            <div id="collapse<?= $value->LegOrder; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div id="collapse<?= $key; ?>" class="collapse" aria-labelledby="heading<?=$key;?>" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -504,6 +511,20 @@ switch ($transMode) {
                                                             <strong>Address Type</strong>
                                                             <p><?= (!empty($value->AddressType))?$value->AddressType:" - "; ?></p>
                                                         </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <?php if(!empty($value->LCLAvailability)) : ?>
+                                                        <div class="col-lg-4">
+                                                            <strong>CFS Availability</strong>
+                                                            <p><?= date("d F Y H:i", strtotime($value->LCLAvailability)); ?></p>
+                                                        </div>
+                                                        <?php endif; ?>
+                                                        <?php if(!empty($value->LCLStorageDate)) : ?>
+                                                        <div class="col-lg-4">
+                                                            <strong>CFS Storage Date</strong>
+                                                            <p><?= date("d F Y H:i", strtotime($value->LCLStorageDate)); ?></p>
+                                                        </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -913,20 +934,27 @@ $(document).ready(function() {
             },
             error:function(err, status){
                 // what error is seen(it could be either server side or client side.
-                // console.log(err);
-         },
+                console.log(err);
+            },
         },
         columns: [
             { data: 'type', defaultContent: "OTHER" },
             { data: 'status', defaultContent: "-" },
-            { data: 'saved_date', defaultContent: "-" },
+            { data: 'saved_date', defaultContent: "-",
+                render: function(data, type, row){
+                    if(type === "sort" || type === "type"){
+                        return data;
+                    }
+                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                }
+            },
             { data: 'doc_comments', defaultContent: "-" }
         ],
         initComplete: function( settings, json ) {
         },
         drawCallback: function( settings, json ) {
             // Button Comment
-            $('button.file-comment').click(function (ev) {
+            $('button.file-comment, span.file-comment').click(function (ev) {
                 var doc_status = $(this).data("doc_status");
                 var doc_id = $(this).data("doc_id");
                 //$('#document-upload, #document-comment').toggle();

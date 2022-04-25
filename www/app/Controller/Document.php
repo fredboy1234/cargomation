@@ -1169,7 +1169,7 @@ class Document extends Core\Controller {
             $subdata["id"] = $value->id;
             $subdata["shipment_id"] = $value->shipment_id;
             $subdata["shipment_num"] = $value->shipment_num;
-            $subdata["type"] = $value->type;
+            $subdata["type"] = (!empty($value->type)) ? $value->type : " - ";
             $subdata["name"] = $value->name;
             $subdata["saved_by"] = $value->saved_by;
             $subdata["saved_date"] = $value->saved_date;
@@ -1182,7 +1182,9 @@ class Document extends Core\Controller {
             $subdata["consignee"] = $value->consignee;
             $subdata["consignor"] = $value->consignor;
             $subdata["url_file"] = $value->url_file;
-            $subdata["doc_comments"] = "No commments";
+            $subdata["doc_comments"] = '<span class="file-comment btn btn-sm" 
+                title="View Comment" data-doc_id="'.$value->id.'" 
+                data-doc_status="pending">No commments</span>';
             if(!empty($value->doc_comments)) {
                 // foreach ($value->doc_comments as $key => $value) {
                 //     # code...
