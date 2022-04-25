@@ -166,7 +166,7 @@
         }
     ],
     "document":[
-        {"filterID":"Type", "filterName":"type","filterType":"document","placeholder":"","show":"y",
+        {"filterID":"Type", "filterName":"document:type","filterType":"document","placeholder":"","show":"y",
             "value":[
                 {"name":"Select All","value":"ALL"},
                 {"name":"PKD","value":"PKD"},
@@ -181,7 +181,7 @@
                 {"option":"IN","value":"in"}
             ]
         },
-        {"filterID":"Status", "filterName":"status","filterType":"document","placeholder":"","show":"y",
+        {"filterID":"Status", "filterName":"document:status","filterType":"document","placeholder":"","show":"y",
             "value":[
                 {"name":"Approved","value":"approved"},
                 {"name":"Pending","value":"pending"}
