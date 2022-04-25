@@ -394,7 +394,10 @@ $(document).ready(function () {
             d.data = arr;
           });
         }
-
+      },
+      error:function(err, status){
+        // what error is seen(it could be either server side or client side.
+        console.log(err);
       },
     },
     rowId: 'real_id_shipment',
@@ -422,7 +425,11 @@ $(document).ready(function () {
     // columnDefs: [
     //   { className: "stats", targets: [4, 5, 6, 7, 8] }
     // ],
-    initComplete: setColor,
+    initComplete: function( settings, json ) {
+      setColor();
+    },
+    drawCallback: function( settings, json ) {
+    },
     "fnPreDrawCallback": function (oSettings) {
       // if ($('#test').val() == 1) {
       //   return false;
