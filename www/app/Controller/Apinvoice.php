@@ -401,7 +401,7 @@ class Apinvoice extends Core\Controller {
         if(isset($_POST)){
             $process_id = $this->getMatchReportWidthID($_POST['prim_ref'])[0]->id;
             $arr = array(
-                "user_id" => (int)$user_id,
+                "user_id" => strval($user_id),
                 "id" => (int)$process_id
             );
     
