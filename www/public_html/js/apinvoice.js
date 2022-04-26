@@ -38,6 +38,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 } );
 $.fn.dataTable.ext.errMode = 'none';
 $(document).ready(function() {
+  console.log(parsedData);
     var table = $('#example').DataTable( {
         "ajax": '/apinvoice/invoiceSuccess',
         "columns": [

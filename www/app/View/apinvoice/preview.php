@@ -1,5 +1,12 @@
 
 <!--start of modal-->
+<?php 
+ $pdfparsed = json_decode($this->parsedData);
+ $jnumber = '';
+ if(isset($pdfparsed->ParsedPDFHeader->JobNumber)){
+   $jnumber = $pdfparsed->ParsedPDFHeader->JobNumber;
+ }
+?>
 <div class="modal fade" id="modal-lg-prev">
    <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -36,6 +43,7 @@
                      <div class="col-lg-12">
                         <div class="card-header">
                            <h3 class="card-title">Cargowise Data</h3>
+                           <h3 class="card-title float-right">JOB Number: <?=$jnumber?></h3>
                         </div>
                         <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">
