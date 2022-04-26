@@ -397,7 +397,7 @@ class Apinvoice extends Core\Controller {
             $url ='https://cargomation.com:8001/compare'; 
             
             $result = $this->post($url, $arr, '');
-           
+            print_r($result);
            return "success";
         }
     }
