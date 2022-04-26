@@ -444,11 +444,11 @@ function preloader(url) {
 $(document).on('click','.cwresmodal',function(){
   var urlcw = "/apinvoice/cwresponse";
   var prim_ref = $('button',this).attr('data-pid');
-  
+  $("#cwresponsemodal .modal-body").append(loader);
   $("#cwresponsemodal .modal-body").load(urlcw,{prim_ref:prim_ref},
     function (response, status, xhr) {
         if (xhr.status == 200) {
-            $('#loader-wrapper').remove();
+            v9jn9cQ9dF7W$('#loader-wrapper').remove();
             $("#cwresponsemodal").modal("show");
         } else {
             alert("Error: " + xhr.status + ": " + xhr.statusText);
