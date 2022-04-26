@@ -448,7 +448,7 @@ $(document).on('click','.cwresmodal',function(){
   $("#cwresponsemodal .modal-body").load(urlcw,{prim_ref:prim_ref},
     function (response, status, xhr) {
         if (xhr.status == 200) {
-            v9jn9cQ9dF7W$('#loader-wrapper').remove();
+            $('#loader-wrapper').remove();
             $("#cwresponsemodal").modal("show");
         } else {
             alert("Error: " + xhr.status + ": " + xhr.statusText);
