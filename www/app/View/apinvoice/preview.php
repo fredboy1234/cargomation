@@ -70,7 +70,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-9">
+               <div class="col-lg-5 text-center">
                   <button type="button" class="btn btn-danger d-none">Raise Query</button>
                   <button type="button" class="btn btn-success d-none">Tag as Validated</button>
                   <button id="addtocw"  type="button" class="btn btn-info">Add to CW</button>
