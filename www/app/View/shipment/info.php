@@ -550,42 +550,40 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                     <i class="fas fa-file-invoice"></i>
                                     Invoice Details
                                 </h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                            <div class="card-tools m-0">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="card-body table-responsive p-0 ttable" style="height: auto;">
-                            <table id="example" class="table table-hover table-head-fixed text-nowrap">
+                            <table id="invoice" class="table table-hover table-head-fixed text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>Account</th>
-                                        <th>Type</th>
                                         <th>Trans.#</th>
+                                        <th>Type</th>
+                                        <th>Debtor</th>
                                         <th>Job Inv.#</th>
                                         <th>Post Date</th>
                                         <th>Invoice Date</th>
                                         <th>Fully Paid Date</th>
-                                        <th>Payment Status</th>
                                         <th>Invoice Amount</th>
-                                        <th>Currency</th>
-                                        <th>Outstanding Bal</th>
+                                        <th>Outstanding Balance</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Account</th>
-                                        <th>Type</th>
                                         <th>Trans.#</th>
+                                        <th>Type</th>
+                                        <th>Debtor</th>
                                         <th>Job Inv.#</th>
                                         <th>Post Date</th>
                                         <th>Invoice Date</th>
                                         <th>Fully Paid Date</th>
-                                        <th>Payment Status</th>
                                         <th>Invoice Amount</th>
-                                        <th>Currency</th>
-                                        <th>Outstanding Bal</th>
+                                        <th>Outstanding Balance</th>
+                                        <th>Status</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -710,7 +708,7 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 .dataTables_paginate {
     padding-right: 1em;
 }
-#example_length {
+#invoice_length {
     display: none;
 }
 #chartdiv > div > svg > g > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > g > g:nth-child(6) > g > g:nth-child(3) > g > g:nth-child(4) > g > g{
@@ -800,54 +798,130 @@ $(document).ready(function() {
         });
     });
     $.each(combineRoute, function(key, value) {
-            // If point has back slash
-            if(value.point.includes("/")) {
-                value.point = value.point.split('/')[1];
-            }
-            var data = null;
-            var promise  = $.ajax({
-                url: document.location.origin + '/shipment/getCity/',
-                type: "POST",
-                dataType: "json",
-                data: { location: value.point },
-                success: function (res) {
-                    console.log(res);
-                    data = res;
-                    if(data.length > 0) {
-                        var latitude = data[0].lat
-                        var longitude = data[0].lng;
-    
-                        pointObject.push({
-                            "latitude": parseFloat(latitude),
-                            "longitude":parseFloat( longitude),
-                            "title": value.point,
-                            "order": value.order,
-                            "vessel": value.vessel,
-                            "type": value.type,
-                            "keycount":value.keycount
-                        });
-                        cnt++;
-                    }
+        // If point has back slash
+        if(value.point.includes("/")) {
+            value.point = value.point.split('/')[1];
+        }
+        var data = null;
+        var promise  = $.ajax({
+            url: document.location.origin + '/shipment/getCity/',
+            type: "POST",
+            dataType: "json",
+            data: { location: value.point },
+            success: function (res) {
+                console.log(res);
+                data = res;
+                if(data.length > 0) {
+                    var latitude = data[0].lat
+                    var longitude = data[0].lng;
+
+                    pointObject.push({
+                        "latitude": parseFloat(latitude),
+                        "longitude":parseFloat( longitude),
+                        "title": value.point,
+                        "order": value.order,
+                        "vessel": value.vessel,
+                        "type": value.type,
+                        "keycount":value.keycount
+                    });
+                    cnt++;
                 }
-            }); 
-            promises.push(promise);
-        });
-
-        $.when.apply($, promises).done(function() {
-            pointObject.sort((a, b) => { return a.keycount - b.keycount;});
-            if(transmode === "Sea"){
-                $.getScript("/js/shipment/sea.map.js", function() {}); 
-            }else{ 
-                $.getScript("/js/shipment/air.map.js", function() {}); 
             }
-        }).fail(function() {
-            console.log("fail");
-        });
-    
-
-    $('#example').DataTable( { 
-        responsive: true,
-        ajax: "/uploads/sample.json"
+        }); 
+        promises.push(promise);
+    });
+    $.when.apply($, promises).done(function() {
+        pointObject.sort((a, b) => { return a.keycount - b.keycount;});
+        if(transmode === "Sea"){
+            $.getScript("/js/shipment/sea.map.js", function() {}); 
+        }else{ 
+            $.getScript("/js/shipment/air.map.js", function() {}); 
+        }
+    }).fail(function() {
+        console.log("fail");
+    });
+    $('#invoice').DataTable( {
+        processing: true,
+        autoWidth: false,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        console.log(data);
+                        return 'Details for '+data.job_invoicenum+' - '+data.transaction_num;
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                })
+            }
+        },
+        language: {
+            processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
+        },
+        serverSide: true,
+        serverMethod: 'post',
+        ajax: {
+            url: 'invoice/getInvoiceData',
+            data: function(outData){
+                outData.shipment_num = "<?= $this->shipment_info[0]->shipment_num; ?>";
+                // console.log(outData);
+                return outData;
+            },
+            dataFilter:function(inData){
+                // what is being sent back from the server (if no error)
+                // console.log(inData);
+                return inData;
+            },
+            error:function(err, status){
+                // what error is seen(it could be either server side or client side.
+                console.log(err);
+            },
+        },
+        columns: [
+            { data: 'transaction_num', defaultContent: "-" },
+            { data: 'inv_type', defaultContent: "-" },
+            { data: 'debtor', defaultContent: "-" },
+            { data: 'job_invoicenum', defaultContent: "-" },
+            { data: 'post_date', defaultContent: "-",
+                render: function(data, type, row){
+                    return moment(data).format("DD MMM YYYY");
+                }
+            },
+            { data: 'invoice_date', defaultContent: "-",
+                render: function(data, type, row){
+                    return moment(data).format("DD MMM YYYY");
+                }
+            },
+            { data: 'fullypaid_date', defaultContent: "-",
+                render: function(data, type, row){
+                    var date = moment(data).format("DD MMM YYYY");
+                    if (date !== '01 Jan 1900') {
+                        return moment(data).format("DD MMM YYYY");
+                    }
+                    return '-';
+                }
+            },
+            { data: 'invoice_amount', defaultContent: "-",
+                render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
+            },
+            { data: 'outstanding_amount', defaultContent: "-",
+                render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
+            },
+            { data: 'outstanding_amount', defaultContent: "Unpaid",
+                render: function(data, type, row){
+                    if (data <= '0.00000') {
+                        return 'Paid';
+                    }
+                    return 'Unpaid';
+                }
+            }
+        ],
+        // initComplete: function( settings, json ) {
+        // },
+        // drawCallback: function( settings, json ) {
+        // }
     });
     $('.shipment-num').tooltip();
     // makechart();
@@ -924,7 +998,7 @@ $(document).ready(function() {
             url: 'document/getDocumentData',
             data: function(outData){
                 outData.shipment_num = "<?= $this->shipment_info[0]->shipment_num; ?>";
-                console.log(outData);
+                // console.log(outData);
                 return outData;
             },
             dataFilter:function(inData){
@@ -982,11 +1056,4 @@ $(document).ready(function() {
         }
     });
 });
-
-$(document).ready(function() {
-    $('#example').DataTable( { 
-        responsive: true,
-        ajax: "/uploads/sample.json"
-    } );
-})
 </script>
