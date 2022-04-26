@@ -185,7 +185,10 @@ class Apinvoice extends Core\Controller {
         // exit();
         foreach($data['invoices'] as $value){
             $invoiceHeader['invoice'] = array();
-            
+            $invoiceHeader['invoice_num'] = '';
+            $invoiceHeader['invoice_report'] ='';
+            $invoiceHeader['invoice_response'] ='';
+            $invoiceHeader['invoice_status'] = '';
             if(!empty($value->match_report)){
                 $parsed = json_decode($value->match_report);
                 $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
@@ -193,7 +196,7 @@ class Apinvoice extends Core\Controller {
                 if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
                  
                     foreach($parsedChargline ->ChargeLine as $chline){
-                        $invoiceHeader['invoice_num'] = $chline->InvoiceNumber;
+                        $invoiceHeader['invoice_num'] = $chline->InvoiceNumber ;
                         $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
                         $invoiceHeader['invoice_response'] = "ready";
                         $invoiceHeader['invoice_status'] = "complete";
@@ -213,7 +216,7 @@ class Apinvoice extends Core\Controller {
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
-                "Doc Number" => !isset($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
+                "Doc Number" => (!isset($jobnum->doc_number) ? 'Empty' : (is_null($jobnum->doc_number) ? 'Empty ' : $jobnum->doc_number)) ,
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> $actionbtn,

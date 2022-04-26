@@ -11,7 +11,10 @@
         }elseif(strpos($text, 'Successfully') !== false){
             $stattext = '<span class="badge badge-success">Success</span> '; 
         }else{
-            $stattext =  '<span class="badge badge-primary">Process</span> ';
+            if($text !==''){
+                $stattext =  '<span class="badge badge-primary">Process</span> ';
+            }
+           
         }
         
         $ctext = str_replace('ProcessingLog'," ",$text);
