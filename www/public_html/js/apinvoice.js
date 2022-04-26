@@ -370,7 +370,7 @@ $(document).ready(function(){
 });
 
 
-//setInterval(function () {
+setInterval(function () {
   $.ajax({
     url: document.location.origin+"/apinvoice/invoiceSuccess/",
     type: "POST",
@@ -380,7 +380,7 @@ $(document).ready(function(){
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
     }
   });
-//}, 20000);
+}, 20000);
 
 // //on click priview documents get specific match report
 // $(document).on('click','.viewdoc',function(){
