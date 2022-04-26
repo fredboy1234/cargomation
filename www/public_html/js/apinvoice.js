@@ -190,7 +190,7 @@ $(document).ready(function() {
             $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
           }
 
-          if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber.length) !== 'undefined'){
+          if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber) !== 'undefined'){
             $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
           }
 
