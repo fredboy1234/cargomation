@@ -348,7 +348,7 @@ setInterval(function () {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
     }
   });
-}, 20000);
+}, 200000);
 
 // //on click priview documents get specific match report
 // $(document).on('click','.viewdoc',function(){
