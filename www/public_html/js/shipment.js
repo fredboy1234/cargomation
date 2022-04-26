@@ -1329,7 +1329,18 @@ $('#loadSaved, #loadRecent').on('click', function() {
     });
     var length = myArray.length;
     $(myArray).each(function(k,v){
-      var field = v.split(':');
+      var field = "";
+      if(v.includes("document")) {
+        var field = v.split(':');
+        field[0] = field[0] + ":" + field[1];
+        field[1] = field[2];
+        field[2] = field[3];
+        field[3] = field[4];
+        field.pop();
+        console.log(field);
+      } else {
+        var field = v.split(':');
+      }
       if(k < (length - 1)) {
         addSearchFilter(field[0]);
       }
@@ -1348,7 +1359,9 @@ $('#loadSaved, #loadRecent').on('click', function() {
         $("#no_cond_"+xdex).val(field[3]).trigger('change');
       },300);
       setTimeout(function(){
-        $("#no_value_"+xdex).val(field[2]); // value
+        $("#no_value_"+xdex).val(field[2]);
+        $("#container_mode_"+xdex).val(field[2]);
+        $("#container_mode_"+xdex).trigger('change'); 
       },300);
     });
   }

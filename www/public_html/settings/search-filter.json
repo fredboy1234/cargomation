@@ -183,8 +183,8 @@
         },
         {"filterID":"Status", "filterName":"document:status","filterType":"document","placeholder":"","show":"y",
             "value":[
-                {"name":"Approved","value":"approved"},
-                {"name":"Pending","value":"pending"}
+                {"name":"APPROVED","value":"APPROVED"},
+                {"name":"PENDING","value":"PENDING"}
             ],
             "type":[
                 {"option":"--Select type--","value":""},
