@@ -677,7 +677,7 @@ class Apinvoice extends Core\Controller {
        
         $this->View->renderWithoutHeaderAndFooter("/apinvoice/edit", [
             "data" => $pdfData,
-            "apinvoice"=>$_POST['apinvoice'],
+            "apinvoice"=>json_decode($data),
             "index"=>$_POST['index'],
          ]);
     }
@@ -713,7 +713,7 @@ class Apinvoice extends Core\Controller {
             $_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
             $data['cgm'] = json_encode($_POST['apinvoice']);
             $data['prim_ref'] = $_POST['prim_ref'];
-
+            
             $APinvoice->addToCGM_Response($data);
         }
     }
