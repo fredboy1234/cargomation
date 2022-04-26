@@ -7,6 +7,13 @@
    $jnumber = $pdfparsed->ParsedPDFHeader->JobNumber;
  }
 ?>
+<style>
+   .loaderstyle{
+      position: absolute;
+    top: 13%;
+    right: 50%;
+   }
+</style>
 <div class="modal fade" id="modal-lg-prev">
    <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -24,7 +31,10 @@
                      <i class="nav-icon fas fa-exchange-alt"></i>
                      </button>
                      <div class="col-lg-12">
-                        <embed src="https://cargomation.com:5002/PDF_AI/BL6227048630.pdf" style="width:100%; height:500px;" frameborder="0"></embed>
+                        <div id="embeded">
+                           <embed src="" style="width:100%; height:500px;" frameborder="0"></embed>
+                        </div>
+                        
                         <div id="cusdiv" class="danger">
                            <p><strong>Discrepancy Found: </strong> Some text...</p>
                         </div>
@@ -43,7 +53,7 @@
                      <div class="col-lg-12">
                         <div class="card-header">
                            <h3 class="card-title">Cargowise Data</h3>
-                           <h3 class="card-title float-right">JOB Number: <?=$jnumber?></h3>
+                           <h3 class="card-title float-right">JOB Number: <span class="jobnum"><?=$jnumber?></span></h3>
                         </div>
                         <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">

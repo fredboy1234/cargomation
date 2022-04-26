@@ -82,7 +82,9 @@ class Apinvoice extends Core\Model {
     public function getSingleCWResponse($user_id,$prim_ref){
         $Db = Utility\Database::getInstance();
         $query = "SELECT 
-           mr.cw_response
+           mr.cw_response,
+           ma.filepath,
+           mr.match_report
         FROM match_apinvoice ma
         LEFT JOIN match_report mr
         ON mr.prim_ref = ma.process_id

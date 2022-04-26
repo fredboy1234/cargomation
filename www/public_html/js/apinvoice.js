@@ -38,7 +38,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 } );
 $.fn.dataTable.ext.errMode = 'none';
 $(document).ready(function() {
-  console.log(parsedData);
+  
     var table = $('#example').DataTable( {
         "ajax": '/apinvoice/invoiceSuccess',
         "columns": [
@@ -61,9 +61,23 @@ $(document).ready(function() {
     
     $(document).on('click',".viewdoc",function(){
       var pid = $(this).attr('data-pid');
-      console.log('pid');
-      console.log(pid);
-      
+      $("#embeded").append(loader);
+      $('#loader-wrapper').addClass('loaderstyle');
+      $("#embeded embed").attr('src','');
+      $.ajax({
+        url: document.location.origin+"/apinvoice/preview/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+          $('#loader-wrapper').remove();
+         var d = JSON.parse(data);
+         var jreport = JSON.parse(d[0].match_report);
+          $("#embeded embed").attr('src',d[0].filepath);
+          $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
+        }
+      });
+
       var headertable = $('#headerTable').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -144,29 +158,30 @@ $(document).ready(function() {
         ]
       });
       $("#parsedTable_wrapper").attr("data-prim",pid);
-      $.ajax({
-        url: document.location.origin+"/apinvoice/headerData/",
-        type: "POST",
-        data:{prim_ref:pid},
-        success:function(data)
-        {
-          console.log(data);
-          headertable.ajax.reload; 
-        }
-      });
+      
+      // $.ajax({
+      //   url: document.location.origin+"/apinvoice/headerData/",
+      //   type: "POST",
+      //   data:{prim_ref:pid},
+      //   success:function(data)
+      //   {
+      //     console.log(data);
+      //     headertable.ajax.reload; 
+      //   }
+      // });
 
       
       //need to change this two ajax if have temporary because need to present
-      $.ajax({
-        url: document.location.origin+"/apinvoice/parsedData/",
-        type: "POST",
-        data:{prim_ref:pid},
-        success:function(data)
-        {
-          console.log(data);
-          parsedTable.ajax.reload; 
-        }
-      });
+      // $.ajax({
+      //   url: document.location.origin+"/apinvoice/parsedData/",
+      //   type: "POST",
+      //   data:{prim_ref:pid},
+      //   success:function(data)
+      //   {
+      //     console.log(data);
+      //     parsedTable.ajax.reload; 
+      //   }
+      // });
     });
     
 

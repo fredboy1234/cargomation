@@ -402,6 +402,7 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    
     public function pushTOCW(){
         $user_id = $_SESSION['user'];
         $process_id = '';
@@ -643,6 +644,13 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    public function preview(){
+        if(isset($_POST)){
+            echo json_encode($this->getSingleCWResponse($_SESSION['user'],$_POST['prim_ref']));
+        }
+       
+    }
+
     public function edit(){
         $data = array();
         if(isset($_POST)){
@@ -692,7 +700,10 @@ class Apinvoice extends Core\Controller {
             $APinvoice->addToCGM_Response($data);
         }
     }
-    
+    public function getSingleCWResponse($user_id,$prim_ref){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getSingleCWResponse($user_id,$prim_ref);
+    }
     public function geTempData(){
         $APinvoice = Model\Apinvoice::getInstance();
         return $APinvoice->getMatchReport(52);
