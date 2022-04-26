@@ -257,8 +257,15 @@ class Apinvoice extends Core\Controller {
 
     public function parsedData(){
         $parsed = array();
+        
         if(isset($_POST['prim_ref'])){
-            $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);   
+            $cgm = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->cgm_response);
+            if(is_null( $cgm ) || empty( $cgm)){
+                $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report); 
+            }else{
+                $data['apinvoice'] = $cgm;
+            }
+             
         }else{
             $data['apinvoice'] = json_decode($this->geTempData()[0]->match_report);
         }
@@ -654,13 +661,22 @@ class Apinvoice extends Core\Controller {
 
     public function edit(){
         $data = array();
+        $pdfData = array();
         if(isset($_POST)){
-          $data =  $_POST['data']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']];
+          $cgm = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->cgm_response);
+          if(is_null($cgm) || empty($cgm)){
+            $data = $this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report;
+          }else{
+            $data = $this->getMatchReportWidthID($_POST['prim_ref'])[0]->cgm_response;
+          }
+          
+          $pdfData = json_decode($data)->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines->ChargeLine[$_POST['index']];
+          //$data =  $_POST['data']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']];
         }
         $this->View->addJS("js/apinvoice.js");
        
         $this->View->renderWithoutHeaderAndFooter("/apinvoice/edit", [
-            "data" => $data,
+            "data" => $pdfData,
             "apinvoice"=>$_POST['apinvoice'],
             "index"=>$_POST['index'],
          ]);

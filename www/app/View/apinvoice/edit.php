@@ -30,7 +30,7 @@
       tobj[tname] = tvalue;
       formData.push(tobj);
     });
-
+    console.log(formData);
     $.ajax({
       url: document.location.origin+"/apinvoice/sendToAPI/",
       type: "POST",

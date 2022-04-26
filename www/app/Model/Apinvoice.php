@@ -32,6 +32,7 @@ class Apinvoice extends Core\Model {
         //     INTO match_report(cgm_response)
         //     VALUES('{$data}')
         // ";
+        
         $query = "UPDATE match_report 
                SET cgm_response = '{$cgm}'
                WHERE prim_ref = '{$prim_ref}'";

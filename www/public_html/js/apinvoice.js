@@ -275,7 +275,9 @@ $(document).ready(function(){
   //var parsedData = [];
   $(document).on("click","tr .editor-edit",function(){
     var indexTD = $(this).parent().find("td").attr('data-index');
-    $("#edit-ap .modal-body").load(url,{data:parsedData,index:indexTD, apinvoice: apinvoice},
+    var prim_ref = $("#parsedTable_wrapper").attr("data-prim");
+    var url = "/apinvoice/edit"
+    $("#edit-ap .modal-body").load(url,{data:parsedData,index:indexTD, apinvoice: apinvoice,prim_ref:prim_ref},
       function (response, status, xhr) {
           if (xhr.status == 200) {
               $('#loader-wrapper').remove();
@@ -285,6 +287,10 @@ $(document).ready(function(){
               $('#loader-wrapper').remove();
           }
       });
+  });
+
+  $('#edit-ap').on('hidden.bs.modal', function (e) {
+    $('#parsedTable').DataTable().ajax.reload();
   });
 
   // Bootstrap File Input
