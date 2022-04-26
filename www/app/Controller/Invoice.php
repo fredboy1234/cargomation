@@ -322,7 +322,28 @@ class Invoice extends Core\Controller {
         }
     }
 
-
-
+    public function getInvoiceData($user_id = "") {
+        if(!isset($_POST['draw'])) {
+            die('Unauthorized Access');
+        }
+        // var_dump($_POST); die();
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+        $_POST['user_id'] = $user_id;
+        $Invoice = new Model\Invoice();
+        $result = $Invoice->getInvoiceData($_POST);
+        echo json_encode($result);
+    }
 
 }
