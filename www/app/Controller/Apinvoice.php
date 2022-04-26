@@ -437,13 +437,13 @@ class Apinvoice extends Core\Controller {
             $email = $User->data()->email;
            // $user_id = $User->data()->id;
             
-            $newFilePath = "E:/A2BFREIGHT_MANAGER/hub@tcfinternational.com.au/CW_APINVOICE/IN/";
+            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_APINVOICE/IN/";
 
             $location = $newFilePath.$name;
             
             $data['user_id'] = $_SESSION['user'];
             $data['filename'] = $name;
-            $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
+            $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_APINVOICE/IN/'.$name;
             $data['uploadedby']= $email;
             $APinvoice = Model\Apinvoice::getInstance();
             
