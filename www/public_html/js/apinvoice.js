@@ -294,11 +294,11 @@ $(document).ready(function(){
       success:function(data)
       {
         $("#modalloader").modal("hide");
-        //table.ajax.url( '/apinvoice/invoicesData' ).load();
+        table.ajax.url( '/apinvoice/invoicesData' ).load();
          //call Compare api after upload
          Swal.fire(
           "",
-          "Your Was File Uploaded!",
+          "Your file was uploaded!",
           );
         $.ajax({
           url: document.location.origin+"/apinvoice/customUpload/",
