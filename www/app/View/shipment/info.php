@@ -560,28 +560,30 @@ foreach ($this->shipment_info[0] as $key => $value) {
                             <table id="invoice" class="table table-hover table-head-fixed text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Type</th>
                                         <th>Trans.#</th>
+                                        <th>Type</th>
+                                        <th>Debtor</th>
                                         <th>Job Inv.#</th>
                                         <th>Post Date</th>
                                         <th>Invoice Date</th>
                                         <th>Fully Paid Date</th>
                                         <th>Invoice Amount</th>
                                         <th>Outstanding Balance</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Type</th>
                                         <th>Trans.#</th>
+                                        <th>Type</th>
+                                        <th>Debtor</th>
                                         <th>Job Inv.#</th>
                                         <th>Post Date</th>
                                         <th>Invoice Date</th>
                                         <th>Fully Paid Date</th>
                                         <th>Invoice Amount</th>
                                         <th>Outstanding Balance</th>
+                                        <th>Status</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -878,23 +880,27 @@ $(document).ready(function() {
             },
         },
         columns: [
-            { data: 'id', defaultContent: "-" },
-            { data: 'inv_type', defaultContent: "-" },
             { data: 'transaction_num', defaultContent: "-" },
+            { data: 'inv_type', defaultContent: "-" },
+            { data: 'debtor', defaultContent: "-" },
             { data: 'job_invoicenum', defaultContent: "-" },
             { data: 'post_date', defaultContent: "-",
                 render: function(data, type, row){
-                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                    return moment(data).format("DD MMM YYYY");
                 }
             },
             { data: 'invoice_date', defaultContent: "-",
                 render: function(data, type, row){
-                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                    return moment(data).format("DD MMM YYYY");
                 }
             },
             { data: 'fullypaid_date', defaultContent: "-",
                 render: function(data, type, row){
-                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                    var date = moment(data).format("DD MMM YYYY");
+                    if (date !== '01 Jan 1900') {
+                        return moment(data).format("DD MMM YYYY");
+                    }
+                    return '-';
                 }
             },
             { data: 'invoice_amount', defaultContent: "-",
@@ -902,6 +908,14 @@ $(document).ready(function() {
             },
             { data: 'outstanding_amount', defaultContent: "-",
                 render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
+            },
+            { data: 'outstanding_amount', defaultContent: "Unpaid",
+                render: function(data, type, row){
+                    if (data <= '0.00000') {
+                        return 'Paid';
+                    }
+                    return 'Unpaid';
+                }
             }
         ],
         // initComplete: function( settings, json ) {
