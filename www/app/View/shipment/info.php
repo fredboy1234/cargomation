@@ -221,7 +221,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 <?php endif; ?>
                                 <?php 
                                 $json_org = json_decode($this->shipment_info[0]->organization);
-                                if(!empty($this->shipment_info[0]->organization)) {
+                                if(!empty($json_org)) {
                                     foreach ($json_org as $key => $value) {
                                         if ($value->AddressType == "ConsigneePickupDeliveryAddress") {
                                 ?>
