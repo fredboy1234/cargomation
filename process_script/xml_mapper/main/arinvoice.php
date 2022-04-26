@@ -4,6 +4,7 @@ $user = $client_email;
 $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
+
 		try{
 			$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
@@ -13,6 +14,15 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 
 			$path_TransactionInfo = "$.Body.UniversalTransaction.TransactionInfo";
 			$path_Chargeline = "$.Body.UniversalTransaction.TransactionInfo.ShipmentCollection.Shipment.JobCosting.ChargeLineCollection";
+			$path_ChargelineConsol = "$.Body.UniversalTransaction.TransactionInfo.ShipmentCollection.Shipment.SubShipmentCollection.SubShipment.JobCosting.ChargeLineCollection";
+			$path_JobCosting = "$.Body.UniversalTransaction.TransactionInfo.ShipmentCollection.Shipment.SubShipmentCollection.SubShipment.JobCosting";
+		
+			
+			/*Check if there's attached consol change xpath */
+			$Code= jsonPath($universal_shipment, $path_JobCosting.".Branch.Code");
+			$Code = $parser->encode($Code);
+
+			if($Code == 'false'){ $xpath = $path_Chargeline; } else{ $xpath = $path_ChargelineConsol; }
 
 			/*GET Key DETAILS*/
 			$ShipmentKey= jsonPath($universal_shipment, $path_TransactionInfo.".Job.Key");
@@ -50,17 +60,16 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 			$OutstandingAmount = node_exist(getArrayName($OutstandingAmount));
 
 			  /*GET if 1 COUNT*/
-		    $Chargectr = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine.SellPostedTransactionNumber");
+		    $Chargectr = jsonPath($universal_shipment, $xpath.".ChargeLine.SellPostedTransactionNumber");
 			$ChargeBoolean = $parser->encode($Chargectr);
 
 			  /*GET ChargeLine COUNT*/
-		    $Chargeline = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[*]");
+		    $Chargeline = jsonPath($universal_shipment, $xpath.".ChargeLine[*]");
 			$ChargelineCTR = $Chargeline;
-			$a = 0;
+			
 				if ($ChargeBoolean == 'false') {
-					$ChargelineCTR = jsonPath($universal_shipment, $path_Chargeline.".ChargeLine[*]");
+					$ChargelineCTR = jsonPath($universal_shipment, $xpath.".ChargeLine[*]");
 					$ChargelineCTR = count($ChargelineCTR);
-					$ChargeLineArr = ".ChargeLine[$a].";
 					
 				}
 				else
@@ -71,22 +80,25 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 				}
 
             for ($a = 0; $a <= $ChargelineCTR-1; $a++) {
+            	if ($ChargeBoolean == 'false'){ 
+            		$ChargeLineArr = ".ChargeLine[$a]."; 
+            	}
 
-            	$SellPostedTransactionNumber = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellPostedTransactionNumber");
+            	$SellPostedTransactionNumber = jsonPath($universal_shipment, $xpath.$ChargeLineArr."SellPostedTransactionNumber");
 				$SellPostedTransactionNumber = $parser->encode($SellPostedTransactionNumber);
 		    	$SellPostedTransactionNumber = node_exist(getArrayName($SellPostedTransactionNumber));
 
 		    	if(strval($TransactionNumber) == strval($SellPostedTransactionNumber)){
 
-		    		$SellInvoiceType = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellInvoiceType");
+		    		$SellInvoiceType = jsonPath($universal_shipment, $xpath.$ChargeLineArr."SellInvoiceType");
 					$SellInvoiceType = $parser->encode($SellInvoiceType);
 			    	$SellInvoiceType = node_exist(getArrayName($SellInvoiceType));
 
-			    	$Debtor = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."Debtor.Key");
+			    	$Debtor = jsonPath($universal_shipment, $xpath.$ChargeLineArr."Debtor.Key");
 					$Debtor = $parser->encode($Debtor);
 			    	$Debtor = node_exist(getArrayName($Debtor));
 
-			    	$FullyPaidDate = jsonPath($universal_shipment, $path_Chargeline.$ChargeLineArr."SellPostedTransaction.FullyPaidDate");
+			    	$FullyPaidDate = jsonPath($universal_shipment, $xpath.$ChargeLineArr."SellPostedTransaction.FullyPaidDate");
 					$FullyPaidDate = $parser->encode($FullyPaidDate);
 			    	$FullyPaidDate = node_exist(getArrayName($FullyPaidDate));
 
