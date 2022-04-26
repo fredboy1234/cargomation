@@ -180,7 +180,9 @@ class Apinvoice extends Core\Controller {
         $retData = array();
         $invoiceHeader = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
-        
+        // echo"<pre>";
+        // print_r($data['invoices']);
+        // exit();
         foreach($data['invoices'] as $value){
             $invoiceHeader['invoice'] = array();
             
@@ -204,14 +206,17 @@ class Apinvoice extends Core\Controller {
             } 
            
             $jobnum = json_decode($value->sec_ref);
-            
+            $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
+            if(!is_null($value->cw_response) || !empty($value->cw_response)){
+                $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
+            }
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
                 "Doc Number" => !isset($jobnum->doc_number) ? 'Empty' : $jobnum->doc_number,
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
-                "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
+                "Action"=> $actionbtn,
                 "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : $value->status,
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
@@ -646,6 +651,24 @@ class Apinvoice extends Core\Controller {
             "data" => $data,
             "apinvoice"=>$_POST['apinvoice'],
             "index"=>$_POST['index'],
+         ]);
+    }
+    
+    public function cwresponse(){
+        $data = array();
+        $data['cwresponse'] = 'Empty';
+        if(isset($_POST)){
+         $APinvoice = Model\Apinvoice::getInstance();
+         $data['invoices'] = $APinvoice->getSingleCWResponse($_SESSION['user'],$_POST['prim_ref']);
+         if(!empty($data['invoices'][0]) && isset($data['invoices'][0]->cw_response)){
+            $data['cwresponse'] = $data['invoices'][0]->cw_response;
+         }
+        }
+         
+        $this->View->addJS("js/apinvoice.js");
+       
+        $this->View->renderWithoutHeaderAndFooter("/apinvoice/cwresponse", [
+            "data" => $data['cwresponse'],
          ]);
     }
 

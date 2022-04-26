@@ -237,7 +237,7 @@ Swal.fire({
 
 var editor;
 $(document).ready(function(){
-  var url = "/apinvoice/edit";
+  
   //var parsedData = [];
   $(document).on("click","tr .editor-edit",function(){
     var indexTD = $(this).parent().find("td").attr('data-index');
@@ -439,3 +439,20 @@ function preloader(url) {
 
   $('button#request').toggle();
 }
+
+
+$(document).on('click','.cwresmodal',function(){
+  var urlcw = "/apinvoice/cwresponse";
+  var prim_ref = $('button',this).attr('data-pid');
+  
+  $("#cwresponsemodal .modal-body").load(urlcw,{prim_ref:prim_ref},
+    function (response, status, xhr) {
+        if (xhr.status == 200) {
+            $('#loader-wrapper').remove();
+            $("#cwresponsemodal").modal("show");
+        } else {
+            alert("Error: " + xhr.status + ": " + xhr.statusText);
+            $('#loader-wrapper').remove();
+        }
+    });
+});
