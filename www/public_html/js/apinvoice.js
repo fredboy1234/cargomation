@@ -185,7 +185,15 @@ $(document).ready(function() {
          var jreport = JSON.parse(d[0].match_report);
          console.log(jreport);
           $("#embeded embed").attr('src',d[0].filepath);
-          $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
+          
+          if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
+            $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
+          }
+
+          if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber.length) !== 'undefined'){
+            $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
+          }
+
         }
       });
     });
