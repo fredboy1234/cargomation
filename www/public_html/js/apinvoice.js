@@ -12,8 +12,8 @@ function format ( d ) {
   });
  
   $.each(invoiceData,function(okey,oval){
-    console.log(oval);
-    if(oval.length !=0){
+    console.log(typeof oval);
+    if(typeof oval === 'string'){
       var inval = oval.split(",");
       htmlinvoice+=`<tr>
         <td><b>Invoice: </b> ${inval[0]} </td>
