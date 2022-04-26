@@ -12,15 +12,19 @@ function format ( d ) {
   });
  
   $.each(invoiceData,function(okey,oval){
-    var inval = oval.split(",");
-    htmlinvoice+=`<tr>
-      <td><b>Invoice: </b> ${inval[0]} </td>
-      <td><b>Match Report: </b> ${inval[1]} </td>
-      <td><b>Response: </b> ${inval[2]} </td>
-      <td><button type="button" id="${process_ID}_view"  data-pid="${process_ID}" class="btn btn-block btn-outline-primary viewdoc" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>
-      <td><button  type="button" id="${process_ID}_delete"class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>
-      <td><b>Status: </b> ${inval[3]} </td>
-    </tr>`; 
+    console.log(oval);
+    if(oval.length !=0){
+      var inval = oval.split(",");
+      htmlinvoice+=`<tr>
+        <td><b>Invoice: </b> ${inval[0]} </td>
+        <td><b>Match Report: </b> ${inval[1]} </td>
+        <td><b>Response: </b> ${inval[2]} </td>
+        <td><button type="button" id="${process_ID}_view"  data-pid="${process_ID}" class="btn btn-block btn-outline-primary viewdoc" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>
+        <td><button  type="button" id="${process_ID}_delete"class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>
+        <td><b>Status: </b> ${inval[3]} </td>
+      </tr>`;
+    }
+    
   });
   
   if(invoiceData.length ==0){
@@ -64,20 +68,7 @@ $(document).ready(function() {
       $("#embeded").append(loader);
       $('#loader-wrapper').addClass('loaderstyle');
       $("#embeded embed").attr('src','');
-      $.ajax({
-        url: document.location.origin+"/apinvoice/preview/",
-        type: "POST",
-        data:{prim_ref:pid},
-        success:function(data)
-        {
-          $('#loader-wrapper').remove();
-         var d = JSON.parse(data);
-         var jreport = JSON.parse(d[0].match_report);
-          $("#embeded embed").attr('src',d[0].filepath);
-          $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
-        }
-      });
-
+     
       var headertable = $('#headerTable').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -182,6 +173,21 @@ $(document).ready(function() {
       //     parsedTable.ajax.reload; 
       //   }
       // });
+
+      $.ajax({
+        url: document.location.origin+"/apinvoice/preview/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+          $('#loader-wrapper').remove();
+         var d = JSON.parse(data);
+         var jreport = JSON.parse(d[0].match_report);
+         console.log(jreport);
+          $("#embeded embed").attr('src',d[0].filepath);
+          $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
+        }
+      });
     });
     
 
@@ -296,10 +302,12 @@ $(document).ready(function(){
         $("#modalloader").modal("hide");
         table.ajax.url( '/apinvoice/invoicesData' ).load();
          //call Compare api after upload
+         $('.progress').remove();
          Swal.fire(
           "",
           "Your file was uploaded!",
           );
+          //return 
         $.ajax({
           url: document.location.origin+"/apinvoice/customUpload/",
           contentType:false,
@@ -354,7 +362,7 @@ $(document).ready(function(){
 });
 
 
-setInterval(function () {
+//setInterval(function () {
   $.ajax({
     url: document.location.origin+"/apinvoice/invoiceSuccess/",
     type: "POST",
@@ -364,7 +372,7 @@ setInterval(function () {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
     }
   });
-}, 20000);
+//}, 20000);
 
 // //on click priview documents get specific match report
 // $(document).on('click','.viewdoc',function(){
@@ -431,7 +439,9 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
-
+var progressbar = `<div class="progress">
+<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+</div>`;
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
   '<div class="spinner-border" role="status">' +
   '<span class="sr-only">Loading...</span>' +
