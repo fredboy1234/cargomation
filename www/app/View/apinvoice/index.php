@@ -164,7 +164,7 @@ $status = array("error","success");
         <h4 class="modal-title"></h4>
       </div>
       <div class="modal-body">
-        <p>Loading&hellip;</p>
+        <p>Uploading File Please Wait&hellip;</p>
       </div>
     </div>
     <!-- /.modal-content -->

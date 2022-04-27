@@ -60,7 +60,8 @@ $(document).ready(function() {
             { "data": "Action" },
             { "data": "Status" }
         ],
-        "order": [[1, 'asc']]
+        "order": [[2, 'asc']],
+        
     } );
     
     $(document).on('click',".viewdoc",function(){
@@ -305,6 +306,26 @@ $(document).ready(function(){
    
     //auto insert after upload separated for some reason
     $.ajax({
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          // Upload progress
+          xhr.upload.addEventListener("progress", function(evt){
+            
+            if (evt.lengthComputable) {
+              let progress = Math.round(evt.loaded * 100 / evt.total);
+              for (let i = 0; i <= 100; i++) {
+                setTimeout(function(){
+                  $(".progress-bar").css("width", i + "%").text(i+'%');
+                  $(".progress-bar").attr('aria-valuenow',i);
+                },450);
+              }
+              //$(".progress-bar").css("width", progress + "%").text(progress+'%');
+              //$(".progress-bar").attr('aria-valuenow',progress);
+            
+            }
+        }, false);
+        return xhr;
+      },
       url: document.location.origin+"/apinvoice/uploadAndInsert/",
       contentType:false,
       cache:false,
@@ -312,19 +333,31 @@ $(document).ready(function(){
       type: "POST",
       data:form_data,
       beforeSend: function(){
-        $("#modalloader .modal-body").append(loader);
-        $("#modalloader").modal("show");
+        $(".file-preview").append(progressbar);
+        //$("#modalloader").modal("show");
       },
       success:function(data)
       {
-        $("#modalloader").modal("hide");
+       // $("#modalloader").modal("hide");
         table.ajax.url( '/apinvoice/invoicesData' ).load();
+        
          //call Compare api after upload
          $('.progress').remove();
          Swal.fire(
           "",
           "Your file was uploaded!",
           );
+          Swal.fire({  
+            title: 'Your file was uploaded!',  
+            confirmButtonText: `OK`,  
+          }).then((result) => {  
+            /* Read more about isConfirmed, isDenied below */  
+              if (result.isConfirmed) {    
+                $('html, body').animate({
+                  scrollTop: $("#example").offset().top
+                });
+              } 
+          });
           //return 
         $.ajax({
           url: document.location.origin+"/apinvoice/customUpload/",
@@ -458,7 +491,7 @@ function customside(){
   mainContent.classList.toggle('main-content_large');
 }
 var progressbar = `<div class="progress">
-<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+<div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
 </div>`;
 var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
   '<div class="spinner-border" role="status">' +
