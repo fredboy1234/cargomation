@@ -22,6 +22,7 @@ function format ( d ) {
         <td><button type="button" id="${process_ID}_view"  data-pid="${process_ID}" class="btn btn-block btn-outline-primary viewdoc" data-toggle="modal" data-target="#modal-lg-prev">Preview document</button></td>
         <td><button  type="button" id="${process_ID}_delete"class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>
         <td><b>Status: </b> ${inval[3]} </td>
+        <td> ${inval[4]} </td>
       </tr>`;
     }
     
@@ -69,9 +70,19 @@ $(document).ready(function() {
       $("#embeded").append(loader);
       $('#loader-wrapper').addClass('loaderstyle');
       $("#embeded embed").attr('src','');
-     
+      
+      $.ajax({
+        url: document.location.origin+"/apinvoice/reprocessMatchReport/",
+        type: "POST",
+        data:{prim_ref:pid},
+        success:function(data)
+        {
+         console.log(data);
+        }
+      });
+
       var headertable = $('#headerTable').DataTable( {
-        "processing": true,
+        "processing": false,
         "serverSide": true,
         "scrollX": true,
         "scrollY":        "250px",
@@ -174,7 +185,7 @@ $(document).ready(function() {
       //     parsedTable.ajax.reload; 
       //   }
       // });
-
+      
       $.ajax({
         url: document.location.origin+"/apinvoice/preview/",
         type: "POST",
@@ -197,15 +208,12 @@ $(document).ready(function() {
           }catch(x){
             console.log("error");
           }
-         
-
         }
       });
+
     });
     
-
-    
-     
+   
     // Add event listener for opening and closing details
     $('#example tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -453,12 +461,23 @@ setInterval(function () {
 //     }
 //   });
 // });
+$('#modal-lg-prev').on('shown.bs.modal', function () {
+  var looper = 0;
+  var headerInterval = setInterval(function(){
+    looper++;
+    $('#headerTable').DataTable().ajax.reload();
+    if(looper==10){
+      clearInterval(headerInterval);
+    }
+  },10000);
+})
 
 $('#modal-lg-prev').on('hidden.bs.modal', function (e) {
   $('#headerTable').DataTable().clear();
   $('#parsedTable').DataTable().clear();
   $('#headerTable').dataTable().fnDestroy();
   $('#parsedTable').dataTable().fnDestroy();
+  
 });
 
 $("#addtocw").on('click',function(){

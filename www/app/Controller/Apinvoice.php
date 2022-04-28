@@ -202,17 +202,23 @@ class Apinvoice extends Core\Controller {
                         $invoiceHeader['invoice_status'] = "complete";
                     }
                 }
+                $actionbtn = '';
+                //if(is_null($value->cw_response) || !empty($value->cw_response)){
+                    $actionbtn = "<button type='button' class='btn btn-block btn-outline-success cwresmodal' data-pid='".$value->process_id."'>CW Response</button>";
+               // }
+                
                 $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
                                                     {$invoiceHeader['invoice_report']},
                                                     <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
-                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>";
+                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>
+                                                    ".$actionbtn;
             } 
            
             $jobnum = json_decode($value->sec_ref);
             $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
-            if(!is_null($value->cw_response) || !empty($value->cw_response)){
-                $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
-            }
+            // if(!is_null($value->cw_response) || !empty($value->cw_response)){
+            //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
+            // }
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
@@ -242,14 +248,16 @@ class Apinvoice extends Core\Controller {
             exit;
         }
         $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
-        
-        foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
-            foreach($m as $mkey=>$mval){
-                if(!in_array($mkey,$columnMatched)){
-                    $columnMatched[] = array("data"=>$mkey);
+        if(isset($matched->CWChargeLines->ChargeLine)){
+            foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+                foreach($m as $mkey=>$mval){
+                    if(!in_array($mkey,$columnMatched)){
+                        $columnMatched[] = array("data"=>$mkey);
+                    }  
                 }  
-            }  
+            }
         }
+        
         $header['data'] =  $matched->CWChargeLines->ChargeLine;
        
         echo json_encode($header);
@@ -410,7 +418,27 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    public function reprocessMatchReport(){
+       
+        if(isset($_POST)){
+            $user_id = $_SESSION['user'];
+            $process_id =  $this->getMatchReportWidthID($_POST['prim_ref'])[0]->id;
+            $arr = array(
+                "user_id" => strval($user_id),
+                "id"=>(int) $process_id
+            );
+
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
     
+            //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
+            $url ='https://cargomation.com:5200/redis/apinvoice/match_report';
+             $result = $this->postAuth($url,$payload,$headers);
+            print_r($payload);
+            print_r($result);
+        }
+    }
     public function pushTOCW(){
         $user_id = $_SESSION['user'];
         $process_id = '';
