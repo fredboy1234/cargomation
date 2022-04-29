@@ -23,6 +23,7 @@ function format ( d ) {
         <td><button  type="button" id="${process_ID}_delete"class="btn btn-block btn-outline-danger">Send to CargoWise</button></td>
         <td><b>Status: </b> ${inval[3]} </td>
         <td> ${inval[4]} </td>
+        <td><b>CW Respons Status: </b> ${inval[5]} </td>
       </tr>`;
     }
     
@@ -539,7 +540,8 @@ function preloader(url) {
 
 $(document).on('click','.cwresmodal',function(){
   var urlcw = "/apinvoice/cwresponse";
-  var prim_ref = $('button',this).attr('data-pid');
+  var prim_ref = $(this).attr('data-pid');
+  
   $("#cwresponsemodal .modal-body").append(loader);
   $("#cwresponsemodal .modal-body").load(urlcw,{prim_ref:prim_ref},
     function (response, status, xhr) {

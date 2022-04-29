@@ -203,15 +203,15 @@ class Apinvoice extends Core\Controller {
                     }
                 }
                 $actionbtn = '';
-                //if(is_null($value->cw_response) || !empty($value->cw_response)){
+                if(!is_null($value->cw_response) || !empty($value->cw_response)){
                     $actionbtn = "<button type='button' class='btn btn-block btn-outline-success cwresmodal' data-pid='".$value->process_id."'>CW Response</button>";
-               // }
+                }
                 
                 $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
                                                     {$invoiceHeader['invoice_report']},
                                                     <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
-                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>
-                                                    ".$actionbtn;
+                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>,
+                                                    ".$actionbtn.",".$value->cw_response_status;
             } 
            
             $jobnum = json_decode($value->sec_ref);
@@ -713,11 +713,13 @@ class Apinvoice extends Core\Controller {
     public function cwresponse(){
         $data = array();
         $data['cwresponse'] = 'Empty';
+        $data['cwstatus'] = '';
         if(isset($_POST)){
          $APinvoice = Model\Apinvoice::getInstance();
          $data['invoices'] = $APinvoice->getSingleCWResponse($_SESSION['user'],$_POST['prim_ref']);
          if(!empty($data['invoices'][0]) && isset($data['invoices'][0]->cw_response)){
             $data['cwresponse'] = $data['invoices'][0]->cw_response;
+            $data['cwstatus'] = $data['invoices'][0]->cw_response_status;
          }
         }
          
@@ -725,6 +727,7 @@ class Apinvoice extends Core\Controller {
        
         $this->View->renderWithoutHeaderAndFooter("/apinvoice/cwresponse", [
             "data" => $data['cwresponse'],
+            "cwstatus" => $data['cwstatus']
          ]);
     }
 

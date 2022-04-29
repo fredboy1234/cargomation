@@ -85,7 +85,8 @@ class Apinvoice extends Core\Model {
         $query = "SELECT 
            mr.cw_response,
            ma.filepath,
-           mr.match_report
+           mr.match_report,
+           mr.cw_response_status
         FROM match_apinvoice ma
         LEFT JOIN match_report mr
         ON mr.prim_ref = ma.process_id

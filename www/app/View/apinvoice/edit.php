@@ -2,10 +2,11 @@
   .modal-footer{display: none;}
 </style>
 <?php $invoiceDate = ''; ?>
+<?php $disabledInput = array("InvoiceNumber","ExchangeRate");?>
 <form id="parsedForm">
   <?php foreach($this->data as $key=>$val){ $disable="";?>
     <?php
-      if($key==="InvoiceNumber"){
+      if(in_array($key,$disabledInput)){
         $disable = "disabled";
       }
       if($key==='InvoiceDate'){
