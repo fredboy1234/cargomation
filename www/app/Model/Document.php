@@ -203,8 +203,14 @@ class Document extends Core\Model {
 
     public static function updateDocumentType($data){
         $Db = Utility\Database::getInstance();
-        $query = "UPDATE document SET type='{$data['doc_type']}' WHERE id='{$data['doc_id']}'";
-        return $Db->query($query)->results();
+        $doc_id = implode(", ", $data['data']);
+        $query = "UPDATE document SET type='{$data['type']}' WHERE id IN ({$doc_id})";
+        $result = $Db->query($query)->error();
+        if(!$result) {
+            // $response = array('data' => $data['data'], 'type' => $data['type']);
+            return $data['type'];
+        }
+        // return json_encode($response);
     }
 
     public static function putDocumentComment($data) {
