@@ -349,15 +349,19 @@
                      <button id="push_selected" 
                         data-action="push" data-text="Push" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
-                        class="btn badge-primary" type="button" title="Push Selected"><i class="fas fa-upload"></i></button>
+                        class="btn badge-primary" type="button" title="Upload to CargoWise"><i class="fas fa-cloud"></i></button>
                     <button id="delete_selected" 
                         data-action="deleted" data-text="Delete" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
-                        class="btn btn-default bg-danger" type="button" title="Delete Selected"><i class="fas fa-trash"></i></button>
+                        class="btn btn-default bg-danger" type="button" title="Delete Selected File"><i class="fas fa-trash"></i></button>
+                    <button id="edit_selected" data-action="edit" data-text="Edit" 
+                        data-option="action" data-toggle="tooltip" data-placement="top" 
+                        class="btn badge-primary" type="button" title="" data-original-title="Change Document Type">
+                        <i class="fas fa-pencil-alt"></i></button>
                     <button id="compare_selected" 
                         data-action="compare" data-text="Compare" data-option="action" 
                         data-toggle="tooltip" data-placement="top" 
-                        class="btn badge-primary" type="button" title="Compare Selected"><i class="fas fa-eye"></i></button>
+                        class="btn badge-primary" type="button" title="Compare Selected File"><i class="fas fa-eye"></i></button>
                     <button id="approve_selected" data-action="approved" data-text="Approve" data-option="status" type="button" title="Approve Selected" data-toggle="tooltip" data-placement="top" class="btn badge-primary"><i id="custom_thumb" class="fas fa-thumbs-up cust"></i></button>
                     <button id="pending_selected" data-action="pending" data-text="Pending" data-option="status" type="button" title="Pending Selected" data-toggle="tooltip" data-placement="top" class="btn btn-default bg-danger"><i id="custom_thumb" class="fas fa-thumbs-down"></i></button>
                     <button id="approve_all" data-action="approved" data-text="Approve All" data-option="status_all" type="button" class="btn badge-primary">Approve All</button>
