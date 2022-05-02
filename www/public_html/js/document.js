@@ -116,7 +116,7 @@ $(document).ready(function () {
             '</div>' +
             '<div class="file-thumbnail-footer">\n' +
                 '    <div class="file-footer-caption" title="{title}">File Name: {caption}' +
-                '       <br>File Type: <b>{type}</b>' +
+                '       <br>File Type: <b id="type-{id}">{type}</b>' +
                 '       <br>File Source: <b>{origin}</b>' +
                 '       <br>File Status: <b id="status" class="{status}">{status}</b>' +
                 '   </div>\n' +
@@ -854,6 +854,10 @@ $(document).ready(function () {
     $("#push_selected, #delete_selected, #approve_all, #approve_selected, #pending_all, #pending_selected").on("click", function() {
         updateDocumentStatus($(this).data('option'), $(this).data('action'), $(this).data('text'));
     });
+
+    $('#edit_selected').on("click", function() {
+        updateDocumentType($(this).data('option'), $(this).data('action'), $(this).data('text'));
+    });
     
     $("#compare_selected").on("click", function() {
         var data = ""; 
@@ -1162,6 +1166,115 @@ function updateDocumentStatus(option, action, text) {
                     'No status change in the document',
                     'error'
                 )
+            }
+        });
+    }
+}
+
+function updateDocumentType(option, action, text) {
+    var data = [];
+    var warning_msg = "";
+    var success_msg = "";
+    if(option == "status_all") {
+        $('.file-preview-thumbnails > .file-preview-frame > .checkbox').each(function(index, element) {
+            data.push($(element).find('input').val());
+        });
+        warning_msg = "This will <b>" + text + "</b> the document. Do you still want to continue?";
+        success_msg = "Successfully <b>" + text + "</b> the document!";
+    } else {
+        $('div[class*="selected"] > input').each(function () {
+            data.push($(this).val().replace('d-', ''));
+        });
+        warning_msg = "This action will <b>" + text + "</b> the selected documents. <br>Do you still want to continue?";
+        success_msg =  "Successfully <b>" + text + "</b> the selected document!";
+    }
+    if (data.length === 0) {
+        Swal.fire(
+            'No file was selected!',
+            'Please select a file(s) by ticking the checkbox.',
+            'error'
+        );
+    } else {
+
+        var inputOptions = new Promise(function(resolve) {
+            // get your data and pass it to resolve()
+            setTimeout(function() {
+                // $.getJSON("/document/getDocumentTypeByUserID/180", function(data) {
+                //     // var obj = JSON.parse(data);
+                //     console.log(data);
+                //     resolve(data);
+                // });
+            }, 2000)
+        })
+
+        Swal.fire({
+            title: 'Change Document Type',
+            html: 'This action will update the type of the document. <br> Please proceed with caution.',
+            icon: 'warning',
+            input: 'select',
+            inputOptions: {
+                'PKD': 'Packing Declaration (PKD)',
+                'PKL': 'Packing List (PKL)',
+                'CIV': 'Commercial Invoice (CIV)',
+                'HBL': 'House Bill of Lading (HBL)',
+                'MBL': 'Airway Bill/Ocean Bill of Lading (MBL)'
+            },
+            // inputOptions: inputOptions,
+            inputPlaceholder: 'Select document type',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (value === '') {
+                        alert('You need to select document type')
+                        // reject('You need to select document type')
+                    } else {
+                        resolve()
+                    }
+                })
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Change',
+            showLoaderOnConfirm: true,
+            preConfirm: (type) => {
+                return $.ajax({
+                    type: "POST",
+                    url: 'document/updateDocumentType',
+                    data: {type:type, data:data}, 
+                    beforeSend: function () {
+                    },
+                    success: function (response) {
+                        return response;
+                    }
+                })
+                // .then(response => {
+                //     if (!response) {
+                //         throw new Error(response.statusText);
+                //     }
+                //     return response.json()
+                // })
+                // .catch(error => {
+                //     Swal.showValidationMessage(
+                //         `Request failed: ${error}`
+                //     )
+                // })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                console.log(result.value);
+                data.forEach(function(item) {
+                    console.log(item);
+                    $('#type-' + item).text(result.value);
+                })
+                Swal.fire({
+                    title: 'Done',
+                    icon: 'success',
+                    text: 'Update successful'
+                })
+                sessionStorage.setItem("changeTriggered", "1");
             }
         });
     }
