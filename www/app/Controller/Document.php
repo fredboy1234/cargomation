@@ -722,6 +722,11 @@ class Document extends Core\Controller {
         echo json_encode($this->Document->updateDocumentStatus($_POST));
     }
 
+    public function updateDocumentType(){
+        // $this->putUserNotifications('type', $_POST);
+        echo json_encode($this->Document->updateDocumentType($_POST));
+    }
+
     public function updateDocumentBulk(){
         echo json_encode($this->Document->updateDocumentBulk($_POST));
     }
@@ -1052,6 +1057,10 @@ class Document extends Core\Controller {
                 $data['message'] = "Status in file was changed to ". $post['doc_status'] . " by ";
                 $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
                 break;
+            case 'type':
+                $data['message'] = "Document type in file was changed to ". $post['doc_type'] . " by ";
+                $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
+                break;
             case 'upload':
                 $data['message'] = "New file was uploaded by ";
                 $data['message'] .= $user_info[0]->first_name . " " . $user_info[0]->last_name;
@@ -1258,6 +1267,10 @@ class Document extends Core\Controller {
         }
 
         echo json_encode($document_type);
+    }
+
+    public function getDocumentTypeByShipmentNum($shipment_num) {
+
     }
 
     /**
