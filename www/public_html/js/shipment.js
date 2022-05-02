@@ -1127,7 +1127,7 @@ function triggerType(data){
       $("#no_value_"+data['value']).parent().empty().html(`
         <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
 
-      $('#'+data['id']).html(createSelect('number_and_preferences',data));
+      $('#'+data['id']).html(createSelect('numbers_and_references',data));
     break;
     case 'option':
         $('#'+data['id']).html(createSelect('others',data));
