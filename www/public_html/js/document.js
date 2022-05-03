@@ -1197,14 +1197,15 @@ function updateDocumentType(option, action, text) {
     } else {
 
         var inputOptions = new Promise(function(resolve) {
-            // get your data and pass it to resolve()
-            setTimeout(function() {
-                // $.getJSON("/document/getDocumentTypeByUserID/180", function(data) {
-                //     // var obj = JSON.parse(data);
-                //     console.log(data);
-                //     resolve(data);
-                // });
-            }, 2000)
+            $.getJSON( "/document/getDocumentTypeByUserID/" + user_id, function( data ) {
+                var items = [];
+                $.each( data, function( key, value ) {
+                    if(value.type !== '') {
+                        items[value.type] = value.description + " (" + value.type + ")";
+                    }
+                });
+                resolve(items);
+            });
         })
 
         Swal.fire({
@@ -1212,14 +1213,7 @@ function updateDocumentType(option, action, text) {
             html: 'This action will update the type of the document. <br> Please proceed with caution.',
             icon: 'warning',
             input: 'select',
-            inputOptions: {
-                'PKD': 'Packing Declaration (PKD)',
-                'PKL': 'Packing List (PKL)',
-                'CIV': 'Commercial Invoice (CIV)',
-                'HBL': 'House Bill of Lading (HBL)',
-                'MBL': 'Airway Bill/Ocean Bill of Lading (MBL)'
-            },
-            // inputOptions: inputOptions,
+            inputOptions: inputOptions,
             inputPlaceholder: 'Select document type',
             inputAttributes: {
                 autocapitalize: 'off'
