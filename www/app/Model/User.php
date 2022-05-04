@@ -759,7 +759,7 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();
         $query = "";
-        if(is_null($result[0]->search)) {
+        if(is_null($result[0]->search) || empty($result[0]->search)) {
             $arr_data = [];
         } else {
             $arr_data = json_decode($result[0]->search);
@@ -780,7 +780,7 @@ class User extends Core\Model {
         $query = "";
         
         if(isset($result[0])){
-            if(is_null($result[0]->recent)) {
+            if(is_null($result[0]->recent) || empty($result[0]->recent)) {
                 $arr_data = [];
             } else {
                 $arr_data = json_decode($result[0]->recent);
