@@ -78,12 +78,12 @@ $status = array("error","success");
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Queue <span class="badge bg-warning">15</span>
+                <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning"> <?=$this->quecount?></span>
               </label>
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b2" autocomplete="off"> Completed <span class="badge bg-success">113</span>
+                <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"><?=$this->completeCount?></span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
+              <label class="btn btn-outline-info btn-lg d-none">
                 <input type="radio" name="options" id="option_b3" autocomplete="off"> Deleted <span class="badge bg-danger">53</span>
               </label>
             </div>

@@ -39,14 +39,15 @@ $.extend( true, $.fn.dataTable.defaults, {
   "searching": true,
   "responsive": false,
   "paging":   false,
+  "info":     false,
   "ordering": false,
-  "info":     false
 } );
 $.fn.dataTable.ext.errMode = 'none';
 $(document).ready(function() {
   
     var table = $('#example').DataTable( {
         "ajax": '/apinvoice/invoiceSuccess',
+        "ordering": true,
         "columns": [
             {
                 "className":      'dt-control',
@@ -62,7 +63,7 @@ $(document).ready(function() {
             { "data": "Action" },
             { "data": "Status" }
         ],
-        "order": [[2, 'asc']],
+        "order": [[1, 'desc']],
         
     } );
     
@@ -186,7 +187,10 @@ $(document).ready(function() {
       //     parsedTable.ajax.reload; 
       //   }
       // });
-      
+
+      /**
+       * showing pdf preview and chargeline contents below pdf.
+       */
       $.ajax({
         url: document.location.origin+"/apinvoice/preview/",
         type: "POST",
@@ -196,8 +200,9 @@ $(document).ready(function() {
           $('#loader-wrapper').remove();
          var d = JSON.parse(data);
          var jreport = JSON.parse(d[0].match_report);
-         console.log(jreport);
-          $("#embeded embed").attr('src',d[0].filepath);
+         console.log(d);
+          $("#embeded embed").attr('src',d[0].filename);
+          var html='';
           try{
             if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
               $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
@@ -209,6 +214,36 @@ $(document).ready(function() {
           }catch(x){
             console.log("error");
           }
+
+          $.each(jreport.HubJSONOutput.MatchReport,function(okey,oval){
+            var classkey = '';
+            var contentText = '';
+            if(Object.keys(oval).length !== 0){
+              if(okey==='Errors'){
+                classkey ="danger";
+                contentText = oval;
+              }else if(okey ==='Information'){
+                classkey = "info_1"
+                contentText = oval.InformationDetail.join("<br>");
+              }else if(okey ==='Warnings'){
+                classkey = "warning";
+                contentText = oval.WarningsDetail;
+              }else{
+                classkey = "success"
+                contentText = oval;
+              }
+            }
+            
+
+            html+=`<div id="cusdiv" class="${classkey}">
+                    <p><strong>${okey}: </strong><br>
+                    ${contentText}
+                    </p>
+                  </div>`;
+            $("#infor-boxes").html(html);
+            //console.log(okey); 
+          });
+          
         }
       });
 
@@ -428,8 +463,11 @@ setInterval(function () {
     type: "POST",
     success:function(data)
     {
-      //console.log(data);
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
+      var comdata = JSON.parse(data);
+      console.log(comdata.completedCount[0].completed);
+      $("#totalque").text(comdata.data.length);
+      $("#completedque").text(comdata.completedCount[0].completed);
     }
   });
 }, 20000);

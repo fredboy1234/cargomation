@@ -17,7 +17,6 @@ $spited = preg_split('/\.\s*?(?=[A-Z])|(\r\n|\n|\r)/', $cwresponse);
         $logs['warning'][] = $sp;
      }
   }
-
 ?>
 <?php if($this->cwstatus === "Failed"){?>
     <h5 class="text-danger text-center">Failed to Push to CW!

@@ -47,13 +47,13 @@ class Apinvoice extends Core\Model {
 
     public function getInvoices($user_id){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM match_apinvoice WHERE user_id = '{$user_id}'";
+        $query = "SELECT * FROM match_apinvoice WHERE user_id = '{$user_id}' order by process_id desc";
         return  $Db->query($query)->results();
     }
 
     public function getInvoicesSuccess(){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM match_report ";
+        $query = "SELECT * FROM match_report ORDER BY id desc";
         return  $Db->query($query)->results();
     }
 
@@ -63,12 +63,22 @@ class Apinvoice extends Core\Model {
         return  $Db->query($query)->results();
     }
 
+    public function getAPCompleteCount($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT count(*) as completed FROM match_apinvoice ma 
+            inner join match_report mr on mr.prim_ref = ma.process_id
+            WHERE user_id = '{$user_id}' ";
+        return  $Db->query($query)->results();
+        
+    }
+
     public function getSingleInvoice($user_id){
         $Db = Utility\Database::getInstance();
         $query = "SELECT 
             ma.process_id as process_id,
             ma.filename as maAPFIlename,  
             ma.filepath,
+            mr.filename,
             ma.status,
             mr.status,
             *
@@ -85,6 +95,7 @@ class Apinvoice extends Core\Model {
         $query = "SELECT 
            mr.cw_response,
            ma.filepath,
+           mr.filename,
            mr.match_report,
            mr.cw_response_status
         FROM match_apinvoice ma

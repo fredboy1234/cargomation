@@ -133,7 +133,9 @@ class Apinvoice extends Core\Controller {
                 }  
             }
         }
-   
+        $countque = $this->getSingleInvoice($_SESSION['user']);
+        $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -151,6 +153,8 @@ class Apinvoice extends Core\Controller {
             "headerParsed" =>$headerParsed,
             "parsedData" => json_encode($parsed),
             "invoicesHeader" =>$invoicesHeader,
+            "quecount" =>is_countable($countque) ? sizeof($countque) : 0, 
+            "completeCount"=>$completeCount[0]->completed,
         ]);
     }
 
@@ -179,46 +183,55 @@ class Apinvoice extends Core\Controller {
     public function invoiceSuccess(){
         $retData = array();
         $invoiceHeader = array();
+        $splitInvoice = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
-        // echo"<pre>";
-        // print_r($data['invoices']);
-        // exit();
+       // echo"<pre>";
+        
         foreach($data['invoices'] as $value){
+            $splitInvoice[$value->process_id][] = $value;
+        }
+        //print_r($splitInvoice);
+        foreach($splitInvoice as $key=>$v){
             $invoiceHeader['invoice'] = array();
-            $invoiceHeader['invoice_num'] = '';
-            $invoiceHeader['invoice_report'] ='';
-            $invoiceHeader['invoice_response'] ='';
-            $invoiceHeader['invoice_status'] = '';
-            if(!empty($value->match_report)){
-                $parsed = json_decode($value->match_report);
-                $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
-               
-                if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
-                 
-                    foreach($parsedChargline ->ChargeLine as $chline){
-                        $invoiceHeader['invoice_num'] = $chline->InvoiceNumber ;
-                        $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
-                        $invoiceHeader['invoice_response'] = "ready";
-                        $invoiceHeader['invoice_status'] = "complete";
-                    }
-                }
-                $actionbtn = '';
-                if(!is_null($value->cw_response) || !empty($value->cw_response)){
-                    $actionbtn = "<button type='button' class='btn btn-block btn-outline-success cwresmodal' data-pid='".$value->process_id."'>CW Response</button>";
-                }
+           foreach($v as $value){
+                $invoiceHeader['invoice_num'] = '';
+                $invoiceHeader['invoice_report'] ='';
+                $invoiceHeader['invoice_response'] ='';
+                $invoiceHeader['invoice_status'] = '';
+                if(!empty($value->match_report)){
+                    $parsed = json_decode($value->match_report);
+                    $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
                 
-                $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
-                                                    {$invoiceHeader['invoice_report']},
-                                                    <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
-                                                    <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>,
-                                                    ".$actionbtn.",".$value->cw_response_status;
-            } 
+                    if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
+                    
+                        foreach($parsedChargline ->ChargeLine as $chline){
+                            $invoiceHeader['invoice_num'] = $chline->InvoiceNumber ;
+                            $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
+                            $invoiceHeader['invoice_response'] = "ready";
+                            $invoiceHeader['invoice_status'] = "complete";
+                        }
+                    }
+                    $actionbtn = '';
+                    if(!is_null($value->cw_response) || !empty($value->cw_response)){
+                        $actionbtn = "<button type='button' class='btn btn-block btn-outline-success cwresmodal' data-pid='".$value->process_id."'>CW Response</button>";
+                    }
+                    
+                    $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
+                                                        {$invoiceHeader['invoice_report']},
+                                                        <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
+                                                        <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>,
+                                                        ".$actionbtn.",".$value->cw_response_status;
+                } 
            
-            $jobnum = json_decode($value->sec_ref);
-            $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
+                $jobnum = json_decode($value->sec_ref);
+                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
+           
+           }
+            
             // if(!is_null($value->cw_response) || !empty($value->cw_response)){
             //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
             // }
+            $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
@@ -226,17 +239,19 @@ class Apinvoice extends Core\Controller {
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> $actionbtn,
-                "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : $value->status,
+                "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : 'Complete',
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
         }
-       
+    //   print_r($retData['data']);
+        //exit();
         echo json_encode($retData);
     }
 
     public function headerData(){
         $header=array();
+        $header['data'] = array();
         $columnMatched = array();
         
         if(isset($_POST['prim_ref'])){
@@ -256,10 +271,9 @@ class Apinvoice extends Core\Controller {
                     }  
                 }  
             }
+            $header['data'] =  $matched->CWChargeLines->ChargeLine;
         }
         
-        $header['data'] =  $matched->CWChargeLines->ChargeLine;
-       
         echo json_encode($header);
     }
 
@@ -788,4 +802,9 @@ class Apinvoice extends Core\Controller {
         return $lastID[0]->lastid;
     }
 
+    public function getAPCompleteCount($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPCompleteCount($user_id);
+        return $twoJoint;
+    }
 }
