@@ -266,9 +266,9 @@ if(!empty($this->document)) {
     <?php if (isset($document_settings->doctracker->push_document)): ?>
     btn_upload = '<button type="button" ' +
                 'class="kv-file-push btn btn-sm btn-kv btn-default btn-outline-secondary" ' +
-                'title="Push to CargoWise"{dataUrl}{dataKey} ' +
+                'title="Upload to CargoWise"{dataUrl}{dataKey} ' +
                 'data-doc_id="{id}" data-doc_status="{status}">' +
-                '<i class="fas fa-upload"></i>' +
+                '<i class="fas fa-cloud"></i>' +
                 '</button>\n';
     <?php endif; ?>
     btn_edit = '<button type="button" ' +

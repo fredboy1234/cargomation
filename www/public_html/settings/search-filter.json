@@ -1,5 +1,5 @@
 {
-    "number_and_preferences":[
+    "numbers_and_references":[
         {"filterID":"Shipment ID", "filterName":"shipment_num","filterType":"input","placeholder":"","show":"y",
             "value":[],
             "type":[
