@@ -180,14 +180,24 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 <div class="col-lg-6">
                                     <strong>Estimated Departure</strong>
                                     <p><?php 
-                                        $date = date_create($this->shipment_info[0]->etd);
-                                        echo date_format($date,"d M Y H:i"); ?></p>
+                                        if($this->shipment_info[0]->etd == '1900-01-01 00:00:00.000'):
+                                            echo '-';
+                                        else: 
+                                            $date = date_create($this->shipment_info[0]->etd);
+                                            echo date_format($date,"d M Y H:i"); 
+                                        endif;
+                                    ?></p>
                                 </div>
                                 <div class="col-lg-6">
                                     <strong>Estimated Arrival</strong>
                                     <p><?php 
-                                        $date = date_create($this->shipment_info[0]->eta);
-                                        echo date_format($date,"d M Y H:i"); ?></p>
+                                        if($this->shipment_info[0]->eta == '1900-01-01 00:00:00.000'):
+                                            echo '-';
+                                        else: 
+                                            $date = date_create($this->shipment_info[0]->eta);
+                                            echo date_format($date,"d M Y H:i"); 
+                                        endif;
+                                    ?></p>
                                 </div>
                             </div>
                             <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
@@ -488,13 +498,13 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                                         <?php if(isset($value->ETD)): ?>
                                                         <div class="col-lg-6">
                                                             <strong>Estimated Departure </strong>
-                                                            <p><?= $value->ETD; ?></p>
+                                                            <p><?= ($value->ETD == '01 Jan 1900 00:00.000') ? '-' : $value->ETD; ?></p>
                                                         </div>
                                                         <?php endif; ?>
                                                         <?php if(isset($value->ETA)): ?>
                                                         <div class="col-lg-6">
                                                             <strong>Estimated Arrival</strong>
-                                                            <p><?= $value->ETA; ?></p>
+                                                            <p><?= ($value->ETA == '01 Jan 1900 00:00.000') ? '-' : $value->ETA; ?></p>
                                                         </div>
                                                         <?php endif; ?>
                                                     </div>

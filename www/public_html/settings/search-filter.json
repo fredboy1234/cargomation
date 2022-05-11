@@ -12,9 +12,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Consol ID", "filterName":"console_id","filterType":"input","placeholder":"","show":"y",
@@ -29,9 +29,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Master Bill", "filterName":"master_bill","filterType":"input","placeholder":"","show":"y",
@@ -46,9 +46,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n",
@@ -63,9 +63,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n",
@@ -80,9 +80,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Container #", "filterName":"container","filterType":"input","placeholder":"","show":"n",
@@ -97,9 +97,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"House Bill", "filterName":"house_bill","filterType":"input","placeholder":"","show":"n",
@@ -114,9 +114,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
         {"filterID":"Order Reference", "filterName":"order_number","filterType":"input","placeholder":"","show":"n",
@@ -131,9 +131,9 @@
                 {"option":"Not Contain","value":"NOT_CONTAINS"},
                 {"option":"Equals","value":"EQUALS"},
                 {"option":"Not Equals","value":"NOT_EQUALS"},
-                {"option":"not_starting","value":"not_starting"},
-                {"option":"is_blank","value":"is_blank"},
-                {"option":"not_blank","value":"not_blank"}
+                {"option":"Not Starting With","value":"NOT_STARTING"},
+                {"option":"Is Blank","value":"IS_BLANK"},
+                {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         }
     ],
@@ -168,13 +168,7 @@
     "document":[
         {"filterID":"Type", "filterName":"document:type","filterType":"document","placeholder":"","show":"y",
             "value":[
-                {"name":"Select All","value":"ALL"},
-                {"name":"PKD","value":"PKD"},
-                {"name":"PKL","value":"PKL"},
-                {"name":"HBL","value":"HBL"},
-                {"name":"MBL","value":"MBL"},
-                {"name":"COO","value":"COO"},
-                {"name":"CIV","value":"CIV"}
+                {"name":"Select All","value":"ALL"}
             ],
             "type":[
                 {"option":"--Select type--","value":""},

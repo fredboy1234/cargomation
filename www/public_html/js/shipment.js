@@ -1144,6 +1144,19 @@ function triggerType(data){
 function selectTrigger(index,inputType){
   if(inputType === "select2"){
     $('#container_mode_'+index).select2();
+    var seach_type = $('#no_search_'+index+' option:selected').text();
+    if(seach_type == 'Type'){
+      let items = [];
+      $.getJSON( "/document/getDocumentTypeByUserID/" + user_id, function( data ) {
+        $.each( data, function( key, value ) {
+          if(value.type !== '') {
+            var newOption = new Option(value.type, value.type, false, false);
+            $('#container_mode_'+index).append(newOption).trigger('change');
+          }
+        });
+      });
+    }
+
     $('#container_mode_'+index).on("select2:select", function (e) {
       var text = e.params.data.text;
       if (text == 'Select All') {
