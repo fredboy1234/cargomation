@@ -48,6 +48,9 @@ $(document).ready(function() {
     var table = $('#example').DataTable( {
         "ajax": '/apinvoice/invoiceSuccess',
         "ordering": true,
+        "bPaginate":true,
+        "sPaginationType":"full_numbers",
+        "iDisplayLength": 8,
         "columns": [
             {
                 "className":      'dt-control',

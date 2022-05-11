@@ -13,6 +13,9 @@
     top: 13%;
     right: 50%;
    }
+   #headerTable_wrapper{
+      overflow: hidden;
+   }
 </style>
 <div class="modal fade" id="modal-lg-prev">
    <div class="modal-dialog modal-xl">
