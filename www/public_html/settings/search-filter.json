@@ -168,13 +168,7 @@
     "document":[
         {"filterID":"Type", "filterName":"document:type","filterType":"document","placeholder":"","show":"y",
             "value":[
-                {"name":"Select All","value":"ALL"},
-                {"name":"PKD","value":"PKD"},
-                {"name":"PKL","value":"PKL"},
-                {"name":"HBL","value":"HBL"},
-                {"name":"MBL","value":"MBL"},
-                {"name":"COO","value":"COO"},
-                {"name":"CIV","value":"CIV"}
+                {"name":"Select All","value":"ALL"}
             ],
             "type":[
                 {"option":"--Select type--","value":""},
