@@ -473,8 +473,7 @@ class Apinvoice extends Core\Controller {
                 //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
                 $url ='https://cargomation.com:5200/redis/apinvoice/match_report';
                  $result = $this->postAuth($url,$payload,$headers);
-                print_r($payload);
-                print_r($result);
+                
             }      
     }
 
