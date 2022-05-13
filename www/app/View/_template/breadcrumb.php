@@ -17,7 +17,7 @@
     <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand text-center w-100" href="#">
-        <img src="<?=$imageMisc?>" alt=""  class="d-inline-block align-text-top img-thumbnail ubanner"><br>
+        <img src="<?=$imageMisc?>" alt=""  class="d-inline-block align-text-top  ubanner"><br>
       </a>
       
     </div>
