@@ -13,6 +13,7 @@
     width: 488px;
     border-radius: 5px;
 }
+
 </style>
     <?php 
     if(!empty($this->user_settings)) {

@@ -167,7 +167,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <?php if($imageMisc !== ''){?>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-        <img src="<?=$imageMisc?>" alt="" class="d-inline-block align-text-top img-thumbnail w-100" style="height:95px;object-fit: cover;">
+        <img src="<?=$imageMisc?>" alt="" class="d-inline-block align-text-top img-thumbnail w-100" style="height:136px;object-fit: cover;">
       </div>
     </nav>
   <?php } ?>

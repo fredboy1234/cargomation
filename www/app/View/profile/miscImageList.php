@@ -7,6 +7,12 @@
   .set-to-profile{
     cursor: pointer;
   }
+  #uploadimageModal .modal-dialog{
+    width: 100%;
+    height: 100%;
+    margin: 36px;
+    padding: 0;
+}
 </style>
 <div class="container">
   <label class="btn btn-block btn-primary btn-sm" for="upload_image">
@@ -16,10 +22,10 @@
 
   <div class="row">
     <?php foreach($this->user as $user){?>
-      <div class="col-sm-4">
+      <div class="col-sm-12">
         <div class="card">
           <div class="card-body set-to-profile" data-imgid="<?=$user->id?>">
-            <img src="<?=base64_decode($user->image_src)?>" class="img-responsive">
+            <img src="<?=base64_decode($user->image_src)?>" class="img-responsive w-100">
           </div>  
         </div>   
       </div> 
@@ -30,7 +36,7 @@
 
 <div id="uploadimageModal" class="modal" role="dialog">
  <div class="modal-dialog">
-  <div class="modal-content" style="width: 950px;">
+  <div class="modal-content" style="width: 1200px;">
         <div class="modal-header">
           <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           <h4 class="modal-title">Update Header and Footer Picture</h4>
@@ -56,12 +62,12 @@
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
-          width:800,
+          width:1000,
           height:95,
           type:'square' //circle
         },
         boundary:{
-          width:900,
+          width:1100,
           height:105
         }
   });
@@ -131,7 +137,7 @@
           $('#uploadimageModal').modal('hide');
           $('#uploaded_image').html(data);
           $("#profileModal").modal('hide');
-         //window.location.reload();
+          window.location.reload();
         }
       });
     })
