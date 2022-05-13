@@ -460,7 +460,7 @@ class Apinvoice extends Core\Controller {
             $user_id = $_SESSION['user'];
             $process_id = $this->getLastID();
             $checkIFExist = $this->getSingleCWResponse($_SESSION['user'],$process_id);
-            if(!empty($checkIFExist)){
+            if(empty($checkIFExist)){
                 $arr = array(
                     "user_id" => strval($user_id),
                     "id"=>(int) $process_id
