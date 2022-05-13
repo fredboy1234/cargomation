@@ -459,8 +459,8 @@ class Apinvoice extends Core\Controller {
     public function reprocessReportONSuccess(){
             $user_id = $_SESSION['user'];
             $process_id = $this->getLastID();
-            $checkIFExist = $this->getSingleCWResponse($_SESSION['user'],$process_id);
-            if(empty($checkIFExist)){
+            //$checkIFExist = $this->getSingleCWResponse($_SESSION['user'],$process_id);
+            //if(empty($checkIFExist)){
                 $arr = array(
                     "user_id" => strval($user_id),
                     "id"=>(int) $process_id
@@ -472,9 +472,8 @@ class Apinvoice extends Core\Controller {
         
                 //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
                 $url ='https://cargomation.com:5200/redis/apinvoice/match_report';
-                 $result = $this->postAuth($url,$payload,$headers);
-                
-            }      
+                $result = $this->postAuth($url,$payload,$headers);
+            //}      
     }
 
     public function pushTOCW(){
