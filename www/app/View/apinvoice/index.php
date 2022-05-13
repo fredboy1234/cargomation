@@ -204,4 +204,5 @@ $status = array("error","success");
   var user_id = '< ? = $this - > user_id; ? >' ;
   var token = " < ? = generateRandomString(); ? > ";
   var param = "test";
+  var chartdata = <?=json_encode($this->chartData)?>;
 </script>

@@ -30,10 +30,10 @@
 
 <div id="uploadimageModal" class="modal" role="dialog">
  <div class="modal-dialog">
-  <div class="modal-content">
+  <div class="modal-content" style="width: 950px;">
         <div class="modal-header">
           <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-          <h4 class="modal-title">Update Profile Picture</h4>
+          <h4 class="modal-title">Update Header and Footer Picture</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -42,7 +42,7 @@
         <div id="image_demo"></div>
        </div>
        <div class="col-md-8">
-        <button type="button" class="btn btn-primary crop_image">Set Profile Picture</button>
+        <button type="button" class="btn btn-primary crop_image">Set As Header And Footer Image</button>
      </div>
     </div>
         </div>
@@ -56,25 +56,26 @@
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
-          width:200,
-          height:200,
+          width:800,
+          height:95,
           type:'square' //circle
         },
         boundary:{
-          width:300,
-          height:300
+          width:900,
+          height:105
         }
   });
 
   $('.set-to-profile').on('click',function(){
     var url = $('img',this).attr('src');
-    // var reader = new FileReader();
-    // reader.onload = function (event) {
-    //   var image = new Image();
-    //   image.src = event.target.result;
-    //   console.log(event);
-    // }
+    var reader = new FileReader();
+    reader.onload = function (event) {
+      var image = new Image();
+      image.src = event.target.result;
+      console.log(event);
+    }
     var image = new Image();
+    $(".crop_image").attr("data-imgid",$(this).attr("data-imgid"));
     image.src = url;
     $image_crop.croppie('bind', {
       url: image.src
@@ -95,11 +96,24 @@
         console.log('jQuery bind complete');
       });
     }
+    console.log(this.files);
     reader.readAsDataURL(this.files[0]);
     $('#uploadimageModal').modal('show');
   });
     
   $('.crop_image').click(function(event){
+      var imageid = $(this).attr("data-imgid");
+      var modalCID = $("#hfmodal").attr('data-cid');
+      var imagetype = '';
+      if(modalCID === 'hfupload'){
+        imagetype = 'Header';
+      }
+      if(modalCID === 'footerupload'){
+        imagetype = 'Footer';
+      }
+      if(typeof imageid ==='undefined'){
+        imageid = 0;
+      }
     $image_crop.croppie('result', {
       type: 'canvas',
       size: 'viewport'
@@ -107,7 +121,7 @@
       $.ajax({
         url: document.location.origin+"/profile/insertUserProfile/",
         type: "POST",
-        data:{"image_src": response,'imageType':'Misc'},
+        data:{"image_src": response,'imageType':imagetype,'imageID':imageid},
         beforeSend: function() {
             // setting a timeout
             $('#uploaded_image').html("<p>Loading...</p>");
@@ -117,7 +131,7 @@
           $('#uploadimageModal').modal('hide');
           $('#uploaded_image').html(data);
           $("#profileModal").modal('hide');
-          window.location.reload();
+         //window.location.reload();
         }
       });
     })

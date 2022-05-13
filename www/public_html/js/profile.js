@@ -11,6 +11,13 @@ $(document).ready(function () {
         $("#profileModal").modal("show");
     });
 
+    $("#hfupload, #footerupload").on("click", function () {
+        $("#hfmodal .modal-body").load("profile/miscImageList");
+        $("#hfmodal").modal("show");
+        $("#hfmodal").attr("data-cid",$(this).attr('id'));
+    });
+    
+
     $("#settings > form").submit(function( event ) {
         event.preventDefault();
         $.ajax({

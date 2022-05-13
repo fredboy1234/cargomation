@@ -155,6 +155,7 @@ class Apinvoice extends Core\Controller {
             "invoicesHeader" =>$invoicesHeader,
             "quecount" =>is_countable($countque) ? sizeof($countque) : 0, 
             "completeCount"=>$completeCount[0]->completed,
+            "chartData" =>$this->chartData($_SESSION['user'])
         ]);
     }
 
@@ -806,5 +807,11 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $twoJoint = $APinvoice->getAPCompleteCount($user_id);
         return $twoJoint;
+    }
+
+    public function chartData($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $chartData = $APinvoice-> chartData($user_id);
+        return $chartData;
     }
 }

@@ -153,6 +153,7 @@
                                 <li class="nav-item"><a class="nav-link active" href="#information" data-toggle="tab">Information</a></li>
                                 <?php if($this->role->role_id != 4): ?>
                                 <li class="nav-item"><a class="nav-link" href="#theme" data-toggle="tab">Themes</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#misc" data-toggle="tab">Miscellaneous</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                                 <?php endif; ?>
                             </ul>
@@ -446,6 +447,29 @@
                                     </form>
                                 </div>
                                 <!-- /.tab-pane -->
+                                <!--mis-->
+                                <div class="tab-pane" id="misc">
+                                    <form class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label for="hfimage" class="col-sm-2 col-form-label">Header Banner</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <img style="width:auto; height:50px; " src="<?=$this->miscImage?>" alt="..." class="img-thumbnail">
+                                                <span id="hfupload" role="button">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="footerimage" class="col-sm-2 col-form-label">Footer Banner</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <img style="width:auto; height:50px; " src="<?=$this->miscFooter?>" alt="..." class="img-thumbnail">
+                                                <span id="footerupload" role="button">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <!--Edit Settings-->     
                                 <div class="tab-pane" id="edit-settings">
                                     <form class="form-horizontal" _lpchecked="1">
@@ -760,6 +784,27 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Upload Profile</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <!-- <button type="file" class="btn btn-block btn-primary btn-sm"><i class="fas fa-cloud-upload-alt"></i> Upload Photo</button> -->
+      </div>
+      <!-- <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="hfmodal">
+  <div class="modal-dialog modal-lg" style="width:100%; max-width:825px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload Image</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

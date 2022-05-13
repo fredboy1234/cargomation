@@ -125,4 +125,27 @@ class Apinvoice extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT IDENT_CURRENT('match_apinvoice') as lastid")->results();
     }
+
+    public function chartData($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "select 
+            count( CAST(dateuploaded AS DATE)) as countdate,
+            CAST(dateuploaded AS DATE) as DateField
+            from match_apinvoice 
+            where user_id = '{$user_id}'
+            and 
+            dateuploaded >= DATEADD(day, DATEDIFF(day, 0, DATEADD(month, -1, CURRENT_TIMESTAMP)), 0)
+            Group by CAST(dateuploaded AS DATE)";
+        // $query="select 
+        //     count(Month(dateuploaded)) as monthCount,
+        //     Month(dateuploaded)as month, 
+        //     Year(dateuploaded) as year
+        //     from match_apinvoice 
+        //     where user_id = '{$user_id}'
+        //     and 
+        //     dateuploaded >= DATEADD(day, DATEDIFF(day, 0, DATEADD(month, -1, CURRENT_TIMESTAMP)), 0)
+        //     Group by Month(dateuploaded),Year(dateuploaded)";
+
+        return $Db->query($query)->results();
+    }
 }
