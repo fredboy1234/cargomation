@@ -2,8 +2,7 @@
   <style>
     .ubanner{
       width: 100%;
-      height: 136px;
-      object-fit: cover;
+      height: 95px;
     }
   </style>
   <?php $imageMisc=""; if(isset($this->user->user_image)){

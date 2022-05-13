@@ -36,7 +36,7 @@
 
 <div id="uploadimageModal" class="modal" role="dialog">
  <div class="modal-dialog">
-  <div class="modal-content" style="width: 1200px;">
+  <div class="modal-content" style="width: 1400px;">
         <div class="modal-header">
           <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           <h4 class="modal-title">Update Header and Footer Picture</h4>
@@ -62,12 +62,12 @@
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
-          width:1000,
-          height:95,
+          width:1200,
+          height:100,
           type:'square' //circle
         },
         boundary:{
-          width:1100,
+          width:1300,
           height:105
         }
   });
