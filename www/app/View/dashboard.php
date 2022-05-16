@@ -72,6 +72,11 @@
 .not-shipment{
 color:#808080 !important;
 }
+#lazy-tablue{
+  overflow: hidden;
+  display: block;
+  height: 100%;
+}
 </style>
   <!-- Main content -->
     <section class="content" style="padding-bottom: 5em;">
@@ -822,7 +827,7 @@ color:#808080 !important;
             <?php endif; ?>
           </section>
           <!--start of section report-->
-          <section id="lazy-tablue" class="col-lg-12 connectedSortable" style="max-height: 50px;">
+          <section id="lazy-tablue" class="col-lg-12 connectedSortable">
             <div class="card bg-gradient-default" style="display: block;">
               <div class="card-header border-0">
                 <h3 class="card-title">

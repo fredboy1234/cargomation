@@ -369,16 +369,28 @@ class User extends Core\Model {
      */
     public function inserUserImages(array $fields) {
         $img_src = base64_encode($fields['image_src']);
+        $img_id = $fields['imageId'];
         //$img_src = $fields['image_src'];
         $Db = Utility\Database::getInstance();
         $Db->query("UPDATE user_images
-                set image_type = '' WHERE user_id = '{$fields['user_id']}'
+                set image_type = '' WHERE user_id = '{$fields['user_id']}' and image_type = '{$fields['image_type']}'
         ");
-        return $Db->query("INSERT
+        
+        $check = $Db->query("SELECT id  FROM user_images WHERE user_id = '{$fields['user_id']}' and id = '{$img_id}' ")->results();
+        
+        if(!empty($check)){
+            return $Db->query("UPDATE user_images
+                set image_type = '{$fields['image_type']}' WHERE user_id = '{$fields['user_id']}'
+            ");
+        }else{
+            
+            return $Db->query("INSERT
                             INTO user_images 
                         (user_id,image_type,uploaded,image_src) 
                         values('{$fields['user_id']}','{$fields['image_type']}',GETDATE(),'{$img_src}')
         ");
+        }
+        
     }
 
     public static function getUsersDashPhoto($userID) {

@@ -155,10 +155,23 @@ body {font-family: Arial, Helvetica, sans-serif;}
   </div>
 </div>
 <!-- end cookie card-->
-
+<?php $imageMisc=""; if(isset($this->user->user_image)){
+    foreach($this->user->user_image as $src_image){
+      if($src_image->image_type === "Footer"){
+        $imageMisc = base64_decode($src_image->image_src);
+      }
+    }
+  }?>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy;
+  <?php if($imageMisc !== ''){?>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <img src="<?=$imageMisc?>" alt="" class="d-inline-block align-text-top img-thumbnail w-100" style="height:95px;">
+      </div>
+    </nav>
+  <?php } ?>
+    <strong>Powered by Cargomation. Copyright &copy;
     <?php echo (gmDate('Y') == 2019) ? gmDate('Y') : ((gmDate('Y') < 2019) ? "Year Error!" : "2019 - " . gmDate('Y')); ?> 
     <a href="/"><?=APP_NAME?></a>.</strong>
     All rights reserved.
@@ -166,7 +179,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
       <b>Version</b> <?=APP_VERSION?>
     </div>
   </footer>
-
+  
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->

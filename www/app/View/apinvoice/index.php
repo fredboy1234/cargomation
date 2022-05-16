@@ -2,6 +2,9 @@
   .fileinput-upload{
     display: none;
   }
+  #example_length{
+    display: none;
+  }
 </style>
 <?php
 function generateRandomString($length = 10) {
@@ -132,7 +135,7 @@ $status = array("error","success");
           </div>
           
           <!-- /.card-body -->
-          <div class="card-footer clearfix">
+          <div class="card-footer clearfix d-none">
             <ul class="pagination pagination-sm m-0 float-right">
               <li class="page-item">
                 <a class="page-link" href="#">«</a>
@@ -201,4 +204,5 @@ $status = array("error","success");
   var user_id = '< ? = $this - > user_id; ? >' ;
   var token = " < ? = generateRandomString(); ? > ";
   var param = "test";
+  var chartdata = <?=json_encode($this->chartData)?>;
 </script>

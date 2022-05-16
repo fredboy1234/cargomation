@@ -155,6 +155,7 @@ class Apinvoice extends Core\Controller {
             "invoicesHeader" =>$invoicesHeader,
             "quecount" =>is_countable($countque) ? sizeof($countque) : 0, 
             "completeCount"=>$completeCount[0]->completed,
+            "chartData" =>$this->chartData($_SESSION['user'])
         ]);
     }
 
@@ -243,6 +244,7 @@ class Apinvoice extends Core\Controller {
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
+            //$this->reprocessReportONSuccess();
         }
     //   print_r($retData['data']);
         //exit();
@@ -453,6 +455,29 @@ class Apinvoice extends Core\Controller {
             print_r($result);
         }
     }
+
+    public function reprocessReportONSuccess(){
+            $user_id = $_SESSION['user'];
+            $process_id = $this->getLastID();
+            //$checkIFExist = $this->getSingleCWResponse($_SESSION['user'],$process_id);
+            //if(empty($checkIFExist)){
+                $arr = array(
+                    "user_id" => strval($user_id),
+                    "id"=>(int) $process_id
+                );
+    
+                $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+                $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                            "Content-Type: application/json"];
+        
+                //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
+                $url ='https://cargomation.com:5200/redis/apinvoice/match_report';
+                $result = $this->postAuth($url,$payload,$headers);
+                print_r($payload);
+            print_r($result);
+            //}      
+    }
+
     public function pushTOCW(){
         $user_id = $_SESSION['user'];
         $process_id = '';
@@ -806,5 +831,11 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $twoJoint = $APinvoice->getAPCompleteCount($user_id);
         return $twoJoint;
+    }
+
+    public function chartData($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $chartData = $APinvoice-> chartData($user_id);
+        return $chartData;
     }
 }

@@ -48,6 +48,9 @@ $(document).ready(function() {
     var table = $('#example').DataTable( {
         "ajax": '/apinvoice/invoiceSuccess',
         "ordering": true,
+        "bPaginate":true,
+        "sPaginationType":"full_numbers",
+        "iDisplayLength": 8,
         "columns": [
             {
                 "className":      'dt-control',
@@ -273,8 +276,24 @@ $(document).ready(function() {
      * BAR CHART
      * ---------
      */
+    console.log(chartdata);
+   // month1 = month1.toLowerCase();
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var chartNumbers = [];
+    var tickMonth = [];
+   // month1 = months.indexOf(month1);
+
+    $.each(chartdata,function(okey,oval){
+      var tickdate = oval.DateField.split("-");
+      var formatdate = new Date(oval.DateField);
+      var month = months[formatdate.getMonth()];
+      console.log(tickdate[2]);
+      tickMonth.push([okey,month+' - '+tickdate[2]]);
+      chartNumbers.push([okey,parseInt(oval.countdate)]);
+    });
+    
     var bar_data = {
-      data : [[1,96], [2,83], [3,89], [4,75], [5,43], [6,62], [7,42]],
+      data : chartNumbers,
       bars: { show: true }
     }
     $.plot('#shipcount-chart', [bar_data], {
@@ -290,7 +309,7 @@ $(document).ready(function() {
       },
       colors: ['#3c8dbc'],
       xaxis : {
-        ticks: [[1,'JAN-19'], [2,'JAN-20'], [3,'JAN-21'], [4,'JAN-22'], [5,'JAN-23'], [6,'JAN-24'], [7,'JAN-25']]
+        ticks: tickMonth
       }
     })
     /* END BAR CHART */

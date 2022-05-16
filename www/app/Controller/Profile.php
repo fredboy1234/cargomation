@@ -80,9 +80,20 @@ class Profile extends Core\Controller {
 
         $imageList = (Object) Model\User::getProfile($user);
         $profileImage = '/img/default-profile.png';
+        $miscImage = '/img/default-profile.png';
+        $miscFooter = '/img/default-profile.png';
         foreach($imageList->user_image as $img){
             if( $img->image_src!="" && $img->image_type=='profile' ){
                 $profileImage = base64_decode($img->image_src);
+            }
+        }
+
+        foreach($imageList->user_image as $img){
+            if( $img->image_src!="" && $img->image_type=='Header' ){
+                $miscImage  = base64_decode($img->image_src);
+            }
+            if( $img->image_src!="" && $img->image_type=='Footer' ){
+                $miscFooter  = base64_decode($img->image_src);
             }
         }
         
@@ -93,6 +104,8 @@ class Profile extends Core\Controller {
             "user_info" => Model\User::getProfile($user)['user_info'][0],
             "contact_list" => $User->getUserContactList($user),
             "image_profile" => $profileImage,
+            "miscImage" => $miscImage,
+            "miscFooter" => $miscFooter,
             "role" => $role,
             "themes" => Model\User::getUserTheme(),
             "selectedTheme" => $User->getUserSettings($user),
@@ -197,6 +210,41 @@ class Profile extends Core\Controller {
         ]);
     }
 
+    public function miscImageList($user_id = ""){ 
+
+        // Check that the user is authenticated.
+        Utility\Auth::checkAuthenticated();
+
+        // If no user ID has been passed, and a user session exists, display
+        // the authenticated users profile.
+        if (!$user_id) {
+            $userSession = Utility\Config::get("SESSION_USER");
+            if (Utility\Session::exists($userSession)) {
+                $user_id = Utility\Session::get($userSession);
+            }
+        }
+
+        // Get an instance of the user model using the user ID passed to the
+        // controll action. 
+        if (!$User = Model\User::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        if (!$Role = Model\Role::getInstance($user_id)) {
+            Utility\Redirect::to(APP_URL);
+        }
+
+        $role = $Role->getUserRole($user_id)->role_name;
+
+        if(empty($role)) {
+            Utility\Redirect::to(APP_URL . $role);
+        }
+        
+        $this->View->renderWithoutHeaderAndFooter("/profile/miscImageList", [
+            "user" => Model\User::getProfile($user_id)['user_image']
+        ]);
+    }
+
     public function insertUserProfile($user=""){
         
         // Check that the user is authenticated.
@@ -226,12 +274,14 @@ class Profile extends Core\Controller {
         if(empty($role->role_name)) {
             Utility\Redirect::to(APP_URL . $role->role_name);
         }
-
+        
         if(isset($_POST)){
+            $imageType = $_POST['imageType'];
             $User->inserUserImages(array(
                 'user_id' => $user,
-                'image_type' => 'profile',
-                'image_src' => $_POST['image_src']
+                'image_type' => $imageType,
+                'image_src' => $_POST['image_src'],
+                'imageId'=>$_POST['imageID']
             ),$user);
             
             Utility\Redirect::to(APP_URL . "/profile");
