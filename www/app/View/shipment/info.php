@@ -261,7 +261,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 <div class="col-lg-6">
                                     <dt>Delivery Date:</dt>
                                     <dd>
-                                    <?php if(empty($this->container_detail)): ?>   
+                                    <?php if($this->container_detail[0]->trans_estimated_delivery == '1900-01-01 00:00:00.000'): ?>   
                                     <span> - </span>
                                     <?php else: ?>  
                                     <span><?= date("d F Y H:i", strtotime($this->container_detail[0]->trans_estimated_delivery)); ?></span>
@@ -498,13 +498,13 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                                         <?php if(isset($value->ETD)): ?>
                                                         <div class="col-lg-6">
                                                             <strong>Estimated Departure </strong>
-                                                            <p><?= ($value->ETD == '01 Jan 1900 00:00.000') ? '-' : $value->ETD; ?></p>
+                                                            <p><?= ($value->ETD == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->ETD)); ?></p>
                                                         </div>
                                                         <?php endif; ?>
                                                         <?php if(isset($value->ETA)): ?>
                                                         <div class="col-lg-6">
                                                             <strong>Estimated Arrival</strong>
-                                                            <p><?= ($value->ETA == '01 Jan 1900 00:00.000') ? '-' : $value->ETA; ?></p>
+                                                            <p><?= ($value->ETA == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->ETA)); ?></p>
                                                         </div>
                                                         <?php endif; ?>
                                                     </div>

@@ -447,7 +447,7 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
-    var reqHandler = ['is_blank','not_blank'];
+    var reqHandler = ['IS_BLANK','NOT_BLANK'];
     var reqIdentity = '';
     var allBlank = true;
     var checkInput = [];
@@ -1235,6 +1235,13 @@ $(document).on("change", "[id*='no_type_']",function(){
           format: defaultDate
         }
       });
+  }
+  var typeValue = $(this).val();
+  var thisOption = $("option:selected",this);
+  if(typeValue == 'IS_BLANK' || typeValue == 'NOT_BLANK') {
+    $(this).parent().next().find('input').prop( "disabled", true );
+  } else {
+    $(this).parent().next().find('input').prop( "disabled", false );
   }
 });
 
