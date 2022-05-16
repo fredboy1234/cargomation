@@ -12,7 +12,7 @@
 //   //['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
 // ];
 
-$menuItems = $this->menu;
+$menuItems = json_decode($this->menu[0]->object, true);
 
 function isActive($url) {
   if($url == '/' && $_GET['url'] == 'dashboard')
@@ -91,13 +91,41 @@ function isActive($url) {
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <?php foreach ($menuItems as $key => $menu): ?>
-          <li class="nav-item">
-            <a href="<?= $menu->url; ?>" class="nav-link <?= isActive($menu->url); ?>">
-              <i class="nav-icon <?= $menu->icon; ?>"></i>
-              <p> <?= $menu->label; ?> <?= $menu->badge; ?></p>
-            </a>
-          </li>
+          <?php foreach ($menuItems as $menu): ?>
+            <?php if($menu['show'] == true): ?>
+            <li class="nav-item">
+              <a href="<?= $menu['url']; ?>" class="nav-link <?= isActive($menu['url']); ?>">
+                <i class="nav-icon fas fa-<?= $menu['icon']; ?>"></i>
+                <p> <?= $menu['label']; ?> 
+                <?php if(!empty($menu['badge'])): ?>
+                  <span class="right badge badge-<?= $menu['badge'][0]['type']; ?>"><?= $menu['badge'][0]['text']; ?></span>
+                <?php endif; ?>
+                <?php if(!empty($menu['treeview'])): ?>
+                <i class="right fas fa-angle-left"></i>
+                <?php endif; ?>
+                </p>
+              </a>
+              <?php if(!empty($menu['treeview'])): ?>
+              <ul class="nav nav-treeview">
+                <?php foreach ($menu['treeview'] as $submenu): ?>
+                <li class="nav-item">
+                  <a href="<?= $submenu['url']; ?>" class="nav-link <?= isActive($submenu['url']); ?>">
+                    <i class="nav-icon fas fa-<?= $submenu['icon']; ?>"></i>
+                    <p> <?= $submenu['label']; ?> 
+                    <?php if(!empty($submenu['badge'])): ?>
+                      <span class="right badge badge-<?= $submenu['badge'][0]['type']; ?>"><?= $submenu['badge'][0]['text']; ?></span>
+                    <?php endif; ?>
+                    <?php if(!empty($submenu['treeview'])): ?>
+                    <i class="right fas fa-angle-left"></i>
+                    <?php endif; ?>
+                    </p>
+                  </a>
+                </li>
+                <?php endforeach; ?>
+              </ul>
+              <?php endif; ?>
+            </li>
+            <?php endif; ?>
           <?php endforeach; ?>
           <?php if(false): ?>
           <li class="nav-item">

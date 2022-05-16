@@ -261,10 +261,14 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 <div class="col-lg-6">
                                     <dt>Delivery Date:</dt>
                                     <dd>
+                                    <?php if(!empty($this->container_detail[0]->trans_estimated_delivery)) : ?> 
                                     <?php if($this->container_detail[0]->trans_estimated_delivery == '1900-01-01 00:00:00.000'): ?>   
                                     <span> - </span>
                                     <?php else: ?>  
                                     <span><?= date("d F Y H:i", strtotime($this->container_detail[0]->trans_estimated_delivery)); ?></span>
+                                    <?php endif; ?> 
+                                    <?php else: ?>
+                                    <span> - </span>
                                     <?php endif; ?>
                                     <?php 
                                         // $date = date_create($this->shipment_info[0]->etd);

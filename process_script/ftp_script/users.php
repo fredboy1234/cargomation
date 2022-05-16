@@ -9,17 +9,25 @@ if($return_user == true){
 	while( $row_user = sqlsrv_fetch_array( $execRecord_userinfo, SQLSRV_FETCH_ASSOC) ) 
 	{
 	$user_email = $row_user['email'];
-	$fpath = array('CW_XML/', 'CW_USERS/', 'CW_SUCCESS/', 'CW_LOG/','CW_FILE/','CW_ERROR/');
+	$fpath = array('CW_XML/', 'CW_XML/CW_AR_INVOICE/IN/','CW_XML/CW_AR_INVOICE/SUCCESS/','CW_XML/CW_AR_INVOICE/ERROR/',
+        'CW_XML/CW_ORDERS/IN/','CW_XML/CW_ORDERS/SUCCESS/','CW_XML/CW_ORDERS/ERROR/',
+        'CW_XML/CW_CUSTOMS/IN/','CW_XML/CW_CUSTOMS/SUCCESS/','CW_XML/CW_CUSTOMS/ERROR/',
+        'CW_XML/CW_ORG/IN/','CW_XML/CW_ORG/SUCCESS/','CW_XML/CW_ORG/ERROR/',
+        'CW_APINVOICE/IN/','CW_APINVOICE/MERGE_FOLDER/',
+        'CW_USERS/', 'CW_SUCCESS/', 'CW_LOG/','CW_FILE/','CW_ERROR/');
 	$path = "E:/A2BFREIGHT_MANAGER/$user_email/";
 
-    if ( !is_dir( $path ) )
+	    
+if (file_exists( $path ) )
     {
-		foreach ($fpath as $inspath) 
-		{
-		$insidepath = $path.$inspath;	
+     foreach ($fpath as $inspath) 
+      {
+	$insidepath = $path.$inspath;
+        if(is_dir( $path )){
         mkdir( $insidepath, 0777, true );
-	  }
-    }
+        }   
+      }
+    }			
   }
 }
 ?>
