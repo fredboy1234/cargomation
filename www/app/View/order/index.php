@@ -151,7 +151,7 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
     <!--end of column filter-->
 
           <!--start of order table-->
-          <div class="col-12 col-sm-12" style="height:500px;">
+          <div class="col-12 col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
