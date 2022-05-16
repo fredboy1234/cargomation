@@ -1,10 +1,11 @@
 <?php 
 if(isset($_GET['get_email'])){
 $user = $client_email;
-$myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/Orders/IN/*.xml");
+$myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
 		try{
+
 			$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
@@ -12,13 +13,13 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/Orders/IN/*.xml");
 			$universal_shipment = json_decode($universalshipment, true);
 
 
-			$pathDataSource = "$.Shipment";
-			$pathDataSourceContext = "$.Shipment.DataContext.DataSourceCollection";
-			$path_DataSourceOrder ="$.Shipment.Order";
-			$path_DataSourceMileStone ="$.Shipment.MilestoneCollection";
-			$path_DataSourceOrganizationAddress="$.Shipment.OrganizationAddressCollection";
-			$path_DataSourceTransport="$.Shipment.TransportLegCollection";
-			$path_DataSourceContainer="$.Shipment.ContainerCollection";
+			$pathDataSource = "$.Body.UniversalShipment.Shipment";
+			$pathDataSourceContext = "$.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection";
+			$path_DataSourceOrder ="$.Body.UniversalShipment.Shipment.Order";
+			$path_DataSourceMileStone ="$.Body.UniversalShipment.Shipment.MilestoneCollection";
+			$path_DataSourceOrganizationAddress="$.Body.UniversalShipment.Shipment.OrganizationAddressCollection";
+			$path_DataSourceTransport="$.Body.UniversalShipment.Shipment.TransportLegCollection";
+			$path_DataSourceContainer="$.Body.UniversalShipment.Shipment.ContainerCollection";
 
 			/*GET KEYCONTEXT DETAILS*/
 			$XPATH_KEYTYPE= jsonPath($universal_shipment, $pathDataSourceContext.".DataSource.Type");
@@ -118,7 +119,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/Orders/IN/*.xml");
 				{
 					$MILESTONECTR = 0;
 				}
-
+	
 			   /*GET ORGANIZATION COUNT*/
 		    $ORGADDRESS = jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress");
 			$ORGADDRESSCTR = $ORGADDRESS;
@@ -222,6 +223,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/Orders/IN/*.xml");
 		  $sql = "SELECT * FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$CLIENT_ID."'";
 		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 		  $row_count = sqlsrv_num_rows($qryOrder);
+	
 
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
@@ -239,7 +241,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/Orders/IN/*.xml");
 
 		  	}
 
-		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/Orders/SUCCESS/";						
+		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_ORDERS/SUCCESS/";						
 			if(!file_exists($destination_path.$filename)){
 			rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 			}
