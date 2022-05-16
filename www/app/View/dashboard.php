@@ -149,7 +149,8 @@ color:#808080 !important;
                 <p>Order Pending Shipment</p>
               </div>
               <div class="icon">
-                <i id="custom_glass" class="fas fa-hourglass-end"></i>
+                <!-- <i id="custom_glass" class="fas fa-hourglass-end"></i> -->
+                <i id="custom_glassv2"  class="fas fa-box"></i>
               </div>
               <!-- <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a> -->
               <a href="#" class="small-box-footer text-dark">Coming Soon</i></a>

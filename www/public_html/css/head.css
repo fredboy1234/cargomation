@@ -10,7 +10,7 @@ html * {
 }
 
 .small-box>.small-box-footer {
-  background-color: #515254 !important;
+  background-color: #515254;
 }
 
 a.text-dark:focus,

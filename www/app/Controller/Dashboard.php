@@ -205,10 +205,11 @@ class Dashboard extends Core\Controller {
         }else{
             $selectedTheme = 'default';
         }
-        
+        $this->View->addCSS("css/dashboardv2.css");
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/dashboard.js");
+       
         
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
@@ -265,6 +266,8 @@ class Dashboard extends Core\Controller {
     public function processMapCount(){
         $userID = $_POST['userid'];
         $mapcount = json_decode($this->getMapCount($userID));
+        print_r($mapcount);
+        exit;
         $loadingCol=array();
         $loading = array(); 
         $sea=array();
@@ -376,6 +379,7 @@ class Dashboard extends Core\Controller {
         $result = $this->post($url, $payload, $headers);
         
         $json_data = json_decode($result);
+        print_r($json_data);
         if($json_data->status != '200') {
             echo json_encode($json_data);
             exit;
