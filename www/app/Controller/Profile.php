@@ -67,7 +67,7 @@ class Profile extends Core\Controller {
         $dashboardTheme = '';
         if(isset($selectedTheme[0])){
             $selectedTheme = $selectedTheme[0]->theme;
-            $dashboardTheme=$User->getUserSettings($user)[0]->dashboard;
+            $dashboardTheme=json_decode($User->getUserSettings($user)[0]->dashboard);
         }else{
             $selectedTheme = '';
         }
