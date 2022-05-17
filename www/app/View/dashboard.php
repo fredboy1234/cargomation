@@ -83,7 +83,7 @@ color:#808080 !important;
     <section class="content" style="padding-bottom: 5em;">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <?php if(isset($dashboardV1->dashboard) && $dashboardV1->dash ==='dash_v1' ){
+        <?php if(isset($dashboardV1->dash) && $dashboardV1->dash ==='dash_v1' ){
           include(VIEW_PATH."_template/module/dashboard/dashboard_box_v1.php");
          }else{
           include(VIEW_PATH."_template/module/dashboard/dashboard_box_default.php");
@@ -97,7 +97,7 @@ color:#808080 !important;
           <section class="col-lg-4 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
 
-            <?php if(isset($dashboardV1->dashboard) && $dashboardV1->dash ==='dash_v1' ){
+            <?php if(isset($dashboardV1->dash) && $dashboardV1->dash ==='dash_v1' ){
               include(VIEW_PATH."_template/module/dashboard/dashboard_side_v1.php");
              }else{
               include(VIEW_PATH."_template/module/dashboard/dashboard_side_default.php");
