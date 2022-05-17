@@ -36,6 +36,8 @@
 .info-box .info-box-content{
     display: block !important;
 }
-
+.bb-box{
+    font-size: 1.2rem !important;
+}
 
 

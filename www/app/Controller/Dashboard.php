@@ -198,17 +198,25 @@ class Dashboard extends Core\Controller {
 
 
         $selectedTheme = $User->getUserSettings($userID);
-       
-    
+        $dashboardTheme = '';
+        
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
+            $dashboardTheme=$User->getUserSettings($userID)[0]->dashboard;
         }else{
             $selectedTheme = 'default';
         }
-        $this->View->addCSS("css/dashboardv2.css");
+       
+
+        if(isset($dashboardTheme->dash) && $dashboardTheme->dash == "dash_v1"){
+            $this->View->addCSS("css/dashboardv2.css");
+        }
+        
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/dashboard.js");
+       
+        
        
         
         // Render view template
@@ -234,6 +242,7 @@ class Dashboard extends Core\Controller {
             "selected_theme" => $selectedTheme,
             "role" => $role,
             "uid"=>$userID,
+            'dashtheme'=>$dashboardTheme,
         ]);
         $this->externalTemp();
     }
