@@ -275,8 +275,8 @@ class Dashboard extends Core\Controller {
     public function processMapCount(){
         $userID = $_POST['userid'];
         $mapcount = json_decode($this->getMapCount($userID));
-        print_r($mapcount);
-        exit;
+        // print_r($mapcount);
+        // exit;
         $loadingCol=array();
         $loading = array(); 
         $sea=array();
