@@ -473,7 +473,7 @@
                                         <div class="custom-control custom-switch">
                                             <?php $defaultdash="";
                                                 $dashdeftext="Switch To Version 1 Design"; 
-                                                if(isset($this->dashtheme->dashboard) && $this->dashtheme->dash !==""){
+                                                if(isset($this->dashtheme->dash) && $this->dashtheme->dash !==""){
                                                     $defaultdash="checked";
                                                     $dashdeftext="Switch To Default DashBoard";
                                             }?>
