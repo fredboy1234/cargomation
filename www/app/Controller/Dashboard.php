@@ -387,7 +387,7 @@ class Dashboard extends Core\Controller {
         $result = $this->post($url, $payload, $headers);
         
         $json_data = json_decode($result);
-        print_r($json_data);
+        //print_r($json_data);
         if($json_data->status != '200') {
             echo json_encode($json_data);
             exit;
