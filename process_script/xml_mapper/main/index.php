@@ -736,7 +736,7 @@ try{
 					$XPATH_LCLStorageDate = $parser->encode($XPATH_LCLStorageDate);
 					$LCLStorageDate = node_exist(getArrayName($XPATH_LCLStorageDate));
 
-					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$LCLAvailability,"LCLStorageDate"=>$LCLStorageDate);
+					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$LCLAvailability,"LCLStorageDate"=>$LCLStorageDate);
                     
 				 }
 				 else
@@ -877,7 +877,7 @@ try{
 					$XPATH_ORGCODE_GLOBAL = node_exist(getArrayName($XPATH_ORGCODE_GLOBAL));
 
 					/*store to json for organization details*/
-					$orgaddress_array[] = array("AddressType"=>getArrayName($PATH_ADDRESSTYPE),"Address1"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS1))),"Address2"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS2))),"AddressShortCode"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESSCODE))),"CompanyName"=>node_exist(getArrayName($parser->encode($XPATH_COMPNAME))),"OrganizationCode"=>node_exist(getArrayName($parser->encode($XPATH_ORGANIZATIONCODE))));
+					$orgaddress_array[] = array("AddressType"=>getArrayName($PATH_ADDRESSTYPE),"Address1"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS1))),"Address2"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESS2))),"AddressShortCode"=>node_exist(getArrayName($parser->encode($XPATH_ADDRESSCODE))),"CompanyName"=>node_exist(getArrayName($parser->encode($XPATH_COMPNAME))),"Email"=>node_exist(getArrayName($parser->encode($XPATH_EMAIL_GLOBAL))),"OrganizationCode"=>node_exist(getArrayName($parser->encode($XPATH_ORGANIZATIONCODE))));
 		    		
 
 					
