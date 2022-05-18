@@ -5,6 +5,18 @@
       height: 95px;
     }
   </style>
+  
+  <?php 
+  
+   if(isset($this->user->user_settings[0])){
+     $styleof = json_decode($this->user->user_settings[0]->colorScheme);
+     if(!empty($styleof->colorObject)){
+      echo"<style>{$styleof->colorObject}</style>";
+     }
+     
+   }
+  ?>
+  
   <?php $imageMisc=""; if(isset($this->user->user_image)){
     foreach($this->user->user_image as $src_image){
       if($src_image->image_type === "Header"){

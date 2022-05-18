@@ -372,4 +372,70 @@ class Profile extends Core\Controller {
         exit;
     }
 
+    public function setColorScheme($user=""){
+        // $schemeObject = json_decode(file_get_contents(PUBLIC_ROOT."/settings/colorScheme.json"));
+        // $decob = array(
+        //     "colorset"=> array(
+        //         "#0c343d",
+        //         "#104551",
+        //         "#145766",
+        //         "#18687a",
+        //         "#1c798e"
+        //     )  
+        // );
+        // echo"<pre>";
+        
+        // foreach($schemeObject->colorset as $scheme){
+        //     foreach($scheme as $sckey=> $scval){
+        //         print_r($sckey);echo"<br>";
+        //         print_r($scval-);
+        //     }
+        // }
+         // Check that the user is authenticated.
+         Utility\Auth::checkAuthenticated();
+
+         // If no user ID has been passed, and a user session exists, display
+         // the authenticated users profile.
+         if (!$user) {
+             $userSession = Utility\Config::get("SESSION_USER");
+             if (Utility\Session::exists($userSession)) {
+                 $user = Utility\Session::get($userSession);
+             }
+         }
+ 
+         // Get an instance of the user model using the user ID passed to the
+         // controll action. 
+         if (!$User = Model\User::getInstance($user)) {
+             Utility\Redirect::to(APP_URL);
+         }
+        
+
+        if(isset($_POST['colorset'])){
+            $setColor = $_POST['colorset'];
+            $colorObject = "";
+            
+            if(!isset( $_POST['dash'])){
+                unset($_POST['column']);
+            }
+
+            $data['colorObject'] = 
+            ".btn-primary,.small-box,
+                #s_headcus{background-color:{$setColor[0]} !important; border-color:{$setColor[0]} !important;}
+                .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active,
+                .nav-tabs .nav-link.active{background-color: {$setColor[0]} !important;}
+                h1-cus,breadcrumb-item a,h1,h2,h3,h4,.info-box-text,.info-box-number{color:{$setColor[0]} !important;}
+                .info-box .info-box-icon i{color:{$setColor[1]} !important; }
+                .nav-pills .nav-link.active, .nav-pills .show>.nav-link,
+                .btn-primary.dropdown-toggle,.badge-primary,
+                #searchFilter,#loadRecent,#loadSaved,.card-title button{background-color:{$setColor[2]} !important;}
+                #resetSearch,#deleteSearch,#savefilter,#clearFilter{background-color:{$setColor[4]} !important;}
+                ";
+            //$data = $_POST;
+            $User->updateUserSettings('colorScheme', $data, $user);
+        }else{
+            
+            $data['colorObject']=array();
+            $User->updateUserSettings('colorScheme', $data, $user);
+        }
+    }
 }

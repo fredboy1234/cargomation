@@ -98,7 +98,7 @@
   font-size: 18px;
 }
 #s_headcus{
-    background-color: #3778be !important;
+    background-color: #3778be;
     color: #ffffff;
 }
 </style>

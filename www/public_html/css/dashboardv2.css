@@ -15,7 +15,7 @@
     color: #fff !important;
 }
 .info-box-icon i{
-    color: rgb(43,98,177) !important;
+    color: rgb(43,98,177);
 }
 .info-box-content .info-box-text,
 .info-box-content .info-box-number{

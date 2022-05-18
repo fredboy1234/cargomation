@@ -18,7 +18,7 @@
               <div class="card-body">
                   <!-- Info Boxes Style 2 -->
                   <div class="info-box mb-3 bg-light">
-                    <span class="info-box-icon text-success"><i class="far fa-thumbs-up"></i></span>
+                    <span id="side-act-1" class="info-box-icon text-success"><i class="far fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
                       <span class="info-box-text">Total Uploaded Files</span>
@@ -33,7 +33,7 @@
                   </div>
                   <!-- /.info-box -->
                   <div class="info-box mb-3 bg-light">
-                    <span class="info-box-icon text-danger"><i class="fas fa-exclamation-triangle"></i></span>
+                    <span id="side-act-2" class="info-box-icon text-danger"><i class="fas fa-exclamation-triangle"></i></span>
 
                     <div class="info-box-content">
                       <span class="info-box-text">Document for Approval</span>
@@ -48,7 +48,7 @@
                   </div>
                   <!-- /.info-box -->
                   <div class="info-box mb-3 bg-light">
-                    <span class="info-box-icon text-info"><i class="far fa-check-square"></i></span>
+                    <span id="side-act-3" class="info-box-icon text-info"><i class="far fa-check-square"></i></span>
 
                     <div class="info-box-content">
                       <span class="info-box-text">Requested Documents</span>
@@ -63,7 +63,7 @@
                   </div>
                   <!-- /.info-box -->
                   <div class="info-box mb-3 bg-light">
-                    <span class="info-box-icon text-warning"><i class="far fa-edit"></i></span>
+                    <span id="side-act-4" class="info-box-icon text-warning"><i class="far fa-edit"></i></span>
 
                     <div class="info-box-content">
                       <span class="info-box-text">Document for Update</span>
