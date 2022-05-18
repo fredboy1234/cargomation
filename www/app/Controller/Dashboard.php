@@ -198,17 +198,26 @@ class Dashboard extends Core\Controller {
 
 
         $selectedTheme = $User->getUserSettings($userID);
-       
-    
+        $dashboardTheme = '';
+        
         if(isset($selectedTheme[0]) && !empty($selectedTheme)){
             $selectedTheme = $selectedTheme[0]->theme;
+            $dashboardTheme = json_decode($User->getUserSettings($userID)[0]->dashboard);
         }else{
             $selectedTheme = 'default';
         }
-        
+       
+
+        if(isset($dashboardTheme->dash) && $dashboardTheme->dash == "dash_v1"){
+            $this->View->addCSS("css/dashboardv2.css");
+        }
+       
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/dashboard.js");
+       
+        
+       
         
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
@@ -233,6 +242,7 @@ class Dashboard extends Core\Controller {
             "selected_theme" => $selectedTheme,
             "role" => $role,
             "uid"=>$userID,
+            'dashtheme'=>$dashboardTheme,
         ]);
         $this->externalTemp();
     }
@@ -265,6 +275,7 @@ class Dashboard extends Core\Controller {
     public function processMapCount(){
         $userID = $_POST['userid'];
         $mapcount = json_decode($this->getMapCount($userID));
+       
         $loadingCol=array();
         $loading = array(); 
         $sea=array();
@@ -376,6 +387,7 @@ class Dashboard extends Core\Controller {
         $result = $this->post($url, $payload, $headers);
         
         $json_data = json_decode($result);
+        //print_r($json_data);
         if($json_data->status != '200') {
             echo json_encode($json_data);
             exit;

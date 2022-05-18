@@ -14,7 +14,7 @@
   }?>
   <div class="content-wrapper">
     <?php if($imageMisc !== ''){?>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar">
     <div class="container-fluid">
       <a class="navbar-brand text-center w-100" href="#">
         <img src="<?=$imageMisc?>" alt=""  class="d-inline-block align-text-top  ubanner"><br>

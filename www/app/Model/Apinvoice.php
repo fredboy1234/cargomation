@@ -45,6 +45,15 @@ class Apinvoice extends Core\Model {
         return  $Db->query($query)->results();
     }
 
+    public function getParseINV($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT ma.process_id,ma.parsed_inv 
+                  FROM match_apinvoice ma 
+                  left join match_report mr on ma.process_id = mr.prim_ref
+                  where ma.user_id = '{$user_id}' and mr.prim_ref is null";
+        return  $Db->query($query)->results();
+    }
+
     public function getInvoices($user_id){
         $Db = Utility\Database::getInstance();
         $query = "SELECT * FROM match_apinvoice WHERE user_id = '{$user_id}' order by process_id desc";

@@ -1,0 +1,43 @@
+.small-box{
+    background-color: rgb(66,66,66) !important;
+    color: #fff !important;
+    border-radius: 23px;
+}
+.small-box-footer,
+.small-box>.small-box-footer{
+    background: none !important;
+    border-top: 1px solid #fff;
+}
+.small-box i,
+.small-box .h3,
+#custom_glass,
+.air-shipment,.total-shipment,.sea-shipment,.not-shipment{
+    color: #fff !important;
+}
+.info-box-icon i{
+    color: rgb(43,98,177) !important;
+}
+.info-box-content .info-box-text,
+.info-box-content .info-box-number{
+ color: rgb(43,98,177);
+ display: inline-block;
+ font-weight: bold;
+ text-transform: uppercase;
+ vertical-align: bottom;
+}
+.info-box-content .info-box-text{
+    width: 70%;
+    font-size: 17px;
+}
+.info-box-content .info-box-number{
+    width: 20%;
+    font-size: 27px;
+}
+.info-box .info-box-content{
+    display: block !important;
+}
+.bb-box{
+    font-size: 1.2rem !important;
+}
+
+

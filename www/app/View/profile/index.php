@@ -469,6 +469,17 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <hr>
+                                        <div class="custom-control custom-switch">
+                                            <?php $defaultdash="";
+                                                $dashdeftext="Switch To Version 1 Design"; 
+                                                if(isset($this->dashtheme->dash) && $this->dashtheme->dash !==""){
+                                                    $defaultdash="checked";
+                                                    $dashdeftext="Switch To Default DashBoard";
+                                            }?>
+                                            <input type="checkbox" class="custom-control-input" id="defaultDash" <?=$defaultdash?>>
+                                            <label class="custom-control-label" for="defaultDash"><?=$dashdeftext?></label>
+                                        </div>
                                     </form>
                                 </div>
                                 <!--Edit Settings-->     

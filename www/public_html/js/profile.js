@@ -130,6 +130,22 @@ $(document).ready(function () {
     //     console.log(previewId);
     //     console.log("olok")
     // });
+
+    $('#defaultDash').on('change',function() {
+        var dashSet = '';
+        if(this.checked) {
+            dashSet = 'dash_v1'
+        }
+        $.ajax({
+            type: "POST",
+            url: document.location.origin + "/profile/saveSettings",
+            data:{'dash':dashSet,'column':'dashboard'},
+            dataType: "JSON",
+            success: function (res) {
+                console.log(res);
+            }
+        });
+    });
 });
 
 // Show loader

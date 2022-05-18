@@ -165,9 +165,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <!-- /.content-wrapper -->
   <footer class="main-footer">
   <?php if($imageMisc !== ''){?>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar ">
       <div class="container-fluid">
-        <img src="<?=$imageMisc?>" alt="" class="d-inline-block align-text-top img-thumbnail w-100" style="height:95px;">
+        <img src="<?=$imageMisc?>" alt="" class="d-inline-block align-text-top  w-100" style="height:95px;">
       </div>
     </nav>
   <?php } ?>

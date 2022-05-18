@@ -64,11 +64,14 @@ class Profile extends Core\Controller {
         ]);
 
         $selectedTheme = $User->getUserSettings($user);
+        $dashboardTheme = '';
         if(isset($selectedTheme[0])){
             $selectedTheme = $selectedTheme[0]->theme;
+            $dashboardTheme=json_decode($User->getUserSettings($user)[0]->dashboard);
         }else{
             $selectedTheme = '';
         }
+        
         
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("css/custom.css");
@@ -112,6 +115,7 @@ class Profile extends Core\Controller {
             "user_settings" => $User->getUserSettings($user),
             "notifications" => Model\User::getUserNotifications($user),
             "menu" => Model\User::getUserMenu($role->role_id),
+            "dashtheme"=>$dashboardTheme,
         ]);
     }
 
@@ -351,7 +355,9 @@ class Profile extends Core\Controller {
 
         if (!empty($_POST)) {
             $column = $_POST['column'];
-            unset($_POST['column']);
+            if(!isset( $_POST['dash'])){
+                unset($_POST['column']);
+            }
             $data = $_POST;
 
             $User->updateUserSettings($column, $data, $user);

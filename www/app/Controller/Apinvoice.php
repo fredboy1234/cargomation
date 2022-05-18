@@ -244,7 +244,7 @@ class Apinvoice extends Core\Controller {
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
-            //$this->reprocessReportONSuccess();
+            $this->reprocessReportONSuccess();
         }
     //   print_r($retData['data']);
         //exit();
@@ -459,24 +459,54 @@ class Apinvoice extends Core\Controller {
     public function reprocessReportONSuccess(){
             $user_id = $_SESSION['user'];
             $process_id = $this->getLastID();
+            $parseinv = $this->getParseINV($user_id);
+            
+            //print_r($this->getParseINV($user_id));
+           //exit;   
+           if(!empty($parseinv)){
+            foreach($parseinv as $parse){
+                $decodeINV = json_decode($parse->parsed_inv);
+               // print_r($decodeINV);
+               
+               if(!empty($decodeINV)){
+                foreach($decodeINV as $inv){
+                   
+                    $arr = array(
+                        "user_id" => strval($user_id),
+                        "jsonstring"=>json_encode($inv)
+                    );
+        
+                    $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+                    $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                                "Content-Type: application/json"];
+            
+                    $url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
+                    $result = $this->postAuth($url,$payload,$headers);
+                }
+               }
+                
+            }
+           }
+           
             //$checkIFExist = $this->getSingleCWResponse($_SESSION['user'],$process_id);
             //if(empty($checkIFExist)){
-                $arr = array(
-                    "user_id" => strval($user_id),
-                    "id"=>(int) $process_id
-                );
+            //     $arr = array(
+            //         "user_id" => strval($user_id),
+            //         "jsonstring"=>(int) $process_id
+            //     );
     
-                $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-                $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
-                            "Content-Type: application/json"];
+            //     $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            //     $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+            //                 "Content-Type: application/json"];
         
-                //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
-                $url ='https://cargomation.com:5200/redis/apinvoice/match_report';
-                $result = $this->postAuth($url,$payload,$headers);
-                print_r($payload);
-            print_r($result);
+            //     //$url ='https://cargomation.com:5200/redis/apinvoice/compare'; 
+            //     //$url ='https://cargomation.com:5200/redis/apinvoice/compare';
+            //     //$result = $this->postAuth($url,$payload,$headers);
+            //     //print_r($payload);
+            // //print_r($result);
             //}      
     }
+
 
     public function pushTOCW(){
         $user_id = $_SESSION['user'];
@@ -837,5 +867,10 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $chartData = $APinvoice-> chartData($user_id);
         return $chartData;
+    }
+    public function getParseINV($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $parsedINV = $APinvoice-> getParseINV($user_id);
+        return $parsedINV;
     }
 }
