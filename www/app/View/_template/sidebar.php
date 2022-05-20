@@ -12,7 +12,7 @@
 //   //['label' => 'Air Track', 'url' => ['#'], 'icon' => 'fas fa-plane-departure', 'isActive' => '', 'badge' => '<span class="right badge badge-danger">Coming Soon</span>'],
 // ];
 
-$menuItems = json_decode($this->menu[0]->object, true);
+$menuItems = json_decode($this->menu[0]->menu, true);
 
 function isActive($url) {
   if($url == '/' && $_GET['url'] == 'dashboard')
