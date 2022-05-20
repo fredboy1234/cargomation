@@ -283,13 +283,15 @@ class User extends Core\Model {
         $user_image = $Db->query("SELECT *
                                 FROM user_images where user_id = '{$user}'
                                 ")->results();
+        $user_settings = $Db->query("SELECT colorScheme  FROM user_settings where user_id = '{$user}'")->results();
 
         return [
             "user_info" => $user_info,
             "user_addr" => $user_addr,
             "user_count" => $user_count,
             "account_info" => $account_info,
-            "user_image" => $user_image
+            "user_image" => $user_image,
+            "user_settings"=>$user_settings
         ];
     }
 
@@ -343,9 +345,10 @@ class User extends Core\Model {
     public function updateUserSettings($column = "*", $data = "", $user_id = "") {
 
         $value = json_encode($data);
-
+        
         $Db = Utility\Database::getInstance();
         $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
+        
         if(empty($select)){
             return $Db->query("INSERT
                            INTO user_settings (user_id, {$column})

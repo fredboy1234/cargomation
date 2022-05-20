@@ -480,6 +480,22 @@
                                             <input type="checkbox" class="custom-control-input" id="defaultDash" <?=$defaultdash?>>
                                             <label class="custom-control-label" for="defaultDash"><?=$dashdeftext?></label>
                                         </div>
+                                        <hr>
+                                        <label class="" for=""> Color Scheme</label>
+                                        <div class="form-group row">
+                                            <!-- <input type="text" class="custom-control-input" id="colorSchemev1"> -->
+                                            <input class="form-control" id="colorSchemev1" value='#276cb8' />
+                                            <button id="setcolor" type="button" class="btn btn-primary">Set Color Theme</button>
+                                            <div class="col-md-12 d-block">
+                                                <span class="text-muted text-small">This is the set of Colors that applied in your theme.</span>
+                                                <div id="pal-0" style="width:25px;height:25px;"></div>
+                                                <div id="pal-1" style="width:25px;height:25px;"></div>
+                                                <div id="pal-2" style="width:25px;height:25px;"></div>
+                                                <div id="pal-3" style="width:25px;height:25px;"></div>
+                                                <div id="pal-4" style="width:25px;height:25px;"></div>
+                                            </div>
+                                            
+                                        </div>
                                     </form>
                                 </div>
                                 <!--Edit Settings-->     

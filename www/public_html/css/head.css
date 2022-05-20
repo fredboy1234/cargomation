@@ -5,7 +5,7 @@ html * {
 }
 
 .h1-cus {
-  color: #3778be !important;
+  color: #3778be;
   font-size: 2rem !important;
 }
 
@@ -61,7 +61,7 @@ h4{
 }
 
 .btn-primary.dropdown-toggle {
-  background-color: #3778be !important;
+  background-color: #3778be;
 }
 
 .badge-primary {
@@ -96,6 +96,6 @@ h4{
     background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
 }
 #s_headcus{
-background-color: #3778be !important;
+background-color: #3778be;
 color:#ffffff;
 }

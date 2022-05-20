@@ -118,6 +118,7 @@ $(window).on("load", function() {
       }); 
 
     //map
+    
     $.ajax({
       url: document.location.origin + '/dashboard/processMapCount/',
       type: "POST",
