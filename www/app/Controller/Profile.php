@@ -427,8 +427,8 @@ class Profile extends Core\Controller {
                 .info-box .info-box-icon i{color:{$setColor[1]} !important; }
                 .nav-pills .nav-link.active, .nav-pills .show>.nav-link,
                 .btn-primary.dropdown-toggle,.badge-primary,
-                #searchFilter,#loadRecent,#loadSaved,.card-title button{background-color:{$setColor[2]} !important;}
-                #resetSearch,#deleteSearch,#savefilter,#clearFilter{background-color:{$setColor[4]} !important;}
+                #searchFilter,#loadRecent,#loadSaved,.card-title button{background-color:{$setColor[1]} !important;}
+                #resetSearch,#deleteSearch,#savefilter,#clearFilter{background-color:{$setColor[1]} !important;}
                 ";
             //$data = $_POST;
             $User->updateUserSettings('colorScheme', $data, $user);

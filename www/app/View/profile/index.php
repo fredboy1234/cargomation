@@ -484,7 +484,7 @@
                                         <label class="" for=""> Color Scheme</label>
                                         <div class="form-group row">
                                             <!-- <input type="text" class="custom-control-input" id="colorSchemev1"> -->
-                                            <input class="form-control" id="colorSchemev1" value='#276cb8' />
+                                            <input class="form-control" id="colorSchemev1" value='' />
                                             <button id="setcolor" type="button" class="btn btn-primary">Set Color Theme</button>
                                             <div class="col-md-12 d-block">
                                                 <span class="text-muted text-small">This is the set of Colors that applied in your theme.</span>

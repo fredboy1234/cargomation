@@ -77,8 +77,15 @@ class Apinvoice extends Core\Model {
         $query = "SELECT count(*) as completed FROM match_apinvoice ma 
             inner join match_report mr on mr.prim_ref = ma.process_id
             WHERE user_id = '{$user_id}' ";
-        return  $Db->query($query)->results();
-        
+        return  $Db->query($query)->results();    
+    }
+
+    public function getCompleteFilter($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * as completed FROM match_apinvoice ma 
+            inner join match_report mr on mr.prim_ref = ma.process_id
+            WHERE user_id = '{$user_id}' ";
+        return  $Db->query($query)->results();    
     }
 
     public function getSingleInvoice($user_id){

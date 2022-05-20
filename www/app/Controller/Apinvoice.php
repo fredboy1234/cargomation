@@ -817,6 +817,7 @@ class Apinvoice extends Core\Controller {
             $APinvoice->addToCGM_Response($data);
         }
     }
+
     public function getSingleCWResponse($user_id,$prim_ref){
         $APinvoice = Model\Apinvoice::getInstance();
         return $APinvoice->getSingleCWResponse($user_id,$prim_ref);
@@ -863,6 +864,12 @@ class Apinvoice extends Core\Controller {
         return $twoJoint;
     }
 
+    public function getCompleteFilter($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPCompleteCount($user_id);
+        return $twoJoint;
+    }
+    
     public function chartData($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
         $chartData = $APinvoice-> chartData($user_id);

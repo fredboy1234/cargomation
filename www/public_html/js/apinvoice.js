@@ -69,6 +69,15 @@ $(document).ready(function() {
         "order": [[1, 'desc']],
         
     } );
+
+    //on click filter complete and all 
+    $("#completedque").on('click',function(){
+      table.ajax.reload; 
+    });
+    
+    $("#totalque").on('click',function(){
+      table.ajax.reload;
+    });
     
     $(document).on('click',".viewdoc",function(){
       var pid = $(this).attr('data-pid');
@@ -611,3 +620,5 @@ $(document).on('click','.cwresmodal',function(){
         }
     });
 });
+
+
