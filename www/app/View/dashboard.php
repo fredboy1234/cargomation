@@ -77,6 +77,28 @@ color:#808080 !important;
   display: block;
   height: 100%;
 }
+[style*="--aspect-ratio"] > :first-child {
+  width: 100%;
+}
+[style*="--aspect-ratio"] > img {  
+  height: auto;
+} 
+@supports (--custom:property) {
+  [style*="--aspect-ratio"] {
+    position: relative;
+  }
+  [style*="--aspect-ratio"]::before {
+    content: "";
+    display: block;
+    padding-bottom: calc(100% / (var(--aspect-ratio)));
+  }  
+  [style*="--aspect-ratio"] > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }  
+}
 </style>
 <?php $dashboardV1 = $this->dashtheme;?>
   <!-- Main content -->
@@ -735,27 +757,15 @@ color:#808080 !important;
               <div class="card-body p-0">
                 <!-- <div id="dashmap d-none" class="map" style="position: relative; height: 495px;"></div>
                  -->
-                <div style=position:relative>
-                  <div class=tableauPlaceholder id=viz1646066982039 style=position:relative>
-                   <object class=tableauViz style=display:none>
-                    <param name=host_url value=https%3A%2F%2Fpublic.tableau.com%2F>
-                    <param name=embed_code_version value=3>
-                    <param name=site_root value="">
-                    <param name=name value=Cargomation_ReportHub&#47;Dashboard1>
-                    <param name=tabs value=no>
-                    <param name=toolbar value=yes>
-                    <param name=animate_transition value=yes>
-                    <param name=display_static_image value=yes>
-                    <param name=display_spinner value=yes>
-                    <param name=display_overlay value=yes>
-                    <param name=display_count value=yes>
-                    <param name=language value=en-US>
-                    <param name=filter value="publish=yes">
-                    <param name=filter value="User Id=<?php echo $this->uid?>">
-                    </object>
-                  </div>
-                  <div class=toolbarWorkaround style=position:absolute;background-color:#fff;width:100%;bottom:0;z-index:10;height:35px>
-                </div>
+                <div style="--aspect-ratio: 16/9;">
+                <iframe 
+                  src="https://public.tableau.com/views/Cargomation_ReportHub/Dashboard1?:embed=y&amp;:showVizHome=no&amp;:host_url=https%3A%2F%2Fpublic.tableau.com%2F&amp;:embed_code_version=3&amp;:tabs=no&amp;:toolbar=yes&amp;:animate_transition=yes&amp;:display_static_image=yes&amp;:display_spinner=no&amp;:display_overlay=yes&amp;:display_count=yes&amp;:language=en-US&amp;publish=yes&amp;User%20Id=<?php echo $this->uid?>&amp;:loadOrderID=0"
+                  width="1600"
+                  height="900"
+                  frameborder="0">
+                </iframe>
+              </div>
+              <div style="background-color:white;position:relative;top:-27px;z-index: 1;height:27px;">&nbsp;</div>           
               </div>
               
               </div>
