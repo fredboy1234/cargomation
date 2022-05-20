@@ -99,8 +99,8 @@ $(window).on("load", function() {
           $(".total-shipment").text(data.total_shipment);
           $(".sea-shipment").text(data.sea);
           $(".air-shipment").text(data.air);
-          // $(".not-shipment").text(data.not_arrived);
-          $(".not-shipment").text('0');
+           $(".new-shipment").text(data.not_arrived);
+          //$(".not-shipment").text('0');
         }
       }); 
       //document stat
@@ -116,6 +116,32 @@ $(window).on("load", function() {
           $(".updated").text(data.updated);
         }
       }); 
+
+      //active order count
+      $.ajax({
+        url: document.location.origin + '/dashboard/getActiveOrdersCount/',
+        type: "POST",
+        dataType: "json",
+        data:{userid:uid},
+        success: function (data) {
+          $(".v1_uploaded").text(data.count);
+          $(".not-shipment").text(data.pending);
+        }
+      }); 
+
+      //process FCL and LCL COUNT
+      $.ajax({
+        url: document.location.origin + '/dashboard/getFCLCount/',
+        type: "POST",
+        dataType: "json",
+        data:{userid:uid,rolename:rolename},
+        success: function (data) {
+          console.log(data);
+          $(".total-shipment-FCL").text(data.FCLcount);
+          $(".Total-shipment-LCL").text(data.LCLcount);
+        }
+      }); 
+      
 
     //map
     
@@ -263,4 +289,6 @@ $(window).on("load", function() {
     }
   },3000);
 });
-
+$(".act-order").on('click',function(){
+  window.location.href=document.location.origin + '/order/';
+});

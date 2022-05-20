@@ -20,9 +20,9 @@
                   <div class="info-box mb-3 bg-light">
                     <span id="side-act-1" class="info-box-icon text-success"><i class="fas fa-box"></i></span>
 
-                    <div class="info-box-content">
+                    <div class="info-box-content act-order" style="cursor: pointer;">
                       <span class="info-box-text">Active Orders</span>
-                      <span class="info-box-number uploaded">
+                      <span class="info-box-number v1_uploaded">
                         <?php //$this->document_stats['total_files'][0]->count; ?>
                         <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
                           <span class="sr-only">Loading...</span>
@@ -37,7 +37,7 @@
 
                     <div class="info-box-content">
                       <span class="info-box-text">New Shipments</span>
-                      <span class="info-box-number approval">
+                      <span class="info-box-number new-shipment">
                         <?php //$this->document_stats['pending_files'][0]->count; ?>
                         <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
                           <span class="sr-only">Loading...</span>

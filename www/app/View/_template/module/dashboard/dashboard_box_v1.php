@@ -6,7 +6,7 @@
               <div class="inner">
                 <!-- <p class="bb-box">Total Shipments</p> -->
                 <p class="bb-box">Sea FCL</p>
-                <h3 class="text-dark total-shipment">
+                <h3 class="text-dark total-shipment-FCL text-white">
                   <div class="spinner-border text-dark" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>
@@ -28,7 +28,7 @@
               <div class="inner">
                 <!-- <p class="bb-box">Sea Shipments</p> -->
                 <p class="bb-box">Sea LCL</p>
-                <h3 class="text-success sea-shipment">
+                <h3 class="text-success Total-shipment-LCL text-white">
                   <div class="spinner-border text-success" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>

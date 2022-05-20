@@ -263,6 +263,7 @@ class Dashboard extends Core\Controller {
             $shiparr[$ship->transport_mode] = $ship->count;    
         }
         $notarrived = isset($Shipment->getShipmentnotArrived($userID)[0]->count) ? $Shipment->getShipmentnotArrived($userID)[0]->count : 0;
+        
         echo json_encode([
             "total_shipment"=>$ctotal,
             "not_arrived" => $notarrived ,
@@ -305,6 +306,51 @@ class Dashboard extends Core\Controller {
        
     }
 
+    public function getActiveOrdersCount(){
+        $Order = Model\Order::getInstance();
+        $count = 0;
+        $pendingCount = 0;
+        $orderCount = $Order->getActiveOrdersCount($_POST['userid']);
+        $pendingOrder =$Order->getPendingOrder($_POST['userid']);
+        if(isset($orderCount[0]) && isset($orderCount[0]->cnt)){
+            $count = $orderCount[0]->cnt;
+        }
+        if(isset($pendingOrder[0]) && isset($pendingOrder[0]->cnt)){
+            $pendingCount = $orderCount[0]->cnt;
+        }
+        
+       echo json_encode([
+        "count" => $count,
+        "pending"=> $pendingCount 
+        ]);
+    }
+
+    public function getFCLCount(){
+        $userID = $_POST['userid'];
+        $rolename = $_POST['rolename'];
+        $data = $this->docstats($userID);
+        $Shipment = Model\Shipment::getInstance();
+        $FCLCount = $Shipment->getShipmentByFCL($userID,$rolename,$data);
+        $LCLCount = $Shipment->getShipmentByLCL($userID,$rolename,$data);
+        
+        $FCLcount = 0;
+        $LCLcount =0;
+
+        if(isset($FCLCount[0]) && isset($FCLCount[0]->count)){
+            $FCLcount = $FCLCount[0]->count;
+        }
+        if(isset($LCLCount[0]) && isset($LCLCount[0]->count)){
+            $LCLcount = $LCLCount[0]->count;
+        }
+        echo json_encode([
+            "FCLcount"=> $FCLcount,
+            "LCLcount"=>$LCLcount
+        ]);
+    }
+
+    public function getLCLCount(){
+
+    }
     public function processDocStats(){
         $userID = $_POST['userid'];
         

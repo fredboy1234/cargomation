@@ -320,7 +320,7 @@ class Shipment extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT  count(shipment.id) as count
                         FROM shipment 
-                        where shipment.eta > getdate() and user_id='{$user_id}' ")->results();
+                        where shipment.eta >= getdate() and user_id='{$user_id}' ")->results();
     }
 
     public function getShipmentCount($user_id,$rolename,$data){
@@ -339,6 +339,38 @@ class Shipment extends Core\Model {
         }
         
 
+    }
+
+    public function getShipmentByFCL($user_id,$rolename,$data){
+        $Db = Utility\Database::getInstance();
+
+        if(!$data['is_customer']) {
+            return $Db->query("SELECT count(transport_mode) as count  from shipment 
+            where user_id='{$user_id}' and container_mode='FCL'
+            ")->results();
+        } else {
+            return $Db->query("SELECT count(transport_mode) as count  from shipment 
+            where 
+            (consignee = '{$data['org_code']}' OR consignor = '{$data['org_code']}') and transport_mode <>''
+            and container_mode='FCL'
+            ")->results();
+        }
+    }
+
+    public function getShipmentByLCL($user_id,$rolename,$data){
+        $Db = Utility\Database::getInstance();
+       
+        if(!$data['is_customer']) {
+            return $Db->query("SELECT count(transport_mode) as count  from shipment 
+            where user_id='{$user_id}' and container_mode='LCL'
+            ")->results();
+        } else {
+            return $Db->query("SELECT count(transport_mode) as count  from shipment 
+            where 
+            (consignee = '{$data['org_code']}' OR consignor = '{$data['org_code']}') and transport_mode <>''
+            and container_mode='LCL'
+            ")->results();
+        }
     }
 
     public static function countOfPort($user_id,$data){ 
