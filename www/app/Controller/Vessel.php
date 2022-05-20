@@ -165,7 +165,7 @@ class Vessel extends Core\Controller {
             'role' => $role,
             'mapToken' => 'pk.eyJ1IjoidGl5bzE0IiwiYSI6ImNrbTA1YzdrZTFmdGIyd3J6OXFhbHcyYTEifQ.R2vfZbgOCPtFG6lgAMWj7A',
             "notifications" => Model\User::getUserNotifications($user),
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($user, $role->role_id),
             "sea_rates" => $seadata,
             "confirmed" => $confirmed,
             "pending" => $pending,
@@ -297,7 +297,7 @@ class Vessel extends Core\Controller {
             "vesselnum" => $vessel_number,
             "searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
             "tracking" => isset($_SESSION['tracking']) ? $_SESSION['tracking'] : '',
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($user, $role->role_id),
             //"shipment_info" => $this->Shipment->getShipmentByShipID($user),
         ]);
         $this->externalTemp();
@@ -411,7 +411,7 @@ class Vessel extends Core\Controller {
            "notifications" => Model\User::getUserNotifications($user),
            "vesselyod" => $vloyds,
            "searatesTracking" => $cont,
-           "menu" => Model\User::getUserMenu($role->role_id),
+           "menu" => Model\User::getUserMenu($user, $role->role_id),
            //"searatesTracking" => $this->Vessel->getSearatesByID($vessel_number),
 
        ]);

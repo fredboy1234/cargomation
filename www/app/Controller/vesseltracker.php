@@ -83,7 +83,7 @@ class VesselTracker extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => (Object) Model\User::getProfile($user),
             "notifications" => Model\User::getUserNotifications($user),
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($user, $role->role_id),
             "image_profile" => $profileImage,
             'role' => $role, 
             'user_id' => $user,
