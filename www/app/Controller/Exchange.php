@@ -87,7 +87,7 @@ class Exchange extends Core\Controller {
             "list_currency" => $list_currency,
             "currency" => $currency,
             "notifications" => Model\User::getUserNotifications($userID),
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($userID, $role->role_id),
             "role" => $role
         ]);
 

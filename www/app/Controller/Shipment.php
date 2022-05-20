@@ -142,7 +142,7 @@ class Shipment extends Core\Controller {
             "data" => (new Presenter\Profile($User->data()))->present(),
             "user" => $imageList,
             "notifications" => Model\User::getUserNotifications($user),
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($user, $role->role_id),
             "user_settings" =>$this->defaultSettings($user, $role->role_id), // $user_key??
             "settings_user" => $selectedTheme,
             "image_profile" => $profileImage,

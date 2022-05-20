@@ -698,10 +698,21 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public static function getUserMenu($role_id = "") {
+    public static function getUserMenu_OLD($role_id = "") {
         $query = "SELECT * FROM menu WHERE role_id = '{$role_id}'";
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
+    }
+
+    public static function getUserMenu($user_id = "", $role_id = "") {
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM user_menu WHERE user_id = '{$user_id}' AND role_id = '{$role_id}'";
+        $result = $Db->query($query)->results();
+        if(empty($result)) {
+            $query = "SELECT * FROM menu WHERE role_id = '{$role_id}'";
+            $result = $Db->query($query)->results();
+        }
+        return $result;
     }
 
     public function getSubAccountInfo($user_id = "") {

@@ -461,7 +461,7 @@ $(document).ready(function () {
         reqIdentity = $(this).val();
         var comp = $(this).attr('id').split("_");
         var lastcomp = $(comp).get(-1);
-        if(!$.inArray(reqIdentity, reqHandler) && $("#no_value_"+lastcomp).val().length == 0){
+        if(reqHandler.includes(reqIdentity) && $("#no_value_"+lastcomp).val().length == 0){
           allBlank = false;
         }
       });
@@ -1237,9 +1237,11 @@ $(document).on("change", "[id*='no_type_']",function(){
       });
   }
   var typeValue = $(this).val();
+  var arr = ['IS_BLANK', 'NOT_BLANK'];
   var thisOption = $("option:selected",this);
-  if(typeValue == 'IS_BLANK' || typeValue == 'NOT_BLANK') {
+  if(arr.includes(typeValue)) {
     $(this).parent().next().find('input').prop( "disabled", true );
+    $(this).parent().next().find('input').val('');
   } else {
     $(this).parent().next().find('input').prop( "disabled", false );
   }

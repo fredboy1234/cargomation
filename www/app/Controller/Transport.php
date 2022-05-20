@@ -126,7 +126,7 @@ class Transport extends Core\Controller {
             "user" => (Object) Model\User::getProfile($user),
             "droplist" =>$this->dropdownList(),
             "notifications" => Model\User::getUserNotifications($user),
-            "menu" => Model\User::getUserMenu($role->role_id),
+            "menu" => Model\User::getUserMenu($user, $role->role_id),
         ]);
     }
 
