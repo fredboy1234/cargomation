@@ -706,7 +706,7 @@ class User extends Core\Model {
 
     public static function getUserMenu($user_id = "", $role_id = "") {
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM user_menu WHERE user_id = '{$user_id}' AND role_id = '{$role_id}'";
+        $query = "SELECT menu FROM user_setting WHERE user_id = '{$user_id}'";
         $result = $Db->query($query)->results();
         if(empty($result)) {
             $query = "SELECT * FROM menu WHERE role_id = '{$role_id}'";
