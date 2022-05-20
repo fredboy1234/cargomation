@@ -708,8 +708,8 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT menu FROM user_settings WHERE user_id = '{$user_id}'";
         $result = $Db->query($query)->results();
-        if(empty($result)) {
-            $query = "SELECT * FROM menu WHERE role_id = '{$role_id}'";
+        if(empty($test[0]->menu)) {
+            $query = "SELECT menu FROM menu WHERE role_id = '{$role_id}'";
             $result = $Db->query($query)->results();
         }
         return $result;
