@@ -1,6 +1,5 @@
 var stepperForm
 document.addEventListener('DOMContentLoaded', function () {
-  dataBind();
   var stepperFormEl = document.querySelector('#stepperForm')
   stepperForm = new Stepper(stepperFormEl, {
     animation: true
@@ -170,41 +169,41 @@ document.getElementById('submit').addEventListener('click', function (event) {
     })
 })
 
-document.getElementById('inputRole').addEventListener('change', function(event) {
-    var selectedValue = this.selectedOptions[0].value;
-    //var selectedText  = this.selectedOptions[0].text;
+// document.getElementById('inputRole').addEventListener('change', function(event) {
+//     var selectedValue = this.selectedOptions[0].value;
+//     //var selectedText  = this.selectedOptions[0].text;
 
-    var html = '<div id="code" class="form-group">' +
-    '<label for="inputCode">Organization Code <span class="text-danger font-weight-bold"></span></label>' +
-    '<input id="inputCode" type="text" name="organization_code" data-bind="organization_code" class="form-control" placeholder="Enter organization code">' +
-    '<span id="errorCode" class="text-danger"></span>' +
-    '</div>' +
-    '<div id="company" class="form-group">' +
-    '<label for="inputCompany">Company Name <span class="text-danger font-weight-bold"></span></label>' +
-    '<input id="inputCompany" type="text" name="company_name" data-bind="company_name" class="form-control" placeholder="Enter company name">' +
-    '<span id="errorCompany" class="text-danger"></span>' +
-    '</div>';
+//     var html = '<div id="code" class="form-group">' +
+//     '<label for="inputCode">Organization Code <span class="text-danger font-weight-bold"></span></label>' +
+//     '<input id="inputCode" type="text" name="organization_code" data-bind="organization_code" class="form-control" placeholder="Enter organization code">' +
+//     '<span id="errorCode" class="text-danger"></span>' +
+//     '</div>' +
+//     '<div id="company" class="form-group">' +
+//     '<label for="inputCompany">Company Name <span class="text-danger font-weight-bold"></span></label>' +
+//     '<input id="inputCompany" type="text" name="company_name" data-bind="company_name" class="form-control" placeholder="Enter company name">' +
+//     '<span id="errorCompany" class="text-danger"></span>' +
+//     '</div>';
 
-    if(selectedValue === '4') {
-        $(html).insertAfter($('#inputRole').parent())
-        if($('input[name=code]').val()) {
-            $('input[name=organization_code]').val($('input[name=code]').val());
-        }
-        if($('input[name=company]').val()) {
-            $('input[name=company_name]').val($('input[name=company]').val());
-        }
-        $('#org_code, #comp_name').show();
-    } else {
-        $('#org_code, #comp_name').hide();
-        $('#code, #company').remove()
-    }
-    dataBind();
-})
+//     if(selectedValue === '4') {
+//         $(html).insertAfter($('#inputRole').parent())
+//         if($('input[name=code]').val()) {
+//             $('input[name=organization_code]').val($('input[name=code]').val());
+//         }
+//         if($('input[name=company]').val()) {
+//             $('input[name=company_name]').val($('input[name=company]').val());
+//         }
+//         $('#org_code, #comp_name').show();
+//     } else {
+//         $('#org_code, #comp_name').hide();
+//         $('#code, #company').remove()
+//     }
+//     dataBind();
+// })
 
 // Declare a global object to store view data.
 var viewData = {};
 
-function dataBind() {
+$(document).ready(function () {
 
     console.log('running...')
 
@@ -241,7 +240,7 @@ function dataBind() {
     $(document).on('updateBindableElements', detectBindableElements);
 
     detectBindableElements();
-}
+});
 
 function updateDisplay() {
     var updateEls;

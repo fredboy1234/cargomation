@@ -77,6 +77,19 @@ if(isset($this->contact_info)) {
                 </select>
                 <span id="errorRole" class="text-danger"></span>
               </div>
+              <div id="code" class="form-group">
+                <label for="inputCode">Organization Code <span class="text-danger font-weight-bold">*</span></label>
+                <input id="inputCode" type="text" name="organization_code" data-bind="organization_code" class="form-control" placeholder="Enter organization code" 
+                <?= (empty($contact_info->organization_code))  ? "" : 'value="' . $contact_info->organization_code . '"'; ?>
+                required>
+                <span id="errorCode" class="text-danger"></span>
+              </div>
+              <div id="company" class="form-group">
+                <label for="inputCompany">Company Name <span class="text-danger font-weight-bold"></span></label>
+                <input id="inputCompany" type="text" name="company_name" data-bind="company_name" class="form-control" placeholder="Enter company name" 
+                <?= (empty($contact_info->company_name))  ? "" : 'value="' . $contact_info->company_name . '"'; ?>>
+                <span id="errorCompany" class="text-danger"></span>
+              </div>
               <div class="form-group">
                 <label for="inputEmail">Email address <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputEmail" type="email" name="email" data-bind="email" class="form-control" placeholder="Enter email" 
@@ -184,7 +197,7 @@ if(isset($this->contact_info)) {
                         </span>
                     </div>
                 </div>
-                <div id="org_code" class="form-group row" style="display: none">
+                <div id="org_code" class="form-group row" style="">
                     <label for="organization_code" class="col-sm-6 col-form-label">Organization Code</label>
                     <div class="col-sm-6 mt-2">
                         <span data-update="organization_code">
@@ -192,7 +205,7 @@ if(isset($this->contact_info)) {
                         </span>
                     </div>
                 </div>
-                <div id="comp_name" class="form-group row" style="display: none">
+                <div id="comp_name" class="form-group row" style="">
                     <label for="company_name" class="col-sm-6 col-form-label">Company Name</label>
                     <div class="col-sm-6 mt-2">
                         <span data-update="company_name">
@@ -263,7 +276,7 @@ if(isset($this->contact_info)) {
                 <div class="form-group row">
                   <div class="mx-auto d-block">
                     <?php 
-                      if(!empty($contact_info->id)) {
+                      if(!empty($contact_info->id) && false) {
                         echo '<input type="hidden" name="id" value="' . $contact_info->id . '">';
                         echo '<input type="hidden" name="code" value="' . $contact_info->organization_code . '">';
                         echo '<input type="hidden" name="company" value="' . $contact_info->company_name . '">';
