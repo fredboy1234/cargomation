@@ -1,5 +1,6 @@
 var stepperForm
 document.addEventListener('DOMContentLoaded', function () {
+  dataBind();
   var stepperFormEl = document.querySelector('#stepperForm')
   stepperForm = new Stepper(stepperFormEl, {
     animation: true
@@ -137,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 })
 
-
 document.getElementById('submit').addEventListener('click', function (event) {
     var registrationForm = document.getElementById("registrationForm")
     console.log(registrationForm.action)
@@ -170,7 +170,6 @@ document.getElementById('submit').addEventListener('click', function (event) {
     })
 })
 
-
 document.getElementById('inputRole').addEventListener('change', function(event) {
     var selectedValue = this.selectedOptions[0].value;
     //var selectedText  = this.selectedOptions[0].text;
@@ -188,18 +187,24 @@ document.getElementById('inputRole').addEventListener('change', function(event) 
 
     if(selectedValue === '4') {
         $(html).insertAfter($('#inputRole').parent())
-        $('input[name=organization_code]').val($('input[name=code]').val());
-        $('input[name=company_name]').val($('input[name=company]').val());
-        $('#org_code, #comp_name').toggle();
+        if(!$('input[name=code]').val()) {
+            $('input[name=organization_code]').val($('input[name=code]').val());
+        }
+        if(!$('input[name=company]').val()) {
+            $('input[name=company_name]').val($('input[name=company]').val());
+        }
+        $('#org_code, #comp_name').show();
     } else {
+        $('#org_code, #comp_name').hide();
         $('#code, #company').remove()
     }
+    dataBind();
 })
 
 // Declare a global object to store view data.
 var viewData = {};
 
-$(document).ready(function () {
+function dataBind() {
 
     console.log('running...')
 
@@ -236,7 +241,7 @@ $(document).ready(function () {
     $(document).on('updateBindableElements', detectBindableElements);
 
     detectBindableElements();
-});
+}
 
 function updateDisplay() {
     var updateEls;

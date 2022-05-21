@@ -80,7 +80,7 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputEmail">Email address <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputEmail" type="email" name="email" data-bind="email" class="form-control" placeholder="Enter email" 
-                <?= (empty($contact_info->email_address)) ?: 'value="' . $contact_info->email_address . '"'; ?>
+                <?= (empty($contact_info->email_address))  ? "" : 'value="' . $contact_info->email_address . '"'; ?>
                 required>
                 <span id="errorEmail" class="text-danger"></span>
               </div>
@@ -104,21 +104,21 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputFirstName">First Name <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputFirstName" type="text" name="first-name" data-bind="first-name" class="form-control" placeholder="First Name" 
-                <?= (empty($contact_info->first_name)) ?: 'value="' . $contact_info->first_name . '"'; ?>
+                <?= (empty($contact_info->first_name))  ? "" : 'value="' . $contact_info->first_name . '"'; ?>
                 required>
                 <span id="errorFirstName" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="inputLastName">Last Name <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputLastName" type="text" name="last-name" data-bind="last-name" class="form-control" placeholder="Last Name" 
-                <?= (empty($contact_info->last_name)) ?: 'value="' . $contact_info->last_name . '"'; ?>
+                <?= (empty($contact_info->last_name))  ? "" : 'value="' . $contact_info->last_name . '"'; ?>
                 required>
                 <span id="errorLastName" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="inputPhone">Phone <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputPhone" type="text" name="phone" data-bind="phone" class="form-control" placeholder="+61 (02) 9876 5432" 
-                <?= (empty($contact_info->phone)) ?: 'value="' . $contact_info->phone . '"'; ?>
+                <?= (empty($contact_info->phone))  ? "" : 'value="' . $contact_info->phone . '"'; ?>
                 required>
                 <span id="errorPhone" class="text-danger"></span>
               </div>
@@ -133,7 +133,7 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputAddress">Address<span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputAddress" type="text" name="address" data-bind="address" class="form-control" placeholder="123 Sesame Street" 
-                <?= (empty($contact_info->address)) ?: 'value="' . $contact_info->address . '"'; ?>
+                <?= (empty($contact_info->address))  ? "" : 'value="' . $contact_info->address . '"'; ?>
                 required>
                 <div class="invalid-feedback">Please fill the address field</div>
               </div>
@@ -146,7 +146,7 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputCity">City <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputCity" type="text" name="city" data-bind="city" class="form-control" placeholder="Sydney" 
-                <?= (empty($contact_info->city)) ?: 'value="' . $contact_info->city . '"'; ?>
+                <?= (empty($contact_info->city))  ? "" : 'value="' . $contact_info->city . '"'; ?>
                 required>
                 <div class="invalid-feedback">Please fill the city field</div>
               </div>
@@ -158,7 +158,7 @@ if(isset($this->contact_info)) {
               <div class="form-group">
                 <label for="inputZip">ZIP Code <span class="text-danger font-weight-bold">*</span></label>
                 <input id="inputZip" type="text" name="zip" data-bind="zip" class="form-control" placeholder="Ex. 12345" 
-                <?= (empty($contact_info->postcode)) ?: 'value="' . $contact_info->postcode . '"'; ?>
+                <?= (empty($contact_info->postcode))  ? "" : 'value="' . $contact_info->postcode . '"'; ?>
                 required>
                 <div class="invalid-feedback">Please fill the ZIP code field</div>
               </div>
@@ -180,7 +180,7 @@ if(isset($this->contact_info)) {
                     <label for="email" class="col-sm-6 col-form-label">Email</label>
                     <div class="col-sm-6 mt-2">
                         <span data-update="email">
-                        <?= (empty($contact_info->email_address)) ?: $contact_info->email_address; ?>
+                        <?= (empty($contact_info->email_address))  ? "" : $contact_info->email_address; ?>
                         </span>
                     </div>
                 </div>
@@ -188,7 +188,7 @@ if(isset($this->contact_info)) {
                     <label for="organization_code" class="col-sm-6 col-form-label">Organization Code</label>
                     <div class="col-sm-6 mt-2">
                         <span data-update="organization_code">
-                        <?= (empty($contact_info->organization_code)) ?: $contact_info->organization_code; ?>
+                        <?= (empty($contact_info->organization_code))  ? "" : $contact_info->organization_code; ?>
                         </span>
                     </div>
                 </div>
@@ -196,7 +196,7 @@ if(isset($this->contact_info)) {
                     <label for="company_name" class="col-sm-6 col-form-label">Company Name</label>
                     <div class="col-sm-6 mt-2">
                         <span data-update="company_name">
-                        <?= (empty($contact_info->company_name)) ?: $contact_info->company_name; ?>
+                        <?= (empty($contact_info->company_name))  ? "" : $contact_info->company_name; ?>
                         </span>
                     </div>
                 </div>
@@ -204,7 +204,7 @@ if(isset($this->contact_info)) {
                     <label for="firstname" class="col-sm-6 col-form-label">First Name:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="first-name">
-                      <?= (empty($contact_info->first_name)) ?: $contact_info->first_name; ?>
+                      <?= (empty($contact_info->first_name))  ? "" : $contact_info->first_name; ?>
                       </span>
                     </div>
                 </div>
@@ -212,7 +212,7 @@ if(isset($this->contact_info)) {
                     <label for="lastname" class="col-sm-6 col-form-label">Last Name:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="last-name">
-                      <?= (empty($contact_info->last_name)) ?: $contact_info->last_name; ?>
+                      <?= (empty($contact_info->last_name))  ? "" : $contact_info->last_name; ?>
                       </span>
                     </div>
                 </div>
@@ -220,7 +220,7 @@ if(isset($this->contact_info)) {
                     <label for="phone" class="col-sm-6 col-form-label">Phone:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="phone">
-                      <?= (empty($contact_info->phone)) ?: $contact_info->phone; ?>
+                      <?= (empty($contact_info->phone)) ? "" : $contact_info->phone; ?>
                       </span>
                     </div>
                 </div>
@@ -228,7 +228,7 @@ if(isset($this->contact_info)) {
                     <label for="address" class="col-sm-6 col-form-label">Address:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="address">
-                      <?= (empty($contact_info->address)) ?: $contact_info->address; ?>
+                      <?= (empty($contact_info->address)) ? "" : $contact_info->address; ?>
                       </span>
                     </div>
                 </div>
@@ -242,7 +242,7 @@ if(isset($this->contact_info)) {
                     <label for="city" class="col-sm-6 col-form-label">City:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="city">
-                      <?= (empty($contact_info->city)) ?: $contact_info->city; ?>
+                      <?= (empty($contact_info->city))  ? "" : $contact_info->city; ?>
                       </span>
                     </div>
                 </div>
@@ -256,7 +256,7 @@ if(isset($this->contact_info)) {
                     <label for="zip" class="col-sm-6 col-form-label">ZIP code:</label>
                     <div class="col-sm-6 mt-2">
                       <span data-update="zip">
-                      <?= (empty($contact_info->postcode)) ?: $contact_info->postcode; ?>
+                      <?= (empty($contact_info->postcode))  ? "" : $contact_info->postcode; ?>
                       </span>
                     </div>
                 </div>
