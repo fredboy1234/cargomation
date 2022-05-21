@@ -5,8 +5,8 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
     #myTable1_length{
         display: none;
     }
-    #myTable1_wrapper > div:nth-child(2) > div,
-    #myTable1_wrapper > div:nth-child(2) > div{
+    #myTable2_wrapper > div:nth-child(2),
+    #myTable2_wrapper > div:nth-child(2){
         overflow: scroll;
     }
 </style>
