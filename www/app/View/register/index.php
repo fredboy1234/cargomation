@@ -265,8 +265,8 @@ if(isset($this->contact_info)) {
                     <?php 
                       if(!empty($contact_info->id)) {
                         echo '<input type="hidden" name="id" value="' . $contact_info->id . '">';
-                        echo '<input type="hidden" name="organization_code" value="' . $contact_info->organization_code . '">';
-                        echo '<input type="hidden" name="company_name" value="' . $contact_info->company_name . '">';
+                        echo '<input type="hidden" name="code" value="' . $contact_info->organization_code . '">';
+                        echo '<input type="hidden" name="company" value="' . $contact_info->company_name . '">';
                       }
                     ?>
                     <button class="btn btn-primary btn-edit-form mx-auto">Edit</button>
