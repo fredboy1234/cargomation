@@ -1,7 +1,17 @@
 <?php
 $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buyer","Supplier","Transport Mode","Container Mode","Goods Origin","Goods Destination","Load Port","Dischargte Port","Packs","Type","Volume","UV","Weight","UW","Req. in Stock","Req. in Works","H.Bill","M.BIll");
 ?>
-
+<style>
+    #myTable1_length{
+        display: none;
+    }
+    .ff-pane{
+        overflow: scroll;
+    }
+   #myTable2,#myTable1{
+       width: 100% !important;
+   }
+</style>
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -155,7 +165,21 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                  <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link filter-order all_fil" data-fil="all" id="custom-tabs-sea-tab" data-toggle="pill" href="#custom-tabs-sea" role="tab" aria-controls="custom-tabs-sea" aria-selected="false">
+                            All
+                            <span class="badge bg-success">0</span></a>
+                    </li>
+                 <?php if(!empty($this->filterButton)){?>
+                   <?php foreach($this->filterButton as $filter){?>
+                        <li class="nav-item">
+                            <a class="nav-link filter-order <?=$filter->status?>_fil" data-fil="<?=$filter->status?>" id="custom-tabs-three-todispatch-tab" data-toggle="pill" href="#custom-tabs-three-todispatch" role="tab" aria-controls="custom-tabs-three-todispatch" aria-selected="false">
+                                <?=$filter->status_desc?>
+                                <span class="badge bg-success">0</span></a>
+                        </li>
+                    <?php } ?>
+                 <?php } ?>
+                  <!-- <li class="nav-item">
                     <a class="nav-link active" id="custom-tabs-sea-tab" data-toggle="pill" href="#custom-tabs-sea" role="tab" aria-controls="custom-tabs-sea" aria-selected="false">Incomplete <span class="badge bg-danger">113</span></a>
                   </li>
                   <li class="nav-item">
@@ -163,13 +187,13 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-dispatch-tab" data-toggle="pill" href="#custom-tabs-three-dispatch" role="tab" aria-controls="custom-tabs-three-dispatch" aria-selected="false">Shipped <span class="badge bg-info">46</span></a>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
               <div class="card-body">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                  <div class="tab-pane fade active show" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
-                     <table id="myTable1" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <div class="tab-pane fade active show ff-pane" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
+                     <table id="myTable1" class="table table-striped table-bordered" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>
@@ -179,8 +203,8 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
 	                    </thead>
 	                </table>
                   </div>
-                  <div class="tab-pane fade" id="custom-tabs-three-todispatch" role="tabpanel" aria-labelledby="custom-tabs-three-todispatch-tab">
-                    <table id="myTable2" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <div class="tab-pane fade ff-pane" id="custom-tabs-three-todispatch" role="tabpanel" aria-labelledby="custom-tabs-three-todispatch-tab">
+                    <table id="myTable2" class="table table-striped table-bordered"  cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>

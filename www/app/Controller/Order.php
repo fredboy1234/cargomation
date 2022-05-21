@@ -77,7 +77,10 @@ class Order extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-
+        $Order = Model\Order::getInstance();
+        //$orderData = $Order->getOrderData($user);
+        $filterButton = $Order->getFilterButton($user);
+        
         $this->View->renderTemplate("/order/index", [
             "title" => "Order View",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -90,6 +93,103 @@ class Order extends Core\Controller {
             'selected_theme' => $selectedTheme,
             "user_settings" =>$User->defaultSettings($user_key, $role->role_id),
             "settings_user" => $User->getUserSettings($user),
+            "filterButton"=>$filterButton,
         ]);
     }
+
+   
+    public function getCountsForFilterButton(){
+        $user = $_SESSION['user'];
+        $statsCount = array();
+        $Order = Model\Order::getInstance();
+        $orderData = $Order->getOrderData($user);
+        $filterButton = $Order->getFilterButton($user);
+        
+        foreach( $filterButton as $val){
+           $count = $Order->getOrderCountByStatus($user,$val->status);
+           
+           if(isset($count[0]) && isset($count[0]->cnt)){
+            $statsCount[$val->status] = $count[0]->cnt;
+           }else{
+            $statsCount[$val->status] = 0;
+           }
+        }
+      
+        $statsCount['all'] = count($orderData);
+       echo json_encode($statsCount);
+    }
+
+    public function getFilterResults(){
+        $user = $_SESSION['user'];
+        $retData = array();
+        $Order = Model\Order::getInstance();
+        $orderData = $Order->getFilterResults($user,$_POST['status']);
+
+        foreach($orderData as $value){
+            $retData['data'][] = array(
+                "order_number" => $value->order_number,
+                "ship_num" =>'',
+                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "pre_advice"=>'',
+                "buyer"=>$value->buyer,
+                "supplier"=>'',
+                "transport_mode"=>$value->trans_mode,
+                "container_mode"=>'',
+                "goods_origin"=>$value->port_origin,
+                "good_destination"=>'',
+                "load_port"=>$value->port_load,
+                "discharge_port"=>'',
+                "packs"=>'',
+                "type"=>'',
+                "volume"=>$value->total_volume,
+                "uv"=>'',
+                "weight" =>$value->total_weight,
+                "uw"=>$value->weight_unit,
+                "req_stock"=>'',
+                "req_work"=>'',
+                "h_bill"=>'',
+                "m_bill"=>''
+            );
+        }
+        
+        echo json_encode($retData);
+    }
+
+    public function orderData(){
+        $user_id = $_SESSION['user'];
+        $retData = array();
+
+        $Order = Model\Order::getInstance();
+        $orderData = $Order->getOrderData($user_id);
+        
+        foreach($orderData as $value){
+            $retData['data'][] = array(
+                "order_number" => $value->order_number,
+                "ship_num" =>'',
+                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "pre_advice"=>'',
+                "buyer"=>$value->buyer,
+                "supplier"=>'',
+                "transport_mode"=>$value->trans_mode,
+                "container_mode"=>'',
+                "goods_origin"=>$value->port_origin,
+                "good_destination"=>'',
+                "load_port"=>$value->port_load,
+                "discharge_port"=>'',
+                "packs"=>'',
+                "type"=>'',
+                "volume"=>$value->total_volume,
+                "uv"=>'',
+                "weight" =>$value->total_weight,
+                "uw"=>$value->weight_unit,
+                "req_stock"=>'',
+                "req_work"=>'',
+                "h_bill"=>'',
+                "m_bill"=>''
+            );
+        }
+        
+        echo json_encode($retData);
+    }
+
 }
