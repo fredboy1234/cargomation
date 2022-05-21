@@ -187,10 +187,10 @@ document.getElementById('inputRole').addEventListener('change', function(event) 
 
     if(selectedValue === '4') {
         $(html).insertAfter($('#inputRole').parent())
-        if(!$('input[name=code]').val()) {
+        if($('input[name=code]').val()) {
             $('input[name=organization_code]').val($('input[name=code]').val());
         }
-        if(!$('input[name=company]').val()) {
+        if($('input[name=company]').val()) {
             $('input[name=company_name]').val($('input[name=company]').val());
         }
         $('#org_code, #comp_name').show();
