@@ -5,10 +5,12 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
     #myTable1_length{
         display: none;
     }
-    #myTable2_wrapper > div:nth-child(2),
-    #myTable2_wrapper > div:nth-child(2){
+    .ff-pane{
         overflow: scroll;
     }
+   #myTable2,#myTable1{
+       width: 100% !important;
+   }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -190,8 +192,8 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
               </div>
               <div class="card-body">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                  <div class="tab-pane fade active show" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
-                     <table id="myTable1" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <div class="tab-pane fade active show ff-pane" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
+                     <table id="myTable1" class="table table-striped table-bordered" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>
@@ -201,8 +203,8 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
 	                    </thead>
 	                </table>
                   </div>
-                  <div class="tab-pane fade" id="custom-tabs-three-todispatch" role="tabpanel" aria-labelledby="custom-tabs-three-todispatch-tab">
-                    <table id="myTable2" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <div class="tab-pane fade ff-pane" id="custom-tabs-three-todispatch" role="tabpanel" aria-labelledby="custom-tabs-three-todispatch-tab">
+                    <table id="myTable2" class="table table-striped table-bordered"  cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>
