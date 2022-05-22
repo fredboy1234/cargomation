@@ -86,6 +86,30 @@ class UserRegister {
             // $company_name = Utility\Input::post("company_name");
             // $company_name = (isset($company_name)) ? $company_name : "";
 
+            if(!empty($contactID)) {
+                $User->updateUserContactInfo([
+                    "user_id" => $userID,
+                    "email_address" => Utility\Input::post("email"),
+                    "organization_code" => Utility\Input::post("organization_code"),
+                    "company_name" => Utility\Input::post("company_name"),
+                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
+                    "status" => 1
+                ], $contactID);
+
+            } else {
+                $User->putUserContactInfo([
+                    "admin_id" => $accId,
+                    "user_id" => $userID,
+                    "email_address" => Utility\Input::post("email"),
+                    "organization_code" => Utility\Input::post("organization_code"),
+                    "company_name" => Utility\Input::post("company_name"),
+                    "is_default" => 'N',
+                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
+                    "status" => 1
+                ]);
+                $contactID = NULL;
+            }
+
             //insert user info
             $User->insertUserInfo([
                 "user_id" => $userID,
@@ -102,8 +126,8 @@ class UserRegister {
                 "subscription_id" => 1, // Basic Account Plan
                 "status" => 0, // Not Verified yet
                 "registered_date" => date('Y-m-d H:i:s'), // Current datetime
-                // "organization_code" => Utility\Input::post("organization_code"),
-                // "contact_id" => $contactID,
+                "organization_code" => Utility\Input::post("organization_code"),
+                "contact_id" => $contactID,
             ]);
 
             //insert user role
@@ -111,26 +135,6 @@ class UserRegister {
                 "user_id" => $userID,
                 "role_id" => Utility\Input::post("role")
             ]);
-            
-            if(!empty($contactID)) {
-                $User->updateUserContactInfo([
-                    "user_id" => $userID,
-                    "email_address" => Utility\Input::post("email"),
-                    "organization_code" => Utility\Input::post("organization_code"),
-                    "company_name" => Utility\Input::post("company_name"),
-                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
-                    "status" => 1
-                ], $contactID);
-            } else {
-                $User->putUserContactInfo([
-                    "user_id" => $userID,
-                    "email_address" => Utility\Input::post("email"),
-                    "organization_code" => Utility\Input::post("organization_code"),
-                    "company_name" => Utility\Input::post("company_name"),
-                    "registered_date" => date('Y-m-d H:i:s'), // Current datetime
-                    "status" => 1
-                ]);
-            }
             
             //create ftp for user
             self::createFTP(Utility\Input::post("email"));
