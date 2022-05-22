@@ -862,7 +862,9 @@ function byLevel() {
   var level = [];
   if (listbox.length > 0) {
     listboxparent.append(`<optgroup id='ship-level' label='Shipment Level'></optgroup>`);
-    listboxparent.append("<optgroup id='document-level' label='Document Level'></optgroup>");
+    if(role_id < 3) {
+      listboxparent.append("<optgroup id='document-level' label='Document Level'></optgroup>");
+    }
     listbox.each(function () {
       if ($(this).attr('lvl') == 'shipment') {
         $('#ship-level').append($(this));
