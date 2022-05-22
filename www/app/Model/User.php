@@ -564,8 +564,18 @@ class User extends Core\Model {
     }
 
     public function putUserContactInfo(array $fields) {
-        $this->create("user_contact", $fields);
-        #$this->update("user_contact", $fields, $contact_id);
+        $query = "SELECT id FROM user_contact 
+            WHERE organization_code = '{$fields['organization_code']}' 
+            AND email_address = '{$fields['email_address']}'";
+        $result = $this->query($query)->results();
+        if(empty($result)) {
+            // 'NO EXISTED ACCOUNT';
+            $this->create("user_contact", $fields);
+        } else {
+            // 'ACCOUNT EXISTED';
+            $contact_id = $result[0]->id;
+            $this->update("user_contact", $fields, $contact_id);
+        }
 
         // $Db = Utility\Database::getInstance();
         // $query = "INSERT
