@@ -192,4 +192,40 @@ class Order extends Core\Controller {
         echo json_encode($retData);
     }
 
+    public function getOrderByShipment(){
+        $user_id = $_SESSION['user'];
+        $retData = array();
+
+        $Order = Model\Order::getInstance();
+        $orderData = $Order->getOrderByShipment($user_id);
+        
+        foreach($orderData as $value){
+            $retData['data'][] = array(
+                "order_number" => $value->order_number,
+                "ship_num" =>'',
+                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "pre_advice"=>'',
+                "buyer"=>$value->buyer,
+                "supplier"=>'',
+                "transport_mode"=>$value->trans_mode,
+                "container_mode"=>'',
+                "goods_origin"=>$value->port_origin,
+                "good_destination"=>'',
+                "load_port"=>$value->port_load,
+                "discharge_port"=>'',
+                "packs"=>'',
+                "type"=>'',
+                "volume"=>$value->total_volume,
+                "uv"=>'',
+                "weight" =>$value->total_weight,
+                "uw"=>$value->weight_unit,
+                "req_stock"=>'',
+                "req_work"=>'',
+                "h_bill"=>'',
+                "m_bill"=>''
+            );
+        }
+        
+        echo json_encode($retData);
+    }
 }

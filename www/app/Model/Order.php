@@ -67,4 +67,12 @@ class Order extends Core\Model {
            AND status='{$status}' ";
         return $Db->query($query)->results();
     }
+
+    public function getOrderByShipment($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM orders ord
+           INNER JOIN shipment sh on sh.order_number = ord.order_number
+           WHERE user_id = '{$user_id}'";
+        return $Db->query($query)->results();
+    }
 }

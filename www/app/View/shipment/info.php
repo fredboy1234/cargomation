@@ -1127,7 +1127,7 @@ $(document).ready(function() {
     var table = $('#orders').DataTable( {
         // "serverSide": true,
         "autoWidth": false,
-        "ajax": document.location.origin+"/order/orderData/",
+        "ajax": document.location.origin+"/order/getOrderByShipment/",
         "ordering": true,
         "bPaginate":true,
         "responsive:":true,
