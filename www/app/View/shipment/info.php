@@ -1123,7 +1123,7 @@ $(document).ready(function() {
         }
     });
 
-    //orders code must go here
+    //orders code  goes here
     var table = $('#orders').DataTable( {
         // "serverSide": true,
         "autoWidth": false,
@@ -1131,6 +1131,7 @@ $(document).ready(function() {
         "ordering": true,
         "bPaginate":true,
         "responsive:":true,
+        "bLengthChange": false,
         "sPaginationType":"full_numbers",
         "iDisplayLength": 8,
         "columns": [
