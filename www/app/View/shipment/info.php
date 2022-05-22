@@ -556,36 +556,52 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
                         </div>
                     </section>
-                    <div class="col-md-12" style="overflow: scroll;">
-                        <table id="orders" class="table table-hover table-head-fixed text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Order Number</th>
-                                    <th>Ship/Dec No.</th>
-                                    <th>Order Date</th>
-                                    <th>Pre Advice</th>
-                                    <th>Buyer</th>
-                                    <th>Supplier</th>
-                                    <th>Transport Mode</th>
-                                    <th>Container Mode</th>
-                                    <th>Goods Origin</th>
-                                    <th>Goods Destination</th>
-                                    <th>Load Port</th>
-                                    <th>Dischargte Port</th>
-                                    <th>Packs</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>UV</th>
-                                    <th>Weight</th>
-                                    <th>UW</th>
-                                    <th>Req. in Stock</th>
-                                    <th>Req. in Works</th>
-                                    <th>H.Bill</th>
-                                    <th>M.BIll</th>
-                                </tr>
-                            </thead>   
-                        </table>
-                    </div>
+                    <section class="col-lg-12 connectedSortable ui-sortable" style="overflow: scroll;">
+                        <div class="card">
+                            <div class="card-header ui-sortable-handle" style="cursor: move;">
+                                <h3 class="card-title">
+                                    <i class="fas fa-file-invoice  mr-1"></i>
+                                     Order View
+                                </h3>
+                                <div class="card-tools m-0">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table id="orders" class="table table-hover table-head-fixed text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Order Number</th>
+                                            <th>Ship/Dec No.</th>
+                                            <th>Order Date</th>
+                                            <th>Pre Advice</th>
+                                            <th>Buyer</th>
+                                            <th>Supplier</th>
+                                            <th>Transport Mode</th>
+                                            <th>Container Mode</th>
+                                            <th>Goods Origin</th>
+                                            <th>Goods Destination</th>
+                                            <th>Load Port</th>
+                                            <th>Dischargte Port</th>
+                                            <th>Packs</th>
+                                            <th>Type</th>
+                                            <th>Volume</th>
+                                            <th>UV</th>
+                                            <th>Weight</th>
+                                            <th>UW</th>
+                                            <th>Req. in Stock</th>
+                                            <th>Req. in Works</th>
+                                            <th>H.Bill</th>
+                                            <th>M.BIll</th>
+                                        </tr>
+                                    </thead>   
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
             </div>
             <div class="tab-pane fade" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
