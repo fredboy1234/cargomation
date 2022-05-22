@@ -106,9 +106,9 @@ foreach ($this->shipment_info[0] as $key => $value) {
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-invoice-tab" data-toggle="pill" href="#custom-tabs-invoice" role="tab" aria-controls="custom-tabs-invoice" aria-selected="false">Invoice</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" id="order-tabs-invoice-tab" data-toggle="pill" href="#order-tabs-invoice" role="tab" aria-controls="order-tabs-invoice" aria-selected="false">Orders</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-timeline-tab" data-toggle="pill" href="#custom-tabs-timeline" role="tab" aria-controls="custom-tabs-timeline" aria-selected="false">Timeline</a>
             </li>
@@ -556,6 +556,36 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
                         </div>
                     </section>
+                    <div class="col-md-12" style="overflow: scroll;">
+                        <table id="orders" class="table table-hover table-head-fixed text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Ship/Dec No.</th>
+                                    <th>Order Date</th>
+                                    <th>Pre Advice</th>
+                                    <th>Buyer</th>
+                                    <th>Supplier</th>
+                                    <th>Transport Mode</th>
+                                    <th>Container Mode</th>
+                                    <th>Goods Origin</th>
+                                    <th>Goods Destination</th>
+                                    <th>Load Port</th>
+                                    <th>Dischargte Port</th>
+                                    <th>Packs</th>
+                                    <th>Type</th>
+                                    <th>Volume</th>
+                                    <th>UV</th>
+                                    <th>Weight</th>
+                                    <th>UW</th>
+                                    <th>Req. in Stock</th>
+                                    <th>Req. in Works</th>
+                                    <th>H.Bill</th>
+                                    <th>M.BIll</th>
+                                </tr>
+                            </thead>   
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
@@ -603,56 +633,6 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                         <th>Status</th>
                                     </tr>
                                 </tfoot>
-                            </table>
-                        </div>
-                    </section>
-                </div>
-            </div>
-            <!--order view-->
-            <div class="tab-pane fade" id="order-tabs-invoice" role="tabpanel" aria-labelledby="order-tabs-invoice-tab">
-                <div class="row">
-                    <section class="col-lg-12 connectedSortable ui-sortable">
-                        <div class="card">
-                            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                                <h3 class="card-title">
-                                    <i class="fas fa-file-invoice"></i>
-                                    Order Details
-                                </h3>
-                            <div class="card-tools m-0">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body table-responsive p-0 ttable" style="height: auto;">
-                            <table id="orders" class="table table-hover table-head-fixed text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>Order Number</th>
-                                        <th>Ship/Dec No.</th>
-                                        <th>Order Date</th>
-                                        <th>Pre Advice</th>
-                                        <th>Buyer</th>
-                                        <th>Supplier</th>
-                                        <th>Transport Mode</th>
-                                        <th>Container Mode</th>
-                                        <th>Goods Origin</th>
-                                        <th>Goods Destination</th>
-                                        <th>Load Port</th>
-                                        <th>Dischargte Port</th>
-                                        <th>Packs</th>
-                                        <th>Type</th>
-                                        <th>Volume</th>
-                                        <th>UV</th>
-                                        <th>Weight</th>
-                                        <th>UW</th>
-                                        <th>Req. in Stock</th>
-                                        <th>Req. in Works</th>
-                                        <th>H.Bill</th>
-                                        <th>M.BIll</th>
-                                    </tr>
-                                </thead>
-                                
                             </table>
                         </div>
                     </section>
