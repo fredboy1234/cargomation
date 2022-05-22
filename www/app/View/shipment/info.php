@@ -556,7 +556,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
                         </div>
                     </section>
-                    <section class="col-lg-12 connectedSortable ui-sortable" style="overflow: scroll;">
+                    <section class="col-lg-12 connectedSortable ui-sortable">
                         <div class="card">
                             <div class="card-header ui-sortable-handle" style="cursor: move;">
                                 <h3 class="card-title">
@@ -569,7 +569,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="overflow: scroll;">
                                 <table id="orders" class="table table-hover table-head-fixed text-nowrap">
                                     <thead>
                                         <tr>
