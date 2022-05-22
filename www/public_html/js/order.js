@@ -91,6 +91,9 @@ $(".filter-order").on('click',function(){
         $('#myTable2').dataTable().fnDestroy();
         var filterTable = $('#myTable2').DataTable( {
             "autoWidth": false,
+            "scrollX": true,
+            "scrollY":        "250px",
+            "fixedColumns": false,
             "ajax": {
                 url: document.location.origin + '/order/getFilterResults/',
                 type: "POST",
