@@ -543,10 +543,11 @@ setInterval(function () {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
       var comdata = JSON.parse(data);
       console.log(comdata);
-      $("#totalque").text(comdata.que[0].que);
-      $("#completedque").text(comdata.completedCount[0].completed);
-      $("#archivrcount").text(comdata.archive[0].archive);
-      $("#allcount").text(comdata.data.length);
+      //$("#totalque").val(comdata.que[0].que);
+      $("#totalqueparent span").text(comdata.que[0].que);
+      $("#completedqueparent span").text(comdata.completedCount[0].completed);
+      $("#archivecountparent span").text(comdata.archive[0].archive);
+      $("#allcountparent span").text(comdata.data.length);
       
     }
   });
@@ -560,10 +561,10 @@ $.ajax({
   {
     var comdata = JSON.parse(data);
     console.log(comdata);
-    $("#totalque").val(comdata.que[0].que);
-    $("#completedque").val(comdata.completedCount[0].completed);
-    $("#archivecount").val(comdata.archive[0].archive);
-    $("#allcount").val(comdata.data.length);
+      $("#totalqueparent span").text(comdata.que[0].que);
+      $("#completedqueparent span").text(comdata.completedCount[0].completed);
+      $("#archivecountparent span").text(comdata.archive[0].archive);
+      $("#allcountparent span").text(comdata.data.length);
   }
 });
 

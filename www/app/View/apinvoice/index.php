@@ -80,16 +80,16 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-outline-info btn-lg">
+              <label class="btn btn-outline-info btn-lg" id="allcountparent">
                 <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
+              <label class="btn btn-outline-info btn-lg" id="totalqueparent">
                 <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
+              <label class="btn btn-outline-info btn-lg" id="completedqueparent">
                 <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
+              <label class="btn btn-outline-info btn-lg" id="archivecountparent" >
                 <input type="radio" name="options" id="archivecount" autocomplete="off"> Archive <span class="badge bg-danger">0</span>
               </label>
             </div>
