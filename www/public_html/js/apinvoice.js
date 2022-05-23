@@ -238,7 +238,7 @@ $(document).ready(function() {
             console.log("error");
           }
 
-          totolTipText+=`<span>CW MBL# ${cwmbl}</span></br>
+          totolTipText=`<span>CW MBL# ${cwmbl}</span></br>
                         <span>PDF MBL# ${pdfmbl}</span>`;
 
           $('.jobtooltip').attr('data-original-title',totolTipText);
