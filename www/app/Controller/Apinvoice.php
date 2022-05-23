@@ -225,7 +225,7 @@ class Apinvoice extends Core\Controller {
                 } 
            
                 $jobnum = json_decode($value->sec_ref);
-                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
+                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Archive</button></div></div></div>";
            
            }
             
@@ -240,7 +240,7 @@ class Apinvoice extends Core\Controller {
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> $actionbtn,
-                "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : 'Complete',
+                "Status"=> is_null($value->status) || empty($value->status) ? 'Processing' : $value->status,
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
@@ -879,5 +879,31 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $parsedINV = $APinvoice-> getParseINV($user_id);
         return $parsedINV;
+    }
+
+    public function checkSite(){  
+        // if($url == NULL) return false;
+        $url = $_POST['url'];
+        $cdata = array();  
+        $ch = curl_init($url);  
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+
+
+        $data = curl_exec($ch);  
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+        $redirectedUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_close($ch);  
+        
+        if($httpcode >= 200 && $httpcode < 300){  
+             echo 'valid';
+        } else {  
+            echo 'invalid';  
+        }  
     }
 }
