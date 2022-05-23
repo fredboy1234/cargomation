@@ -290,11 +290,7 @@ $(document).ready(function() {
         "type": "POST",
         "data":{process_id:processid},
         success:function(res){
-          Swal.fire(
-            'Success!',
-            'Item was save to Archive',
-            'success'
-          )
+          console.log(res);
         }
       });
     });
