@@ -89,7 +89,7 @@ $status = array("error","success");
               <label class="btn btn-outline-info btn-lg">
                 <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"><?=$this->completeCount?></span>
               </label>
-              <label class="btn btn-outline-info btn-lg d-none">
+              <label class="btn btn-outline-info btn-lg">
                 <input type="radio" name="options" id="archivrcount" autocomplete="off"> Archive <span class="badge bg-danger">53</span>
               </label>
             </div>

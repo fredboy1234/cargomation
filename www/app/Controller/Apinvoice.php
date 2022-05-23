@@ -878,6 +878,19 @@ class Apinvoice extends Core\Controller {
         return $twoJoint;
     }
 
+    public function getAPQUECount($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPQUECount($user_id);
+        return $twoJoint;
+    }
+
+    public function getAPArchiveCount($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPArchiveCount($user_id);
+        return $twoJoint;
+    }
+    
+
     public function getCompleteFilter($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
         $twoJoint = $APinvoice->getAPCompleteCount($user_id);
