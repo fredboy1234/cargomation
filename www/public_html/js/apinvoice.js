@@ -280,7 +280,24 @@ $(document).ready(function() {
     $(".jobtooltip").on('click',function(){
       window.location.href=document.location.origin+"/shipment";
     });
-   
+    
+    //saveing to archive
+    $(document).on('click','.toarchive',function(){
+      var processid = $(this).attr('data-pd');
+      
+      $.ajax({
+        "url":  document.location.origin+"/apinvoice/saveToArchive",
+        "type": "POST",
+        "data":{process_id:processid},
+        success:function(res){
+          Swal.fire(
+            'Success!',
+            'Item was save to Archive',
+            'success'
+          )
+        }
+      });
+    });
     // Add event listener for opening and closing details
     $('#example tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -526,8 +543,11 @@ setInterval(function () {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
       var comdata = JSON.parse(data);
       console.log(comdata.completedCount[0].completed);
-      $("#totalque").text(comdata.data.length);
+      $("#totalque").text(comdata.que[0].que);
       $("#completedque").text(comdata.completedCount[0].completed);
+      $("#archivrcount").text(comdata.archive[0].archive);
+      $("#allcount").text(comdata.data.length);
+      
     }
   });
 }, 20000);

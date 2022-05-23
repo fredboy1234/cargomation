@@ -80,6 +80,9 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-info btn-lg">
+                <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning"> <?=$this->quecount?></span>
+              </label>
               <label class="btn btn-outline-info btn-lg">
                 <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning"> <?=$this->quecount?></span>
               </label>
@@ -87,7 +90,7 @@ $status = array("error","success");
                 <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"><?=$this->completeCount?></span>
               </label>
               <label class="btn btn-outline-info btn-lg d-none">
-                <input type="radio" name="options" id="option_b3" autocomplete="off"> Deleted <span class="badge bg-danger">53</span>
+                <input type="radio" name="options" id="archivrcount" autocomplete="off"> Archive <span class="badge bg-danger">53</span>
               </label>
             </div>
           </div>

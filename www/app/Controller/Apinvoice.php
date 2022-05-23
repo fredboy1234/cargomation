@@ -225,7 +225,7 @@ class Apinvoice extends Core\Controller {
                 } 
            
                 $jobnum = json_decode($value->sec_ref);
-                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Archive</button></div></div></div>";
+                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button data-pd='{$value->process_id}' type='button' class='toarchive btn btn-block btn-outline-danger'>Archive</button></div></div></div>";
            
            }
             
@@ -233,9 +233,12 @@ class Apinvoice extends Core\Controller {
             //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
             // }
             $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+            $retData['que'] =  $this->getAPQUECount($_SESSION['user']);
+            $retData['archive'] = $this->getAPArchiveCount($_SESSION['user']);
+            
             $cstatus = '';
             if(!is_null($value->cw_response_status)){
-                $cstatus = $value->cw_response_status;
+                $cstatus = $value->cw_response_status ==='Success' ? 'Complete' : $cstatus = $value->cw_response_status;
             }else{
                 if(is_null($value->status) || empty($value->status)){
                     $cstatus = 'Processing';
@@ -890,6 +893,13 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $parsedINV = $APinvoice-> getParseINV($user_id);
         return $parsedINV;
+    }
+
+    public function saveToArchive(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        if(isset($_POST['process_id'])){
+            $APinvoice->saveToArchive($_POST['process_id']);
+        }
     }
 
     public function checkSite(){  
