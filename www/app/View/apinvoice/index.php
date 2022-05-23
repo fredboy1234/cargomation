@@ -84,7 +84,7 @@ $status = array("error","success");
                 <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning">0</span>
               </label>
               <label class="btn btn-outline-info btn-lg" id="totalqueparent">
-                <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning">0</span>
+                <input type="radio" name="options" id="totalque" autocomplete="off" > Queue <span class="badge bg-warning">0</span>
               </label>
               <label class="btn btn-outline-info btn-lg" id="completedqueparent">
                 <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success">0</span>

@@ -183,6 +183,6 @@ class Apinvoice extends Core\Model {
 
     public function saveToArchive($processID){
         $Db = Utility\Database::getInstance();
-        return $Db->query("UPDATE match_apinvoice SET archive='1' process_id='{$processID}'");
+        return $Db->query("UPDATE match_apinvoice SET archive='1' where process_id='{$processID}'");
     }
 }

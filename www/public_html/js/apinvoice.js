@@ -291,6 +291,7 @@ $(document).ready(function() {
         "data":{process_id:processid},
         success:function(res){
           console.log(res);
+          console.log($(this).closest("tr").hide());
         }
       });
     });
