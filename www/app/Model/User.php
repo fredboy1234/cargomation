@@ -280,10 +280,19 @@ class User extends Core\Model {
         $user_count = $Db->query("SELECT count(*) AS count
                                 FROM user_info
                                 WHERE account_id = '{$user}'")->results();
+
+        $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
+        
+        $check_sub_user = $user;
+        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+            if($check_user[0]->role_id > 2 ){
+                $check_sub_user = $check_user[0]->account_id;
+            }
+        }
         $user_image = $Db->query("SELECT *
-                                FROM user_images where user_id = '{$user}'
+                                FROM user_images where user_id = '{$check_sub_user}'
                                 ")->results();
-        $user_settings = $Db->query("SELECT colorScheme  FROM user_settings where user_id = '{$user}'")->results();
+        $user_settings = $Db->query("SELECT colorScheme  FROM user_settings where user_id = '{$check_sub_user}'")->results();
 
         return [
             "user_info" => $user_info,
@@ -294,6 +303,7 @@ class User extends Core\Model {
             "user_settings"=>$user_settings
         ];
     }
+
 
     public function addUserSettings($data) {
         $fields = array(

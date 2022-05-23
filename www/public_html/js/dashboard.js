@@ -292,3 +292,10 @@ $(window).on("load", function() {
 $(".act-order").on('click',function(){
   window.location.href=document.location.origin + '/order/';
 });
+$("#side-act-3").on('click',function(){
+  window.location.href=document.location.origin + '/shipment/';
+});
+$("#side-act-2").on('click',function(){
+  window.location.href=document.location.origin + '?search=eta_date&type=exact&value=23/06/2022-23/07/2022';
+});
+
