@@ -560,10 +560,10 @@ $.ajax({
   {
     var comdata = JSON.parse(data);
     console.log(comdata);
-    $("#totalque").text(comdata.que[0].que);
-    $("#completedque").text(comdata.completedCount[0].completed);
-    $("#archivecount").text(comdata.archive[0].archive);
-    $("#allcount").text(comdata.data.length);
+    $("#totalque").val(comdata.que[0].que);
+    $("#completedque").val(comdata.completedCount[0].completed);
+    $("#archivecount").val(comdata.archive[0].archive);
+    $("#allcount").val(comdata.data.length);
   }
 });
 
