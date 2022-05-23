@@ -133,10 +133,10 @@ class Apinvoice extends Core\Controller {
                 }  
             }
         }
-        $countque = $this->getSingleInvoice($_SESSION['user']);
-        $completeCount = $this->getAPCompleteCount($_SESSION['user']);
-        $quecount = $this->getAPQUECount($_SESSION['user']);
-        $archivecount = $this->getAPArchiveCount($_SESSION['user']);
+       // $countque = $this->getSingleInvoice($_SESSION['user']);
+       // $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+       // $quecount = $this->getAPQUECount($_SESSION['user']);
+       // $archivecount = $this->getAPArchiveCount($_SESSION['user']);
 
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
@@ -155,10 +155,10 @@ class Apinvoice extends Core\Controller {
             "headerParsed" =>$headerParsed,
             "parsedData" => json_encode($parsed),
             "invoicesHeader" =>$invoicesHeader,
-            "allcount" =>is_countable($countque) ? sizeof($countque) : 0, 
-            "completeCount"=>$completeCount[0]->completed,
-            "quecount"=>$quecount[0]->que,
-            "archivecount"=>$archivecount[0]->archive,
+           // "allcount" =>is_countable($countque) ? sizeof($countque) : 0, 
+           // "completeCount"=>$completeCount[0]->completed,
+           // "quecount"=>$quecount[0]->que,
+           // "archivecount"=>$archivecount[0]->archive,
             "chartData" =>$this->chartData($_SESSION['user'])
         ]);
     }

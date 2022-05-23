@@ -552,6 +552,21 @@ setInterval(function () {
   });
 }, 20000);
 
+//load the all counts
+$.ajax({
+  url: document.location.origin+"/apinvoice/invoiceSuccess/",
+  type: "POST",
+  success:function(data)
+  {
+    var comdata = JSON.parse(data);
+    console.log(comdata);
+    $("#totalque").text(comdata.que[0].que);
+    $("#completedque").text(comdata.completedCount[0].completed);
+    $("#archivecount").text(comdata.archive[0].archive);
+    $("#allcount").text(comdata.data.length);
+  }
+});
+
 // //on click priview documents get specific match report
 // $(document).on('click','.viewdoc',function(){
 //   var pid = $(this).attr('data-pid');
