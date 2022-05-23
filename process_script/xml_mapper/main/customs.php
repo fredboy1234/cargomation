@@ -400,6 +400,11 @@ if(isset($_GET['get_email'])){
 			$sqlUpdateRecord = sqlsrv_query($conn, $sqlUpdateRecord, array(), array( "Scrollable" => 'static'));
 		  }
 
+		  $destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_CUSTOMS/SUCCESS/";						
+			if(!file_exists($destination_path.$filename)){
+			rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
+			}
+
 		}/*end try catch*/
 		 catch (Exception $e) {
 			
