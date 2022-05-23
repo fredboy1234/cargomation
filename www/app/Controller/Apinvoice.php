@@ -233,6 +233,17 @@ class Apinvoice extends Core\Controller {
             //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
             // }
             $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+            $cstatus = '';
+            if(!is_null($value->cw_response_status)){
+                $cstatus = $value->cw_response_status;
+            }else{
+                if(is_null($value->status) || empty($value->status)){
+                    $cstatus = 'Processing';
+                }else{
+                    $cstatus =  $value->status;
+                }
+            }
+            
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
@@ -240,7 +251,7 @@ class Apinvoice extends Core\Controller {
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> $actionbtn,
-                "Status"=> is_null($value->status) || empty($value->status) ? 'Processing' : $value->status,
+                "Status"=> $cstatus,
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
