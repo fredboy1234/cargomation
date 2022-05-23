@@ -227,18 +227,18 @@ $(document).ready(function() {
           try{
             if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
               $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
-              totolTipText+=`<span>CW MBL# </span></br>`;
+              totolTipText+=`<span>CW MBL# </br>`;
             }
   
             if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber) !== 'undefined'){
               $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
-              totolTipText+=`<span>PDF MBL# </span></br>`;
+              totolTipText+=`PDF MBL#`;
             }
           }catch(x){
             console.log("error");
           }
 
-          $('.jobtooltip').attr('data-original-title',totolTipText);
+          $('.jobtooltip').attr('title',totolTipText);
           $.each(jreport.HubJSONOutput.MatchReport,function(okey,oval){
             var classkey = '';
             var contentText = '';
@@ -273,6 +273,9 @@ $(document).ready(function() {
 
     });
     
+    $(".jobtooltip").on('clicl',function(){
+      window.location.href=document.location.origin+"/shipment";
+    });
    
     // Add event listener for opening and closing details
     $('#example tbody').on('click', 'td.dt-control', function () {
