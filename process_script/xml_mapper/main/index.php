@@ -1649,6 +1649,7 @@ try{
 			}
 		}
 		/*call order module details*/
+		require_once('customs.php');
 		require_once('arinvoice.php');
 		require_once('order.php');
 	}
