@@ -542,7 +542,7 @@ setInterval(function () {
     {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
       var comdata = JSON.parse(data);
-      console.log(comdata.completedCount[0].completed);
+      console.log(comdata);
       $("#totalque").text(comdata.que[0].que);
       $("#completedque").text(comdata.completedCount[0].completed);
       $("#archivrcount").text(comdata.archive[0].archive);

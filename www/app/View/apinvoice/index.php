@@ -80,17 +80,17 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning"> <?=$this->quecount?></span>
+              <label class="btn btn-outline-info btn-lg">
+                <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning"></span>
               </label>
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning"> <?=$this->quecount?></span>
+                <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning"></span>
               </label>
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"><?=$this->completeCount?></span>
+                <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"></span>
               </label>
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="archivrcount" autocomplete="off"> Archive <span class="badge bg-danger">53</span>
+                <input type="radio" name="options" id="archivrcount" autocomplete="off"> Archive <span class="badge bg-danger"></span>
               </label>
             </div>
           </div>
