@@ -223,22 +223,26 @@ $(document).ready(function() {
           //$("#embeded embed").attr('src',d[0].filename);
           
           var html='';
-          var totolTipText ='';
+          var totolTipText,cwmbl,pdfmbl ='';
           try{
             if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
               $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
-              totolTipText+=`<span>CW MBL# </br>`;
+              cwmbl='';
             }
   
             if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber) !== 'undefined'){
               $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
-              totolTipText+=`PDF MBL#`;
+              pdfmbl='';
             }
           }catch(x){
             console.log("error");
           }
 
-          $('.jobtooltip').attr('title',totolTipText);
+          totolTipText+=`<span>CW MBL# ${cwmbl}</span></br>
+                        <span>PDF MBL# ${pdfmbl}</span>`;
+
+          $('.jobtooltip').attr('data-original-title',totolTipText);
+
           $.each(jreport.HubJSONOutput.MatchReport,function(okey,oval){
             var classkey = '';
             var contentText = '';
@@ -272,7 +276,7 @@ $(document).ready(function() {
       });
 
     });
-    
+
     $(".jobtooltip").on('clicl',function(){
       window.location.href=document.location.origin+"/shipment";
     });
