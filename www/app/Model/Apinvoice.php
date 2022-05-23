@@ -122,6 +122,33 @@ class Apinvoice extends Core\Model {
         return  $Db->query($query)->results();
     }
 
+    public function getSingleInvoiceBytype($user_id,$type){
+        $andcondition = '';
+        if($type === 'que'){
+            $andcondition = ' and ma.archive is null and mr.cw_response_status is null ';
+        }elseif($type === 'completed' ){
+            $andcondition = ' and mr.cw_response_status="Success" ';
+        }elseif( $type === 'archive' ){
+            $andcondition = ' ma.archive=1 ';
+        }
+
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT 
+            ma.process_id as process_id,
+            ma.filename as maAPFIlename,  
+            ma.filepath,
+            mr.filename,
+            ma.status,
+            mr.status,
+            *
+        FROM match_apinvoice ma
+        LEFT JOIN match_report mr
+        ON mr.prim_ref = ma.process_id
+        WHERE user_id = '{$user_id}' {$andcondition}
+        ";
+        return  $Db->query($query)->results();
+    }
+
     public function getSingleCWResponse($user_id,$prim_ref){
         $Db = Utility\Database::getInstance();
         $query = "SELECT 

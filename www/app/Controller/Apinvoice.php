@@ -191,7 +191,9 @@ class Apinvoice extends Core\Controller {
         $splitInvoice = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
        // echo"<pre>";
-        
+        if(isset($_POST['type'])){
+            $data['invoices'] = $this->getSingleInvoiceBytype($_SESSION['user'],$_POST['type']);
+        }
         foreach($data['invoices'] as $value){
             $splitInvoice[$value->process_id][] = $value;
         }
@@ -870,6 +872,13 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getSingleInvoice($user_id); 
     }
 
+    public function getSingleInvoiceBytype($user_id,$type){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getSingleInvoiceBytype($user_id,$type); 
+    }
+
+    
+
     public function getLastID(){
         $APinvoice = Model\Apinvoice::getInstance();
         $lastID = $APinvoice->getLastID();
@@ -918,6 +927,7 @@ class Apinvoice extends Core\Controller {
             $APinvoice->saveToArchive($_POST['process_id']);
         }
     }
+
 
     public function checkSite(){  
         // if($url == NULL) return false;

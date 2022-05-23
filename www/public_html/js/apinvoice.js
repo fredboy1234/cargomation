@@ -70,6 +70,7 @@ $(document).ready(function() {
         
     } );
 
+   
     //on click filter complete and all 
     $("#completedque").on('click',function(){
       table.ajax.reload; 
@@ -528,6 +529,21 @@ $(document).ready(function(){
       });
       console.log('File upload error: ' + msg);
   })
+});
+
+ //for filer button click
+ $(".typebutton").on('click',function(){
+   var typebutton = $(this).attr('data-typebutton');
+   
+  $.ajax({
+    url: document.location.origin+"/apinvoice/invoiceSuccess/",
+    type: "POST",
+    data:{type:typebutton},
+    success:function(data)
+    {
+      table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
+    }
+  });
 });
 
 
