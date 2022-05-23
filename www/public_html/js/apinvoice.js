@@ -277,7 +277,7 @@ $(document).ready(function() {
 
     });
 
-    $(".jobtooltip").on('clicl',function(){
+    $(".jobtooltip").on('click',function(){
       window.location.href=document.location.origin+"/shipment";
     });
    
