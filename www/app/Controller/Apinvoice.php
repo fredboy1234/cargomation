@@ -133,8 +133,10 @@ class Apinvoice extends Core\Controller {
                 }  
             }
         }
-        $countque = $this->getSingleInvoice($_SESSION['user']);
-        $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+       // $countque = $this->getSingleInvoice($_SESSION['user']);
+       // $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+       // $quecount = $this->getAPQUECount($_SESSION['user']);
+       // $archivecount = $this->getAPArchiveCount($_SESSION['user']);
 
         $this->View->renderTemplate("/apinvoice/index", [
             "title" => "Upload AP Invoice",
@@ -153,8 +155,10 @@ class Apinvoice extends Core\Controller {
             "headerParsed" =>$headerParsed,
             "parsedData" => json_encode($parsed),
             "invoicesHeader" =>$invoicesHeader,
-            "quecount" =>is_countable($countque) ? sizeof($countque) : 0, 
-            "completeCount"=>$completeCount[0]->completed,
+           // "allcount" =>is_countable($countque) ? sizeof($countque) : 0, 
+           // "completeCount"=>$completeCount[0]->completed,
+           // "quecount"=>$quecount[0]->que,
+           // "archivecount"=>$archivecount[0]->archive,
             "chartData" =>$this->chartData($_SESSION['user'])
         ]);
     }
@@ -187,7 +191,9 @@ class Apinvoice extends Core\Controller {
         $splitInvoice = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
        // echo"<pre>";
-        
+        if(isset($_POST['type'])){
+            $data['invoices'] = $this->getSingleInvoiceBytype($_SESSION['user'],$_POST['type']);
+        }
         foreach($data['invoices'] as $value){
             $splitInvoice[$value->process_id][] = $value;
         }
@@ -225,7 +231,7 @@ class Apinvoice extends Core\Controller {
                 } 
            
                 $jobnum = json_decode($value->sec_ref);
-                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>";
+                $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button data-pd='{$value->process_id}' type='button' class='toarchive btn btn-block btn-outline-danger'>Archive</button></div></div></div>";
            
            }
             
@@ -233,6 +239,20 @@ class Apinvoice extends Core\Controller {
             //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
             // }
             $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+            $retData['que'] =  $this->getAPQUECount($_SESSION['user']);
+            $retData['archive'] = $this->getAPArchiveCount($_SESSION['user']);
+            
+            $cstatus = '';
+            if(!is_null($value->cw_response_status)){
+                $cstatus = $value->cw_response_status ==='Success' ? 'Complete' : $cstatus = $value->cw_response_status;
+            }else{
+                if(is_null($value->status) || empty($value->status)){
+                    $cstatus = 'Processing';
+                }else{
+                    $cstatus =  $value->status;
+                }
+            }
+            
             $retData['data'][] = array(
                 "Process ID" => $value->process_id,
                 "File Name" => $value->maAPFIlename,
@@ -240,7 +260,7 @@ class Apinvoice extends Core\Controller {
                 "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
                 "Uploaded By" => $value->uploadedby,
                 "Action"=> $actionbtn,
-                "Status"=> is_null($value->status) || empty($value->status) ?'Processing' : 'Complete',
+                "Status"=> $cstatus,
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
@@ -852,6 +872,13 @@ class Apinvoice extends Core\Controller {
         return $APinvoice->getSingleInvoice($user_id); 
     }
 
+    public function getSingleInvoiceBytype($user_id,$type){
+        $APinvoice = Model\Apinvoice::getInstance();
+        return $APinvoice->getSingleInvoiceBytype($user_id,$type); 
+    }
+
+    
+
     public function getLastID(){
         $APinvoice = Model\Apinvoice::getInstance();
         $lastID = $APinvoice->getLastID();
@@ -863,6 +890,19 @@ class Apinvoice extends Core\Controller {
         $twoJoint = $APinvoice->getAPCompleteCount($user_id);
         return $twoJoint;
     }
+
+    public function getAPQUECount($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPQUECount($user_id);
+        return $twoJoint;
+    }
+
+    public function getAPArchiveCount($user_id){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $twoJoint = $APinvoice->getAPArchiveCount($user_id);
+        return $twoJoint;
+    }
+    
 
     public function getCompleteFilter($user_id){
         $APinvoice = Model\Apinvoice::getInstance();
@@ -879,5 +919,39 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         $parsedINV = $APinvoice-> getParseINV($user_id);
         return $parsedINV;
+    }
+
+    public function saveToArchive(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        if(isset($_POST['process_id'])){
+            $APinvoice->saveToArchive($_POST['process_id']);
+        }
+    }
+
+
+    public function checkSite(){  
+        // if($url == NULL) return false;
+        $url = $_POST['url'];
+        $cdata = array();  
+        $ch = curl_init($url);  
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+
+
+        $data = curl_exec($ch);  
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+        $redirectedUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_close($ch);  
+        
+        if($httpcode >= 200 && $httpcode < 300){  
+             echo 'valid';
+        } else {  
+            echo 'invalid';  
+        }  
     }
 }

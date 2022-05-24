@@ -80,14 +80,17 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="totalque" autocomplete="off" checked=""> Queue <span class="badge bg-warning"> <?=$this->quecount?></span>
+              <label class="btn btn-outline-info btn-lg typebutton" id="allcountparent" data-typebutton="all">
+                <input type="radio" name="options" id="allcount" autocomplete="off" checked=""> All <span class="badge bg-warning">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success"><?=$this->completeCount?></span>
+              <label class="btn btn-outline-info btn-lg typebutton" id="totalqueparent" data-typebutton="que">
+                <input type="radio" name="options" id="totalque" autocomplete="off" > Queue <span class="badge bg-warning">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg d-none">
-                <input type="radio" name="options" id="option_b3" autocomplete="off"> Deleted <span class="badge bg-danger">53</span>
+              <label class="btn btn-outline-info btn-lg typebutton" id="completedqueparent" data-typebutton="completed">
+                <input type="radio" name="options" id="completedque" autocomplete="off"> Completed <span class="badge bg-success">0</span>
+              </label>
+              <label class="btn btn-outline-info btn-lg typebutton" id="archivecountparent" data-typebutton="archive">
+                <input type="radio" name="options" id="archivecount" autocomplete="off"> Archive <span class="badge bg-danger">0</span>
               </label>
             </div>
           </div>

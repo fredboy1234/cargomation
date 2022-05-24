@@ -76,10 +76,26 @@ class Apinvoice extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT count(*) as completed FROM match_apinvoice ma 
             inner join match_report mr on mr.prim_ref = ma.process_id
-            WHERE user_id = '{$user_id}' ";
+            WHERE user_id = '{$user_id}' and mr.cw_response_status='Success' ";
         return  $Db->query($query)->results();    
     }
 
+    public function getAPQUECount($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT count(*) as que FROM match_apinvoice ma 
+            inner join match_report mr on mr.prim_ref = ma.process_id
+            WHERE user_id = '{$user_id}' and ma.archive is null and mr.cw_response_status is null ";
+        return  $Db->query($query)->results();    
+    }
+
+    public function getAPArchiveCount($user_id){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT count(*) as archive FROM match_apinvoice ma 
+            inner join match_report mr on mr.prim_ref = ma.process_id
+            WHERE user_id = '{$user_id}' and ma.archive=1 ";
+        return  $Db->query($query)->results();    
+    }
+    
     public function getCompleteFilter($user_id){
         $Db = Utility\Database::getInstance();
         $query = "SELECT * as completed FROM match_apinvoice ma 
@@ -102,6 +118,33 @@ class Apinvoice extends Core\Model {
         LEFT JOIN match_report mr
         ON mr.prim_ref = ma.process_id
         WHERE user_id = '{$user_id}'
+        ";
+        return  $Db->query($query)->results();
+    }
+
+    public function getSingleInvoiceBytype($user_id,$type){
+        $andcondition = '';
+        if($type === 'que'){
+            $andcondition = ' and ma.archive is null and mr.cw_response_status is null ';
+        }elseif($type === 'completed' ){
+            $andcondition = ' and mr.cw_response_status="Success" ';
+        }elseif( $type === 'archive' ){
+            $andcondition = ' ma.archive=1 ';
+        }
+
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT 
+            ma.process_id as process_id,
+            ma.filename as maAPFIlename,  
+            ma.filepath,
+            mr.filename,
+            ma.status,
+            mr.status,
+            *
+        FROM match_apinvoice ma
+        LEFT JOIN match_report mr
+        ON mr.prim_ref = ma.process_id
+        WHERE user_id = '{$user_id}' {$andcondition}
         ";
         return  $Db->query($query)->results();
     }
@@ -163,5 +206,10 @@ class Apinvoice extends Core\Model {
         //     Group by Month(dateuploaded),Year(dateuploaded)";
 
         return $Db->query($query)->results();
+    }
+
+    public function saveToArchive($processID){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("UPDATE match_apinvoice SET archive='1' where process_id='{$processID}'");
     }
 }

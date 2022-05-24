@@ -17,7 +17,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                   <!-- Info Boxes Style 2 -->
-                  <div class="info-box mb-3 bg-light">
+                  <div class="info-box mb-3 bg-light" style="cursor:pointer;">
                     <span id="side-act-1" class="info-box-icon text-success"><i class="fas fa-box"></i></span>
 
                     <div class="info-box-content act-order" style="cursor: pointer;">
@@ -32,7 +32,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-light">
+                  <div class="info-box mb-3 bg-light newshipments" style="cursor:pointer;">
                     <span id="side-act-2" class="info-box-icon text-danger"><i class="fas fa-ship"></i></span>
 
                     <div class="info-box-content">
@@ -47,7 +47,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-light">
+                  <div class="info-box mb-3 bg-light docrequests" style="cursor:pointer;">
                     <span id="side-act-3" class="info-box-icon text-info"><i class="fas fa-file-alt"></i></span>
 
                     <div class="info-box-content">
@@ -62,7 +62,7 @@
                     <!-- /.info-box-content -->
                   </div>
                   <!-- /.info-box -->
-                  <div class="info-box mb-3 bg-light">
+                  <div class="info-box mb-3 bg-light etaupdated" style="cursor:pointer;">
                     <span id="side-act-4" class="info-box-icon text-warning"><i class="fas fa-exclamation-triangle"></i></span>
 
                     <div class="info-box-content">

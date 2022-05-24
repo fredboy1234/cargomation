@@ -70,6 +70,7 @@ $(document).ready(function() {
         
     } );
 
+   
     //on click filter complete and all 
     $("#completedque").on('click',function(){
       table.ajax.reload; 
@@ -203,6 +204,8 @@ $(document).ready(function() {
       /**
        * showing pdf preview and chargeline contents below pdf.
        */
+       $('[data-toggle="tooltip"]').tooltip();
+
       $.ajax({
         url: document.location.origin+"/apinvoice/preview/",
         type: "POST",
@@ -213,19 +216,33 @@ $(document).ready(function() {
          var d = JSON.parse(data);
          var jreport = JSON.parse(d[0].match_report);
          console.log(d);
+         if(checkpath(d[0].filename) === 'valid'){
           $("#embeded embed").attr('src',d[0].filename);
+         }else{
+          $("#embeded embed").attr('src',d[0].filepath);
+         }
+          //$("#embeded embed").attr('src',d[0].filename);
+          
           var html='';
+          var totolTipText,cwmbl,pdfmbl ='';
           try{
             if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
               $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
+              cwmbl='';
             }
   
             if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber) !== 'undefined'){
               $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
+              pdfmbl='';
             }
           }catch(x){
             console.log("error");
           }
+
+          totolTipText=`<span>CW MBL# ${cwmbl}</span></br>
+                        <span>PDF MBL# ${pdfmbl}</span>`;
+
+          $('.jobtooltip').attr('data-original-title',totolTipText);
 
           $.each(jreport.HubJSONOutput.MatchReport,function(okey,oval){
             var classkey = '';
@@ -260,8 +277,25 @@ $(document).ready(function() {
       });
 
     });
+
+    $(".jobtooltip").on('click',function(){
+      window.location.href=document.location.origin+"/shipment";
+    });
     
-   
+    //saveing to archive
+    $(document).on('click','.toarchive',function(){
+      var processid = $(this).attr('data-pd');
+      
+      $.ajax({
+        "url":  document.location.origin+"/apinvoice/saveToArchive",
+        "type": "POST",
+        "data":{process_id:processid},
+        success:function(res){
+          console.log(res);
+          console.log($(this).closest("tr").hide());
+        }
+      });
+    });
     // Add event listener for opening and closing details
     $('#example tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -280,7 +314,20 @@ $(document).ready(function() {
     });
 
 
-
+    //check if file path is not 404 or exists
+    function checkpath(url){
+      var ret = '';
+      $.ajax({
+        "url":  document.location.origin+"/apinvoice/checkSite",
+        "type": "POST",
+        "data":{url:url},
+        success:function(res){
+          ret = res;
+        }
+      });
+      return ret;
+    }
+    
   /*
      * BAR CHART
      * ---------
@@ -484,6 +531,21 @@ $(document).ready(function(){
   })
 });
 
+ //for filer button click
+ $(".typebutton").on('click',function(){
+   var typebutton = $(this).attr('data-typebutton');
+   
+  $.ajax({
+    url: document.location.origin+"/apinvoice/invoiceSuccess/",
+    type: "POST",
+    data:{type:typebutton},
+    success:function(data)
+    {
+      table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
+    }
+  });
+});
+
 
 setInterval(function () {
   $.ajax({
@@ -493,12 +555,31 @@ setInterval(function () {
     {
       table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
       var comdata = JSON.parse(data);
-      console.log(comdata.completedCount[0].completed);
-      $("#totalque").text(comdata.data.length);
-      $("#completedque").text(comdata.completedCount[0].completed);
+      console.log(comdata);
+      //$("#totalque").val(comdata.que[0].que);
+      $("#totalqueparent span").text(comdata.que[0].que);
+      $("#completedqueparent span").text(comdata.completedCount[0].completed);
+      $("#archivecountparent span").text(comdata.archive[0].archive);
+      $("#allcountparent span").text(comdata.data.length);
+      
     }
   });
 }, 20000);
+
+//load the all counts
+$.ajax({
+  url: document.location.origin+"/apinvoice/invoiceSuccess/",
+  type: "POST",
+  success:function(data)
+  {
+    var comdata = JSON.parse(data);
+    console.log(comdata);
+      $("#totalqueparent span").text(comdata.que[0].que);
+      $("#completedqueparent span").text(comdata.completedCount[0].completed);
+      $("#archivecountparent span").text(comdata.archive[0].archive);
+      $("#allcountparent span").text(comdata.data.length);
+  }
+});
 
 // //on click priview documents get specific match report
 // $(document).on('click','.viewdoc',function(){

@@ -57,7 +57,10 @@
                      <div class="col-lg-12">
                         <div class="card-header">
                            <h3 class="card-title">Cargowise Data</h3>
-                           <h3 class="card-title float-right">JOB Number: <span class="jobnum"></span></h3>
+                           <h3 style="cursor: pointer;" class="card-title float-right jobtooltip" data-toggle="tooltip" data-placement="top" title="" data-original-title="" data-html="true" >
+                              JOB Number: 
+                              <span class="jobnum"></span>
+                           </h3>
                         </div>
                         <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">
