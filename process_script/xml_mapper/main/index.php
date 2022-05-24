@@ -165,12 +165,12 @@ try{
 					INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
-					AND dbo.document_base64.img_data = '$ctr_b64'
+					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
 					AND dbo.document.type = '$get_valDocType_'
 					AND dbo.document.shipment_id='$ship_idlast'
 					";
 					$ifdocexistqry = sqlsrv_query($conn, $ifdocexist);
-					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry);
+					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry); 
 
 					if ($ifdocexistres === false) {
 					
@@ -241,7 +241,7 @@ try{
 					INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
-					AND dbo.document_base64.img_data = '$ctr_b64'
+					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
 					AND dbo.document.type = '$get_valDocType_'
 					AND dbo.document.shipment_id='$ship_idlast'";
 					
