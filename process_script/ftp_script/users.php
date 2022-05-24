@@ -26,7 +26,7 @@ if($return_user == true){
       {
         $insidepath = $path.$inspath;
         if(is_dir( $path )){
-            mkdir( $insidepath, 0777, false );
+            mkdir( $insidepath, 0777, true );
        }   
     }          
   }
