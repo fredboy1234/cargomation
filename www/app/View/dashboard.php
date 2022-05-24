@@ -125,7 +125,7 @@ color:#808080 !important;
               include(VIEW_PATH."_template/module/dashboard/dashboard_side_default.php");
             }?>
       
-      <?php if(false): ?>
+            <?php if(false): ?>
             <!-- Calendar -->
             <div class="card bg-gradient-white">
               <div class="card-header border-0">
@@ -666,9 +666,7 @@ color:#808080 !important;
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->
-            <?php endif; ?>
-
-            <?php if(true): ?>
+            <?php else: ?>
             <!-- Map card -->            
             <div class="card bg-gradient-default" style="display: block;">
               <div class="card-header border-0">
@@ -728,6 +726,9 @@ color:#808080 !important;
             <!-- /.card -->
             <?php endif; ?>
           </section>
+          <?php if($this->role->id == 1): ?>
+          <?php // FOR SUPER ADMIN ?>
+          <?php else: ?>
           <!--start of section report-->
           <section id="lazy-tablue" class="col-lg-12 connectedSortable">
             <div class="card bg-gradient-default" style="display: block;">
@@ -768,11 +769,12 @@ color:#808080 !important;
               <div style="background-color:white;position:relative;top:-27px;z-index: 1;height:27px;">&nbsp;</div>           
               </div>
               
-              </div>
+            </div>
               <!-- /.card-body-->
             </div>   
-      </section>
+          </section>
            <!--end of section report-->
+          <?php endif; ?>
 
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
