@@ -235,13 +235,13 @@ try{
 					$upload_src = "hub";
 					}
 					
-					$ifdocexist_ = "SELECT *,
+					$ifdocexist_ = "SELECT DISTINCT top 1 *,
 					dbo.document_base64.img_data
 					FROM   dbo.document_base64
 					INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
 					WHERE  dbo.document.NAME = '$ctr_1'
-					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
+					AND dbo.document_base64.img_data = '$ctr_b64'
 					AND dbo.document.type = '$get_valDocType_'
 					AND dbo.document.shipment_id='$ship_idlast'";
 					
