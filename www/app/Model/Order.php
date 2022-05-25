@@ -64,7 +64,7 @@ class Order extends Core\Model {
                 FROM orders 
            WHERE user_id = '{$user_id}' and status_desc <>'' 
            group by status_desc, status order by ordering asc";
-
+ 
         return $Db->query($query)->results();
     }
 
