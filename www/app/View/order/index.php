@@ -78,9 +78,10 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
                                             </select>
                                             <div class="col-md-2 float-right parent-settings">
                                                 <?php if (is_array($this->settings_user)) { ?>
-                                                    <?php $settings_id = $this->settings_user[0]->id; ?>
-                                                    <button id="reset-settings" type="button" data-setting-id="<?= $settings_id ?>" class="btn btn-block btn-danger">Set Default</button>
-                                                <?php } ?>
+                                                    <?php if(isset($this->settings_user[0])){?>
+                                                        <?php $settings_id = $this->settings_user[0]->id; ?>
+                                                        <button id="reset-settings" type="button" data-setting-id="<?= $settings_id ?>" class="btn btn-block btn-danger">Set Default</button>
+                                                <?php } }?>
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->
