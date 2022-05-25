@@ -293,9 +293,9 @@ $(".act-order").on('click',function(){
   window.location.href=document.location.origin + '/order/';
 });
 $(".docrequests").on('click',function(){
-  window.location.href=document.location.origin + '/shipment/';
+  window.location.href=document.location.origin + '/shipment?search=requested&type=in&value=requested';
 });
 $(".newshipments").on('click',function(){
-  window.location.href=document.location.origin + '/shipment?search=eta_date&type=exact&value=23/06/2022-23/07/2022';
+  window.location.href=document.location.origin + '/shipment?search=eta_date&type=exact&value=newshipments';
 });
 

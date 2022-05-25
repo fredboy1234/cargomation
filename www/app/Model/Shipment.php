@@ -320,7 +320,7 @@ class Shipment extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT  count(shipment.id) as count
                         FROM shipment 
-                        where shipment.eta >= getdate() and user_id='{$user_id}' ")->results();
+                        where shipment.eta >= CAST( GETDATE() AS Date ) and user_id='{$user_id}' ")->results();
     }
 
     public function getShipmentCount($user_id,$rolename,$data){

@@ -518,9 +518,25 @@ class Shipment extends Core\Controller {
     }
 
     public function shipmentData($user_id = "") {
+       
         if(!isset($_POST['draw'])) {
             die('Unauthorized Access');
         }
+         //this code is temporary remove this if kuya has API
+         $requested = '';
+         
+         if(isset($_POST['data'][0]['value']) && $_POST['data'][0]['value'] ==='REQUESTED'){
+             //unset($_POST);
+             unset($_POST['data']);
+             $requested = 'requested';
+         }
+
+         if(isset($_POST['data'][0]['value']) && $_POST['data'][0]['value'] ==='NEWSHIPMENTS'){
+            //unset($_POST);
+            unset($_POST['data']);
+            $requested = 'newshipments';
+        }
+        
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         if (!$user_id) {
@@ -541,6 +557,8 @@ class Shipment extends Core\Controller {
             "length" => (is_numeric($_POST['length']) ? (int)$_POST['length'] : 0),
             "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
         ];
+        
+       
         if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
             foreach ($_POST['order'] as $key => $value) {
                 // change shipment_id to shipment_num
@@ -574,12 +592,13 @@ class Shipment extends Core\Controller {
             "draw"            => $json_data->draw,  
             "recordsTotal"    => $json_data->recordsTotal,  
             "recordsFiltered" => $json_data->recordsTotal,
-            "data"            => $this->sanitizeData($json_data->data)
+            "data"            => $this->sanitizeData($json_data->data,$requested)
         );
         echo json_encode($array_data);
     }
 
-    private function sanitizeData($param) {
+    //must remove the $requested parameter if Kuya has the API
+    private function sanitizeData($param, $docRequest) {
         $array_data = json_decode($param);
         $doc_type = array_column($this->Document->getDocumentType(), 'type');
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
@@ -745,7 +764,27 @@ class Shipment extends Core\Controller {
                     # $subdata[$key] = "Empty";
                 #}
             }
-            $data[] = $subdata;
+
+            //remove this code if kuya has API
+            // print_r($docRequest);
+            // exit;
+            if($docRequest ==='requested'){
+                if(!empty($shipment->Documents)) {
+                    $data[] = $subdata;
+                }
+            }elseif($docRequest ==='newshipments'){
+                $etdata = date("Y-m-d", strtotime($shipment->eta));
+                $now_date = date("Y-m-d");
+                if($etdata >= $now_date) {
+                    $data[] = $subdata;
+                }
+            }else{
+                $data[] = $subdata;
+            }
+
+            //uncomment this if kuya has API
+            // $data[] = $subdata;
+            
         }
         return $data;
     }

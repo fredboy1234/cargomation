@@ -26,7 +26,7 @@ class Order extends Core\Model {
 
     public function getOrderData($user_id){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT *  FROM orders WHERE user_id = '{$user_id}'  ";
+        $query = "SELECT *  FROM orders WHERE user_id = '{$user_id}' AND status <>'INA'  ";
         return $Db->query($query)->results();
     }
     public function getActiveOrdersCount($user_id){
@@ -47,15 +47,23 @@ class Order extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT count(*) as cnt FROM orders 
            WHERE user_id = '{$user_id}' 
-           AND status='{$status}' ";
+           AND status='{$status}'";
         return $Db->query($query)->results();
     }
 
     public function getFilterButton($user_id){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT status_desc,status FROM orders 
+        $query = "SELECT status_desc,status,
+                Case
+                    when status = 'INC' Then 1
+                    when status = 'PLC' Then 2
+                    when status = 'SHP' Then 3
+                    when status = 'DLV' Then 4
+                    when status =  'CNF' Then 5
+                End ordering
+                FROM orders 
            WHERE user_id = '{$user_id}' and status_desc <>'' 
-           group by status_desc, status";
+           group by status_desc, status order by ordering asc";
 
         return $Db->query($query)->results();
     }

@@ -226,14 +226,15 @@ $(document).ready(function() {
           var html='';
           var totolTipText,cwmbl,pdfmbl ='';
           try{
+            pdfmbl=jreport.HubJSONOutput.ParsedPDFData.ParsedPDFHeader.MasterBillNumber;
+            cwmbl=jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.MasterBillNumber;
+
             if(typeof(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader) !== 'undefined'){
               $(".jobnum").text(jreport.HubJSONOutput.CargoWiseMatchedData.CWHeader.JobNumber);
-              cwmbl='';
             }
   
             if(typeof(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber) !== 'undefined'){
-              $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber);
-              pdfmbl='';
+              $(".jobnum").text(jreport.ParsedPDFData.ParsedPDFHeader.JobNumber); 
             }
           }catch(x){
             console.log("error");
