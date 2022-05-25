@@ -159,7 +159,7 @@ try{
 					$upload_src = "hub";
 					}
            
-					$ifdocexist = "SELECT *,
+					$ifdocexist = "SELECT DISTINCT top 1 *,
 					dbo.document_base64.img_data
 					FROM   dbo.document_base64
 					INNER JOIN dbo.document
@@ -170,7 +170,7 @@ try{
 					AND dbo.document.shipment_id='$ship_idlast'
 					";
 					$ifdocexistqry = sqlsrv_query($conn, $ifdocexist);
-					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry);
+					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry); 
 
 					if ($ifdocexistres === false) {
 					
@@ -235,7 +235,7 @@ try{
 					$upload_src = "hub";
 					}
 					
-					$ifdocexist_ = "SELECT *,
+					$ifdocexist_ = "SELECT DISTINCT top 1 *,
 					dbo.document_base64.img_data
 					FROM   dbo.document_base64
 					INNER JOIN dbo.document

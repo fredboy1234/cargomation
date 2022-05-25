@@ -88,9 +88,11 @@ if(isset($_GET['get_email'])){
 				    $LegOrderCount = 0;
 				    }	
 				}
-
+           
 		     /*GET ETA ETD TRANSPORT*/
-		    if($LegOrderCount == 0){
+		    $items = array();
+		    $orgaddress_array = array();
+		    if($LegOrderCount == 0 || $LegOrderCount == '' ){
 		  			/*GET ETA*/
 				    $XPATH_ETA= jsonPath($universal_shipment, $path_DataSourceTransport.".TransportLeg.EstimatedArrival");
 					$XPATH_ETA = $parser->encode($XPATH_ETA);
@@ -177,6 +179,7 @@ if(isset($_GET['get_email'])){
 					$XPATH_LCLStorageDate = $parser->encode($XPATH_LCLStorageDate);
 					$LCLStorageDate = node_exist(getArrayName($XPATH_LCLStorageDate));
 
+					
 					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$ETA,"ETD"=>$ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$LCLAvailability,"LCLStorageDate"=>$LCLStorageDate);
 
 		    
@@ -284,11 +287,12 @@ if(isset($_GET['get_email'])){
 					$XPATH_LCLStorageDate = $parser->encode($XPATH_LCLStorageDate);
 					$LCLStorageDate = node_exist(getArrayName($XPATH_LCLStorageDate));
 
+					
 					$items[] = array("LegOrder"=>$LEG_ORDER,"LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$LEG_ETA,"ETD"=>$LEG_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$LCLAvailability,"LCLStorageDate"=>$LCLStorageDate);
 				}
 			}
 
-			$routing = json_encode($items);
+			 $routing = json_encode($items);
 
 			   /*GET ORGANIZATION COUNT*/
 		    $ORGADDRESS = jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress");
@@ -374,7 +378,7 @@ if(isset($_GET['get_email'])){
 
 		    }
 
-		    $organization = json_encode($orgaddress_array);
+		  $organization = json_encode($orgaddress_array);
 
 		  $sql = "SELECT * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '$key' AND dbo.shipment.user_id ='$CLIENT_ID'";
 		  $qryCustomDec = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
@@ -391,7 +395,6 @@ if(isset($_GET['get_email'])){
 		  }
 		  else
 		  {
-
 		  	$sqlUpdateRecord = "Update shipment
 				        Set master_bill ='$WayBillNumber', transport_mode='$TransportMode',
 				        vessel_name='$VesselName', voyage_flight_num='$VoyageFlightNo', vesslloyds='$LloydsIMO', eta='$ETA', etd='$ETD', place_delivery='$PLACE_DELIVERY', place_receipt='$PLACE_RECEIPT',
@@ -400,7 +403,7 @@ if(isset($_GET['get_email'])){
 			$sqlUpdateRecord = sqlsrv_query($conn, $sqlUpdateRecord, array(), array( "Scrollable" => 'static'));
 		  }
 
-		  $destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_CUSTOMS/SUCCESS/";						
+		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_CUSTOMS/SUCCESS/";						
 			if(!file_exists($destination_path.$filename)){
 			rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
 			}

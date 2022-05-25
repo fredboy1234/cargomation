@@ -736,7 +736,7 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT menu FROM user_settings WHERE user_id = '{$user_id}'";
         $result = $Db->query($query)->results();
-        if(empty($test[0]->menu)) {
+        if(empty($result[0]->menu)) {
             $query = "SELECT menu FROM menu WHERE role_id = '{$role_id}'";
             $result = $Db->query($query)->results();
         }
@@ -862,4 +862,12 @@ class User extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT search, recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
     }
+
+    // Default CW DocumentType
+    public function getCWDOcumentType($user_id) {
+        $query = "SELECT * FROM cargowise_document_type_{$user_id}";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
 }
