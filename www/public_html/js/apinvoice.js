@@ -280,7 +280,8 @@ $(document).ready(function() {
     });
 
     $(".jobtooltip").on('click',function(){
-      window.location.href=document.location.origin+"/shipment";
+      var shipid = $('.jobnum').text();
+      window.location.href=document.location.origin+"/shipment?search=shipment_num&type=exact&value="+shipid;
     });
     
     //saveing to archive
@@ -535,16 +536,36 @@ $(document).ready(function(){
  //for filer button click
  $(".typebutton").on('click',function(){
    var typebutton = $(this).attr('data-typebutton');
-   
-  $.ajax({
-    url: document.location.origin+"/apinvoice/invoiceSuccess/",
-    type: "POST",
-    data:{type:typebutton},
-    success:function(data)
-    {
-      table.ajax.url( '/apinvoice/invoiceSuccess' ).load();
-    }
-  });
+
+    $('#example').DataTable().clear();
+    $('#example').dataTable().fnDestroy();
+    $('#example').DataTable( {
+        "ajax": {
+          url: document.location.origin+"/apinvoice/invoiceSuccess/",
+          type: "POST",
+          data:{type:typebutton},
+        },
+        "ordering": true,
+        "bPaginate":true,
+        "sPaginationType":"full_numbers",
+        "iDisplayLength": 8,
+        "columns": [
+            {
+                "className":      'dt-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
+            { "data": "Process ID" },
+            { "data": "File Name" },
+            { "data": "Job Number" },
+            { "data": "Date Uploaded" },
+            { "data": "Uploaded By" },
+            { "data": "Action" },
+            { "data": "Status" }
+        ],
+        "order": [[1, 'desc']],  
+      });
 });
 
 

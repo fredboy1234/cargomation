@@ -67,14 +67,15 @@
   var formatedInvoiceDate = "";
   if(invoiceDate !== ""){
     var d = new Date(invoiceDate);
+    
     formatedInvoiceDate = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
   }
   $('input[name="InvoiceDate"]').daterangepicker({
     "singleDatePicker": true,
-    "startDate": formatedInvoiceDate,
-    //"endDate": "04/28/2022",
+    "startDate": d,
+    
     locale: {
-      format: 'MM/DD/YYYY'
+      format: 'MMM D, YYYY'
     }
   }, function(start, end, label) {
     console.log('New date range selected: ' + start.format('dd/mm/yyyy'));
