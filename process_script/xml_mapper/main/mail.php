@@ -22,7 +22,7 @@ $var_code = "license_code";
 $var_col = "(shipment_num,master_bill,house_bill,shipper,client,macro_link,license_code)";
 
 //The location of the mailbox.
-$mailbox = "{imap.secureserver.net:995/pop3/ssl/novalidate-cert}";
+$mailbox = "{outlook.office365.com:993/imap/ssl/novalidate-cert}";
 //The username / email address that we want to login to.
 $username = $email;
 //The password for this email address.
@@ -75,14 +75,15 @@ $new_array = array();
 if(!empty($emails)){ 
     ##Loop through the emails.
     foreach($emails as $key=>$email){
+    	echo $key;
 		$overview = imap_fetch_overview($imapResource, $email);
         $overview = $overview[0]; 
 			if(strpos(htmlentities($overview->subject),'Shipment - HTML to Hub') !== false){
 					$message = imap_fetchbody($imapResource, $email, 1);
-					if($username == 'tcf@cargomation.com'){
-						$tagLT = "&lt";
-						$tagGT = "&gt";
-						$tagSpan = '<s/span>';
+					if($username == 'TCF@cargomation.com'){
+						$tagLT = "&lt;";
+						$tagGT = "&gt;";
+						$tagSpan = '<s span="">';
 						$tempID = 'TCFSYDSYD';
 					}
 					elseif($username == 'imageinternational@cargomation.com'){
@@ -105,6 +106,11 @@ if(!empty($emails)){
 		}
 		$totalMail++;
     }
+     
+     	$imapresult=imap_mail_move($imapResource,$totalMail,'INBOX/Saved');
+		if($imapresult==false){die(imap_last_error());}
+		imap_close($imapResource,CL_EXPUNGE);
+    
 }
 		$sql = "Select * from {$link_table} WHERE {$var_code} = '{$tempID}'";
 		$execute_query = sqlsrv_query($conn, $sql);
@@ -139,5 +145,5 @@ if(!empty($emails)){
 echo 'connection: '.(microtime(true)-$start).' seconds'."\r\n"; // show results
 echo "Total Processed: ".$ctr." Total Fetched Emails:".$totalMail;
 $errors = imap_errors();
-imap_close($imapResource);
+//imap_close($imapResource);
 ?>
