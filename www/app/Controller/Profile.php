@@ -285,7 +285,7 @@ class Profile extends Core\Controller {
                 'user_id' => $user,
                 'image_type' => $imageType,
                 'image_src' => $_POST['image_src'],
-                'imageId'=>$_POST['imageID']
+                'imageId'=>isset($_POST['imageID']) ? $_POST['imageID'] : '',
             ),$user);
             
             Utility\Redirect::to(APP_URL . "/profile");
