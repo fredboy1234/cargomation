@@ -46,14 +46,13 @@ if ($return === true) {
 
 	function process_shipment($key,$client_email,$ship_idlast,$webservicelink,$service_user,$service_password,$server_id,$enterprise_id,$auth,$company_code)
 	{
-try{		
-		if(gethostname() == "A2B-Cargomation"){$db="a2bcargomation_db";}else{$db="a2bcargomation_db";}
+	try{		
+		if(gethostname() == base64_decode("QTJCLUNhcmdvbWF0aW9u")){$db=base64_decode("YTJiY2FyZ29tYXRpb25fZGI=");}else{$db=base64_decode("YTJiY2FyZ29tYXRpb25fZGI=");}
 		$serverName = "a2bserver.database.windows.net"; 
-		$connectionInfo = array( "Database"=>$db, "UID"=>"A2B_Admin", "PWD"=>"v9jn9cQ9dF7W");
+		$connectionInfo = array( "Database"=>$db, "UID"=>base64_decode("QTJCX0FkbWlu"), "PWD"=>base64_decode("djlqbjljUTlkRjdX"));
 		$conn = sqlsrv_connect( $serverName, $connectionInfo);
 
 		if ($conn) {} else {die(print_r(sqlsrv_errors(), true));}
-		
 		$curl_ = curl_init();
 		curl_setopt_array(
 			$curl_,
@@ -122,8 +121,6 @@ try{
 				$file_count = 1;
 			}
 
-
-
 			for ($attach = 0; $attach <= $file_count - 1; $attach++) {
 				if ($file_ctr == 1) {
 					
@@ -159,43 +156,34 @@ try{
 					$upload_src = "hub";
 					}
            
-					$ifdocexist = "SELECT DISTINCT top 1 *,
-					dbo.document_base64.img_data
-					FROM   dbo.document_base64
-					INNER JOIN dbo.document
-					ON dbo.document_base64.document_id = dbo.document.id
-					WHERE  dbo.document.NAME = '$ctr_1'
-					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
-					AND dbo.document.type = '$get_valDocType_'
-					AND dbo.document.shipment_id='$ship_idlast'
-					";
-					$ifdocexistqry = sqlsrv_query($conn, $ifdocexist);
-					$ifdocexistres = sqlsrv_has_rows($ifdocexistqry); 
 
-					if ($ifdocexistres === false) {
+					$ifdocexist="SELECT distinct top 1 document_id 
+					FROM dbo.document_base64 INNER JOIN dbo.document
+					ON dbo.document_base64.document_id = dbo.document.id
+					WHERE dbo.document.NAME = '$ctr_1'
+					AND dbo.document.type = '$get_valDocType_'
+					AND dbo.document.shipment_id= '$ship_idlast'";
+
+					$ifdocexistqry = sqlsrv_query($conn, $ifdocexist, array(), array( "Scrollable" => 'static'));
+					$ifdocexistres = sqlsrv_num_rows($ifdocexistqry);
+
+					if ($ifdocexistres <= 0) {
 					
 					$sqlInsertRecord = "INSERT INTO document
 					(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src,is_published) Values
 					($ship_idlast,'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}')";
-						$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
-						//$sql_getlastdocID = "SELECT IDENT_CURRENT('dbo.document') as document_id;";
-						//$execRecord_getlastdocID = sqlsrv_query($conn, $sql_getlastdocID);
-						//while ($row_docid = sqlsrv_fetch_array($execRecord_getlastdocID, SQLSRV_FETCH_ASSOC)) {
-						//	$doc_idlast1 = $row_docid['document_id'];
-						//}
+					$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
 
-					 sqlsrv_next_result($execRecord);
-				     sqlsrv_fetch($execRecord);
-				     $doc_idlast1 = sqlsrv_get_field($execRecord, 0);
+						sqlsrv_next_result($execRecord);
+				    	sqlsrv_fetch($execRecord);
+				    	$doc_idlast1 = sqlsrv_get_field($execRecord, 0);
 					
-					//INSERT DOCUMENT IMG_DATA
-						$sql_insertb641 = "INSERT INTO document_base64 (document_id,img_data) Values
-			        ($doc_idlast1,'" . $ctr_b64 . "')";
+						//INSERT DOCUMENT IMG_DATA
+						$sql_insertb641 = "INSERT INTO document_base64 (document_id,img_data) Values ($doc_idlast1,'" . $ctr_b64 . "')";
 						$sql_insertb641 = sqlsrv_query($conn, $sql_insertb641);
 					
-					//SET DEFAULT STATUS DOCUMENT
-						$sql_insertdocstatus = "INSERT INTO document_status (document_id,status) Values
-			        ($doc_idlast1,'pending')";
+						//SET DEFAULT STATUS DOCUMENT
+						$sql_insertdocstatus = "INSERT INTO document_status (document_id,status) Values ($doc_idlast1,'pending')";
 						$sql_insertdocstatus = sqlsrv_query($conn, $sql_insertdocstatus);
 
 						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
@@ -217,7 +205,6 @@ try{
 					$Saved_EventTime = $parser->encode($xpath_SavedEventTime);
 					$Saved_By = $parser->encode($xpath_SavedBy);
 					$IsPublished = $parser->encode($xpath_IsPublished);
-					//$ctr_1 = node_exist(getArrayName($SingleAttach_ctr));
 					$ctr_1 = str_replace(['\\','#','+','/',':','*','?','"','<','>','|'],'',node_exist(getArrayName($SingleAttach_ctr)));
 					$ctr_b64 = node_exist(getArrayName($SingleAttach_ctrb64));
 					$get_valDocType_ = node_exist(getArrayName($DocType));
@@ -235,44 +222,32 @@ try{
 					$upload_src = "hub";
 					}
 					
-					$ifdocexist_ = "SELECT DISTINCT top 1 *,
-					dbo.document_base64.img_data
-					FROM   dbo.document_base64
-					INNER JOIN dbo.document
+					$ifdocexist_="SELECT distinct top 1 document_id 
+					FROM dbo.document_base64 INNER JOIN dbo.document
 					ON dbo.document_base64.document_id = dbo.document.id
-					WHERE  dbo.document.NAME = '$ctr_1'
-					/*AND dbo.document_base64.img_data = '$ctr_b64'*/
+					WHERE dbo.document.NAME = '$ctr_1'
 					AND dbo.document.type = '$get_valDocType_'
-					AND dbo.document.shipment_id='$ship_idlast'";
+					AND dbo.document.shipment_id= '$ship_idlast'";
 					
-					$ifdocexistqry_ = sqlsrv_query($conn, $ifdocexist_);
-					$ifdocexistres_ = sqlsrv_has_rows($ifdocexistqry_);
+					$ifdocexistqry_ = sqlsrv_query($conn, $ifdocexist_, array(), array( "Scrollable" => 'static'));
+					$ifdocexistres = sqlsrv_num_rows($ifdocexistqry_);
 
-					if ($ifdocexistres_ === false) {
+					if ($ifdocexistres <= 0) {
 						$sqlInsertRecord = "INSERT INTO document
 						(shipment_id ,shipment_num, type, name, saved_by, saved_date, event_date, upload_src,is_published) Values
 						({$ship_idlast},'" . $key . "','" . $get_valDocType_ . "','" . $ctr_1 . "','" . $get_Saved_By . "','" . $get_valSavedDate . "','" . $get_Saved_EventTime . "','{$upload_src}','{$get_IsPublished}') SELECT SCOPE_IDENTITY() as ins_id ";
-						//$execRecord = sqlsrv_query($conn, $sqlInsertRecord);
-						//$sql_getlastdocID = "SELECT SCOPE_IDENTITY() as ins_id ";
+
 						$execRecord_getlastdocID = sqlsrv_query($conn, $sqlInsertRecord);
-						//while ($row_docid = sqlsrv_fetch_array($execRecord_getlastdocID, SQLSRV_FETCH_ASSOC)) {
-							// $doc_idlast1 = $row_docid['ins_id'];
-						//}
-						//echo $doc_idlast1;die();
-
-					 sqlsrv_next_result($execRecord_getlastdocID);
-				     sqlsrv_fetch($execRecord_getlastdocID);
-				     $doc_idlast1 = sqlsrv_get_field($execRecord_getlastdocID, 0);
-
+						sqlsrv_next_result($execRecord_getlastdocID);
+					    sqlsrv_fetch($execRecord_getlastdocID);
+					    $doc_idlast1 = sqlsrv_get_field($execRecord_getlastdocID, 0);
 				
-					//INSERT DOCUMENT IMG_DATA
-						$sql_insertb641 = "INSERT INTO document_base64 (document_id,img_data) Values
-			        ($doc_idlast1,'" . $ctr_b64 . "')";
+						//INSERT DOCUMENT IMG_DATA
+						$sql_insertb641 = "INSERT INTO document_base64 (document_id,img_data) Values ($doc_idlast1,'" . $ctr_b64 . "')";
 						$sql_insertb641 = sqlsrv_query($conn, $sql_insertb641);
 					
-					//SET DEFAULT STATUS DOCUMENT
-						$sql_insertdocstatus = "INSERT INTO document_status (document_id,status) Values
-			        ($doc_idlast1,'pending')";
+						//SET DEFAULT STATUS DOCUMENT
+						$sql_insertdocstatus = "INSERT INTO document_status (document_id,status) Values ($doc_idlast1,'pending')";
 						$sql_insertdocstatus = sqlsrv_query($conn, $sql_insertdocstatus);
 						Base64_Decoder($ctr_b64, $ctr_1, $client_email, $get_valDocType_, $key);
 						}
@@ -359,8 +334,8 @@ try{
 		}
 	}
 
-	$sqluser_info = "SELECT TOP (1) * FROM [dbo].[user_info] WHERE [user_id] = '$CLIENT_ID'";
-	$execRecord_userinfo = sqlsrv_query($conn, $sqluser_info);
+	$sqluser_info = "SELECT DISTINCT TOP (1) * FROM [dbo].[user_info] WHERE [user_id] = '$CLIENT_ID'";
+	$execRecord_userinfo = sqlsrv_query($conn, $sqluser_info, array(), array( "Scrollable" => 'static'));
 	$return_user = sqlsrv_has_rows($execRecord_userinfo);
 	if ($return_user == true) {
 		while ($row_user = sqlsrv_fetch_array($execRecord_userinfo, SQLSRV_FETCH_ASSOC)) {
@@ -829,8 +804,7 @@ try{
 					$items[] = array("LegOrder"=>"1","LegType"=>$LEG_TYPE,"VesselName"=>$TRANSVESSELNAME,"Destination"=>$TRANSDISCHARGE,"Origin"=>$TRANSLOADING,"ETA"=>$TRANS_ETA,"ETD"=>$TRANS_ETD,"BookingStatus"=>$BOOKINGSTATUS,"BookingDesc"=>$BOOKINGDESC,"AddressType"=>$CARRIERTYPE,"CarrierName"=>$CARRIERNAME,"CarrierOrg"=>$CARRIERORG,"LCLAvailability"=>$LCLAvailability,"LCLStorageDate"=>$LCLStorageDate);
 				}
 			
-				 $routing = json_encode($items);
-
+				$routing = json_encode($items);
 				if ($CONTAINERctr == 1) {
 					$CONTAINERctr = 1;
 				}
@@ -981,36 +955,35 @@ try{
 				
             
 				if (!empty($SHIPMENTKEY) || $SHIPMENTKEY <> "") {
-				$sql = "SELECT * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '$SHIPMENTKEY' AND dbo.shipment.user_id ='$CLIENT_ID'";
-				$qryResultShipID = sqlsrv_query($conn, $sql);
-				$ifShipIDExist = sqlsrv_has_rows($qryResultShipID);
+				$sql = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '$SHIPMENTKEY' AND dbo.shipment.user_id ='$CLIENT_ID'";
+				$qryResultShipID = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
+				$ifShipIDExist = sqlsrv_num_rows($qryResultShipID);
 				$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_SUCCESS/";
 				
-					if ($ifShipIDExist == false) {
+					if ($ifShipIDExist <=0) {
 						if ($TRANS_ETA == '' || $TRANS_ETD == '') {
 							 $TRANS_ETA = null;
 							 $TRANS_ETD = null;
 						}
 						
-				$sqlInsertRecord = "INSERT INTO shipment
-                (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
+				$sqlInsertRecord = "INSERT INTO shipment (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
 				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg,organization,packingline)
                 Values(" . $CLIENT_ID . ",'" . $CONSOLNUMBER . "','" . $SHIPMENTKEY . "','" . $WAYBILLNUMBER . "','" . $HOUSEWAYBILLNUMBER . "','" . $TRANSMODE . "','" . $VESSELNAME . "','" . $VOYAGEFLIGHTNO . "','" . $VESSELLOYDSIMO . "','" . $TRANS_ETA . "','" . $TRANS_ETD . "','" . $PLACEOFDELIVERY . "','" . $PLACEOFRECEIPT . "',
 				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','" . $PATH_SENDINGAGENT . "','" . $PATH_RECEIVINGAGENT . "','" . $RECEIVINGAGENTADDRESS . "','" . $SENDINGAGENTADDRESS . "','" . $CONSIGNEEADDRESS . "','" . $CONSIGNORADDRESS . "','" . $SHIP_TRIGGERDATE . "','".$CONTAINERMODE."','".$PORTOFLOADING."','".$PORTOFDISCHARGE."','".$ORDER_NUMBER."','".$TOTALVOLUME."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."','".$pack_line."') SELECT SCOPE_IDENTITY() as id_ship";
-						$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
-						$sql_getlastshipID = "SELECT  *
-						FROM dbo.shipment
-						WHERE console_id = '" . $CONSOLNUMBER . "' AND shipment_num = '" . $SHIPMENTKEY . "' AND user_id = ". $CLIENT_ID ."";
-						$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
-						while ($row_shipid = sqlsrv_fetch_array($execRecord_getlastshipID, SQLSRV_FETCH_ASSOC)) {
-							 $shipcontainer_id = $row_shipid['id'];
-						}
-				     sqlsrv_next_result($insertRec);
-				     sqlsrv_fetch($insertRec);
-				     $ship_idlast = sqlsrv_get_field($insertRec, 0);
+				$insertRec = sqlsrv_query($conn, $sqlInsertRecord);
 
 
+				$sql_getlastshipID = "SELECT DISTINCT TOP 1 *
+				FROM dbo.shipment WHERE console_id = '" . $CONSOLNUMBER . "' AND shipment_num = '" . $SHIPMENTKEY . "' AND user_id = ". $CLIENT_ID ."";
+				$execRecord_getlastshipID = sqlsrv_query($conn, $sql_getlastshipID);
+				while ($row_shipid = sqlsrv_fetch_array($execRecord_getlastshipID, SQLSRV_FETCH_ASSOC)) {
+					$shipcontainer_id = $row_shipid['id'];
+				}
+
+				sqlsrv_next_result($insertRec);
+				sqlsrv_fetch($insertRec);
+				$ship_idlast = sqlsrv_get_field($insertRec, 0);
 
 					for ($a = 0; $a <= $OrganizationAddress_ctr - 1; $a++) {
 					$XPATH_COMPANYNAME = jsonPath($universal_shipment,$path_SubUniversalSubShipment.".OrganizationAddress[$a].OrganizationCode");
@@ -1028,14 +1001,16 @@ try{
 		
 					
 					if(is_null($XPATH_EMAIL_GLOBAL) == 'false' || $XPATH_EMAIL_GLOBAL != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$shipcontainer_id." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL'";
-					$qryResultContact = sqlsrv_query($conn, $sql_contact);
-					$ifContactExist = sqlsrv_has_rows($qryResultContact);
+					 $sql_contact = "SELECT DISTINCT TOP 1 * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$shipcontainer_id." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL'";
+					$qryResultContact = sqlsrv_query($conn, $sql_contact, array(), array( "Scrollable" => 'static'));
+					$ifContactExist = sqlsrv_num_rows($qryResultContact);
 					
-					if($ifContactExist != 1 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
-					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
-					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
+					if($ifContactExist <= 0){
+						if($PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
+							 $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
+							   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
+							   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);			
+						}
 					}
 				}
 			}
@@ -1058,21 +1033,21 @@ try{
 					
 					
 					if(is_null($XPATH_EMAIL_GLOBAL_) == 'false' || $XPATH_EMAIL_GLOBAL_ != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '".$shipcontainer_id."' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL_'";
-					$qryResultContact = sqlsrv_query($conn, $sql_contact);
-					$ifContactExist = sqlsrv_has_rows($qryResultContact);
+					 $sql_contact = "SELECT DISTINCT TOP 1 * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = '".$shipcontainer_id."' AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL' AND email='$XPATH_EMAIL_GLOBAL_'";
+					$qryResultContact = sqlsrv_query($conn, $sql_contact, array(), array( "Scrollable" => 'static'));
+					$ifContactExist = sqlsrv_num_rows($qryResultContact);
 					
-					if($ifContactExist != 1 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
-					   $sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE_."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
-					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
+					if($ifContactExist <=0){
+						if($PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
+								$sql_Insert_contact = "INSERT INTO FROM dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
+							    VALUES ('".$shipcontainer_id."','".$PATH_ADDRESSTYPE_."','".$XPATH_ORGCODE_GLOBAL."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
+							    $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
+						}
 					}	
 				}
 							
 			}
 						
-						
-
 						if ($CONTAINERctr > 1) {
 							for ($c = 0; $c <= $CONTAINERctr - 1; $c++) {
 								$XPATH_CONTAINERNUMBER = jsonPath($universal_shipment, $path_ContainerCollection."[$c].ContainerNumber");
@@ -1345,15 +1320,16 @@ try{
 					
 				
 				if(is_null($XPATH_EMAIL_GLOBAL) == 'false' || $XPATH_EMAIL_GLOBAL != ''){
-					 $sql_contact_ = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL'";
-					$qryResultContact = sqlsrv_query($conn, $sql_contact_);
-					$ifContactExist = sqlsrv_has_rows($qryResultContact);
+					 $sql_contact_ = "SELECT DISTINCT TOP 1 * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL'";
+					$qryResultContact = sqlsrv_query($conn, $sql_contact_,array(), array( "Scrollable" => 'static'));
 					$row_count = sqlsrv_num_rows($qryResultContact);
 					
-					if($ifContactExist != 1 && $PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
-					   $sql_Insert_contact_ = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
-					   $sql_Insert_contact_ = sqlsrv_query($conn, $sql_Insert_contact_);
+					if($row_count <= 0){
+						if($PATH_ADDRESSTYPE == "ConsigneeDocumentaryAddress"){
+							$sql_Insert_contact_ = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
+						    VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL."','N','".$XPATH_COMPANY."');";
+						    $sql_Insert_contact_ = sqlsrv_query($conn, $sql_Insert_contact_);
+						}
 					}
 				}
 			}
@@ -1377,17 +1353,19 @@ try{
 						
 					
 					if(is_null($XPATH_EMAIL_GLOBAL_) == 'false' || $XPATH_EMAIL_GLOBAL_ != ''){
-					 $sql_contact = "SELECT * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL_'";
-					$qryResultContact = sqlsrv_query($conn, $sql_contact);
-					$ifContactExist = sqlsrv_has_rows($qryResultContact);
+					 $sql_contact = "SELECT DISTINCT TOP 1 * FROM dbo.shipment_contacts WHERE dbo.shipment_contacts.shipment_id = ".$ship_idlast." AND dbo.shipment_contacts.address_type ='$PATH_ADDRESSTYPE_' AND dbo.shipment_contacts.organization_code = '$XPATH_ORGCODE_GLOBAL_' AND email='$XPATH_EMAIL_GLOBAL_'";
+					$qryResultContact = sqlsrv_query($conn, $sql_contact,array(), array( "Scrollable" => 'static'));
+					$row_count = sqlsrv_num_rows($qryResultContact);
 
-				if($ifContactExist != 1 && $PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
-					   $sql_Insert_contact = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
-					   VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
-					   $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
-					}	
-				}
-			}
+						if($row_count <=0){
+							if($PATH_ADDRESSTYPE_ == "ConsigneeDocumentaryAddress"){
+									$sql_Insert_contact = "INSERT INTO dbo.shipment_contacts (shipment_id,address_type,organization_code,email,is_default,company_name)
+								    VALUES (".$ship_idlast.",'".$PATH_ADDRESSTYPE."','".$XPATH_ORGCODE_GLOBAL_."','".$XPATH_EMAIL_GLOBAL_."','N','".$XPATH_COMPANY_."');";
+								    $qry_Insert_contact = sqlsrv_query($conn, $sql_Insert_contact);
+								}
+							}	
+						}
+					}
 		
 						if ($CONTAINERctr > 1) {
 							for ($c = 0; $c <= $CONTAINERctr - 1; $c++) {
@@ -1496,13 +1474,13 @@ try{
 								$DeliveryTruckWaitTime = node_exist(getArrayName($DeliveryTruckWaitTime));
 								
 								
-								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
-								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
-								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
+								$sqlSearchContainer = "SELECT DISTINCT TOP 1 * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
+								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer,array(), array( "Scrollable" => 'static'));
+								$ifContainerIDExist = sqlsrv_num_rows($searchContainer);
 								
-								if($ifContainerIDExist == 'true')
+								if($ifContainerIDExist > 0)
 							    {
-								$sqlUpdateRecord_Container = "Update shipment_container SET
+								$sqlUpdateRecord_Container = "UPDATE shipment_container SET
 								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE' ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime',length='$TOTALLENGTH',width='$TOTALWIDTH',height='$TOTALHEIGHT'
 								WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
 								$insertRecContainer = sqlsrv_query($conn, $sqlUpdateRecord_Container); 
@@ -1610,11 +1588,11 @@ try{
 								$DeliveryTruckWaitTime = $parser->encode($DeliveryTruckWaitTime);
 								$DeliveryTruckWaitTime = node_exist(getArrayName($DeliveryTruckWaitTime));
 								
-								$sqlSearchContainer = "Select * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
-								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer);
-								$ifContainerIDExist = sqlsrv_has_rows($searchContainer);
+								$sqlSearchContainer = "SELECT DISTINCT TOP 1 * from shipment_container WHERE shipment_id=".$ship_idlast." AND containernumber='$CONTAINERNUMBER'";
+								$searchContainer = sqlsrv_query($conn, $sqlSearchContainer,array(), array( "Scrollable" => 'static'));
+								$ifContainerIDExist = sqlsrv_num_rows($searchContainer);
 								
-								if($ifContainerIDExist == 'true')
+								if($ifContainerIDExist > 0)
 							    {
 							    $sqlUpdateRecord_Container = "Update shipment_container SET
 								containernumber='$CONTAINERNUMBER', containertype='$CONTAINERTYPE', containerdeliverymode='$DELIVERYMODE', containerdescription='$CATEGORYDESCRIPTION', fcl_unload='$FCLUNLOADFROMVESSEL', port_transport_booked='$ARRIVALCARTAGEADVISED', slot_date='$SLOTDATE', wharf_gate_out='$WHARFOUT', estimated_full_delivery='$ESTFULLDELIVER', actual_full_deliver='$ACTFULLDELIVER', empty_returned_by='$EMPRETURNEDBY', empty_readyfor_returned='$EMPFORRETURNED', customs_Ref='$CUSTOMSREF', port_transport_ref='$PORTTRANSREF',slot_book_ref='$SLOTTRANSREF', do_release='$DORELEASE'  ,trans_book_req='$DeliveryCartageAdvised',trans_actual_deliver='$DeliveryCartageCompleted',trans_deliverreq_from='$DeliveryRequiredFrom',trans_deliverreq_by='$DeliveryRequiredBy',trans_estimated_delivery='$EstimatedDelivery',trans_delivery_labour='$DeliveryLabourTime',trans_wait_time='$DeliveryTruckWaitTime',length='$TOTALLENGTH',width='$TOTALWIDTH',height='$TOTALHEIGHT'
