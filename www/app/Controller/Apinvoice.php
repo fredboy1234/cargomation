@@ -932,6 +932,8 @@ class Apinvoice extends Core\Controller {
         $APinvoice = Model\Apinvoice::getInstance();
         if(isset($_POST['shipmentid'])){
             $macro = $APinvoice->saveToArchive($_POST['shipmentid']);
+            print_r($macro);
+            exit();
             if(isset($macro[0])){
                 echo json_encode($macro[0]->macro_link);
             }
