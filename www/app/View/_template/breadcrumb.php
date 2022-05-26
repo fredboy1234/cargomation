@@ -17,8 +17,8 @@
    }
   ?>
   
-  <?php $imageMisc=""; if(isset($this->user->user_image)){
-    foreach($this->user->user_image as $src_image){
+  <?php $imageMisc=""; if(isset($this->user->user_banner)){
+    foreach($this->user->user_banner as $src_image){
       if($src_image->image_type === "Header"){
         $imageMisc = base64_decode($src_image->image_src);
       }

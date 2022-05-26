@@ -80,8 +80,9 @@ class Profile extends Core\Controller {
         $this->View->addCSS("css/profile.css");
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
-
+        
         $imageList = (Object) Model\User::getProfile($user);
+        
         $profileImage = '/img/default-profile.png';
         $miscImage = '/img/default-profile.png';
         $miscFooter = '/img/default-profile.png';

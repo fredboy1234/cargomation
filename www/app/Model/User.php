@@ -290,8 +290,15 @@ class User extends Core\Model {
             }
         }
         $user_image = $Db->query("SELECT *
-                                FROM user_images where user_id = '{$check_sub_user}'
+                                FROM user_images where user_id = '{$user}'
                                 ")->results();
+
+        $user_banner = $Db->query("SELECT *
+                        FROM user_images where user_id = '{$check_sub_user}'
+                    ")->results();
+        // $profile_image = $Db->query("SELECT *
+        //                         FROM user_images where user_id = '{$user}' and image_type = 'profile'
+        //                         ")->results();
         $user_settings = $Db->query("SELECT colorScheme  FROM user_settings where user_id = '{$check_sub_user}'")->results();
 
         return [
@@ -300,6 +307,7 @@ class User extends Core\Model {
             "user_count" => $user_count,
             "account_info" => $account_info,
             "user_image" => $user_image,
+            "user_banner"=>  $user_banner,
             "user_settings"=>$user_settings
         ];
     }
