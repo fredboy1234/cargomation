@@ -102,7 +102,7 @@
                   <button type="button" class="btn btn-danger d-none">Raise Query</button>
                   <button type="button" class="btn btn-success d-none">Tag as Validated</button>
                   <button id="addtocw"  type="button" class="btn btn-info">Push to Cargowise</button>
-                  <button id="overidecw"  type="button" class="btn btn-danger">Override Cargowise</button>
+                  <button id="overidecw"  type="button" class="btn btn-danger">Update Cargowise</button>
                   <button id="apportioncw"  type="button" class="btn btn-warning">Apportion Charges </button>
                   <button type="button" class="btn btn-info d-none">Update to CW1</button>
                   <button type="button" class="btn btn-warning d-none" data-dismiss="modal">Cancel</button>
