@@ -124,6 +124,7 @@ class Apinvoice extends Core\Model {
 
     public function getSingleInvoiceBytype($user_id,$type){
         $andcondition = '';
+        
         if($type === 'que'){
             $andcondition = ' and ma.archive is null and mr.cw_response_status is null ';
         }elseif($type === 'completed' ){
@@ -146,6 +147,7 @@ class Apinvoice extends Core\Model {
         ON mr.prim_ref = ma.process_id
         WHERE user_id = '{$user_id}' {$andcondition}
         ";
+        
         return  $Db->query($query)->results();
     }
 
@@ -211,5 +213,10 @@ class Apinvoice extends Core\Model {
     public function saveToArchive($processID){
         $Db = Utility\Database::getInstance();
         return $Db->query("UPDATE match_apinvoice SET archive='1' where process_id='{$processID}'");
+    }
+
+    public function getApMacroLick($hipmentid){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT macro_link FROM shipment_link where shipment_num = '{$hipmentid}'")->results();
     }
 }

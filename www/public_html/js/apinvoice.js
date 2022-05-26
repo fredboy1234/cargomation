@@ -706,6 +706,21 @@ function preloader(url) {
   $('button#request').toggle();
 }
 
+$('.macro').on('click',function(){
+  var shipid = $('.jobnum').text();
+  $.ajax({
+    url: document.location.origin+"/apinvoice/getApMacroLick/",
+    type: "POST",
+    data:{"shipmentid":shipid},
+    success:function(data)
+    {
+      console.log(data);
+      macroLink(data);
+    }
+  });
+});
+
+
 
 $(document).on('click','.cwresmodal',function(){
   var urlcw = "/apinvoice/cwresponse";

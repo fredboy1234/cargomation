@@ -928,6 +928,16 @@ class Apinvoice extends Core\Controller {
         }
     }
 
+    public function getApMacroLick(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        if(isset($_POST['shipmentid'])){
+            $macro = $APinvoice->saveToArchive($_POST['shipmentid']);
+            if(isset($macro[0])){
+                echo json_encode($macro[0]->macro_link);
+            }
+        }
+    }
+
 
     public function checkSite(){  
         // if($url == NULL) return false;
