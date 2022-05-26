@@ -7,6 +7,9 @@
   .set-to-profile{
     cursor: pointer;
   }
+  #upload_image .modal-content{
+    width: 700px;
+  }
 </style>
 <div class="container">
   <label class="btn btn-block btn-primary btn-sm" for="upload_image">
@@ -16,6 +19,7 @@
 
   <div class="row">
     <?php foreach($this->user as $user){?>
+      <?php if($user->image_type =="profile"){?>
       <div class="col-sm-4">
         <div class="card">
           <div class="card-body set-to-profile" data-imgid="<?=$user->id?>">
@@ -23,14 +27,14 @@
           </div>  
         </div>   
       </div> 
-      <?php } ?>               
+      <?php } } ?>               
   </div>
 </div>
 
 
 <div id="uploadimageModal" class="modal" role="dialog">
  <div class="modal-dialog">
-  <div class="modal-content">
+  <div class="modal-content" style="width:700px;">
         <div class="modal-header">
           <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           <h4 class="modal-title">Update Profile Picture</h4>
@@ -42,7 +46,7 @@
         <div id="image_demo"></div>
        </div>
        <div class="col-md-8">
-        <button type="button" class="btn btn-primary crop_image">Set Profile Picture</button>
+        <button type="button" class="btn btn-primary crop_image" >Set Profile Picture</button>
      </div>
     </div>
         </div>
@@ -56,18 +60,19 @@
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
-          width:450,
-          height:450,
+          width:350,
+          height:350,
           type:'square' //circle
         },
         boundary:{
-          width:500,
-          height:500
+          width:450,
+          height:450
         }
   });
 
   $('.set-to-profile').on('click',function(){
     var url = $('img',this).attr('src');
+    $(".crop_image").attr("data-imgid",$(this).attr("data-imgid"));
     // var reader = new FileReader();
     // reader.onload = function (event) {
     //   var image = new Image();
@@ -100,6 +105,7 @@
   });
     
   $('.crop_image').click(function(event){
+    var imageid = $(this).attr("data-imgid");
     $image_crop.croppie('result', {
       type: 'canvas',
       size: 'viewport'
@@ -107,7 +113,7 @@
       $.ajax({
         url: document.location.origin+"/profile/insertUserProfile/",
         type: "POST",
-        data:{"image_src": response,'imageType':'Misc'},
+        data:{"image_src": response,'imageType':'profile','imageID':imageid},
         beforeSend: function() {
             // setting a timeout
             $('#uploaded_image').html("<p>Loading...</p>");
