@@ -57,10 +57,13 @@
                      <div class="col-lg-12">
                         <div class="card-header">
                            <h3 class="card-title">Cargowise Data</h3>
-                           <h3 style="cursor: pointer;" class="card-title float-right jobtooltip" data-toggle="tooltip" data-placement="top" title="" data-original-title="" data-html="true" >
-                              JOB Number: 
-                              <span class="jobnum"></span>
-                           </h3>
+                           <a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink('')">
+                              <h3 style="cursor: pointer;" class="card-title float-right jobtooltip" data-toggle="tooltip" data-placement="top" title="" data-original-title="" data-html="true" >
+                                 JOB Number: 
+                                 <span class="jobnum"></span>
+                              </h3>
+                           </a>
+                           
                         </div>
                         <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">
@@ -98,7 +101,9 @@
                <div class="col-lg-5 text-center">
                   <button type="button" class="btn btn-danger d-none">Raise Query</button>
                   <button type="button" class="btn btn-success d-none">Tag as Validated</button>
-                  <button id="addtocw"  type="button" class="btn btn-info">Add to CW</button>
+                  <button id="addtocw"  type="button" class="btn btn-info">Push to Cargowise</button>
+                  <button id="overidecw"  type="button" class="btn btn-danger">Override Cargowise</button>
+                  <button id="apportioncw"  type="button" class="btn btn-warning">Apportion Charges </button>
                   <button type="button" class="btn btn-info d-none">Update to CW1</button>
                   <button type="button" class="btn btn-warning d-none" data-dismiss="modal">Cancel</button>
                </div>

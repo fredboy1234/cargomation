@@ -279,10 +279,10 @@ $(document).ready(function() {
 
     });
 
-    $(".jobtooltip").on('click',function(){
-      var shipid = $('.jobnum').text();
-      window.location.href=document.location.origin+"/shipment?search=shipment_num&type=exact&value="+shipid;
-    });
+    //$(".jobtooltip").on('click',function(){
+      //var shipid = $('.jobnum').text();
+      //window.location.href=document.location.origin+"/shipment?search=shipment_num&type=exact&value="+shipid;
+    //});
     
     //saveing to archive
     $(document).on('click','.toarchive',function(){
@@ -650,7 +650,7 @@ $('#modal-lg-prev').on('hidden.bs.modal', function (e) {
   
 });
 
-$("#addtocw").on('click',function(){
+$("#addtocw, #overidecw, #apportioncw").on('click',function(){
   var prim_ref = $("#parsedTable_wrapper").attr("data-prim");
 
   $.ajax({
@@ -723,5 +723,34 @@ $(document).on('click','.cwresmodal',function(){
         }
     });
 });
+
+function macroLink(link) {
+  Swal.fire({
+    title: "This action will open WiseCloud",
+    text: "Please make sure you already installed it?",
+    icon: "warning",
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: `Open WiseCloud`,
+    denyButtonText: 'No',
+    customClass: {
+      actions: 'my-actions',
+      cancelButton: 'order-1 right-gap',
+      confirmButton: 'order-2',
+      denyButton: 'order-3',
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = link;
+    }
+    if (result.isDenied) {
+      Swal.fire("No action");
+    } else if (result.isDismissed) {
+      Swal.fire("You cancel your action!");
+    } else if(res.dismiss == 'esc'){
+      console.log('cancle-esc**strong text**');
+    }
+  });
+}
 
 
