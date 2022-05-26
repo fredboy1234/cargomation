@@ -931,9 +931,8 @@ class Apinvoice extends Core\Controller {
     public function getApMacroLick(){
         $APinvoice = Model\Apinvoice::getInstance();
         if(isset($_POST['shipmentid'])){
-            $macro = $APinvoice->saveToArchive($_POST['shipmentid']);
-            print_r($macro);
-            exit();
+            $macro = $APinvoice->getApMacroLick($_POST['shipmentid']);
+            
             if(isset($macro[0])){
                 echo json_encode($macro[0]->macro_link);
             }

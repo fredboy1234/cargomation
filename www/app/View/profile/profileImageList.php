@@ -56,13 +56,13 @@
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
-          width:200,
-          height:200,
+          width:450,
+          height:450,
           type:'square' //circle
         },
         boundary:{
-          width:300,
-          height:300
+          width:500,
+          height:500
         }
   });
 

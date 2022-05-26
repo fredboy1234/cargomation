@@ -715,7 +715,7 @@ $('.macro').on('click',function(){
     success:function(data)
     {
       console.log(data);
-      macroLink(data);
+      macroLink(data.replace(/\"/g, ""));
     }
   });
 });
