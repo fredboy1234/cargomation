@@ -608,7 +608,29 @@ class Shipment extends Core\Controller {
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
             $etd_date_sort = date_format(date_create($shipment->eta), "d/m/Y");
             $eta_date_sort = date_format(date_create($shipment->etd), "d/m/Y");
+            $sta_date = '2022-05-30 00:00:00';
             $marco_link = "";
+            $etadays = "";
+
+            if(isset($shipment->sta)){
+                $sta_date = $shipment->sta;
+            }
+            $diff =  strtotime($shipment->eta) - strtotime($sta_date);
+            $etadiff = ceil($diff / 86400);
+            $etadaycolor = '';
+            if($eta_date != '01/01/1900'){
+                if($etadiff > 0){
+                    $etadays =' <span style="color:red;">+'.$etadiff.'d</span>';
+                }else{
+                    if($etadiff != 0){
+                        $etadays =' <span style="color:green;">'.$etadiff.'d</span>';
+                    }
+                }
+            }
+            
+
+            
+
             if(!empty($shipment->vrptShipmentlinks)) {
                 $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
             }
@@ -627,7 +649,7 @@ class Shipment extends Core\Controller {
               </div>
             </div>';
             $subdata['console_id'] = (empty($shipment->console_id)) ? '<span class="text-warning">No Consol ID</span>' : $shipment->console_id;
-            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date);
+            $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date).$etadays;
             $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
             $subdata['vessel_name'] = (empty($shipment->vessel_name)) ? '<span class="text-warning">No Data</span>' : $shipment->vessel_name;
             $subdata['place_delivery'] = $shipment->place_delivery;
