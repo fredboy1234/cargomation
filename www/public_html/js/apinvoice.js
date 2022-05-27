@@ -742,7 +742,7 @@ $(document).on('click','.cwresmodal',function(){
 function macroLink(link) {
   Swal.fire({
     title: "This action will open WiseCloud",
-    text: "Please make sure you already installed it?",
+    text: "Please make sure you have already installed the application.",
     icon: "warning",
     showDenyButton: true,
     showCancelButton: true,

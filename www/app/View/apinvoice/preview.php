@@ -101,9 +101,15 @@
                <div class="col-lg-5 text-center">
                   <button type="button" class="btn btn-danger d-none">Raise Query</button>
                   <button type="button" class="btn btn-success d-none">Tag as Validated</button>
-                  <button id="addtocw"  type="button" class="btn btn-info">Push to Cargowise</button>
-                  <button id="overidecw"  type="button" class="btn btn-danger">Update Cargowise</button>
-                  <button id="apportioncw"  type="button" class="btn btn-warning">Apportion Charges </button>
+                  <button id="addtocw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
+                     Push to Cargowise
+                  </button>
+                  <button id="overidecw"  type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Override matching charge codes with new data." data-html="true">
+                     Update Cargowise
+                  </button>
+                  <button id="apportioncw"  type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add charges to Consol Costing for multiple Shipments." data-html="true">
+                     Apportion Charges 
+                  </button>
                   <button type="button" class="btn btn-info d-none">Update to CW1</button>
                   <button type="button" class="btn btn-warning d-none" data-dismiss="modal">Cancel</button>
                </div>
