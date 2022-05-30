@@ -1,34 +1,3 @@
-/*
-Template: sofbox - Data science WordPress landing Page
-Author: iqonicthemes.in
-Version: 3.5
-Design and Developed by: iqonicthemes.in
-*/
-
-/*----------------------------------------------
-Index Of Script
-------------------------------------------------
-
-1.Page Loader
-2.Isotope
-3.Masonry
-4.Slick
-5.Swiper
-6.Progress Bar
-7.Counter
-8.Coming soon
-6.Timer
-7.Back To Top
-8.Accordion
-9.Magnific Popup
-10.Owl Carousel
-11.Wow Animation
-12.Skrollr
-13.Tab
-
-------------------------------------------------
-Index Of Script
-----------------------------------------------*/
 (function(jQuery) {
 
     "use strict";
