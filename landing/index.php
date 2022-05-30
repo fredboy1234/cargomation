@@ -18,7 +18,7 @@
       #iq-about {
         display: none;
       }
-      #client_logo{
+      #iq-logo{
         display: none !important;
       }
     </style>
@@ -149,7 +149,7 @@
     </rs-module-wrap>
     <!-- END REVOLUTION SLIDER -->
     <div class="main-content">
-      <section id="iq-home" class="">
+      <section id="iq-logo" class="">
         <div class="container text-center">
           <div id="client_logo" class="owl-carousel" data-dots="false" data-nav="false" data-loop="true" data-items="5" data-autoplay="true" data-items-laptop="4" data-items-tab="3" data-items-mobile="2" data-items-mobile-sm="1" data-margin="30">
             <div class="item">
