@@ -296,8 +296,8 @@
             <div class="col-lg-6">
               <div class="">
                 <img class="img-fluid img-logo1" src="images/logo-2.png" alt="img">
-                <h5 class="mb-3 mt-5">Sydney AU</h5>
-                <p class="mb-0">0 1223 456 789</p>
+                <h5 class="mb-3 mt-5">Level 30 264 – 278 George Street Sydney, NSW 200</h5>
+                <p class="mb-0">+61 409 819 749</p>
                 <p class="mb-0">support@cargomation.com</p>
                 <div class="deatils-social mt-5 mb-4">
                   <ul class="share-social  list-inline p-0">
@@ -381,7 +381,7 @@
               <li>
                 <a href="tel:+0123456789" class="anchor">
                   <i class="fa fa-phone fa1"></i>
-                  <span class="spanpadding">+0123456789</span>
+                  <span class="spanpadding">+61 409 819 749</span>
                 </a>
               </li>
               <li>
@@ -393,7 +393,7 @@
               <li>
                 <a class="anchor">
                   <i class="fa fa-home fa1"></i>
-                  <span class="spanpadding">Sydney AU</span>
+                  <span class="spanpadding">Level 30 264 – 278 George Street Sydney, NSW 200</span>
                 </a>
               </li>
             </ul>
