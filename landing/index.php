@@ -16,12 +16,8 @@
       }
 
       #iq-about,
-      #client_logo {
+      #iq-home {
         display: none;
-      }
-
-      #rev_slider_24_1_forcefullwidth {
-        margin-top: 80px;
       }
     </style>
   </head>
@@ -63,7 +59,7 @@
     </header>
     <!-- START cargomation REVOLUTION SLIDER 6.5.2 -->
     <p class="rs-p-wp-fix"></p>
-    <rs-module-wrap id="rev_slider_24_1_wrapper" data-source="gallery" style="visibility:hidden;background:transparent;padding:0;margin:0px auto;margin-top:50px;margin-bottom:0;">
+    <rs-module-wrap id="rev_slider_24_1_wrapper" data-source="gallery" style="visibility:hidden;background:transparent;padding:0;margin:0px auto;margin-top:80px;margin-bottom:0;">
       <rs-module id="rev_slider_24_1" style="" data-version="6.5.2">
         <rs-slides>
           <rs-slide data-key="rs-26" id="iq-home" data-title="Slide" data-in="o:0;" data-out="a:false;">
