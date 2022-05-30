@@ -239,30 +239,6 @@
                 <h5 class="mb-3 mt-5">Level 30 264 – 278 George Street Sydney, NSW 200</h5>
                 <p class="mb-0">+61 409 819 749</p>
                 <p class="mb-0">support@cargomation.com</p>
-                <div class="deatils-social mt-5 mb-4">
-                  <ul class="share-social  list-inline p-0">
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="fa fa-facebook-f"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="fa fa-twitter"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="fa fa-github"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="fa fa-instagram"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
                 <iframe src="https://maps.google.com/maps?q=sydney%20australia&t=&z=13&ie=UTF8&iwloc=&output=embed" width="600" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
               </div>
             </div>
