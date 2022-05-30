@@ -224,67 +224,6 @@
           </div>
         </div>
       </section>
-      <section id="iq-about" class="pt-0">
-        <div class="container-fluid align-items-center bg-light section-top">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="title-box">
-                <h2>What Our Clients Say About Us</h2>
-                <p>If you are planning on developing a product landing</p>
-              </div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="title-box">
-                  <div class="owl-carousel" data-dots="false" data-loop="true" data-nav="false" data-items="2" data-autoplay="true" data-items-laptop="3" data-items-tab="2" data-items-mobile="2" data-items-mobile-sm="1" data-margin="30">
-                    <div class="item">
-                      <div class="card color-pallete1">
-                        <div class="card-body text-center">
-                          <div class="iq-testimonial-quote">
-                            <i aria-hidden="true" class="fa fa-check"></i>
-                          </div>
-                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. <br>Distracted by the readable content of a page. </p>
-                          <strong>Moric Horgon</strong>
-                          <p>CEO, Company</p>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-center">
-                        <img src="images/user2.jpg" class="img-fluid rounded-circle iq-image imageposition" alt="user 1">
-                      </div>
-                    </div>
-                    <div class="item">
-                      <div class="card color-pallete1">
-                        <div class="card-body text-center align-item-center">
-                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. <br>Distracted by the readable content of a page. </p>
-                          <strong>John Doe</strong>
-                          <p>CEO, Company</p>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-center">
-                        <img src="images/demo-5/user1.jpg" class="img-fluid rounded-circle  iq-image imageposition" alt="user 2">
-                      </div>
-                    </div>
-                    <div class="item">
-                      <div class="card color-pallete1">
-                        <div class="card-body text-center">
-                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. <br> Distracted by the readable content of a page. </p>
-                          <strong>Kip Leo</strong>
-                          <p>CEO, Company</p>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-center">
-                        <img src="images/demo-5/user3.jpg" class="img-fluid rounded-circle  iq-image imageposition" alt="user 2">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section id="iq-blog" class="pt-0">
         <div class="container">
           <div class="row">
