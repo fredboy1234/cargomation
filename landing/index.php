@@ -11,8 +11,7 @@
         <style>
             .rs_splitted_lines{font-size:55pt;}
             .footerbg2 {background-color: #3778be;}
-            #iq-about {display: none;}
-            .owl-carousel {display: none;}
+            #iq-about,#iq-home {display: none;}
         </style>
 	</head>
     <body>
