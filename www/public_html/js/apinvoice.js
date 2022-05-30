@@ -221,6 +221,7 @@ $(document).ready(function() {
          }else{
           $("#embeded embed").attr('src',d[0].filepath);
          }
+         $('.downicon').removeClass('d-none');
           //$("#embeded embed").attr('src',d[0].filename);
           
           var html='';
@@ -679,6 +680,12 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
+
+$(".downicon").on('click',function(){
+  $('.sideparent, #embeded, #embeded embed').toggleClass('h-100');
+  $('#infor-boxes').toggleClass('d-none');
+  $(this).html('<i class="fas fa-angle-double-up"></i>');
+});
 var progressbar = `<div class="progress">
 <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
 </div>`;

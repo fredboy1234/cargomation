@@ -16,6 +16,25 @@
    #headerTable_wrapper{
       overflow: hidden;
    }
+   .downicon{
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      font-size: 1.3em;
+      background: #fff;
+      padding: 5px;
+      border-radius: 46px;
+      height: 33px;
+      width: 33px;
+      text-align: center;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0px 1px 4px 1px rgb(0 0 0 / 30%);
+   }
+   #embeded{
+      position: relative;
+   }
 </style>
 <div class="modal fade" id="modal-lg-prev">
    <div class="modal-dialog modal-xl">
@@ -33,9 +52,10 @@
                      <button onclick="customside()" id="view">
                      <i class="nav-icon fas fa-exchange-alt"></i>
                      </button>
-                     <div class="col-lg-12">
+                     <div class="col-lg-12 sideparent">
                         <div id="embeded">
                            <embed src="" style="width:100%; height:500px;" frameborder="0"></embed>
+                           <a class="downicon d-none"><i class="fas fa-angle-double-down"></i></a>
                         </div>
                         <div id="infor-boxes">
                            <!-- <div id="cusdiv" class="danger">
@@ -98,7 +118,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-lg-5 text-center">
+               <div class="col-lg-5 text-center mt-3">
                   <button type="button" class="btn btn-danger d-none">Raise Query</button>
                   <button type="button" class="btn btn-success d-none">Tag as Validated</button>
                   <button id="addtocw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
