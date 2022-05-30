@@ -11,7 +11,7 @@
         <style>
             .rs_splitted_lines{font-size:55pt;}
             .footerbg2 {background-color: #3778be;}
-            #iq-about,#iq-home {display: none;}
+            #iq-about,#client_logo {display: none;}
         </style>
 	</head>
     <body>
@@ -263,7 +263,7 @@
         <div class="main-content">
             <section id="iq-home" class="">
                 <div class="container text-center">
-                    <div class="owl-carousel" data-dots="false" data-nav="false" data-loop="true" data-items="5" data-autoplay="true" data-items-laptop="4" data-items-tab="3" data-items-mobile="2" data-items-mobile-sm="1" data-margin="30">
+                    <div id="client_logo" class="owl-carousel" data-dots="false" data-nav="false" data-loop="true" data-items="5" data-autoplay="true" data-items-laptop="4" data-items-tab="3" data-items-mobile="2" data-items-mobile-sm="1" data-margin="30">
                         <div class="item">
                             <img src="images/img1.png" alt="cargomation logo">
                         </div>
