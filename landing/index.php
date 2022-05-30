@@ -21,6 +21,7 @@
       #iq-logo{
         display: none !important;
       }
+      #slider-24-slide-26-layer-7,#slider-24-slide-26-layer-8,#slider-24-slide-26-layer-9,#slider-24-slide-26-layer-10{display: none;}
     </style>
   </head>
   <body>
