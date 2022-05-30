@@ -361,7 +361,7 @@
               <a href="index.html">
                 <img class="img-fluid" src="images/logo-white.png" alt="img">
               </a>
-              <p class="mt-5 text-white">Subscribe to our newsletter and get 10% off your first purchase.</p>
+              <p class="mt-5 text-white">Cargomation All-in-one solution</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-4 mt-lg-0 mt-md-0">
