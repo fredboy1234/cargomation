@@ -331,16 +331,16 @@
               <form>
                 <div class="row">
                   <div class="col-lg-6">
-                    <input type="text" class="form-control" id="inputName" placeholder="Your Name">
+                    <input type="text" class="form-control" id="inputName" placeholder="Your Name" required>
                   </div>
                   <div class="col-lg-6">
-                    <input type="Email" class="form-control" id="inputEmail" placeholder="Your Email">
+                    <input type="Email" class="form-control" id="inputEmail" placeholder="Your Email" required>
                   </div>
                   <div class="col-lg-12">
-                    <input type="text" class="form-control" id="inputSubject" placeholder="Your Subject">
+                    <input type="text" class="form-control" id="inputSubject" placeholder="Your Subject" required>
                   </div>
                   <div class="col-lg-12">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Your Message"></textarea>
+                    <textarea required class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Your Message"></textarea>
                   </div>
                   <div class="col-lg-12">
                     <a class="button iq-button" href="#">Send Message</a>
