@@ -15,9 +15,11 @@
         background-color: #3778be;
       }
 
-      #iq-about,
-      #iq-home {
+      #iq-about {
         display: none;
+      }
+      #client_logo{
+        display: none !important;
       }
     </style>
   </head>
