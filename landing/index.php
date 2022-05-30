@@ -30,7 +30,7 @@
         <div class="row">
           <div class="col-sm-12">
             <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="index.html">
+              <a class="navbar-brand" href="/">
                 <img class="img-fluid" src="images/logo-2.png" alt="img">
               </a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -274,7 +274,7 @@
         <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-6  iq-rmb-50">
             <div class="logo">
-              <a href="index.html">
+              <a href="/">
                 <img class="img-fluid" src="images/logo-white.png" alt="img">
               </a>
               <p class="mt-5 text-white">Cargomation All-in-one solution</p>
