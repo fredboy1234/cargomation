@@ -301,7 +301,7 @@ class Apinvoice extends Core\Controller {
 
     public function parsedData(){
         $parsed = array();
-        
+        $_POST['prim_ref'] = 176;
         if(isset($_POST['prim_ref'])){
             $cgm = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->cgm_response);
             if(is_null( $cgm ) || empty( $cgm)){
@@ -316,8 +316,42 @@ class Apinvoice extends Core\Controller {
         
         $columnMatched = array();
         $data['apinvoice']->HubJSONOutput->ParsedPDFData;
-        
-        $parsed['data'] = $data['apinvoice']->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines->ChargeLine;
+        $pline =  $data['apinvoice']->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines->ChargeLine;
+
+        if(!empty($pline)){
+            foreach($pline as $pval){
+                $container = '';
+                $btncon ='';
+                if(is_array($pval->Container)){
+                    foreach($pval->Container as $pcontainer){
+                        $btncon .= $pcontainer.'<br>';
+                    }
+                }
+                $container = '<div class="btn-group show">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                         View
+                    </button>
+                    <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 35px, 0px);">
+                    <span class="dropdown-item">
+                    '.$btncon.'
+                    </span>
+                    </div>
+                    </div>';
+                $parsed['data'][] = array(
+                    'ChargeCode' => $pval->ChargeCode,
+                    'InvoiceNumber' => $pval->InvoiceNumber,
+                    'InvoiceDate' => $pval->InvoiceDate,
+                    'Container' => $container,
+                    'ExchangeRate' => $pval->ExchangeRate,
+                    'Creditor' => $pval->Creditor,
+                    'InvoiceTo' => $pval->InvoiceTo,
+                    'SubTotal' => $pval->SubTotal,
+                    'GST' => $pval->GST,
+                    'Discrepancy' => $pval->Discrepancy
+                );
+            }
+        }
+       
         echo json_encode($parsed);
     }
 

@@ -684,7 +684,12 @@ function customside(){
 $(".downicon").on('click',function(){
   $('.sideparent, #embeded, #embeded embed').toggleClass('h-100');
   $('#infor-boxes').toggleClass('d-none');
-  $(this).html('<i class="fas fa-angle-double-up"></i>');
+  if(!$(this).hasClass('dup')){
+    $(this).html('<i class="fas fa-angle-double-up"></i>');
+  }else{
+    $(this).removeClass('dup');
+    $(this).html('<i class="fas fa-angle-double-down"></i>'); 
+  }
 });
 var progressbar = `<div class="progress">
 <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
