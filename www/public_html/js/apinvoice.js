@@ -685,6 +685,7 @@ $(".downicon").on('click',function(){
   $('.sideparent, #embeded, #embeded embed').toggleClass('h-100');
   $('#infor-boxes').toggleClass('d-none');
   if(!$(this).hasClass('dup')){
+    $(this).addClass('dup');
     $(this).html('<i class="fas fa-angle-double-up"></i>');
   }else{
     $(this).removeClass('dup');
