@@ -69,8 +69,27 @@
             <img loading="lazy" src="images/bg-1_.png" title="bg-1.png" width="1600" height="777" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="" data-bg="p:center bottom;" data-no-retina>
             <!--
                         -->
-            <rs-layer id="slider-24-slide-26-layer-2" data-type="image" data-rsp_ch="on" data-xy="xo:726px,532px,205px,129px;yo:113px,108px,410px,373px;" data-text="w:normal;s:20,12,9,5;l:0,16,12,7;" data-dim="w:869px,512px,311px,214px;h:468px,276px,168px,115px;" data-frame_0="y:100%;" data-frame_0_mask="u:t;" data-frame_1="st:2070;sp:1200;sR:2070;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;sR:5730;" style="z-index:12;">
-              <img loading="lazy" src="images/slider.png" class="tp-rs-img rs-lazyload" width="885" height="477" data-lazyload="" data-no-retina>
+            <rs-layer id="slider-24-slide-26-layer-2" data-type="image" data-rsp_ch="on" data-xy="xo:726px,532px,205px,129px;yo:113px,108px,410px,373px;" data-text="w:normal;s:20,12,9,5;l:0,16,12,7;" data-dim="w:869px,512px,311px,214px;h:468px,276px,168px,115px;" data-frame_0="y:100%;" data-frame_0_mask="u:t;" data-frame_1="st:2070;sp:1200;sR:2070;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;sR:5730;" style="z-index:1;">
+            <div class="">
+                <div class="mySlides fading">
+                  <img src="https://web.cargomation.com/images/ss1.png" style="width:100%">
+                </div>
+
+                <div class="mySlides fading">
+                  <img src="https://web.cargomation.com/images/ss2.png" style="width:100%">
+                </div>
+
+                <div class="mySlides fading">
+                  <img src="https://web.cargomation.com/images/ss3.png" style="width:100%">
+                </div>
+
+                </div>
+                <br>
+                <div style="text-align:center;">
+                  <span class="dot"></span> 
+                  <span class="dot"></span> 
+                  <span class="dot"></span> 
+                </div>    
             </rs-layer>
             <!--
 
@@ -358,5 +377,27 @@
         }
       });
     </script>
+
+    <script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      let dots = document.getElementsByClassName("dot");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}    
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex-1].style.display = "block";  
+      dots[slideIndex-1].className += " active";
+      setTimeout(showSlides, 3000); // Change image every 2 seconds
+    }
+</script>
   </body>
 </html>
