@@ -183,8 +183,7 @@
             </div>
             <div class="col-lg-6 wow fadeInRight">
               <div class="title-box text-left">
-                <h2>The Unfair Advantage to Win in Freight Forwarding.</h2>
-                <p>Deliver unparalleled user experience through combining logistics and personalized service with our digital platform.</p>
+                <h2>Why choose Cargomation ?</h2>
               </div>
               <div class="row">
                 <div class="col-lg-6">
@@ -192,25 +191,26 @@
                     <ul class="iq-list wow fadeInRight">
                       <li>
                         <i class="fa fa-check"></i>
-                        <span>Scale Your Operations</span>
+                        <span>Automated shipping & Reduce efforts</span>
                       </li>
                       <li>
                         <i class="fa fa-check"></i>
-                        <span>Supercharge Sales Team</span>
+                        <span>Improve your shipping experience</span>
                       </li>
-                      <li>
+                        <li>
                         <i class="fa fa-check"></i>
-                        <span>Boost Customer Retention</span>
+                        <span>Automates and integrates the operations to deliver enhanced productivity and profitability</span>
                       </li>
                     </ul>
                   </div>
                 </div>
+                
                 <div class="col-lg-6">
                   <div class="text-left  ">
                     <ul class="iq-list wow fadeInRight">
                       <li>
                         <i class="fa fa-check"></i>
-                        <span>Compete with Anyone</span>
+                        <span>Grow your ecommerce business and reduce cost</span>
                       </li>
                       <li>
                         <i class="fa fa-check"></i>
