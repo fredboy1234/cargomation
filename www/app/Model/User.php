@@ -873,9 +873,75 @@ class User extends Core\Model {
 
     // Default CW DocumentType
     public function getCWDOcumentType($user_id) {
-        $query = "SELECT * FROM cargowise_document_type_{$user_id}";
+        $query = "SELECT * FROM cargowise_document_type WHERE user_id = {$user_id} ORDER BY doc_type ASC";
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
+    }
+
+    public function getDocumentType($user_id) {
+        $Db = Utility\Database::getInstance();
+        $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
+        
+        $check_sub_user = $user_id;
+        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+            if($check_user[0]->role_id > 2 ){
+                $check_sub_user = $check_user[0]->account_id;
+            }
+        }
+        return $Db->query("SELECT doc_type, description
+                                FROM cargowise_document_type
+                                WHERE active = 'Y'
+                                AND user_id = '{$check_sub_user}' 
+                                ORDER BY doc_type ASC")->results();
+    }
+
+    public function getClientDocumentType($user_id) {
+        $query = "SELECT * FROM cargowise_document_type WHERE active = 'Y' AND user_id = {$user_id}";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getUsers() {
+        $query = "SELECT ui.*, ur.role_id AS role, vs.account_id AS account_id
+                FROM user_info AS ui
+                LEFT JOIN user_role AS ur ON ui.user_id = ur.user_id
+                LEFT JOIN vrpt_subaccount AS vs ON ui.user_id = vs.user_id";        
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function updateCWDocumentType($arr_data, $user_id) {
+        // $query = "UPDATE cargowise_document_type SET active = (CASE WHEN active = 'N' THEN 'Y' ELSE 'N' END)";
+        // UPDATE cargowise_document_type SET active = (CASE WHEN active = 'N' AND doc_type IN ('1RM', 'PKL') THEN 'Y' ELSE 'N' END) WHERE user_id = '180'
+        if(!empty($arr_data['doc_type'])) {
+            $doc_types = "'" . implode ( "', '", $arr_data['doc_type'] ) . "'";
+            // sprintf("'%s'", implode("', '", $array)) 
+            $value = "(CASE WHEN doc_type IN ({$doc_types}) THEN 'Y' ELSE 'N' END)";
+        } else {
+            $value = "'N'";
+        }
+        $query = "UPDATE cargowise_document_type SET active = {$value} 
+        WHERE user_id = {$arr_data['account_id']}";
+        $Db = Utility\Database::getInstance();
+        $test = $Db->query($query)->error();
+    }
+
+    public function updateUserSettings2($column = "*", $data = "", $user_id = "") {
+
+        $value = json_encode($data);
+        
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
+        
+        if(empty($select)){
+            return $Db->query("INSERT
+                           INTO user_settings (user_id, {$column})
+                           VALUES('{$user_id}','{$column}')")->error();
+        }else{
+            return $Db->query("UPDATE user_settings 
+                                SET {$column} ='{$value}'
+                                WHERE user_id = '{$user_id}'")->error();
+        }
     }
 
 }

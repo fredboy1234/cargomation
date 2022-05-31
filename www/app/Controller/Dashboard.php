@@ -71,10 +71,6 @@ class Dashboard extends Core\Controller {
         if(isset($dashboardTheme->dash) && $dashboardTheme->dash == "dash_v1"){
             $this->View->addCSS("css/dashboardv2.css");
         }
-       
-        $this->View->addCSS("css/theme/".$selectedTheme.".css");
-        $this->View->addCSS("css/".$selectedTheme.".css");
-        $this->View->addJS("js/dashboard.js");
 
         $imageList = (Object) Model\User::getProfile($userID);
         $profileImage = '/img/default-profile.png';
@@ -84,14 +80,26 @@ class Dashboard extends Core\Controller {
             }
         }
 
+        $this->View->addCSS("css/theme/".$selectedTheme.".css");
+        $this->View->addCSS("css/".$selectedTheme.".css");
+        $url_admin = ""; $all_users = [];
+        if($role->role_id == 1) {
+            $url_admin = "admin";
+            // $all_users = Model\User::getUsersInstance($userID, $role->role_id);
+            $all_users = $User->getUsers();
+            $this->View->addJS("js/admin.js");
+        } else {
+            $this->View->addJS("js/dashboard.js");
+        }
+
         // Render view template
         // Usage renderTemplate(string|$template, string|$filepath, array|$data)
-        $this->View->renderTemplate("/dashboard", [
+        $this->View->renderTemplate($url_admin . "/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
             "notifications" => Model\User::getUserNotifications($userID),
             "user" => (Object) Model\User::getProfile($userID),
-            "users" => Model\User::getUsersInstance($userID, $role->role_id),
+            "users" => $all_users,
             "user_log" => Model\User::getUsersLogInstance($userID, $role->role_id),
             "menu" => Model\User::getUserMenu($userID, $role->role_id),
             "image_profile" => $profileImage,

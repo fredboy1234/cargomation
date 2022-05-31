@@ -592,15 +592,17 @@ class Shipment extends Core\Controller {
             "draw"            => $json_data->draw,  
             "recordsTotal"    => $json_data->recordsTotal,  
             "recordsFiltered" => $json_data->recordsTotal,
-            "data"            => $this->sanitizeData($json_data->data,$requested)
+            "data"            => $this->sanitizeData($user_id, $json_data->data, $requested)
         );
         echo json_encode($array_data);
     }
 
     //must remove the $requested parameter if Kuya has the API
-    private function sanitizeData($param, $docRequest) {
+    private function sanitizeData($user_id, $param, $docRequest) {
         $array_data = json_decode($param);
-        $doc_type = array_column($this->Document->getDocumentType(), 'type');
+        $User = new Model\User;
+        // $doc_type = array_column($this->Document->getDocumentType(), 'type');
+        $doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type');
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
         foreach($array_data as $shipment_key => $shipment) {
