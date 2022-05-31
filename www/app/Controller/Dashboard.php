@@ -23,143 +23,6 @@ class Dashboard extends Core\Controller {
      * @return void
      * @since 1.0
      */
-    // public function index() {
-        
-    //     // Check that the user is authenticated.
-    //     Utility\Auth::checkAuthenticated();
-    //     Utility\Cookie::delete('redirectLink');
-    //     // Get an instance of the user model using the ID stored in the session. 
-    //     $userID = Utility\Session::get(Utility\Config::get("SESSION_USER"));
-        
-    //     if (!$User = Model\User::getInstance($userID)) {
-    //         Utility\Redirect::to(APP_URL);
-    //     }        
-       
-    //     if (!$Role = Model\Role::getInstance($userID)) {
-    //         Utility\Redirect::to(APP_URL);
-    //     }
-       
-    //     $Shipment = Model\Shipment::getInstance();
-
-    //     $role = $Role->getUserRole($userID);
-        
-    //     // var_dump(Model\User::getUserNotifications($userID));
-    //     //  die();
-
-    //     if(empty($role)) {
-    //         Utility\Redirect::to(APP_URL . $role);
-    //     }
-        
-    //     // assign value by user role
-    //     switch ($role->role_id) {
-    //         case 1: // SUPER ADMIN
-    //             $data['is_customer'] = false;
-    //             $document_stats = Model\Document::getDocumentStats($userID);
-    //             break;
-    //         case 2: // CLIENT ADMIN
-    //             $data['is_customer'] = false;
-    //             $document_stats = Model\Document::getDocumentStats($userID);
-    //             break;
-    //         case 3: // STAFF
-    //             $data['is_customer'] = false;
-    //             $document_stats = Model\Document::getDocumentStats($userID);
-    //             break;
-    //         case 4: // CUSTOMER
-    //             $org_code = Model\User::getUserInfoByID($userID)[0]->organization_code;
-    //             $data['is_customer'] = true;
-    //             if($org_code == NULL) {
-    //                 $org_code = $User->getUserContactInfo($userID)[0]->organization_code;
-    //             }
-    //             $data['org_code'] = $org_code;
-    //             $document_stats = Model\Document::getDocumentStats($userID, $org_code);
-    //             break;
-            
-    //         default:
-    //             die('Error in getting the user role');
-    //             break;
-    //     }
-        
-        
-    //     $User->putUserLog([
-    //         "user_id" => $userID,
-    //         "ip_address" => $User->getIPAddress(),
-    //         "log_type" => 2,
-    //         "log_action" => "Access dashboard",
-    //         "start_date" => date("Y-m-d H:i:s"),
-    //     ]);
-
-
-    //     $selectedTheme = $User->getUserSettings($userID);
-       
-    
-    //     if(isset($selectedTheme[0]) && !empty($selectedTheme)){
-    //         $selectedTheme = $selectedTheme[0]->theme;
-    //     }else{
-    //         $selectedTheme = 'default';
-    //     }
-        
-    //     $this->View->addCSS("css/theme/".$selectedTheme.".css");
-    //     $this->View->addCSS("css/".$selectedTheme.".css");
-    //     $this->View->addJS("js/dashboard.js");
-        
-    //     // Render view template
-    //     // Usage renderTemplate(string|$template, string|$filepath, array|$data)
-
-    //     $imageList = (Object) Model\User::getProfile($userID);
-    //     $profileImage = '/img/default-profile.png';
-    //     foreach($imageList->user_image as $img){
-    //         if( $img->image_src!="" && $img->image_type=='profile' ){
-    //             $profileImage = base64_decode($img->image_src);
-    //         }
-    //     }
-       
-    //     //$cmode = $Shipment->getShipmentDynamic($userID,'container_mode, transport_mode', 'containermode', $data);
-    //     //$cmodeArray = array();
-    //     $seacount = 0;
-    //     $aircount =0;
-    //     // foreach($cmode as $value){
-    //     //     if($value->transport_mode === 'Sea'){
-    //     //         $cmodeArray['sea'][$value->container_mode][] = $value;
-    //     //         $seacount++;
-    //     //     }else{
-    //     //         $cmodeArray['air'][$value->container_mode][] = $value;
-    //     //         $aircount++;
-    //     //     }
-           
-    //     // }
-    //     //echo"<pre>";
-    //     $shipmentcount = $Shipment->getShipmentCount($userID);
-    //     $shiparr = array();
-    //     $ctotal = 0;
-    //     foreach($shipmentcount as $ship){
-    //         $ctotal += $ship->count;
-    //         $shiparr[$ship->transport_mode] = $ship->count;    
-    //     }
-        
-    //     $this->View->renderTemplate("/dashboard", [
-    //         "title" => "Dashboard",
-    //         "data" => (new Presenter\Profile($User->data()))->present(),
-    //         "notifications" => Model\User::getUserNotifications($userID),
-    //         "user" => (Object) Model\User::getProfile($userID),
-    //         "users" => Model\User::getUsersInstance($userID, $role->role_id),
-    //         "user_log" => Model\User::getUsersLogInstance($userID, $role->role_id),
-    //         "menu" => Model\User::getUserMenu($user_id, $role->role_id),
-    //         "image_profile" => $profileImage,
-    //         "selected_theme" => $selectedTheme,
-    //         "role" => $role,
-    //         "total_shipment" =>$ctotal,
-    //         "not_arrived" => $Shipment->getShipmentnotArrived($userID)[0]->count,
-    //         "air_shipment" => $shiparr['Air'],
-    //         "sea_shipment" => $shiparr['Sea'],
-    //         "shipment_with_port" => array(),
-    //         "port_loading_count" =>$this->getMapCount($userID),
-    //         "document_stats" => $document_stats,
-    //         "uid"=>$userID,
-    //     ]);
-    //     $this->externalTemp();
-    // }
-
-
     public function index() {
         
         // Check that the user is authenticated.
@@ -186,8 +49,7 @@ class Dashboard extends Core\Controller {
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
-        
-       
+
         $User->putUserLog([
             "user_id" => $userID,
             "ip_address" => $User->getIPAddress(),
@@ -195,7 +57,6 @@ class Dashboard extends Core\Controller {
             "log_action" => "Access dashboard",
             "start_date" => date("Y-m-d H:i:s"),
         ]);
-
 
         $selectedTheme = $User->getUserSettings($userID);
         $dashboardTheme = '';
@@ -205,8 +66,7 @@ class Dashboard extends Core\Controller {
             $dashboardTheme = json_decode($User->getUserSettings($userID)[0]->dashboard);
         }else{
             $selectedTheme = 'default';
-        }
-       
+        }       
 
         if(isset($dashboardTheme->dash) && $dashboardTheme->dash == "dash_v1"){
             $this->View->addCSS("css/dashboardv2.css");
@@ -215,12 +75,6 @@ class Dashboard extends Core\Controller {
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
         $this->View->addJS("js/dashboard.js");
-       
-        
-       
-        
-        // Render view template
-        // Usage renderTemplate(string|$template, string|$filepath, array|$data)
 
         $imageList = (Object) Model\User::getProfile($userID);
         $profileImage = '/img/default-profile.png';
@@ -229,7 +83,9 @@ class Dashboard extends Core\Controller {
                 $profileImage = base64_decode($img->image_src);
             }
         }
-       
+
+        // Render view template
+        // Usage renderTemplate(string|$template, string|$filepath, array|$data)
         $this->View->renderTemplate("/dashboard", [
             "title" => "Dashboard",
             "data" => (new Presenter\Profile($User->data()))->present(),
@@ -246,8 +102,6 @@ class Dashboard extends Core\Controller {
         ]);
         $this->externalTemp();
     }
-
-
 
     public function processShipmentCount(){
         $userID = $_POST['userid'];
@@ -351,6 +205,7 @@ class Dashboard extends Core\Controller {
     public function getLCLCount(){
 
     }
+
     public function processDocStats(){
         $userID = $_POST['userid'];
         
@@ -476,5 +331,4 @@ class Dashboard extends Core\Controller {
         curl_close($curl);
         return $response;
     }
-
 }
