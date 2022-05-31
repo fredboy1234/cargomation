@@ -66,11 +66,11 @@
       <rs-module id="rev_slider_24_1" style="" data-version="6.5.2">
         <rs-slides>
           <rs-slide data-key="rs-26" id="iq-home" data-title="Slide" data-in="o:0;" data-out="a:false;">
-            <img loading="lazy" src="images/bg-1.png" title="bg-1.png" width="1600" height="777" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="" data-bg="p:center bottom;" data-no-retina>
+            <img loading="lazy" src="images/bg-1_.png" title="bg-1.png" width="1600" height="777" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="" data-bg="p:center bottom;" data-no-retina>
             <!--
                         -->
             <rs-layer id="slider-24-slide-26-layer-2" data-type="image" data-rsp_ch="on" data-xy="xo:726px,532px,205px,129px;yo:113px,108px,410px,373px;" data-text="w:normal;s:20,12,9,5;l:0,16,12,7;" data-dim="w:869px,512px,311px,214px;h:468px,276px,168px,115px;" data-frame_0="y:100%;" data-frame_0_mask="u:t;" data-frame_1="st:2070;sp:1200;sR:2070;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;sR:5730;" style="z-index:12;">
-              <img loading="lazy" src="images/slider.png" class="tp-rs-img rs-lazyload" width="885" height="477" data-lazyload="" data-no-retina>
+              <img loading="lazy" src="images/laptop.gif" class="tp-rs-img rs-lazyload" width="885" height="477" data-lazyload="" data-no-retina>
             </rs-layer>
             <!--
 
@@ -225,47 +225,35 @@
         </div>
       </section>
       <section id="iq-blog" class="pt-0">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-              <h2>Request Demo</h2>
-              <p>See how Cargomation engages cargo forwarders all around the world to step up the computerized insight for their clients. Call (+61) 409 819 749 for any prompt inquiries!</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="">
-                <img class="img-fluid img-logo1" src="images/logo-2.png" alt="img">
-                <h5 class="mb-3 mt-5">Level 30 264 – 278 George Street Sydney, NSW 200</h5>
-                <p class="mb-0">+61 409 819 749</p>
-                <p class="mb-0">support@cargomation.com</p>
-                <iframe src="https://maps.google.com/maps?q=Level%2030%20264%20%E2%80%93%20278%20George%20Street%20Sydney,%20NSW%20200&t=&z=13&ie=UTF8&iwloc=&output=embed" width="600" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <h4 class="mb-4">Get in Touch</h4>
-              <form>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <input type="text" class="form-control" id="inputName" placeholder="Your Name" required>
-                  </div>
-                  <div class="col-lg-6">
-                    <input type="Email" class="form-control" id="inputEmail" placeholder="Your Email" required>
-                  </div>
-                  <div class="col-lg-12">
-                    <input type="text" class="form-control" id="inputSubject" placeholder="Your Subject" required>
-                  </div>
-                  <div class="col-lg-12">
-                    <textarea required class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Your Message"></textarea>
-                  </div>
-                  <div class="col-lg-12">
-                    <a class="button iq-button" href="#">Send Message</a>
-                  </div>
+          <div class="container">
+            <div class="row">
+                <div class="col-sm-6 mx-auto  text-center mb-5">
+                  <h2>Request Demo</h2>
+                  <p>See how Cargomation engages cargo forwarders all around the world to step up the computerized insight for their clients. Call (+61) 409 819 749 for any prompt inquiries!</p>
+                  <div class="demo-content">
+                  <form method="post" action="#">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <input type="text" class="form-control" id="inputName" placeholder="Your Name" required>
+                        </div>
+                        <div class="col-lg-6">
+                          <input type="Email" class="form-control" id="inputEmail" placeholder="Your Email" required>
+                        </div>
+                        <div class="col-lg-12">
+                          <input type="text" class="form-control" id="inputSubject" placeholder="Your Subject" required>
+                        </div>
+                        <div class="col-lg-12">
+                          <textarea required class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Your Message"></textarea>
+                        </div>
+                        <div class="col-lg-12">
+                          <a class="button iq-button">Send Message</a>
+                        </div>
+                    </div>
+                  </form>
                 </div>
-              </form>
             </div>
-          </div>
         </div>
+    </div>
       </section>
     </div>
     <!-- Footer Start -->
@@ -277,7 +265,12 @@
               <a href="/">
                 <img class="img-fluid" src="images/logo-white.png" alt="img">
               </a>
-              <p class="mt-5 text-white">Cargomation All-in-one solution</p>
+              <div class="col-lg-12">
+              <div class="">
+                <span class="spanpadding"></span>
+                <iframe src="https://maps.google.com/maps?q=Level%2030%20264%20%E2%80%93%20278%20George%20Street%20Sydney,%20NSW%20200&t=&z=13&ie=UTF8&iwloc=&output=embed" width="750" height="90" frameborder="0" style="border:0" allowfullscreen></iframe>
+              </div>
+            </div>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-4 mt-lg-0 mt-md-0">
@@ -317,6 +310,7 @@
         </div>
       </div>
       <hr>
+
       <div class="copyright-footer">
         <div class="container">
           <div class="pt-3 pb-3">
