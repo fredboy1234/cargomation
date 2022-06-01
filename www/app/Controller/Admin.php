@@ -108,7 +108,7 @@ class Admin extends Core\Controller {
 
         switch ($form_type) {
             case 'information':
-                $has_error = $User->updateUserInfo($_POST, $user_id);
+                $has_error = $User->updateUsers($_POST, $user_id);
                 break;
             case 'shipment':
                 # code...
@@ -161,7 +161,7 @@ class Admin extends Core\Controller {
             }
         }
         if(!empty($data['doc_type'])){
-            $count = 10;
+            $count = 11;
             foreach ($all_document as $key => $value) {
                 if(in_array($value->doc_type, $data['doc_type'])) {
                     array_push($userData, (object)[

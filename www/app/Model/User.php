@@ -934,14 +934,27 @@ class User extends Core\Model {
         $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
         
         if(empty($select)){
-            return $Db->query("INSERT
-                           INTO user_settings (user_id, {$column})
-                           VALUES('{$user_id}','{$column}')")->error();
+            $query = "INSERT
+            INTO user_settings (user_id, {$column})
+            VALUES('{$user_id}','{$column}')";
         }else{
-            return $Db->query("UPDATE user_settings 
-                                SET {$column} ='{$value}'
-                                WHERE user_id = '{$user_id}'")->error();
+            $query = "UPDATE user_settings 
+            SET {$column} = '" . str_replace("'", "`", $value) . "'
+            WHERE user_id = '{$user_id}'";
         }
+
+        return $Db->query($query)->error();
+    }
+
+    public function updateUsers(array $data, $user_id) {
+        foreach ($data as $key => $value) {
+            $info[] = "$key = '$value'";
+        }
+
+        $query = "UPDATE user_info SET ".implode(", ", $info)." WHERE user_id = {$user_id}";
+        
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->error();
     }
 
 }
