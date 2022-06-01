@@ -403,7 +403,7 @@ class Shipment extends Core\Controller {
         }
         // $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
         if(!empty($doc_type)){
-            $count = 17;
+            $count = 11;
             foreach ($doc_type as $key => $value) {
                 // if(!in_array($value->type,$defaultDocType)){
                     array_push($userData, (object)[
