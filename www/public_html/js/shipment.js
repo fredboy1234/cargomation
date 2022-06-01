@@ -344,6 +344,7 @@ $(document).ready(function () {
     ajax: {
       url: '/shipment/shipmentData/',
       data: function (d) {
+        delete d.columns; // remove columns
         var arr = [];
         console.log(parsed_qs);
         if (typeof parsed_qs['value'] !== "undefined") {
