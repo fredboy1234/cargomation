@@ -1121,7 +1121,9 @@ function triggerType(data){
         <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(2, 'month').format(defaultDate)]}">Next Month</option>
         <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(3, 'month').format(defaultDate)]}">Next 2 Months</option>
         <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(6, 'month').format(defaultDate)]}">Next 6 Months</option>
-        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}">Next  12 Months</option>`);
+        <option class="datepick" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}">Next  12 Months</option>
+        <option class="datepick" data-date="${[moment().format(defaultDate),moment().format(defaultDate)]}">Custom Date</option>`);
+        
     break;
     case 'input':
       $("#no_value_"+data['value']).val('');
@@ -1237,6 +1239,10 @@ $(document).on("change", "[id*='no_type_']",function(){
           format: defaultDate
         }
       });
+      //open calendar if user select custom date
+      if($("option:selected",this).text() === 'Custom Date'){
+        $(idOfDate).trigger('click');
+      }
   }
   var typeValue = $(this).val();
   var arr = ['IS_BLANK', 'NOT_BLANK'];
