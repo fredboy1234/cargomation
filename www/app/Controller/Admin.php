@@ -182,7 +182,7 @@ class Admin extends Core\Controller {
         // }else{
         //     return json_encode($userData);    
         // }
-        return $User->updateUserSettings2('shipment', $userData, $_POST['user_id']);
+        return $User->updateUserSettings2('shipment', $userData, $user_id);
     }
 
     /* NEED TO REVIEW CODE BELOW */
