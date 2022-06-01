@@ -13,22 +13,22 @@
                 <form id="update_info" class="mx-5 form-horizontal" _lpchecked="1">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputName" class="control-label">First Name</label>
+                            <label for="inputFirstName" class="control-label">First Name</label>
                             <input type="text" name="first_name" class="form-control" placeholder="First Name" value="<?=$this->user_info->first_name?>">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputName" class="control-label">Last Name</label>
+                            <label for="inputLastName" class="control-label">Last Name</label>
                             <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="<?=$this->user_info->last_name?>">
 
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputName" class="control-label">Address</label>
+                        <label for="inputAddress" class="control-label">Address</label>
                         <input type="text" name="address" class="form-control" placeholder="Address" value="<?=$this->user_info->address?>">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputName" class="control-label">City</label>
+                            <label for="inputCity" class="control-label">City</label>
                             <input type="text" name="city" class="form-control" placeholder="City" value="<?=$this->user_info->city?>">
                         </div>
                         <div class="form-group col-md-4">
@@ -39,30 +39,31 @@
                             </select>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputName" class="control-label">Zipcode</label>
+                            <label for="inputZipcode" class="control-label">Zipcode</label>
                             <input type="text" name="postcode" class="form-control" placeholder="Zipcode" value="<?=$this->user_info->postcode?>">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputName" class="control-label">Contact No.</label>
-                        <input type="text" name="phone" class="form-control" placeholder="Contact" value="<?=$this->user_info->phone?>">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputOrganization" class="control-label">Organization Code</label>
+                            <input disabled="disabled" type="text" name="organization_code" class="form-control" placeholder="Ex. A2BSOLSYD" value="<?=$this->user_info->organization_code?>">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputContact" class="control-label">Contact No.</label>
+                            <input type="text" name="phone" class="form-control" placeholder="Contact" value="<?=$this->user_info->phone?>">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-10">
+                        <label for="inputEmail" class="control-label">Email</label>
                         <input disabled="disabled" type="email" name="email" class="form-control" placeholder="Email" value="<?=$this->user_info->email?>">
-                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-2">
-                        <input type="hidden" name="user_id" value="<?=$this->user_id; ?>">
                         <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
                     </div>
                 </form>
             </div>
             <div class="tab-pane fade" id="vert-tabs-shipment" role="tabpanel" aria-labelledby="vert-tabs-shipment-tab">
-            Coming soon...
+                Coming soon...
             </div>
             <div class="tab-pane fade" id="vert-tabs-document" role="tabpanel" aria-labelledby="vert-tabs-document-tab">
                 <form id="document_type" class="mx-5 form-horizontal" _lpchecked="1">
@@ -92,7 +93,6 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2">
-                            <input type="hidden" name="user_id" value="<?=$this->user_id; ?>">
                             <input type="hidden" name="account_id" value="<?=$this->user_info->account_id?>">
                             <button type="submit" class="btn btn-danger">Submit</button>
                             </div>
@@ -101,7 +101,7 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="vert-tabs-general" role="tabpanel" aria-labelledby="vert-tabs-general-tab">
-            Coming soon...
+                Coming soon...
             </div>
         </div>
     </div>
@@ -164,8 +164,7 @@ $(document).ready(function () {
             type: "POST",
             url: document.location.origin + "/admin/update/<?= $this->user_id; ?>/document",
             data: { 
-                doc_type: $('[name="doc_type[]"]').val(), 
-                user_id: <?= $this->user_id; ?>, 
+                doc_type: $('[name="doc_type[]"]').val(),
                 account_id: <?=$this->user_info->account_id; ?>,
             },
             dataType: "JSON",
