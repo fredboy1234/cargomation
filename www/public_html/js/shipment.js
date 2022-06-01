@@ -1432,58 +1432,62 @@ $('#deleteSearch').on('click', function() {
       success: function (res) {
         $('#loader-wrapper').remove();
         const search_obj = JSON.parse(res.search);
-        const recent_obj = JSON.parse(res.recent);
-        search_obj.sort(function(a,b){
-          return new Date(b.created_date) - new Date(a.created_date);
-        });
-        recent_obj.sort(function(a,b){
-          return new Date(b.created_date) - new Date(a.created_date);
-        });
         var search_html = "";
-        var recent_html = "";
-        for (const key in search_obj) {
-          if (Object.hasOwnProperty.call(search_obj, key)) {
-            const search = search_obj[key].search_query;
-            var search_value = "";
-            var search_data = "";
-            for (const key2 in search) {
-              if (Object.hasOwnProperty.call(search, key2)) {
-                var columnname = search[key2].columnname;
-                var type = search[key2].type;
-                var value = search[key2].value;
-                var cond = search[key2].cond;
-                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+        if(search_obj) {
+          search_obj.sort(function(a,b){
+            return new Date(b.created_date) - new Date(a.created_date);
+          });
+          for (const key in search_obj) {
+            if (Object.hasOwnProperty.call(search_obj, key)) {
+              const search = search_obj[key].search_query;
+              var search_value = "";
+              var search_data = "";
+              for (const key2 in search) {
+                if (Object.hasOwnProperty.call(search, key2)) {
+                  var columnname = search[key2].columnname;
+                  var type = search[key2].type;
+                  var value = search[key2].value;
+                  var cond = search[key2].cond;
+                  search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                  search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+                }
               }
+              var text_save = search_obj[key].search_title;
+              text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                  return letter.toUpperCase();
+              });
+              search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+              text_save + '</option>';
             }
-            var text_save = search_obj[key].search_title;
-            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-                return letter.toUpperCase();
-            });
-            search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-            text_save + '</option>';
           }
         }
-        for (const key in recent_obj) {
-          if (Object.hasOwnProperty.call(recent_obj, key)) {
-            const recent = recent_obj[key].search_query;
-            var recent_value = "";
-            var recent_data = "";
-            for (const key2 in recent) {
-              if (Object.hasOwnProperty.call(recent, key2)) {
-                var columnname = recent[key2].columnname;
-                var type = recent[key2].type;
-                var value = recent[key2].value;
-                var cond = recent[key2].cond;
-                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+        const recent_obj = JSON.parse(res.recent);
+        var recent_html = "";
+        if(recent_obj) {
+          recent_obj.sort(function(a,b){
+            return new Date(b.created_date) - new Date(a.created_date);
+          });
+          for (const key in recent_obj) {
+            if (Object.hasOwnProperty.call(recent_obj, key)) {
+              const recent = recent_obj[key].search_query;
+              var recent_value = "";
+              var recent_data = "";
+              for (const key2 in recent) {
+                if (Object.hasOwnProperty.call(recent, key2)) {
+                  var columnname = recent[key2].columnname;
+                  var type = recent[key2].type;
+                  var value = recent[key2].value;
+                  var cond = recent[key2].cond;
+                  recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                  recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+                }
               }
+              const text_recent = recent[0].columnname;
+              recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+              text_recent.replaceAll('_', ' ').toUpperCase() + 
+              " ("+recent[0].value+")" +
+              '</option>';
             }
-            const text_recent = recent[0].columnname;
-            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
-            text_recent.replaceAll('_', ' ').toUpperCase() + 
-            " ("+recent[0].value+")" +
-            '</option>';
           }
         }
         $('#save_search').html(search_html);
