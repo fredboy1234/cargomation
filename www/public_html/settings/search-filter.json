@@ -161,7 +161,8 @@
                 {"option":"Next Month","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(2, 'month').format(defaultDate)]}"},
                 {"option":"Next 2 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(3, 'month').format(defaultDate)]}"},
                 {"option":"Next 6 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(6, 'month').format(defaultDate)]}"},
-                {"option":"Next  12 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}"}
+                {"option":"Next  12 Months","value":"${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}"},
+                {"option":"Custom Date","value":"${[moment().format(defaultDate),moment().format(defaultDate)]}"}
             ]
         }
     ],
