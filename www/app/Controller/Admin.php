@@ -114,7 +114,7 @@ class Admin extends Core\Controller {
                 # code...
                 break;
             case 'document':
-                $this->updateFilterSettings($_POST);
+                $this->updateFilterSettings($_POST, $user_id);
                 $has_error = $User->updateCWDocumentType($_POST, $user_id);
                 // $has_error = $User->updateUserInfo($_POST, $user_id);
                 break;
@@ -135,12 +135,12 @@ class Admin extends Core\Controller {
         // $Contact->deleteContactInfo($contact_id);
     }
 
-    public function updateFilterSettings($data) {
+    public function updateFilterSettings($data, $user_id) {
         $User = new Model\User;
-        $userData = $User->getUserSettings($data['user_id']);
+        $userData = $User->getUserSettings($user_id);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
         // ALL DOCUMENT IN USER CW
-        $all_document = $User->getCWDOcumentType($data['user_id']);
+        $all_document = $User->getCWDOcumentType($user_id);
         // Default Shipment Filter Setting
         $shipment_setting = '/settings/sub-shipment-settings.json';
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$shipment_setting));
