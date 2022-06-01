@@ -1224,7 +1224,7 @@ class Document extends Core\Controller {
         ]);
     }
 
-    public function getDocumentTypeByUserID($user_id = "") {
+    public function getDocumentTypeByUserID_OLD($user_id = "") {
         // Check that the user is authenticated.
         // Utility\Auth::checkAuthenticated();
 
@@ -1266,6 +1266,11 @@ class Document extends Core\Controller {
             $document_type = $this->Document->getDocumentTypeByUserID($sub_id);
         }
 
+        echo json_encode($document_type);
+    }
+
+    public function getDocumentTypeByUserID($user_id = "") {
+        $document_type = $this->Document->getDocumentTypeByUserID($user_id);
         echo json_encode($document_type);
     }
 

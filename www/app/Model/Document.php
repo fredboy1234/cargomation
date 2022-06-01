@@ -322,7 +322,7 @@ class Document extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function getDocumentTypeByUserID($user, $arg = "") {
+    public function getDocumentTypeByUserID_OLD($user, $arg = "") {
         // $query = "SELECT ISNULL(type, 'OTHER') as type {$arg}
         // FROM document
         // LEFT JOIN shipment ON shipment.id = document.shipment_id
@@ -341,6 +341,21 @@ class Document extends Core\Model {
         $query .= " ORDER BY typer ASC";
 
         $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getDocumentTypeByUserID($user_id) {
+        $Db = Utility\Database::getInstance();
+        $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
+        $check_sub_user = $user_id;
+        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+            if($check_user[0]->role_id > 2 ){
+                $check_sub_user = $check_user[0]->account_id;
+            }
+        }
+        $query = "SELECT doc_type AS type, ISNULL(description, 'no description yet') AS description 
+        FROM cargowise_document_type 
+        WHERE user_id = '{$check_sub_user}' ORDER BY type ASC";
         return $Db->query($query)->results();
     }
 
