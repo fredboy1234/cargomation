@@ -367,29 +367,31 @@ class Shipment extends Core\Controller {
         $userData = $User->getUserSettings($user);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
 
-        if ($role_id == 4) {
-            // customer
-            $sub_account = $User->getSubAccountInfo($user);
-            $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
-            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
-        } else if ($role_id == 3) {
-            // staff 
-            $sub_account = $User->getSubAccountInfo($user);
-            $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id);
-        } else {
-            // client admin
-            $doc_type = $User->getUserDocumentType($user, $role_id);
-        }
+        // if ($role_id == 4) {
+        //     // customer
+        //     $sub_account = $User->getSubAccountInfo($user);
+        //     $org_code = Model\User::getUserInfoByID($user)[0]->organization_code;
+        //     $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id, $org_code); // $this->Document->getDocumentType(), 'type');
+        // } else if ($role_id == 3) {
+        //     // staff 
+        //     $sub_account = $User->getSubAccountInfo($user);
+        //     $doc_type = $User->getUserDocumentType($sub_account[0]->account_id, $role_id);
+        // } else {
+        //     // client admin
+        //     $doc_type = $User->getUserDocumentType($user, $role_id);
+        // }
+
+        $doc_type = $User->getCWDOcumentType($user);
 
         // $Role = Model\Role::getInstance($user);
         // $role = $Role->getUserRole($user);
         // $role = Model\Role::getInstance($user_id)->getUserRole($user_id);
 
-        $json_setting = '/settings/shipment-settings.json';
+        // $json_setting = '/settings/shipment-settings.json';
 
-        if($role_id == 4 && empty($doc_type)) {
+        // if($role_id == 4 && empty($doc_type)) {
             $json_setting = '/settings/sub-shipment-settings.json';
-        }
+        // }
 
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
         
@@ -399,14 +401,14 @@ class Shipment extends Core\Controller {
                 $defaultCollection[]=$value->index_value;
             }
         }
-        $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
+        // $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
         if(!empty($doc_type)){
             $count = 17;
             foreach ($doc_type as $key => $value) {
-                if(!in_array($value->type,$defaultDocType)){
+                // if(!in_array($value->type,$defaultDocType)){
                     array_push($userData, (object)[
-                        'index' => strtolower($value->type),
-                        'index_name' => $value->type . " - " . $value->description,
+                        'index' => strtolower($value->doc_type),
+                        'index_name' => $value->doc_type . " - " . $value->description,
                         // 'index_value' => (string)$count++, // Explicit cast
                         'index_value' => strval($count++), // Function call
                         'index_check' => 'false',
@@ -414,7 +416,7 @@ class Shipment extends Core\Controller {
                         'index_sortable' => 'false'
                     ]);
                 }
-            }
+            // }
         } 
         foreach($defaultSettings->table  as $key=> $value){
             if(!empty($defaultCollection)){
@@ -622,17 +624,13 @@ class Shipment extends Core\Controller {
             $etadaycolor = '';
             if($eta_date != '01/01/1900'){
                 if($etadiff > 0){
-                    $etadays =' <span style="color:red;">+'.$etadiff.'d</span>';
+                    $etadays =' <span style="color:red;" class="badge navbar-badge ship-badge">+'.$etadiff.'d</span>';
                 }else{
                     if($etadiff != 0){
-                        $etadays =' <span style="color:green;">'.$etadiff.'d</span>';
+                        $etadays =' <span style="color:green;" class="badge navbar-badge ship-badge">'.$etadiff.'d</span>';
                     }
                 }
             }
-            
-
-            
-
             if(!empty($shipment->vrptShipmentlinks)) {
                 $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
             }
