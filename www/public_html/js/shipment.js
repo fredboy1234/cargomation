@@ -344,7 +344,12 @@ $(document).ready(function () {
     ajax: {
       url: '/shipment/shipmentData/',
       data: function (d) {
-        delete d.columns; // remove columns
+        // delete d.columns; // remove columns
+        for (let i = 0; i < d.columns.length; i++) {
+          if (!d.columns[i].orderable) {
+            delete d.columns[i];
+          }
+        }
         var arr = [];
         console.log(parsed_qs);
         if (typeof parsed_qs['value'] !== "undefined") {
