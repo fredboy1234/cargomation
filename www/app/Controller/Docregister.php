@@ -322,7 +322,66 @@ class Docregister extends Core\Controller {
         }
     }
 
-
+    public function allDocs(){
+        $retData = array();
+        $docs = array();
+        //$data['invoices'] = $this->getInvoices($_SESSION['user']);
+        
+        // foreach($data['invoices'] as $value){
+        //     $retData['data'][] = array(
+        //         "Process ID" => $value->process_id,
+        //         "File Name" => $value->filename,
+        //         "Doc Number" => "empty",
+        //         "Date Uploaded"=> date("d/m/Y"),
+        //         "Uploaded By" => $value->uploadedby,
+        //         "Action"=> "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-danger'>Delete</button></div></div></div>",
+        //         "Status"=> "Processing",
+        //         "invoices"=>''
+        //     );
+        // }
+        $docs = '<div class="d-inline-block w-45">
+                 <h4>Master Bill</h4><br>
+                 <span><strong>00LU1234567</strong></span><br>
+                 <span>Match Status </span> <span class="badge badge-success">Ready</span><br>
+                 <span>Upload Status</span>
+                 <i class="far fa-check-circle"></i>
+                </div>,
+                <div class="d-inline-block w-45">
+                 <h4>House Bill</h4><br>
+                 <span>HBL12345576 HBL12345678 HBL12345678 HBL12345678 HBL12345678</span><br>
+                </div>,
+                <div class="d-inline-block w-45">
+                 <h4>Other Documents Identified</h4><br>
+                 <span>CIV PKL</span><br>
+                </div>,
+                <div class="d-inline-block w-45">
+                    <button type="button" class="btn btn-block btn-outline-info btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">Preview Match Report</button><br>
+                    <button type="button" class="btn btn-block btn-outline-info btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">Send To Cargowise</button><br>
+                    <button type="button" class="btn btn-block btn-outline-success btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">View CW Response</button><br>
+                </div>';
+        $retData['data'][] = array(
+            "Process ID" => 1,
+            "File Name" => 'sampledocs.pdf',
+            "Doc Number" => "empty",
+            "Date Uploaded"=> date("d/m/Y"),
+            "Uploaded By" => 'a2b@a2bsolutiongroup.com',
+            "Action"=> '<div class="btn-group show">
+                            <button type="button" class="btn btn-default">Action</button>
+                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+                            <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu show" role="menu" style="position: absolute; transform: translate3d(65px, 35px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-start">
+                            <a class="dropdown-item" href="#">Push to Cargowise</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-xl">View File</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Delete</a>
+                            </div>
+                            </div>',
+            "Status"=> "Processing",
+            "docs"=> $docs 
+        );
+        echo json_encode($retData);
+    }
 
 
 }

@@ -23,3 +23,72 @@
       }
     })
     /* END BAR CHART */
+
+$(document).ready(function(){
+    var table = $('#docregister').DataTable( {
+      "ajax": '/docregister/allDocs',
+      "processing": true,
+      "ordering": true,
+      "bPaginate":true,
+      "sPaginationType":"full_numbers",
+      "iDisplayLength": 8,
+      "columns": [
+          {
+              "className":      'dt-control',
+              "orderable":      false,
+              "data":           null,
+              "defaultContent": ''
+          },
+          { "data": "Process ID" },
+          { "data": "File Name" },
+          { "data": "Doc Number" },
+          { "data": "Date Uploaded" },
+          { "data": "Uploaded By" },
+          { "data": "Action" },
+          { "data": "Status" }
+      ],
+      "order": [[1, 'desc']],
+      
+  } );
+
+
+  // Add event listener for opening and closing details
+  $('#docregister tbody').on('click', 'td.dt-control', function () {
+    
+    var tr = $(this).closest('tr');
+    var row = table.row( tr );
+    
+    if ( row.child.isShown() ) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    }
+    else {
+        // Open this row
+        row.child( format(row.data()) ).show();
+        tr.addClass('shown');
+    }
+});
+});
+
+function format ( d ) {
+  console.log(d);
+  var invoiceData = [];
+  var htmlinvoice = '';
+  var process_ID = d.pid; 
+  $.each(d,function(okey,oval){
+    console.log(oval);
+    if(okey === "docs"){
+      invoiceData =  oval;
+    }
+  });
+ 
+  $.each(invoiceData.split(","),function(okey,oval){
+    htmlinvoice+=`<td>${oval}</td>`;
+  });
+  
+  if(invoiceData.length ==0){
+    htmlinvoice = "<tr><td> No Results</tr></td>";
+  }
+    return `<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">${htmlinvoice}</table>`;
+}

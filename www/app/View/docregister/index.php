@@ -10,10 +10,28 @@ function generateRandomString($length = 10) {
 }
 $function_mod = array("AP Invoice", "Registration", "Compile");
 $status = array("error","success");
-?> <style>
+?>
+ <style>
   .custom {
     width: 130px !important;
   }
+  table.dataTable td.dt-control:before{
+    height: 1em;
+    width: 1em;
+    margin-top: -9px;
+    display: inline-block;
+    color: white;
+    border: 0.15em solid white;
+    border-radius: 1em;
+    box-shadow: 0 0 0.2em #444;
+    box-sizing: content-box;
+    text-align: center;
+    text-indent: 0 !important;
+    font-family: "Courier New",Courier,monospace;
+    line-height: 1em;
+    content: "+";
+    background-color: #31b131;
+}
 </style>
 <!-- Main content -->
 <section class="content">
@@ -80,62 +98,40 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Pending <span class="badge bg-warning">15</span>
+            <label class="btn btn-outline-info btn-lg bg-success">
+                <input type="radio" name="options" id="option_b2" autocomplete="off"> New <span class="badge bg-success">113</span>
+              </label>
+              <label class="btn btn-outline-info btn-lg bg-info">
+                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Processing <span class="badge bg-info">15</span>
               </label>
               <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b2" autocomplete="off"> Completed <span class="badge bg-success">113</span>
+                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Completed <span class="badge bg-info">15</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b3" autocomplete="off"> Deleted <span class="badge bg-danger">53</span>
+              <label class="btn btn-outline-info btn-lg bg-danger">
+                <input type="radio" name="options" id="option_b3" autocomplete="off"> Failed <span class="badge bg-danger">53</span>
+              </label>
+              <label class="btn btn-outline-info btn-lg bg-info">
+                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Archived <span class="badge bg-info">15</span>
               </label>
             </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table class="table">
+            <table id="docregister" class="table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th></th>
+                  <th>Process ID</th>
                   <th>File Name</th>
                   <th>Type</th>
                   <th>Date Uploaded</th>
-                  <th>Status
-                  <th>
+                  <th>Uploaded By</th>
                   <th>Actions</th>
+                  <th>Status</th>
                 </tr>
               </thead>
-              <tbody> <?php for ($x = 0; $x <= 5; $x++) { ?> <tr>
-                  <td> <?php print_r($x); ?> </td>
-                  <td>HBL_FILE <?php print_r(generateRandomString());?>.xls </td>
-                  <td>HBL_ <?php print_r(generateRandomString());?> </td>
-                  <td>2022-03-02 04:03:00PM</td>
-                  <td> <?php ($status[array_rand($status,1)] == "error")?print_r("
-                                <small class='badge badge-danger'>
-                                  <i class='fas fa-exclamation-triangle'></i> Discrepancy found!
-                                </small>
-                                <br />
-                                <button type='button' class='btn btn-block btn-outline-danger btn-xs custom' data-toggle='modal' data-target='#modal-lg-error'>View</button>"):print_r("
-                                <small class='badge badge-success'>
-                                  <i class='fas fa-check'></i> No Shipment Found
-                                </small>
-                                <br />
-                                <button type='button' class='btn btn-block btn-outline-success btn-xs custom' data-toggle='modal' data-target='#modal-lg-success'>View</button>");?> </td>
-                  <td>
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default">Action</button>
-                      <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <div class="dropdown-menu" role="menu" style="">
-                        <a class="dropdown-item" href="#">Push to Cargowise</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-xl">View File</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr> <?php } ?> </tbody>
+              <tbody>
+              </tbody>
             </table>
           </div>
           <!-- /.card-body -->
@@ -167,6 +163,6 @@ $status = array("error","success");
 </section>
  <?php require_once('status.php');?>
 <script>
-  var user_id = < ? = $this - > user_id; ? > ;
+  var user_id = '< ? = $this - > user_id; ? >' ;
   var token = " < ? = generateRandomString(); ? > ";
 </script>
