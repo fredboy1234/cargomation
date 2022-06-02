@@ -69,7 +69,31 @@ $(document).ready(function(){
         tr.addClass('shown');
     }
 });
+
+  $(document).on('click','.custom',function(){
+    var prim_ref = $(this).attr('data-prim_ref');
+    console.log(prim_ref);
+    var url = "/docregister/preview/" + prim_ref;
+    preloader(url);
+  });
 });
+
+function preloader(url) {
+ var loader ='';
+  $("#preview-doc .modal-body").append(loader);
+  // load the url and show modal on success
+  $("#preview-doc .modal-body").load(url, function (response, status, xhr) {
+    if (xhr.status == 200) {
+      $('#loader-wrapper').remove();
+      $("#preview-doc").modal("show");
+    } else {
+      alert("Error: " + xhr.status + ": " + xhr.statusText);
+      $('#loader-wrapper').remove();
+    }
+  });
+
+  $('button#request').toggle();
+}
 
 function format ( d ) {
   console.log(d);
@@ -91,4 +115,14 @@ function format ( d ) {
     htmlinvoice = "<tr><td> No Results</tr></td>";
   }
     return `<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">${htmlinvoice}</table>`;
+}
+
+
+/*collapse custom js*/
+const sidebar = document.querySelector('.custom_sidebar');
+const mainContent = document.querySelector('.main-content_custom');
+
+function customside(){
+  sidebar.classList.toggle('sidebar_small');
+  mainContent.classList.toggle('main-content_large');
 }

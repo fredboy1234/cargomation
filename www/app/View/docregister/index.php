@@ -161,7 +161,20 @@ $status = array("error","success");
     <!--end of row class-->
   </div>
 </section>
- <?php require_once('status.php');?>
+<div class="modal fade" id="preview-doc">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Preview Shipment Data</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+         </div>
+      </div>
+   </div>
+</div>
 <script>
   var user_id = '< ? = $this - > user_id; ? >' ;
   var token = " < ? = generateRandomString(); ? > ";
