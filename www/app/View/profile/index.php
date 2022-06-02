@@ -52,7 +52,7 @@
                                     <b>Account Type</b> <a class="float-right"><?= $this->user->account_info[0]->plan; ?></a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Users</b> <a class="float-right"><?= $this->user->user_count[0]->count; ?> /<b>
+                                    <b>Registered Users</b> <a class="float-right"><?= $this->user->user_count[0]->count; ?> /<b>
                                 <?= $this->user->account_info[0]->max_users; ?></b></a>
                                 </li>
                                 <?php else: ?>

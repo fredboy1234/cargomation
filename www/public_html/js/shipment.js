@@ -197,60 +197,6 @@ $(document).on('click', '.doc', function (e) {
   localStorage.setItem("row_id", row_id);
 });
 
-//assign shipment to users
-// $(document).on("click", ".assign, .btn-assign", function () {
-//   var userId = $(this).data("userid");
-//   var shipId = $(this).data("shipid");
-//   $.ajax({
-//     url: "/shipment/shipmentAssign",
-//     type: "POST",
-//     data: { "user_id": userId, "shipment_id": shipId },
-//     success: function (res) {
-//       $(document).Toasts('create', {
-//         title: 'Success',
-//         body: 'Shipment was successfully assigned',
-//         autohide: true,
-//         close: false,
-//         class: 'bg-success'
-//       })
-//     }
-//   });
-// });
-
-//unassign shipment to users
-$(document).on("click", ".btn-unassign", function () {
-  var userId = $(this).data("userid");
-  var shipId = $(this).data("shipid");
-
-  $.ajax({
-    url: document.location.origin + "/doctracker/shipmentunAssign",
-    type: "POST",
-    data: { "user_id": userId, "shipment_id": shipId },
-    success: function (res) {
-      $(document).Toasts('create', {
-        title: 'Success',
-        body: 'Shipment was successfully Unassigned',
-        autohide: true,
-        close: false,
-        class: 'bg-success'
-      })
-    }
-  });
-});
-
-//asssigned all
-// $(document).on("click", "#assignall", function () {
-//   var pp = $(this).parent().parent().find('.dropdown-item');
-//   var count = 0;
-//   assignBulk(pp, 'shipmentAssign');
-// });
-
-// $(document).on("click", "#unassign", function () {
-//   var pp = $(this).parent().parent().find('.dropdown-item');
-//   var count = 0;
-//   assignBulk(pp, 'shipmentunAssign');
-// });
-
 $(document).ready(function () {
 
   if (parsed_qs.calendar != '' && typeof parsed_qs.calendar != 'undefined') {
@@ -342,7 +288,7 @@ $(document).ready(function () {
     columns: tableColumnData,
     order: [[0, 'desc']],
     ajax: {
-      url: '/shipment/shipmentData/',
+      url: '/shipment/shipmentData/' + user_id,
       data: function (d) {
         // delete d.columns; // remove columns
         for (let i = 0; i < d.columns.length; i++) {
@@ -583,7 +529,7 @@ $(document).ready(function () {
     }
   });
 
-  //For Settings
+  /*** Column Filters START ***/
   $('select[name="settings-dual"]').bootstrapDualListbox({
     nonSelectedListLabel: 'Available Columns',
     selectedListLabel: 'Showing Columns',
@@ -625,13 +571,13 @@ $(document).ready(function () {
         last = (set1.length ? set1 : set2)[0];
 
       map = comp;
-      var Sdata = getSettings(map);
+      // var Sdata = getSettings(map);
 
       $.ajax({
         url: document.location.origin + '/shipment/addUserSettings/',
         type: "POST",
         dataType: "json",
-        data: { "settings": Sdata },
+        data: { user_id: user_id, data: map },
         success: function (res) {
           // for checking only
           hideShowResetSettings();
@@ -716,7 +662,7 @@ $(document).ready(function () {
 
   $('.moveall').text('Show All');
   $('.removeall').text('Hide All');
-  //end of settings
+  /*** Column Filters END ***/
 
   //re order column
   table.on('column-reorder', function (e, settings, details) {
@@ -1423,91 +1369,91 @@ $("#recent_search").on('change', function(e) {
 $('#deleteSearch').on('click', function() {
   $('select').find(":selected").hide();
 });
-  // Func Recent/Save Search
-  function loadRecentSave() {
-    $.ajax({
-      url: "/shipment/getRecentSave/",
-      type: "post",
-      data: {user_id:user_id},
-      dataType: "json",
-      beforeSend: function (res) {
-        console.log("loading...");
-        $("#fsearch > .card-body").append(mini_loader);
-      },
-      success: function (res) {
-        $('#loader-wrapper').remove();
-        const search_obj = JSON.parse(res.search);
-        var search_html = "";
-        if(search_obj) {
-          search_obj.sort(function(a,b){
-            return new Date(b.created_date) - new Date(a.created_date);
-          });
-          for (const key in search_obj) {
-            if (Object.hasOwnProperty.call(search_obj, key)) {
-              const search = search_obj[key].search_query;
-              var search_value = "";
-              var search_data = "";
-              for (const key2 in search) {
-                if (Object.hasOwnProperty.call(search, key2)) {
-                  var columnname = search[key2].columnname;
-                  var type = search[key2].type;
-                  var value = search[key2].value;
-                  var cond = search[key2].cond;
-                  search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                  search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
-                }
-              }
-              var text_save = search_obj[key].search_title;
-              text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-                  return letter.toUpperCase();
-              });
-              search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-              text_save + '</option>';
-            }
-          }
-        }
-        const recent_obj = JSON.parse(res.recent);
-        var recent_html = "";
-        if(recent_obj) {
-          recent_obj.sort(function(a,b){
-            return new Date(b.created_date) - new Date(a.created_date);
-          });
-          for (const key in recent_obj) {
-            if (Object.hasOwnProperty.call(recent_obj, key)) {
-              const recent = recent_obj[key].search_query;
-              var recent_value = "";
-              var recent_data = "";
-              for (const key2 in recent) {
-                if (Object.hasOwnProperty.call(recent, key2)) {
-                  var columnname = recent[key2].columnname;
-                  var type = recent[key2].type;
-                  var value = recent[key2].value;
-                  var cond = recent[key2].cond;
-                  recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                  recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
-                }
-              }
-              const text_recent = recent[0].columnname;
-              recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
-              text_recent.replaceAll('_', ' ').toUpperCase() + 
-              " ("+recent[0].value+")" +
-              '</option>';
-            }
-          }
-        }
-        $('#save_search').html(search_html);
-        $('#recent_search').html(recent_html);
-      },
-      error: function (res) {
-        console.log(res);
-        $('#loader-wrapper').remove();
-      },
-      complete: function (res) {
-        console.log(res);
-        $('#loader-wrapper').remove();
-      },
-    }).done(function(ev) {
-      console.log(ev);
+// Func Recent/Save Search
+function loadRecentSave() {
+  $.ajax({
+    url: "/shipment/getRecentSave/",
+    type: "post",
+    data: {user_id:user_id},
+    dataType: "json",
+    beforeSend: function (res) {
+      // console.log("loading...");
+      $("#fsearch > .card-body").append(mini_loader);
+    },
+    success: function (res) {
       $('#loader-wrapper').remove();
-    });
-  }
+      const search_obj = JSON.parse(res.search);
+      var search_html = "";
+      if(search_obj) {
+        search_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
+        for (const key in search_obj) {
+          if (Object.hasOwnProperty.call(search_obj, key)) {
+            const search = search_obj[key].search_query;
+            var search_value = "";
+            var search_data = "";
+            for (const key2 in search) {
+              if (Object.hasOwnProperty.call(search, key2)) {
+                var columnname = search[key2].columnname;
+                var type = search[key2].type;
+                var value = search[key2].value;
+                var cond = search[key2].cond;
+                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
+            }
+            var text_save = search_obj[key].search_title;
+            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                return letter.toUpperCase();
+            });
+            search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+            text_save + '</option>';
+          }
+        }
+      }
+      const recent_obj = JSON.parse(res.recent);
+      var recent_html = "";
+      if(recent_obj) {
+        recent_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
+        for (const key in recent_obj) {
+          if (Object.hasOwnProperty.call(recent_obj, key)) {
+            const recent = recent_obj[key].search_query;
+            var recent_value = "";
+            var recent_data = "";
+            for (const key2 in recent) {
+              if (Object.hasOwnProperty.call(recent, key2)) {
+                var columnname = recent[key2].columnname;
+                var type = recent[key2].type;
+                var value = recent[key2].value;
+                var cond = recent[key2].cond;
+                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
+            }
+            const text_recent = recent[0].columnname;
+            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+            text_recent.replaceAll('_', ' ').toUpperCase() + 
+            " ("+recent[0].value+")" +
+            '</option>';
+          }
+        }
+      }
+      $('#save_search').html(search_html);
+      $('#recent_search').html(recent_html);
+    },
+    error: function (res) {
+      // console.log(res);
+      $('#loader-wrapper').remove();
+    },
+    complete: function (res) {
+      // console.log(res);
+      $('#loader-wrapper').remove();
+    },
+  }).done(function(ev) {
+    // console.log(ev);
+    $('#loader-wrapper').remove();
+  });
+}

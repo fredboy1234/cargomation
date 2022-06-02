@@ -279,7 +279,9 @@ class User extends Core\Model {
                                 WHERE users.id = '{$user}'")->results();
         $user_count = $Db->query("SELECT count(*) AS count
                                 FROM user_info
-                                WHERE account_id = '{$user}'")->results();
+                                WHERE account_id = '{$user}' 
+                                AND user_id != '{$user}' 
+                                AND contact_id IS NOT NULL")->results();
 
         $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
         
@@ -313,27 +315,31 @@ class User extends Core\Model {
     }
 
 
-    public function addUserSettings($data) {
-        $fields = array(
-            $user_id = $data['user'],
-            $hub =json_encode($data['settings']['hub']),
-            $profile =json_encode($data['settings']['profile']),
-            $shipment =json_encode($data['settings']['shipment']),
-            $document=json_encode($data['settings']['document']),
-        );
+    public function addUserSettings($column, $user_id, $data) {
+        // $fields = array(
+        //     $user_id = $data['user'],
+        //     $hub =json_encode($data['settings']['hub']),
+        //     $profile =json_encode($data['settings']['profile']),
+        //     $shipment =json_encode($data['settings']['shipment']),
+        //     $document=json_encode($data['settings']['document']),
+        // );
 
-        $Db = Utility\Database::getInstance();
-        $select = $Db->query("SELECT * from user_settings where user_id = '{$user_id}'")->results();
-        if(empty($select)){
-            return $Db->query("INSERT
-                           INTO user_settings (user_id,hub,profile,shipment,document)
-                           VALUES('{$user_id}','{$hub}','{$profile}','{$shipment}','{$document}')");
-        }else{
-            return $Db->query("UPDATE user_settings 
-                                SET hub ='{$hub}' ,profile='{$profile}',shipment='{$shipment}',document='{$document}'
-                                WHERE user_id = '{$user_id}'");
-        }
+        //$value = json_encode($data);
         
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
+        
+        if(empty($select)){
+            $query = "INSERT
+            INTO user_settings (user_id, {$column})
+            VALUES('{$user_id}','{$column}')";
+        }else{
+            $query = "UPDATE user_settings 
+            SET {$column} = '" . str_replace("'", "`", $data) . "' 
+            WHERE user_id = '{$user_id}'";
+        }
+        return $Db->query($query)->error();
+
         //return null;
     }
 
@@ -872,8 +878,16 @@ class User extends Core\Model {
 
     // Default CW DocumentType
     public function getCWDOcumentType($user_id) {
-        $query = "SELECT * FROM cargowise_document_type WHERE user_id = {$user_id} ORDER BY doc_type ASC";
         $Db = Utility\Database::getInstance();
+        $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
+        
+        $check_sub_user = $user_id;
+        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+            if($check_user[0]->role_id > 2 ){
+                $check_sub_user = $check_user[0]->account_id;
+            }
+        }
+        $query = "SELECT * FROM cargowise_document_type WHERE user_id = {$check_sub_user} ORDER BY doc_type ASC";
         return $Db->query($query)->results();
     }
 
