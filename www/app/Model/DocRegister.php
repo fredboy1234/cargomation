@@ -26,11 +26,12 @@ class DocRegister extends Core\Model {
 
     public function getDocReportReg($user_id){
         $Db = Utility\Database::getInstance();
-        $query = "SELECT * FROM match_registration mr 
+        $query = "SELECT mr.filename as dfilename,* FROM match_registration mr 
                  inner join match_report_reg mrr on mrr.prim_ref = mr.process_id
                  WHERE mr.user_id = '{$user_id}'";
         return $Db->query($query)->results();
     }
+
     public function getDocReportRegSingle($user_id, $prim_ref){
         $Db = Utility\Database::getInstance();
         $query = "SELECT mr.filepath as filename,* 

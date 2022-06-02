@@ -331,7 +331,9 @@ class Docregister extends Core\Controller {
         $docreg = $this->getDocReportReg($_SESSION['user']);
        
         if(!empty($docreg)){
+            
             foreach($docreg as $docval){
+              
                 if(isset($docval->match_report)){
                     $docmatch = json_decode($docval->match_report);
                     if(isset($docmatch->HubJSONOutput->ParsedPDFData)){
@@ -362,7 +364,7 @@ class Docregister extends Core\Controller {
                 
                 $retData['data'][] = array(
                     "Process ID" => $docval->process_id,
-                    "File Name" => $docval->filename,
+                    "File Name" => $docval->dfilename,
                     "Doc Number" => $docval->doc_type,
                     "Date Uploaded"=> $docval->dateuploaded,
                     "Uploaded By" => $docval->uploadedby,
@@ -443,7 +445,7 @@ class Docregister extends Core\Controller {
            
             $filename = isset($doc[0]) ? $doc[0]->filepath : '' ;
         }
-       
+        
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
             'container_details' => $container_details,
