@@ -340,27 +340,76 @@ class Shipment extends Core\Controller {
     }
 
     // this must be change to api. temporary only
-    public function addUserSettings($user=""){
+    public function addUserSettings($column = 'shipment', $user=""){
+        $User = new Model\User;
+        switch ($column) {
+            case 'shipment':
+                $data = $this->sanitizeSettings($User, $_POST);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
 
-        Utility\Auth::checkAuthenticated();
+        $User->addUserSettings($column, $_POST['user_id'], $data);
+        // echo json_encode($_POST['settings']);
+        echo $data;
+    }
 
-        if (!$user) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user = Utility\Session::get($userSession);
+    public function sanitizeSettings($User, $data) {
+        // $User = new Model\User;
+        // $userData = $User->getUserSettings($data['user_id']);
+        $shipment_settings = [];
+
+        // DEFAULT SHIPMENT COLUMN SETTTING
+        $json_setting = '/settings/sub-shipment-settings.json';
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+
+        // SHIPMENT COLUMN NEEDS TO SHOW
+        $need_show = empty($data['data']) ? [1] : $data['data'];
+        foreach($defaultSettings->table  as $key=> $value){
+            if(in_array($value->index_value, $need_show)){
+                $value->index_check = 'true';
+            } else {
+                $value->index_check = 'false';
             }
+            $shipment_settings[] = $value;
         }
-        if (!$User = Model\User::getInstance($user)) {
-            Utility\Redirect::to(APP_URL);
-        }
-        $User = Model\User::getInstance($user);
-        $data['user'] = $user;
-        $data['settings']['shipment'] = $_POST['settings'];
-        $data['settings']['document'] = "";
-        $data['settings']['profile'] = "";
-        $data['settings']['hub'] = "";
-        $User->addUserSettings($data);
-        echo json_encode($_POST['settings']);
+
+        // START COUNT FOR DOCUMENT TYPE
+        $count = count($shipment_settings);
+
+        // DEFAULT DOCUMENT COLUMN SETTING
+        $doc_type = $User->getCWDOcumentType($data['user_id']);
+
+        // DOCUMENT COLUMN NEEDS TO SHOW
+        if(!empty($doc_type)){
+            foreach ($doc_type as $key => $value) {
+                if(in_array($count, $need_show)){
+                    array_push($shipment_settings, (object)[
+                        'index' => strtolower($value->doc_type),
+                        'index_name' => $value->doc_type . " - " . $value->description,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'true',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                } else {
+                    array_push($shipment_settings, (object)[
+                        'index' => strtolower($value->doc_type),
+                        'index_name' => $value->doc_type . " - " . $value->description,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'false',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                }
+            }
+        } 
+        return json_encode($shipment_settings);
     }
 
     public function defaultSettings($user="", $role_id=""){

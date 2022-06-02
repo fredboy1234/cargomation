@@ -315,27 +315,31 @@ class User extends Core\Model {
     }
 
 
-    public function addUserSettings($data) {
-        $fields = array(
-            $user_id = $data['user'],
-            $hub =json_encode($data['settings']['hub']),
-            $profile =json_encode($data['settings']['profile']),
-            $shipment =json_encode($data['settings']['shipment']),
-            $document=json_encode($data['settings']['document']),
-        );
+    public function addUserSettings($column, $user_id, $data) {
+        // $fields = array(
+        //     $user_id = $data['user'],
+        //     $hub =json_encode($data['settings']['hub']),
+        //     $profile =json_encode($data['settings']['profile']),
+        //     $shipment =json_encode($data['settings']['shipment']),
+        //     $document=json_encode($data['settings']['document']),
+        // );
 
-        $Db = Utility\Database::getInstance();
-        $select = $Db->query("SELECT * from user_settings where user_id = '{$user_id}'")->results();
-        if(empty($select)){
-            return $Db->query("INSERT
-                           INTO user_settings (user_id,hub,profile,shipment,document)
-                           VALUES('{$user_id}','{$hub}','{$profile}','{$shipment}','{$document}')");
-        }else{
-            return $Db->query("UPDATE user_settings 
-                                SET hub ='{$hub}' ,profile='{$profile}',shipment='{$shipment}',document='{$document}'
-                                WHERE user_id = '{$user_id}'");
-        }
+        //$value = json_encode($data);
         
+        $Db = Utility\Database::getInstance();
+        $select = $Db->query("SELECT {$column} from user_settings where user_id = '{$user_id}'")->results();
+        
+        if(empty($select)){
+            $query = "INSERT
+            INTO user_settings (user_id, {$column})
+            VALUES('{$user_id}','{$column}')";
+        }else{
+            $query = "UPDATE user_settings 
+            SET {$column} = '" . str_replace("'", "`", $data) . "' 
+            WHERE user_id = '{$user_id}'";
+        }
+        return $Db->query($query)->error();
+
         //return null;
     }
 
