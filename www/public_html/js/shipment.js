@@ -691,7 +691,7 @@ $(document).ready(function () {
     setTimeout(function () {
       var Sdata = getSettings();
       $.ajax({
-        url: document.location.origin + '/shipment/addUserSettings/',
+        url: document.location.origin + '/shipment/addUserSettings/column-order',
         type: "POST",
         dataType: "json",
         data: { user_id: user_id, data: Sdata },

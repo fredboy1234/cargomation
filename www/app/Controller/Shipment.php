@@ -344,11 +344,11 @@ class Shipment extends Core\Controller {
         $User = new Model\User;
         switch ($column) {
             case 'shipment':
-                if(isset($_POST['data'][0]['index'])) {
-                    $data = $this->columnOrder($User, $_POST);
-                } else {
-                    $data = $this->sanitizeSettings($User, $_POST);
-                } 
+                $data = $this->sanitizeSettings($User, $_POST);
+                break;
+            case 'shipment':
+                $data = $this->columnOrder($User, $_POST);
+                $column = 'shipment';
                 break;
             case 'document':
                 
