@@ -346,7 +346,7 @@ class Shipment extends Core\Controller {
             case 'shipment':
                 $data = $this->sanitizeSettings($User, $_POST);
                 break;
-            case 'shipment':
+            case 'column-order':
                 $data = $this->columnOrder($User, $_POST);
                 $column = 'shipment';
                 break;
@@ -399,12 +399,39 @@ class Shipment extends Core\Controller {
                     }
                 }
             }
-        }
 
-        // DOCUMENT COLUMN NEEDS TO SHOW
-        if(!empty($doc_type)){
-            foreach ($doc_type as $key => $value) {
-                if(in_array($value->doc_type, $selected_doc)){
+            // DOCUMENT COLUMN NEEDS TO SHOW
+            if(!empty($doc_type)){
+                foreach ($doc_type as $key => $value) {
+                    if(in_array($value->doc_type, $selected_doc)){
+                        if(in_array(strtolower($value->doc_type), $need_show)){
+                            array_push($shipment_settings, (object)[
+                                'index' => strtolower($value->doc_type),
+                                'index_name' => $value->doc_type . " - " . $value->description,
+                                // 'index_value' => (string)$count++, // Explicit cast
+                                'index_value' => strval($count++), // Function call
+                                'index_check' => 'true',
+                                'index_lvl' => 'document',
+                                'index_sortable' => 'false'
+                            ]);
+                        } else {
+                            array_push($shipment_settings, (object)[
+                                'index' => strtolower($value->doc_type),
+                                'index_name' => $value->doc_type . " - " . $value->description,
+                                // 'index_value' => (string)$count++, // Explicit cast
+                                'index_value' => strval($count++), // Function call
+                                'index_check' => 'false',
+                                'index_lvl' => 'document',
+                                'index_sortable' => 'false'
+                            ]);
+                        }
+                    }
+                }
+            } 
+        } else {
+            // DOCUMENT COLUMN NEEDS TO SHOW
+            if(!empty($doc_type)){
+                foreach ($doc_type as $key => $value) {
                     if(in_array(strtolower($value->doc_type), $need_show)){
                         array_push($shipment_settings, (object)[
                             'index' => strtolower($value->doc_type),
@@ -427,8 +454,10 @@ class Shipment extends Core\Controller {
                         ]);
                     }
                 }
-            }
-        } 
+            } 
+        }
+
+
         return json_encode($shipment_settings);
     }
 
@@ -534,11 +563,19 @@ class Shipment extends Core\Controller {
             $count = count($shipment_settings);
 
             // DEFAULT DOCUMENT COLUMN SETTING (CLIENT ADMIN)
-            if($role_id == 2) {
-                $doc_type = $User->getCWDOcumentType($user_id);
-            } else {
-                $sub_account = $User->getSubAccountInfo($user_id);
-                $doc_type = $User->getSubDocumentType($user_id, $sub_account[0]->account_id)[0]->shipment;
+            // $doc_type = $User->getCWDOcumentType($data['user_id']);
+            $doc_type = $User->getClientDocumentType($user_id);
+            $selected_doc = [];
+            $sub_account = $User->getSubAccountInfo($user_id);
+            if($sub_account[0]->role_id > 2) {
+                $document_settings = json_decode($User->getSubDocumentType($user_id, $sub_account[0]->account_id)[0]->shipment);
+                if(!is_null($document_settings)) {
+                    foreach ($document_settings as $key => $value) {
+                        if($value->index_lvl == 'document') {
+                            $selected_doc[] = strtoupper($value->index);
+                        }
+                    }
+                }
             }
 
             // DOCUMENT COLUMN NEEDS TO SHOW
