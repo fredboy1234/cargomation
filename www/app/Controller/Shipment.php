@@ -344,9 +344,15 @@ class Shipment extends Core\Controller {
         $User = new Model\User;
         switch ($column) {
             case 'shipment':
-                $data = $this->sanitizeSettings($User, $_POST);
+                if(isset($_POST['data'][0]['index'])) {
+                    $data = $this->columnOrder($User, $_POST);
+                } else {
+                    $data = $this->sanitizeSettings($User, $_POST);
+                } 
                 break;
-            
+            case 'document':
+                
+                break;
             default:
                 # code...
                 break;
@@ -358,18 +364,17 @@ class Shipment extends Core\Controller {
     }
 
     public function sanitizeSettings($User, $data) {
-        // $User = new Model\User;
-        // $userData = $User->getUserSettings($data['user_id']);
-        $shipment_settings = [];
 
         // DEFAULT SHIPMENT COLUMN SETTTING
         $json_setting = '/settings/sub-shipment-settings.json';
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
 
+        $shipment_settings = [];
+
         // SHIPMENT COLUMN NEEDS TO SHOW
         $need_show = empty($data['data']) ? [1] : $data['data'];
         foreach($defaultSettings->table  as $key=> $value){
-            if(in_array($value->index_value, $need_show)){
+            if(in_array($value->index, $need_show)){
                 $value->index_check = 'true';
             } else {
                 $value->index_check = 'false';
@@ -380,39 +385,54 @@ class Shipment extends Core\Controller {
         // START COUNT FOR DOCUMENT TYPE
         $count = count($shipment_settings);
 
-        // DEFAULT DOCUMENT COLUMN SETTING
-        $doc_type = $User->getCWDOcumentType($data['user_id']);
+        // DEFAULT DOCUMENT COLUMN SETTING (CLIENT ADMIN)
+        // $doc_type = $User->getCWDOcumentType($data['user_id']);
+        $doc_type = $User->getClientDocumentType($data['user_id']);
+        $selected_doc = [];
+        $sub_account = $User->getSubAccountInfo($data['user_id']);
+        if($sub_account[0]->role_id > 2) {
+            $document_settings = json_decode($User->getSubDocumentType($data['user_id'], $sub_account[0]->account_id)[0]->shipment);
+            if(!is_null($document_settings)) {
+                foreach ($document_settings as $key => $value) {
+                    if($value->index_lvl == 'document') {
+                        $selected_doc[] = strtoupper($value->index);
+                    }
+                }
+            }
+        }
 
         // DOCUMENT COLUMN NEEDS TO SHOW
         if(!empty($doc_type)){
             foreach ($doc_type as $key => $value) {
-                if(in_array($count, $need_show)){
-                    array_push($shipment_settings, (object)[
-                        'index' => strtolower($value->doc_type),
-                        'index_name' => $value->doc_type . " - " . $value->description,
-                        // 'index_value' => (string)$count++, // Explicit cast
-                        'index_value' => strval($count++), // Function call
-                        'index_check' => 'true',
-                        'index_lvl' => 'document',
-                        'index_sortable' => 'false'
-                    ]);
-                } else {
-                    array_push($shipment_settings, (object)[
-                        'index' => strtolower($value->doc_type),
-                        'index_name' => $value->doc_type . " - " . $value->description,
-                        // 'index_value' => (string)$count++, // Explicit cast
-                        'index_value' => strval($count++), // Function call
-                        'index_check' => 'false',
-                        'index_lvl' => 'document',
-                        'index_sortable' => 'false'
-                    ]);
+                if(in_array($value->doc_type, $selected_doc)){
+                    if(in_array(strtolower($value->doc_type), $need_show)){
+                        array_push($shipment_settings, (object)[
+                            'index' => strtolower($value->doc_type),
+                            'index_name' => $value->doc_type . " - " . $value->description,
+                            // 'index_value' => (string)$count++, // Explicit cast
+                            'index_value' => strval($count++), // Function call
+                            'index_check' => 'true',
+                            'index_lvl' => 'document',
+                            'index_sortable' => 'false'
+                        ]);
+                    } else {
+                        array_push($shipment_settings, (object)[
+                            'index' => strtolower($value->doc_type),
+                            'index_name' => $value->doc_type . " - " . $value->description,
+                            // 'index_value' => (string)$count++, // Explicit cast
+                            'index_value' => strval($count++), // Function call
+                            'index_check' => 'false',
+                            'index_lvl' => 'document',
+                            'index_sortable' => 'false'
+                        ]);
+                    }
                 }
             }
         } 
         return json_encode($shipment_settings);
     }
 
-    public function defaultSettings($user="", $role_id=""){
+    public function defaultSettings_OLD($user="", $role_id=""){
 
         $User = Model\User::getInstance($user);
         $userData = $User->getUserSettings($user);
@@ -486,6 +506,65 @@ class Shipment extends Core\Controller {
             return json_encode($userData);    
         }
 
+    }
+
+    public function defaultSettings($user_id = "", $role_id="") {
+        $User = Model\User::getInstance($user_id);
+        $settings = $User->getUserSettings($user_id);
+
+        if(is_null($settings[0]->shipment)) {
+            // DEFAULT SHIPMENT COLUMN SETTTING
+            $json_setting = '/settings/sub-shipment-settings.json';
+            $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+
+            $shipment_settings = [];
+
+            // SHIPMENT COLUMN NEEDS TO SHOW
+            // $need_show = empty($data['data']) ? [1] : $data['data'];
+            foreach($defaultSettings->table  as $key=> $value){
+                // if(in_array($value->index_value, $need_show)){
+                //     $value->index_check = 'true';
+                // } else {
+                //     $value->index_check = 'false';
+                // }
+                $shipment_settings[] = $value;
+            }
+
+            // START COUNT FOR DOCUMENT TYPE
+            $count = count($shipment_settings);
+
+            // DEFAULT DOCUMENT COLUMN SETTING (CLIENT ADMIN)
+            if($role_id == 2) {
+                $doc_type = $User->getCWDOcumentType($user_id);
+            } else {
+                $sub_account = $User->getSubAccountInfo($user_id);
+                $doc_type = $User->getSubDocumentType($user_id, $sub_account[0]->account_id)[0]->shipment;
+            }
+
+            // DOCUMENT COLUMN NEEDS TO SHOW
+            if(!is_null($doc_type)){
+                foreach ($doc_type as $key => $value) {
+                    array_push($shipment_settings, (object)[
+                        'index' => strtolower($value->doc_type),
+                        'index_name' => $value->doc_type . " - " . $value->description,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'true',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                }
+            } 
+            $result = json_encode($shipment_settings);
+        } else {
+            $result = $settings[0]->shipment;
+        }
+
+        return $result;
+    }
+
+    public function columnOrder($User, $data) {
+        return json_encode($data['data']);
     }
 
     public function info($user_id = "", $shipment_num = "") {
