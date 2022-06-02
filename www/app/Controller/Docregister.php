@@ -326,11 +326,9 @@ class Docregister extends Core\Controller {
         $retData = array();
         $docs = array();
         $docmatch ='';
-        echo"<pre>";
-        
+       
         $docreg = $this->getDocReportReg($_SESSION['user']);
-        print_r($docreg);
-        exit;
+       
         if(!empty($docreg)){
             
             foreach($docreg as $docval){
