@@ -28,7 +28,7 @@ class DocRegister extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT mr.filename as dfilename,* FROM match_registration mr 
                  inner join match_report_reg mrr on mrr.prim_ref = mr.process_id
-                 WHERE mr.user_id = '{$user_id}' and process_type = 'ShipmentRegistration'";
+                 WHERE mr.user_id = '{$user_id}'";
         return $Db->query($query)->results();
     }
 
