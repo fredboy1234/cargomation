@@ -23,7 +23,9 @@
       }
     })
     /* END BAR CHART */
-
+    var progressbar = `<div class="progress">
+    <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+    </div>`;
 $(document).ready(function(){
     var table = $('#docregister').DataTable( {
       "ajax": '/docregister/allDocs',
