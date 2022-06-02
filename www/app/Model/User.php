@@ -279,7 +279,9 @@ class User extends Core\Model {
                                 WHERE users.id = '{$user}'")->results();
         $user_count = $Db->query("SELECT count(*) AS count
                                 FROM user_info
-                                WHERE account_id = '{$user}'")->results();
+                                WHERE account_id = '{$user}' 
+                                AND user_id != '{$user}' 
+                                AND contact_id IS NOT NULL")->results();
 
         $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
         
