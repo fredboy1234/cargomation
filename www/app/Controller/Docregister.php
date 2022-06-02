@@ -326,10 +326,11 @@ class Docregister extends Core\Controller {
         $retData = array();
         $docs = array();
         $docmatch ='';
-        //echo"<pre>";
+        echo"<pre>";
         
         $docreg = $this->getDocReportReg($_SESSION['user']);
-       
+        print_r($docreg);
+        exit;
         if(!empty($docreg)){
             
             foreach($docreg as $docval){
@@ -404,16 +405,6 @@ class Docregister extends Core\Controller {
         echo json_encode($retData);
     }
 
-    public function getDocReportReg($user_id){
-        $APinvoice = Model\DocRegister::getInstance();
-        return $APinvoice->getDocReportReg($user_id);
-    }
-
-    public function getDocReportRegSingle($user_id,$prim_ref){
-        $APinvoice = Model\DocRegister::getInstance();
-        return $APinvoice->getDocReportRegSingle($user_id,$prim_ref);
-    }
-
     public function preview($prim_ref=""){
         $url = explode("/",$_GET['url']);
         $prim_ref = end($url);
@@ -455,4 +446,96 @@ class Docregister extends Core\Controller {
             'tableheader'=>$tableheader
         ]);
     }
+
+    public function customUpload(){
+        if($_FILES['file']['name'] != ''){
+            $test = explode('.', $_FILES['file']['name']);
+            $extension = end($test);    
+            $name = $_FILES['file']['name'];
+            
+            $User = Model\User::getInstance($_SESSION['user']);
+            $email = $User->data()->email;
+           // $user_id = $User->data()->id;
+            
+            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+            //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
+
+            if (!file_exists($newFilePath)) {
+                mkdir($newFilePath, 0777, true);
+            }
+            
+            $location = $newFilePath.$name;
+           
+            move_uploaded_file($_FILES['file']['tmp_name'], $location);
+        
+           // $file_server_path = realpath($newFileUrl.$name);
+            // $data['user_id'] = $_SESSION['user'];
+            // $data['filename'] = $name;
+            // $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
+            // $data['uploadedby']= $email;
+            // $APinvoice = Model\Apinvoice::getInstance();
+            
+            // $APinvoice->insertMatchHeader($data);
+
+            //print_r($file_server_path);
+            // $arr  = array(
+            //     'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_APINVOICE/IN/'.$name,
+            //     'client' => 'A2B',
+            //     'user_id' => $_SESSION['user'],
+            //     'process_id' => $this->getLastID()
+            // );
+           
+           // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+           
+           // $url ='https://cargomation.com:8001/compare'; 
+            
+           // $result = $this->post($url, $arr, '');
+           // print_r($arr);
+           // print_r($result);
+          // return "success";
+        }
+    }
+
+    public function uploadAndInsert(){
+        if($_FILES['file']['name'] != ''){
+            $test = explode('.', $_FILES['file']['name']);
+            $extension = end($test);    
+            $name = $_FILES['file']['name'];
+            
+            $User = Model\User::getInstance($_SESSION['user']);
+            $email = $User->data()->email;
+           // $user_id = $User->data()->id;
+            
+            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+
+            $location = $newFilePath.$name;
+            
+            $data['user_id'] = $_SESSION['user'];
+            $data['filename'] = $name;
+            $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
+            $data['uploadedby']= $email;
+            $APinvoice = Model\Apinvoice::getInstance();
+            
+            $this->insertDoc($data);
+
+           return "success";
+        }
+    }
+
+
+    public function getDocReportReg($user_id){
+        $APinvoice = Model\DocRegister::getInstance();
+        return $APinvoice->getDocReportReg($user_id);
+    }
+
+    public function getDocReportRegSingle($user_id,$prim_ref){
+        $APinvoice = Model\DocRegister::getInstance();
+        return $APinvoice->getDocReportRegSingle($user_id,$prim_ref);
+    }
+
+    public function insertDoc($data){
+        $Docregister = Model\DocRegister::getInstance();
+        return $Docregister->insertDoc($data);
+    }
+    
 }

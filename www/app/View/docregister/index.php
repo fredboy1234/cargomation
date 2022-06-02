@@ -63,8 +63,8 @@ $status = array("error","success");
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <button type="button" class="btn btn-block btn-outline-info btn-lg">
-              <i style="font-size:15`px" class="fa">&#xf085;</i>&nbsp; <b style="font-size: 15pt;">Upload</b>
+            <button id="uploadoc" type="button" class="btn btn-block btn-outline-info btn-lg">
+              <i style="font-size:15px" class="fa">&#xf085;</i>&nbsp; <b style="font-size: 15pt;">Upload</b>
             </button>
           </div>
         </div>

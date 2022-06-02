@@ -55,26 +55,104 @@ $(document).ready(function(){
   // Add event listener for opening and closing details
   $('#docregister tbody').on('click', 'td.dt-control', function () {
     
-    var tr = $(this).closest('tr');
-    var row = table.row( tr );
-    
-    if ( row.child.isShown() ) {
-        // This row is already open - close it
-        row.child.hide();
-        tr.removeClass('shown');
-    }
-    else {
-        // Open this row
-        row.child( format(row.data()) ).show();
-        tr.addClass('shown');
-    }
-});
+      var tr = $(this).closest('tr');
+      var row = table.row( tr );
+      
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format(row.data()) ).show();
+          tr.addClass('shown');
+      }
+  });
 
   $(document).on('click','.custom',function(){
     var prim_ref = $(this).attr('data-prim_ref');
     console.log(prim_ref);
     var url = "/docregister/preview/" + prim_ref;
     preloader(url);
+  });
+
+  //upload file 
+  $("#uploadoc, #upload-btn").on("click",function(){
+  
+    var file_data = $('#invoice').prop('files')[0];   
+    var form_data = new FormData(); 
+    var data=[];
+    form_data.append('file', file_data);
+   // data['user_id'] = user_id;
+    data['form_data'] = form_data;
+   
+    //auto insert after upload separated for some reason
+    $.ajax({
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          // Upload progress
+          xhr.upload.addEventListener("progress", function(evt){
+            
+            if (evt.lengthComputable) {
+              let progress = Math.round(evt.loaded * 100 / evt.total);
+              for (let i = 0; i <= 100; i++) {
+                setTimeout(function(){
+                  $(".progress-bar").css("width", i + "%").text(i+'%');
+                  $(".progress-bar").attr('aria-valuenow',i);
+                },450);
+              }
+            }
+        }, false);
+        return xhr;
+      },
+      url: document.location.origin+"/docregister/uploadAndInsert/",
+      contentType:false,
+      cache:false,
+      processData:false,
+      type: "POST",
+      data:form_data,
+      beforeSend: function(){
+        $(".file-preview").append(progressbar);
+        //$("#modalloader").modal("show");
+      },
+      success:function(data)
+      {
+        $('#docregister').DataTable().ajax.reload();
+        
+         //call Compare api after upload
+         $('.progress').remove();
+         Swal.fire(
+          "",
+          "Your file was uploaded!",
+          );
+          Swal.fire({  
+            title: 'Your file was uploaded!',  
+            confirmButtonText: `OK`,  
+          }).then((result) => {  
+            /* Read more about isConfirmed, isDenied below */  
+              if (result.isConfirmed) {    
+                $('html, body').animate({
+                  scrollTop: $("#example").offset().top
+                });
+              } 
+          });
+          //return 
+        $.ajax({
+          url: document.location.origin+"/apinvoice/customUpload/",
+          contentType:false,
+              cache:false,
+              processData:false,
+          type: "POST",
+          data:form_data,
+          success:function(data)
+          {
+            
+          }
+        });
+      }
+    });
+
   });
 });
 
