@@ -310,16 +310,18 @@ class Shipment extends Core\Controller {
 
         $email = $User->data()->email;
 
-        $document_type = "";
-        // get client admin email
-        if(!empty($User->getSubAccountInfo($user_id))) {
-            $sub_account = $User->getSubAccountInfo($user_id);
-            // "user email" change to "client email"
-            $email = $sub_account[0]->client_email;
-            $sub_id = array('user_id' => $sub_account[0]->user_id,
-                            'client_id' => $sub_account[0]->account_id);
-            $document_type = $this->Document->getDocumentTypeByUserID($sub_id);
-        }
+        // $document_type = "";
+        // // get client admin email
+        // if(!empty($User->getSubAccountInfo($user_id))) {
+        //     $sub_account = $User->getSubAccountInfo($user_id);
+        //     // "user email" change to "client email"
+        //     $email = $sub_account[0]->client_email;
+        //     $sub_id = array('user_id' => $sub_account[0]->user_id,
+        //                     'client_id' => $sub_account[0]->account_id);
+        //     $document_type = $this->Document->getDocumentTypeByUserID($sub_id);
+        // }
+
+        $document_type = $this->Document->getDocumentTypeByUserID($user_id);
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
@@ -403,7 +405,7 @@ class Shipment extends Core\Controller {
         }
         // $defaultDocType = ['PKD', 'PKL', 'HBL', 'MBL', 'COO', 'CIV'];
         if(!empty($doc_type)){
-            $count = 17;
+            $count = 11;
             foreach ($doc_type as $key => $value) {
                 // if(!in_array($value->type,$defaultDocType)){
                     array_push($userData, (object)[

@@ -9,6 +9,7 @@
         {"index": "consignor","index_name": "Consignor", "index_value": "6", "index_check": "true", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "vessel_name","index_name": "Vessel Name", "index_value": "7", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "place_delivery","index_name": "Place Of Delivery", "index_value": "8", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
-        {"index": "container_number","index_name": "Container Number", "index_value": "9", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"}
+        {"index": "container_number","index_name": "Container Number", "index_value": "9", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "all","index_name": "All Documents", "index_value": "10", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"}
     ]
 }

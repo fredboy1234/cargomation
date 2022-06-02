@@ -108,13 +108,13 @@ class Admin extends Core\Controller {
 
         switch ($form_type) {
             case 'information':
-                $has_error = $User->updateUserInfo($_POST, $user_id);
+                $has_error = $User->updateUsers($_POST, $user_id);
                 break;
             case 'shipment':
                 # code...
                 break;
             case 'document':
-                $this->updateFilterSettings($_POST);
+                $this->updateFilterSettings($_POST, $user_id);
                 $has_error = $User->updateCWDocumentType($_POST, $user_id);
                 // $has_error = $User->updateUserInfo($_POST, $user_id);
                 break;
@@ -135,12 +135,12 @@ class Admin extends Core\Controller {
         // $Contact->deleteContactInfo($contact_id);
     }
 
-    public function updateFilterSettings($data) {
+    public function updateFilterSettings($data, $user_id) {
         $User = new Model\User;
-        $userData = $User->getUserSettings($data['user_id']);
+        $userData = $User->getUserSettings($user_id);
         $userData = !isset($userData)?json_decode($userData[0]->shipment):array();
         // ALL DOCUMENT IN USER CW
-        $all_document = $User->getCWDOcumentType($data['user_id']);
+        $all_document = $User->getCWDOcumentType($user_id);
         // Default Shipment Filter Setting
         $shipment_setting = '/settings/sub-shipment-settings.json';
         $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$shipment_setting));
@@ -161,7 +161,7 @@ class Admin extends Core\Controller {
             }
         }
         if(!empty($data['doc_type'])){
-            $count = 10;
+            $count = 11;
             foreach ($all_document as $key => $value) {
                 if(in_array($value->doc_type, $data['doc_type'])) {
                     array_push($userData, (object)[
@@ -182,7 +182,7 @@ class Admin extends Core\Controller {
         // }else{
         //     return json_encode($userData);    
         // }
-        return $User->updateUserSettings2('shipment', $userData, $_POST['user_id']);
+        return $User->updateUserSettings2('shipment', $userData, $user_id);
     }
 
     /* NEED TO REVIEW CODE BELOW */
