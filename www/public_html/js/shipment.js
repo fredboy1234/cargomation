@@ -875,7 +875,7 @@ function hideShowResetSettings() {
     success: function (res) {
       // for checking only
       if (res) {
-        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Set Default</button>`
+        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Reset Column</button>`
         $(".parent-settings").html(html);
       }
     }
