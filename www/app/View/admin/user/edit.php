@@ -93,7 +93,6 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2">
-                            <input type="hidden" name="account_id" value="<?=$this->user_info->account_id?>">
                             <button type="submit" class="btn btn-danger">Submit</button>
                             </div>
                         </div>
