@@ -352,10 +352,9 @@ class User extends Core\Model {
                                 WHERE user_id = '{$check_sub_user}' ")->results();
     }
 
-    public function deleteUserSettings($id){
+    public function deleteUserSettings($id, $column = 'shipment'){
         $Db = Utility\Database::getInstance();
-        return $Db->query("DELETE
-                            FROM user_settings
+        return $Db->query("UPDATE user_settings SET {$column} = NULL
                             WHERE id = '{$id}' ");
     }
 
