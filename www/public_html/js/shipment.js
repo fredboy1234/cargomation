@@ -288,7 +288,7 @@ $(document).ready(function () {
     columns: tableColumnData,
     order: [[0, 'desc']],
     ajax: {
-      url: '/shipment/shipmentData/',
+      url: '/shipment/shipmentData/' + user_id,
       data: function (d) {
         // delete d.columns; // remove columns
         for (let i = 0; i < d.columns.length; i++) {
