@@ -591,18 +591,18 @@ class Shipment extends Core\Controller {
         }
         
         // Check that the user is authenticated.
-        Utility\Auth::checkAuthenticated();
-        if (!$user_id) {
-            $userSession = Utility\Config::get("SESSION_USER");
-            if (Utility\Session::exists($userSession)) {
-                $user_id = Utility\Session::get($userSession);
-            }
-        }
+        //Utility\Auth::checkAuthenticated();
+        //if (!$user_id) {
+        //    $userSession = Utility\Config::get("SESSION_USER");
+        //    if (Utility\Session::exists($userSession)) {
+        //        $user_id = Utility\Session::get($userSession);
+        //    }
+        //}
         // Get an instance of the user model using the user ID passed to the
         // controll action. 
-        if (!$User = Model\User::getInstance($user_id)) {
-            Utility\Redirect::to(APP_URL);
-        }
+        //if (!$User = Model\User::getInstance($user_id)) {
+        //    Utility\Redirect::to(APP_URL);
+        //}
         $url = 'https://cargomation.com:5200/redis/getshipmentview';
         $arr = [
             "draw" => $_POST['draw'],
