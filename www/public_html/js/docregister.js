@@ -141,7 +141,7 @@ $(document).ready(function(){
           });
           //return 
         $.ajax({
-          url: document.location.origin+"/apinvoice/customUpload/",
+          url: document.location.origin+"/docregister/customUpload/",
           contentType:false,
               cache:false,
               processData:false,
