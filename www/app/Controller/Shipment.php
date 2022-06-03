@@ -719,6 +719,7 @@ class Shipment extends Core\Controller {
         //if (!$User = Model\User::getInstance($user_id)) {
         //    Utility\Redirect::to(APP_URL);
         //}
+        $User = new Model\User;
         $url = 'https://cargomation.com:5200/redis/getshipmentview';
         $arr = [
             "draw" => $_POST['draw'],
