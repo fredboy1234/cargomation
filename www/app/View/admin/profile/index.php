@@ -142,6 +142,7 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane" id="activity">
+                                    <?php if(false): ?>
                                     <!-- Post -->
                                     <div class="post">
                                         <div class="user-block">
@@ -251,9 +252,11 @@
                                         <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
                                     </div>
                                     <!-- /.post -->
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="timeline">
+                                    <?php if(false): ?>
                                     <!-- The timeline -->
                                     <div class="timeline timeline-inverse">
                                         <!-- timeline time label -->
@@ -346,6 +349,7 @@
                                         <i class="far fa-clock bg-gray"></i>
                                         </div>
                                     </div>
+                                    <?php endif; ?>
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="active tab-pane" id="information">
@@ -603,7 +607,6 @@
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>

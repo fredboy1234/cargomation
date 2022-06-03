@@ -118,11 +118,17 @@ class Contact extends Core\Controller {
         Utility\Auth::checkAuthenticated();
 
         $Contact = new Model\Contact;
+        $User = new Model\User;
+
+        $contact_info = $Contact->getContactInfo($contact_id)[0];
 
         $this->View->renderWithoutHeaderAndFooter("/contact/edit", [
             "title" => "Contact Info",
             "contact_id" => $contact_id,
-            "contact_info" => $Contact->getContactInfo($contact_id)[0]
+            "contact_info" => $contact_info,
+            "cw_document_type" => $User->getClientDocumentType($contact_info->account_id),
+            "document_type" => $User->getSubDocumentType($contact_info->uid)
+
         ]);
 
     }
@@ -151,17 +157,82 @@ class Contact extends Core\Controller {
 
     }
 
-    public function update($contact_id = "") {
+    public function update($contact_id = "", $form_type) {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         $Contact = new Model\Contact;
-        $has_error = $Contact->updateContactInfo($contact_id, $_POST);
+        switch ($form_type) {
+            case 'information':
+                $has_error = $Contact->updateContactInfo($contact_id, $_POST);
+                break;
+            case 'shipment':
+                # code...
+                break;
+            case 'document':
+                $User = new Model\User;
+                $settings = $this->sanitizeSettings($User, $contact_id, $_POST);
+                $has_error = $User->updateUserSettings2('shipment', $settings, $contact_id);
+                // $has_error = $User->updateCWDocumentType($_POST, $contact_id);
+                break;
+            case 'settings':
+                # code...
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        
         echo json_encode($has_error);
     }
 
     public function delete($contact_id = "") {
         $Contact = new Model\Contact;
         $Contact->deleteContactInfo($contact_id);
+    }
+
+    public function sanitizeSettings($User, $user_id, $data) {
+
+        // DEFAULT SHIPMENT COLUMN SETTTING
+        $json_setting = '/settings/sub-shipment-settings.json';
+        $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+
+        $shipment_settings = [];
+
+        // SHIPMENT COLUMN NEEDS TO SHOW
+        $need_show = empty($data['data']) ? [1] : $data['data'];
+        foreach($defaultSettings->table  as $key=> $value){
+            // if(in_array($value->index_value, $need_show)){
+            //     $value->index_check = 'true';
+            // } else {
+            //     $value->index_check = 'false';
+            // }
+            $shipment_settings[] = $value;
+        }
+
+        // START COUNT FOR DOCUMENT TYPE
+        $count = count($shipment_settings);
+
+        // DEFAULT DOCUMENT COLUMN SETTING (SUB ACCOUNT)
+        $doc_type = $User->getCWDOcumentType($user_id, $data['account_id']);
+
+        // DOCUMENT COLUMN NEEDS TO SHOW
+        if(!empty($doc_type)){
+            foreach ($doc_type as $key => $value) {
+                if(in_array($value->doc_type, $need_show)){
+                    array_push($shipment_settings, (object)[
+                        'index' => strtolower($value->doc_type),
+                        'index_name' => $value->doc_type . " - " . $value->description,
+                        // 'index_value' => (string)$count++, // Explicit cast
+                        'index_value' => strval($count++), // Function call
+                        'index_check' => 'false',
+                        'index_lvl' => 'document',
+                        'index_sortable' => 'false'
+                    ]);
+                }
+            }
+        } 
+        return $shipment_settings;
     }
 
 }

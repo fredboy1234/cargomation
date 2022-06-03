@@ -345,17 +345,17 @@ class User extends Core\Model {
 
     public function getUserSettings($user){
         $Db = Utility\Database::getInstance();
-        $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
+        // $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
         
-        $check_sub_user = $user;
-        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
-            if($check_user[0]->role_id > 2 ){
-                $check_sub_user = $check_user[0]->account_id;
-            }
-        }
+        // $check_sub_user = $user;
+        // if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+        //     if($check_user[0]->role_id > 2 ){
+        //         $check_sub_user = $check_user[0]->account_id;
+        //     }
+        // }
         return $Db->query("SELECT * 
                                 FROM user_settings
-                                WHERE user_id = '{$check_sub_user}' ")->results();
+                                WHERE user_id = '{$user}' ")->results();
     }
 
     public function deleteUserSettings($id, $column = 'shipment'){
@@ -893,24 +893,51 @@ class User extends Core\Model {
 
     public function getDocumentType($user_id) {
         $Db = Utility\Database::getInstance();
-        $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
+        // $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
         
+        // $check_sub_user = $user_id;
+        // if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+        //     if($check_user[0]->role_id > 2 ){
+        //         $check_sub_user = $check_user[0]->account_id;
+        //     }
+        // }
+        return $Db->query("SELECT doc_type, description
+                                FROM cargowise_document_type
+                                WHERE active = 'Y'
+                                AND user_id = '{$user_id}' 
+                                ORDER BY doc_type ASC")->results();
+    }
+
+    public function getSubDocumentType_OLD($user_id, $account_id) {
+        $Db = Utility\Database::getInstance();
+        $check = $Db->query("SELECT shipment FROM user_settings WHERE user_id = '{$user_id}'")->results();
+        $status = 'ERROR';
+        if(is_null($check[0]->shipment)) {
+            $query = "SELECT * FROM cargowise_document_type WHERE active = 'Y' AND user_id = '{$account_id}'";
+            // $query = "SELECT shipment FROM user_settings WHERE user_id = '{$account_id}'";
+            $status = 'admin';
+        } else {
+            $query = "SELECT shipment FROM user_settings WHERE user_id = '{$user_id}'";
+            $status = 'sub';
+        }
+        return ['status' => $status, 'result' => $Db->query($query)->results()];
+    }
+
+    public function getSubDocumentType($user_id) {
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT shipment FROM user_settings WHERE user_id = '{$user_id}'")->results();
+    }
+
+    public function getClientDocumentType($user_id) {
+        $Db = Utility\Database::getInstance();
+        $check_user = $Db->query("SELECT * FROM vrpt_subaccount where user_id = '{$user_id}'")->results();
         $check_sub_user = $user_id;
         if(isset($check_user[0]) && isset($check_user[0]->role_id)){
             if($check_user[0]->role_id > 2 ){
                 $check_sub_user = $check_user[0]->account_id;
             }
         }
-        return $Db->query("SELECT doc_type, description
-                                FROM cargowise_document_type
-                                WHERE active = 'Y'
-                                AND user_id = '{$check_sub_user}' 
-                                ORDER BY doc_type ASC")->results();
-    }
-
-    public function getClientDocumentType($user_id) {
-        $query = "SELECT * FROM cargowise_document_type WHERE active = 'Y' AND user_id = {$user_id}";
-        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM cargowise_document_type WHERE active = 'Y' AND user_id = {$check_sub_user}";
         return $Db->query($query)->results();
     }
 

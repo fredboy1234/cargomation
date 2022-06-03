@@ -416,6 +416,9 @@ $(document).ready(function () {
         if(reqHandler.includes(reqIdentity) && $("#no_value_"+lastcomp).val().length == 0){
           allBlank = false;
         }
+        if(!reqIdentity || reqIdentity !== "") {
+          allBlank = false;
+        }
       });
       
       if(allBlank){
@@ -572,13 +575,20 @@ $(document).ready(function () {
 
       map = comp;
       // var Sdata = getSettings(map);
+      var Sdata = $("select[name='settings-dual'] option:selected").map(function () {
+        return this.id;
+      }).get()
 
       $.ajax({
         url: document.location.origin + '/shipment/addUserSettings/',
         type: "POST",
         dataType: "json",
-        data: { user_id: user_id, data: map },
+        data: { user_id: user_id, data: Sdata },
+        beforeSend: function () {
+          $('body').append(loader);
+        },
         success: function (res) {
+          $('#loader-wrapper').remove();
           // for checking only
           hideShowResetSettings();
         }
@@ -604,7 +614,7 @@ $(document).ready(function () {
     }, 100);
 
 
-  }).find('option:selected').map(function () { return this.value }).get();
+  }).find('option:selected').map(function () { return this.id }).get();
 
   var check_arr = [];
   function getSettings(map) {
@@ -670,29 +680,33 @@ $(document).ready(function () {
     $("select[name='settings-dual'] option").each(function () {
       if ($(this).val() == details.from) {
         $(this).val(details.to);
-        $(this).attr('id', details.to);
+        //$(this).attr('id', details.to);
       } else if ($(this).val() == details.to) {
         $(this).val(details.from);
-        $(this).attr('id', details.from);
+        //$(this).attr('id', details.from);
       }
     });
     $('#bootstrap-duallistbox-selected-list_settings-dual  option').each(function () {
       if ($(this).val() == details.from) {
         $(this).val(details.to);
-        $(this).attr('id', details.to);
+        //$(this).attr('id', details.to);
       } else if ($(this).val() == details.to) {
         $(this).val(details.from);
-        $(this).attr('id', details.from);
+        //$(this).attr('id', details.from);
       }
     });
     setTimeout(function () {
       var Sdata = getSettings();
       $.ajax({
-        url: document.location.origin + '/shipment/addUserSettings/',
+        url: document.location.origin + '/shipment/addUserSettings/column-order',
         type: "POST",
         dataType: "json",
-        data: { "settings": Sdata },
+        data: { user_id: user_id, data: Sdata },
+        beforeSend: function () {
+          $('body').append(loader);
+        },
         success: function (res) {
+          $('#loader-wrapper').remove();
           hideShowResetSettings();
         }
       });
@@ -814,9 +828,9 @@ function byLevel() {
   var level = [];
   if (listbox.length > 0) {
     listboxparent.append(`<optgroup id='ship-level' label='Shipment Level'></optgroup>`);
-    if(role_id < 3) {
+    // if(role_id < 3) {
       listboxparent.append("<optgroup id='document-level' label='Document Level'></optgroup>");
-    }
+    // }
     listbox.each(function () {
       if ($(this).attr('lvl') == 'shipment') {
         $('#ship-level').append($(this));
@@ -872,7 +886,7 @@ function hideShowResetSettings() {
     success: function (res) {
       // for checking only
       if (res) {
-        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Set Default</button>`
+        var html = `<button id="reset-settings" type="button" data-setting-id="${res[0].id}" class="btn btn-block btn-danger">Reset Column</button>`
         $(".parent-settings").html(html);
       }
     }
