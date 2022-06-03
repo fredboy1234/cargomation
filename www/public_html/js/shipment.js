@@ -581,7 +581,11 @@ $(document).ready(function () {
         type: "POST",
         dataType: "json",
         data: { user_id: user_id, data: Sdata },
+        beforeSend: function () {
+          $('body').append(loader);
+        },
         success: function (res) {
+          $('#loader-wrapper').remove();
           // for checking only
           hideShowResetSettings();
         }
@@ -695,7 +699,11 @@ $(document).ready(function () {
         type: "POST",
         dataType: "json",
         data: { user_id: user_id, data: Sdata },
+        beforeSend: function () {
+          $('body').append(loader);
+        },
         success: function (res) {
+          $('#loader-wrapper').remove();
           hideShowResetSettings();
         }
       });
