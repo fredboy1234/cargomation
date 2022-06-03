@@ -399,7 +399,7 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
-    var reqHandler = ['IS_BLANK','NOT_BLANK'];
+    var reqHandler = ['IS_BLANK'];
     var reqIdentity = '';
     var allBlank = true;
     var checkInput = [];
@@ -1212,7 +1212,7 @@ $(document).on("change", "[id*='no_type_']",function(){
       }
   }
   var typeValue = $(this).val();
-  var arr = ['IS_BLANK', 'NOT_BLANK'];
+  var arr = ['IS_BLANK'];
   var thisOption = $("option:selected",this);
   if(arr.includes(typeValue)) {
     $(this).parent().next().find('input').prop( "disabled", true );
