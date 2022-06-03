@@ -116,22 +116,27 @@ class Apinvoice extends Core\Controller {
             // }
             
             //echo "<pre>";
-            foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
-                foreach($m as $mkey=>$mval){
-                    if(!in_array($mkey,$headerMatched)){
-                        $headerMatched[] = $mkey;
-                    }
-                    
-                }   
+            if(isset($matched->CWChargeLines->ChargeLine)){
+                foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+                    foreach($m as $mkey=>$mval){
+                        if(!in_array($mkey,$headerMatched)){
+                            $headerMatched[] = $mkey;
+                        }
+                        
+                    }   
+                }
             }
-
-            foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
-                foreach($m as $mkey=>$mval){
-                    if(!in_array($mkey,$headerParsed)){
-                        $headerParsed[] = $mkey;
+            
+            if(isset($parsed->ParsedPDFChargeLines->ChargeLine)){
+                foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
+                    foreach($m as $mkey=>$mval){
+                        if(!in_array($mkey,$headerParsed)){
+                            $headerParsed[] = $mkey;
+                        }  
                     }  
-                }  
+                }
             }
+            
         }
        // $countque = $this->getSingleInvoice($_SESSION['user']);
        // $completeCount = $this->getAPCompleteCount($_SESSION['user']);
@@ -190,7 +195,11 @@ class Apinvoice extends Core\Controller {
         $invoiceHeader = array();
         $splitInvoice = array();
         $data['invoices'] = $this->getSingleInvoice($_SESSION['user']);
-       // echo"<pre>";
+        
+        $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+        $retData['que'] =  $this->getAPQUECount($_SESSION['user']);
+        $retData['archive'] = $this->getAPArchiveCount($_SESSION['user']);
+            
         if(isset($_POST['type'])){
             $data['invoices'] = $this->getSingleInvoiceBytype($_SESSION['user'],$_POST['type']);
         }
@@ -238,9 +247,6 @@ class Apinvoice extends Core\Controller {
             // if(!is_null($value->cw_response) || !empty($value->cw_response)){
             //     $actionbtn = "<div class='container cwresmodal'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button type='button' class='btn btn-block btn-outline-success' data-pid='".$value->process_id."'>CW Response</button></div></div></div>";
             // }
-            $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
-            $retData['que'] =  $this->getAPQUECount($_SESSION['user']);
-            $retData['archive'] = $this->getAPArchiveCount($_SESSION['user']);
             
             $cstatus = '';
             if(!is_null($value->cw_response_status)){
@@ -264,11 +270,12 @@ class Apinvoice extends Core\Controller {
                 "invoices" => $invoiceHeader['invoice'],
                 "pid" =>$value->process_id
             );
-            $this->reprocessReportONSuccess();
+            
         }
     //   print_r($retData['data']);
         //exit();
         echo json_encode($retData);
+        $this->reprocessReportONSuccess();
     }
 
     public function headerData(){
@@ -301,7 +308,7 @@ class Apinvoice extends Core\Controller {
 
     public function parsedData(){
         $parsed = array();
-        $_POST['prim_ref'] = 176;
+    
         if(isset($_POST['prim_ref'])){
             $cgm = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->cgm_response);
             if(is_null( $cgm ) || empty( $cgm)){
@@ -810,6 +817,56 @@ class Apinvoice extends Core\Controller {
        
     }
 
+    public function showPreview(){
+        $_POST['prim_ref'] = 176;
+        if(isset($_POST)){
+            //$singleInvoice = $this->getSingleCWResponse($_SESSION['user'],$_POST['prim_ref']);
+            $headerMatched = array();
+            $headerParsed = array();
+           
+            $data['invoices'] = array();
+            $data['apinvoice'] = array();
+            $parsed = array();
+
+            $this->View->addJS("js/apinvoice.js");
+            
+            $data['apinvoice'] = json_decode($this->getMatchReportWidthID($_POST['prim_ref'])[0]->match_report);
+            
+            $data['invoices'] = $this->getInvoices($_SESSION['user']);
+            $matched =  $data['apinvoice']->HubJSONOutput->CargoWiseMatchedData;
+            $parsed = $data['apinvoice']->HubJSONOutput->ParsedPDFData;
+            
+            if(isset($matched->CWChargeLines->ChargeLine )){
+                foreach($matched->CWChargeLines->ChargeLine as $key=>$m){
+                    foreach($m as $mkey=>$mval){
+                        if(!in_array($mkey,$headerMatched)){
+                            $headerMatched[] = $mkey;
+                        }
+                        
+                    }   
+                }
+            }
+           
+            if(isset($parsed->ParsedPDFChargeLines->ChargeLine)){
+                foreach($parsed->ParsedPDFChargeLines->ChargeLine as $key=>$m){
+                    foreach($m as $mkey=>$mval){
+                        if(!in_array($mkey,$headerParsed)){
+                            $headerParsed[] = $mkey;
+                        }  
+                    }  
+                }
+            }
+            
+            $this->View->renderWithoutHeaderAndFooter("/apinvoice/preview", [
+                "data"=>$data['apinvoice'],
+                "headerMatched" =>$headerMatched,
+                "headerParsed" =>$headerParsed, 
+                "parsedData" =>$parsed,
+                "apinvoice" =>$data['apinvoice'],
+            ]);
+        }
+    }
+
     public function edit(){
         $data = array();
         $pdfData = array();
@@ -878,7 +935,7 @@ class Apinvoice extends Core\Controller {
     }
     public function geTempData(){
         $APinvoice = Model\Apinvoice::getInstance();
-        return $APinvoice->getMatchReport(52);
+        return $APinvoice->getMatchReport(176);
     }
 
     public function geTempDataV2($process_id){
@@ -999,4 +1056,124 @@ class Apinvoice extends Core\Controller {
             echo 'invalid';  
         }  
     }
+
+    public function test(){
+        $url = 'https://cargomation.com:5200/redis/apinvoice/getdata';
+        $arr = [
+            "draw" => '1',
+            "start" => 0,
+            "length" => 10,
+            "user_id" => (string)$_SESSION['user'],
+        ];
+
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+        $result = $this->postAuth($url, $payload, $headers);
+        $json_data = json_decode($result);
+        
+        if($json_data->status != '200') {
+            echo json_encode($json_data);
+            exit;
+        }
+        
+        $array_data = array(
+            "draw"            => $json_data->draw,  
+            "recordsTotal"    => $json_data->recordsTotal,  
+            "recordsFiltered" => $json_data->recordsTotal,
+            "data"            => $this->reprocessData(json_decode($json_data->data))
+        );
+       
+    }
+
+    public function reprocessData($data){
+        $retData = array();
+        $invoiceHeader = array();
+        $splitInvoice = array();
+        $data['invoices'] = $data;//$this->getSingleInvoice($_SESSION['user']);
+        
+        if(isset($_POST['type'])){
+            $data['invoices'] = $this->getSingleInvoiceBytype($_SESSION['user'],$_POST['type']);
+        }
+
+        foreach($data['invoices'] as $value){
+            $splitInvoice[$value->process_id][] = $value;
+        }
+       //echo"<pre>";
+       $retData['completedCount'] = $completeCount = $this->getAPCompleteCount($_SESSION['user']);
+       $retData['que'] =  $this->getAPQUECount($_SESSION['user']);
+       $retData['archive'] = $this->getAPArchiveCount($_SESSION['user']);
+
+        foreach($splitInvoice as $key=>$v){
+            $invoiceHeader['invoice'] = array();
+            foreach($v as $value){
+                $actionbtn = '';
+                $cstatus = '';
+                $invoiceHeader['invoice_num'] = '';
+                $invoiceHeader['invoice_report'] ='';
+                $invoiceHeader['invoice_response'] ='';
+                $invoiceHeader['invoice_status'] = '';
+                if(!empty($value->match_reports)){
+                    if(!empty($value->match_reports->match_report1)){
+                        $mactch1 =$value->match_reports->match_report1;
+                        $parsed = json_decode($value->match_reports->match_report1);
+                        $parsedChargline = $parsed->HubJSONOutput->ParsedPDFData->ParsedPDFChargeLines;
+
+                        if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
+                    
+                            foreach($parsedChargline->ChargeLine as $chline){
+                                $invoiceHeader['invoice_num'] = $chline->InvoiceNumber ;
+                                $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
+                                $invoiceHeader['invoice_response'] = "ready";
+                                $invoiceHeader['invoice_status'] = "complete";
+                            }
+                        }
+                        
+                        if(!is_null($mactch1->cw_response) || !empty($mactch1->cw_response)){
+                            $actionbtn = "<button type='button' class='btn btn-block btn-outline-success cwresmodal' data-pid='".$value->process_id."'>CW Response</button>";
+                        }
+
+                        $invoiceHeader['invoice'][]  = "INVOICE_{$invoiceHeader['invoice_num']},
+                                                        {$invoiceHeader['invoice_report']},
+                                                        <span class='badge bg-danger'>{$invoiceHeader['invoice_response']}</span>,
+                                                        <span class='badge bg-warning'>{$invoiceHeader['invoice_status']}</span>,
+                                                        ".$actionbtn.",".$mactch1->cw_response_status;
+                        $jobnum = isset($mactch1->sec_ref) ? json_decode($mactch1->sec_ref) : '';
+                        $actionbtn = "<div class='container'><div class='row'><div class='col-xs-6'></div><div class='col-xs-6'><button data-pd='{$value->process_id}' type='button' class='toarchive btn btn-block btn-outline-danger'>Archive</button></div></div></div>";                               
+                        
+                        
+                        if(!is_null($mactch1->cw_response_status)){
+                            $cstatus = $mactch1->cw_response_status ==='Success' ? 'Complete' : $cstatus = $mactch1->cw_response_status;
+                        }else{
+                            if(is_null($mactch1->status) || empty($mactch1->status)){
+                                $cstatus = 'Processing';
+                            }else{
+                                $cstatus =  $mactch1->status;
+                            }
+                        }
+
+                    }
+
+                }
+                
+            }
+
+            $retData['data'][] = array(
+                "Process ID" => $value->process_id,
+                "File Name" => $value->filename,
+                "Doc Number" => (!isset($jobnum->doc_number) ? 'Empty' : (is_null($jobnum->doc_number) ? 'Empty ' : $jobnum->doc_number)) ,
+                "Date Uploaded"=> date('d/m/y H:i a', strtotime($value->dateuploaded)),
+                "Uploaded By" => $value->uploadedby,
+                "Action"=> $actionbtn,
+                "Status"=> $cstatus,
+                "invoices" => $invoiceHeader['invoice'],
+                "pid" =>$value->process_id
+            );
+        }
+        //$this->reprocessReportONSuccess();
+       // print_r($retData);
+        echo json_encode($retData);
+    }
+
+    
 }

@@ -85,7 +85,20 @@ $(document).ready(function() {
       $("#embeded").append(loader);
       $('#loader-wrapper').addClass('loaderstyle');
       $("#embeded embed").attr('src','');
-      
+
+      // $("#modal-lg-prev .modal-body").append(loader);
+      // $("#modal-lg-prev .modal-body").load('/apinvoice/showPreview', function (response, status, xhr) {
+      //   if (xhr.status == 200) {
+      //     $('#loader-wrapper').remove();
+      //     $("#modal-lg-prev").modal("show");
+      //   } else {
+      //     alert("Error: " + xhr.status + ": " + xhr.statusText);
+      //     $('#loader-wrapper').remove();
+      //   }
+      // });
+
+      // $('button#request').toggle();
+
       $.ajax({
         url: document.location.origin+"/apinvoice/reprocessMatchReport/",
         type: "POST",
@@ -120,25 +133,6 @@ $(document).ready(function() {
           { "data": "Discrepancy" }
         ]
       });
-
-      // var headertable = $('#headerTable').DataTable({
-      //   "ajax": "/apinvoice/headerData",
-      //   "scrollX": true,
-      //   "scrollY":        "250px",
-      //   "fixedColumns": false,
-      //   "columns": [
-      //     { "data": "ChargeCode" },
-      //     { "data": "InvoiceNumber" },
-      //     { "data": "InvoiceDate" },
-      //     { "data": "Container" },
-      //     { "data": "ExchangeRate" },
-      //     { "data": "Creditor" },
-      //     { "data": "InvoiceTo" },
-      //     { "data": "SubTotal" },
-      //     { "data": "GST" },
-      //     { "data": "Discrepancy" }
-      //   ]
-      // });
 
       var parsedTable = $('#parsedTable').DataTable({
         "serverSide": true,
@@ -177,30 +171,7 @@ $(document).ready(function() {
       });
       $("#parsedTable_wrapper").attr("data-prim",pid);
       
-      // $.ajax({
-      //   url: document.location.origin+"/apinvoice/headerData/",
-      //   type: "POST",
-      //   data:{prim_ref:pid},
-      //   success:function(data)
-      //   {
-      //     console.log(data);
-      //     headertable.ajax.reload; 
-      //   }
-      // });
-
       
-      //need to change this two ajax if have temporary because need to present
-      // $.ajax({
-      //   url: document.location.origin+"/apinvoice/parsedData/",
-      //   type: "POST",
-      //   data:{prim_ref:pid},
-      //   success:function(data)
-      //   {
-      //     console.log(data);
-      //     parsedTable.ajax.reload; 
-      //   }
-      // });
-
       /**
        * showing pdf preview and chargeline contents below pdf.
        */
@@ -249,7 +220,9 @@ $(document).ready(function() {
           $.each(jreport.HubJSONOutput.MatchReport,function(okey,oval){
             var classkey = '';
             var contentText = '';
-            if(Object.keys(oval).length !== 0){
+            console.log(oval);
+            console.log("object oval");
+            if(oval != null){
               if(okey==='Errors'){
                 classkey ="danger";
                 contentText = oval;
