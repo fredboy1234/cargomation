@@ -6,6 +6,8 @@
  if(isset($pdfparsed->ParsedPDFHeader->JobNumber)){
    $jnumber = $pdfparsed->ParsedPDFHeader->JobNumber;
  }
+ $defaultHeader = array("ChargeCode","InvoiceNumber","InvoiceDate","Container","ExchangeRate","Creditor","InvoiceTo","SubTotal","GST","Discrepancy");
+
 ?>
 <style>
    .loaderstyle{
@@ -38,14 +40,14 @@
 </style>
 <div class="modal fade" id="modal-lg-prev">
    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-         <div class="modal-header">
+      <div class="modal-content"> 
+      <div class="modal-header">
             <h4 class="modal-title">Preview Charges</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
-         </div>
-         <div class="modal-body">
+         </div>  
+         <div class="modal-body">     
             <div class="row">
                <div class="grid-container_custom">
                   <div class="custom_sidebar">
@@ -85,6 +87,7 @@
                            </a>
                            
                         </div>
+                        <?php if(empty($this->headerMatched)) $this->headerMatched = $defaultHeader;?>
                         <?php if(!empty($this->headerMatched)){?>
                         <table style="width:100%" id="headerTable" class="table card-primary card-outline">
                            <thead>
@@ -101,6 +104,7 @@
                         <div class="card-header">
                            <h3 class="card-title">Extracted Data</h3>
                         </div>
+                        <?php if(empty($this->headerParsed)) $this->headerParsed = $defaultHeader;?>
                         <?php if(!empty($this->headerParsed)){?>
                         <table style="width:100%" id="parsedTable" class="table card-danger card-outline">
                            <thead>
@@ -135,12 +139,13 @@
                </div>
             </div>
          </div>
-         <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         </div>
       </div>
    </div>
 </div>
+         <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      
 <!--end of modal-->
 <!--start of modal-->
 <div class="modal fade" id="modal-lg-success">
@@ -216,7 +221,7 @@
 <!-- /.modal -->
 <!--end of modal-->
 <script>
-   var parsedData = <?php echo $this->parsedData?>;
+   var parsedData = <?php echo json_encode($this->parsedData)?>;
    var apinvoice = <?php echo json_encode($this->apinvoice)?>;
 </script>
 
