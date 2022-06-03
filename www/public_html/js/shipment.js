@@ -416,6 +416,9 @@ $(document).ready(function () {
         if(reqHandler.includes(reqIdentity) && $("#no_value_"+lastcomp).val().length == 0){
           allBlank = false;
         }
+        if(!reqIdentity || reqIdentity !== "") {
+          allBlank = false;
+        }
       });
       
       if(allBlank){
