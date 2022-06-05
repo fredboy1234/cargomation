@@ -476,21 +476,22 @@ class Docregister extends Core\Controller {
             // $APinvoice->insertMatchHeader($data);
 
             //print_r($file_server_path);
-            // $arr  = array(
-            //     'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_APINVOICE/IN/'.$name,
-            //     'client' => 'A2B',
-            //     'user_id' => $_SESSION['user'],
-            //     'process_id' => $this->getLastID()
-            // );
+            $arr  = array(
+                'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
+                'client' => 'A2B',
+                'user_id' => $_SESSION['user'],
+                'process_id' => $this->getLastID()
+            );
            
-           // $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
            
-           // $url ='https://cargomation.com:8001/compare'; 
+            $url ='https://cargomation.com:8002/compare'; 
             
-           // $result = $this->post($url, $arr, '');
-           // print_r($arr);
-           // print_r($result);
-          // return "success";
+           $result = $this->post($url, $arr, '');
+           echo"<pre>";
+           print_r($arr);
+           print_r($result);
+          return "success";
         }
     }
 
