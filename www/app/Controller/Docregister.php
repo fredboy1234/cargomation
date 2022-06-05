@@ -522,6 +522,54 @@ class Docregister extends Core\Controller {
     }
 
 
+    private function post($url, $payload, $headers) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        return $response;
+    
+    }
+
+    private function postAuth($url, $payload, $headers) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+        ));
+        if (!empty($headers)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        $response = curl_exec($curl);
+        $errno = curl_errno($curl);
+        if ($errno) {
+            return false;
+        }
+        curl_close($curl);
+        return $response;
+    }
+    
     public function getDocReportReg($user_id){
         $APinvoice = Model\DocRegister::getInstance();
         return $APinvoice->getDocReportReg($user_id);
