@@ -536,5 +536,11 @@ class Docregister extends Core\Controller {
         $Docregister = Model\DocRegister::getInstance();
         return $Docregister->insertDoc($data);
     }
+
+    public function getLastID(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $lastID = $APinvoice->getLastID();
+        return $lastID[0]->lastid;
+    }
     
 }

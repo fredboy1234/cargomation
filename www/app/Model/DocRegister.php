@@ -53,4 +53,10 @@ class DocRegister extends Core\Model {
                  ";
          return $Db->query($query);      
     }
+
+
+    public function getLastID(){
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT IDENT_CURRENT('match_apinvoice') as lastid")->results();
+    }
 }
