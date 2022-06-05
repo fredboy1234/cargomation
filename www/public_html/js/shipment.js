@@ -399,7 +399,7 @@ $(document).ready(function () {
 
   $('#addvance-search-form').on("submit", function(ev) {
     ev.preventDefault();
-    var reqHandler = ['IS_BLANK','NOT_BLANK'];
+    var reqHandler = ['IS_BLANK'];
     var reqIdentity = '';
     var allBlank = true;
     var checkInput = [];
@@ -416,8 +416,8 @@ $(document).ready(function () {
         if(reqHandler.includes(reqIdentity) && $("#no_value_"+lastcomp).val().length == 0){
           allBlank = false;
         }
-        if(!reqIdentity || reqIdentity !== "") {
-          allBlank = false;
+        if(!reqIdentity || reqIdentity === "") {
+          allBlank = true;
         }
       });
       
@@ -729,6 +729,7 @@ $(document).ready(function () {
     $(".form_field_outer_row:not(:first)").remove();
     $("#no_value_1").val("");
     $("#no_search_1").val("");
+    $("#container_mode_1").val(null).trigger("change"); 
     $("#no_type_1").prop("selectedIndex", 0);
     $("#add_filters option").each(function(){
       $(this).attr("data-index",1);
@@ -1101,21 +1102,21 @@ function triggerType(data){
     break;
     case 'option':
         $('#'+data['id']).html(createSelect('others',data));
-        selectTrigger(data['value'],'select2');
+        selectTrigger(data['value'], 'select2', data['keyindex']);
     break;
 
     case 'document':
         $('#'+data['id']).html(createSelect('document',data));
-        selectTrigger(data['value'],'select2');
+        selectTrigger(data['value'], 'select2', data['keyindex']);
     break;
   }
 }
 
-function selectTrigger(index,inputType){
+function selectTrigger(index, inputType, search_type = ""){
   if(inputType === "select2"){
     $('#container_mode_'+index).select2();
-    var seach_type = $('#no_search_'+index+' option:selected').text();
-    if(seach_type == 'Type'){
+    // var seach_type = $('#no_search_'+index+' option:selected').text();
+    if(search_type == 'document:type'){
       let items = [];
       $.getJSON( "/document/getDocumentTypeByUserID/" + user_id, function( data ) {
         $.each( data, function( key, value ) {
@@ -1211,7 +1212,7 @@ $(document).on("change", "[id*='no_type_']",function(){
       }
   }
   var typeValue = $(this).val();
-  var arr = ['IS_BLANK', 'NOT_BLANK'];
+  var arr = ['IS_BLANK'];
   var thisOption = $("option:selected",this);
   if(arr.includes(typeValue)) {
     $(this).parent().next().find('input').prop( "disabled", true );
