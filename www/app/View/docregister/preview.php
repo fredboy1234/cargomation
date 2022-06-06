@@ -69,13 +69,17 @@
         </div>
         <div class="main-content_custom">
             <div class="col-lg-12">
+            
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <?php if(!empty($matchData)){?>
+                    <?php $st = 0;?>
+                    <?php $isact = '';?>
                     <?php foreach($matchData as $hbl){?>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                        <?php $st++; $isact=$st==1 ? 'active' :'';?>
+                        <li class="nav-item <?=$isact?>" role="presentation">
+                            <a class="nav-link <?=$isact?>" id="<?=$hbl['hbl_numbers']?>_tab" data-toggle="tab" href="#<?=$hbl['hbl_numbers']?>_pane" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
                                 <?=$hbl['hbl_numbers']?>
-                            </button>
+                            </a>
                         </li>
                     <?php } ?>
                 <?php } ?>
@@ -95,7 +99,7 @@
                 <?php foreach($matchData as $matchval){ ?>
                     <?php $cc++;?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
-                    <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade <?=$show?>" id="<?=$hbl['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
                     
                         <!--List of Fields-->
                         <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
@@ -121,9 +125,9 @@
                                 <tbody>
                                    
                                     <?php if(count($matchval['container_details']) != 1){?>
-                                        <td></td>
                                         <?php foreach($matchval['container_details'] as $condetails){?>
                                             <tr>
+                                            <td></td>
                                                 <?php foreach($condetails as $conchild){ ?>
                                                     <td><?=$conchild?></td>
                                                 <?php } ?>
@@ -131,6 +135,7 @@
                                         <?php }?>
                                     <?php }else{?>
                                         <tr>
+                                        <td></td>
                                             <?php foreach($matchval['container_details'] as $condetails){?>
                                                 <?php foreach($condetails as $con){?>
                                                     <td><?=$con?></td>
