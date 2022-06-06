@@ -27,7 +27,7 @@
     <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
     </div>`;
 $(document).ready(function(){
-  $('.pdfbtn').on('click',function(){
+  $(document).on('click','.pdfbtn',function(){
     var idembed = $(this).attr('data-embeded');
     
     $('embed').addClass('d-none');
