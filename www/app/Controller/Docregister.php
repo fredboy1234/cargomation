@@ -417,7 +417,7 @@ class Docregister extends Core\Controller {
         if(isset($doc[0]) && isset($doc[0]->match_report)){
             $docmatchreport = json_decode($doc[0]->match_report);
             $dochubparsedpdf = $docmatchreport->HubJSONOutput->ParsedPDFData;
-            $hbl_numbers[] = $dochubparsedpdf->ParsedPDFHeader->hbl_number;
+            $hbl_numbers[] = isset($dochubparsedpdf->ParsedPDFHeader->hbl_number) ? $dochubparsedpdf->ParsedPDFHeader->hbl_number : $dochubparsedpdf->ParsedPDFHeader->mbl_number ;
 
             foreach($dochubparsedpdf->ParsedPDFHeader as $key=>$pdf){
                 if(!in_array($key, $mustnot)){
