@@ -69,6 +69,7 @@ class DocRegister extends Core\Model {
     public function toArchive($prim_ref){
         $Db = Utility\Database::getInstance();
         $query = "UPDATE match_registration set archive = 1 where process_id = '{$prim_ref}'  ";
+       
         return  $Db->query($query);
     }
 }

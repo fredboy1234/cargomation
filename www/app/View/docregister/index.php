@@ -114,6 +114,7 @@ $status = array("error","success");
                 <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Archived <span class="badge bg-info">15</span>
               </label>
             </div>
+            <button type="button" class="clearall btn btn-danger float-right">Clear All</button>
           </div>
           <!-- /.card-header -->
           <div class="card-body">

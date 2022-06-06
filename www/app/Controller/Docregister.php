@@ -417,7 +417,9 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
-      
+        // echo'<pre>';
+        // print_r($this->newjson($prim_ref,$_SESSION['user']));
+        //  exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -667,11 +669,37 @@ class Docregister extends Core\Controller {
     }
 
     public function toArchive(){
-        if(isset($_POST['prim_ref'])){
+        if(isset($_POST['process_id'])){
             $APinvoice = Model\DocRegister::getInstance();
-            $lastID = $APinvoice->toArchive($_POST['prim_ref']);
+            $lastID = $APinvoice->toArchive($_POST['process_id']);
         }
        
         //return $lastID[0]->lastid;
+    }
+
+    public function archiveAll(){
+       
+        $user_id = $_SESSION['user'];
+        $process_id = '';
+
+        if(isset($_POST)){
+           // $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
+           // $decode_respose = json_decode($match_response)->data;
+           
+            $arr = array(
+                "user_id" => (int)$user_id,
+            );
+    
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
+    
+            $url =' https://cargomation.com:5200/redis/apinvoice/shipmentreg_archive'; 
+    
+            $result = $this->postAuth($url,$payload,$headers);
+
+            print_r($result);
+            return $result;
+        }
     }
 }

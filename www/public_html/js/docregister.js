@@ -256,3 +256,15 @@ $(document).on('click','.toarchive',function(){
     }
   });
 });
+
+$('.clearall').on('click',function(){
+  var processid = $(this).attr('data-pd');
+  $.ajax({
+    "url":  document.location.origin+"/docregister/archiveAll/",
+    "type": "POST",
+    "data":{process_id:processid},
+    success:function(res){
+      location.reload();
+    }
+  });
+});
