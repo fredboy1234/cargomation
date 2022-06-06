@@ -115,26 +115,26 @@ function addSearchFilter(selected) {
     }).get().sort().pop();
   $(".form_field_outer").append(`
   <div class="row form_field_outer_row ${index}" section="${index}">
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-4">
       <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
         <option>--Select type--</option>
       </select>
     </div>
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       <select name="type[]" id="no_type_${index}" class="form-control no_type">
         <option>--Select type--</option>
       </select>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-5">
       <input name="value[]" id="no_value_${index}" type="text" class="form-control w_90" placeholder="Enter search value" />
     </div>
-    <div class="form-group col-md-1">
+    <div class="form-group col-md-2">
       <select name="cond[]" id="no_cond_${index}" class="form-control exclude" disabled>
         <option value="OR">OR</option>
         <option value="AND">AND</option>
       </select>
     </div>
-    <div class="form-group col-md-2 add_del_btn_outer">
+    <div class="form-group col-md-10 add_del_btn_outer">
       <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
         <i class="fas fa-copy"></i>
       </button>
