@@ -465,7 +465,8 @@ class Docregister extends Core\Controller {
             'filename'=> $filename,
             'fieldlist' => $fieldlist,
             'tableheader'=>$tableheader,
-            'matchData' =>$matchData
+            'matchData' =>$matchData,
+            'process_id'=>$prim_ref
         ]);
     }
 
@@ -629,5 +630,37 @@ class Docregister extends Core\Controller {
 
         $result = $this->postAuth($url, $payload, $headers);
         return $result;
+    }
+
+    public function pushToCargowise(){
+        $user_id = $_SESSION['user'];
+        $process_id = '';
+
+        if(isset($_POST)){
+            $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
+            $decode_respose = json_decode($match_response)->data;
+           
+            $arr = array(
+                "string_hubjsonArray" => $decode_respose,
+            );
+    
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
+    
+            $url ='https://cargomation.com:5200/redis/apinvoice/CargowiseShipmentReg'; 
+    
+            $result = $this->postAuth($url,$payload,$headers);
+
+            print_r($result);
+            return $result;
+        }
+         
+    }
+
+    public function getCMByprim_ref(){
+        $APinvoice = Model\Apinvoice::getInstance();
+        $lastID = $APinvoice->getLastID();
+        return $lastID[0]->lastid;
     }
 }

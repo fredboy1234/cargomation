@@ -213,3 +213,29 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
+
+$(document).on('click','#addtocw',function(){
+  var prim_ref = $(this).attr("data-pid");
+
+  $.ajax({
+    url: document.location.origin+"/docregister/pushToCargowise/",
+    type: "POST",
+    data:{"process_id":prim_ref},
+    success:function(data)
+    {
+      console.log(data.status);
+      if(data.status ==='200'){
+        Swal.fire(
+          "",
+          "Push Success!",
+          );
+      }else{
+        Swal.fire(
+          "",
+          "Error on Pushing!",
+          );
+      }
+      
+    }
+  });
+});

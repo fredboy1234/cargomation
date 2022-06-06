@@ -59,4 +59,10 @@ class DocRegister extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT IDENT_CURRENT('match_apinvoice') as lastid")->results();
     }
+
+    public function getMatchReportWidthID($prim_ref){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT * FROM match_report WHERE prim_ref = '{$prim_ref}' ";
+        return  $Db->query($query)->results();
+    }
 }

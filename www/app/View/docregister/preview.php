@@ -170,10 +170,10 @@
     <div class="col-lg-5 text-center mt-3">
         <button type="button" class="btn btn-danger d-none">Raise Query</button>
         <button type="button" class="btn btn-success d-none">Tag as Validated</button>
-        <button id="addtocw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
+        <button id="addtocw" data-pid="<?=$this->process_id?>"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
             Push All
         </button>
-        <button id="overidecw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Override matching charge codes with new data." data-html="true">
+        <button id="overidecw" data-pid="<?=$this->process_id?>" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Override matching charge codes with new data." data-html="true">
            Push Current Tab
         </button>
     </div>
