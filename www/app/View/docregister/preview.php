@@ -91,7 +91,7 @@
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
                 <?php foreach($matchData as $matchval){ ?>
-                    <div class="tab-pane fade show active" id="<?=$matchval['hbl_numbers']?>" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade" id="<?=$matchval['hbl_numbers']?>" role="tabpanel" aria-labelledby="home-tab">
                     
                         <!--List of Fields-->
                         <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
@@ -115,6 +115,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                   
                                     <?php if(count($matchval['container_details']) != 1){?>
                                         <?php foreach($matchval['container_details'] as $condetails){?>
                                             <tr>
@@ -126,7 +127,9 @@
                                     <?php }else{?>
                                         <tr>
                                             <?php foreach($matchval['container_details'] as $condetails){?>
-                                                <td><?php print_r($condetails)?></td>
+                                                <?php foreach($condetails as $con){?>
+                                                    <td><?=$con?></td>
+                                                <?php } ?>
                                             <?php } ?>
                                         </tr>
                                     <?php } ?>
