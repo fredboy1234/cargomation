@@ -144,7 +144,7 @@
    </div>
    <div class="col-sm-4 form_sec_outer_task ">
       <div id ="row_head" class="row">
-         <div class="col-md-4">
+         <div class="col-md-12">
             <label>Recent Search</label>
          </div>
       </div>

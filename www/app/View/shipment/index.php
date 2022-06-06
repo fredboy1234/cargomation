@@ -176,7 +176,7 @@
                                             <div class="row">
                                                 <div class="col-sm-4 form_sec_outer_task ">
                                                     <div id ="row_head" class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-12">
                                                             <label>Save Search</label>
                                                         </div>
                                                     </div>
@@ -192,7 +192,7 @@
                                                 </div>
                                                 <div class="col-sm-8 form_sec_outer_task ">
                                                     <div id ="row_head" class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-12">
                                                             <label>Search Query</label>
                                                         </div>
                                                     </div>
