@@ -209,6 +209,6 @@ function customside(){
 
 $('#myTab .nav-item').on('click',function(){
   var idembed = $(this).attr('data-embeded');
-  $(embed).addClass('d-none');
+  $('embed').addClass('d-none');
   $('#'+idembed).removeClass('d-none');
 });
