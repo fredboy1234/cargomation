@@ -115,26 +115,26 @@ function addSearchFilter(selected) {
     }).get().sort().pop();
   $(".form_field_outer").append(`
   <div class="row form_field_outer_row ${index}" section="${index}">
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-4">
       <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
         <option>--Select type--</option>
       </select>
     </div>
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       <select name="type[]" id="no_type_${index}" class="form-control no_type">
         <option>--Select type--</option>
       </select>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-5">
       <input name="value[]" id="no_value_${index}" type="text" class="form-control w_90" placeholder="Enter search value" />
     </div>
-    <div class="form-group col-md-1">
+    <div class="form-group col-md-2">
       <select name="cond[]" id="no_cond_${index}" class="form-control exclude" disabled>
         <option value="OR">OR</option>
         <option value="AND">AND</option>
       </select>
     </div>
-    <div class="form-group col-md-2 add_del_btn_outer">
+    <div class="form-group col-md-10 add_del_btn_outer">
       <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
         <i class="fas fa-copy"></i>
       </button>
@@ -1315,55 +1315,60 @@ $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
 // Load Recent/Save Search
 $('#loadSaved, #loadRecent').on('click', function() {
   var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
-  const myArray = text.split(",");
-  if(myArray.length > 0){
-    $(".form_field_outer_row:not(:first)").remove();
-    $("#no_value_1").val("");
-    $("#no_search_1").val("");
-    $("#no_type_1").val("");
-    $("#add_filters option").each(function(){
-      $(this).attr("data-index",1);
-    });
-    var length = myArray.length;
-    $(myArray).each(function(k,v){
-      var field = "";
-      if(v.includes("document")) {
-        var field = v.split(':');
-        field[0] = field[0] + ":" + field[1];
-        field[1] = field[2];
-        field[2] = field[3];
-        field[3] = field[4];
-        field.pop();
+  // const myArray = (text) ? text.split(",") : alert('Please select search');
+  if(text) {
+    const myArray = text.split(",");
+    if(myArray.length > 0){
+      $(".form_field_outer_row:not(:first)").remove();
+      $("#no_value_1").val("");
+      $("#no_search_1").val("");
+      $("#no_type_1").val("");
+      $("#add_filters option").each(function(){
+        $(this).attr("data-index",1);
+      });
+      var length = myArray.length;
+      $(myArray).each(function(k,v){
+        var field = "";
+        if(v.includes("document")) {
+          var field = v.split(':');
+          field[0] = field[0] + ":" + field[1];
+          field[1] = field[2];
+          field[2] = field[3];
+          field[3] = field[4];
+          field.pop();
+          console.log(field);
+        } else {
+          var field = v.split(':');
+        }
+        if(k < (length - 1)) {
+          addSearchFilter(field[0]);
+        }
         console.log(field);
-      } else {
-        var field = v.split(':');
-      }
-      if(k < (length - 1)) {
-        addSearchFilter(field[0]);
-      }
-      console.log(field);
-      var xdex = k + 1; // 0 
-      setTimeout(function(){
-        $("#no_search_"+xdex).change(); // column
-        $("#no_search_"+xdex).val(field[0]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_type_"+xdex).change();
-        $("#no_type_"+xdex).val(field[1]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_cond_"+xdex).change();
-        $("#no_cond_"+xdex).val(field[3]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_value_"+xdex).val(field[2]);
-        $("#container_mode_"+xdex).val(field[2]);
-        $("#container_mode_"+xdex).trigger('change'); 
-      },300);
-    });
+        var xdex = k + 1; // 0 
+        setTimeout(function(){
+          $("#no_search_"+xdex).change(); // column
+          $("#no_search_"+xdex).val(field[0]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_type_"+xdex).change();
+          $("#no_type_"+xdex).val(field[1]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_cond_"+xdex).change();
+          $("#no_cond_"+xdex).val(field[3]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_value_"+xdex).val(field[2]);
+          $("#container_mode_"+xdex).val(field[2]);
+          $("#container_mode_"+xdex).trigger('change'); 
+        },300);
+      });
+    }
+    console.log(myArray);
+    $('a[href="#vert-tabs-search"]').tab('show');
+  } else {
+    Swal.fire('Please select search query to load!');
   }
-  console.log(myArray);
-  $('a[href="#vert-tabs-search"]').tab('show');
 });
 // Reset Recent/Save Search
 $('#resetSearch').on('click', function() {

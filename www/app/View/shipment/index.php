@@ -174,13 +174,40 @@
                                     <div class="tab-pane fade" id="vert-tabs-save" role="tabpanel" aria-labelledby="vert-tabs-save-tab">
                                         <div class="tab-pane" id="save">
                                             <div class="row">
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label>Save Search</label>
-                                                        <select id="save_search" multiple="" class="form-control">
-                                                        </select>
+                                                <div class="col-sm-4 form_sec_outer_task ">
+                                                    <div id ="row_head" class="row">
+                                                        <div class="col-md-12">
+                                                            <label>Save Search</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 p-0">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <select id="save_search" multiple="" class="form-control" size="6"></select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-8 form_sec_outer_task ">
+                                                    <div id ="row_head" class="row">
+                                                        <div class="col-md-12">
+                                                            <label>Search Query</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 p-0">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <div id="query_text">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label>Search Query</label>
@@ -188,13 +215,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!--<div class="col-sm-4">
+                                                <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label>Recent Search</label>
                                                         <select id="recent_search" multiple="" class="form-control">
                                                         </select>
                                                     </div>
-                                                </div>-->
+                                                </div>
+                                                -->
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
@@ -205,7 +233,7 @@
                                                         <i class="fas fa-trash"></i> Delete Query
                                                     </button>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-8">
                                                     <button type="button" id="loadSaved" class="btn btn-success">
                                                         <i class="fas fa-search"></i> Load Saved Search
                                                     </button>

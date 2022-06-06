@@ -206,8 +206,8 @@
         },
         {"filterID":"Transport Mode", "filterName":"transport_mode","filterType":"option","placeholder":"","show":"n",
             "value":[
-                {"name":"Sea","value":"sea"},
-                {"name":"Air","value":"air"}
+                {"name":"SEA","value":"SEA"},
+                {"name":"AIR","value":"AIR"}
             ],
             "type":[
                 {"option":"--Select type--","value":""},

@@ -74,54 +74,47 @@
    #vert-tabs .nav-link{
    border: none !important;
    }
-   #row_head{
+   #row_head, .box1 label, .box2 label {
       color:#3778be !important;
       font-size: 13pt;
    }
- 
 </style>
 <div class="row">
    <div class="col-md-8 form_sec_outer_task ">
       <div id ="row_head" class="row">
-         <div class="col-md-3">
+         <div class="col-md-4">
             <label>Search</label>
          </div>
-         <div class="col-md-2">
+         <div class="col-md-3">
             <label>Type</label>
          </div>
-         <div class="col-md-4">
+         <div class="col-md-5">
             <label>Value</label>
-         </div>
-         <div class="col-md-1">
-            <label> </label>
-         </div>
-         <div class="col-md-2">
-            <label> </label>
          </div>
       </div>
       <div class="col-md-12 p-0">
          <div class="col-md-12 form_field_outer p-0">
             <div class="row form_field_outer_row 1" section="1">
-               <div class="form-group col-md-3">
+               <div class="form-group col-md-4">
                   <select name="search[]" id="no_search_1" class="form-control search-list" value="">
                      <option>--Select type--</option>
                   </select>
                </div>
-               <div class="form-group col-md-2">
+               <div class="form-group col-md-3">
                   <select name="type[]" id="no_type_1" class="form-control">
                      <option>--Select type--</option>
                   </select>
                </div>
-               <div class="form-group col-md-4">
+               <div class="form-group col-md-5">
                   <input  name="value[]" id="no_value_1" type="text" class="form-control w_90" placeholder="Enter search value">
                </div>
-               <div class="form-group col-md-1">
+               <div class="form-group col-md-2">
                   <select name="cond[]" id="no_cond_1" class="form-control exclude" disabled>
                      <option value="OR">OR</option>
                      <option value="AND">AND</option>
                   </select>
                </div>
-               <div class="form-group col-md-2 add_del_btn_outer">
+               <div class="form-group col-md-10 add_del_btn_outer">
                   <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="1">
                   <i class="fas fa-copy"></i>
                   </button>
@@ -149,15 +142,25 @@
 
       </div>
    </div>
-   <div class="col-sm-4">
-      <div class="form-group">
-         <label>Recent Search</label>
-         <select id="recent_search" multiple="" class="form-control"></select>
+   <div class="col-sm-4 form_sec_outer_task ">
+      <div id ="row_head" class="row">
+         <div class="col-md-12">
+            <label>Recent Search</label>
+         </div>
       </div>
-      <div class="col-md-12 mt-2 text-left">
-         <button type="button" id="loadRecent" class="btn btn-success">
-         <i class="fas fa-search"></i> Load Recent Search
-         </button>
+      <div class="col-md-12 p-0">
+         <div class="col-md-12 p-0">
+            <div class="row">
+               <div class="form-group col-md-12">
+                  <select id="recent_search" multiple="" class="form-control" size="6"></select>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-12 mt-2 text-left">
+            <button type="button" id="loadRecent" class="btn btn-success">
+               <i class="fas fa-search"></i> Load Recent Search
+            </button>
+         </div>
       </div>
    </div>
 </div>
