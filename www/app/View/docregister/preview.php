@@ -90,8 +90,8 @@
                 </li> -->
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-                <?$cc = 0;?>
-                <?$show = '';?>
+                <?php $cc = 0;?>
+                <?php $show = '';?>
                 <?php foreach($matchData as $matchval){ ?>
                     <?php $cc++;?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
