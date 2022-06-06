@@ -133,7 +133,7 @@
                                     <?php if(count($matchval['container_details']) != 1){?>
                                         <?php foreach($matchval['container_details'] as $condetails){?>
                                             <tr>
-                                            <td></td>
+                                            <td class="edit-details"><i class="fas fa-edit"></i></td>
                                                 <?php foreach($condetails as $conchild){ ?>
                                                     <td><?=$conchild?></td>
                                                 <?php } ?>
@@ -141,7 +141,7 @@
                                         <?php }?>
                                     <?php }else{?>
                                         <tr>
-                                        <td></td>
+                                        <td class="edit-details"><i class="fas fa-edit"></i></td>
                                             <?php foreach($matchval['container_details'] as $condetails){?>
                                                 <?php foreach($condetails as $con){?>
                                                     <td><?=$con?></td>
