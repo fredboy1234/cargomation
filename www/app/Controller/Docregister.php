@@ -433,9 +433,10 @@ class Docregister extends Core\Controller {
                 }else{
                     $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
                 }
-                $container_details[] =$pdf;    
+                $container_details[] =$pdfchild;   
+                 
             }
-           
+          
             $filename = isset($doc[0]) ? $doc[0]->filepath : '' ;
         }
        
