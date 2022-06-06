@@ -108,9 +108,9 @@
                                 <tr>
                                     <th></th>
                                     <?php if(!empty($this->tableheader)){?>
-                                    <?php foreach($this->tableheader as $header){?>
-                                        <th><?=$header?></th>
-                                    <?php } ?>
+                                        <?php foreach($this->tableheader as $key=>$header){?>
+                                            <th><?=$header?></th>
+                                        <?php } ?>
                                     <?php } ?>
                                 </tr>
                             </thead>
@@ -119,9 +119,13 @@
                                     <?php foreach( $container_details  as $details){?>
                                         <tr>
                                             <td><i class="fas fa-edit"></i></td>
-                                            <?php foreach($details as $det){ ?>
-                                                <td><?=$det?></td>
-                                            <?php } ?>  
+                                            <?php if(is_object($details)){?>
+                                                <?php foreach($details as $det){ ?>
+                                                    <td><?=$det?></td>
+                                                <?php } ?>  
+                                            <?php }else{ ?>
+                                                <td><?=$details?></td>
+                                            <?php } ?>
                                         </tr>
                                     <?php } ?>
                                 <?php } ?>

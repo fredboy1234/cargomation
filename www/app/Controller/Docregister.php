@@ -424,12 +424,15 @@ class Docregister extends Core\Controller {
                     $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                 }
             }
-            
-            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $key=>$pdfchild){
-                $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
-            }
-
-            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $pdf){  
+           
+            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $key=>$pdfchild){ 
+                if(is_object($pdfchild)){
+                    foreach($pdfchild as $pkey=>$pval){
+                        $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);
+                    }
+                }else{
+                    $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
+                }
                 $container_details[] =$pdf;    
             }
            
