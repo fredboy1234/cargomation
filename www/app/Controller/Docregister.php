@@ -342,7 +342,7 @@ class Docregister extends Core\Controller {
                
                 $docs = '<div class="d-inline-block w-45">
                         <h4>Master Bill</h4><br>
-                        <span><strong>COSU6327</strong></span><br>
+                        <span><strong>COSU6327594340</strong></span><br>
                         <span>Match Status </span> <span class="badge badge-success">Ready</span><br>
                         <span>Upload Status</span>
                         <i class="far fa-check-circle"></i>
