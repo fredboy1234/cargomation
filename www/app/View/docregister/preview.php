@@ -99,7 +99,7 @@
                 <?php foreach($matchData as $matchval){ ?>
                     <?php $cc++;?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
-                    <div class="tab-pane fade <?=$show?>" id="<?=$hbl['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
+                    <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
                     
                         <!--List of Fields-->
                         <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
