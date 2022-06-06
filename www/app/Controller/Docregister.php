@@ -438,7 +438,7 @@ class Docregister extends Core\Controller {
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
             'container_details' => $container_details,
-            'doc_data' => $dochubparsedpdf,
+            'doc_data' => isset($dochubparsedpdf) ? $dochubparsedpdf : '',
             'filename'=> $filename,
             'fieldlist' => $fieldlist,
             'tableheader'=>$tableheader
@@ -569,7 +569,7 @@ class Docregister extends Core\Controller {
         curl_close($curl);
         return $response;
     }
-    
+
     public function getDocReportReg($user_id){
         $APinvoice = Model\DocRegister::getInstance();
         return $APinvoice->getDocReportReg($user_id);
