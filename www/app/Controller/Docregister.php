@@ -413,7 +413,7 @@ class Docregister extends Core\Controller {
         $fieldlist=array();
         $filename = '';
         $matchData = array();
-        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path');
+        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref));
        if(!isset($jsonDecode->data)) exit;
