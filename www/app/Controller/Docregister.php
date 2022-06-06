@@ -416,7 +416,7 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path');
       
         $jsonDecode = json_decode($this->newjson($prim_ref));
-        
+       if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
        //echo '<pre>';
