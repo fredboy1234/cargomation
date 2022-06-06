@@ -415,12 +415,10 @@ class Docregister extends Core\Controller {
         $matchData = array();
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
-        $jsonDecode = json_decode($this->newjson($prim_ref));
+        $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
-       //echo '<pre>';
-        
         if(!empty($matchArray)){
             foreach($matchArray as $match){
                 $jmatch = $match; 
@@ -452,13 +450,12 @@ class Docregister extends Core\Controller {
                     'hbl_numbers' => $hbl_numbers,
                     'container_details' => $container_details,
                     'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
-                    'filename'=> $filename,
+                    'filename'=> 'https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/CW_DOCREGISTER/IN'.$filename,
                     'fieldlist' => $fieldlist,
                     'tableheader'=>$tableheader
                 );
             }
         }
-       
        
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
@@ -617,10 +614,11 @@ class Docregister extends Core\Controller {
         return $lastID[0]->lastid;
     }
     
-    public function newjson($process_id){
+    public function newjson($process_id,$user_id){
         $url = 'https://cargomation.com:5200/redis/apinvoice/shipmentreg_hblmbl';
         $arr = [
             'process_id' =>(int)$process_id,
+            'user_id'=>(string)$user_id
         ];
         
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
