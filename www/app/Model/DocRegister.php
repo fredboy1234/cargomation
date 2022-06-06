@@ -28,7 +28,7 @@ class DocRegister extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT mr.filename as dfilename,* FROM match_registration mr 
                  left join match_report_reg mrr on mrr.prim_ref = mr.process_id
-                 WHERE mr.user_id = '{$user_id}'";
+                 WHERE mr.user_id = '{$user_id}' and archive is null";
         return $Db->query($query)->results();
     }
 
@@ -64,5 +64,11 @@ class DocRegister extends Core\Model {
         $Db = Utility\Database::getInstance();
         $query = "SELECT * FROM match_report WHERE prim_ref = '{$prim_ref}' ";
         return  $Db->query($query)->results();
+    }
+
+    public function toArchive($prim_ref){
+        $Db = Utility\Database::getInstance();
+        $query = "UPDATE match_registration set archive = 1 where process_id = '{$prim_ref}'  ";
+        return  $Db->query($query);
     }
 }

@@ -376,7 +376,7 @@ class Docregister extends Core\Controller {
                                     <a class="dropdown-item" href="#">Push to Cargowise</a>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-xl">View File</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a data-pd="'.$docval->process_id.'" class="dropdown-item toarchive" href="#">Delete</a>
                                     </div>
                                     </div>',
                     "Status"=> "Processing",
@@ -404,6 +404,7 @@ class Docregister extends Core\Controller {
     }
 
     public function preview($prim_ref=""){
+       
         $url = explode("/",$_GET['url']);
         $prim_ref = end($url);
         $doc = $this->getDocReportRegSingle($_SESSION['user'],$prim_ref);
@@ -416,6 +417,7 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
+      
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -659,8 +661,17 @@ class Docregister extends Core\Controller {
     }
 
     public function getCMByprim_ref(){
-        $APinvoice = Model\Apinvoice::getInstance();
+        $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getLastID();
         return $lastID[0]->lastid;
+    }
+
+    public function toArchive(){
+        if(isset($_POST['prim_ref'])){
+            $APinvoice = Model\DocRegister::getInstance();
+            $lastID = $APinvoice->toArchive($_POST['prim_ref']);
+        }
+       
+        //return $lastID[0]->lastid;
     }
 }

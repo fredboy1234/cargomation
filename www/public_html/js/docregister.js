@@ -243,3 +243,16 @@ $(document).on('click','#addtocw',function(){
     }
   });
 });
+
+$(document).on('click','.toarchive',function(){
+  var processid = $(this).attr('data-pd');
+  
+  $.ajax({
+    "url":  document.location.origin+"/docregister/toArchive/",
+    "type": "POST",
+    "data":{process_id:processid},
+    success:function(res){
+      console.log(res);
+    }
+  });
+});
