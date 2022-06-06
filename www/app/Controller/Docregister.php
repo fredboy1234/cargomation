@@ -687,7 +687,7 @@ class Docregister extends Core\Controller {
            // $decode_respose = json_decode($match_response)->data;
            
             $arr = array(
-                "user_id" => (int)$user_id,
+                "user_id" => (string)$user_id,
             );
     
             $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
