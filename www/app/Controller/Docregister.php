@@ -424,17 +424,18 @@ class Docregister extends Core\Controller {
                     $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                 }
             }
+            
+            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $key=>$pdfchild){
+                $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
+            }
 
             foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $pdf){  
-                foreach($pdf as $key=>$pdfchild){
-                    $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
-                }
                 $container_details[] =$pdf;    
             }
            
             $filename = isset($doc[0]) ? $doc[0]->filepath : '' ;
         }
-        
+       
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
             'container_details' => $container_details,
