@@ -129,14 +129,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+                                    
                                     <?php if(count($matchval['container_details']) != 1){?>
                                         <?php foreach($matchval['container_details'] as $condetails){?>
                                             <tr>
                                             <td class="edit-details"><i class="fas fa-edit"></i></td>
-                                                <?php foreach($condetails as $conchild){ ?>
-                                                    <td><?=$conchild?></td>
-                                                <?php } ?>
+                                            <?php foreach($matchval['tableheader'] as $theader){?>
+                                                    <?php $property_name =str_replace(" ","_",$theader);?>
+                                                    <?php if(isset($condetails->$property_name)){?>
+                                                        <td><?php echo $condetails->$property_name?></td>
+                                                    <?php } ?>
+                                            <?php } ?>
                                             </tr>
                                         <?php }?>
                                     <?php }else{?>
