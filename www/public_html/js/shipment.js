@@ -1315,55 +1315,60 @@ $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
 // Load Recent/Save Search
 $('#loadSaved, #loadRecent').on('click', function() {
   var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
-  const myArray = text.split(",");
-  if(myArray.length > 0){
-    $(".form_field_outer_row:not(:first)").remove();
-    $("#no_value_1").val("");
-    $("#no_search_1").val("");
-    $("#no_type_1").val("");
-    $("#add_filters option").each(function(){
-      $(this).attr("data-index",1);
-    });
-    var length = myArray.length;
-    $(myArray).each(function(k,v){
-      var field = "";
-      if(v.includes("document")) {
-        var field = v.split(':');
-        field[0] = field[0] + ":" + field[1];
-        field[1] = field[2];
-        field[2] = field[3];
-        field[3] = field[4];
-        field.pop();
+  // const myArray = (text) ? text.split(",") : alert('Please select search');
+  if(text) {
+    const myArray = text.split(",");
+    if(myArray.length > 0){
+      $(".form_field_outer_row:not(:first)").remove();
+      $("#no_value_1").val("");
+      $("#no_search_1").val("");
+      $("#no_type_1").val("");
+      $("#add_filters option").each(function(){
+        $(this).attr("data-index",1);
+      });
+      var length = myArray.length;
+      $(myArray).each(function(k,v){
+        var field = "";
+        if(v.includes("document")) {
+          var field = v.split(':');
+          field[0] = field[0] + ":" + field[1];
+          field[1] = field[2];
+          field[2] = field[3];
+          field[3] = field[4];
+          field.pop();
+          console.log(field);
+        } else {
+          var field = v.split(':');
+        }
+        if(k < (length - 1)) {
+          addSearchFilter(field[0]);
+        }
         console.log(field);
-      } else {
-        var field = v.split(':');
-      }
-      if(k < (length - 1)) {
-        addSearchFilter(field[0]);
-      }
-      console.log(field);
-      var xdex = k + 1; // 0 
-      setTimeout(function(){
-        $("#no_search_"+xdex).change(); // column
-        $("#no_search_"+xdex).val(field[0]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_type_"+xdex).change();
-        $("#no_type_"+xdex).val(field[1]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_cond_"+xdex).change();
-        $("#no_cond_"+xdex).val(field[3]).trigger('change');
-      },300);
-      setTimeout(function(){
-        $("#no_value_"+xdex).val(field[2]);
-        $("#container_mode_"+xdex).val(field[2]);
-        $("#container_mode_"+xdex).trigger('change'); 
-      },300);
-    });
+        var xdex = k + 1; // 0 
+        setTimeout(function(){
+          $("#no_search_"+xdex).change(); // column
+          $("#no_search_"+xdex).val(field[0]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_type_"+xdex).change();
+          $("#no_type_"+xdex).val(field[1]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_cond_"+xdex).change();
+          $("#no_cond_"+xdex).val(field[3]).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_value_"+xdex).val(field[2]);
+          $("#container_mode_"+xdex).val(field[2]);
+          $("#container_mode_"+xdex).trigger('change'); 
+        },300);
+      });
+    }
+    console.log(myArray);
+    $('a[href="#vert-tabs-search"]').tab('show');
+  } else {
+    Swal.fire('Please select search query to load!');
   }
-  console.log(myArray);
-  $('a[href="#vert-tabs-search"]').tab('show');
 });
 // Reset Recent/Save Search
 $('#resetSearch').on('click', function() {
