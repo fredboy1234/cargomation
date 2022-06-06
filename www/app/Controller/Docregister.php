@@ -517,10 +517,14 @@ class Docregister extends Core\Controller {
             $url ='https://cargomation.com:8002/compare'; 
             
            $result = $this->post($url, $arr, '');
-           echo"<pre>";
-           print_r($arr);
-           print_r($result);
-          return "success";
+        //    echo"<pre>";
+        //    print_r($arr);
+        //    print_r($result);
+        //   return "success";
+          $ret = array(
+              "result"=>$result,
+            "prim_ref"=>$this->getLastID());
+            echo json_encode($ret);
         }
     }
 
@@ -666,6 +670,18 @@ class Docregister extends Core\Controller {
         $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getLastID();
         return $lastID[0]->lastid;
+    }
+
+    public function updateParseInput($prim_ref,$parse_input){
+        $APinvoice = Model\DocRegister::getInstance();
+        $APinvoice->updateParseInput($prim_ref,$parse_input);
+       // return $lastID[0]->lastid;
+    }
+
+    public function setParseInput(){
+        if(isset($_POST)){
+            $this->updateParseInput($_POST['prim_ref'],$_POST['parse_input']);
+        }
     }
 
     public function toArchive(){

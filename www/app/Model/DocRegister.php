@@ -72,4 +72,11 @@ class DocRegister extends Core\Model {
        
         return  $Db->query($query);
     }
+
+    public function updateParseInput($prim_ref,$parse_input){
+        $Db = Utility\Database::getInstance();
+        $query = "UPDATE match_registration set parsed_input = '{$parse_input}' where process_id = '{$prim_ref}'  ";
+       
+        return  $Db->query($query);
+    }
 }
