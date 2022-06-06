@@ -376,7 +376,7 @@ class Docregister extends Core\Controller {
                                     <a class="dropdown-item" href="#">Push to Cargowise</a>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-xl">View File</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a data-pd="'.$docval->process_id.'" class="dropdown-item toarchive" href="#">Delete</a>
                                     </div>
                                     </div>',
                     "Status"=> "Processing",
@@ -404,6 +404,7 @@ class Docregister extends Core\Controller {
     }
 
     public function preview($prim_ref=""){
+       
         $url = explode("/",$_GET['url']);
         $prim_ref = end($url);
         $doc = $this->getDocReportRegSingle($_SESSION['user'],$prim_ref);
@@ -412,41 +413,62 @@ class Docregister extends Core\Controller {
         $tableheader = array();
         $fieldlist=array();
         $filename = '';
-        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id');
-       
-        if(isset($doc[0]) && isset($doc[0]->match_report)){
-            $docmatchreport = json_decode($doc[0]->match_report);
-            $dochubparsedpdf = $docmatchreport->HubJSONOutput->ParsedPDFData;
-            $hbl_numbers[] = isset($dochubparsedpdf->ParsedPDFHeader->hbl_number) ? $dochubparsedpdf->ParsedPDFHeader->hbl_number : $dochubparsedpdf->ParsedPDFHeader->mbl_number ;
+        $matchData = array();
+        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
+      
+        $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
+      
+       if(!isset($jsonDecode->data)) exit;
+        $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
-            foreach($dochubparsedpdf->ParsedPDFHeader as $key=>$pdf){
-                if(!in_array($key, $mustnot)){
-                    $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
-                }
-            }
-           
-            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $key=>$pdfchild){ 
-                if(is_object($pdfchild)){
-                    foreach($pdfchild as $pkey=>$pval){
-                        $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);
+        if(!empty($matchArray)){
+            foreach($matchArray as $match){
+                $jmatch = $match; 
+                $parsePdfData = $jmatch->HubJSONOutput->ParsedPDFData;
+                $parsePdfDataheader = $parsePdfData->ParsedPDFHeader;
+                $parsePdfParsedPDFLines = $parsePdfData->ParsedPDFLines;
+                $hbl_numbers = isset($parsePdfDataheader->mbl_number) ? $parsePdfDataheader->mbl_number : $parsePdfDataheader->hbl_number;
+                $filename = $parsePdfDataheader->filename;
+                //print_r($jmatch);
+
+                foreach($parsePdfDataheader as $key=>$pdf){
+                    if(!in_array($key, $mustnot)){
+                        $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                     }
-                }else{
-                    $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
                 }
-                $container_details[] =$pdfchild;   
-                 
+                foreach($parsePdfParsedPDFLines  as $key=>$pdfchild){ 
+                    if(is_object($pdfchild)){
+                        foreach($pdfchild as $pkey=>$pval){
+                            $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                        }
+                        $container_details[] = $pdfchild;
+                    }else{
+                        $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                        $container_details[$key] = $pdfchild; 
+                    }
+                    
+                }
+                $matchData[] = array(
+                    'hbl_numbers' => $hbl_numbers,
+                    'container_details' => $container_details,
+                    'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
+                    'filename'=> 'https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/CW_DOCREGISTER/IN/'.$filename,
+                    'fieldlist' => $fieldlist,
+                    'tableheader'=>$tableheader
+                );
             }
-          
-            $filename = isset($doc[0]) ? $doc[0]->filepath : '' ;
         }
        
+        $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
             'container_details' => $container_details,
             'doc_data' => isset($dochubparsedpdf) ? $dochubparsedpdf : '',
             'filename'=> $filename,
             'fieldlist' => $fieldlist,
-            'tableheader'=>$tableheader
+            'tableheader'=>$tableheader,
+            'matchData' =>$matchData,
+            'process_id'=>$prim_ref
         ]);
     }
 
@@ -596,4 +618,60 @@ class Docregister extends Core\Controller {
         return $lastID[0]->lastid;
     }
     
+    public function newjson($process_id,$user_id){
+        $url = 'https://cargomation.com:5200/redis/apinvoice/shipmentreg_hblmbl';
+        $arr = [
+            'process_id' =>(int)$process_id,
+            'user_id'=>(string)$user_id
+        ];
+        
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        
+        $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                    "Content-Type: application/json"];
+
+        $result = $this->postAuth($url, $payload, $headers);
+        return $result;
+    }
+
+    public function pushToCargowise(){
+        $user_id = $_SESSION['user'];
+        $process_id = '';
+
+        if(isset($_POST)){
+            $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
+            $decode_respose = json_decode($match_response)->data;
+           
+            $arr = array(
+                "string_hubjsonArray" => $decode_respose,
+            );
+    
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
+    
+            $url ='https://cargomation.com:5200/redis/apinvoice/CargowiseShipmentReg'; 
+    
+            $result = $this->postAuth($url,$payload,$headers);
+
+            print_r($result);
+            return $result;
+        }
+         
+    }
+
+    public function getCMByprim_ref(){
+        $APinvoice = Model\DocRegister::getInstance();
+        $lastID = $APinvoice->getLastID();
+        return $lastID[0]->lastid;
+    }
+
+    public function toArchive(){
+        if(isset($_POST['prim_ref'])){
+            $APinvoice = Model\DocRegister::getInstance();
+            $lastID = $APinvoice->toArchive($_POST['prim_ref']);
+        }
+       
+        //return $lastID[0]->lastid;
+    }
 }

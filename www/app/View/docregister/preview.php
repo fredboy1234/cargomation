@@ -4,6 +4,8 @@
  $hbl_numbers = $this->hbl_numbers;
  $container_details = $this->container_details;
  $doc_data = $this->doc_data;
+ $matchData = $this->matchData;
+ $connumber = '';
 ?>
 <style>
    .loaderstyle{
@@ -37,6 +39,7 @@
        width: 50%;
    }
 </style>
+
 <div class="row">
     <div class="grid-container_custom">
         <div class="custom_sidebar">
@@ -45,8 +48,14 @@
             </button>
             <div class="col-lg-12 sideparent">
             <div id="embeded">
-                <embed src="<?=$this->filename?>" style="width:100%; height:500px;" frameborder="0"></embed>
+            <?php $pdfcount=0;?>
+            <?php foreach($matchData as $hbl){?>
+                <?php $pdfcount++;?>
+                <?php $pdfclass=$pdfcount==1 ? '' : 'd-none';?>
+                <embed id="<?=$hbl['hbl_numbers']?>_embed" class="<?=$pdfclass?>" src="<?=$hbl['filename']?>" style="width:100%; height:500px;" frameborder="0"></embed>
                 <a class="downicon d-none"><i class="fas fa-angle-double-down"></i></a>
+            <?php } ?>
+                
             </div>
             <div id="infor-boxes">
                 <!-- <div id="cusdiv" class="danger">
@@ -66,13 +75,17 @@
         </div>
         <div class="main-content_custom">
             <div class="col-lg-12">
+            
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <?php if(!empty($hbl_numbers)){?>
-                    <?php foreach($hbl_numbers as $hbl){?>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
-                                <?=$hbl?>
-                            </button>
+                <?php if(!empty($matchData)){?>
+                    <?php $st = 0;?>
+                    <?php $isact = '';?>
+                    <?php foreach($matchData as $hbl){?>
+                        <?php $st++; $isact=$st==1 ? 'active' :'';?>
+                        <li class="nav-item <?=$isact?>" role="presentation" >
+                            <a class="nav-link <?=$isact?> pdfbtn" data-embeded="<?=$hbl['hbl_numbers']?>_embed" id="<?=$hbl['hbl_numbers']?>_tab" data-toggle="tab" href="#<?=$hbl['hbl_numbers']?>_pane" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
+                                <?=$hbl['hbl_numbers']?>
+                            </a>
                         </li>
                     <?php } ?>
                 <?php } ?>
@@ -87,52 +100,66 @@
                 </li> -->
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="col-md-12">
-                    <form>
-                        <?php if(!empty($this->fieldlist)){ ?>
-                            <?php foreach($this->fieldlist as $key=>$filedlist){ ?>
-                                    <div class="form-group row d-inline-block px-2">
-                                        <label for="<?=$key?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$key?></label>
-                                        <div class="col-sm-12">
-                                            <input type="email" class="form-control form-control-sm" id="<?=$key?>" placeholder="col-form-label-sm" value="<?=$filedlist?>">
-                                        </div>
-                                    </div>
-                            <?php } ?>
+                <?php $cc = 0;?>
+                <?php $show = '';?>
+                <?php foreach($matchData as $matchval){ ?>
+                    <?php $cc++;?>
+                    <?php $show=$cc==1 ? 'active show' : '' ;?>
+                    <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
+                    
+                        <!--List of Fields-->
+                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
+                            <div class="form-group row d-inline-block px-2">
+                                <label for="<?=$keyField?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                <div class="col-sm-12">
+                                    <input type="email" class="form-control form-control-sm" id="<?=$keyField?>" placeholder="col-form-label-sm" value="<?=$listofField?>">
+                                </div>
+                            </div>
                         <?php } ?>
-                        </form>
-                    </div>
-                    <div class="card-body" style="overflow:scroll;">
-                        <table id="con-details" class="table w-100">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <?php if(!empty($this->tableheader)){?>
-                                        <?php foreach($this->tableheader as $key=>$header){?>
-                                            <th><?=$header?></th>
+
+                        <!--Table-->
+                        <div class="card-body" style="overflow:scroll;">
+                            <table id="con-details" class="table w-100">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <?php foreach($matchval['tableheader'] as $theader){?>
+                                            <th><?=$theader?></th>
                                         <?php } ?>
-                                    <?php } ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(!empty($container_details )){?>
-                                    <?php foreach( $container_details  as $details){?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php if(count($matchval['container_details']) != 1){?>
+                                        <?php foreach($matchval['container_details'] as $condetails){?>
+                                            <tr>
+                                            <td class="edit-details"><i class="fas fa-edit"></i></td>
+                                            <?php foreach($matchval['tableheader'] as $theader){?>
+                                                    <?php $property_name =str_replace(" ","_",$theader);?>
+                                                    <?php if(isset($condetails->$property_name)){?>
+                                                        <td><?php echo $condetails->$property_name?></td>
+                                                    <?php } ?>
+                                            <?php } ?>
+                                            </tr>
+                                        <?php }?>
+                                    <?php }else{?>
                                         <tr>
-                                            <td><i class="fas fa-edit"></i></td>
-                                            <?php if(is_object($details)){?>
-                                                <?php foreach($details as $det){ ?>
-                                                    <td><?=$det?></td>
-                                                <?php } ?>  
-                                            <?php }else{ ?>
-                                                <td><?=$details?></td>
+                                        <td class="edit-details"><i class="fas fa-edit"></i></td>
+                                            <?php foreach($matchval['container_details'] as $condetails){?>
+                                                <?php foreach($condetails as $con){?>
+                                                    <td><?=$con?></td>
+                                                <?php } ?>
                                             <?php } ?>
                                         </tr>
                                     <?php } ?>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--end of table-->
                     </div>
-                </div>
+                <?php } ?>
+                
                 <!-- <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div> -->
@@ -143,10 +170,10 @@
     <div class="col-lg-5 text-center mt-3">
         <button type="button" class="btn btn-danger d-none">Raise Query</button>
         <button type="button" class="btn btn-success d-none">Tag as Validated</button>
-        <button id="addtocw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
+        <button id="addtocw" data-pid="<?=$this->process_id?>"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add additional line to Cargowise." data-html="true">
             Push All
         </button>
-        <button id="overidecw"  type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Override matching charge codes with new data." data-html="true">
+        <button id="overidecw" data-pid="<?=$this->process_id?>" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Override matching charge codes with new data." data-html="true">
            Push Current Tab
         </button>
     </div>

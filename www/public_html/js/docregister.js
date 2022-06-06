@@ -27,6 +27,13 @@
     <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
     </div>`;
 $(document).ready(function(){
+  $(document).on('click','.pdfbtn',function(){
+    var idembed = $(this).attr('data-embeded');
+    
+    $('embed').addClass('d-none');
+    $('#'+idembed).removeClass('d-none');
+  });
+
     var table = $('#docregister').DataTable( {
       "ajax": '/docregister/allDocs',
       "processing": true,
@@ -206,3 +213,46 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
+
+$(document).on('click','#addtocw',function(){
+  var prim_ref = $(this).attr("data-pid");
+
+  $.ajax({
+    url: document.location.origin+"/docregister/pushToCargowise/",
+    type: "POST",
+    data:{"process_id":prim_ref},
+    success:function(data)
+    {
+      console.log(data.status);
+      Swal.fire(
+            "",
+            "Push Success!",
+            );
+      // if(data.status ==='200'){
+      //   Swal.fire(
+      //     "",
+      //     "Push Success!",
+      //     );
+      // }else{
+      //   Swal.fire(
+      //     "",
+      //     "Error on Pushing!",
+      //     );
+      // }
+      
+    }
+  });
+});
+
+$(document).on('click','.toarchive',function(){
+  var processid = $(this).attr('data-pd');
+  
+  $.ajax({
+    "url":  document.location.origin+"/docregister/toArchive/",
+    "type": "POST",
+    "data":{process_id:processid},
+    success:function(res){
+      console.log(res);
+    }
+  });
+});
