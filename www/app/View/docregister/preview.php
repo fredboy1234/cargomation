@@ -4,6 +4,8 @@
  $hbl_numbers = $this->hbl_numbers;
  $container_details = $this->container_details;
  $doc_data = $this->doc_data;
+ $matchData = $this->matchData;
+ $connumber = '';
 ?>
 <style>
    .loaderstyle{
@@ -37,6 +39,7 @@
        width: 50%;
    }
 </style>
+
 <div class="row">
     <div class="grid-container_custom">
         <div class="custom_sidebar">
@@ -67,11 +70,11 @@
         <div class="main-content_custom">
             <div class="col-lg-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <?php if(!empty($hbl_numbers)){?>
-                    <?php foreach($hbl_numbers as $hbl){?>
+                <?php if(!empty($matchData)){?>
+                    <?php foreach($matchData as $hbl){?>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
-                                <?=$hbl?>
+                                <?=$hbl['hbl_numbers']?>
                             </button>
                         </li>
                     <?php } ?>
@@ -87,52 +90,54 @@
                 </li> -->
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="col-md-12">
-                    <form>
-                        <?php if(!empty($this->fieldlist)){ ?>
-                            <?php foreach($this->fieldlist as $key=>$filedlist){ ?>
-                                    <div class="form-group row d-inline-block px-2">
-                                        <label for="<?=$key?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$key?></label>
-                                        <div class="col-sm-12">
-                                            <input type="email" class="form-control form-control-sm" id="<?=$key?>" placeholder="col-form-label-sm" value="<?=$filedlist?>">
-                                        </div>
-                                    </div>
-                            <?php } ?>
+                <?php foreach($matchData as $matchval){ ?>
+                    <div class="tab-pane fade show active" id="<?=$matchval['hbl_numbers']?>" role="tabpanel" aria-labelledby="home-tab">
+                    
+                        <!--List of Fields-->
+                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
+                            <div class="form-group row d-inline-block px-2">
+                                <label for="<?=$keyField?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                <div class="col-sm-12">
+                                    <input type="email" class="form-control form-control-sm" id="<?=$keyField?>" placeholder="col-form-label-sm" value="<?=$listofField?>">
+                                </div>
+                            </div>
                         <?php } ?>
-                        </form>
-                    </div>
-                    <div class="card-body" style="overflow:scroll;">
-                        <table id="con-details" class="table w-100">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <?php if(!empty($this->tableheader)){?>
-                                        <?php foreach($this->tableheader as $key=>$header){?>
-                                            <th><?=$header?></th>
+
+                        <!--Table-->
+                        <div class="card-body" style="overflow:scroll;">
+                            <table id="con-details" class="table w-100">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <?php foreach($matchval['tableheader'] as $theader){?>
+                                            <th><?=$theader?></th>
                                         <?php } ?>
-                                    <?php } ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if(!empty($container_details )){?>
-                                    <?php foreach( $container_details  as $details){?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if(count($matchval['container_details']) != 1){?>
+                                        <?php foreach($matchval['container_details'] as $condetails){?>
+                                            <tr>
+                                                <?php foreach($condetails as $conchild){ ?>
+                                                    <td><?=$conchild?></td>
+                                                <?php } ?>
+                                            </tr>
+                                        <?php }?>
+                                    <?php }else{?>
                                         <tr>
-                                            <td><i class="fas fa-edit"></i></td>
-                                            <?php if(is_object($details)){?>
-                                                <?php foreach($details as $det){ ?>
-                                                    <td><?=$det?></td>
-                                                <?php } ?>  
-                                            <?php }else{ ?>
-                                                <td><?=$details?></td>
+                                            <?php foreach($matchval['container_details'] as $condetails){?>
+                                                <td><?php print_r($condetails)?></td>
                                             <?php } ?>
                                         </tr>
                                     <?php } ?>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--end of table-->
                     </div>
-                </div>
+                <?php } ?>
+                
                 <!-- <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div> -->

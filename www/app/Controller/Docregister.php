@@ -412,33 +412,52 @@ class Docregister extends Core\Controller {
         $tableheader = array();
         $fieldlist=array();
         $filename = '';
+        $matchData = array();
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id');
-       
-        if(isset($doc[0]) && isset($doc[0]->match_report)){
-            $docmatchreport = json_decode($doc[0]->match_report);
-            $dochubparsedpdf = $docmatchreport->HubJSONOutput->ParsedPDFData;
-            $hbl_numbers[] = isset($dochubparsedpdf->ParsedPDFHeader->hbl_number) ? $dochubparsedpdf->ParsedPDFHeader->hbl_number : $dochubparsedpdf->ParsedPDFHeader->mbl_number ;
+      
+        $jsonDecode = json_decode($this->newjson());
+        $matchArray = $jsonDecode->MatchReportArray;
 
-            foreach($dochubparsedpdf->ParsedPDFHeader as $key=>$pdf){
-                if(!in_array($key, $mustnot)){
-                    $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
-                }
-            }
-           
-            foreach($dochubparsedpdf->ParsedPDFLines->ParsedPDFLine as $key=>$pdfchild){ 
-                if(is_object($pdfchild)){
-                    foreach($pdfchild as $pkey=>$pval){
-                        $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);
+       //echo '<pre>';
+        
+        if(!empty($matchArray)){
+            foreach($matchArray as $match){
+                $jmatch = json_decode($match); 
+                $parsePdfData = $jmatch->HubJSONOutput->ParsedPDFData;
+                $parsePdfDataheader = $parsePdfData->ParsedPDFHeader;
+                $parsePdfParsedPDFLines = $parsePdfData->ParsedPDFLines;
+                $hbl_numbers = isset($parsePdfDataheader->mbl_number) ? $parsePdfDataheader->mbl_number : $parsePdfDataheader->hbl_number;
+                $filename = $parsePdfDataheader->filename;
+                //print_r($jmatch);
+
+                foreach($parsePdfDataheader as $key=>$pdf){
+                    if(!in_array($key, $mustnot)){
+                        $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                     }
-                }else{
-                    $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);
                 }
-                $container_details[] =$pdfchild;   
-                 
+                foreach($parsePdfParsedPDFLines  as $key=>$pdfchild){ 
+                    if(is_object($pdfchild)){
+                        foreach($pdfchild as $pkey=>$pval){
+                            $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                        }
+                        $container_details[] = $pdfchild;
+                    }else{
+                        $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                        $container_details[$key] = $pdfchild; 
+                    }
+                    
+                }
+                $matchData[] = array(
+                    'hbl_numbers' => $hbl_numbers,
+                    'container_details' => $container_details,
+                    'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
+                    'filename'=> $filename,
+                    'fieldlist' => $fieldlist,
+                    'tableheader'=>$tableheader
+                );
             }
-          
-            $filename = isset($doc[0]) ? $doc[0]->filepath : '' ;
         }
+       
        
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
@@ -446,7 +465,8 @@ class Docregister extends Core\Controller {
             'doc_data' => isset($dochubparsedpdf) ? $dochubparsedpdf : '',
             'filename'=> $filename,
             'fieldlist' => $fieldlist,
-            'tableheader'=>$tableheader
+            'tableheader'=>$tableheader,
+            'matchData' =>$matchData
         ]);
     }
 
@@ -596,4 +616,12 @@ class Docregister extends Core\Controller {
         return $lastID[0]->lastid;
     }
     
+    public function newjson(){
+        return '{
+            "MatchReportArray": [
+              "{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"gross_weight\":\"23260.000KGS\",\"shipper\":\"SHANGHAI SUPREME INTERNATIONAL\",\"incoterm\":\"OCEAN FREIGHT PREPAID\",\"consignee\":\"SILA GLOBAL PTY LTD\",\"mbl_number\":\"COSU6327594340\",\"port_origin\":\"SHANGHAI\",\"goods_description\":\"DESMODUR T80 TANK TANK TRUCK UN 2078, TOLUENE DIISOCYANATE, 6.1, II, IMDG-CODE\",\"port_destination\":\"MELBOURNE\",\"filename\":\"6327594340-20220322090225-pg0.pdf\",\"page\":\"1\",\"webservice_link\":\"https://a2btrnservices.wisegrid.net/eAdaptor/  \",\"webservice_username\":\"A2B\",\"webservice_password\":\"Hw7m3XhS\",\"server_id\":\"TRN\",\"enterprise_id\":\"A2B\",\"company_code\":\"SYD\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":{\"CONTAINER_NUMBER\":\"WSDU6001792\",\"SEAL\":\"/784914\",\"CONTAINER_TYPE\":\"20TK\",\"CHARGEABLE_WEIGHT\":\"23260.000KGS\",\"VOLUME\":\"24.0000CBM\",\"PACKAGE_COUNT\":\"1 TANK\"}}}}}",
+              "{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"release_type\":\"OBR\",\"consignee\":\"COVESTRO PTY LTD\",\"hbl_number\":\"STL22008755\",\"coload_number\":\"ORD220121906566\",\"port_origin\":\"SHANGHAI\",\"goods_description\":\"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE\",\"consol_number\":\"COSU6327594340\",\"coloader\":\"SILA GLOBAL PTY LTD\",\"port_destination\":\"MELBOURNE\",\"incoterm\":\"FREIGHT PREPAID\",\"shipper\":\"COVESTRO (HONG KONG) LIMITED\",\"filename\":\"STL22008755.pdf\",\"page\":\"1\",\"process_id\":\"11\",\"merged_file_path\":\"/home/isa/Documents/work/ai-data/test-ftp-folder/SPLIT/STL22008755.pdf\",\"webservice_link\":\"https://a2btrnservices.wisegrid.net/eAdaptor/  \",\"webservice_username\":\"A2B\",\"webservice_password\":\"Hw7m3XhS\",\"server_id\":\"TRN\",\"enterprise_id\":\"A2B\",\"company_code\":\"SYD\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":{\"CONTAINER_NUMBER\":\"WSDU6001792\",\"SEAL\":\"784914\",\"CONTAINER_TYPE\":\"20TK*1\",\"CHARGEABLE_WEIGHT\":\"23260 KGS\",\"VOLUME\":\"24CBM 2022\",\"PACKAGE_COUNT\":\"ONE\"}}}}}"
+            ]
+          }';
+    }
 }
