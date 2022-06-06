@@ -224,17 +224,21 @@ $(document).on('click','#addtocw',function(){
     success:function(data)
     {
       console.log(data.status);
-      if(data.status ==='200'){
-        Swal.fire(
-          "",
-          "Push Success!",
-          );
-      }else{
-        Swal.fire(
-          "",
-          "Error on Pushing!",
-          );
-      }
+      Swal.fire(
+            "",
+            "Push Success!",
+            );
+      // if(data.status ==='200'){
+      //   Swal.fire(
+      //     "",
+      //     "Push Success!",
+      //     );
+      // }else{
+      //   Swal.fire(
+      //     "",
+      //     "Error on Pushing!",
+      //     );
+      // }
       
     }
   });
