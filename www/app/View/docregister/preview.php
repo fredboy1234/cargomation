@@ -82,8 +82,8 @@
                     <?php $isact = '';?>
                     <?php foreach($matchData as $hbl){?>
                         <?php $st++; $isact=$st==1 ? 'active' :'';?>
-                        <li class="nav-item <?=$isact?>" role="presentation" data-embeded="<?=$hbl['hbl_numbers']?>_embed?>">
-                            <a class="nav-link <?=$isact?>" id="<?=$hbl['hbl_numbers']?>_tab" data-toggle="tab" href="#<?=$hbl['hbl_numbers']?>_pane" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
+                        <li class="nav-item <?=$isact?>" role="presentation" >
+                            <a class="nav-link <?=$isact?> pdfbtn" data-embeded="<?=$hbl['hbl_numbers']?>_embed?>" id="<?=$hbl['hbl_numbers']?>_tab" data-toggle="tab" href="#<?=$hbl['hbl_numbers']?>_pane" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
                                 <?=$hbl['hbl_numbers']?>
                             </a>
                         </li>

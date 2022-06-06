@@ -27,6 +27,13 @@
     <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
     </div>`;
 $(document).ready(function(){
+  $('.pdfbtn').on('click',function(){
+    var idembed = $(this).attr('data-embeded');
+    console.log(idembed);
+    $('embed').addClass('d-none');
+    $('#'+idembed).removeClass('d-none');
+  });
+
     var table = $('#docregister').DataTable( {
       "ajax": '/docregister/allDocs',
       "processing": true,
@@ -206,10 +213,3 @@ function customside(){
   sidebar.classList.toggle('sidebar_small');
   mainContent.classList.toggle('main-content_large');
 }
-
-$('#myTab .nav-item').on('click',function(){
-  var idembed = $(this).attr('data-embeded');
-  console.log(idembed);
-  $('embed').addClass('d-none');
-  $('#'+idembed).removeClass('d-none');
-});
