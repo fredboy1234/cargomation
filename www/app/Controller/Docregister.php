@@ -682,7 +682,7 @@ class Docregister extends Core\Controller {
         $user_id = $_SESSION['user'];
         $process_id = '';
 
-        if(isset($_POST)){
+        //if(isset($_POST)){
            // $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
            // $decode_respose = json_decode($match_response)->data;
            
@@ -694,12 +694,12 @@ class Docregister extends Core\Controller {
             $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                         "Content-Type: application/json"];
     
-            $url =' https://cargomation.com:5200/redis/apinvoice/shipmentreg_archive'; 
+            $url ='https://cargomation.com:5200/redis/apinvoice/shipmentreg_archive'; 
     
             $result = $this->postAuth($url,$payload,$headers);
 
             print_r($result);
             return $result;
-        }
+        //}
     }
 }
