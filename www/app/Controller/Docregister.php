@@ -450,7 +450,7 @@ class Docregister extends Core\Controller {
                     'hbl_numbers' => $hbl_numbers,
                     'container_details' => $container_details,
                     'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
-                    'filename'=> 'https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/CW_DOCREGISTER/IN'.$filename,
+                    'filename'=> $filename,
                     'fieldlist' => $fieldlist,
                     'tableheader'=>$tableheader
                 );
