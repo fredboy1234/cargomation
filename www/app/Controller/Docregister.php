@@ -521,10 +521,10 @@ class Docregister extends Core\Controller {
         //    print_r($arr);
         //    print_r($result);
         //   return "success";
-          $ret = array(
-              "result"=>$result,
-            "prim_ref"=>$this->getLastID());
-            echo json_encode($ret);
+          $ret = array();
+          $ret['result'] = $result;
+          $ret['prim_ref'] = $this->getLastID();
+        
         }
     }
 

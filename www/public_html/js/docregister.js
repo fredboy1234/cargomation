@@ -156,15 +156,16 @@ $(document).ready(function(){
           data:form_data,
           success:function(data)
           {
-            $.ajax({
-              url: document.location.origin+"/docregister/setParseInput/",
-              type: "POST",
-              data:{prim_ref:data.prim_ref,parse_input:data.result},
-              success:function(data)
-              {
-                  console.log(data);
-              }
-            });
+            console.log(data);
+            // $.ajax({
+            //   url: document.location.origin+"/docregister/setParseInput/",
+            //   type: "POST",
+            //   data:{prim_ref:data.prim_ref,parse_input:data.result},
+            //   success:function(data)
+            //   {
+            //       console.log(data);
+            //   }
+            // });
           }
         });
       }
