@@ -29,7 +29,7 @@
 $(document).ready(function(){
   $('.pdfbtn').on('click',function(){
     var idembed = $(this).attr('data-embeded');
-    console.log(idembed);
+    
     $('embed').addClass('d-none');
     $('#'+idembed).removeClass('d-none');
   });

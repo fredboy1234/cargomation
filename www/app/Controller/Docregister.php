@@ -457,6 +457,7 @@ class Docregister extends Core\Controller {
             }
         }
        
+        $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
             'container_details' => $container_details,
