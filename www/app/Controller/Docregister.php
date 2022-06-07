@@ -356,9 +356,9 @@ class Docregister extends Core\Controller {
                         <span>CIV PKL</span><br>
                     </div>,
                     <div class="d-inline-block w-45">
-                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-info btn-xs custom" >Preview Match Report</button><br>
+                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-info btn-xs custom viewdoc" >Preview Match Report</button><br>
                         <button type="button" class="btn btn-block btn-outline-info btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">Send To Cargowise</button><br>
-                        <button type="button" class="btn btn-block btn-outline-success btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">View CW Response</button><br>
+                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-success btn-xs custom cwresponse" data-toggle="modal" data-target="#modal-lg-error">View CW Response</button><br>
                     </div>';
                 
                 $retData['data'][] = array(
@@ -474,6 +474,23 @@ class Docregister extends Core\Controller {
         ]);
     }
 
+    public function cwresponse($prim_ref=""){
+       
+        $url = explode("/",$_GET['url']);
+        $prim_ref = end($url);
+        $doc = $this->getcwresponse($prim_ref);
+        $data = array();
+        
+        if(!empty($doc)){
+            $data =$doc[0]->cw_response;
+        }
+        
+        $this->View->addJS("js/docregister.js");
+        $this->View->renderWithoutHeaderAndFooter("/docregister/cwresponse", [
+           'data' =>$data
+        ]);
+    }
+
     public function customUpload(){
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
@@ -524,7 +541,7 @@ class Docregister extends Core\Controller {
           $ret = array();
           $ret['result'] = $result;
           $ret['prim_ref'] = $this->getLastID();
-        
+            echo json_encode($ret);
         }
     }
 
@@ -619,10 +636,17 @@ class Docregister extends Core\Controller {
     }
 
     public function getLastID(){
-        $APinvoice = Model\Apinvoice::getInstance();
+        $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getLastID();
         return $lastID[0]->lastid;
     }
+
+    public function getcwresponse($prim_ref){
+        $APinvoice = Model\DocRegister::getInstance();
+        $lastID = $APinvoice->getcwresponse($prim_ref);
+        return $lastID;
+    }
+    
     
     public function newjson($process_id,$user_id){
         $url = 'https://cargomation.com:5200/redis/apinvoice/shipmentreg_hblmbl';
@@ -679,8 +703,9 @@ class Docregister extends Core\Controller {
     }
 
     public function setParseInput(){
+        $_POST['parse_input'] = '{\"HBL\": [{\"goods_description\": \"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE\", \"carrier\": null, \"coloader\": \"SILA GLOBAL PTY LTD\", \"consol_number\": null, \"hbl_number\": \"STL22008755\", \"coload_number\": null, \"payment\": null, \"container_number\": null, \"shipper\": \"COVESTRO (HONG KONG) LIMITED\", \"port_origin\": \"SHANGHAI\", \"number_original\": \"THREE\", \"consignee\": \"COVESTRO PTY LTD\", \"incoterm\": \"FREIGHT PREPAID\", \"port_destination\": \"MELBOURNE\", \"gross_weight\": null, \"table\": {\"container_number\": [\"WSDU6001792\"], \"seal\": [null], \"container_type\": [\"20TK*1\"], \"chargeable_weight\": [\"23260 KGS\"], \"volume\": [\"24CBM\"], \"package_count\": [null]}, \"filename\": \"STL22008755.pdf\", \"page\": 1, \"release_type\": \"OBR\", \"webservice_link\": \"https:\/\/a2btrnservices.wisegrid.net\/eAdaptor\/  \", \"webservice_username\": \"A2B\", \"webservice_password\": \"Hw7m3XhS\", \"server_id\": \"TRN\", \"enterprise_id\": \"A2B\", \"company_code\": \"SYD\", \"process_id\": \"185\"}]}';
         if(isset($_POST)){
-            $this->updateParseInput($_POST['prim_ref'],$_POST['parse_input']);
+            $this->updateParseInput($_POST['prim_ref'],json_encode($_POST['parse_input']));
         }
     }
 

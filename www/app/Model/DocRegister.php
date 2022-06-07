@@ -57,7 +57,7 @@ class DocRegister extends Core\Model {
 
     public function getLastID(){
         $Db = Utility\Database::getInstance();
-        return $Db->query("SELECT IDENT_CURRENT('match_apinvoice') as lastid")->results();
+        return $Db->query("SELECT IDENT_CURRENT('match_registration') as lastid")->results();
     }
 
     public function getMatchReportWidthID($prim_ref){
@@ -78,5 +78,12 @@ class DocRegister extends Core\Model {
         $query = "UPDATE match_registration set parsed_input = '{$parse_input}' where process_id = '{$prim_ref}'  ";
        
         return  $Db->query($query);
+    }
+
+    public function getcwresponse($prim_ref){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT cw_response FROM match_report_reg WHERE prim_ref = '{$prim_ref}' ";
+        
+        return  $Db->query($query)->results();
     }
 }
