@@ -26,6 +26,11 @@
     var progressbar = `<div class="progress">
     <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
     </div>`;
+    var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
+  '<div class="spinner-border" role="status">' +
+  '<span class="sr-only">Loading...</span>' +
+  '</div>' +
+  '</div>';
 $(document).ready(function(){
   $(document).on('click','.pdfbtn',function(){
     var idembed = $(this).attr('data-embeded');
@@ -79,7 +84,7 @@ $(document).ready(function(){
       }
   });
 
-  $(document).on('click','.custom',function(){
+  $(document).on('click','.viewdoc',function(){
     var prim_ref = $(this).attr('data-prim_ref');
     console.log(prim_ref);
     var url = "/docregister/preview/" + prim_ref;
@@ -156,7 +161,16 @@ $(document).ready(function(){
           data:form_data,
           success:function(data)
           {
-            
+            var jsdata = JSON.parse(data);
+            $.ajax({
+              url: document.location.origin+"/docregister/setParseInput/",
+              type: "POST",
+              data:{prim_ref:jsdata.prim_ref,parse_input:jsdata.result},
+              success:function(data)
+              {
+                  console.log(data);
+              }
+            });
           }
         });
       }
@@ -166,7 +180,7 @@ $(document).ready(function(){
 });
 
 function preloader(url) {
- var loader ='';
+ 
   $("#preview-doc .modal-body").append(loader);
   // load the url and show modal on success
   $("#preview-doc .modal-body").load(url, function (response, status, xhr) {
@@ -256,3 +270,33 @@ $(document).on('click','.toarchive',function(){
     }
   });
 });
+
+$('.clearall').on('click',function(){
+  var processid = $(this).attr('data-pd');
+  $.ajax({
+    "url":  document.location.origin+"/docregister/archiveAll/",
+    "type": "POST",
+    "data":{process_id:processid},
+    success:function(res){
+      location.reload();
+    }
+  });
+});
+
+$(document).on('click','.cwresponse',function(){
+    var prim_ref = $(this).attr('data-prim_ref');
+    console.log(prim_ref);
+    var url = "/docregister/cwresponse/" + prim_ref;
+    $("#preview-cwresponse .modal-body").append(loader);
+    // load the url and show modal on success
+    $("#preview-cwresponse .modal-body").load(url, function (response, status, xhr) {
+      if (xhr.status == 200) {
+        $('#loader-wrapper').remove();
+        $("#preview-cwresponse").modal("show");
+      } else {
+        alert("Error: " + xhr.status + ": " + xhr.statusText);
+        $('#loader-wrapper').remove();
+      }
+    });
+});
+

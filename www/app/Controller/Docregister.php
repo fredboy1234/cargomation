@@ -356,9 +356,9 @@ class Docregister extends Core\Controller {
                         <span>CIV PKL</span><br>
                     </div>,
                     <div class="d-inline-block w-45">
-                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-info btn-xs custom" >Preview Match Report</button><br>
+                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-info btn-xs custom viewdoc" >Preview Match Report</button><br>
                         <button type="button" class="btn btn-block btn-outline-info btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">Send To Cargowise</button><br>
-                        <button type="button" class="btn btn-block btn-outline-success btn-xs custom" data-toggle="modal" data-target="#modal-lg-error">View CW Response</button><br>
+                        <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-success btn-xs custom cwresponse" data-toggle="modal" data-target="#modal-lg-error">View CW Response</button><br>
                     </div>';
                 
                 $retData['data'][] = array(
@@ -417,7 +417,9 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
-      
+        // echo'<pre>';
+        // print_r($this->newjson($prim_ref,$_SESSION['user']));
+        //  exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -472,6 +474,23 @@ class Docregister extends Core\Controller {
         ]);
     }
 
+    public function cwresponse($prim_ref=""){
+       
+        $url = explode("/",$_GET['url']);
+        $prim_ref = end($url);
+        $doc = $this->getcwresponse($prim_ref);
+        $data = array();
+        
+        if(!empty($doc)){
+            $data =$doc[0]->cw_response;
+        }
+        
+        $this->View->addJS("js/docregister.js");
+        $this->View->renderWithoutHeaderAndFooter("/docregister/cwresponse", [
+           'data' =>$data
+        ]);
+    }
+
     public function customUpload(){
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
@@ -515,10 +534,14 @@ class Docregister extends Core\Controller {
             $url ='https://cargomation.com:8002/compare'; 
             
            $result = $this->post($url, $arr, '');
-           echo"<pre>";
-           print_r($arr);
-           print_r($result);
-          return "success";
+        //    echo"<pre>";
+        //    print_r($arr);
+        //    print_r($result);
+        //   return "success";
+          $ret = array();
+          $ret['result'] = $result;
+          $ret['prim_ref'] = $this->getLastID();
+            echo json_encode($ret);
         }
     }
 
@@ -613,10 +636,17 @@ class Docregister extends Core\Controller {
     }
 
     public function getLastID(){
-        $APinvoice = Model\Apinvoice::getInstance();
+        $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getLastID();
         return $lastID[0]->lastid;
     }
+
+    public function getcwresponse($prim_ref){
+        $APinvoice = Model\DocRegister::getInstance();
+        $lastID = $APinvoice->getcwresponse($prim_ref);
+        return $lastID;
+    }
+    
     
     public function newjson($process_id,$user_id){
         $url = 'https://cargomation.com:5200/redis/apinvoice/shipmentreg_hblmbl';
@@ -666,12 +696,51 @@ class Docregister extends Core\Controller {
         return $lastID[0]->lastid;
     }
 
+    public function updateParseInput($prim_ref,$parse_input){
+        $APinvoice = Model\DocRegister::getInstance();
+        $APinvoice->updateParseInput($prim_ref,$parse_input);
+       // return $lastID[0]->lastid;
+    }
+
+    public function setParseInput(){
+        $_POST['parse_input'] = '{\"HBL\": [{\"goods_description\": \"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE\", \"carrier\": null, \"coloader\": \"SILA GLOBAL PTY LTD\", \"consol_number\": null, \"hbl_number\": \"STL22008755\", \"coload_number\": null, \"payment\": null, \"container_number\": null, \"shipper\": \"COVESTRO (HONG KONG) LIMITED\", \"port_origin\": \"SHANGHAI\", \"number_original\": \"THREE\", \"consignee\": \"COVESTRO PTY LTD\", \"incoterm\": \"FREIGHT PREPAID\", \"port_destination\": \"MELBOURNE\", \"gross_weight\": null, \"table\": {\"container_number\": [\"WSDU6001792\"], \"seal\": [null], \"container_type\": [\"20TK*1\"], \"chargeable_weight\": [\"23260 KGS\"], \"volume\": [\"24CBM\"], \"package_count\": [null]}, \"filename\": \"STL22008755.pdf\", \"page\": 1, \"release_type\": \"OBR\", \"webservice_link\": \"https:\/\/a2btrnservices.wisegrid.net\/eAdaptor\/  \", \"webservice_username\": \"A2B\", \"webservice_password\": \"Hw7m3XhS\", \"server_id\": \"TRN\", \"enterprise_id\": \"A2B\", \"company_code\": \"SYD\", \"process_id\": \"185\"}]}';
+        if(isset($_POST)){
+            $this->updateParseInput($_POST['prim_ref'],json_encode($_POST['parse_input']));
+        }
+    }
+
     public function toArchive(){
-        if(isset($_POST['prim_ref'])){
+        if(isset($_POST['process_id'])){
             $APinvoice = Model\DocRegister::getInstance();
-            $lastID = $APinvoice->toArchive($_POST['prim_ref']);
+            $lastID = $APinvoice->toArchive($_POST['process_id']);
         }
        
         //return $lastID[0]->lastid;
+    }
+
+    public function archiveAll(){
+       
+        $user_id = $_SESSION['user'];
+        $process_id = '';
+
+        //if(isset($_POST)){
+           // $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
+           // $decode_respose = json_decode($match_response)->data;
+           
+            $arr = array(
+                "user_id" => (string)$user_id,
+            );
+    
+            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+            $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                        "Content-Type: application/json"];
+    
+            $url ='https://cargomation.com:5200/redis/apinvoice/shipmentreg_archive'; 
+    
+            $result = $this->postAuth($url,$payload,$headers);
+
+            print_r($result);
+            return $result;
+        //}
     }
 }
