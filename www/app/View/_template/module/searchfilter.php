@@ -6,7 +6,7 @@
    border-radius: 50%;
    text-align: center;
    line-height: 35px;
-   margin-left: 10px;
+   /* margin-left: 10px; */
    border: 1px solid #ccc;
    cursor: pointer;
    }
@@ -82,20 +82,26 @@
 <div class="row">
    <div class="col-md-8 form_sec_outer_task ">
       <div id ="row_head" class="row">
-         <div class="col-md-4">
+         <div class="col-md-3">
             <label>Search</label>
          </div>
          <div class="col-md-3">
             <label>Type</label>
          </div>
-         <div class="col-md-5">
+         <div class="col-md-3">
             <label>Value</label>
+         </div>
+         <div class="col-md-2">
+            <label></label>
+         </div>
+         <div class="col-md-1">
+            <label></label>
          </div>
       </div>
       <div class="col-md-12 p-0">
          <div class="col-md-12 form_field_outer p-0">
             <div class="row form_field_outer_row 1" section="1">
-               <div class="form-group col-md-4">
+               <div class="form-group col-md-3">
                   <select name="search[]" id="no_search_1" class="form-control search-list" value="">
                      <option>--Select type--</option>
                   </select>
@@ -105,7 +111,7 @@
                      <option>--Select type--</option>
                   </select>
                </div>
-               <div class="form-group col-md-5">
+               <div class="form-group col-md-3">
                   <input  name="value[]" id="no_value_1" type="text" class="form-control w_90" placeholder="Enter search value">
                </div>
                <div class="form-group col-md-2">
@@ -114,10 +120,10 @@
                      <option value="AND">AND</option>
                   </select>
                </div>
-               <div class="form-group col-md-10 add_del_btn_outer">
-                  <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="1">
+               <div class="form-group col-md-1 add_del_btn_outer">
+                  <!-- <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="1">
                   <i class="fas fa-copy"></i>
-                  </button>
+                  </button> -->
                   <button class="btn_round remove_node_btn_frm_field" disabled="">
                   <i class="fas fa-trash-alt"></i>
                   </button>
@@ -151,12 +157,12 @@
       <div class="col-md-12 p-0">
          <div class="col-md-12 p-0">
             <div class="row">
-               <div class="form-group col-md-12">
-                  <select id="recent_search" multiple="" class="form-control" size="6"></select>
+               <div class="form-group col-md-12" style="margin-bottom: 12px;">
+                  <select id="recent_search" multiple="" class="form-control" size="4"></select>
                </div>
             </div>
          </div>
-         <div class="col-md-12 mt-2 text-left">
+         <div class="col-md-12 p-0 text-left">
             <button type="button" id="loadRecent" class="btn btn-success">
                <i class="fas fa-search"></i> Load Recent Search
             </button>
