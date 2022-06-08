@@ -456,11 +456,22 @@ class Docregister extends Core\Controller {
                     'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
                     'filename'=> 'https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/CW_DOCREGISTER/IN/'.$filename,
                     'fieldlist' => $fieldlist,
-                    'tableheader'=>$tableheader
+                    'tableheader'=>$tableheader,
                 );
             }
         }
-       
+        
+        $encodedData = urlencode( $this->encryptData( $jsonDecode->data ) );
+        
+       // echo urlencode($this->encryptData($mj));
+       // echo "<br><br><br><pre>";
+
+        //print_r(json_decode($this->decryptData(urldecode($cp))));
+        // $options['salt'] = 'a2b!@#$';
+        // echo hash('ripemd160', $mj);
+        // echo "<br>";
+        // echo password_verify('pass123', hash('ripemd160', $mj));
+
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
@@ -470,8 +481,115 @@ class Docregister extends Core\Controller {
             'fieldlist' => $fieldlist,
             'tableheader'=>$tableheader,
             'matchData' =>$matchData,
-            'process_id'=>$prim_ref
+            'process_id'=>$prim_ref,
+            'match_arr'=> $encodedData,
+            'prim_ref'=>$prim_ref,
+            'matchjson'=>$jsonDecode->data
         ]);
+    }
+
+    public function encryptData($data){
+        // Store the cipher method
+        $ciphering = "AES-128-CTR";
+        
+        // Use OpenSSl Encryption method
+        $iv_length = openssl_cipher_iv_length($ciphering);
+        $options = 0;
+        
+        // Non-NULL Initialization Vector for encryption
+        $encryption_iv = '1234567891011121';
+        
+        // Store the encryption key
+        $encryption_key = "GeeksforGeeks";
+        
+        // Use openssl_encrypt() function to encrypt the data
+        $encryption = openssl_encrypt($data, $ciphering,
+        $encryption_key, $options, $encryption_iv);
+
+        return $encryption;
+    }
+
+    public function decryptData($data){
+        $ciphering = "AES-128-CTR";
+         // Use OpenSSl Encryption method
+         $iv_length = openssl_cipher_iv_length($ciphering);
+         $options = 0;
+        // Non-NULL Initialization Vector for decryption
+        $decryption_iv = '1234567891011121';
+        // Store the decryption key
+        $decryption_key = "GeeksforGeeks";
+
+        // Use openssl_decrypt() function to decrypt the data
+        $decryption=openssl_decrypt ($data, $ciphering, 
+                $decryption_key, $options, $decryption_iv);
+        return $decryption;
+    }
+
+    //edit modal
+    public function edit($pass=""){
+        $data =array();
+        $tableData=array();
+        $collectionOfTableData = array();
+        $url = explode("?",$_SERVER['REQUEST_URI']);
+        
+        if(!isset(  $url[1] ))exit;
+        $data = $url[1];
+        $urlindex = explode("&",$url[1]);
+        $indexID = $urlindex[0];
+        $indexTable = $urlindex[1];
+        $indexData = $urlindex[2];
+        $decrypted = json_decode($this->decryptData(urldecode($indexData)));
+        if(empty($decrypted))exit;
+        
+        // echo"<pre>";
+        // print_r($decrypted);
+        // exit;
+        $tableMatchReport = $decrypted->MatchReportArray;
+        $matchreportIndex = $tableMatchReport[$indexID];
+        $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
+       
+        foreach($matchreportTableData as $key=>$tdata){
+            $collectionOfTableData[] = $tdata;
+        }
+        $tableData=$collectionOfTableData[$indexTable];
+        
+        $this->View->addJS("js/docregister.js");
+        $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
+            "data"=>$decrypted,
+            "tableData"=>$tableData
+        ]);
+    }
+
+    //save data to cgm
+    public function sendToAPI(){
+        $toPass = array();
+        if(isset($_POST)){
+             echo"<pre>";
+            //  print_r($_POST);
+            // exit;
+            foreach($_POST['data'] as $key=>$val){
+                foreach($val as $vkey=>$vval){
+                    $toPass[$vkey]=$vval;
+                }
+            }
+            
+            if($_POST['type'] === 'table'){
+                $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
+            }else{
+                $_POST['docregister'] = json_decode($_POST['docregister']);
+                //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader = $toPass;
+                foreach($toPass as $key=>$tpval){
+                    $_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpval;
+                }
+            }
+            
+            //$_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
+            $data['cgm'] = json_encode($_POST['docregister']);
+            $data['prim_ref'] = $_POST['prim_ref'];
+            
+            $APinvoice = Model\DocRegister::getInstance();
+            $APinvoice->addToCGM_Response($data);
+        }
     }
 
     public function cwresponse($prim_ref=""){

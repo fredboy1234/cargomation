@@ -283,6 +283,7 @@ $('.clearall').on('click',function(){
   });
 });
 
+//show cw response
 $(document).on('click','.cwresponse',function(){
     var prim_ref = $(this).attr('data-prim_ref');
     console.log(prim_ref);
