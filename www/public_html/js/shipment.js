@@ -731,6 +731,8 @@ $(document).ready(function () {
     $("#no_search_1").val("");
     $("#container_mode_1").val(null).trigger("change"); 
     $("#no_type_1").prop("selectedIndex", 0);
+    // $("#no_cond_1").prop("selectedIndex", 0).prop("disabled", true).addClass('exclude');
+    $("#no_cond_1").prop({"selectedIndex": 0, "disabled": true}).addClass('exclude');
     $("#add_filters option").each(function(){
       $(this).attr("data-index",1);
     });
