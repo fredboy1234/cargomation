@@ -7,7 +7,9 @@
 ?>
     <?= $this->getCSS(); ?>
     <pre>
+        
     <?php 
+     print_r($arrText);
     foreach($arrText as $sp){
         if (strpos($sp, 'Error - ') !== false) {
         $logs['error'][] = $sp;
@@ -17,13 +19,24 @@
             $logs['warning'][] = $sp;
         }
     }
+    $searchWord = array('Successfully saved Consol','Updated Consol','Updated Shipment','Added Shipment');
     ?>
 
     <div class="col-12 col-sm-12 mt-3">
         <div class="card card-primary card-outline card-outline-tabs">
+        <ul class="list-group list-group-flush">
             <?php foreach($arrText as $text){ ?>
-                <?php echo $text; //print_r(preg_match('/(Added Shipment)/',  $text, $matches, PREG_OFFSET_CAPTURE));?>
+                
+                <?php 
+                    foreach($searchWord  as $word){
+                       
+                        if(preg_match("/".$word."/", $text)){
+                            echo '<li class="list-group-item">'.str_replace('"}', '', $text).'</li>';
+                        }
+                    }
+                ?>
             <?php } ?>
+        </ul>
         </div>
     </div>
 <?php } ?>
