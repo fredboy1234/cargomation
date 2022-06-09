@@ -751,7 +751,7 @@ class Shipment extends Core\Controller {
                     "Content-Type: application/json"];
         $result = $this->post($url, $payload, $headers);
         $json_data = json_decode($result);
-        if($json_data->status != '200') {
+        if($json_data->status != '200' || empty($json_data)) {
             echo json_encode($json_data);
             exit;
         }
