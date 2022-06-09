@@ -151,6 +151,7 @@ $(window).on("load", function() {
       dataType: "json",
       data:{userid:uid},
       success: function (data) {
+        console.log(data);
         JSON.parse(data.port_loading_count)
         console.log(JSON.parse(data.port_loading_count));
         //console.log(JSON.parse(data.port_loading_count));

@@ -79,7 +79,7 @@ class DocRegister extends Core\Model {
        
         return  $Db->query($query);
     }
-
+    //need to put this in one function
     public function getcwresponse($prim_ref){
         $Db = Utility\Database::getInstance();
         $query = "SELECT cw_response FROM match_report_reg WHERE prim_ref = '{$prim_ref}' ";
@@ -100,5 +100,13 @@ class DocRegister extends Core\Model {
                SET cgm_response = '{$cgm}'
                WHERE prim_ref = '{$prim_ref}'";
         return  $Db->query($query);
+    }
+
+    //need to put this in one function 
+    public function getCGMresponse($prim_ref){
+        $Db = Utility\Database::getInstance();
+        $query = "SELECT cgm_response FROM match_report_reg WHERE prim_ref = '{$prim_ref}' ";
+        
+        return  $Db->query($query)->results();
     }
 }
