@@ -417,9 +417,13 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
-        // echo'<pre>';
-        // print_r($this->newjson($prim_ref,$_SESSION['user']));
-        //  exit;
+        
+        if($jsonDecode->status ==='500' || isset($this->getCGMresponse($prim_ref)[0])){
+            $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
+        }
+        //  echo'<pre>';
+        //  print_r($jsonDecode);
+        //   exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -787,8 +791,13 @@ class Docregister extends Core\Controller {
         $process_id = '';
 
         if(isset($_POST)){
-            $match_response = $this->newjson($_POST['process_id'],$user_id);//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
-            $decode_respose = json_decode($match_response)->data;
+            $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
+            
+            if($match_response->status ==='500' || isset($this->getCGMresponse($_POST['process_id'])[0])){
+                $match_response->data = $this->getCGMresponse($_POST['process_id'])[0]->cgm_response;
+            }
+            
+            $decode_respose = $match_response->data;
            
             $arr = array(
                 "string_hubjsonArray" => $decode_respose,
@@ -812,6 +821,11 @@ class Docregister extends Core\Controller {
         $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getLastID();
         return $lastID[0]->lastid;
+    }
+
+    public function getCGMresponse($prim_ref){
+        $APinvoice = Model\DocRegister::getInstance();
+        return $APinvoice->getCGMresponse($prim_ref);
     }
 
     public function updateParseInput($prim_ref,$parse_input){
