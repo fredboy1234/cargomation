@@ -619,7 +619,7 @@ $(document).ready(function () {
     }, 100);
 
 
-  }).find('option:selected').map(function () { return this.id }).get();
+  }).find('option:selected').map(function () { return this.value }).get();
 
   var check_arr = [];
   function getSettings(map) {
