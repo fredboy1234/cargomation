@@ -102,7 +102,7 @@
             <div class="tab-content mt-3" id="myTabContent">
                 <?php $cc = 0;?>
                 <?php $show = '';?>
-                <?php foreach($matchData as $matchval){ ?>
+                <?php foreach($matchData as $pkey=>$matchval){ ?>
                     <?php $cc++;?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
                     <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
@@ -112,11 +112,12 @@
                             <div class="form-group row d-inline-block px-2">
                                 <label for="<?=$keyField?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
                                 <div class="col-sm-12">
-                                    <input type="email" class="form-control form-control-sm" id="<?=$keyField?>" placeholder="col-form-label-sm" value="<?=$listofField?>">
+                                    <input type="text" class="form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$keyField))?>" placeholder="col-form-label-sm" value="<?=$listofField?>">
                                 </div>
                             </div>
                         <?php } ?>
-
+                        <button type="button" class="btn btn-primary sendToCGM" data-key="<?=$pkey?>">Save Changes</button>
+                        <hr>
                         <!--Table-->
                         <div class="card-body" style="overflow:scroll;">
                             <table id="con-details" class="table w-100">
@@ -131,9 +132,11 @@
                                 <tbody>
                                     
                                     <?php if(count($matchval['container_details']) != 1){?>
-                                        <?php foreach($matchval['container_details'] as $condetails){?>
+                                        <?php foreach($matchval['container_details'] as $key=>$condetails){ ?>
                                             <tr>
-                                            <td class="edit-details"><i class="fas fa-edit"></i></td>
+                                            <td class="edit-details" data-tindex="<?=$key?>" data-dindex="<?=$pkey?>">
+                                              <i class="fas fa-edit"></i>
+                                            </td>
                                             <?php foreach($matchval['tableheader'] as $theader){?>
                                                     <?php $property_name =str_replace(" ","_",$theader);?>
                                                     <?php if(isset($condetails->$property_name)){?>
@@ -144,8 +147,10 @@
                                         <?php }?>
                                     <?php }else{?>
                                         <tr>
-                                        <td class="edit-details"><i class="fas fa-edit"></i></td>
-                                            <?php foreach($matchval['container_details'] as $condetails){?>
+                                        <td class="edit-details" data-tindex="0" data-dindex="<?=$pkey?>">
+                                          <i class="fas fa-edit"></i>
+                                        </td>
+                                            <?php foreach($matchval['container_details'] as $key=>$condetails){?>
                                                 <?php foreach($condetails as $con){?>
                                                     <td><?=$con?></td>
                                                 <?php } ?>
@@ -188,7 +193,7 @@
    <div class="modal-dialog modal-lg" style="width:100%; max-width:1088px">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Invoice</h4>
+            <h4 class="modal-title">Container Details</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -196,7 +201,7 @@
          <div class="modal-body">
             <p>Loading&hellip;</p>
          </div>
-         <div class="modal-footer justify-content-between">
+         <div class="modal-footer justify-content-between d-none">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
          </div>
@@ -209,5 +214,69 @@
 <!--end of modal-->
 
 <script>
- 
+ var match_arr = <?=json_encode($this->match_arr)?>;
+ var prim_ref =<?=json_encode($this->prim_ref)?>;
+ var matchjson = <?=json_encode($this->matchjson)?>;
+ //show edit modal on preview doc
+$(document).on('click','.edit-details',function(){
+    console.log(match_arr);
+    var tableindex = $(this).attr('data-tindex');
+    var matcharrayIndex = $(this).attr('data-dindex');
+    
+    $('#edit-ap').attr("tabledindex",tableindex);
+    $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
+    $('#edit-ap').attr('data-prim',prim_ref);
+    
+    var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+
+    $("#edit-ap .modal-body").append(loader);
+    // load the url and show modal on success
+    $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
+    if (xhr.status == 200) {
+        $('#loader-wrapper').remove();
+        $("#edit-ap").modal("show");
+    } else {
+        alert("Error: " + xhr.status + ": " + xhr.statusText);
+        $('#loader-wrapper').remove();
+    }
+    });
+});
+
+//push edited to cgm response
+$(document).on('click','.sendToCGM',function(){
+        var formData = [];
+        //var prim_ref = $("#edit-ap").attr("data-prim");
+        var tableindex =$(this).attr("tabledindex");
+        var parseindex = $(this).attr("data-key");
+        $('.form-group input').each(function(){
+            var tobj ={};
+            var tvalue = $(this).val();
+            var tname = $(this).attr("name");
+            tobj[tname] = tvalue;
+            formData.push(tobj);
+        });
+    //console.log(formData);
+        $.ajax({
+            url: document.location.origin+"/docregister/sendToAPI/",
+            type: "POST",
+            data:{
+                "data": formData, 
+                "docregister":matchjson, 
+                "prim_ref":prim_ref,
+                "tableindex":tableindex,
+                "parseindex":parseindex,
+                "type":'main',
+            },
+            success:function(data)
+            {
+             
+               $("#edit-ap .close").trigger("click");
+                Swal.fire(
+                "",
+                "Edit Success!",
+                );
+            }
+        });
+
+    });
 </script>

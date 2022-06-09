@@ -86,4 +86,19 @@ class DocRegister extends Core\Model {
         
         return  $Db->query($query)->results();
     }
+
+    public function addToCGM_Response($data){
+        $cgm = $data['cgm'];
+        $prim_ref = $data['prim_ref'];
+        $Db = Utility\Database::getInstance();
+        // $query = "INSERT
+        //     INTO match_report(cgm_response)
+        //     VALUES('{$data}')
+        // ";
+        
+        $query = "UPDATE match_report_reg 
+               SET cgm_response = '{$cgm}'
+               WHERE prim_ref = '{$prim_ref}'";
+        return  $Db->query($query);
+    }
 }
