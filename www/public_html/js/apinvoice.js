@@ -222,7 +222,7 @@ $(document).ready(function() {
             var contentText = '';
             console.log(oval);
             console.log("object oval");
-            if(oval != null){
+            if(oval != null ){
               if(okey==='Errors'){
                 classkey ="danger";
                 contentText = oval;

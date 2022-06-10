@@ -46,6 +46,9 @@ $(document).ready(function(){
       "bPaginate":true,
       "sPaginationType":"full_numbers",
       "iDisplayLength": 8,
+      "language": {
+        "emptyTable":     "Empty Data You Can Try To Upload Files."
+      },
       "columns": [
           {
               "className":      'dt-control',
@@ -98,7 +101,7 @@ $(document).ready(function(){
     var form_data = new FormData(); 
     var data=[];
     
-    for(var i=0; i<=file_data.length; i++){ 
+    for(var i=0; i<file_data.length; i++){ 
       //formultiple file
       //form_data.append('file[]', file_data[i]);
       form_data.append('file', file_data[i]);
@@ -130,7 +133,10 @@ $(document).ready(function(){
       type: "POST",
       data:form_data,
       beforeSend: function(){
-        $(".file-preview").append(progressbar);
+        if(file_data.length == i){
+          $(".file-preview").append(progressbar);
+        }
+        
         //$("#modalloader").modal("show");
       },
       success:function(data)
@@ -181,7 +187,7 @@ $(document).ready(function(){
         });
       }
     });
-
+    
     }
 
   });
