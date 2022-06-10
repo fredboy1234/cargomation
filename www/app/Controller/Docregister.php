@@ -615,10 +615,10 @@ class Docregister extends Core\Controller {
         ]);
     }
 
-    public function customUpload(){
+    public function customUpload($data,$prim_ref){
        // echo"<pre>";
-        //print_r($_FILES);
-      
+       //print_r($_FILES);
+
         $User = Model\User::getInstance($_SESSION['user']);
         $email = $User->data()->email;
 
@@ -628,31 +628,29 @@ class Docregister extends Core\Controller {
             mkdir($newFilePath, 0777, true);
         }
 
-        if(isset($_FILES['file']['name'])){
-            foreach($_FILES['file']['name'] as $key=>$file ){
-                $name =  $file;
-                $location = $newFilePath.$name;
-                move_uploaded_file($_FILES['file']['tmp_name'][$key], $location);
+        $name =  $data['filename'];
+        $location = $newFilePath.$name;
+        move_uploaded_file($data['tmp_name'], $location);
 
-                $arr  = array(
-                    'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
-                    'client' => 'A2B',
-                    'user_id' => $_SESSION['user'],
-                    'process_id' => $this->getLastID()
-                );
+        $arr  = array(
+            'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
+            'client' => 'A2B',
+            'user_id' => $_SESSION['user'],
+            'process_id' =>$prim_ref
+        );
 
-                $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
            
-                $url ='https://cargomation.com:8002/compare'; 
-            
-                $result = $this->post($url, $arr, '');
-       
-                $ret = array();
-                $ret['result'] = $result;
-                $ret['prim_ref'] = $this->getLastID();
-                echo json_encode($ret);
-            }
-        }
+        $url ='https://cargomation.com:8002/compare'; 
+    
+        $result = $this->post($url, $arr, '');
+
+        $ret = array();
+        $ret['result'] = $result;
+        $ret['prim_ref'] = $this->getLastID();
+        echo json_encode($ret);
+
+        
         // exit;
         // if($_FILES['file']['name'] != ''){
         //     $test = explode('.', $_FILES['file']['name']);
@@ -715,7 +713,7 @@ class Docregister extends Core\Controller {
         $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
         if(isset($_FILES['file']['name'])){
-            foreach($_FILES['file']['name'] as $file ){
+            foreach($_FILES['file']['name'] as $key=>$file ){
                 $name = $file;
                 $location = $newFilePath.$name;
 
@@ -723,8 +721,12 @@ class Docregister extends Core\Controller {
                 $data['filename'] = $name;
                 $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
                 $data['uploadedby']= $email;
-
+                
                 $this->insertDoc($data);
+                $fl=array();
+                $fl['filename'] = $_FILES['file']['name'][$key];
+                $fl['tmp_name'] = $_FILES['file']['tmp_name'][$key];
+                $this->customUpload($fl,$this->getLastID());
             }
         }
         // exit;

@@ -164,27 +164,19 @@ $(document).ready(function(){
         //}
         
           //return 
-        $.ajax({
-          url: document.location.origin+"/docregister/customUpload/",
-          contentType:false,
-              cache:false,
-              processData:false,
-          type: "POST",
-          data:form_data,
-          success:function(data)
-          {
-            var jsdata = JSON.parse(data);
-            // $.ajax({
-            //   url: document.location.origin+"/docregister/setParseInput/",
-            //   type: "POST",
-            //   data:{prim_ref:jsdata.prim_ref,parse_input:jsdata.result},
-            //   success:function(data)
-            //   {
-            //       console.log(data);
-            //   }
-            // });
-          }
-        });
+        // $.ajax({
+        //   url: document.location.origin+"/docregister/customUpload/",
+        //   contentType:false,
+        //       cache:false,
+        //       processData:false,
+        //   type: "POST",
+        //   data:form_data,
+        //   success:function(data)
+        //   {
+        //     var jsdata = JSON.parse(data);
+            
+        //   }
+        // });
       }
     });
     
