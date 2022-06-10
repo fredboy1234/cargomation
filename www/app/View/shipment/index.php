@@ -28,7 +28,7 @@
   border-radius: 50%;
   text-align: center;
   line-height: 35px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   border: 1px solid #ccc;
   cursor: pointer;
 }

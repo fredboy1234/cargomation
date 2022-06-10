@@ -372,12 +372,11 @@ class Shipment extends Core\Controller {
         $shipment_settings = [];
 
         // SHIPMENT COLUMN NEEDS TO SHOW
-        $need_show = empty($data['data']) ? [1] : $data['data'];
+        $need_show = empty($data['data']) ? [] : $data['data'];
         foreach($defaultSettings->table  as $key=> $value){
+            $value->index_check = 'false';
             if(in_array($value->index, $need_show)){
                 $value->index_check = 'true';
-            } else {
-                $value->index_check = 'false';
             }
             $shipment_settings[] = $value;
         }
@@ -456,8 +455,6 @@ class Shipment extends Core\Controller {
                 }
             } 
         }
-
-
         return json_encode($shipment_settings);
     }
 
@@ -754,7 +751,7 @@ class Shipment extends Core\Controller {
                     "Content-Type: application/json"];
         $result = $this->post($url, $payload, $headers);
         $json_data = json_decode($result);
-        if($json_data->status != '200') {
+        if($json_data->status != '200' || empty($json_data)) {
             echo json_encode($json_data);
             exit;
         }

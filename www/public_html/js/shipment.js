@@ -80,8 +80,12 @@ $(document).on('keypress',"input[name='value[]'], .add_node_btn_frm_field, input
   }
 });
 function invokeFilter(selected, index) {
-  var $select = $(`#add_filters, #no_search_${index}`); 
-  var text = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
+  var $add_select = $(`#add_filters`);
+  var $select = $(`#no_search_${index}`); 
+  var text = "";
+  var init_1 = '<option value="" selected="" disabled="" hidden="">Add search option</option>';
+  var init_2 = '<option value="" selected="" disabled="" hidden="">--Select search--</option>';
+  
   $.getJSON('/settings/search-filter.json', function(data) {
     
     searchJson = data;
@@ -100,7 +104,8 @@ function invokeFilter(selected, index) {
     });
     text += `</optgroup>`;
   });
-    $select.html(text);
+    $select.html(init_2 + text);
+    $add_select.html(init_1 + text);
     $("#add_filters").val("");
   }).fail(function(){
     console.log("Error");
@@ -115,7 +120,7 @@ function addSearchFilter(selected) {
     }).get().sort().pop();
   $(".form_field_outer").append(`
   <div class="row form_field_outer_row ${index}" section="${index}">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <select name="search[]" id="no_search_${index}" class="form-control search-list" data-index="${index}">
         <option>--Select type--</option>
       </select>
@@ -125,7 +130,7 @@ function addSearchFilter(selected) {
         <option>--Select type--</option>
       </select>
     </div>
-    <div class="form-group col-md-5">
+    <div class="form-group col-md-3">
       <input name="value[]" id="no_value_${index}" type="text" class="form-control w_90" placeholder="Enter search value" />
     </div>
     <div class="form-group col-md-2">
@@ -134,10 +139,10 @@ function addSearchFilter(selected) {
         <option value="AND">AND</option>
       </select>
     </div>
-    <div class="form-group col-md-10 add_del_btn_outer">
-      <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
+    <div class="form-group col-md-1 add_del_btn_outer">
+      <!--<button class="btn_round add_node_btn_frm_field" title="Copy or clone this row" section="${index}">
         <i class="fas fa-copy"></i>
-      </button>
+      </button>-->
 
       <button class="btn_round remove_node_btn_frm_field" disabled>
         <i class="fas fa-trash-alt"></i>
@@ -614,7 +619,7 @@ $(document).ready(function () {
     }, 100);
 
 
-  }).find('option:selected').map(function () { return this.id }).get();
+  }).find('option:selected').map(function () { return this.value }).get();
 
   var check_arr = [];
   function getSettings(map) {
@@ -731,6 +736,8 @@ $(document).ready(function () {
     $("#no_search_1").val("");
     $("#container_mode_1").val(null).trigger("change"); 
     $("#no_type_1").prop("selectedIndex", 0);
+    // $("#no_cond_1").prop("selectedIndex", 0).prop("disabled", true).addClass('exclude');
+    $("#no_cond_1").prop({"selectedIndex": 0, "disabled": true}).addClass('exclude');
     $("#add_filters option").each(function(){
       $(this).attr("data-index",1);
     });
