@@ -46,8 +46,8 @@ $(document).ready(function(){
       "bPaginate":true,
       "sPaginationType":"full_numbers",
       "iDisplayLength": 8,
-      "language": {
-        "emptyTable":     "Empty Data You Can Try To Upload Files."
+      "oLanguage": {
+        "sEmptyTable":     "Empty Data Please Upload Files."
       },
       "columns": [
           {
@@ -103,10 +103,10 @@ $(document).ready(function(){
     
     for(var i=0; i<file_data.length; i++){ 
       //formultiple file
-      //form_data.append('file[]', file_data[i]);
-      form_data.append('file', file_data[i]);
+      form_data.append('file[]', file_data[i]);
+      //form_data.append('file', file_data[i]);
       data['form_data'] = form_data;
-
+    }
       //auto insert after upload separated for some reason
       $.ajax({
         xhr: function() {
@@ -133,9 +133,9 @@ $(document).ready(function(){
       type: "POST",
       data:form_data,
       beforeSend: function(){
-        if(file_data.length == i){
+        //if(file_data.length == i){
           $(".file-preview").append(progressbar);
-        }
+        //}
         
         //$("#modalloader").modal("show");
       },
@@ -145,7 +145,7 @@ $(document).ready(function(){
         
         //call Compare api after upload
         $('.progress').remove();
-        if(file_data.length == i){
+        //if(file_data.length == i){
           Swal.fire(
             "",
             "Your file was uploaded!",
@@ -161,7 +161,7 @@ $(document).ready(function(){
                   });
                 } 
             });
-        }
+        //}
         
           //return 
         $.ajax({
@@ -188,8 +188,6 @@ $(document).ready(function(){
       }
     });
     
-    }
-
   });
 });
 
