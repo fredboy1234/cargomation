@@ -616,7 +616,9 @@ class Docregister extends Core\Controller {
     }
 
     public function customUpload(){
-
+       // echo"<pre>";
+        //print_r($_FILES);
+      
         $User = Model\User::getInstance($_SESSION['user']);
         $email = $User->data()->email;
 
@@ -627,11 +629,10 @@ class Docregister extends Core\Controller {
         }
 
         if(isset($_FILES['file']['name'])){
-            foreach($_FILES['file']['name'] as $file ){
+            foreach($_FILES['file']['name'] as $key=>$file ){
                 $name =  $file;
                 $location = $newFilePath.$name;
-
-                move_uploaded_file($_FILES['file']['tmp_name'], $location);
+                move_uploaded_file($_FILES['file']['tmp_name'][$key], $location);
 
                 $arr  = array(
                     'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
@@ -706,7 +707,7 @@ class Docregister extends Core\Controller {
     public function uploadAndInsert(){
         //echo"<pre>";
         // print_r($_FILES['file']['name']);
-        // exit;
+        //exit;
         $User = Model\User::getInstance($_SESSION['user']);
         $APinvoice = Model\Apinvoice::getInstance();
         $email = $User->data()->email;
