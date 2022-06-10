@@ -328,7 +328,9 @@ class Docregister extends Core\Controller {
         $docmatch ='';
        
         $docreg = $this->getDocReportReg($_SESSION['user']);
-       
+    //     echo"<pre>";
+    //    print_r($docreg);
+    //    exit;
         if(!empty($docreg)){
             
             foreach($docreg as $docval){
@@ -418,12 +420,12 @@ class Docregister extends Core\Controller {
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
         
-        if($jsonDecode->status ==='500' || isset($this->getCGMresponse($prim_ref)[0])){
+        if(isset($this->getCGMresponse($prim_ref)[0])){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
-        //  echo'<pre>';
-        //  print_r($jsonDecode);
-        //   exit;
+        //   echo'<pre>';
+        //   print_r($jsonDecode );
+        //    exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -614,6 +616,7 @@ class Docregister extends Core\Controller {
     }
 
     public function customUpload(){
+        
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
             $extension = end($test);    
@@ -668,6 +671,7 @@ class Docregister extends Core\Controller {
     }
 
     public function uploadAndInsert(){
+        
         if($_FILES['file']['name'] != ''){
             $test = explode('.', $_FILES['file']['name']);
             $extension = end($test);    
@@ -793,7 +797,7 @@ class Docregister extends Core\Controller {
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
             
-            if($match_response->status ==='500' || isset($this->getCGMresponse($_POST['process_id'])[0])){
+            if(isset($this->getCGMresponse($_POST['process_id'])[0])){
                 $match_response->data = $this->getCGMresponse($_POST['process_id'])[0]->cgm_response;
             }
             

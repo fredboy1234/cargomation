@@ -41,7 +41,7 @@ $status = array("error","success");
       <!--start of row class-->
       <div class="col-sm-12 col-md-6 col-lg-6 col-6">
         <!--start of option list-->
-        <div class="form-group">
+        <div class="form-group d-none">
           <label>Choose Module</label>
           <select class="form-control">
             <option onclick='knobfunction("~")' value=""></option> <?php foreach ($function_mod as $key => $value) 
@@ -58,7 +58,7 @@ $status = array("error","success");
           <!-- /.card-header -->
           <div class="card-body">
             <div class="file-loading">
-              <input id="invoice" name="invoice[]" type="file" class="file" accept="application/*" data-preview-file-type="text" data-allowed-file-extensions='["pdf", "docx"]'>
+              <input id="invoice" name="invoice[]" type="file" class="file" accept="application/*" data-preview-file-type="text" data-allowed-file-extensions='["pdf", "docx"]' multiple>
             </div>
           </div>
           <!-- /.card-body -->

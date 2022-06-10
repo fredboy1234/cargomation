@@ -93,16 +93,19 @@ $(document).ready(function(){
 
   //upload file 
   $("#uploadoc, #upload-btn").on("click",function(){
-  
-    var file_data = $('#invoice').prop('files')[0];   
+    
+    var file_data = $('#invoice').prop('files');   
     var form_data = new FormData(); 
     var data=[];
-    form_data.append('file', file_data);
-   // data['user_id'] = user_id;
-    data['form_data'] = form_data;
-   
-    //auto insert after upload separated for some reason
-    $.ajax({
+    
+    for(var i=0; i<=file_data.length; i++){ 
+      //formultiple file
+      //form_data.append('file[]', file_data[i]);
+      form_data.append('file', file_data[i]);
+      data['form_data'] = form_data;
+
+      //auto insert after upload separated for some reason
+      $.ajax({
         xhr: function() {
           var xhr = new window.XMLHttpRequest();
           // Upload progress
@@ -134,23 +137,26 @@ $(document).ready(function(){
       {
         $('#docregister').DataTable().ajax.reload();
         
-         //call Compare api after upload
-         $('.progress').remove();
-         Swal.fire(
-          "",
-          "Your file was uploaded!",
-          );
-          Swal.fire({  
-            title: 'Your file was uploaded!',  
-            confirmButtonText: `OK`,  
-          }).then((result) => {  
-            /* Read more about isConfirmed, isDenied below */  
-              if (result.isConfirmed) {    
-                $('html, body').animate({
-                  scrollTop: $("#example").offset().top
-                });
-              } 
-          });
+        //call Compare api after upload
+        $('.progress').remove();
+        if(file_data.length == i){
+          Swal.fire(
+            "",
+            "Your file was uploaded!",
+            );
+            Swal.fire({  
+              title: 'Your file was uploaded!',  
+              confirmButtonText: `OK`,  
+            }).then((result) => {  
+              /* Read more about isConfirmed, isDenied below */  
+                if (result.isConfirmed) {    
+                  $('html, body').animate({
+                    scrollTop: $("#example").offset().top
+                  });
+                } 
+            });
+        }
+        
           //return 
         $.ajax({
           url: document.location.origin+"/docregister/customUpload/",
@@ -175,6 +181,8 @@ $(document).ready(function(){
         });
       }
     });
+
+    }
 
   });
 });
