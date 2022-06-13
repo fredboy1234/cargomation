@@ -44,7 +44,8 @@ h4{
 #savefilter,
 #clearFilter,
 #resetSearch,
-#deleteSearch {
+#deleteSearch,
+#editSearch {
   background-color: #b0bec5;
   color: #FFFFFF !important;
   border: 1px solid #3778be;

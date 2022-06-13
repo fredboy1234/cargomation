@@ -729,18 +729,7 @@ $(document).ready(function () {
   });
 
   $("#clearFilter").on("click",function(){
-    var search = $('#no_search_1').val();
-    var value = $('#no_value_1').val();
-    $(".form_field_outer_row:not(:first)").remove();
-    $("#no_value_1").val("");
-    $("#no_search_1").val("");
-    $("#container_mode_1").val(null).trigger("change"); 
-    $("#no_type_1").prop("selectedIndex", 0);
-    // $("#no_cond_1").prop("selectedIndex", 0).prop("disabled", true).addClass('exclude');
-    $("#no_cond_1").prop({"selectedIndex": 0, "disabled": true}).addClass('exclude');
-    $("#add_filters option").each(function(){
-      $(this).attr("data-index",1);
-    });
+    clearFilter();
     if((typeof search !== null || search !== null) && value !== '') {
       table.ajax.reload(setColor);
     }
@@ -1239,81 +1228,7 @@ $(document).on("change", "[id*='no_type_']",function(){
  '</div>';
 // On Click Save Search
 $('#savefilter').on("click",function(){
-  var settingArray = [];
-  $(".form_field_outer_row").each(function(){
-    var search = $(this).find("[name*='search']").val(); //*= means like
-    var type = $(this).find("[name*='type']").val(); 
-    var value = $(this).find("[name*='value']").val(); 
-    var cond = $(this).find("[name*='cond']").val();
-    if($(this).find("[name*='cond']").hasClass('exclude')) {
-        cond = "";
-    } 
-    if(typeof search !== null && search !== null){
-      settingArray.push({
-        "columnname": search,
-        "type": type,
-        "value": value.toUpperCase(),
-        "cond": cond
-      });
-    } 
-  });
-  if(settingArray.length > 0){
-    Swal.fire({
-      title: 'Search Query Title',
-      // html: `<input type="text" id="search_title" class="swal2-input" placeholder="Search Title">`,
-      input: 'text',
-      inputPlaceholder: 'Enter search title',
-      inputAttributes: {
-        maxlength: 50,
-        autocapitalize: 'off',
-        autocorrect: 'off'
-      },
-      confirmButtonText: 'Save',
-      focusConfirm: false,
-      focusDeny: false,
-      focusCancel: false,
-      showCloseButton: true,
-      showCancelButton: true,
-      showLoaderOnConfirm: true,
-      preConfirm: (search_title) => {
-        if (!search_title) {
-          Swal.showValidationMessage(`Please enter search title`)
-        } else {
-          const api = "/shipment/putSaveSearch";
-          var payload = {user_id:user_id, search_title:search_title, search:settingArray};
-          $.post(api,payload)
-          .done(function (result, status, xhr) {
-            console.log(status);
-          })
-          .fail(function (xhr, status, error) {
-              console.log("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
-          });
-          return { search_title: search_title }
-        }
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if(result.isDismissed == true || result.isDenied == true) {
-        Swal.fire(
-          'Failed to saved!',
-          `Search Title: ${result.value.search_title}`,
-          'error'
-        )
-      } else {
-        Swal.fire(
-          'Saved Successfully!',
-          `Search Title: ${result.value.search_title}`,
-          'success'
-        )
-      }
-    })
-  } else {
-    Swal.fire(
-      'Failed to saved!',
-      `No search filter to be save.`,
-      'error'
-    )
-  }
+  saveFilter();
 });
 // On Shown Load Recent/Save
 $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
@@ -1321,6 +1236,128 @@ $('#vert-tabs-save-tab').on('shown.bs.tab', function(event){
 });
 // Load Recent/Save Search
 $('#loadSaved, #loadRecent').on('click', function() {
+  loadSaved();
+});
+// Reset Recent/Save Search
+$('#resetSearch').on('click', function() {
+  $("#save_search, #recent_search").prop('selectedIndex', -1);
+  $('#query_text').html('');
+});
+// Toggle when select
+$("#save_search").on('change', function(e) {
+  // alert( $(this).find(":selected").val() );
+  $("#recent_search").prop('selectedIndex', -1);
+  $('#query_text').html(this.value);
+});
+// Toggle when select
+$("#recent_search").on('change', function(e) {
+  $("#save_search").prop('selectedIndex', -1);
+  $('#query_text').html(this.value);
+});
+// Delete Saved Search
+$('#deleteSearch').on('click', function() {
+  var id = $('#save_search').find(':selected').attr('data-id');
+  deleteSaved(id);
+});
+// Edit Saved Search
+$('#editSearch').on('click', function() {
+  var selected = $('#save_search').find(':selected').text();
+  var id = $('#save_search').find(':selected').attr('data-id');
+  // sessionStorage.setItem('saved_title', selected);
+  $("#editSavedTitle").val(selected).attr('data-did', id);
+  loadSaved();
+});
+// Func Recent/Save Search
+function loadRecentSave() {
+  $.ajax({
+    url: "/shipment/getRecentSave/",
+    type: "post",
+    data: {user_id:user_id},
+    dataType: "json",
+    beforeSend: function (res) {
+      // console.log("loading...");
+      $("#fsearch > .card-body").append(mini_loader);
+    },
+    success: function (res) {
+      $('#loader-wrapper').remove();
+      const search_obj = JSON.parse(res.search);
+      var search_html = "";
+      if(search_obj) {
+        search_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
+        for (const key in search_obj) {
+          if (Object.hasOwnProperty.call(search_obj, key)) {
+            const search = search_obj[key].search_query;
+            var search_value = "";
+            var search_data = "";
+            for (const key2 in search) {
+              if (Object.hasOwnProperty.call(search, key2)) {
+                var columnname = search[key2].columnname;
+                var type = search[key2].type;
+                var value = search[key2].value;
+                var cond = search[key2].cond;
+                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
+            }
+            var text_save = search_obj[key].search_title;
+            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                return letter.toUpperCase();
+            });
+            search_html += '<option data-id="'+search_obj[key].id+'" data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
+            text_save + '</option>';
+          }
+        }
+      }
+      const recent_obj = JSON.parse(res.recent);
+      var recent_html = "";
+      if(recent_obj) {
+        recent_obj.sort(function(a,b){
+          return new Date(b.created_date) - new Date(a.created_date);
+        });
+        for (const key in recent_obj) {
+          if (Object.hasOwnProperty.call(recent_obj, key)) {
+            const recent = recent_obj[key].search_query;
+            var recent_value = "";
+            var recent_data = "";
+            for (const key2 in recent) {
+              if (Object.hasOwnProperty.call(recent, key2)) {
+                var columnname = recent[key2].columnname;
+                var type = recent[key2].type;
+                var value = recent[key2].value;
+                var cond = recent[key2].cond;
+                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
+                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
+              }
+            }
+            const text_recent = recent[0].columnname;
+            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
+            text_recent.replaceAll('_', ' ').toUpperCase() + 
+            " ("+recent[0].value+")" +
+            '</option>';
+          }
+        }
+      }
+      $('#save_search').html(search_html);
+      $('#recent_search').html(recent_html);
+      $('#query_text').html('');
+    },
+    error: function (res) {
+      // console.log(res);
+      $('#loader-wrapper').remove();
+    },
+    complete: function (res) {
+      // console.log(res);
+      $('#loader-wrapper').remove();
+    },
+  }).done(function(ev) {
+    // console.log(ev);
+    $('#loader-wrapper').remove();
+  });
+}
+// Func Load Saved Search
+function loadSaved() {
   var text = $('select#save_search, select#recent_search').find(":selected").data('value'); console.log(text);
   // const myArray = (text) ? text.split(",") : alert('Please select search');
   if(text) {
@@ -1376,100 +1413,113 @@ $('#loadSaved, #loadRecent').on('click', function() {
   } else {
     Swal.fire('Please select search query to load!');
   }
-});
-// Reset Recent/Save Search
-$('#resetSearch').on('click', function() {
-  $("#save_search, #recent_search").prop('selectedIndex', -1);
-});
-// Toggle when select
-$("#save_search").on('change', function(e) {
-  // alert( $(this).find(":selected").val() );
-  $("#recent_search").prop('selectedIndex', -1);
-  $('#query_text').html(this.value);
-});
-// Toggle when select
-$("#recent_search").on('change', function(e) {
-  $("#save_search").prop('selectedIndex', -1);
-  $('#query_text').html(this.value);
-});
-// Delete Recent/Save Search
-$('#deleteSearch').on('click', function() {
-  $('select').find(":selected").hide();
-});
-// Func Recent/Save Search
-function loadRecentSave() {
+}
+function saveFilter() {
+  var settingArray = [];
+  // var input = sessionStorage.getItem('saved_title');
+  var input = $("#editSavedTitle").val();
+  var did = $("#editSavedTitle").attr("data-did");
+  $(".form_field_outer_row").each(function(){
+    var search = $(this).find("[name*='search']").val(); //*= means like
+    var type = $(this).find("[name*='type']").val(); 
+    var value = $(this).find("[name*='value']").val(); 
+    var cond = $(this).find("[name*='cond']").val();
+    if($(this).find("[name*='cond']").hasClass('exclude')) {
+        cond = "";
+    } 
+    if(typeof search !== null && search !== null){
+      settingArray.push({
+        "columnname": search,
+        "type": type,
+        "value": value.toUpperCase(),
+        "cond": cond
+      });
+    } 
+  });
+  if(settingArray.length > 0){
+    Swal.fire({
+      title: 'Search Query Title',
+      // html: `<input type="text" id="search_title" class="swal2-input" placeholder="Search Title">`,
+      input: 'text',
+      inputPlaceholder: 'Enter search title',
+      inputValue: input,
+      inputAttributes: {
+        maxlength: 50,
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
+      confirmButtonText: 'Save',
+      focusConfirm: false,
+      focusDeny: false,
+      focusCancel: false,
+      showCloseButton: true,
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+      preConfirm: (search_title) => {
+        if (!search_title) {
+          Swal.showValidationMessage(`Please enter search title`)
+        } else {
+          var api = "";
+          var payload = {};
+          if (did) {
+            api = "/shipment/updateSaveSearch";
+            payload = {user_id:user_id, search_title:search_title, search:settingArray, id:did};
+          } else {
+            api = "/shipment/putSaveSearch";
+            payload = {user_id:user_id, search_title:search_title, search:settingArray};
+          }
+          $.post(api,payload)
+          .done(function (result, status, xhr) {
+            console.log(status);
+          })
+          .fail(function (xhr, status, error) {
+              console.log("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+          });
+          return { search_title: search_title }
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if(result.isDismissed == true || result.isDenied == true) {
+        Swal.fire(
+          'Failed to saved!',
+          `Process cancelled`,
+          'error'
+        )
+      } else {
+        $("#editSavedTitle").val("").attr("data-did", "");
+        Swal.fire(
+          'Saved Successfully!',
+          `Search Title: ${result.value.search_title}`,
+          'success'
+        );
+        clearFilter();
+      }
+    })
+  } else {
+    Swal.fire(
+      'Failed to saved!',
+      `No search filter to be save.`,
+      'error'
+    )
+  }
+}
+// Func Delete Save Search
+function deleteSaved(id) {
   $.ajax({
-    url: "/shipment/getRecentSave/",
+    url: "/shipment/deleteSaveSearch/",
     type: "post",
-    data: {user_id:user_id},
+    data: {user_id:user_id, id:id},
     dataType: "json",
     beforeSend: function (res) {
       // console.log("loading...");
       $("#fsearch > .card-body").append(mini_loader);
     },
     success: function (res) {
+      // console.log('delete success');
+      $('#save_search').find(':selected').remove();
+      $('#query_text').html('');
       $('#loader-wrapper').remove();
-      const search_obj = JSON.parse(res.search);
-      var search_html = "";
-      if(search_obj) {
-        search_obj.sort(function(a,b){
-          return new Date(b.created_date) - new Date(a.created_date);
-        });
-        for (const key in search_obj) {
-          if (Object.hasOwnProperty.call(search_obj, key)) {
-            const search = search_obj[key].search_query;
-            var search_value = "";
-            var search_data = "";
-            for (const key2 in search) {
-              if (Object.hasOwnProperty.call(search, key2)) {
-                var columnname = search[key2].columnname;
-                var type = search[key2].type;
-                var value = search[key2].value;
-                var cond = search[key2].cond;
-                search_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                search_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
-              }
-            }
-            var text_save = search_obj[key].search_title;
-            text_save = text_save.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-                return letter.toUpperCase();
-            });
-            search_html += '<option data-value="'+search_data.slice(0, -1)+'" value="'+search_value+'">' + 
-            text_save + '</option>';
-          }
-        }
-      }
-      const recent_obj = JSON.parse(res.recent);
-      var recent_html = "";
-      if(recent_obj) {
-        recent_obj.sort(function(a,b){
-          return new Date(b.created_date) - new Date(a.created_date);
-        });
-        for (const key in recent_obj) {
-          if (Object.hasOwnProperty.call(recent_obj, key)) {
-            const recent = recent_obj[key].search_query;
-            var recent_value = "";
-            var recent_data = "";
-            for (const key2 in recent) {
-              if (Object.hasOwnProperty.call(recent, key2)) {
-                var columnname = recent[key2].columnname;
-                var type = recent[key2].type;
-                var value = recent[key2].value;
-                var cond = recent[key2].cond;
-                recent_value += columnname + " : " + type + " : " + value + " : " + cond + "<br>";
-                recent_data += columnname + ":" + type + ":" + value + ":" + cond + ",";
-              }
-            }
-            const text_recent = recent[0].columnname;
-            recent_html += '<option data-value="'+recent_data.slice(0, -1)+'" value="'+recent_value+'">' + 
-            text_recent.replaceAll('_', ' ').toUpperCase() + 
-            " ("+recent[0].value+")" +
-            '</option>';
-          }
-        }
-      }
-      $('#save_search').html(search_html);
-      $('#recent_search').html(recent_html);
     },
     error: function (res) {
       // console.log(res);
@@ -1482,5 +1532,21 @@ function loadRecentSave() {
   }).done(function(ev) {
     // console.log(ev);
     $('#loader-wrapper').remove();
+  });
+}
+
+// Func Clear Filter
+function clearFilter() {
+  var search = $('#no_search_1').val();
+  var value = $('#no_value_1').val();
+  $(".form_field_outer_row:not(:first)").remove();
+  $("#no_value_1").val("");
+  $("#no_search_1").val("");
+  $("#container_mode_1").val(null).trigger("change"); 
+  $("#no_type_1").prop("selectedIndex", 0);
+  // $("#no_cond_1").prop("selectedIndex", 0).prop("disabled", true).addClass('exclude');
+  $("#no_cond_1").prop({"selectedIndex": 0, "disabled": true}).addClass('exclude');
+  $("#add_filters option").each(function(){
+    $(this).attr("data-index",1);
   });
 }
