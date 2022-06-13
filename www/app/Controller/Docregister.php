@@ -328,7 +328,9 @@ class Docregister extends Core\Controller {
         $docmatch ='';
        
         $docreg = $this->getDocReportReg($_SESSION['user']);
-       
+    //     echo"<pre>";
+    //    print_r($docreg);
+    //    exit;
         if(!empty($docreg)){
             
             foreach($docreg as $docval){
@@ -418,12 +420,12 @@ class Docregister extends Core\Controller {
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
         
-        if($jsonDecode->status ==='500' || isset($this->getCGMresponse($prim_ref)[0])){
+        if(isset($this->getCGMresponse($prim_ref)[0])){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
-        //  echo'<pre>';
-        //  print_r($jsonDecode);
-        //   exit;
+          echo'<pre>';
+          print_r($jsonDecode );
+           exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -613,84 +615,144 @@ class Docregister extends Core\Controller {
         ]);
     }
 
-    public function customUpload(){
-        if($_FILES['file']['name'] != ''){
-            $test = explode('.', $_FILES['file']['name']);
-            $extension = end($test);    
-            $name = $_FILES['file']['name'];
-            
-            $User = Model\User::getInstance($_SESSION['user']);
-            $email = $User->data()->email;
-           // $user_id = $User->data()->id;
-            
-            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
-            //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
+    public function customUpload($data,$prim_ref){
+       // echo"<pre>";
+       //print_r($_FILES);
 
-            if (!file_exists($newFilePath)) {
-                mkdir($newFilePath, 0777, true);
-            }
-            
-            $location = $newFilePath.$name;
-           
-            move_uploaded_file($_FILES['file']['tmp_name'], $location);
-        
-           // $file_server_path = realpath($newFileUrl.$name);
-            // $data['user_id'] = $_SESSION['user'];
-            // $data['filename'] = $name;
-            // $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
-            // $data['uploadedby']= $email;
-            // $APinvoice = Model\Apinvoice::getInstance();
-            
-            // $APinvoice->insertMatchHeader($data);
+        $User = Model\User::getInstance($_SESSION['user']);
+        $email = $User->data()->email;
 
-            //print_r($file_server_path);
-            $arr  = array(
-                'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
-                'client' => 'A2B',
-                'user_id' => $_SESSION['user'],
-                'process_id' => $this->getLastID()
-            );
-           
-            $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-           
-            $url ='https://cargomation.com:8002/compare'; 
-            
-           $result = $this->post($url, $arr, '');
-        //    echo"<pre>";
-        //    print_r($arr);
-        //    print_r($result);
-        //   return "success";
-          $ret = array();
-          $ret['result'] = $result;
-          $ret['prim_ref'] = $this->getLastID();
-            echo json_encode($ret);
+        $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+
+        if (!file_exists($newFilePath)) {
+            mkdir($newFilePath, 0777, true);
         }
+
+        $name =  $data['filename'];
+        $location = $newFilePath.$name;
+        move_uploaded_file($data['tmp_name'], $location);
+
+        $arr  = array(
+            'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
+            'client' => 'A2B',
+            'user_id' => $_SESSION['user'],
+            'process_id' =>$prim_ref
+        );
+
+        $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+           
+        $url ='https://cargomation.com:8002/compare'; 
+    
+        $result = $this->post($url, $arr, '');
+
+        $ret = array();
+        $ret['result'] = $result;
+        $ret['prim_ref'] = $this->getLastID();
+        echo json_encode($ret);
+
+        
+        // exit;
+        // if($_FILES['file']['name'] != ''){
+        //     $test = explode('.', $_FILES['file']['name']);
+        //     $extension = end($test);    
+        //     $name = $_FILES['file']['name'];
+            
+        //     $User = Model\User::getInstance($_SESSION['user']);
+        //     $email = $User->data()->email;
+        //    // $user_id = $User->data()->id;
+            
+        //     $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+        //     //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
+
+        //     if (!file_exists($newFilePath)) {
+        //         mkdir($newFilePath, 0777, true);
+        //     }
+            
+        //     $location = $newFilePath.$name;
+           
+        //     move_uploaded_file($_FILES['file']['tmp_name'], $location);
+        
+        //    // $file_server_path = realpath($newFileUrl.$name);
+        //     // $data['user_id'] = $_SESSION['user'];
+        //     // $data['filename'] = $name;
+        //     // $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
+        //     // $data['uploadedby']= $email;
+        //     // $APinvoice = Model\Apinvoice::getInstance();
+            
+        //     // $APinvoice->insertMatchHeader($data);
+
+        //     //print_r($file_server_path);
+        //     $arr  = array(
+        //         'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
+        //         'client' => 'A2B',
+        //         'user_id' => $_SESSION['user'],
+        //         'process_id' => $this->getLastID()
+        //     );
+           
+        //     $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+           
+        //     $url ='https://cargomation.com:8002/compare'; 
+            
+        //    $result = $this->post($url, $arr, '');
+       
+        //   $ret = array();
+        //   $ret['result'] = $result;
+        //   $ret['prim_ref'] = $this->getLastID();
+        //     echo json_encode($ret);
+        // }
     }
 
     public function uploadAndInsert(){
-        if($_FILES['file']['name'] != ''){
-            $test = explode('.', $_FILES['file']['name']);
-            $extension = end($test);    
-            $name = $_FILES['file']['name'];
-            
-            $User = Model\User::getInstance($_SESSION['user']);
-            $email = $User->data()->email;
-           // $user_id = $User->data()->id;
-            
-            $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+        //echo"<pre>";
+        // print_r($_FILES['file']['name']);
+        //exit;
+        $User = Model\User::getInstance($_SESSION['user']);
+        $APinvoice = Model\Apinvoice::getInstance();
+        $email = $User->data()->email;
 
-            $location = $newFilePath.$name;
-            
-            $data['user_id'] = $_SESSION['user'];
-            $data['filename'] = $name;
-            $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
-            $data['uploadedby']= $email;
-            $APinvoice = Model\Apinvoice::getInstance();
-            
-            $this->insertDoc($data);
+        $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
-           return "success";
+        if(isset($_FILES['file']['name'])){
+            foreach($_FILES['file']['name'] as $key=>$file ){
+                $name = $file;
+                $location = $newFilePath.$name;
+
+                $data['user_id'] = $_SESSION['user'];
+                $data['filename'] = $name;
+                $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
+                $data['uploadedby']= $email;
+                
+                $this->insertDoc($data);
+                $fl=array();
+                $fl['filename'] = $_FILES['file']['name'][$key];
+                $fl['tmp_name'] = $_FILES['file']['tmp_name'][$key];
+                $this->customUpload($fl,$this->getLastID());
+            }
         }
+        // exit;
+        // if($_FILES['file']['name'] != ''){
+        //     $test = explode('.', $_FILES['file']['name']);
+        //     $extension = end($test);    
+        //     $name = $_FILES['file']['name'];
+            
+        //     $User = Model\User::getInstance($_SESSION['user']);
+        //     $email = $User->data()->email;
+        //    // $user_id = $User->data()->id;
+            
+        //     $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
+
+        //     $location = $newFilePath.$name;
+            
+        //     $data['user_id'] = $_SESSION['user'];
+        //     $data['filename'] = $name;
+        //     $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
+        //     $data['uploadedby']= $email;
+        //     $APinvoice = Model\Apinvoice::getInstance();
+            
+        //     $this->insertDoc($data);
+
+        //    return "success";
+        // }
     }
 
 
@@ -793,7 +855,7 @@ class Docregister extends Core\Controller {
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
             
-            if($match_response->status ==='500' || isset($this->getCGMresponse($_POST['process_id'])[0])){
+            if(isset($this->getCGMresponse($_POST['process_id'])[0])){
                 $match_response->data = $this->getCGMresponse($_POST['process_id'])[0]->cgm_response;
             }
             
