@@ -1037,6 +1037,24 @@ class Shipment extends Core\Controller {
         }
     }
 
+    public function deleteSaveSearch() {
+        $user_id = $_POST['user_id'];
+        $id = $_POST['id'];
+        $User = Model\User::getInstance($user_id);
+        $result = $User->deleteSaveSearch($user_id, $id);
+        echo json_encode($result);
+    }
+
+    public function updateSaveSearch() {
+        $user_id = $_POST['user_id'];
+        $search_title = $_POST['search_title'];
+        $data = $_POST['search'];
+        $id = $_POST['id'];
+        $User = Model\User::getInstance($user_id);
+        $test = $User->updateSaveSearch($user_id, $search_title, $data, $id);
+        echo json_encode($test);
+    }
+
     public function request($shipment_id = "", $doc_type = "", $requestToken = "") {
 
         if(isset($requestToken) && !empty($requestToken)) {

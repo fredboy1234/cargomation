@@ -139,6 +139,7 @@
                                             <?php 
                                               include(VIEW_PATH."_template/module/searchfilter.php");
                                             ?>
+                                            <input id="editSavedTitle" type="hidden" value="">
                                             </form>
                                         </div>
                                         <!-- /.tab-pane -->
@@ -184,7 +185,7 @@
                                                         <div class="col-md-12 p-0">
                                                             <div class="row">
                                                                 <div class="form-group col-md-12">
-                                                                    <select id="save_search" multiple="" class="form-control" size="6"></select>
+                                                                    <select id="save_search" class="form-control" size="6"></select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -227,10 +228,13 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <button type="button" id="resetSearch" class="btn btn-warning">
-                                                        <i class="fas fa-undo"></i> Reset Selection
+                                                        <i class="fas fa-undo"></i> Reset 
                                                     </button>
                                                     <button type="button" id="deleteSearch" class="btn btn-danger">
-                                                        <i class="fas fa-trash"></i> Delete Query
+                                                        <i class="fas fa-trash"></i> Delete 
+                                                    </button>
+                                                    <button type="button" id="editSearch" class="btn btn-primary">
+                                                        <i class="fas fa-pencil-alt"></i> Edit 
                                                     </button>
                                                 </div>
                                                 <div class="col-md-8">

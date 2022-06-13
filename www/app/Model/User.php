@@ -832,6 +832,7 @@ class User extends Core\Model {
             $arr_data = json_decode($result[0]->search);
         }
         array_push($arr_data, array(
+            "id" => rand(10,100),
             "search_title"=> $search_title,
             "created_date"=> date("d-m-Y H:i:s"),
             "search_query"=> $data
@@ -874,6 +875,43 @@ class User extends Core\Model {
     public function getSaveSearch($user_id) {
         $Db = Utility\Database::getInstance();
         return $Db->query("SELECT search, recent FROM user_settings WHERE user_id ='{$user_id}'")->results();
+    }
+
+    public function deleteSaveSearch($user_id, $id) {
+        $Db = Utility\Database::getInstance();
+        $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $arr_data = json_decode($result[0]->search);
+        // $new_array = array_filter($arr_data, function($v) use ($id) { return $v->id != $id ? $v : false; });
+        $new_array = [];
+        foreach ($arr_data as $key => $value) {
+            if ($value->id != $id) {
+                array_push($new_array, array(
+                    "id" => $value->id,
+                    "search_title"=> $value->search_title,
+                    "created_date"=> $value->created_date,
+                    "search_query"=> $value->search_query
+                ));    
+            }
+        }
+        $json_data = json_encode($new_array);
+        $query = "UPDATE user_settings SET search='{$json_data}' WHERE user_id ='{$user_id}'";
+        return $Db->query($query)->error();
+    }
+
+    public function updateSaveSearch($user_id, $search_title, $data, $id) {
+        $Db = Utility\Database::getInstance();
+        $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();
+        $arr_data = json_decode($result[0]->search);
+        foreach ($arr_data as $key => $value) {
+            if ($value->id == $id) {
+                $value->search_title = $search_title;
+                $value->created_date = date("d-m-Y H:i:s");
+                $value->search_query = $data;
+            }
+        }
+        $json_data = json_encode($arr_data);
+        $query = "UPDATE user_settings SET search='{$json_data}' WHERE user_id ='{$user_id}'";
+        return $Db->query($query)->error();
     }
 
     // Default CW DocumentType
