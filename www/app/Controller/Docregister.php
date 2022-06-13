@@ -725,7 +725,7 @@ class Docregister extends Core\Controller {
                 $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
                 $data['uploadedby']= $email;
                 
-                //$this->insertDoc($data);
+                $this->insertDoc($data);
                 
                 //$fl['filename'][] = $_FILES['file']['name'][$key];
                 //$fl['tmp_name'][] = $_FILES['file']['tmp_name'][$key];
