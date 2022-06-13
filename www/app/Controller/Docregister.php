@@ -423,9 +423,9 @@ class Docregister extends Core\Controller {
         if(isset($this->getCGMresponse($prim_ref)[0])){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
-          echo'<pre>';
-          print_r($jsonDecode );
-           exit;
+        //   echo'<pre>';
+        //   print_r($jsonDecode );
+        //    exit;
        if(!isset($jsonDecode->data)) exit;
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
 
@@ -615,12 +615,11 @@ class Docregister extends Core\Controller {
         ]);
     }
 
-    public function customUpload($data,$prim_ref){
-       // echo"<pre>";
-       //print_r($_FILES);
-
+    public function customUpload(){
+       
         $User = Model\User::getInstance($_SESSION['user']);
         $email = $User->data()->email;
+        $filearray = array();
 
         $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
@@ -628,29 +627,34 @@ class Docregister extends Core\Controller {
             mkdir($newFilePath, 0777, true);
         }
 
-        $name =  $data['filename'];
-        $location = $newFilePath.$name;
-        move_uploaded_file($data['tmp_name'], $location);
-
+        foreach($_FILES['file']['name'] as $key=>$file){
+            $name = $file;
+            $location = $newFilePath.$name;
+            move_uploaded_file($_FILES['file']['tmp_name'][$key], $location);
+            $path = "https://cargomation.com/filemanager/";
+            $folderpath = "/CW_DOCREGISTER/IN/";
+            //$filearray[]="'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name'";
+            $filearray[]='"'.$path.$email.$folderpath.$name.'"';
+        }
+    
         $arr  = array(
-            'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
-            'client' => 'A2B',
-            'user_id' => $_SESSION['user'],
-            'process_id' =>$prim_ref
+            'file'=> "[".implode(",",$filearray)."]",
+            'user_id' => (string)$_SESSION['user'],
+            'process_id' =>(string)$this->getLastID()
         );
-
+    
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-           
+         
         $url ='https://cargomation.com:8002/compare'; 
     
-        $result = $this->post($url, $arr, '');
+       $result = $this->post($url, $arr, '');
 
         $ret = array();
         $ret['result'] = $result;
         $ret['prim_ref'] = $this->getLastID();
+
         echo json_encode($ret);
 
-        
         // exit;
         // if($_FILES['file']['name'] != ''){
         //     $test = explode('.', $_FILES['file']['name']);
@@ -703,9 +707,7 @@ class Docregister extends Core\Controller {
     }
 
     public function uploadAndInsert(){
-        //echo"<pre>";
-        // print_r($_FILES['file']['name']);
-        //exit;
+       
         $User = Model\User::getInstance($_SESSION['user']);
         $APinvoice = Model\Apinvoice::getInstance();
         $email = $User->data()->email;
@@ -713,6 +715,7 @@ class Docregister extends Core\Controller {
         $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
         if(isset($_FILES['file']['name'])){
+            $fl=array();
             foreach($_FILES['file']['name'] as $key=>$file ){
                 $name = $file;
                 $location = $newFilePath.$name;
@@ -722,12 +725,12 @@ class Docregister extends Core\Controller {
                 $data['filepath'] = 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name;
                 $data['uploadedby']= $email;
                 
-                $this->insertDoc($data);
-                $fl=array();
-                $fl['filename'] = $_FILES['file']['name'][$key];
-                $fl['tmp_name'] = $_FILES['file']['tmp_name'][$key];
-                $this->customUpload($fl,$this->getLastID());
+                //$this->insertDoc($data);
+                
+                //$fl['filename'][] = $_FILES['file']['name'][$key];
+                //$fl['tmp_name'][] = $_FILES['file']['tmp_name'][$key];
             }
+            //$this->customUpload($fl,$this->getLastID());
         }
         // exit;
         // if($_FILES['file']['name'] != ''){
@@ -773,6 +776,8 @@ class Docregister extends Core\Controller {
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $payload,
         ));
+
+       
 
         $response = curl_exec($curl);
         

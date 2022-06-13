@@ -164,19 +164,19 @@ $(document).ready(function(){
         //}
         
           //return 
-        // $.ajax({
-        //   url: document.location.origin+"/docregister/customUpload/",
-        //   contentType:false,
-        //       cache:false,
-        //       processData:false,
-        //   type: "POST",
-        //   data:form_data,
-        //   success:function(data)
-        //   {
-        //     var jsdata = JSON.parse(data);
+        $.ajax({
+          url: document.location.origin+"/docregister/customUpload/",
+          contentType:false,
+              cache:false,
+              processData:false,
+          type: "POST",
+          data:form_data,
+          success:function(data)
+          {
+            var jsdata = JSON.parse(data);
             
-        //   }
-        // });
+          }
+        });
       }
     });
     
