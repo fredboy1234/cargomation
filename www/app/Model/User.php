@@ -822,6 +822,12 @@ class User extends Core\Model {
         return $Db->query($query)->results();
     }
 
+    public function getOrgCodeByUserID($user_id) {
+        $query = "SELECT * FROM vrptConsignee WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
     public function putSaveSearch($user_id, $search_title, $data){
         $Db = Utility\Database::getInstance();
         $result = $Db->query("SELECT search FROM user_settings WHERE user_id ='{$user_id}'")->results();

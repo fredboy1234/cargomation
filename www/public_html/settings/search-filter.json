@@ -51,8 +51,8 @@
                 {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
-        {"filterID":"Consignee", "filterName":"consignee","filterType":"input","placeholder":"","show":"n",
-            "value":[],
+        {"filterID":"Consignee", "filterName":"consignee","filterType":"select","placeholder":"","show":"n",
+            "value":[{"name":"----","value":""}],
             "type":[
                 {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
@@ -68,8 +68,8 @@
                 {"option":"Not Blank","value":"NOT_BLANK"}
             ]
         },
-        {"filterID":"Consignor", "filterName":"consignor","filterType":"input","placeholder":"","show":"n",
-            "value":[],
+        {"filterID":"Consignor", "filterName":"consignor","filterType":"select","placeholder":"","show":"n",
+            "value":[{"name":"----","value":""}],
             "type":[
                 {"option":"--Select type--","value":""},
                 {"option":"EXACT","value":"EXACT"},
