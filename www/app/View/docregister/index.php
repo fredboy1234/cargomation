@@ -75,7 +75,7 @@ $status = array("error","success");
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">
-              <i class="fas fa-ship"></i> Shipment Count ( <code> Last <b>5 days</b>
+              <i class="fas fa-ship"></i> Shipment Count ( <code> This <b>Month</b>
               </code>)
             </h3>
             <div class="card-tools">
