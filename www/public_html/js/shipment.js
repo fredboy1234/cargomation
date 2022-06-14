@@ -79,6 +79,7 @@ $(document).on('keypress',"input[name='value[]'], .add_node_btn_frm_field, input
     e.stopPropagation();
   }
 });
+
 function invokeFilter(selected, index) {
   var $add_select = $(`#add_filters`);
   var $select = $(`#no_search_${index}`); 
@@ -844,9 +845,11 @@ $(".no_trapo").on('click',function(){
   $( "input[name='transportmode_air']" ).prop( "checked", false );
   $( "input[name='transportmode_sea']" ).prop( "checked", false );
 });
+
 $( "input[name='transportmode_sea'], input[name='transportmode_air']" ).on('click',function(){
   $( "input[name='transportmode_none']" ).prop( "checked", false );
 });
+
 // Button Request
 $('button#request').click(function (e) {
   var url = "/document/request/" + shipment_id + "/" + document_type;
@@ -905,36 +908,6 @@ function filterFunction() {
       a[i].style.display = "none";
     }
   }
-}
-
-function assignBulk(pp, api) {
-  var count = 0;
-  $('#loadermodal').modal('show');
-  $(pp).each(function () {
-    var userId = $('button', this).attr('data-userid');
-    var shipId = $('button', this).attr('data-shipid');
-    var text = $.trim($('button', this).text());
-    var msg = text == 'Assign' ? 'Assigned' : 'Unassigned';
-
-    $.ajax({
-      url: document.location.origin + "/doctracker/" + api,
-      type: "POST",
-      data: { "user_id": userId, "shipment_id": shipId },
-      success: function (res) {
-        count++;
-        if (pp.length == count) {
-          $('#loadermodal').modal('hide');
-          $(document).Toasts('create', {
-            title: 'Success',
-            body: ' ' + msg + ' ',
-            autohide: true,
-            close: false,
-            class: 'bg-success'
-          })
-        }
-      }
-    });
-  });
 }
 
 //////////
@@ -1051,22 +1024,17 @@ $(document).on("change", ".search-list", function(){
 });
 
 function triggerType(data){
-  console.log("from trigg");
-  console.log(data['type']);
-  var optionHTML = "";
   switch(data['type']) {    
     case 'date':
       $("#no_value_"+data['value']).val('');
       $("#container_mode_"+data['value']).select2('destroy');
       $("#no_value_"+data['value']).parent().empty().html(`
         <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
-
       $("#no_value_"+data['value']).daterangepicker({
         locale: {
           format:defaultDate
         }
       });
-
     $('#'+data['id']).html(`
         <option class="datepick" value="Today" data-date="${[moment().format(defaultDate),moment().format(defaultDate)]}">Today</option>
         <option class="datepick" value="Yesterday" data-date="${[moment().subtract(1, 'days').format(defaultDate),moment().subtract(1, 'days').format(defaultDate)]}">Yesterday</option>
@@ -1086,25 +1054,28 @@ function triggerType(data){
         <option class="datepick" value="Next 6 Months" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(6, 'month').format(defaultDate)]}">Next 6 Months</option>
         <option class="datepick" value="Next 12 Months" data-date="${[moment().add(1, 'month').format(defaultDate),moment().add(12, 'month').format(defaultDate)]}">Next  12 Months</option>
         <option class="datepick" value="Custom Date" data-date="${[moment().format(defaultDate),moment().format(defaultDate)]}">Custom Date</option>`);
-        
     break;
     case 'input':
       $("#no_value_"+data['value']).val('');
       $("#container_mode_"+data['value']).select2('destroy');
       $("#no_value_"+data['value']).parent().empty().html(`
         <input name="value[]" id="no_value_${data['value']}" type="text" class="form-control w_90" placeholder="Enter search value">`);
-
-      $('#'+data['id']).html(createSelect('numbers_and_references',data));
+      $('#'+data['id']).html(createSelect('numbers_and_references', data));
+    break;
+    case 'select':
+      $('#'+data['id']).html(createSelect('numbers_and_references', data));
+      selectTrigger(data['value'], 'select2', data['keyindex']);
     break;
     case 'option':
-        $('#'+data['id']).html(createSelect('others',data));
+        $('#'+data['id']).html(createSelect('others', data, "multiple"));
         selectTrigger(data['value'], 'select2', data['keyindex']);
     break;
-
     case 'document':
-        $('#'+data['id']).html(createSelect('document',data));
+        $('#'+data['id']).html(createSelect('document', data, "multiple"));
         selectTrigger(data['value'], 'select2', data['keyindex']);
     break;
+    default:
+      break;
   }
 }
 
@@ -1118,6 +1089,18 @@ function selectTrigger(index, inputType, search_type = ""){
         $.each( data, function( key, value ) {
           if(value.type !== '') {
             var newOption = new Option(value.type, value.type, false, false);
+            $('#container_mode_'+index).append(newOption).trigger('change');
+          }
+        });
+      });
+    }
+
+    if(search_type == 'consignee' || search_type == 'consignor'){
+      let items = [];
+      $.getJSON( "/shipment/getOrgCodeByUserID/" + user_id, function( data ) {
+        $.each( data, function( key, value ) {
+          if(value.consignee !== '') {
+            var newOption = new Option(value.consignee, value.consignee, false, false);
             $('#container_mode_'+index).append(newOption).trigger('change');
           }
         });
@@ -1150,36 +1133,32 @@ function selectTrigger(index, inputType, search_type = ""){
   
 }
 
-//create dynamic select option base on serch title
-function createSelect(key,data){
-  console.log(data);
-  console.log(key);
+//create dynamic select option base on search title
+function createSelect(key,data,attr){
   var optionHTML = "";
    var handler = $.grep(searchJson[key], function(obj) { 
     if(obj.filterName === data['keyindex']){   
         return obj; 
       }
   });
- 
   $.each(handler[0].type,function(okey,oval){
     var select = (okey==0 ? 'selected' :'');
     optionHTML +=`<option value="${oval.value}" ${select}>${oval.option}</option>`;
   });
   if(handler[0].value.length > 0){
-    createSelectValue(data['value'],handler[0].value);
+    createSelectValue(data['value'],handler[0].value,attr);
   }
-  
   return optionHTML;
 }
 
-function createSelectValue(index,value){
+function createSelectValue(index,value,attr=""){
   var optionHTML="";
   $.each(value,function(key,val){
     optionHTML+=`<option value="${val.value}">${val.name}</option>`;
   });
   $("#no_value_"+index).parent().empty().html(`
         <input name="value[]" id="no_value_${index}" type="hidden"> 
-        <select id="container_mode_${index}" class="form-control w_90" multiple="multiple">${optionHTML}</select>`);
+        <select id="container_mode_${index}" class="form-control w_90" ${attr}>${optionHTML}</select>`);
 }
 
 function appendToSelect(data){
@@ -1414,6 +1393,7 @@ function loadSaved() {
     Swal.fire('Please select search query to load!');
   }
 }
+// Func Save Search
 function saveFilter() {
   var settingArray = [];
   // var input = sessionStorage.getItem('saved_title');
@@ -1534,7 +1514,6 @@ function deleteSaved(id) {
     $('#loader-wrapper').remove();
   });
 }
-
 // Func Clear Filter
 function clearFilter() {
   var search = $('#no_search_1').val();
