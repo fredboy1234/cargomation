@@ -2,26 +2,26 @@
      * BAR CHART
      * ---------
      */
-    var bar_data = {
-      data : [[1,96], [2,83], [3,89], [4,75], [5,43], [6,62], [7,42]],
-      bars: { show: true }
-    }
-    $.plot('#shipcount-chart', [bar_data], {
-      grid  : {
-        borderWidth: 1,
-        borderColor: '#f3f3f3',
-        tickColor  : '#f3f3f3'
-      },
-      series: {
-         bars: {
-          show: true, barWidth: 0.3, align: 'center',
-        },
-      },
-      colors: ['#3c8dbc'],
-      xaxis : {
-        ticks: [[1,'JAN-19'], [2,'JAN-20'], [3,'JAN-21'], [4,'JAN-22'], [5,'JAN-23'], [6,'JAN-24'], [7,'JAN-25']]
-      }
-    })
+    // var bar_data = {
+    //   data : [[1,96], [2,83], [3,89], [4,75], [5,43], [6,62], [7,42]],
+    //   bars: { show: true }
+    // }
+    // $.plot('#shipcount-chart', [bar_data], {
+    //   grid  : {
+    //     borderWidth: 1,
+    //     borderColor: '#f3f3f3',
+    //     tickColor  : '#f3f3f3'
+    //   },
+    //   series: {
+    //      bars: {
+    //       show: true, barWidth: 0.3, align: 'center',
+    //     },
+    //   },
+    //   colors: ['#3c8dbc'],
+    //   xaxis : {
+    //     ticks: [[1,'JAN-19'], [2,'JAN-20'], [3,'JAN-21'], [4,'JAN-22'], [5,'JAN-23'], [6,'JAN-24'], [7,'JAN-25']]
+    //   }
+    // })
     /* END BAR CHART */
     var progressbar = `<div class="progress">
     <div class="progress-bar" role="progressbar"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
@@ -181,6 +181,70 @@ $(document).ready(function(){
     });
     
   });
+
+
+  //post loaded data
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var chartNumbers = [];
+  var tickMonth = [];
+
+  setTimeout(function(){
+    $.ajax({
+      url: document.location.origin+"/docregister/getcounts/",
+      success:function(data)
+      {
+       var d = JSON.parse(data)
+       console.log(d);
+       console.log(d.new);
+       $("#newcount span").text(d.new);
+       $("#processcount span").text(d.processing);
+       $("#completedcount span").text(d.completed);
+       $("#failedcount span").text(d.failed);
+       $("#archivecount span").text(d.archive);
+      }
+    });
+
+    $.ajax({
+      url: document.location.origin+"/docregister/chartdata/",
+      success:function(data)
+      {
+        chartdata = JSON.parse(data);
+        $.each(chartdata,function(okey,oval){
+          var tickdate = oval.DateField.split("-");
+          var formatdate = new Date(oval.DateField);
+          var month = months[formatdate.getMonth()];
+          console.log(tickdate[2]);
+          tickMonth.push([okey,month+' - '+tickdate[2]]);
+          chartNumbers.push([okey,parseInt(oval.countdate)]);
+        });
+      
+        var bar_data = {
+          data : chartNumbers,
+          bars: { show: true }
+        }
+        
+        $.plot('#shipcount-chart', [bar_data], {
+          grid  : {
+            borderWidth: 1,
+            borderColor: '#f3f3f3',
+            tickColor  : '#f3f3f3'
+          },
+          series: {
+            bars: {
+              show: true, barWidth: 0.3, align: 'center',
+            },
+          },
+          colors: ['#3c8dbc'],
+          xaxis : {
+            ticks: tickMonth
+          }
+        })
+
+        $("#shipcount-chart").height(500);
+      }
+    });
+
+  },500);
 });
 
 function preloader(url) {
