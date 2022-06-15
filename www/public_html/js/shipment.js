@@ -1382,8 +1382,10 @@ function loadSaved() {
         },300);
         setTimeout(function(){
           $("#no_value_"+xdex).val(field[2]);
-          $("#container_mode_"+xdex).val(field[2]);
-          $("#container_mode_"+xdex).trigger('change'); 
+          $("#container_mode_"+xdex).change();
+          setTimeout(function(){
+            $("#container_mode_"+xdex).val(field[2]).trigger('change');
+          },200);
         },300);
       });
     }
