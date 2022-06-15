@@ -75,7 +75,7 @@ $status = array("error","success");
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">
-              <i class="fas fa-ship"></i> Shipment Count ( <code> Last <b>5 days</b>
+              <i class="fas fa-ship"></i> Shipment Count ( <code> This <b>Month</b>
               </code>)
             </h3>
             <div class="card-tools">
@@ -98,20 +98,20 @@ $status = array("error","success");
           </div>
           <div class="card-body">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-outline-info btn-lg bg-success">
-                <input type="radio" name="options" id="option_b2" autocomplete="off"> New <span class="badge bg-success">113</span>
+            <label class="btn btn-outline-info btn-lg bg-success" id="newcount">
+                <input type="radio" name="options" autocomplete="off"> New <span class="badge bg-success">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg bg-info">
-                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Processing <span class="badge bg-info">15</span>
+              <label class="btn btn-outline-info btn-lg bg-info" id="processcount">
+                <input type="radio" name="options"  autocomplete="off" checked=""> Processing <span class="badge bg-info">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg">
-                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Completed <span class="badge bg-info">15</span>
+              <label class="btn btn-outline-info btn-lg" id="completedcount">
+                <input type="radio" name="options"  autocomplete="off" checked=""> Completed <span class="badge bg-info">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg bg-danger">
-                <input type="radio" name="options" id="option_b3" autocomplete="off"> Failed <span class="badge bg-danger">53</span>
+              <label class="btn btn-outline-info btn-lg bg-danger" id="failedcount">
+                <input type="radio" name="options"  autocomplete="off"> Failed <span class="badge bg-danger">0</span>
               </label>
-              <label class="btn btn-outline-info btn-lg bg-info">
-                <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> Archived <span class="badge bg-info">15</span>
+              <label class="btn btn-outline-info btn-lg bg-info" id="archivecount">
+                <input type="radio" name="options"  autocomplete="off" checked=""> Archived <span class="badge bg-info">0</span>
               </label>
             </div>
             <button type="button" class=" clearall btn btn-danger float-right">Clear All</button>

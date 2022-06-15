@@ -328,34 +328,44 @@ class Docregister extends Core\Controller {
         $docmatch ='';
        
         $docreg = $this->getDocReportReg($_SESSION['user']);
-    //     echo"<pre>";
-    //    print_r($docreg);
-    //    exit;
+        //echo"<pre>";
+      // print_r($docreg);
+       //exit;
         if(!empty($docreg)){
             
             foreach($docreg as $docval){
-              
+                $docMasterBill = '';
+                $docHouseBill = '';
+                $docIdentified = '';
                 if(isset($docval->match_report)){
                     $docmatch = json_decode($docval->match_report);
+                    //print_r($docmatch);
                     if(isset($docmatch->HubJSONOutput->ParsedPDFData)){
-
+                        if(isset($docmatch->HubJSONOutput->ParsedPDFData->ParsedPDFHeader)){
+                            if(isset($docmatch->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->mbl_number)){
+                                $docMasterBill = $docmatch->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->mbl_number;
+                            }
+                            if(isset($docmatch->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->hbl_number)){
+                                $docHouseBill = $docmatch->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->hbl_number;
+                            }
+                        }
                     }
                 }
                
                 $docs = '<div class="d-inline-block w-45">
                         <h4>Master Bill</h4><br>
-                        <span><strong>COSU6327594340</strong></span><br>
+                        <span><strong>'.$docMasterBill.'</strong></span><br>
                         <span>Match Status </span> <span class="badge badge-success">Ready</span><br>
                         <span>Upload Status</span>
                         <i class="far fa-check-circle"></i>
                     </div>,
                     <div class="d-inline-block w-45">
                         <h4>House Bill</h4><br>
-                        <span>STL22008755</span><br>
+                        <span>'.$docHouseBill.'</span><br>
                     </div>,
                     <div class="d-inline-block w-45">
                         <h4>Other Documents Identified</h4><br>
-                        <span>CIV PKL</span><br>
+                        <span>'.$docIdentified.'</span><br>
                     </div>,
                     <div class="d-inline-block w-45">
                         <button data-prim_ref="'.$docval->process_id.'" type="button" class="btn btn-block btn-outline-info btn-xs custom viewdoc" >Preview Match Report</button><br>
@@ -401,7 +411,7 @@ class Docregister extends Core\Controller {
         //         "invoices"=>''
         //     );
         // }
-       
+       //exit;
         echo json_encode($retData);
     }
 
@@ -709,9 +719,9 @@ class Docregister extends Core\Controller {
     public function uploadAndInsert(){
        
         $User = Model\User::getInstance($_SESSION['user']);
-        $APinvoice = Model\Apinvoice::getInstance();
+        //$APinvoice = Model\DocRegister::getInstance();
         $email = $User->data()->email;
-
+        
         $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
         if(isset($_FILES['file']['name'])){
@@ -941,5 +951,17 @@ class Docregister extends Core\Controller {
             print_r($result);
             return $result;
         //}
+    }
+
+    public function getcounts(){
+        $Docregister = Model\DocRegister::getInstance();
+        echo json_encode($Docregister->getListCount($_SESSION['user']));
+    }
+
+    public function chartdata(){
+        $Docregister = Model\DocRegister::getInstance();
+        echo json_encode($Docregister->chartData($_SESSION['user']));
+        
+
     }
 }
