@@ -777,10 +777,13 @@ class Shipment extends Core\Controller {
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
             $etd_date_sort = date_format(date_create($shipment->eta), "d/m/Y");
             $eta_date_sort = date_format(date_create($shipment->etd), "d/m/Y");
+            $ata_date = date_format(date_create($shipment->ata), "d/m/Y");
+            $atd_date = date_format(date_create($shipment->atd), "d/m/Y");
+            $atd_date_sort = date_format(date_create($shipment->ata), "d/m/Y");
+            $ata_date_sort = date_format(date_create($shipment->atd), "d/m/Y");
             $sta_date = '2022-05-30 00:00:00';
             $marco_link = "";
             $etadays = "";
-
             if(isset($shipment->sta)){
                 $sta_date = $shipment->sta;
             }
@@ -820,6 +823,17 @@ class Shipment extends Core\Controller {
             $subdata['place_delivery'] = $shipment->place_delivery;
             $subdata['consignee'] = $shipment->consignee;
             $subdata['consignor'] = $shipment->consignor;
+            // Additionals
+            $subdata['master_bill'] = $shipment->master_bill;
+            $subdata['house_bill'] = $shipment->house_bill;
+            $subdata['transport_mode'] = $shipment->transport_mode;
+            $subdata['voyage_flight_num'] = $shipment->voyage_flight_num;
+            $subdata['container_mode'] = $shipment->container_mode;
+            $subdata['port_loading'] = $shipment->port_loading;
+            $subdata['port_discharge'] = $shipment->port_discharge;
+            $subdata['order_number'] = $shipment->order_number;
+            $subdata['ata_date'] = '<span class="d-none">'.($ata_date_sort=="01/01/1900"?"No Date Available":$ata_date_sort).'</span>'.($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date);
+            $subdata['atd_date'] = '<span class="d-none">'.($atd_date_sort=="01/01/1900"?"No Date Available":$atd_date_sort).'</span>'.($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date);
             if(!empty($shipment->Containers)) {
                 $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
                 // Container Number

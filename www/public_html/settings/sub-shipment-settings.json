@@ -10,6 +10,16 @@
         {"index": "vessel_name","index_name": "Vessel Name", "index_value": "7", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "place_delivery","index_name": "Place Of Delivery", "index_value": "8", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
         {"index": "container_number","index_name": "Container Number", "index_value": "9", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
-        {"index": "all","index_name": "All Documents", "index_value": "10", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"}
+        {"index": "house_bill","index_name": "House Bill", "index_value": "10", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "master_bill","index_name": "Master Bill", "index_value": "11", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "transport_mode","index_name": "Transport Mode", "index_value": "12", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "voyage_flight_num","index_name": "Voyage/Flight", "index_value": "13", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "container_mode","index_name": "Container Mode", "index_value": "14", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "port_loading","index_name": "Port of Loading", "index_value": "15", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "port_discharge","index_name": "Port of Discharge", "index_value": "16", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "order_number","index_name": "Order Number", "index_value": "17", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "ata_date","index_name": "ATA Date", "index_value": "18", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "atd_date","index_name": "ATD Date", "index_value": "19", "index_check": "false", "index_lvl":"shipment", "index_sortable":  "true"},
+        {"index": "all","index_name": "All Documents", "index_value": "20", "index_check": "true", "index_lvl":"document", "index_sortable":  "false"}
     ]
 }
