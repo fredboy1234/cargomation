@@ -353,9 +353,15 @@ class User extends Core\Model {
         //         $check_sub_user = $check_user[0]->account_id;
         //     }
         // }
-        return $Db->query("SELECT * 
-                                FROM user_settings
-                                WHERE user_id = '{$user}' ")->results();
+
+        // TEMPORARY SOLUTION
+        $query = "SELECT * FROM user_settings WHERE user_id = '{$user}'";
+        $result = $Db->query($query)->results();
+        if(empty($result)) {
+            $query = "SELECT * FROM user_settings WHERE user_id = '180'";
+            $result = $Db->query($query)->results();
+        }
+        return $result;
     }
 
     public function deleteUserSettings($id, $column = 'shipment'){
@@ -932,7 +938,13 @@ class User extends Core\Model {
             }
         }
         $query = "SELECT * FROM cargowise_document_type WHERE user_id = {$check_sub_user} ORDER BY doc_type ASC";
-        return $Db->query($query)->results();
+        $result = $Db->query($query)->results();
+        // TEMPORARY SOLUTION
+        if(empty($result)) {
+            $query = "SELECT * FROM cargowise_document_type WHERE user_id = '180' ORDER BY doc_type ASC";
+            $result = $Db->query($query)->results();
+        }
+        return $result;
     }
 
     public function getDocumentType($user_id) {
