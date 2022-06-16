@@ -103,26 +103,16 @@
                 <?php $cc = 0;?>
                 <?php $show = '';?>
                 <?php foreach($matchData as $pkey=>$matchval){ ?>
-                    <?php $cc++;?>
+                    <?php $cc++; 
+                          $tolast = array('Consignee Org Code','Shipper Org Code','Consignee','Shipper');
+                          $withOptions = array('Consignee Org Code','Shipper Org Code');
+                    ?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
                     <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
                     
                         <!--List of Fields-->
                         <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
-                            <?php if($keyField === 'Company Code'){?>
-                                <div class="form-group row d-inline-block px-2" style="vertical-align: bottom;">
-                                    <label for="company_code_id" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                    <select id="company_code_id" class="company_code js-example-basic-single form-control form-control-sm col-sm-12" type="text">
-                                        <option value="<?=$listofField?>" selected><?=$listofField?></option>
-                                    </select>
-                                </div>
-                                <div class="form-group row d-inline-block px-2" style="vertical-align: bottom;">
-                                    <label for="company_name_id" class="col-sm-12 col-form-label col-form-label-sm">Company Name</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control form-control-sm company_name" id="company_name_id" placeholder="Company Name" value="" disabled>
-                                    </div>
-                                </div>
-                            <?php }else{?>
+                            <?php if(!in_array($keyField,$tolast)){?>
                                 <div class="form-group row d-inline-block px-2">
                                     <label for="<?=$keyField?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
                                     <div class="col-sm-12">
@@ -131,6 +121,30 @@
                                 </div>
                             <?php }?>
                         <?php } ?>
+                        <br>
+                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
+                            
+                            <?php if(in_array($keyField,$withOptions)){ 
+                                 $kokey = strtolower(str_replace(" ","_",$keyField));
+                                 $names = strtok($keyField, " ");
+                                 $dname = isset($matchval['fieldlist'][$names]) ?  $matchval['fieldlist'][$names] : '' ;
+                                 
+                            ?>
+                                <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
+                                    <label for="<?=$kokey?>_id" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                    <select id="<?=$kokey?>_id" class="<?=$kokey?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
+                                        <option value="<?=$listofField?>" selected><?=$listofField?></option>
+                                    </select>
+                                </div>
+                                <div class="form-group row d-inline-block px-2 col-md-5">
+                                    <label for="<?=$names?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$names?></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="<?=$names?> form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$names))?>"  value="<?=$dname?>">
+                                    </div>
+                                </div>
+                            <?php }?>
+                        <?php } ?>
+                        
                         <div class="d-block col-md-12 " style="overflow: hidden;">
                         <button type="button" class="btn btn-primary sendToCGM float-right" data-key="<?=$pkey?>">Save Changes</button>
                         </div>
@@ -301,34 +315,83 @@ $(document).on('click','.sendToCGM',function(){
     //     $('.company_code').select2('destroy');
     // });
     $('#preview-doc').on('shown.bs.modal ', function () {
-        $('.company_code').select2({
+        $('.consignee_org_code,.shipper_org_code').select2({
             dropdownAutoWidth : true,
             width: 'auto'
         });
+        
         var user_id = <?=json_encode($this->userid)?>;
-        $.ajax({
-            url: document.location.origin+"/docregister/getOrgCodeByUserID/",
-            success:function(data)
-            {
-                $.each( JSON.parse(data), function( key, value ) {
-                    console.log(value);
-                if(value.consignee !== '') {
-                    console.log(value.consignee);
-                    var newOption = new Option(value.consignee, value.company_name, false, false);
-                    console.log(newOption);
-                    $('.company_code').append(newOption).trigger('change');
+        if(localStorage.getItem('userid') == null){
+            localStorage.setItem('userid',user_id);
+            $.ajax({
+                url: document.location.origin+"/docregister/getOrgCodeByUserID/",
+                success:function(data)
+                {
+                    localStorage.setItem('consigneeOrg',data);
+                    $.each( JSON.parse(data), function( key, value ) {
+                    if(value.org_code !== '') {
+                        console.log(value.org_code);
+                        var newOption = new Option(value.org_code, value.company_name, false, false);
+                        
+                        $('.consignee_org_code').append(newOption).trigger('change');
+                    }
+                    });
                 }
-                });
-            }
-        });
+            });
+
+            $.ajax({
+                url: document.location.origin+"/docregister/getShipCodeByUserID/",
+                success:function(data)
+                {
+                    localStorage.setItem('shipmentOrg',data);
+                    $.each( JSON.parse(data), function( key, value ) {
+                        console.log(value);
+                    if(value.org_code !== '') {
+                        console.log(value.org_code);
+                        var newOption = new Option(value.org_code, value.company_name, false, false);
+                        console.log(newOption);
+                        $('.shipper_org_code').append(newOption).trigger('change');
+                    }
+                    });
+                }
+            });
+        }
+        
+        if(localStorage.getItem('userid') != user_id){
+            localStorage.clear();
+        }else{
+            $.each( JSON.parse(localStorage.getItem('consigneeOrg')), function( key, value ) {
+                if(value.org_code !== '') {
+                    console.log(value.org_code);
+                    var newOption = new Option(value.org_code, value.company_name, false, false); 
+                    $('.consignee_org_code').append(newOption).trigger('change');
+                }
+            });
+            $.each( JSON.parse(localStorage.getItem('shipmentOrg')), function( key, value ) {
+                if(value.org_code !== '') {
+                    console.log(value.org_code);
+                    var newOption = new Option(value.org_code, value.company_name, false, false);
+                    console.log(newOption);
+                    $('.shipper_org_code').append(newOption).trigger('change');
+                }
+            });
+        }
+        
     });
     
-    $(document).on('change','.company_code',function(){
+    $(document).on('change','.shipper_org_code',function(){
         var text = $(this).val();
         if(text == 'null'){
             text = 'Not Specified';
         }
-        $('.company_name').val(text);
+        $('.Shipper').val(text);
+	});
+    $(document).on('change','.consignee_org_code',function(){
+        var text = $(this).val();
+        if(text == 'null'){
+            text = 'Not Specified';
+        }
+        $('.Consignee').val(text);
 	});
     
 </script>

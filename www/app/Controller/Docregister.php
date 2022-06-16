@@ -533,7 +533,7 @@ class Docregister extends Core\Controller {
             'matchjson'=>$jsonDecode->data,
             'userid'=>$_SESSION['user'],
             'status'=>$status,
-            'message'=>$message
+            'message'=>$message,
         ]);
     }
 
@@ -1015,5 +1015,10 @@ class Docregister extends Core\Controller {
     public function getOrgCodeByUserID(){
         $Docregister = Model\DocRegister::getInstance();
         echo json_encode($Docregister->getOrgCodeByUserID($_SESSION['user']));
+    }
+
+    public function getShipCodeByUserID(){
+        $Docregister = Model\DocRegister::getInstance();
+        echo json_encode($Docregister->getShipCodeByUserID($_SESSION['user']));
     }
 }
