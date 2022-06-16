@@ -426,19 +426,31 @@ class Docregister extends Core\Controller {
         $fieldlist=array();
         $filename = '';
         $matchData = array();
+        $responsedata = array();
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
-        
-        if(isset($this->getCGMresponse($prim_ref)[0])){
+        $status = $jsonDecode->status;
+        $message = $jsonDecode->message;
+
+        $responsedata['process_id'] = $prim_ref;
+        $responsedata['user_id'] = $_SESSION['user'];
+        $responsedata['status'] = $status;
+        $responsedata['logs'] = $message;
+        $responsedata['response'] = json_encode($jsonDecode);
+        $responsedata['action_type'] = 'preview documents';
+
+        $this->insertLogs($responsedata);
+        //$jsonDecode->data='{"MatchReportArray":[{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":{"Type":"ForwardingShipment","Key":"S00001586","Shipper":"DUMMY SHA","Consignee":"CARGOMATION TEST ORGANISATION","LocalClient":"CARGOMATION TEST ORGANISATION","NotifyParty":"COVESTRO PTY LTD","HouseBill":"STL22008755XX","Origin":"CNNSA","Destination":"AUSYD","Weight":"543.000","Volume":"8.700","Packs":"11","PackType":"CTN","GoodsDescription":"DESMODUR T80 TANK TRUCK UN NO. 2078","Incoterm":"FOB","ReleaseType":"EBL"},"CWLines":{"CWLine":{"ContainerNumber":"UAUA435213","PackQty":"11","PackType":"CTN","Volume":"8.700","Weight":"543.000"}}},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE","coloader":"SILA GLOBAL PTY LTD","hbl_number":"STL22008755","shipper":"COVESTRO (HONG KONG) LIMITED","port_origin":"SHANGHAI","number_original":"THREE","consignee":"COVESTRO PTY LTD","incoterm":"FREIGHT PREPAID","port_destination":"MELBOURNE","filename":"HBL.pdf","page":"1","release_type":"OBR","process_id":"49","webservice_link":"https:\/\/a2btrnservices.wisegrid.net\/eAdaptor\/  ","webservice_username":"A2B","webservice_password":"Hw7m3XhS","server_id":"TRN","enterprise_id":"A2B","company_code":"SYD test test"},"ParsedPDFLines":{"ParsedPDFLine":{"CONTAINER_NUMBER":"WSDU6001792 Test","SEAL":"784914","CONTAINER_TYPE":"20TK","CHARGEABLE_WEIGHT":"23260 KGS","VOLUME":"24CBM Test","PACKAGE_COUNT":"2"}}}}}]}';
+       
+        if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
-        //   echo'<pre>';
-        //   print_r($jsonDecode );
-        //    exit;
+       
        if(!isset($jsonDecode->data)) exit;
+       
         $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
-
+        
         if(!empty($matchArray)){
             foreach($matchArray as $match){
                 $jmatch = $match; 
@@ -454,18 +466,35 @@ class Docregister extends Core\Controller {
                         $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                     }
                 }
-                foreach($parsePdfParsedPDFLines  as $key=>$pdfchild){ 
-                    if(is_object($pdfchild)){
-                        foreach($pdfchild as $pkey=>$pval){
-                            $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                if(isset($parsePdfParsedPDFLines->ParsedPDFLine) && is_array($parsePdfParsedPDFLines->ParsedPDFLine)){
+                    foreach($parsePdfParsedPDFLines->ParsedPDFLine  as $key=>$pdfchild){ 
+                        if(is_object($pdfchild)){
+                            foreach($pdfchild as $pkey=>$pval){
+                                $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                            }
+                            $container_details[] = $pdfchild;
+                        }else{
+                            $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                            $container_details[$key] = $pdfchild; 
                         }
-                        $container_details[] = $pdfchild;
-                    }else{
-                        $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
-                        $container_details[$key] = $pdfchild; 
+                        
                     }
-                    
+                }else{
+                    foreach($parsePdfParsedPDFLines as $key=>$pdfchild){ 
+                        if(is_object($pdfchild)){
+                            foreach($pdfchild as $pkey=>$pval){
+                                $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                            }
+                            $container_details[] = $pdfchild;
+                        }else{
+                            $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                            $container_details[$key] = $pdfchild; 
+                        }
+                        
+                    }
                 }
+                
+                
                 $matchData[] = array(
                     'hbl_numbers' => $hbl_numbers,
                     'container_details' => $container_details,
@@ -475,6 +504,7 @@ class Docregister extends Core\Controller {
                     'tableheader'=>$tableheader,
                 );
             }
+           
         }
         
         $encodedData = urlencode( $this->encryptData( $jsonDecode->data ) );
@@ -500,7 +530,10 @@ class Docregister extends Core\Controller {
             'process_id'=>$prim_ref,
             'match_arr'=> $encodedData,
             'prim_ref'=>$prim_ref,
-            'matchjson'=>$jsonDecode->data
+            'matchjson'=>$jsonDecode->data,
+            'userid'=>$_SESSION['user'],
+            'status'=>$status,
+            'message'=>$message
         ]);
     }
 
@@ -580,7 +613,7 @@ class Docregister extends Core\Controller {
     public function sendToAPI(){
         $toPass = array();
         if(isset($_POST)){
-             echo"<pre>";
+             //echo"<pre>";
             //  print_r($_POST);
             // exit;
             foreach($_POST['data'] as $key=>$val){
@@ -626,7 +659,15 @@ class Docregister extends Core\Controller {
     }
 
     public function customUpload(){
-       
+        $pid = array();
+        if(isset($_POST['file'][0])){
+           
+            foreach(json_decode($_POST['file'][0])->processID as $process){
+                $pid[] = '"'.(string)$process.'"';
+            }
+            
+        }
+        
         $User = Model\User::getInstance($_SESSION['user']);
         $email = $User->data()->email;
         $filearray = array();
@@ -646,13 +687,13 @@ class Docregister extends Core\Controller {
             //$filearray[]="'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name'";
             $filearray[]='"'.$path.$email.$folderpath.$name.'"';
         }
-    
+        
         $arr  = array(
             'file'=> "[".implode(",",$filearray)."]",
             'user_id' => (string)$_SESSION['user'],
-            'process_id' =>(string)$this->getLastID()
+            'process_id' =>  "[".implode(",",$pid)."]"
         );
-    
+        
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
          
         $url ='https://cargomation.com:8002/compare'; 
@@ -721,6 +762,7 @@ class Docregister extends Core\Controller {
         $User = Model\User::getInstance($_SESSION['user']);
         //$APinvoice = Model\DocRegister::getInstance();
         $email = $User->data()->email;
+        $listOfProcessID = array();
         
         $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
 
@@ -736,12 +778,13 @@ class Docregister extends Core\Controller {
                 $data['uploadedby']= $email;
                 
                 $this->insertDoc($data);
-                
+                $listOfProcessID[] = $this->getLastID();
                 //$fl['filename'][] = $_FILES['file']['name'][$key];
                 //$fl['tmp_name'][] = $_FILES['file']['tmp_name'][$key];
             }
             //$this->customUpload($fl,$this->getLastID());
         }
+        echo json_encode(array("processID"=>$listOfProcessID));
         // exit;
         // if($_FILES['file']['name'] != ''){
         //     $test = explode('.', $_FILES['file']['name']);
@@ -840,6 +883,12 @@ class Docregister extends Core\Controller {
         return $lastID[0]->lastid;
     }
 
+    public function insertLogs($data){
+        $APinvoice = Model\DocRegister::getInstance();
+        $lastID = $APinvoice->insertLogs($data);
+       
+    }
+
     public function getcwresponse($prim_ref){
         $APinvoice = Model\DocRegister::getInstance();
         $lastID = $APinvoice->getcwresponse($prim_ref);
@@ -858,7 +907,7 @@ class Docregister extends Core\Controller {
         
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
-
+        
         $result = $this->postAuth($url, $payload, $headers);
         return $result;
     }
@@ -961,7 +1010,10 @@ class Docregister extends Core\Controller {
     public function chartdata(){
         $Docregister = Model\DocRegister::getInstance();
         echo json_encode($Docregister->chartData($_SESSION['user']));
-        
+    }
 
+    public function getOrgCodeByUserID(){
+        $Docregister = Model\DocRegister::getInstance();
+        echo json_encode($Docregister->getOrgCodeByUserID($_SESSION['user']));
     }
 }
