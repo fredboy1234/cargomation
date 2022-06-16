@@ -466,18 +466,35 @@ class Docregister extends Core\Controller {
                         $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
                     }
                 }
-                foreach($parsePdfParsedPDFLines  as $key=>$pdfchild){ 
-                    if(is_object($pdfchild)){
-                        foreach($pdfchild as $pkey=>$pval){
-                            $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                if(isset($parsePdfParsedPDFLines->ParsedPDFLine) && is_array($parsePdfParsedPDFLines->ParsedPDFLine)){
+                    foreach($parsePdfParsedPDFLines->ParsedPDFLine  as $key=>$pdfchild){ 
+                        if(is_object($pdfchild)){
+                            foreach($pdfchild as $pkey=>$pval){
+                                $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                            }
+                            $container_details[] = $pdfchild;
+                        }else{
+                            $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                            $container_details[$key] = $pdfchild; 
                         }
-                        $container_details[] = $pdfchild;
-                    }else{
-                        $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
-                        $container_details[$key] = $pdfchild; 
+                        
                     }
-                    
+                }else{
+                    foreach($parsePdfParsedPDFLines as $key=>$pdfchild){ 
+                        if(is_object($pdfchild)){
+                            foreach($pdfchild as $pkey=>$pval){
+                                $tableheader[str_replace("_"," ",$pkey)]=str_replace("_"," ",$pkey);  
+                            }
+                            $container_details[] = $pdfchild;
+                        }else{
+                            $tableheader[str_replace("_"," ",$key)]=str_replace("_"," ",$key);   
+                            $container_details[$key] = $pdfchild; 
+                        }
+                        
+                    }
                 }
+                
+                
                 $matchData[] = array(
                     'hbl_numbers' => $hbl_numbers,
                     'container_details' => $container_details,
@@ -487,6 +504,7 @@ class Docregister extends Core\Controller {
                     'tableheader'=>$tableheader,
                 );
             }
+           
         }
         
         $encodedData = urlencode( $this->encryptData( $jsonDecode->data ) );
@@ -889,7 +907,7 @@ class Docregister extends Core\Controller {
         
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
-
+        
         $result = $this->postAuth($url, $payload, $headers);
         return $result;
     }

@@ -111,10 +111,16 @@
                         <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
                             <?php if($keyField === 'Company Code'){?>
                                 <div class="form-group row d-inline-block px-2" style="vertical-align: bottom;">
-                                    <label for="company_code" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                    <select id="company_code" class="js-example-basic-single form-control form-control-sm col-sm-12" type="text">
+                                    <label for="company_code_id" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                    <select id="company_code_id" class="company_code js-example-basic-single form-control form-control-sm col-sm-12" type="text">
                                         <option value="<?=$listofField?>" selected><?=$listofField?></option>
                                     </select>
+                                </div>
+                                <div class="form-group row d-inline-block px-2" style="vertical-align: bottom;">
+                                    <label for="company_name_id" class="col-sm-12 col-form-label col-form-label-sm">Company Name</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control form-control-sm company_name" id="company_name_id" placeholder="Company Name" value="" disabled>
+                                    </div>
                                 </div>
                             <?php }else{?>
                                 <div class="form-group row d-inline-block px-2">
@@ -291,11 +297,11 @@ $(document).on('click','.sendToCGM',function(){
         });
 
     });
-    $('#preview-doc').on('hidden.bs.modal', function () {
-        $('#company_code').select2('destroy');
-    });
+    // $('#preview-doc').on('hidden.bs.modal', function () {
+    //     $('.company_code').select2('destroy');
+    // });
     $('#preview-doc').on('shown.bs.modal ', function () {
-        $('#company_code').select2({
+        $('.company_code').select2({
             dropdownAutoWidth : true,
             width: 'auto'
         });
@@ -308,24 +314,21 @@ $(document).on('click','.sendToCGM',function(){
                     console.log(value);
                 if(value.consignee !== '') {
                     console.log(value.consignee);
-                    var newOption = new Option(value.consignee, value.consignee, false, false);
+                    var newOption = new Option(value.consignee, value.company_name, false, false);
                     console.log(newOption);
-                    $('#company_code').append(newOption).trigger('change');
+                    $('.company_code').append(newOption).trigger('change');
                 }
                 });
             }
         });
     });
     
-    // $.getJSON( "/docregister/getOrgCodeByUserID/", function( data ) {
-    //             $.each( data, function( key, value ) {
-    //                 console.log(value);
-    //             if(value.consignee !== '') {
-    //                 console.log(value.consignee);
-    //                 var newOption = new Option(value.consignee, value.consignee, false, false);
-    //                 console.log(newOption);
-    //                 $('#company_code').append(newOption).trigger('change');
-    //             }
-    //             });
-    //         });
+    $('.company_code').select2().on('change', function(){
+        var text = $(this).val();
+        if(text == null){
+            text = 'Not Specified';
+        }
+        $('.company_name').val(text);
+	});
+    
 </script>
