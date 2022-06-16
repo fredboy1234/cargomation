@@ -100,6 +100,7 @@ $(document).ready(function(){
     var file_data = $('#invoice').prop('files');   
     var form_data = new FormData(); 
     var data=[];
+    var listOfProcessID = '';
     
     for(var i=0; i<file_data.length; i++){ 
       //formultiple file
@@ -142,10 +143,11 @@ $(document).ready(function(){
       success:function(data)
       {
         $('#docregister').DataTable().ajax.reload();
-        
+        listOfProcessID = data;
+        form_data.append('file[]', listOfProcessID)
         //call Compare api after upload
         $('.progress').remove();
-        //if(file_data.length == i){
+        
           Swal.fire(
             "",
             "Your file was uploaded!",
@@ -161,20 +163,19 @@ $(document).ready(function(){
                   });
                 } 
             });
-        //}
         
+          //form_data.append('pid[]',JSON.stringify(data));
           //return 
         $.ajax({
           url: document.location.origin+"/docregister/customUpload/",
-          contentType:false,
+          contentType: false,
               cache:false,
               processData:false,
           type: "POST",
           data:form_data,
           success:function(data)
           {
-            var jsdata = JSON.parse(data);
-            
+            var jsdata = data;
           }
         });
       }

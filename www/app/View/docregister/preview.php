@@ -279,4 +279,28 @@ $(document).on('click','.sendToCGM',function(){
         });
 
     });
+
+    setTimeout(function(){ 
+        var user_id = <?=json_encode($this->userid)?>;
+        if ( !$('input[name="company_code"]').hasClass("select2-hidden-accessible")) {
+            //$('input[name="company_code"]').select2('destroy');
+            $('input[name="company_code"]').select2();
+        }
+       
+        setTimeout(function(){
+            $.getJSON( "/docregister/getOrgCodeByUserID/", function( data ) {
+                
+                $.each( data, function( key, value ) {
+                    console.log(value);
+                if(value.consignee !== '') {
+                    console.log(value.consignee);
+                    var newOption = new Option(value.consignee, value.consignee, false, false);
+                    console.log(newOption);
+                    $('input[name="company_code"]').append('<option value="'+value.consignee+'">'+value.consignee+'</option>').trigger('change');
+                }
+                });
+            });
+        },500);
+       
+    },1000);
 </script>

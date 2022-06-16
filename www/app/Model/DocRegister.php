@@ -152,4 +152,10 @@ class DocRegister extends Core\Model {
         
         return $Db->query($query)->results();
     }
+
+    public function getOrgCodeByUserID($user_id) {
+        $query = "SELECT * FROM vrptConsignee WHERE user_id = '{$user_id}'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
 }
