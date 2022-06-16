@@ -323,9 +323,9 @@ $(document).on('click','.sendToCGM',function(){
         });
     });
     
-    $('.company_code').select2().on('change', function(){
+    $(document).on('change','.company_code',function(){
         var text = $(this).val();
-        if(text == null){
+        if(text == 'null'){
             text = 'Not Specified';
         }
         $('.company_name').val(text);
