@@ -158,4 +158,21 @@ class DocRegister extends Core\Model {
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
+
+    public function insertLogs($data){
+        $processid = $data['process_id'];
+        $user_id = $data['user_id'];
+        $timestamp = date('Y-m-d H:i:s');
+        $status = $data['status'];
+        $logs = $data['logs'];
+        $response = $data['response'];
+        $action = $data['action_type'];
+
+        $Db = Utility\Database::getInstance();
+        $query = "INSERT 
+                INTO match_report_reg_logs(process_id,user_id,timestamp,status,logs,match_report_response,action_type)
+                VALUES('{$processid}','{$user_id}','{$timestamp}','{$status}','{$logs}','{$response}','{$action}')
+                ";
+        return $Db->query($query);
+    }
 }
