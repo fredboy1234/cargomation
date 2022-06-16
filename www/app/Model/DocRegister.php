@@ -154,7 +154,13 @@ class DocRegister extends Core\Model {
     }
 
     public function getOrgCodeByUserID($user_id) {
-        $query = "SELECT * FROM vrptConsignee WHERE user_id = '{$user_id}'";
+        $query = "SELECT * FROM organization WHERE user_id = '{$user_id}' and consignee = 'Y'";
+        $Db = Utility\Database::getInstance();
+        return $Db->query($query)->results();
+    }
+
+    public function getShipCodeByUserID($user_id) {
+        $query = "SELECT * FROM organization WHERE user_id = '{$user_id}' and consignee = 'N'";
         $Db = Utility\Database::getInstance();
         return $Db->query($query)->results();
     }
