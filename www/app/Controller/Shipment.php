@@ -1061,6 +1061,10 @@ class Shipment extends Core\Controller {
         echo json_encode($test);
     }
 
+    public function setDefaultSearch() {
+        
+    }
+
     public function request($shipment_id = "", $doc_type = "", $requestToken = "") {
 
         if(isset($requestToken) && !empty($requestToken)) {

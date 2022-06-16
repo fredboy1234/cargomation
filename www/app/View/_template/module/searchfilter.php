@@ -143,6 +143,7 @@
          <div class="col-md-12 p-0">
             <button type="button" id="savefilter" class="btn btn-warning"><i class="fas fa-save"></i> Save Search </button>
             <button type="button" id="clearFilter" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Filter </button>
+            <button type="button" id="setFilter" class="btn btn-primary"><i class="fas fa-edit"></i> Make Default </button>
             <button type="submit" id="searchFilter" class="btn btn-primary float-right"><i class="fas fa-search"></i> Search Data </button>
          </div>
 
