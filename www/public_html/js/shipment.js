@@ -320,37 +320,7 @@ $(document).ready(function () {
           });
           d.data = arr;
         } else {
-          $(".form_field_outer_row").each(function(){
-            var search = $(this).find("[name*='search']").val(); //*= means like
-            var type = $(this).find("[name*='type']").val(); 
-            var value = $(this).find("[name*='value']").val(); 
-            var cond = $(this).find("[name*='cond']").val();
-            if($(this).find("[name*='cond']").hasClass('exclude')) {
-                cond = "";
-            } 
-            //convert date to mm/dd/yyyy for api request format
-            
-            if(search === "ETA" || search === "ETD"){
-              var dateString = value;
-              var dateParts = dateString.split("-");
-              var datePartsChild1 = dateParts[0].split("/");
-              var datePartsChild2 = dateParts[1].split("/");
-                var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
-                var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
-                value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
-                type = type;
-            }
-            
-            if(typeof value !== null || value.length > 0){
-              arr.push({
-                  "columnname": search,
-                  "type": type,
-                  "value": value.toUpperCase(),
-                  "cond": cond
-              });
-            } 
-            d.data = arr;
-          });
+          d.data = getSearch();
         }
       },
       error:function(err, status){
@@ -432,24 +402,6 @@ $(document).ready(function () {
       }else{
         table.ajax.reload(setColor);
       }
-  
-    // $.ajax({
-    //   url: "/shipment/shipmentData/"+user_id+"/"+role_id,
-    //   type: "POST",
-    //   data: {arr},
-    //   beforeSend: function(res) {
-        //table.ajax.reload(setColor);
-    //   },
-    //   success: function (res) {
-    //     // $(document).Toasts('create', {
-    //     //   title: 'Success',
-    //     //   body: 'Shipment was successfully Unassigned',
-    //     //   autohide: true,
-    //     //   close: false,
-    //     //   class: 'bg-success'
-    //     // })
-    //   }
-    // });
   });
   $.fn.dataTable.ext.errMode = 'none';
   // Doing some magic! 
@@ -761,6 +713,8 @@ $(document).ready(function () {
 
   var height = $(window).height();
   $('.ttable, #DataTables_Table_0_wrapper').height(height);
+
+
 });
 
 var setColor = function () {
@@ -1618,4 +1572,39 @@ function loadDefault() {
     alert('Your browser does NOT support the set default.');
   }
 
+}
+// Func Get Search
+function getSearch() {
+  var arr = [];
+  $(".form_field_outer_row").each(function(){
+    var search = $(this).find("[name*='search']").val(); //*= means like
+    var type = $(this).find("[name*='type']").val(); 
+    var value = $(this).find("[name*='value']").val(); 
+    var cond = $(this).find("[name*='cond']").val();
+    if($(this).find("[name*='cond']").hasClass('exclude')) {
+        cond = "";
+    } 
+    //convert date to mm/dd/yyyy for api request format
+    
+    if(search === "ETA" || search === "ETD"){
+      var dateString = value;
+      var dateParts = dateString.split("-");
+      var datePartsChild1 = dateParts[0].split("/");
+      var datePartsChild2 = dateParts[1].split("/");
+        var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+        var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+        value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+        type = type;
+    }
+    
+    if(typeof value !== null || value.length > 0){
+      arr.push({
+          "columnname": search,
+          "type": type,
+          "value": value.toUpperCase(),
+          "cond": cond
+      });
+    }
+  });
+  return arr;
 }
