@@ -7,6 +7,7 @@
 $(document).ready(function () {
   invokeFilter("", 1);
   loadRecentSave();
+  loadDefault();
   var searchJson = [];
   $("#add_filters").on("change",function (e) { 
     var selected = $(this).find('option:selected').val();
@@ -68,7 +69,6 @@ $(document).ready(function () {
     
     //count++;
   });
-
   $('[data-toggle="tooltip"]').tooltip()
 });
 
@@ -326,27 +326,27 @@ $(document).ready(function () {
             var value = $(this).find("[name*='value']").val(); 
             var cond = $(this).find("[name*='cond']").val();
             if($(this).find("[name*='cond']").hasClass('exclude')) {
-               cond = "";
+                cond = "";
             } 
             //convert date to mm/dd/yyyy for api request format
             
             if(search === "ETA" || search === "ETD"){
-             var dateString = value;
-             var dateParts = dateString.split("-");
-             var datePartsChild1 = dateParts[0].split("/");
-             var datePartsChild2 = dateParts[1].split("/");
-               var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
-               var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
-               value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
-               type = type;
+              var dateString = value;
+              var dateParts = dateString.split("-");
+              var datePartsChild1 = dateParts[0].split("/");
+              var datePartsChild2 = dateParts[1].split("/");
+                var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+                var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+                value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+                type = type;
             }
             
             if(typeof value !== null || value.length > 0){
               arr.push({
-                 "columnname": search,
-                 "type": type,
-                 "value": value.toUpperCase(),
-                 "cond": cond
+                  "columnname": search,
+                  "type": type,
+                  "value": value.toUpperCase(),
+                  "cond": cond
               });
             } 
             d.data = arr;
@@ -721,7 +721,7 @@ $(document).ready(function () {
   });
   //end of reorder column
 
-  //reset search
+  // Button Reset Search
   $("#reset-search").on("click", function () {
     $("input[name='post_trigger']").val('');
     $("#addvance-search-form").find("input[type=text], textarea").val("");
@@ -729,21 +729,13 @@ $(document).ready(function () {
     //table.ajax.reload();
   });
 
+  // Button Clear Filter
   $("#clearFilter").on("click",function(){
-    clearFilter();
-    if((typeof search !== null || search !== null) && value !== '') {
+    if(clearFilter()) {
       table.ajax.reload(setColor);
     }
   });
   
-  // $(document).on('click', 'tr td', function (e) {
-  //   var cl = $(e.target).attr("class");
-  //   var indx = $(this).index();
-  //   // if(cl.indexOf('macro') >=0 && indx == 0){
-  //   //   $('tbody').find('tr.child').remove();
-  //   // }
-  // });
-
   //reset settings
   $(document).on('click', '#reset-settings', function () {
     var id = $(this).attr('data-setting-id');
@@ -1246,6 +1238,10 @@ $('#editSearch').on('click', function() {
   $("#editSavedTitle").val(selected).attr('data-did', id);
   loadSaved();
 });
+// Set Default Filter Search
+$('#setFilter').on('click', function() {
+  setFilter();
+});
 // Func Recent/Save Search
 function loadRecentSave() {
   $.ajax({
@@ -1475,7 +1471,9 @@ function saveFilter() {
           `Search Title: ${result.value.search_title}`,
           'success'
         );
-        clearFilter();
+        if(clearFilter()) {
+          table.ajax.reload(setColor);
+        }
       }
     })
   } else {
@@ -1530,4 +1528,94 @@ function clearFilter() {
   $("#add_filters option").each(function(){
     $(this).attr("data-index",1);
   });
+  if((typeof search !== null || search !== null) && value !== '') {
+    return true;
+  }
+}
+// Func Set Filter
+function setFilter() {
+  var settingArray = [];
+  $(".form_field_outer_row").each(function(){
+    var search = $(this).find("[name*='search']").val(); //*= means like
+    var type = $(this).find("[name*='type']").val(); 
+    var value = $(this).find("[name*='value']").val(); 
+    var cond = $(this).find("[name*='cond']").val();
+    if($(this).find("[name*='cond']").hasClass('exclude')) {
+        cond = "";
+    } 
+    if(typeof search !== null && search !== null){
+      settingArray.push({
+        "columnname": search,
+        "type": type,
+        "value": value.toUpperCase(),
+        "cond": cond
+      });
+    } 
+  });
+  if(settingArray.length > 0){
+    if (typeof(Storage) !== "undefined") {
+      localStorage.setItem("defaultSearch", JSON.stringify(settingArray));
+      if (localStorage.getItem('defaultSearch')) {
+        Swal.fire(
+          'Success!',
+          `Search filter set to default.`,
+          'success'
+        )
+      } else {
+        Swal.fire(
+          'Failed to set!',
+          `No search filter to be set to default.`,
+          'error'
+        )
+      }
+    } else {
+      alert('Your browser does NOT support the set default.');
+    }
+  } else {
+    Swal.fire(
+      'Failed to saved!',
+      `No search filter to be set to default.`,
+      'error'
+    )
+  }
+}
+// Func Load Defaut
+function loadDefault() {
+  // Checks if browser is supported
+  if (typeof(Storage) !== "undefined") {
+    if (localStorage.getItem("defaultSearch")) {
+      // Restore the default field in advance search
+      var defaultSetting = JSON.parse(localStorage.getItem("defaultSearch"));
+      var length = defaultSetting.length;
+      $(defaultSetting).each(function(k,v){
+        console.log(v);
+        if(k < (length - 1)) {
+          addSearchFilter(v.columnname);
+        }
+        var xdex = k + 1; // 0 
+        setTimeout(function(){
+          $("#no_search_"+xdex).change(); // column
+          $("#no_search_"+xdex).val(v.columnname).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_type_"+xdex).change();
+          $("#no_type_"+xdex).val(v.type).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_cond_"+xdex).change();
+          $("#no_cond_"+xdex).val(v.cond).trigger('change');
+        },300);
+        setTimeout(function(){
+          $("#no_value_"+xdex).val(v.value);
+          $("#container_mode_"+xdex).change();
+          setTimeout(function(){
+            $("#container_mode_"+xdex).val(v.value).trigger('change');
+          },200);
+        },300);
+      });
+    }
+  } else {
+    alert('Your browser does NOT support the set default.');
+  }
+
 }
