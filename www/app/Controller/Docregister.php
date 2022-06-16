@@ -919,7 +919,7 @@ class Docregister extends Core\Controller {
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
             
-            if(isset($this->getCGMresponse($_POST['process_id'])[0])){
+            if(isset($this->getCGMresponse($_POST['process_id'])[0]) && !empty($this->getCGMresponse($_POST['process_id'])[0]->cgm_response)){
                 $match_response->data = $this->getCGMresponse($_POST['process_id'])[0]->cgm_response;
             }
             
@@ -934,7 +934,7 @@ class Docregister extends Core\Controller {
                         "Content-Type: application/json"];
     
             $url ='https://cargomation.com:5200/redis/apinvoice/CargowiseShipmentReg'; 
-    
+            
             $result = $this->postAuth($url,$payload,$headers);
 
             print_r($result);
