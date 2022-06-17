@@ -55,6 +55,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                         break;
                                     case ($eta_date < $current_date):
                                         echo "Delivered" . ' <i class="fas fa-check-circle text-success"></i> '; // icon check
+                                        echo "<br>" . date_format(date_create($this->shipment_info[0]->atd),"d M Y H:i");
                                         break;
                                     default:
                                         echo '<i class="fas fa-hourglass-half text-warning"></i> ' . "Pending"; // icon hour glass
@@ -454,7 +455,13 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                                         <div class="row">
                                                             <div class="col-sm-5"><?php echo $value->Origin; ?></div>
                                                             <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
-                                                            <div class="col-sm-5"><?php echo $value->Destination; ?></div>
+                                                            <div class="col-sm-5"><?php echo $value->Destination; ?> 
+                                                            <br>
+                                                            <span>
+                                                            <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
+                                                            (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
+                                                            </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </h5>
@@ -462,6 +469,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
                                             <div id="collapse<?= $key; ?>" class="collapse" aria-labelledby="heading<?=$key;?>" data-parent="#accordion">
                                                 <div class="card-body">
+                                                    <?php if(false): ?>
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <strong>Status</strong>
@@ -471,6 +479,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                                         </p>
                                                         </div>
                                                     </div>
+                                                    <?php endif; ?>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <strong>Routing Leg 
