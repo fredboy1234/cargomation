@@ -81,7 +81,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 
             for ($a = 0; $a <= $ChargelineCTR-1; $a++) {
             	if ($ChargeBoolean == 'false'){ 
-            		$. = ".ChargeLine[$a]."; 
+            		$ChargeLineArr = ".ChargeLine[$a]."; 
             	}
 
             	$SellPostedTransactionNumber = jsonPath($universal_shipment, $xpath.$ChargeLineArr."SellPostedTransactionNumber");
