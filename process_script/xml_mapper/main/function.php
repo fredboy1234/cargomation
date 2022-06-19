@@ -38,12 +38,21 @@ function addShipment($value_array,$shipNumber){
 	    else{ $value = ""; 	$var .= "'".$value."',"; }
 	}
 
+
+
+
 	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count < 1){
 		$var = substr($var, 0, -1);		
-	 	$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
+	 	//$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
+	 	$sql = "BEGIN
+			   IF NOT EXISTS (SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."')
+			   BEGIN
+			       INSERT INTO shipment {$col_field} VALUES ({$var})
+			   END
+			END";
 	 	$res = execQuery($sql);
 
 		 	###Check if successfully inserted
