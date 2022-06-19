@@ -257,7 +257,7 @@ function getArrayName($val){
 /*Execute sql query*/
 function execQuery($sql){
 	$result = sqlsrv_query($GLOBALS['conn'], $sql, array(), array( "Scrollable" => 'static'));
-	sleep(3);
+	sleep(1);
 	return $result;
 }
 
