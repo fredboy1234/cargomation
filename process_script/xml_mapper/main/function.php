@@ -37,24 +37,30 @@ function addShipment($value_array,$shipNumber){
 		elseif($key == 26){	$var .= "".$value.",";	 }
 	    else{ $value = ""; 	$var .= "'".$value."',"; }
 	}
-	  
-	 $var = substr($var, 0, -1);		
-	 $sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
-	 $res = execQuery($sql);
-	
-	###Check if successfully inserted
-	 if(!$res){
-	 	return 'failed';
-	 }else{
-	###Get Document after success insert
-		$GLOBALS['ship_id'] = getLastShipID($shipNumber,$GLOBALS['user_id']);
-		if($GLOBALS['ship_id'] != false){
-			getDocumentRequest($shipNumber,"Add", $GLOBALS['ship_id'] , $GLOBALS['ship_id']);
-		}	
-	###End of Get Document after success insert	
-		return 'success';
-	 }
-	###End of Check if successfully inserted
+
+	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
+	$sql =  execQuery($value);
+	$row_count = sqlsrv_num_rows($sql);
+	if($row_count < 1){
+		$var = substr($var, 0, -1);		
+	 	$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
+	 	$res = execQuery($sql);
+
+		 	###Check if successfully inserted
+		 if(!$res){
+		 	return 'failed';
+		 }else{
+		###Get Document after success insert
+			$GLOBALS['ship_id'] = getLastShipID($shipNumber,$GLOBALS['user_id']);
+			if($GLOBALS['ship_id'] != false){
+				getDocumentRequest($shipNumber,"Add", $GLOBALS['ship_id'] , $GLOBALS['ship_id']);
+			}	
+		###End of Get Document after success insert	
+			return 'success';
+		 }
+		###End of Check if successfully inserted
+
+	}
 }
 
 function updateShipment($value_array,$shipNumber){
