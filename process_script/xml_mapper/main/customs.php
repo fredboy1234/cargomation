@@ -1,6 +1,6 @@
 <?php
 
-if(isset($_GET['get_email'])){
+if(isset($GLOBALS['client_email'])){
 	$user = $client_email;
 	$myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_CUSTOMS/IN/*.xml");
 
@@ -392,6 +392,8 @@ if(isset($_GET['get_email'])){
                 Values(" . $CLIENT_ID . ",'','" . $key . "','" . $WayBillNumber . "','','" . $TransportMode . "','" . $VesselName . "','" . $VoyageFlightNo . "','" . $LloydsIMO . "','" . $ETA . "','" . $ETD . "','" . $PLACE_DELIVERY . "','" . $PLACE_RECEIPT . "',
 				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','','','','','" . $CONSIGNEE_ADDRESS . "','" . $CONSIGNOR_ADDRESS . "','','".$CustomsContainerMode."','".$PortOfLoading."','".$PortOfDischarge."','".$OwnerRef."','".$TotalVolume."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."','') SELECT SCOPE_IDENTITY() as id_ship";
 		  	$sqlorderinsert = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
+
+		  
 		  }
 		  else
 		  {
@@ -401,6 +403,8 @@ if(isset($_GET['get_email'])){
 				        consignee='$CONSIGNEE',consignor='$CONSIGNOR', consignee_addr='$CONSIGNEE_ADDRESS',consignor_addr='$CONSIGNOR_ADDRESS',container_mode='$CustomsContainerMode', port_loading='$PortOfLoading', port_discharge='$PortOfDischarge', order_number='$OwnerRef', totalvolume='$TotalVolume', ata='$ACTUAL_ARRIVAL', atd='$ACTUAL_DEPARTURE', route_leg='$routing', organization='$organization'
 				        WHERE shipment_num = '$key' AND user_id = '$CLIENT_ID'";
 			$sqlUpdateRecord = sqlsrv_query($conn, $sqlUpdateRecord, array(), array( "Scrollable" => 'static'));
+
+			
 		  }
 
 		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_CUSTOMS/SUCCESS/";						
