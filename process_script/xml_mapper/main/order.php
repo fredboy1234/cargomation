@@ -1,5 +1,5 @@
 <?php 
-if(isset($_GET['get_email'])){
+if(isset($GLOBALS['client_email'])){
 $user = $client_email;
 $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
@@ -239,7 +239,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
-		  	}
+		  }
 
 		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_ORDERS/SUCCESS/";						
 			if(!file_exists($destination_path.$filename)){
