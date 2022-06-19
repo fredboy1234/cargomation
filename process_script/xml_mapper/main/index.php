@@ -12,7 +12,7 @@ if(isset($_GET['user_id'])){
 	usort($file_path, fn($a, $b) => filemtime($a) - filemtime($b));
 
 	###Loop all Client XML path
-	if($web_service	!= 'Web Service Failed' && $client_email != false){
+	if($web_service	!= 'Web Service Failed'){
 	foreach($file_path as $filename) {
 		$xml = XMLtoJSON($filename);
 		$dataContext = parseJson($xml, $path_DataSource,"");
