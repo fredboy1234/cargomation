@@ -1,5 +1,5 @@
 <?php 
-if(isset($_GET['get_email'])){
+if(isset($GLOBALS['client_email'])){
 $user = $client_email;
 $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
@@ -81,7 +81,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 
             for ($a = 0; $a <= $ChargelineCTR-1; $a++) {
             	if ($ChargeBoolean == 'false'){ 
-            		$ChargeLineArr = ".ChargeLine[$a]."; 
+            		$. = ".ChargeLine[$a]."; 
             	}
 
             	$SellPostedTransactionNumber = jsonPath($universal_shipment, $xpath.$ChargeLineArr."SellPostedTransactionNumber");
@@ -143,7 +143,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml
 		}
 		   catch(Exception $e){
 		  		echo 'Error Caught exception: ',  $e->getMessage(), "\n";
-		  }
+		  	}
 		}
 	}
 ?>
