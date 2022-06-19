@@ -256,7 +256,9 @@ function getArrayName($val){
 
 /*Execute sql query*/
 function execQuery($sql){
-	return $result = sqlsrv_query($GLOBALS['conn'], $sql, array(), array( "Scrollable" => 'static'));	
+	$result = sqlsrv_query($GLOBALS['conn'], $sql, array(), array( "Scrollable" => 'static'));
+	sleep(3);
+	return $result;
 }
 
 function removeSingleQuote($val){
