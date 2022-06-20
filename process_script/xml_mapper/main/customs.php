@@ -381,7 +381,7 @@ if(isset($GLOBALS['client_email'])){
 
 		  $organization = json_encode($orgaddress_array);
 
-		  $sql = "SELECT * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '$key' AND dbo.shipment.user_id ='$_GET['user_id']'";
+		  $sql = "SELECT * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '$key' AND dbo.shipment.user_id ='$CLIENT_ID'";
 		  $qryCustomDec = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 		  $qryCustomDec = sqlsrv_num_rows($qryCustomDec);
 
@@ -390,7 +390,7 @@ if(isset($GLOBALS['client_email'])){
                 (user_id ,console_id, shipment_num, master_bill, house_bill, transport_mode,
                 vessel_name, voyage_flight_num, vesslloyds, eta, etd, place_delivery, place_receipt,
 				consignee, consignor, sending_agent, receiving_agent, receiving_agent_addr, sending_agent_addr, consignee_addr, consignor_addr, trigger_date, container_mode, port_loading, port_discharge,order_number,totalvolume,ata,atd,route_leg,organization,packingline)
-                Values(" . $_GET['user_id'] . ",'','" . $key . "','" . $WayBillNumber . "','','" . $TransportMode . "','" . $VesselName . "','" . $VoyageFlightNo . "','" . $LloydsIMO . "','" . $ETA . "','" . $ETD . "','" . $PLACE_DELIVERY . "','" . $PLACE_RECEIPT . "',
+                Values(" . $CLIENT_ID . ",'','" . $key . "','" . $WayBillNumber . "','','" . $TransportMode . "','" . $VesselName . "','" . $VoyageFlightNo . "','" . $LloydsIMO . "','" . $ETA . "','" . $ETD . "','" . $PLACE_DELIVERY . "','" . $PLACE_RECEIPT . "',
 				'" . $CONSIGNEE . "','" . $CONSIGNOR . "','','','','','" . $CONSIGNEE_ADDRESS . "','" . $CONSIGNOR_ADDRESS . "','','".$CustomsContainerMode."','".$PortOfLoading."','".$PortOfDischarge."','".$OwnerRef."','".$TotalVolume."','".$ACTUAL_ARRIVAL."','".$ACTUAL_DEPARTURE."','".$routing."','".$organization."','') SELECT SCOPE_IDENTITY() as id_ship";
 		  	$sqlorderinsert = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 
