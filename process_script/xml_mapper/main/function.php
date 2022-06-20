@@ -43,7 +43,7 @@ function addShipment($value_array,$shipNumber){
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count < 1){
 		$var = substr($var, 0, -1);		
-	 	//$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
+	 	$sql3 = "INSERT INTO shipment {$col_field} VALUES ({$var})";
 	 	$sql = "BEGIN
 			   IF NOT EXISTS (SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."')
 			   BEGIN
@@ -54,6 +54,7 @@ function addShipment($value_array,$shipNumber){
 	 	
 		###Check if successfully inserted
 		 if(!$res){
+		 	echo $sql3;
 		 	return 'failed';
 		 }else{
 		###Get Document after success insert
@@ -142,11 +143,12 @@ function getDocumentRequest($value,$action,$ship_id){
 		$documentcount = json_decode($DocumentCollection,true);
 		$add_document = array();
 		$push_document = array();
+		$doc_count = (int)count($documentcount);
 
 	###Execute add document if action type is add / new job		
 	if($action === "Add"){
 		if($documentcount != false){
-			if(count($documentcount)> 0){
+			if($doc_count> 0){
 					foreach ($documentcount as $key => $value) {
 					  $fileName = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',$value['FileName']);
 					  $add_document = ["FileName"=>$fileName,"FileType"=>$value['Type']['Code'],"SavedBy"=>$value['SavedBy']['Name'],"SavedDate"=>$value['SaveDateUTC'],"EventDate"=>date("Y-m-d H:i:s"),"Source"=>"cargowise","IsPublished"=>$value['IsPublished'],"ImageData"=>$value['ImageData']];
@@ -163,7 +165,7 @@ function getDocumentRequest($value,$action,$ship_id){
 	###Execute Update document/delete document if type is update (existing job)
 	else{
 		if($documentcount != false){
-			if(count($documentcount)> 0){
+			if($doc_count> 0){
 					foreach ($documentcount as $key => $value) {
 					  $fileName = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',$value['FileName']);
 					  $add_document = ["FileName"=>$fileName,"FileType"=>$value['Type']['Code'],"SavedBy"=>$value['SavedBy']['Name'],"SavedDate"=>$value['SaveDateUTC'],"EventDate"=>date("Y-m-d H:i:s"),"Source"=>"cargowise","IsPublished"=>$value['IsPublished'],"ImageData"=>$value['ImageData']];
