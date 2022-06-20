@@ -154,11 +154,11 @@ if(isset($_GET['user_id'])){
 				}
 				if($valueOrganization['AddressType'] == "ConsigneeDocumentaryAddress"){
 					$consignee = $valueOrganization['OrganizationCode'];
-					$consignee_add = $valueOrganization['Address1'].' , '.$state.' , '.$postcode.' , '.$valueOrganization['Country']['Name'];
+					$consignee_add = $valueOrganization['Address1'].' , '.$valueOrganization['Country']['Name'];
 				}
 				elseif($valueOrganization['AddressType'] == "ConsignorDocumentaryAddress"){
 					$consignor = $valueOrganization['OrganizationCode'];
-					$consignor_add = $valueOrganization['Address1'].' ,, '.$valueOrganization['Country']['Name']; 
+					$consignor_add = $valueOrganization['Address1'].' , '.$valueOrganization['Country']['Name']; 
 				}
 				elseif($valueOrganization['AddressType'] == "SendingForwarderAddress"){
 					$sending_agent = $valueOrganization['OrganizationCode'];
