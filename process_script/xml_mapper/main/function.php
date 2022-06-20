@@ -38,23 +38,16 @@ function addShipment($value_array,$shipNumber){
 	    else{ $value = ""; 	$var .= "'".$value."',"; }
 	}
 
-	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
+	$value = "SELECT DISTINCT TOP 1 dbo.shipment.shipment_num FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count < 1){
 		$var = substr($var, 0, -1);		
-	 	$sql3 = "INSERT INTO shipment {$col_field} VALUES ({$var})";
-	 	$sql = "BEGIN
-			   IF NOT EXISTS (SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."')
-			   BEGIN
-			       INSERT INTO shipment {$col_field} VALUES ({$var})
-			   END
-			END";
+	 	$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
 	 	$res = execQuery($sql);
 	 	
 		###Check if successfully inserted
 		 if(!$res){
-		 	echo $sql3;
 		 	return 'failed';
 		 }else{
 		###Get Document after success insert
@@ -124,10 +117,9 @@ function getDocumentRequest($value,$action,$ship_id){
 	$company_code = $GLOBALS['company_code'];
 	$server_id = $GLOBALS['server_id'];
 	$auth = $GLOBALS['auth'];
-
-	$curl = curl_init();
+	//$curl = curl_init();
 		curl_setopt_array(
-			$curl,
+			$GLOBALS['curl'],
 			array(
 				CURLOPT_URL => $GLOBALS['webservicelink'],
 				CURLOPT_RETURNTRANSFER => true,
@@ -163,11 +155,11 @@ function getDocumentRequest($value,$action,$ship_id){
 			)
 		);
 
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($GLOBALS['curl'], CURLOPT_SSL_VERIFYPEER, false);
 
-		$xml = curl_exec($curl);
-		curl_close($curl);
-	###End of Curl Function get UniversalDocumentRequest using SOAP
+		$xml = curl_exec($GLOBALS['curl']);
+		//curl_close($GLOBALS['curl']);
+	   ###End of Curl Function get UniversalDocumentRequest using SOAP
 
 		$xml = simplexml_load_string($xml);
 	    $documentXML = json_encode($xml, JSON_PRETTY_PRINT);
