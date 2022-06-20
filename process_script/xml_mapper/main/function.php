@@ -182,7 +182,8 @@ function getDocumentRequest($value,$action,$ship_id){
 					  $add_document = ["FileName"=>$fileName,"FileType"=>$value['Type']['Code'],"SavedBy"=>$value['SavedBy']['Name'],"SavedDate"=>$value['SaveDateUTC'],"EventDate"=>date("Y-m-d H:i:s"),"Source"=>"cargowise","IsPublished"=>$value['IsPublished'],"ImageData"=>$value['ImageData']];
 				      		array_push($push_document,$add_document);
 				   	}
-							updateDocument($push_document,$shipNumber,$ship_id);				
+							updateDocument($push_document,$shipNumber,$ship_id);
+							unset($push_document);				
 				}
 			}else{
 				$cgmDocArr = getCgmDoc($shipNumber,$ship_id);
@@ -392,7 +393,7 @@ function ifDocumentExist($file_name,$file_type,$shipNumber,$ship_id){
 }
 
 function getLastShipID($shipNumber,$user_id){
-	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$user_id."'";
+	$value = "SELECT DISTINCT TOP 1 dbo.shipment.id FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$user_id."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count > 0){
