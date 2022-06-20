@@ -182,7 +182,7 @@ if(isset($_GET['user_id'])){
 			###End of Get Shipment Details
 			array_push($ship_array,$GLOBALS['user_id'],$consolNumber,$shipNumber,$master_bill,$house_bill,$transport_mode,$vessel_name,$voyage_number,$lloyds_imo,$eta,$etd);
 			array_push($ship_array,removeSingleQuote($place_delivery),removeSingleQuote($place_receipt),$consignee,$consignor,$sending_agent,$receiving_agent,removeSingleQuote($receiving_add),removeSingleQuote($sending_add),removeSingleQuote($consignee_add),removeSingleQuote($consignor_add));
-			array_push($ship_array,$triggered_date,$container_mode,$port_loading,$port_discharge,$order_number,$total_volume,$ata,$atd);
+			array_push($ship_array,$triggered_date,$container_mode,removeSingleQuote($port_loading),removeSingleQuote($port_discharge),$order_number,$total_volume,$ata,$atd);
 			array_push($ship_array,removeSingleQuote($route_leg),removeSingleQuote($dataOrganizationCollection),removeSingleQuote($packing_line),removeSingleQuote($containercollection),removeSingleQuote($milestone));
 			
 			###Process Shipment to Database
