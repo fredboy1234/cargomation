@@ -377,7 +377,7 @@ function getWebService($user_id){
 }
 
 function ifShipmentExist($key){
-	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$key."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
+	$value = "SELECT DISTINCT TOP 1 dbo.shipment.shipment_num FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$key."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count <= 0){
