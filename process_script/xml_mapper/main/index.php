@@ -199,7 +199,7 @@ if(isset($_GET['user_id'])){
 				$res = updateShipment($ship_array,$shipNumber);
 				if($res == 'failed'){
 					moveFile($res,$filename);
-					logFile("shipment_log.txt","failed to update Job #: ".$shipNumber.'');
+					logFile("shipment_log.txt","failed to update Job #: ".$shipNumber.''.$GLOBALS['err_update']);
 				}else{
 					moveFile($res,$filename);
 					logFile("shipment_log.txt","Successfully updated Job #".$shipNumber.'');
