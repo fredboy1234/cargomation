@@ -103,6 +103,7 @@ function updateShipment($value_array,$shipNumber){
 	 
 	###Check if successfully updated
 	 if(!$res){
+		$GLOBALS['err_update'] = $sql;
 	 	return 'failed';
 	 }else{
 	###Get Document after update
