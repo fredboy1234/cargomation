@@ -229,7 +229,7 @@ if(isset($_GET['user_id'])){
 			}
 			###End of Ignore xml file if not forwarding shipment
 		} 
-		curl_exec($GLOBALS['curl']);    
+		unset($ship_array); 
 	}
 }else{
 	logFile("shipment_log.txt",$web_service);
