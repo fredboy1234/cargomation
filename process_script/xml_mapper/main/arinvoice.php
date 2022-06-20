@@ -1,6 +1,7 @@
 <?php 
 if(isset($GLOBALS['client_email'])){
 $user = $client_email;
+$CLIENT_ID = $_GET['user_id'];
 $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_AR_INVOICE/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
