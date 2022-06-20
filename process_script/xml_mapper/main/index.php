@@ -228,7 +228,8 @@ if(isset($_GET['user_id'])){
 				rename($filename, $ignored_Xml . pathinfo($filename, PATHINFO_BASENAME));
 			}
 			###End of Ignore xml file if not forwarding shipment
-		}     
+		} 
+		curl_exec($GLOBALS['curl']);    
 	}
 }else{
 	logFile("shipment_log.txt",$web_service);
