@@ -38,9 +38,6 @@ function addShipment($value_array,$shipNumber){
 	    else{ $value = ""; 	$var .= "'".$value."',"; }
 	}
 
-
-
-
 	$value = "SELECT DISTINCT TOP 1 * FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
@@ -54,8 +51,8 @@ function addShipment($value_array,$shipNumber){
 			   END
 			END";
 	 	$res = execQuery($sql);
-
-		 	###Check if successfully inserted
+	 	
+		###Check if successfully inserted
 		 if(!$res){
 		 	return 'failed';
 		 }else{
