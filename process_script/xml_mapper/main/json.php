@@ -381,7 +381,7 @@ class __Services_JSON
                                             array_values($var));
 
                     foreach($properties as $property) {
-                        if(Services_JSON::isError($property)) {
+                        if(__Services_JSON::isError($property)) {
                             return $property;
                         }
                     }
@@ -435,7 +435,7 @@ class __Services_JSON
     {
         $encoded_value = $this->encode($value);
 
-        if(Services_JSON::isError($encoded_value)) {
+        if(__Services_JSON::isError($encoded_value)) {
             return $encoded_value;
         }
 
