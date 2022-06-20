@@ -124,17 +124,48 @@ function getDocumentRequest($value,$action,$ship_id){
 	$server_id = $GLOBALS['server_id'];
 	$auth = $GLOBALS['auth'];
 
-	###Curl Function get UniversalDocumentRequest using SOAP
-	curl_setopt_array($GLOBALS['curl'],array(CURLOPT_URL => $GLOBALS['webservicelink'],CURLOPT_RETURNTRANSFER => true,CURLOPT_ENCODING => "",CURLOPT_MAXREDIRS => 10,CURLOPT_TIMEOUT => 0,CURLOPT_FOLLOWLOCATION => true,CURLOPT_HTTP_VERSION =>CURL_HTTP_VERSION_1_1,CURLOPT_CUSTOMREQUEST => "POST",CURLOPT_POSTFIELDS =>
-			"<UniversalDocumentRequest xmlns=\"http://www.cargowise.com/Schemas/Universal/2011/11\" version=\"1.1\">\r\n
-			<DocumentRequest>\r\n<DataContext>\r\n<DataTargetCollection>\r\n<DataTarget>\r\n<Type>ForwardingShipment</Type>\r\n
-			<Key>$shipNumber</Key>\r\n</DataTarget>\r\n</DataTargetCollection>\r\n<Company>\r\n<Code>$company_code</Code>\r\n</Company>\r\n
-			<EnterpriseID>$enterprise_id</EnterpriseID>\r\n<ServerID>$server_id</ServerID>\r\n</DataContext>\r\n</DocumentRequest>\r\n</UniversalDocumentRequest>",
-		CURLOPT_HTTPHEADER => array("Authorization: Basic $auth","Content-Type: application/xml","Cookie: WEBSVC=f50e2886473c750f")));
-		curl_setopt($GLOBALS['curl'], CURLOPT_SSL_VERIFYPEER, false);
+	$curl = curl_init();
+		curl_setopt_array(
+			$curl,
+			array(
+				CURLOPT_URL => $GLOBALS['webservicelink'],
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => 
+				"<UniversalDocumentRequest xmlns=\"http://www.cargowise.com/Schemas/Universal/2011/11\" version=\"1.1\">\r\n
+				<DocumentRequest>\r\n
+				<DataContext>\r\n
+				<DataTargetCollection>\r\n
+				<DataTarget>\r\n
+				<Type>ForwardingShipment</Type>\r\n
+				<Key>$shipNumber</Key>\r\n
+				</DataTarget>\r\n
+				</DataTargetCollection>\r\n
+				<Company>\r\n
+				<Code>$company_code</Code>\r\n
+				</Company>\r\n
+				<EnterpriseID>$enterprise_id</EnterpriseID>\r\n
+				<ServerID>$server_id</ServerID>\r\n
+				</DataContext>\r\n
+				</DocumentRequest>\r\n
+				</UniversalDocumentRequest>",
+				CURLOPT_HTTPHEADER => array(
+				"Authorization: Basic $auth",
+				"Content-Type: application/xml",
+				"Cookie: WEBSVC=f50e2886473c750f"
+				)
+			)
+		);
 
-		$xml = curl_exec($GLOBALS['curl']);
-		curl_close($GLOBALS['curl']);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+		$xml = curl_exec($curl);
+		curl_close($curl);
 	###End of Curl Function get UniversalDocumentRequest using SOAP
 
 		$xml = simplexml_load_string($xml);
