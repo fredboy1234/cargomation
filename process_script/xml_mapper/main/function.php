@@ -8,7 +8,7 @@ set_time_limit(0);
 ini_set('memory_limit', '-1');
 $GLOBALS['parser'] = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 $GLOBALS['curl'] = curl_init();
-$shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = '';
+$ata = $atd = $eta = $etd = $shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = '';
 
 
 /*xml xpath declaration*/
