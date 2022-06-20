@@ -23,7 +23,7 @@ if(isset($_GET['user_id'])){
 			$ship_array = array();
 			$container_in = array();
 			$container_keys = array();
-
+			$shipNumber = "";
 			###Identify ForwardingShipment XML
 			foreach ($dataContextDecode as $val=> $valueContext){
 			 	if($valueContext['Type'] == "ForwardingShipment"){
