@@ -117,36 +117,24 @@ function getDocumentRequest($value,$action,$ship_id){
 	$company_code = $GLOBALS['company_code'];
 	$server_id = $GLOBALS['server_id'];
 	$auth = $GLOBALS['auth'];
-	//$curl = curl_init();
+	$curl = curl_init();
 		curl_setopt_array(
-			$GLOBALS['curl'],
+			$curl,
 			array(
-				CURLOPT_URL => $GLOBALS['webservicelink'],
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 0,
-				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_URL => $GLOBALS['webservicelink'],CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",	CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => 
+				CURLOPT_CUSTOMREQUEST => "POST",CURLOPT_POSTFIELDS => 
 				"<UniversalDocumentRequest xmlns=\"http://www.cargowise.com/Schemas/Universal/2011/11\" version=\"1.1\">\r\n
-				<DocumentRequest>\r\n
-				<DataContext>\r\n
-				<DataTargetCollection>\r\n
-				<DataTarget>\r\n
-				<Type>ForwardingShipment</Type>\r\n
-				<Key>$shipNumber</Key>\r\n
-				</DataTarget>\r\n
-				</DataTargetCollection>\r\n
-				<Company>\r\n
-				<Code>$company_code</Code>\r\n
-				</Company>\r\n
-				<EnterpriseID>$enterprise_id</EnterpriseID>\r\n
-				<ServerID>$server_id</ServerID>\r\n
-				</DataContext>\r\n
-				</DocumentRequest>\r\n
-				</UniversalDocumentRequest>",
+				<DocumentRequest>\r\n<DataContext>\r\n
+				<DataTargetCollection>\r\n<DataTarget>\r\n
+				<Type>ForwardingShipment</Type>\r\n<Key>$shipNumber</Key>\r\n
+				</DataTarget>\r\n</DataTargetCollection>\r\n
+				<Company>\r\n<Code>$company_code</Code>\r\n
+				</Company>\r\n<EnterpriseID>$enterprise_id</EnterpriseID>\r\n
+				<ServerID>$server_id</ServerID>\r\n</DataContext>\r\n
+				</DocumentRequest>\r\n</UniversalDocumentRequest>",
 				CURLOPT_HTTPHEADER => array(
 				"Authorization: Basic $auth",
 				"Content-Type: application/xml",
@@ -155,10 +143,9 @@ function getDocumentRequest($value,$action,$ship_id){
 			)
 		);
 
-		curl_setopt($GLOBALS['curl'], CURLOPT_SSL_VERIFYPEER, false);
-
-		$xml = curl_exec($GLOBALS['curl']);
-		//curl_close($GLOBALS['curl']);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$xml = curl_exec($curl);
+		curl_close($curl);
 	   ###End of Curl Function get UniversalDocumentRequest using SOAP
 
 		$xml = simplexml_load_string($xml);
@@ -181,7 +168,7 @@ function getDocumentRequest($value,$action,$ship_id){
 							addDocument($push_document,$shipNumber,$ship_id);				
 				}
 			}else{
-					logFile("document_log.txt","No Document found in Job# :".$value." <br /> XML Response: <br />".$documentXML);
+					logFile("document_log.txt","No Document found in Job# :".$value." XML Response: <br />");
 			}
 		}
 	###End of Execute add document if action type is add / new job
@@ -231,6 +218,7 @@ function addDocument($value_array,$shipNumber,$ship_id){
 	$res = execQuery($sql);
 	if($res){
 	 	base64_Decoder($value_array,$filepath,$shipNumber);
+	 	unset($value_array);
 	 	logFile("document_log.txt","Successfully added file(s) ".$var." to Job #".$shipNumber.'');
 	}
 }
@@ -256,6 +244,7 @@ if(ifDocumentExist($value['FileName'],$value['FileType'],$shipNumber,$ship_id) =
 if(count($new_document) > 0){
 	addDocument($new_document,$shipNumber,$ship_id);
 	base64_Decoder($new_document,$filepath,$shipNumber);
+	unset($new_document);
 	logFile("document_log.txt","Successfully added new file to Job #".$shipNumber.'');
 }
 
@@ -266,9 +255,11 @@ foreach ($cgmDocArr as $key_1 => $value) {
 	if(array_search($value['file_name'], array_column($cw_document, 'FileName')) === false)	{
 		$new_array[] = array("file_name"=>$value['file_name'], "type"=>$value['type'],"ship_id"=>$value['ship_id'],"shipment_num"=>$value['shipment_num'],"path"=>$value['path']);
 		removeShipmentFile($new_array);
+		unset($new_array);
 	  	logFile("document_log.txt","Successfully removed file ".$value['file_name']." to Job #".$shipNumber.'');
 		}		
 	}
+	unset($cw_document);
 ###End of Remove file if not exist in cargowise
 }
 
