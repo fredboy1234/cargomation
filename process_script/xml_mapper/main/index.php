@@ -34,7 +34,12 @@ if(isset($_GET['user_id'])){
 			 		$consolNumber = $valueContext['Key'];
 			 		$xmlType = $valueContext['Type'];
 			 	}
+			 	elseif($valueContext['Type'] == "CustomsDeclaration" && strpos($valueContext['Key'], 'B') !== false){
+			 		$shipNumber = $valueContext['Key'];
+			 		$xmlType = "CustomsDec";
+			 	}
 			}
+
 			###End of Identify ForwardingShipment XML
 
 			if($shipNumber !== ""){
@@ -52,7 +57,13 @@ if(isset($_GET['user_id'])){
 			$port_loading = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".PortOfLoading.Name")));
 			$port_discharge = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".PortOfDischarge.Name")));
 			$total_volume = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".TotalVolume")));
-			$packing_line = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_PackingLineCollection,".PackingLine"));
+
+			if($xmlType == 'CustomsDec'){
+				$packing_line = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_RelatedPackingLineCollection,".PackingLine"));
+			}else{
+				$packing_line = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_PackingLineCollection,".PackingLine"));
+			}
+		
 			$packing_linedecode = json_decode($packing_line,true);
 			$route_leg = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_TransportLegCollection,""));
 			$container = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_ContainerCollection,""));
@@ -134,11 +145,15 @@ if(isset($_GET['user_id'])){
 			###End of Get Last leg details of transport collection
 
 
-			### Get Organization Collection / Contact Info
-			if($consolNumber == ''){
+			### Get Organization Collection / Contact Info /
+			if($consolNumber == '' && $xmlType != 'CustomsDec'){
 				$path_Organization = $path_OrganizationAddressCollection;
 				$path_Milestone = $path_MilestoneCollection;
-			}else{
+			}elseif($xmlType == 'CustomsDec'){
+				$path_Organization = $path_RelatedShipmentOrgCollection;
+				$path_Milestone = $path_RelatedMilestoneCollection;
+			}
+			else{
 				$path_Organization = $path_SubOrganizationAddressCollection;
 				$path_Milestone = $path_MilestoneCollectionSub;
 			}
@@ -206,7 +221,6 @@ if(isset($_GET['user_id'])){
 				}
 			}
 			###End of Process Shipment to Database
-
 
 			###Get customs brokerage , arinvoice , order
 			require_once('customs.php');
