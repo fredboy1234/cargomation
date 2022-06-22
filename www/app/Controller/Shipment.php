@@ -831,25 +831,28 @@ class Shipment extends Core\Controller {
             $subdata['container_mode'] = $shipment->container_mode;
             $subdata['port_loading'] = $shipment->port_loading;
             $subdata['port_discharge'] = $shipment->port_discharge;
-            $subdata['order_number'] = $shipment->order_number;
+            // $subdata['order_number'] = $shipment->order_number;
             $order_number = json_decode($shipment->order_number); 
-
-            if(count($order_number) <= 1) {
-                $subdata['order_number'] = $order_number[0]->OrderReference;
-            } else {
-                $subdata['order_number'] = '<div class="btn-group">
-                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                $subdata['order_number'] .= $order_number[0]->OrderReference . 
-                '</button>';
-                $subdata['order_number'] .= '<div class="dropdown-menu">';
-                $last_key1 = array_key_last($order_number);
-                foreach ($order_number as $key => $order) {
-                    $subdata['order_number'] .=  '<span class="dropdown-item">' . $order->OrderReference . '</span>';
-                    if($last_key1 !== $key) {
-                        $subdata['order_number'] .= '<div class="dropdown-divider"></div>';
+            if(!empty($order_number)){
+                if(count($order_number) == 1) {
+                    $subdata['order_number'] = $order_number[0]->OrderReference;
+                } else {
+                    $subdata['order_number'] = '<div class="btn-group">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    $subdata['order_number'] .= $order_number[0]->OrderReference . 
+                    '</button>';
+                    $subdata['order_number'] .= '<div class="dropdown-menu">';
+                    $last_key1 = array_key_last($order_number);
+                    foreach ($order_number as $key => $order) {
+                        $subdata['order_number'] .=  '<span class="dropdown-item">' . $order->OrderReference . '</span>';
+                        if($last_key1 !== $key) {
+                            $subdata['order_number'] .= '<div class="dropdown-divider"></div>';
+                        }
                     }
+                    $subdata['order_number'] .= '</div></div>';
                 }
-                $subdata['order_number'] .= '</div></div>';
+            } else {
+                $subdata['order_number'] = "-";
             }
             $subdata['ata_date'] = '<span class="d-none">'.($ata_date_sort=="01/01/1900"?"No Date Available":$ata_date_sort).'</span>'.($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date);
             $subdata['atd_date'] = '<span class="d-none">'.($atd_date_sort=="01/01/1900"?"No Date Available":$atd_date_sort).'</span>'.($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date);
