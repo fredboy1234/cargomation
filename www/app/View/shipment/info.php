@@ -173,7 +173,21 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 </div>
                                 <div class="col-lg-4">
                                     <strong>Order Reference</strong>
-                                    <p><?= (empty($this->shipment_info[0]->order_number)) ? '<span class="text-danger"> - </span>' : $this->shipment_info[0]->order_number; ?></p>
+                                    <?php $order_number = json_decode($this->shipment_info[0]->order_number); ?>
+                                    <?php if(count($order_number) <= 1): ?>
+                                    <p><?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?></p>
+                                    <?php else: ?>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <?php foreach ($order_number as $key => $order): ?>
+                                            <li><a class="dropdown-item" href="#"><?= $order->OrderReference; ?></a></li>
+                                            <?php endforeach; ?> 
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="col-lg-4">
                                     <strong>Container Mode</strong>
