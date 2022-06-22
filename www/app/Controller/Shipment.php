@@ -834,22 +834,26 @@ class Shipment extends Core\Controller {
             // $subdata['order_number'] = $shipment->order_number;
             $order_number = json_decode($shipment->order_number); 
             if(!empty($order_number)){
-                if(count($order_number) == 1) {
-                    $subdata['order_number'] = $order_number[0]->OrderReference;
+                if(!is_array($order_number)) {
+                    $subdata['order_number'] = $order_number;
                 } else {
-                    $subdata['order_number'] = '<div class="btn-group">
-                    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    $subdata['order_number'] .= $order_number[0]->OrderReference . 
-                    '</button>';
-                    $subdata['order_number'] .= '<div class="dropdown-menu">';
-                    $last_key1 = array_key_last($order_number);
-                    foreach ($order_number as $key => $order) {
-                        $subdata['order_number'] .=  '<span class="dropdown-item">' . $order->OrderReference . '</span>';
-                        if($last_key1 !== $key) {
-                            $subdata['order_number'] .= '<div class="dropdown-divider"></div>';
+                    if(count($order_number) == 1) {
+                        $subdata['order_number'] = $order_number[0]->OrderReference;
+                    } else {
+                        $subdata['order_number'] = '<div class="btn-group">
+                        <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                        $subdata['order_number'] .= $order_number[0]->OrderReference . 
+                        '</button>';
+                        $subdata['order_number'] .= '<div class="dropdown-menu">';
+                        $last_key1 = array_key_last($order_number);
+                        foreach ($order_number as $key => $order) {
+                            $subdata['order_number'] .=  '<span class="dropdown-item">' . $order->OrderReference . '</span>';
+                            if($last_key1 !== $key) {
+                                $subdata['order_number'] .= '<div class="dropdown-divider"></div>';
+                            }
                         }
+                        $subdata['order_number'] .= '</div></div>';
                     }
-                    $subdata['order_number'] .= '</div></div>';
                 }
             } else {
                 $subdata['order_number'] = "-";
