@@ -8,7 +8,7 @@ set_time_limit(0);
 ini_set('memory_limit', '-1');
 $GLOBALS['parser'] = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 $GLOBALS['curl'] = curl_init();
-$ata = $atd = $eta = $etd = $shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = '';
+$xmlType = $ata = $atd = $eta = $etd = $shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = '';
 
 
 /*xml xpath declaration*/
@@ -18,13 +18,16 @@ $path_UniversalSubShipment = "$.Body.UniversalShipment.Shipment.SubShipmentColle
 $path_TransportLegCollection = "$.Body.UniversalShipment.Shipment.TransportLegCollection.TransportLeg";
 $path_TransportLegDataSet = "$.Body.UniversalShipment.Shipment.TransportLegCollection";
 $path_PackingLineCollection = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection";
+$path_RelatedPackingLineCollection = "$.Body.UniversalShipment.Shipment.PackingLineCollection";
 $path_OrganizationAddressCollection = "$.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress";
 $path_SubOrganizationAddressCollection = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress";
+$path_RelatedShipmentOrgCollection = "$.Body.UniversalShipment.Shipment.RelatedShipmentCollection.RelatedShipment.OrganizationAddressCollection.OrganizationAddress";
 $path_OrderNumberCollection = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection";
 $path_ContainerCollection = "$.Body.UniversalShipment.Shipment.ContainerCollection.Container";
 $path_ContainerCollectionMultiple = "$.Body.UniversalShipment.Shipment.ContainerCollection";
 $path_MilestoneCollection = "$.Body.UniversalShipment.Shipment.MilestoneCollection";
 $path_MilestoneCollectionSub = "$.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.MilestoneCollection";
+$path_RelatedMilestoneCollection = "$.Body.UniversalShipment.Shipment.RelatedShipmentCollection.RelatedShipment.MilestoneCollection";
 $GLOBALS['path_GetDocument'] = "$.Data.UniversalEvent.Event.AttachedDocumentCollection.AttachedDocument";
 /*end of xml xpath declaration*/
 
@@ -113,6 +116,11 @@ function updateShipment($value_array,$shipNumber){
 
 function getDocumentRequest($value,$action,$ship_id){
 	$shipNumber	= $value;
+	if(strpos($shipNumber, 'B') !== false){
+		$requestType = "CustomsDeclaration";
+	}else{
+		$requestType = "ForwardingShipment";
+	}
 	$enterprise_id = $GLOBALS['enterprise_id'];
 	$company_code = $GLOBALS['company_code'];
 	$server_id = $GLOBALS['server_id'];
@@ -129,7 +137,7 @@ function getDocumentRequest($value,$action,$ship_id){
 				"<UniversalDocumentRequest xmlns=\"http://www.cargowise.com/Schemas/Universal/2011/11\" version=\"1.1\">\r\n
 				<DocumentRequest>\r\n<DataContext>\r\n
 				<DataTargetCollection>\r\n<DataTarget>\r\n
-				<Type>ForwardingShipment</Type>\r\n<Key>$shipNumber</Key>\r\n
+				<Type>$requestType</Type>\r\n<Key>$shipNumber</Key>\r\n
 				</DataTarget>\r\n</DataTargetCollection>\r\n
 				<Company>\r\n<Code>$company_code</Code>\r\n
 				</Company>\r\n<EnterpriseID>$enterprise_id</EnterpriseID>\r\n
@@ -161,7 +169,7 @@ function getDocumentRequest($value,$action,$ship_id){
 		if($documentcount != false){
 			if($doc_count> 0){
 					foreach ($documentcount as $key => $value) {
-					  $fileName = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',$value['FileName']);
+					  $fileName = str_replace(["\\","/","#","+",":","*","?",'"','<','>','|',"'"],'',$value['FileName']);
 					  $add_document = ["FileName"=>$fileName,"FileType"=>$value['Type']['Code'],"SavedBy"=>$value['SavedBy']['Name'],"SavedDate"=>$value['SaveDateUTC'],"EventDate"=>date("Y-m-d H:i:s"),"Source"=>"cargowise","IsPublished"=>$value['IsPublished'],"ImageData"=>$value['ImageData']];
 				      		array_push($push_document,$add_document);
 				   	}
@@ -178,7 +186,7 @@ function getDocumentRequest($value,$action,$ship_id){
 		if($documentcount != false){
 			if($doc_count> 0){
 					foreach ($documentcount as $key => $value) {
-					  $fileName = str_replace(['\\','/','#','+',':','*','?','"','<','>','|'],'',$value['FileName']);
+					  $fileName = str_replace(["\\","/","#","+",":","*","?",'"','<','>','|',"'"],'',$value['FileName']);
 					  $add_document = ["FileName"=>$fileName,"FileType"=>$value['Type']['Code'],"SavedBy"=>$value['SavedBy']['Name'],"SavedDate"=>$value['SaveDateUTC'],"EventDate"=>date("Y-m-d H:i:s"),"Source"=>"cargowise","IsPublished"=>$value['IsPublished'],"ImageData"=>$value['ImageData']];
 				      		array_push($push_document,$add_document);
 				   	}
