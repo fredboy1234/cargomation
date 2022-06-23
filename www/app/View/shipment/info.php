@@ -107,9 +107,6 @@ foreach ($this->shipment_info[0] as $key => $value) {
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-invoice-tab" data-toggle="pill" href="#custom-tabs-invoice" role="tab" aria-controls="custom-tabs-invoice" aria-selected="false">Invoice</a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" id="order-tabs-invoice-tab" data-toggle="pill" href="#order-tabs-invoice" role="tab" aria-controls="order-tabs-invoice" aria-selected="false">Orders</a>
-            </li> -->
             <li class="nav-item">
                 <a class="nav-link" id="custom-tabs-timeline-tab" data-toggle="pill" href="#custom-tabs-timeline" role="tab" aria-controls="custom-tabs-timeline" aria-selected="false">Timeline</a>
             </li>
@@ -122,492 +119,492 @@ foreach ($this->shipment_info[0] as $key => $value) {
         <div class="tab-content" id="custom-tabs-tabContent">
             <div class="tab-pane fade active show" id="custom-tabs-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
                 <div class="row">
-                    <!-- SECTION Shipment Details starts -->
-                    <section class="col-lg-6 connectedSortable ui-sortable">
-                        <div class="card">
-                            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-1"></i>
-                                    Shipment Details
-                                </h3>
-                                <div class="card-tools m-0">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <strong>Consol ID</strong>
-                                        <p><?= $this->shipment_info[0]->console_id; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>House Bill</strong>
-                                        <p><?= $this->shipment_info[0]->house_bill; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Master Bill</strong>
-                                        <p><?= $this->shipment_info[0]->master_bill; ?></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <strong><?= $transTitle ?> No.</strong>
-                                        <p><?= $this->shipment_info[0]->voyage_flight_num; ?></p>
-                                    </div>
-                                    <?php if($transMode == 'Sea'): ?>
-                                    <div class="col-lg-4">
-                                        <strong>Vessel Name</strong>
-                                        <p><?= $this->shipment_info[0]->vessel_name; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Vessel Lloyds</strong>
-                                        <p><?= $this->shipment_info[0]->vesslloyds; ?></p>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <strong>Transport Mode</strong>
-                                        <p><?= $this->shipment_info[0]->transport_mode; ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Order Reference</strong>
-                                        <?php $order_number = json_decode($this->shipment_info[0]->order_number); ?>
-                                        <?php if(!is_array($order_number)): ?>
-                                            <?= $order_number; ?>
-                                        <?php else: ?>
-                                            <?php if(count($order_number) == 1): ?>
-                                            <p><?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?></p>
-                                            <?php else: ?>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <?php foreach ($order_number as $key => $order): ?>
-                                                    <li><a class="dropdown-item" href="#"><?= $order->OrderReference; ?></a></li>
-                                                    <?php endforeach; ?> 
-                                                </div>
-                                            </div>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <strong>Container Mode</strong>
-                                        <p><?= $this->shipment_info[0]->container_mode; ?></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <strong>Estimated Departure</strong>
-                                        <p><?php 
-                                            if($this->shipment_info[0]->etd == '1900-01-01 00:00:00.000'):
-                                                echo '-';
-                                            else: 
-                                                $date = date_create($this->shipment_info[0]->etd);
-                                                echo date_format($date,"d M Y H:i"); 
-                                            endif;
-                                        ?></p>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <strong>Estimated Arrival</strong>
-                                        <p><?php 
-                                            if($this->shipment_info[0]->eta == '1900-01-01 00:00:00.000'):
-                                                echo '-';
-                                            else: 
-                                                $date = date_create($this->shipment_info[0]->eta);
-                                                echo date_format($date,"d M Y H:i"); 
-                                            endif;
-                                        ?></p>
-                                    </div>
-                                </div>
-                                <!-- COLLAPSE Consignee starts -->
-                                <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
-                                    <h5 class="d-inline-block">Consignee</h5>
-                                    <span class="float-right mt-2"><?= $this->shipment_info[0]->consignee; ?>
-                                    <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <dl id="consignee" class="row collapse">
-                                    <?php $json_org = json_decode($this->shipment_info[0]->organization);
-                                    if(!empty($json_org[0])) {
-                                        foreach ($json_org[0] as $key => $value) {
-                                            if(isset($value->AddressType)) {
-                                            if ($value->AddressType == "ConsigneePickupDeliveryAddress") {
-                                    ?>
-                                    <div class="col-lg-12">
-                                        <dt>Company Name:</dt>
-                                        <dd> <?= $value->CompanyName; ?> </dd>
-                                    </div>
-                                    <?php if(false): ?>
-                                    <div class="col-lg-6">
-                                        <dt>Organization Code:</dt>
-                                        <dd> <?= $value->OrganizationCode; ?> </dd>
-                                    </div>
-                                    <?php endif; ?>
-                                    <div class="col-lg-6">
-                                        <dt>Organization Name:</dt>
-                                        <dd><?= (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <dt>Delivery Address:</dt>
-                                        <dd> <?= $value->Address1; ?> </dd>
-                                    </div>
-                                    <?php }
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                    <div class="col-lg-6">
-                                        <dt>Delivery Date:</dt>
-                                        <dd>
-                                        <?php if(!empty($this->container_detail[0]->trans_estimated_delivery)) : ?> 
-                                        <?php if($this->container_detail[0]->trans_estimated_delivery == '1900-01-01 00:00:00.000'): ?>   
-                                        <span> - </span>
-                                        <?php else: ?>  
-                                        <span><?= date("d F Y H:i", strtotime($this->container_detail[0]->trans_estimated_delivery)); ?></span>
-                                        <?php endif; ?> 
-                                        <?php else: ?>
-                                        <span> - </span>
-                                        <?php endif; ?>
-                                        <?php 
-                                            // $date = date_create($this->shipment_info[0]->etd);
-                                            // echo date_format($date,"d F Y H:i"); 
-                                        ?>
-                                        </dd>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <dt>Delivery Place:</dt>
-                                        <dd><?= $this->shipment_info[0]->place_delivery; ?></dd>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <dt>Port of Loading: </dt>
-                                        <dd><?= $this->shipment_info[0]->port_loading; ?></dd>
-                                    </div>
-                                </dl>
-                                <!-- COLLAPSE Consignee ends -->
-                                <!-- COLLAPSE Consignor starts -->
-                                <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
-                                    <h5 class="d-inline-block">Consignor</h5>
-                                    <span class="float-right mt-2"><?= $this->shipment_info[0]->consignor; ?>
-                                    <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <dl id="consignor" class="row collapse">
-                                    <div class="col-lg-12">
-                                        <dt>Address:</dt>
-                                        <dd><?= $this->shipment_info[0]->consignor_addr; ?></dd>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <dt>Receipt Place:</dt>
-                                        <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <dt>Port of Discharge: </dt>
-                                        <dd><?= $this->shipment_info[0]->port_discharge; ?></dd>
-                                    </div>
-                                </dl>
-                                <!-- COLLAPSE Consignor ends -->
-                                <!-- COLLAPSE Container Details starts -->
-                                <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
-                                    <h5 class="d-inline-block">Container Details</h5>
-                                    <span class="float-right mt-2"><?= $this->shipment_info[0]->shipment_num; ?>
-                                        <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <div id="container_details" class="collapse">  
-                                    <?php if(empty($this->container_detail)): ?>   
-                                        <span> No Container Data </span>
-                                    <?php else: ?>
-                                        <?php foreach ($this->container_detail as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
-                                            <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
-                                                <span class="d-inline-block"><?= $value->containernumber; ?>
-                                                    <?php if(false): ?>
-                                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                                    <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
-                                                    <?php endif; ?>
-                                                </span>
-                                                <span class="float-right mt-2">
-                                                    <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
-                                                </span>
-                                            </div>
-                                            <dl id="cd-<?= $value->id ?>" class="row collapse">
-                                                <div class="col-lg-3">
-                                                    <dt>Container Type:</dt>
-                                                    <dd><?= $value->containertype; ?></dd>
-                                                </div>
-                                                <?php if($transMode == 'Sea'): ?>
-                                                <div class="col-lg-3">
-                                                    <dt>Delivery Mode:</dt>
-                                                    <dd><?= $value->containerdeliverymode; ?></dd>
-                                                </div>
-                                                <?php endif; ?>
-                                                <div class="col-lg-3">
-                                                    <dt>Gross Wt.:</dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <dt>Volume:</dt>
-                                                    <dd><?php
-                                                    $volume = $this->shipment_info[0]->totalvolume;
-                                                    // $length = floatval($value->length);
-                                                    // $width = floatval($value->width);
-                                                    // $height = floatval($value->height); 
-                                                    // $volume = $length * $width * $height;
-                                                    echo number_format($volume, 2, '.', ',') . "m³"; ?></dd>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <dt>Packs:</dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <?php if($transMode == 'Sea'): ?>
-                                                <div class="col-lg-3">
-                                                    <dt>Gate In: </dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <dt>FCL Available: </dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <dt>FCL Loaded In: </dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <?php endif; ?>
-                                                <div class="col-lg-3">
-                                                    <dt>Storage Date:</dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <?php if($transMode == 'Sea'): ?>
-                                                <div class="col-lg-3">
-                                                    <dt>Empty Req. By:</dt>
-                                                    <dd><?= $value->no_data; ?></dd>
-                                                </div>
-                                                <?php endif; ?>
-                                            </dl>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </div>
-                                <!-- COLLAPSE Container Details ends -->
-                            </div>
-                        </div>
-                    </section>
-                    <!-- SECTION Shipment Details ends -->
-                    <!-- SECTION Routing Details starts -->
-                    <section class="col-lg-6 connectedSortable ui-sortable">
-                        <div class="card">
-                            <div class="card-header p-0 border-bottom-0">
-                                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false"><i class="fas fa-map mr-1"></i>
-                                        Route Details</a>
-                                    </li>
-                                    <?php if(!empty($this->shipment_info[0]->vesslloyds)) : ?>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-bullseye mr-1"></i>
-                                        GPS Tracking</a>
-                                    </li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="tab-content" id="custom-tabs-three-tabContent">
-                                    <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                                        <div id="chartdiv" class="" style="position: relative; height: 300px;">
-                                            <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
-                                        <div style="background-color:white;position:relative;top:-15px;z-index: 1">&nbsp;</div>
-                                            <?php if(!empty($this->shipment_info[0]->vesslloyds)) : ?>
-                                            <iframe style="position: relative;top: -35px;" name="vesselfinder" id="vesselfinder" src="https://www.vesselfinder.com/aismap?zoom=undefined&amp;lat=undefined&amp;lon=undefined&amp;width=100%&amp;height=500&amp;names=false&amp;imo=<?php echo $this->shipment_info[0]->vesslloyds;?>&amp;track=false&amp;fleet=false&amp;fleet_name=false&amp;fleet_hide_old_positions=false&amp;clicktoact=false&amp;store_pos=false&amp;ra=livetracking_" width="100%" height="352" frameborder="0"></iframe>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div id="accordion" class="mt-2">
-                                            <?php if($this->shipment_info[0]->route_leg !== "[]"):
-                                                $json = json_decode($this->shipment_info[0]->route_leg);
-                                                if(!empty($json)):
-                                            ?>
-                                                <?php foreach ($json as $key => $value): ?>
-                                                <div class="card">
-                                                    <div class="card-header" id="heading<?=$key;?>">
-                                                        <h5 class="mb-0">
-                                                        <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $key; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
-                                                                <div class="row">
-                                                                    <div class="col-sm-5"><?php echo $value->PortOfLoading->Name; ?></div>
-                                                                    <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
-                                                                    <div class="col-sm-5">
-                                                                        <div class="btn-group">
-                                                                            <button style="color:#007bff;" class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                            <?php echo $value->PortOfDischarge->Name; ?> 
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <li class="dropdown-item"><?= (!empty($value->BookingStatus))?$value->BookingStatus->Description:" - "; ?> 
-                                                                                (<?= (!empty($value->BookingStatus))?$value->BookingStatus->Code:" - "; ?>)</li>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </h5>
-                                                    </div>
 
-                                                    <div id="collapse<?= $key; ?>" class="collapse" aria-labelledby="heading<?=$key;?>" data-parent="#accordion">
-                                                        <div class="card-body">
-                                                            <?php if(false): ?>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <strong>Status</strong>
-                                                                    <p class="<?= (!empty($value->BookingStatus))?strtolower($value->BookingStatus):" - "; ?>">
-                                                                    <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
-                                                                    (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
-                                                                </p>
-                                                                </div>
-                                                            </div>
-                                                            <?php endif; ?>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <strong>Routing Leg 
-                                                                    <?= (!empty($value->LegType))?"(".$value->LegType.")":""; ?>
-                                                                    </strong>
-                                                                    <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
-                                                                </div>
-                                                                <?php if(false): ?>
-                                                                <div class="col-lg-4">
-                                                                    <strong>Leg Type</strong>
-                                                                    <p><?= $value->LegType; ?></p>
-                                                                </div>
-                                                                <?php endif; ?>
-                                                                <div class="col-lg-6">
-                                                                    <strong>Vessel Name</strong>
-                                                                    <p><?= (!empty($value->VesselName))?"(".$value->VesselName.")":"";?></p>
-                                                                </div>
-                                                            </div>
-                                                            <?php if(false): ?>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <strong>Origin Port</strong>
-                                                                    <p><?=  $value->PortOfLoading->Name ?></p>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <strong>Destination Port</strong>
-                                                                    <p><?=  $value->PortOfDischarge->Name ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <?php endif; ?>
-                                                            <div class="row">
-                                                                <?php if(isset($value->EstimatedDeparture)): ?>
-                                                                <div class="col-lg-6">
-                                                                    <strong>Estimated Departure </strong>
-                                                                    <p><?= ($value->EstimatedDeparture == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedDeparture)); ?></p>
-                                                                </div>
-                                                                <?php endif; ?>
-                                                                <?php if(isset($value->EstimatedArrival)): ?>
-                                                                <div class="col-lg-6">
-                                                                    <strong>Estimated Arrival</strong>
-                                                                    <p><?= ($value->EstimatedArrival == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedArrival)); ?></p>
-                                                                </div>
-                                                                <?php endif; ?>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <strong>Carrier Name</strong>
-                                                                    <p><?= (!empty($value->Carrier->CompanyName))?$value->Carrier->CompanyName:" - "; ?></p>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <strong>Carrier Address</strong>
-                                                                    <p><?= (!empty($value->Carrier->Address1))?$value->Carrier->Address1.", ".$value->Carrier->City.", ".$value->Carrier->Country->Code:" - "; ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <?php if(!empty($value->LCLAvailability)) : ?>
-                                                                <div class="col-lg-4">
-                                                                    <strong>CFS Availability</strong>
-                                                                    <p><?= date("d F Y H:i", strtotime($value->LCLAvailability)); ?></p>
-                                                                </div>
-                                                                <?php endif; ?>
-                                                                <?php if(!empty($value->LCLStorageDate)) : ?>
-                                                                <div class="col-lg-4">
-                                                                    <strong>CFS Storage Date</strong>
-                                                                    <p><?= date("d F Y H:i", strtotime($value->LCLStorageDate)); ?></p>
-                                                                </div>
-                                                                <?php endif; ?>
-                                                            </div>
+<!-- SECTION Shipment Details starts -->
+<section class="col-lg-6 connectedSortable ui-sortable">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Shipment Details
+            </h3>
+            <div class="card-tools m-0">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong>Consol ID</strong>
+                    <p><?= $this->shipment_info[0]->console_id; ?></p>
+                </div>
+                <div class="col-lg-4">
+                    <strong>House Bill</strong>
+                    <p><?= $this->shipment_info[0]->house_bill; ?></p>
+                </div>
+                <div class="col-lg-4">
+                    <strong>Master Bill</strong>
+                    <p><?= $this->shipment_info[0]->master_bill; ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong><?= $transTitle ?> No.</strong>
+                    <p><?= $this->shipment_info[0]->voyage_flight_num; ?></p>
+                </div>
+                <?php if($transMode == 'Sea'): ?>
+                <div class="col-lg-4">
+                    <strong>Vessel Name</strong>
+                    <p><?= $this->shipment_info[0]->vessel_name; ?></p>
+                </div>
+                <div class="col-lg-4">
+                    <strong>Vessel Lloyds</strong>
+                    <p><?= $this->shipment_info[0]->vesslloyds; ?></p>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong>Transport Mode</strong>
+                    <p><?= $this->shipment_info[0]->transport_mode; ?></p>
+                </div>
+                <div class="col-lg-4">
+                    <strong>Order Reference</strong>
+                    <?php $order_number = json_decode($this->shipment_info[0]->order_number); ?>
+                    <?php if(!is_array($order_number)): ?>
+                        <?= $order_number; ?>
+                    <?php else: ?>
+                        <?php if(count($order_number) == 1): ?>
+                            <p><?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?></p>
+                        <?php else: ?>
+                            <div class="btn-group">
+                                <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <?= (empty($order_number)) ? '<span class="text-danger"> - </span>' : $order_number[0]->OrderReference; ?>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <?php foreach ($order_number as $key => $order): ?>
+                                    <li><a class="dropdown-item" href="#"><?= $order->OrderReference; ?></a></li>
+                                    <?php endforeach; ?> 
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-4">
+                    <strong>Container Mode</strong>
+                    <p><?= $this->shipment_info[0]->container_mode; ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <strong>Estimated Departure</strong>
+                    <p><?php 
+                        if($this->shipment_info[0]->etd == '1900-01-01 00:00:00.000'):
+                            echo '-';
+                        else: 
+                            $date = date_create($this->shipment_info[0]->etd);
+                            echo date_format($date,"d M Y H:i"); 
+                        endif;
+                    ?></p>
+                </div>
+                <div class="col-lg-6">
+                    <strong>Estimated Arrival</strong>
+                    <p><?php 
+                        if($this->shipment_info[0]->eta == '1900-01-01 00:00:00.000'){
+                            echo '-';
+                        } else {
+                            $date = date_create($this->shipment_info[0]->eta);
+                            echo date_format($date,"d M Y H:i"); 
+                        }
+                    ?></p>
+                </div>
+            </div>
+            <!-- COLLAPSE Consignee starts -->
+            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
+                <h5 class="d-inline-block">Consignee</h5>
+                <span class="float-right mt-2"><?= $this->shipment_info[0]->consignee; ?>
+                    <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                </span>
+            </div>
+            <dl id="consignee" class="row collapse">
+                <?php $json_org = json_decode($this->shipment_info[0]->organization);
+                if(!empty($json_org[0])) {
+                    foreach ($json_org[0] as $key => $value) {
+                        if(isset($value->AddressType)) {
+                        if ($value->AddressType == "ConsigneePickupDeliveryAddress") {
+                ?>
+                <div class="col-lg-12">
+                    <dt>Company Name:</dt>
+                    <dd> <?= $value->CompanyName; ?> </dd>
+                </div>
+                <?php if(false): ?>
+                <div class="col-lg-6">
+                    <dt>Organization Code:</dt>
+                    <dd> <?= $value->OrganizationCode; ?> </dd>
+                </div>
+                <?php endif; ?>
+                <div class="col-lg-6">
+                    <dt>Organization Name:</dt>
+                    <dd><?= (empty($this->shipment_contact[0]->company_name)) ? '<span class="text-danger"> - </span>' : $this->shipment_contact[0]->company_name; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Delivery Address:</dt>
+                    <dd> <?= $value->Address1; ?> </dd>
+                </div>
+                <?php }
+                        }
+                    }
+                }
+                ?>
+                <div class="col-lg-6">
+                    <dt>Delivery Date:</dt>
+                    <dd>
+                    <?php if(!empty($this->container_detail[0]->trans_estimated_delivery)) : ?> 
+                    <?php if($this->container_detail[0]->trans_estimated_delivery == '1900-01-01 00:00:00.000'): ?>   
+                    <span> - </span>
+                    <?php else: ?>  
+                    <span><?= date("d F Y H:i", strtotime($this->container_detail[0]->trans_estimated_delivery)); ?></span>
+                    <?php endif; ?> 
+                    <?php else: ?>
+                    <span> - </span>
+                    <?php endif; ?>
+                    <?php 
+                        // $date = date_create($this->shipment_info[0]->etd);
+                        // echo date_format($date,"d F Y H:i"); 
+                    ?>
+                    </dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Delivery Place:</dt>
+                    <dd><?= $this->shipment_info[0]->place_delivery; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Port of Loading: </dt>
+                    <dd><?= $this->shipment_info[0]->port_loading; ?></dd>
+                </div>
+            </dl>
+            <!-- COLLAPSE Consignee ends -->
+            <!-- COLLAPSE Consignor starts -->
+            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
+                <h5 class="d-inline-block">Consignor</h5>
+                <span class="float-right mt-2"><?= $this->shipment_info[0]->consignor; ?>
+                <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                </span>
+            </div>
+            <dl id="consignor" class="row collapse">
+                <div class="col-lg-12">
+                    <dt>Address:</dt>
+                    <dd><?= $this->shipment_info[0]->consignor_addr; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Receipt Place:</dt>
+                    <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
+                </div>
+                <div class="col-lg-6">
+                    <dt>Port of Discharge: </dt>
+                    <dd><?= $this->shipment_info[0]->port_discharge; ?></dd>
+                </div>
+            </dl>
+            <!-- COLLAPSE Consignor ends -->
+            <!-- COLLAPSE Container Details starts -->
+            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
+                <h5 class="d-inline-block">Container Details</h5>
+                <span class="float-right mt-2"><?= $this->shipment_info[0]->shipment_num; ?>
+                    <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div id="container_details" class="collapse">  
+                <?php if(empty($this->container_detail)): ?>   
+                    <span> No Container Data </span>
+                <?php else: ?>
+                    <?php foreach ($this->container_detail as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
+                        <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
+                            <span class="d-inline-block"><?= $value->containernumber; ?>
+                                <?php if(false): ?>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
+                                <?php endif; ?>
+                            </span>
+                            <span class="float-right mt-2">
+                                <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <dl id="cd-<?= $value->id ?>" class="row collapse">
+                            <div class="col-lg-3">
+                                <dt>Container Type:</dt>
+                                <dd><?= $value->containertype; ?></dd>
+                            </div>
+                            <?php if($transMode == 'Sea'): ?>
+                            <div class="col-lg-3">
+                                <dt>Delivery Mode:</dt>
+                                <dd><?= $value->containerdeliverymode; ?></dd>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-lg-3">
+                                <dt>Gross Wt.:</dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <div class="col-lg-3">
+                                <dt>Volume:</dt>
+                                <dd><?php
+                                $volume = $this->shipment_info[0]->totalvolume;
+                                // $length = floatval($value->length);
+                                // $width = floatval($value->width);
+                                // $height = floatval($value->height); 
+                                // $volume = $length * $width * $height;
+                                echo number_format($volume, 2, '.', ',') . "m³"; ?></dd>
+                            </div>
+                            <div class="col-lg-3">
+                                <dt>Packs:</dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <?php if($transMode == 'Sea'): ?>
+                            <div class="col-lg-3">
+                                <dt>Gate In: </dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <div class="col-lg-3">
+                                <dt>FCL Available: </dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <div class="col-lg-3">
+                                <dt>FCL Loaded In: </dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-lg-3">
+                                <dt>Storage Date:</dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <?php if($transMode == 'Sea'): ?>
+                            <div class="col-lg-3">
+                                <dt>Empty Req. By:</dt>
+                                <dd><?= $value->no_data; ?></dd>
+                            </div>
+                            <?php endif; ?>
+                        </dl>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <!-- COLLAPSE Container Details ends -->
+        </div>
+    </div>
+</section>
+<!-- SECTION Shipment Details ends -->
+
+<!-- SECTION Routing Details starts -->
+<section class="col-lg-6 connectedSortable ui-sortable">
+    <div class="card">
+        <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false"><i class="fas fa-map mr-1"></i>
+                    Route Details</a>
+                </li>
+                <?php if(!empty($this->shipment_info[0]->vesslloyds)) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-bullseye mr-1"></i>
+                    GPS Tracking</a>
+                </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="custom-tabs-three-tabContent">
+                <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                    <div id="chartdiv" class="" style="position: relative; height: 300px;">
+                        <div class="spinner-border" role="status" style="position: absolute;bottom: 50%;right: 50%;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+                    <div style="background-color:white;position:relative;top:-15px;z-index: 1">&nbsp;</div>
+                    <?php if(!empty($this->shipment_info[0]->vesslloyds)) : ?>
+                    <iframe style="position: relative;top: -35px;" name="vesselfinder" id="vesselfinder" src="https://www.vesselfinder.com/aismap?zoom=undefined&amp;lat=undefined&amp;lon=undefined&amp;width=100%&amp;height=500&amp;names=false&amp;imo=<?php echo $this->shipment_info[0]->vesslloyds;?>&amp;track=false&amp;fleet=false&amp;fleet_name=false&amp;fleet_hide_old_positions=false&amp;clicktoact=false&amp;store_pos=false&amp;ra=livetracking_" width="100%" height="352" frameborder="0"></iframe>
+                    <?php endif; ?>
+                </div>
+                <div class="col-md-12">
+                    <div id="accordion" class="mt-2">
+                        <?php if($this->shipment_info[0]->route_leg !== "[]"):
+                            $json = json_decode($this->shipment_info[0]->route_leg);
+                            if(!empty($json)):
+                        ?>
+                            <?php foreach ($json as $key => $value): ?>
+                            <div class="card">
+                                <div class="card-header" id="heading<?=$key;?>">
+                                    <h5 class="mb-0">
+                                    <div class="container btn btn-link" data-toggle="collapse" data-target="#collapse<?= $key; ?>" aria-expanded="true" aria-controls="collapse<?= $value->LegOrder; ?>">
+                                            <div class="row">
+                                                <div class="col-sm-5"><?php echo $value->PortOfLoading->Name; ?></div>
+                                                <div class="col-sm-2 text-center"><i class="fas fa-arrow-right"></i></div>
+                                                <div class="col-sm-5">
+                                                    <div class="btn-group">
+                                                        <button style="color:#007bff;" class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <?php echo $value->PortOfDischarge->Name; ?> 
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <li class="dropdown-item"><?= (!empty($value->BookingStatus))?$value->BookingStatus->Description:" - "; ?> 
+                                                            (<?= (!empty($value->BookingStatus))?$value->BookingStatus->Code:" - "; ?>)</li>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php endforeach; ?>
-                                                <?php else: ?>
-                                                    <span>No route data</span>
-                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </h5>
+                                </div>
+
+                                <div id="collapse<?= $key; ?>" class="collapse" aria-labelledby="heading<?=$key;?>" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <?php if(false): ?>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <strong>Status</strong>
+                                                <p class="<?= (!empty($value->BookingStatus))?strtolower($value->BookingStatus):" - "; ?>">
+                                                <?= (!empty($value->BookingDesc))?$value->BookingDesc:" - "; ?> 
+                                                (<?= (!empty($value->BookingStatus))?$value->BookingStatus:" - "; ?>)
+                                            </p>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <strong>Routing Leg 
+                                                <?= (!empty($value->LegType))?"(".$value->LegType.")":""; ?>
+                                                </strong>
+                                                <p><?= $value->LegOrder; ?> of <?= count($json) ?></p>
+                                            </div>
+                                            <?php if(false): ?>
+                                            <div class="col-lg-4">
+                                                <strong>Leg Type</strong>
+                                                <p><?= $value->LegType; ?></p>
+                                            </div>
+                                            <?php endif; ?>
+                                            <div class="col-lg-6">
+                                                <strong>Vessel Name</strong>
+                                                <p><?= (!empty($value->VesselName))?"(".$value->VesselName.")":"";?></p>
+                                            </div>
+                                        </div>
+                                        <?php if(false): ?>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <strong>Origin Port</strong>
+                                                <p><?=  $value->PortOfLoading->Name ?></p>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <strong>Destination Port</strong>
+                                                <p><?=  $value->PortOfDischarge->Name ?></p>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                        <div class="row">
+                                            <?php if(isset($value->EstimatedDeparture)): ?>
+                                            <div class="col-lg-6">
+                                                <strong>Estimated Departure </strong>
+                                                <p><?= ($value->EstimatedDeparture == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedDeparture)); ?></p>
+                                            </div>
+                                            <?php endif; ?>
+                                            <?php if(isset($value->EstimatedArrival)): ?>
+                                            <div class="col-lg-6">
+                                                <strong>Estimated Arrival</strong>
+                                                <p><?= ($value->EstimatedArrival == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedArrival)); ?></p>
+                                            </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <strong>Carrier Name</strong>
+                                                <p><?= (!empty($value->Carrier->CompanyName))?$value->Carrier->CompanyName:" - "; ?></p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <strong>Carrier Address</strong>
+                                                <p><?= (!empty($value->Carrier->Address1))?$value->Carrier->Address1.", ".$value->Carrier->City.", ".$value->Carrier->Country->Code:" - "; ?></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <?php if(!empty($value->LCLAvailability)) : ?>
+                                            <div class="col-lg-4">
+                                                <strong>CFS Availability</strong>
+                                                <p><?= date("d F Y H:i", strtotime($value->LCLAvailability)); ?></p>
+                                            </div>
+                                            <?php endif; ?>
+                                            <?php if(!empty($value->LCLStorageDate)) : ?>
+                                            <div class="col-lg-4">
+                                                <strong>CFS Storage Date</strong>
+                                                <p><?= date("d F Y H:i", strtotime($value->LCLStorageDate)); ?></p>
+                                            </div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                    <!-- SECTION Routing Details ends -->
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                                <span>No route data</span>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- SECTION Routing Details ends -->
 
-
-
-                    <section class="col-lg-12 connectedSortable ui-sortable">
-                        <div class="card">
-                            <div class="card-header ui-sortable-handle" style="cursor: move;">
-                                <h3 class="card-title">
-                                    <i class="fas fa-file-invoice  mr-1"></i>
-                                     Order View
-                                </h3>
-                                <div class="card-tools m-0">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body2" style="overflow: scroll;">
-                                <table id="orders" class="table table-hover table-head-fixed text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Order Number</th>
-                                            <th>Ship/Dec No.</th>
-                                            <th>Order Date</th>
-                                            <th>Pre Advice</th>
-                                            <th>Buyer</th>
-                                            <th>Supplier</th>
-                                            <th>Transport Mode</th>
-                                            <th>Container Mode</th>
-                                            <th>Goods Origin</th>
-                                            <th>Goods Destination</th>
-                                            <th>Load Port</th>
-                                            <th>Dischargte Port</th>
-                                            <th>Packs</th>
-                                            <th>Type</th>
-                                            <th>Volume</th>
-                                            <th>UV</th>
-                                            <th>Weight</th>
-                                            <th>UW</th>
-                                            <th>Req. in Stock</th>
-                                            <th>Req. in Works</th>
-                                            <th>H.Bill</th>
-                                            <th>M.BIll</th>
-                                        </tr>
-                                    </thead>   
-                                </table>
-                            </div>
-                        </div>
-                    </section>
-
+<!-- SECTION Order Details ends -->
+<section class="col-lg-12 connectedSortable ui-sortable">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h3 class="card-title">
+                <i class="fas fa-file-invoice  mr-1"></i>
+                 Order View
+            </h3>
+            <div class="card-tools m-0">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body2" style="overflow: scroll;">
+            <table id="orders" class="table table-hover table-head-fixed text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Ship/Dec No.</th>
+                        <th>Order Date</th>
+                        <th>Pre Advice</th>
+                        <th>Buyer</th>
+                        <th>Supplier</th>
+                        <th>Transport Mode</th>
+                        <th>Container Mode</th>
+                        <th>Goods Origin</th>
+                        <th>Goods Destination</th>
+                        <th>Load Port</th>
+                        <th>Dischargte Port</th>
+                        <th>Packs</th>
+                        <th>Type</th>
+                        <th>Volume</th>
+                        <th>UV</th>
+                        <th>Weight</th>
+                        <th>UW</th>
+                        <th>Req. in Stock</th>
+                        <th>Req. in Works</th>
+                        <th>H.Bill</th>
+                        <th>M.BIll</th>
+                    </tr>
+                </thead>   
+            </table>
+        </div>
+    </div>
+</section>
+<!-- SECTION Order Details ends -->
                 </div>
             </div>
             <div class="tab-pane fade" id="custom-tabs-invoice" role="tabpanel" aria-labelledby="custom-tabs-invoice-tab">
                 <div class="row">
+                    <!-- SECTION Invoice Details ends -->
                     <section class="col-lg-12 connectedSortable ui-sortable">
                         <div class="card">
                             <div class="card-header ui-sortable-handle" style="cursor: move;">
@@ -654,63 +651,71 @@ foreach ($this->shipment_info[0] as $key => $value) {
                             </table>
                         </div>
                     </section>
+                    <!-- SECTION Invoice Details ends -->
                 </div>
             </div>
             <div class="tab-pane fade" id="custom-tabs-timeline" role="tabpanel" aria-labelledby="custom-tabs-timeline-tab">
-            Comming soon...
+                <div class="row"> 
+                    <span class="text-center">Coming soon...</span> 
+                </div>
             </div>
             <div class="tab-pane fade" id="custom-tabs-documents" role="tabpanel" aria-labelledby="custom-tabs-documents-tab">
-                <table id="doc_table" class="table table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Document Type</th>
-                            <th>Status</th>
-                            <th>Date Received</th>
-                            <th>Comments</th>
-                        </tr>
-                    </thead>
-                </table>
-                <canvas id="donutChart" style="display:none; min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                <div class="container-fluid">
-                    <?php if(false): ?>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card mt-4">
-                                <div class="card-header">Document Status</div>
-                                <div class="card-body">
-                                    <div class="chart-container pie-chart">
-                                        <canvas id="pie_chart"></canvas>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Document starts -->
+                        <table id="doc_table" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Status</th>
+                                    <th>Date Received</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <canvas id="donutChart" style="display:none; min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <div class="container-fluid">
+                            <?php if(false): ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card mt-4">
+                                        <div class="card-header">Document Status</div>
+                                        <div class="card-body">
+                                            <div class="chart-container pie-chart">
+                                                <canvas id="pie_chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mt-4">
+                                        <div class="card-header">Document Request</div>
+                                        <div class="card-body">
+                                            <div class="chart-container pie-chart">
+                                                <canvas id="doughnut_chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mt-4 mb-4">
+                                        <div class="card-header">Comments</div>
+                                        <div class="card-body">
+                                            <div class="chart-container pie-chart">
+                                                <canvas id="bar_chart"></canvas>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card mt-4">
-                                <div class="card-header">Document Request</div>
-                                <div class="card-body">
-                                    <div class="chart-container pie-chart">
-                                        <canvas id="doughnut_chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card mt-4 mb-4">
-                                <div class="card-header">Comments</div>
-                                <div class="card-body">
-                                    <div class="chart-container pie-chart">
-                                        <canvas id="bar_chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Document ends -->
                     </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 </div>
