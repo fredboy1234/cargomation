@@ -186,6 +186,7 @@ if(isset($_GET['user_id'])){
 				$postcode = '';
 				$state =  '';
 			}
+
 			###End of Get Organization Collection / Contact Info
 			###Get Order Collection
 			$dataOrderCollection = str_replace(array("[[", "]]"), array("[", "]"),parseJson($xml, $path_OrderNumberCollection,".OrderNumber"));
@@ -199,7 +200,7 @@ if(isset($_GET['user_id'])){
 			array_push($ship_array,removeSingleQuote($place_delivery),removeSingleQuote($place_receipt),$consignee,$consignor,$sending_agent,$receiving_agent,removeSingleQuote($receiving_add),removeSingleQuote($sending_add),removeSingleQuote($consignee_add),removeSingleQuote($consignor_add));
 			array_push($ship_array,$triggered_date,$container_mode,removeSingleQuote($port_loading),removeSingleQuote($port_discharge),removeSingleQuote($order_number),$total_volume,$ata,$atd);
 			array_push($ship_array,removeSingleQuote($route_leg),removeSingleQuote($dataOrganizationCollection),removeSingleQuote($packing_line),removeSingleQuote($containercollection),removeSingleQuote($milestone));
-			
+
 			###Process Shipment to Database
 			if(ifShipmentExist($shipNumber) === false){
 				$res = addShipment($ship_array,$shipNumber);
