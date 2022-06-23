@@ -322,6 +322,14 @@ class Shipment extends Core\Controller {
         // }
 
         $document_type = $this->Document->getDocumentTypeByUserID($user_id);
+        $client_doc_type = $User->getClientDocumentType($user_id);
+
+        if(empty($type)) {
+            $type = [];
+            foreach ($this->client_doc_type as $key => $value) {
+                $type[] = $value->doc_type;
+            }
+        }
 
         $this->View->addJS("js/document.js");
         $this->View->addCSS("css/document.css");
@@ -333,7 +341,7 @@ class Shipment extends Core\Controller {
             "role" => $role,
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
-            "document" => $this->Document->getDocumentByShipment($shipment_id, $type),
+            "document" => $this->Document->getDocumentByShipment2($shipment_id, $type),
             "document_type" => $document_type,
             "user_settings" => $User->getUserSettings($user_id)
         ]);
