@@ -788,7 +788,7 @@ class Shipment extends Core\Controller {
             
             if(isset($shipment->route_leg) && !empty($shipment->route_leg)){
                 $stadecode= json_decode($shipment->route_leg);
-                if(isset($stadecode[0]->ScheduledArrival)){
+                if(isset($stadecode[0]->ScheduledArrival) && !is_array($stadecode[0]->ScheduledArrival)){
                     $sta_date = date_format(date_create($stadecode[0]->ScheduledArrival), "d/m/Y");
                 }
             }
