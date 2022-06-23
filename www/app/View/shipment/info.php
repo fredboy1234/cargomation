@@ -24,7 +24,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
 ?>
 <div class="row">
     <div class="col-lg-3">
-         <h1 class="p-3 shipment-num" data-toggle="tooltip" data-placement="bottom" title="<?= $this->shipment_info[0]->shipment_num; ?>"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
+         <h1 class="p-3 mt-2 shipment-num" data-toggle="tooltip" data-placement="bottom" title="<?= $this->shipment_info[0]->shipment_num; ?>"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
     </div>
     <div class="col-lg-9">
         <div>
@@ -486,7 +486,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                                                 <?php endif; ?>
                                                                 <div class="col-lg-6">
                                                                     <strong>Vessel Name</strong>
-                                                                    <p><?= $value->VesselName; ?></p>
+                                                                    <p><?= (!empty($value->VesselName))?"(".$value->VesselName.")":"";?></p>
                                                                 </div>
                                                             </div>
                                                             <?php if(false): ?>
@@ -715,6 +715,9 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
 </div>
 <style>
+.small-box .inner {
+    min-height: 105px !important;
+}
 .amcharts-myline path {
   stroke-linejoin: round;
   stroke-linecap: round;
