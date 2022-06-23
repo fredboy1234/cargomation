@@ -749,6 +749,7 @@ class Shipment extends Core\Controller {
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
+                 
         $result = $this->post($url, $payload, $headers);
         $json_data = json_decode($result);
         if($json_data->status != '200' || empty($json_data)) {
@@ -772,7 +773,7 @@ class Shipment extends Core\Controller {
         $doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type');
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
-       
+      
         foreach($array_data as $shipment_key => $shipment) {
             $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
@@ -785,15 +786,17 @@ class Shipment extends Core\Controller {
             $sta_date = '';
             $marco_link = "";
             $etadays = "";
+
             
             if(isset($shipment->route_leg) && !empty($shipment->route_leg)){
                 $stadecode= json_decode($shipment->route_leg);
                 if(isset($stadecode[0]->ScheduledArrival) && !is_array($stadecode[0]->ScheduledArrival)){
-                    $sta_date = date_format(date_create($stadecode[0]->ScheduledArrival), "d/m/Y");
+                    $sta_date = date_format(date_create($stadecode[0]->ScheduledArrival), "Y-m-d");
                 }
             }
-          
+           
             $diff =  strtotime($shipment->eta) - strtotime($sta_date);
+            
             $etadiff = ceil($diff / 86400);
             $etadaycolor = '';
             
