@@ -128,7 +128,7 @@
                                  $kokey = strtolower(str_replace(" ","_",$keyField));
                                  $names = strtok($keyField, " ");
                                  $dname = isset($matchval['fieldlist'][$names]) ?  $matchval['fieldlist'][$names] : '' ;
-                                 
+                                 //echo $dname."<br>";
                             ?>
                                 <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
                                     <label for="<?=$kokey?>_id" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
@@ -323,7 +323,37 @@ $(document).on('click','.sendToCGM',function(){
         var user_id = <?=json_encode($this->userid)?>;
         if(localStorage.getItem('userid') == null){
             localStorage.setItem('userid',user_id);
-            $.ajax({
+            setOption();
+        }
+
+        if(localStorage.getItem('shipmentOrg')!=null && localStorage.getItem('shipmentOrg').length==0){
+            setOption();
+        } 
+        
+        
+        if(localStorage.getItem('userid') != user_id){
+            localStorage.clear();
+        }else{
+            $.each( JSON.parse(localStorage.getItem('consigneeOrg')), function( key, value ) {
+                if(value.org_code !== '') {
+                    //console.log(value.org_code);
+                    var newOption = new Option(value.org_code, value.company_name, false, false); 
+                    $('.consignee_org_code').append(newOption).trigger('change');
+                }
+            });
+            $.each( JSON.parse(localStorage.getItem('shipmentOrg')), function( key, value ) {
+                if(value.org_code !== '') {
+                    console.log(value.org_code);
+                    var newOption = new Option(value.org_code, value.company_name, false, false);
+                    //console.log(newOption);
+                    $('.shipper_org_code').append(newOption).trigger('change');
+                }
+            });
+        }
+        
+    });
+    function setOption(){
+        $.ajax({
                 url: document.location.origin+"/docregister/getOrgCodeByUserID/",
                 success:function(data)
                 {
@@ -355,43 +385,20 @@ $(document).on('click','.sendToCGM',function(){
                     });
                 }
             });
-        }
-        
-        if(localStorage.getItem('userid') != user_id){
-            localStorage.clear();
-        }else{
-            $.each( JSON.parse(localStorage.getItem('consigneeOrg')), function( key, value ) {
-                if(value.org_code !== '') {
-                    console.log(value.org_code);
-                    var newOption = new Option(value.org_code, value.company_name, false, false); 
-                    $('.consignee_org_code').append(newOption).trigger('change');
-                }
-            });
-            $.each( JSON.parse(localStorage.getItem('shipmentOrg')), function( key, value ) {
-                if(value.org_code !== '') {
-                    console.log(value.org_code);
-                    var newOption = new Option(value.org_code, value.company_name, false, false);
-                    console.log(newOption);
-                    $('.shipper_org_code').append(newOption).trigger('change');
-                }
-            });
-        }
-        
-    });
-    
-    $(document).on('change','.shipper_org_code',function(){
-        var text = $(this).val();
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Shipper').val(text);
-	});
-    $(document).on('change','.consignee_org_code',function(){
-        var text = $(this).val();
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Consignee').val(text);
-	});
+    }
+    // $(document).on('change','.shipper_org_code',function(){
+    //     var text = $(this).val();
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Shipper').val(text);
+	// });
+    // $(document).on('change','.consignee_org_code',function(){
+    //     var text = $(this).val();
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Consignee').val(text);
+	// });
     
 </script>

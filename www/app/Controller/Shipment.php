@@ -780,6 +780,7 @@ class Shipment extends Core\Controller {
         $doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type');
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
+       
         foreach($array_data as $shipment_key => $shipment) {
             $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
             $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
@@ -789,16 +790,23 @@ class Shipment extends Core\Controller {
             $atd_date = date_format(date_create($shipment->atd), "d/m/Y");
             $atd_date_sort = date_format(date_create($shipment->ata), "d/m/Y");
             $ata_date_sort = date_format(date_create($shipment->atd), "d/m/Y");
-            $sta_date = '2022-05-30 00:00:00';
+            $sta_date = '';
             $marco_link = "";
             $etadays = "";
-            if(isset($shipment->sta)){
-                $sta_date = $shipment->sta;
+            
+            if(isset($shipment->route_leg) && !empty($shipment->route_leg)){
+                $stadecode= json_decode($shipment->route_leg);
+                if(isset($stadecode[0]->ScheduledArrival) && !is_array($stadecode[0]->ScheduledArrival)){
+                    $sta_date = date_format(date_create($stadecode[0]->ScheduledArrival), "d/m/Y");
+                }
             }
+          
             $diff =  strtotime($shipment->eta) - strtotime($sta_date);
             $etadiff = ceil($diff / 86400);
             $etadaycolor = '';
-            if($eta_date != '01/01/1900'){
+            
+            if($sta_date !==""){
+               
                 if($etadiff > 0){
                     $etadays =' <span style="color:red;" class="badge navbar-badge ship-badge">+'.$etadiff.'d</span>';
                 }else{
@@ -806,10 +814,14 @@ class Shipment extends Core\Controller {
                         $etadays =' <span style="color:green;" class="badge navbar-badge ship-badge">'.$etadiff.'d</span>';
                     }
                 }
+            }else{
+                $etadays='';
             }
+
             if(!empty($shipment->vrptShipmentlinks)) {
                 $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
             }
+
             $subdata = array();
             $subdata['real_id_shipment'] = $shipment->shipment_num; // remove?
             $subdata['id'] = $shipment->id; // remove?
