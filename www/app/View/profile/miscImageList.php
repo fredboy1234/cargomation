@@ -59,19 +59,30 @@
     </div>
 </div>
 <script>
+  var modalCID = $("#myModal").attr('data-cid');
+  var vwidth = 450; var vheight = 450;
+  var bwidth = 500; var bheight = 500;
+  var imageid = $(this).attr("data-imgid");
+  var imagetype = '';
+  if(modalCID === 'headerupload' || modalCID === 'footerupload'){
+    vwidth = 1200; vheight = 100;
+    bwidth = 1300; bheight = 105;
+  }
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
+        showZoomer: false,
+        enableResize: true,
+        enableOrientation: true,
         viewport: {
-          width:1200,
-          height:100,
+          width: vwidth,
+          height: vheight,
           type:'square' //circle
         },
         boundary:{
-          width:1300,
-          height:105
+          width: bwidth,
+          height: bheight
         }
   });
-
   $('.set-to-profile').on('click',function(){
     var url = $('img',this).attr('src');
     var reader = new FileReader();
@@ -90,9 +101,6 @@
     });
     $('#uploadimageModal').modal('show');
   });
-
-
-
   $('#upload_image').on('change', function(){
     var reader = new FileReader();
     reader.onload = function (event) {
@@ -106,16 +114,24 @@
     reader.readAsDataURL(this.files[0]);
     $('#uploadimageModal').modal('show');
   });
-    
   $('.crop_image').click(function(event){
-      var imageid = $(this).attr("data-imgid");
-      var modalCID = $("#hfmodal").attr('data-cid');
-      var imagetype = '';
-      if(modalCID === 'hfupload'){
-        imagetype = 'Header';
-      }
-      if(modalCID === 'footerupload'){
-        imagetype = 'Footer';
+      // var modalCID = $("#myModal").attr('data-cid');
+      switch (modalCID) {
+        case 'headerupload':
+          imagetype = 'Header';
+          break;
+        case 'footerupload':
+          imagetype = 'Footer';
+          break;
+        case 'logoupload':
+          imagetype = 'Logo';
+          break;
+        case 'loaderupload':
+          imagetype = 'Loader';
+          break;
+      
+        default:
+          break;
       }
       if(typeof imageid ==='undefined'){
         imageid = 0;

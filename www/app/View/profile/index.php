@@ -456,8 +456,8 @@
                                         <div class="form-group row">
                                             <label for="hfimage" class="col-sm-2 col-form-label">Header Banner</label>
                                             <div class="col-sm-10 mt-2">
-                                                <img style="width:auto; height:50px; " src="<?=$this->miscImage?>" alt="..." class="img-thumbnail">
-                                                <span id="hfupload" role="button">
+                                                <img style="width:auto; height:50px; " src="<?= isset($this->misc_image['header']) ? $this->misc_image['header'] : '/img/default-profile.png'; ?>" alt="..." class="img-thumbnail">
+                                                <span id="headerupload" role="button">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </div>
@@ -465,8 +465,26 @@
                                         <div class="form-group row">
                                             <label for="footerimage" class="col-sm-2 col-form-label">Footer Banner</label>
                                             <div class="col-sm-10 mt-2">
-                                                <img style="width:auto; height:50px; " src="<?=$this->miscFooter?>" alt="..." class="img-thumbnail">
+                                                <img style="width:auto; height:50px; " src="<?= isset($this->misc_image['footer']) ? $this->misc_image['footer'] : '/img/default-profile.png'; ?>" alt="..." class="img-thumbnail">
                                                 <span id="footerupload" role="button">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="hfimage" class="col-sm-2 col-form-label">Logo</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <img style="width:auto; height:50px; " src="<?= isset($this->misc_image['logo']) ? $this->misc_image['logo'] : '/img/default-profile.png'; ?>" alt="..." class="img-thumbnail">
+                                                <span id="logoupload" role="button">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="hfimage" class="col-sm-2 col-form-label">Loader</label>
+                                            <div class="col-sm-10 mt-2">
+                                                <img style="width:auto; height:50px; " src="<?= isset($this->misc_image['loader']) ? $this->misc_image['loader'] : '/img/default-profile.png'; ?>" alt="..." class="img-thumbnail">
+                                                <span id="loaderupload" role="button">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </div>

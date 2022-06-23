@@ -1,6 +1,7 @@
 <?php 
-if(isset($_GET['get_email'])){
+if(isset($GLOBALS['client_email'])){
 $user = $client_email;
+$CLIENT_ID = $_GET['user_id'];
 $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
@@ -220,7 +221,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  $order_status = $ORDERSTATUS;
 		  $order_desc = $ORDERSTATDES;
 
-		  $sql = "SELECT * FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$CLIENT_ID."'";
+		  $sql = "SELECT * FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$_GET['user_id']."'";
 		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 		  $row_count = sqlsrv_num_rows($qryOrder);
 	
@@ -239,7 +240,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
-		  	}
+		  }
 
 		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_ORDERS/SUCCESS/";						
 			if(!file_exists($destination_path.$filename)){

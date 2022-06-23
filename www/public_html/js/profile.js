@@ -11,10 +11,12 @@ $(document).ready(function () {
         $("#profileModal").modal("show");
     });
 
-    $("#hfupload, #footerupload").on("click", function () {
-        $("#hfmodal .modal-body").load("profile/miscImageList");
-        $("#hfmodal").modal("show");
-        $("#hfmodal").attr("data-cid",$(this).attr('id'));
+    $("#headerupload, #footerupload, #logoupload, #loaderupload").on("click", function () {
+        preloader('profile/miscImageList');
+        $("#myModal").attr("data-cid",$(this).attr('id'));
+        // $("#hfmodal .modal-body").load("profile/miscImageList");
+        // $("#hfmodal").modal("show");
+        // $("#hfmodal").attr("data-cid",$(this).attr('id'));
     });
     
 

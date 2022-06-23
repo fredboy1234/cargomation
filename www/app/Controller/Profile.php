@@ -71,8 +71,6 @@ class Profile extends Core\Controller {
         }else{
             $selectedTheme = '';
         }
-        
-        
         // Set any dependencies, data and render the view.
         // $this->View->addCSS("css/custom.css");
         // $this->View->addJS("js/custom.js");
@@ -81,24 +79,15 @@ class Profile extends Core\Controller {
         $this->View->addCSS("css/theme/".$selectedTheme.".css");
         $this->View->addCSS("css/".$selectedTheme.".css");
         
-        $imageList = (Object) Model\User::getProfile($user);
-        
-        $profileImage = '/img/default-profile.png';
-        $miscImage = '/img/default-profile.png';
-        $miscFooter = '/img/default-profile.png';
-        foreach($imageList->user_image as $img){
-            if( $img->image_src!="" && $img->image_type=='profile' ){
-                $profileImage = base64_decode($img->image_src);
-            }
-        }
-
-        foreach($imageList->user_image as $img){
-            if( $img->image_src!="" && $img->image_type=='Header' ){
-                $miscImage  = base64_decode($img->image_src);
-            }
-            if( $img->image_src!="" && $img->image_type=='Footer' ){
-                $miscFooter  = base64_decode($img->image_src);
-            }
+        $user_profile = (Object) Model\User::getProfile($user);
+        $misc_image = [];
+        $misc_image['profile'] = '/img/default-profile.png';
+        // $misc_image['logo'] = '/img/logo_cargomation.png';
+        // $misc_image['loader'] = '/img/logo.png';
+        // $misc_image = '/img/default-profile.png';
+        // $misc_image = '/img/default-profile.png';
+        foreach($user_profile->user_image as $img){
+            $misc_image[strtolower($img->image_type)] = base64_decode($img->image_src);
         }
         
         $this->View->renderTemplate("/profile/index", [
@@ -107,9 +96,8 @@ class Profile extends Core\Controller {
             "user" => (Object) Model\User::getProfile($user),
             "user_info" => Model\User::getProfile($user)['user_info'][0],
             "contact_list" => $User->getUserContactList($user),
-            "image_profile" => $profileImage,
-            "miscImage" => $miscImage,
-            "miscFooter" => $miscFooter,
+            "image_profile" => $misc_image['profile'],
+            "misc_image" => $misc_image,
             "role" => $role,
             "themes" => Model\User::getUserTheme(),
             "selectedTheme" => $User->getUserSettings($user),
@@ -279,7 +267,6 @@ class Profile extends Core\Controller {
         if(empty($role->role_name)) {
             Utility\Redirect::to(APP_URL . $role->role_name);
         }
-        
         if(isset($_POST)){
             $imageType = $_POST['imageType'];
             $User->inserUserImages(array(
