@@ -41,10 +41,12 @@ function addShipment($value_array,$shipNumber){
 	    else{ $value = ""; 	$var .= "'".$value."',"; }
 	}
 
-	$value = "SELECT DISTINCT TOP 1 dbo.shipment.shipment_num FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
-	$sql =  execQuery($value);
+	$checkShipment = "SELECT DISTINCT TOP 1 dbo.shipment.shipment_num FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$shipNumber."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
+	$sql =  execQuery($checkShipment);
 	$row_count = sqlsrv_num_rows($sql);
-	if($row_count < 1){
+	if($row_count > 0){
+		updateShipment($value_array,$shipNumber);
+	}else{
 		$var = substr($var, 0, -1);		
 	 	$sql = "INSERT INTO shipment {$col_field} VALUES ({$var})";
 	 	$res = execQuery($sql);
@@ -62,7 +64,6 @@ function addShipment($value_array,$shipNumber){
 			return 'success';
 		 }
 		###End of Check if successfully inserted
-
 	}
 }
 
@@ -380,16 +381,16 @@ function ifShipmentExist($key){
 	$value = "SELECT DISTINCT TOP 1 dbo.shipment.shipment_num FROM dbo.shipment WHERE dbo.shipment.shipment_num = '".$key."' AND dbo.shipment.user_id ='".$GLOBALS['user_id']."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
-	if($row_count <= 0){
-		return false;
+	if($row_count > 0){
+		return true;
 	}
 	else{
-		return true;
+		return false;
 	}
 }
 
 function ifDocumentExist($file_name,$file_type,$shipNumber,$ship_id){
-	$value = "SELECT DISTINCT TOP 1 * FROM dbo.document WHERE dbo.document.shipment_id = '".$ship_id."' AND dbo.document.shipment_num ='".$shipNumber."' AND dbo.document.type ='".$file_type."'  AND dbo.document.name ='".$file_name."'";
+	$value = "SELECT DISTINCT TOP 1 dbo.document.shipment_num FROM dbo.document WHERE dbo.document.shipment_id = '".$ship_id."' AND dbo.document.shipment_num ='".$shipNumber."' AND dbo.document.type ='".$file_type."'  AND dbo.document.name ='".$file_name."'";
 	$sql =  execQuery($value);
 	$row_count = sqlsrv_num_rows($sql);
 	if($row_count > 0){
