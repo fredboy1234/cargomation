@@ -221,8 +221,9 @@ class Apinvoice extends Core\Controller {
                     if(isset($parsedChargline->ChargeLine) && !empty($parsedChargline->ChargeLine)){
                     
                         foreach($parsedChargline ->ChargeLine as $chline){
+                            $pstatus = isset($parsed->HubJSONOutput->MatchReport->Status) ? $parsed->HubJSONOutput->MatchReport->Status : '';
                             $invoiceHeader['invoice_num'] = $chline->InvoiceNumber ;
-                            $invoiceHeader['invoice_report'] = $parsed->HubJSONOutput->MatchReport->Status;
+                            $invoiceHeader['invoice_report'] = $pstatus ;
                             $invoiceHeader['invoice_response'] = "ready";
                             $invoiceHeader['invoice_status'] = "complete";
                         }
