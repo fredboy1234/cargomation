@@ -357,11 +357,26 @@ class User extends Core\Model {
         // TEMPORARY SOLUTION
         $query = "SELECT * FROM user_settings WHERE user_id = '{$user}'";
         $result = $Db->query($query)->results();
+       
         if(empty($result)) {
             $query = "SELECT * FROM user_settings WHERE user_id = '180'";
             $result = $Db->query($query)->results();
         }
         return $result;
+    }
+
+    public function emptyDash($user){
+        $Db = Utility\Database::getInstance();
+        $check_user = $Db->query("SELECT *  FROM vrpt_subaccount where  user_id = '{$user}'")->results();
+        
+        $check_sub_user = $user;
+        if(isset($check_user[0]) && isset($check_user[0]->role_id)){
+            if($check_user[0]->role_id > 2 ){
+                $check_sub_user = $check_user[0]->account_id;
+            }
+        }
+        $query = "SELECT * FROM user_settings WHERE user_id = '{$check_sub_user}'";
+        return $Db->query($query)->results();
     }
 
     public function deleteUserSettings($id, $column = 'shipment'){
