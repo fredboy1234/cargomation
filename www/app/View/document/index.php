@@ -114,7 +114,7 @@ if(!empty($this->document)) {
                 <span class="text-danger"> Pending (<?= $pending; ?>) </span>
                 <span class="text-warning">For Review (<?= $freview; ?>)</span> 
             </h5> -->
-            <h5><b>Type: </b><span><?= !empty($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></span></h5>
+            <h5><b>Type: </b><span><?= !is_array($this->shipment['type'])? $this->shipment['type'] : "ALL"; ?></span></h5>
         </div>
         <div class="col-md-2">
             <h5><b>Total: </b><span><?= count($this->document); ?></span></h5>
@@ -132,8 +132,14 @@ if(!empty($this->document)) {
             <?php else: ?>
             <h3 class="card-title">More Shipment Info</h3>
             <?php endif; ?>
+            <?php
+                $type2 = $this->shipment['type'];
+                if (is_array($this->shipment['type'])) {
+                    $type2 = "";
+                }
+            ?>
             <div class="card-tools">
-                <button type="button" class="btn btn-tool d-none" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $this->shipment['type'] ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
+                <button type="button" class="btn btn-tool d-none" data-card-widget="card-refresh" data-source="/shipment/document/<?= $this->shipment['shipment_id'] . '/' . $type2 ?>" data-source-selector="#card-refresh-content" data-load-on-init="false">
                 <i class="fas fa-sync-alt"></i>
                 </button>
                 <button type="button" class="btn btn-tool d-none" data-card-widget="maximize">
@@ -252,9 +258,9 @@ if(!empty($this->document)) {
     // var initialPreviewFileType = 'pdf';
     var initialPreviewConfig = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewConfig); ?>;
     var initialPreviewThumbTags = <?= (empty($this->document)) ? "''" :  json_encode($initialPreviewThumbTags); ?>; 
-    var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $this->shipment['type']; ?>";
+    var param = "/<?= $this->id ?>/<?= $this->shipment['shipment_id']; ?>/<?= $type2; ?>";
     var shipment_id = "<?= $this->shipment['shipment_id']; ?>";
-    var document_type = "<?= $this->shipment['type']; ?>";
+    var document_type = "<?= $type2; ?>";
     var user_id = <?= $_SESSION['user']; ?>;
     var options = "";
     var btn_upload = "";

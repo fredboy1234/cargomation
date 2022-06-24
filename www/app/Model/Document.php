@@ -83,6 +83,31 @@ class Document extends Core\Model {
                                 AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
     }
 
+    public static function getDocumentByShipment2($shipment_id, $type) {
+
+        if(is_array($shipment_id)) {
+            $shipment_id = implode("','", array_column($shipment_id, 'shipment_num'));
+        }
+
+        if(is_array($type)) {
+            $column = implode("', '", array_keys($type));
+            $type = "AND type IN (" . $column . ")";
+            
+        } else {
+            if (!empty($type)) {
+                $type = "AND type = '{$type}'";
+            }
+        }
+
+        $Db = Utility\Database::getInstance();
+        return $Db->query("SELECT * 
+                                FROM document 
+                                LEFT JOIN document_status ON document.id = document_status.document_id
+                                WHERE document_status.status != 'deleted' 
+                                AND document.is_published = 'true'
+                                AND shipment_num IN ('" . $shipment_id . "') " . $type)->results();
+    }
+
     public static function getDocumentByShipID($shipment_id, $args = "*") {
         if(is_numeric(strpos($args, "id")))
             $args = str_replace("id", "d.id", $args);

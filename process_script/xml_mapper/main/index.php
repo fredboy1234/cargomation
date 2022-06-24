@@ -63,21 +63,21 @@ if(isset($_GET['user_id'])){
 			}else{
 				$packing_line = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_PackingLineCollection,".PackingLine"));
 			}
-		
+
 			$packing_linedecode = json_decode($packing_line,true);
 			$route_leg = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_TransportLegCollection,""));
 			$container = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_ContainerCollection,""));
 			$milestone = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_MilestoneCollection,""));
 			$container_decode = json_decode($container,true);
 
-
 			###Get specific container from packingline to containercollection
 			if(count($packing_linedecode)>0){
 				foreach($packing_linedecode as $keycontainer=>$valueContainer) {
-		    		array_push($container_in,$valueContainer['ContainerNumber']);		
+					if(!empty($valueContainer['ContainerNumber'])){
+						array_push($container_in,$valueContainer['ContainerNumber']);	
+					}			
 		    	}
 			}
-
 			if($container != 'false'){
 				 if(count($container_decode) === 1){
 		    		foreach ($container_decode as $key => $value) {
@@ -100,6 +100,7 @@ if(isset($_GET['user_id'])){
 			    			array_push($get_container,str_replace(array("[[", "]]"), array("", ""),parseJson($xml, $path_ContainerCollectionMultiple,".[$keys]")));
 			    		}
 			    	  $a = "";
+
 			    	  $containerctr =  json_decode(json_encode($get_container, JSON_UNESCAPED_SLASHES));
 			    	   foreach ($containerctr as $key => $value) {
 			    	 	if(count($containerctr) > 1){
@@ -109,9 +110,13 @@ if(isset($_GET['user_id'])){
 			    	 		  elseif ($key === array_key_last($containerctr)) {
 			    	 		  		 $a .= substr($value, 1, -1).']';
 			    	 		  }else{
-			    	 		  		 $a .= substr(substr($value, 0, -1),1,-1).',';
+			    	 		  		 $a .= ltrim(substr($value, 0, -1), '[').',';
 			    	 		}
-			    	 	 }else{	$a .= substr($value, 0, -1).']'; }
+			    	 	 }elseif(count($containerctr) == 1){	
+			    	 	 	$a = substr($value, 0, -1).']'; 
+			    	 	 }else{
+			    	 	 	$a = "false";
+			    	 	 }
 			    	   }
 			    	   $containercollection = str_replace(array("'", "'"), array("", ""),$a);
 			    	}
