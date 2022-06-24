@@ -67,7 +67,13 @@ class Dashboard extends Core\Controller {
         }else{
             $selectedTheme = 'default';
         }       
-
+        
+        if(is_null($selectedTheme) || empty($selectedTheme)){
+            if(isset($User->emptyDash($userID)[0])){
+                $dashboardTheme = json_decode($User->emptyDash($userID)[0]->dashboard);
+            }
+        }
+        
         if(isset($dashboardTheme->dash) && $dashboardTheme->dash == "dash_v1"){
             $this->View->addCSS("css/dashboardv2.css");
         }
