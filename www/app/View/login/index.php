@@ -9,6 +9,15 @@ if(isset($parts['query']) && !empty($parts['query'])) {
   $redirectTo = $parts['query'];
 }
 
+// TEMPORARY FIX FOR SILA ACCOUNT
+$logo = '/img/logo_cargomation.png';
+$company_name = "Cargomation.com";
+$sub_url = explode('.', $_SERVER['HTTP_HOST'])[0];
+if($sub_url == 'sila') {
+  $logo = '/img/custom/181/SILA_-_SV3_Logo_Transparent_LRG_-_CMYK_1.png';
+  $company_name = 'SV3';
+}
+
 ?>
 <body id="body" class="hold-transition login-page" style="overflow-y: hidden;">
 <div id="feedback" class="container">
@@ -108,7 +117,7 @@ h1 {
 <div class="login-box">
   <div class="login-logo">
     <a href="/" style="color: #FFF;font-weight:900;font-size:3rem;">
-    <img src="/img/logo_cargomation.png" width="350px" alt="Cargomation Logo"><!--<strong><?=APP_NAME?></strong>--></b></a>
+    <img src="<?= $logo; ?>" width="350px" alt="Cargomation"><!--<strong><?=APP_NAME?></strong>--></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -161,7 +170,7 @@ h1 {
 </div>
 <!-- /.login-box -->
 <div class="footer-logo" style="position: fixed;bottom: 0;margin-bottom: 20px;text-align: center;color: #FFF;">
-  Copyright © 2022 <a href="/" style="color: #FFF;">Cargomation.com</a><br>All rights reserved</a>
+  Copyright © 2022 <a href="/" style="color: #FFF;"><?= $company_name; ?></a><br>All rights reserved</a>
 </div>
 
 <!-- jQuery -->

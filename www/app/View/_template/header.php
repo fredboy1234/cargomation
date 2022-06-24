@@ -69,8 +69,19 @@
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed text-sm">
   <div class="wrapper">
-  
+
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center" style="background-color: #0f1255;">
+  <?php
+  // TEMPORARY FIX FOR SILA ACCOUNT
+  $loader = '/img/logo_cargomation.png';
+  $sub_url = explode('.', $_SERVER['HTTP_HOST'])[0];
+  if($sub_url == 'sila') { 
+    $loader = '/img/custom/181/SILA_-_SV3_Logo_Transparent_LRG_-_CMYK_1.png';
+    $loader_alt = 'SV3';
+  ?>
+    <img class="animation__shake" src="<?= $loader; ?>" alt="<?= $this->escapeHTML($this->title . " - " . APP_NAME); ?>" height="80" width="80">
+  <?php } else { ?>
     <img class="animation__shake" src="<?= isset($this->misc_image['loader']) ? $this->misc_image['loader'] : '/img/logo.png'; ?>" alt="CargoMationLogo" height="80" width="80">
+  <?php } ?>
   </div>
