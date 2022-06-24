@@ -797,23 +797,24 @@ class Shipment extends Core\Controller {
 
             
             if(isset($shipment->route_leg) && !empty($shipment->route_leg)){
-                $stadecode= json_decode($shipment->route_leg);
-                if(isset($stadecode[0]->ScheduledArrival) && !is_array($stadecode[0]->ScheduledArrival)){
-                   
-                    $sta_date = date_format(date_create($stadecode[0]->ScheduledArrival), "Y-m-d");
-                    $diff =  strtotime(date_format(date_create($shipment->eta), "Y-m-d")) - strtotime($sta_date);
-                    $etadiff = ceil($diff / 86400);
-                    $etadaycolor = '';
-                    if($sta_date !=="" || strpos($shipment->eta,"1900-01-01")===false){
-                        if($etadiff > 0){
-                            $etadays =' <span style="color:red;" class="badge navbar-badge ship-badge">+'.$etadiff.'d</span>';
-                        }else{
-                            if($etadiff != 0){
-                                $etadays =' <span style="color:green;" class="badge navbar-badge ship-badge">'.$etadiff.'d</span>';
+                $stadecode = json_decode($shipment->route_leg);
+                if(is_array($stadecode)){  
+                    if(isset(end($stadecode)->ScheduledArrival) && !is_array(end($stadecode)->ScheduledArrival)){
+                        $sta_date = date_format(date_create(end($stadecode)->ScheduledArrival), "Y-m-d");
+                        $diff =  strtotime(date_format(date_create($shipment->eta), "Y-m-d")) - strtotime($sta_date);
+                        $etadiff = ceil($diff / 86400);
+                        $etadaycolor = '';
+                        if($sta_date !=="" || strpos($shipment->eta,"1900-01-01")===false){
+                            if($etadiff > 0){
+                                $etadays =' <span style="color:red;" class="badge navbar-badge ship-badge">+'.$etadiff.'d</span>';
+                            }else{
+                                if($etadiff != 0){
+                                    $etadays =' <span style="color:green;" class="badge navbar-badge ship-badge">'.$etadiff.'d</span>';
+                                }
                             }
+                        }else{
+                            $etadays='';
                         }
-                    }else{
-                        $etadays='';
                     }
                 }
             }
