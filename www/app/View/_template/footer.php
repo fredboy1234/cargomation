@@ -171,10 +171,20 @@ body {font-family: Arial, Helvetica, sans-serif;}
       </div>
     </nav>
   <?php } ?>
+    <?php
+      // TEMPORARY FIX FOR SILA ACCOUNT
+    $logo = '/img/logo_cargomation.png';
+    $company_name = "Cargomation.com";
+    $sub_url = explode('.', $_SERVER['HTTP_HOST'])[0];
+    if($sub_url == 'sila') :
+    ?>
+    <strong><?=APP_NAME?></strong>
+    <?php else: ?>
     <strong>Powered by Cargomation. Copyright &copy;
     <?php echo (gmDate('Y') == 2019) ? gmDate('Y') : ((gmDate('Y') < 2019) ? "Year Error!" : "2019 - " . gmDate('Y')); ?> 
     <a href="/"><?=APP_NAME?></a>.</strong>
     All rights reserved.
+    <?php endif; ?>
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> <?=APP_VERSION?>
     </div>

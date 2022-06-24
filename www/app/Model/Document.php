@@ -90,9 +90,8 @@ class Document extends Core\Model {
         }
 
         if(is_array($type)) {
-            $column = implode("', '", array_keys($type));
-            $type = "AND type IN (" . $column . ")";
-            
+            $column = implode("', '", array_values($type));
+            $type = "AND type IN ('" . $column . "')";
         } else {
             if (!empty($type)) {
                 $type = "AND type = '{$type}'";

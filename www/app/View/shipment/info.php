@@ -503,13 +503,21 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                             <?php if(isset($value->EstimatedDeparture)): ?>
                                             <div class="col-lg-6">
                                                 <strong>Estimated Departure </strong>
+                                                <?php if(!empty($value->EstimatedDeparture)): ?>
                                                 <p><?= ($value->EstimatedDeparture == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedDeparture)); ?></p>
+                                                <?php else: ?>
+                                                <p> - </p>
+                                                <?php endif; ?>
                                             </div>
                                             <?php endif; ?>
                                             <?php if(isset($value->EstimatedArrival)): ?>
                                             <div class="col-lg-6">
                                                 <strong>Estimated Arrival</strong>
+                                                <?php if(!empty($value->EstimatedArrival)): ?>
                                                 <p><?= ($value->EstimatedArrival == '01 Jan 1900 00:00.000') ? '-' : date("d F Y H:i", strtotime($value->EstimatedArrival)); ?></p>
+                                                <?php else: ?>
+                                                <p> - </p>
+                                                <?php endif; ?>
                                             </div>
                                             <?php endif; ?>
                                         </div>

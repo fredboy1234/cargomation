@@ -10,8 +10,14 @@ define("ROOT", realpath(dirname(__FILE__) . "/../") . "/");
 // Public Config
 define("PUBLIC_ROOT", ROOT . "public_html");
 
+$app_name = "CARGOMATION";
+$sub_url = explode('.', $_SERVER['HTTP_HOST'])[0];
+if($sub_url == 'sila') { 
+  $app_name = 'SV3';
+}
+
 // App Config
-define("APP_NAME", "CARGOMATION");
+define("APP_NAME", $app_name);
 define("APP_ROOT", ROOT . "app/");
 define("APP_PROTOCOL", stripos($_SERVER["SERVER_PROTOCOL"], "https") === true ? "https://" : "http://");
 define("APP_URL", APP_PROTOCOL . $_SERVER["HTTP_HOST"] . str_replace(PUBLIC_ROOT, "", dirname($_SERVER["SCRIPT_NAME"])) . "");
