@@ -198,7 +198,7 @@ $(document).ready(function(){
               to: to,
               property: "position"
           }, 5000, am4core.ease.sinInOut);
-          //animation.events.on("animationended", flyPlane)
+          animation.events.on("animationended", flyPlane)
       
           shadowPlane.animate({
               from: from,

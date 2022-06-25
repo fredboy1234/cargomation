@@ -61,7 +61,8 @@ am4core.ready(function() {
     lineSeries.mapLines.template.line.nonScalingStroke = true;
     //lineSeries.mapLines.template.line.strokeDasharray = "1,1";
     lineSeries.zIndex = 10;
-
+    lineSeries.mapLines.template.shortestDistance = false;
+    
     // Create image series
     var imageSeries = chart.series.push(new am4maps.MapImageSeries());
 

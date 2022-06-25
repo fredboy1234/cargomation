@@ -860,6 +860,15 @@ var loader = '<div id="loader-wrapper" class="d-flex justify-content-center">' +
     '</div>';
 
 $(document).ready(function() { 
+    if(localStorage.getItem('countryLoc') === null){
+        $.getJSON('/settings/countryLocation.json', function(data) {
+            localStorage.setItem('countryLoc', JSON.stringify(data));
+        }).fail(function(){
+            console.log("Error");
+        }); 
+   }
+    var countryLoc = JSON.parse(localStorage.getItem('countryLoc'));
+
     $(".collapse").on("hidden.bs.collapse", toggleChevron);
     $(".collapse").on("shown.bs.collapse", toggleChevron);
     $.each(route, function(key, value) {
@@ -868,14 +877,16 @@ $(document).ready(function() {
             "point": value.PortOfLoading.Name,
             "vessel": value.VesselName,
             "type": "Origin",
-            "keycount":keycount++
+            "keycount":keycount++,
+            "code": value.PortOfLoading.Code
         });
         combineRoute.push({
             "order": parseInt(value.LegOrder),
             "point": value.PortOfDischarge.Name,
             "vessel": value.VesselName,
             "type": "Destination",
-            "keycount":keycount++
+            "keycount":keycount++,
+            "code":value.PortOfDischarge.Code
         });
     });
     $.each(combineRoute, function(key, value) {
@@ -890,11 +901,12 @@ $(document).ready(function() {
             dataType: "json",
             data: { location: value.point },
             success: function (res) {
-                console.log(res);
+                var cCode = value.code.substr(0, 2);
                 data = res;
                 if(data.length > 0) {
-                    var latitude = data[0].lat
-                    var longitude = data[0].lng;
+                    var latitude = countryLoc[cCode].latitude//data[0].lat
+                    var longitude = countryLoc[cCode].longitude//data[0].lng;
+
 
                     pointObject.push({
                         "latitude": parseFloat(latitude),
@@ -1174,6 +1186,5 @@ $(document).ready(function() {
         ],
         "order": [[1, 'desc']],  
     });
-
 });
 </script>
