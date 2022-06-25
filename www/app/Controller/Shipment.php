@@ -1169,4 +1169,5 @@ class Shipment extends Core\Controller {
             echo "Invalid request token!";
         }
     }
+
 }
