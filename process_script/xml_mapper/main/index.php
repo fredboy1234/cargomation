@@ -41,7 +41,6 @@ if(isset($_GET['user_id'])){
 			}
 
 			###End of Identify ForwardingShipment XML
-
 			if($shipNumber !== ""){
 			###Get Shipment Details
 			$master_bill = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".WayBillNumber")));
@@ -78,6 +77,7 @@ if(isset($_GET['user_id'])){
 					}			
 		    	}
 			}
+
 			if($container != 'false'){
 				 if(count($container_decode) === 1){
 		    		foreach ($container_decode as $key => $value) {
@@ -94,31 +94,48 @@ if(isset($_GET['user_id'])){
 			    			}
 			    		}
 			    	}
+
 			    	$get_container = array();
 			    	if(count($container_keys) > 0){
 			    		foreach($container_keys as $keys){
 			    			array_push($get_container,str_replace(array("[[", "]]"), array("", ""),parseJson($xml, $path_ContainerCollectionMultiple,".[$keys]")));
 			    		}
 			    	  $a = "";
-
 			    	  $containerctr =  json_decode(json_encode($get_container, JSON_UNESCAPED_SLASHES));
 			    	   foreach ($containerctr as $key => $value) {
 			    	 	if(count($containerctr) > 1){
 			    	 		if ($key === array_key_first($containerctr)) {
-			    	 		  		 $a .= substr($value, 0, -1).',';
+			    	 			if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'},';
+			    	 			 }else{
+			    	 			 	$a .= substr($value, 0, -1).',';
+			    	 			 }
 			    	 		  }
-			    	 		  elseif ($key === array_key_last($containerctr)) {
-			    	 		  		 $a .= substr($value, 1, -1).']';
+			    	 		  elseif ($key === array_key_last($containerctr)) {   	 		  		
+			    	 		  	if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 1, -1).'}]';
+			    	 			 }else{
+			    	 			 	 $a .= substr($value, 1, -1).']';
+			    	 			 }
 			    	 		  }else{
-			    	 		  		 $a .= ltrim(substr($value, 0, -1), '[').',';
-			    	 		}
-			    	 	 }elseif(count($containerctr) == 1){	
-			    	 	 	$a = substr($value, 0, -1).']'; 
+			    	 		  	if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 				$a .= substr(ltrim(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), '['), 0, -1).'},';
+			    	 			 }else{
+			    	 			 	$a .= ltrim(substr($value, 0, -1), '[').',';
+			    	 			 }		    	 		  		 
+			    	 		 }
+			    	 	 }elseif(count($containerctr) == 1){
+			    	 	 		if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).']'; 
+			    	 			 }else{
+			    	 			 	$a = substr($value, 0, -1).']'; 
+			    	 			 }	
+			    	 	 	
 			    	 	 }else{
 			    	 	 	$a = "false";
 			    	 	 }
 			    	   }
-			    	   $containercollection = str_replace(array("'", "'"), array("", ""),$a);
+			    	  $containercollection = str_replace(array("'", "'"), array("", ""),$a);
 			    	}
 		    	}
 			}
@@ -148,7 +165,6 @@ if(isset($_GET['user_id'])){
 				}
 			} 
 			###End of Get Last leg details of transport collection
-
 
 			### Get Organization Collection / Contact Info /
 			if($consolNumber == '' && $xmlType != 'CustomsDec'){
@@ -228,12 +244,6 @@ if(isset($_GET['user_id'])){
 			}
 			###End of Process Shipment to Database
 
-			###Get customs brokerage , arinvoice , order
-			require_once('customs.php');
-			require_once('arinvoice.php');
-			require_once('order.php');
-			###End of Get customs brokerage , arinvoice , order
-
 		}else{ 
 			$ignored_Xml = "E:/A2BFREIGHT_MANAGER/$client_email/CW_ERROR/";
 			if(!file_exists($ignored_Xml.$filename)){
@@ -251,6 +261,11 @@ if(isset($_GET['user_id'])){
 		} 
 		unset($ship_array); 
 	}
+	###Get customs brokerage , arinvoice , order
+	require_once('customs.php');
+	require_once('arinvoice.php');
+	require_once('order.php');
+	###End of Get customs brokerage , arinvoice , order
 }else{
 	logFile("shipment_log.txt",$web_service);
 	}
