@@ -326,7 +326,7 @@ class Shipment extends Core\Controller {
 
         if(empty($type)) {
             $type = [];
-            foreach ($this->client_doc_type as $key => $value) {
+            foreach ($client_doc_type as $key => $value) {
                 $type[] = $value->doc_type;
             }
         }
