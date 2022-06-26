@@ -542,11 +542,11 @@ class Shipment extends Core\Model {
         return $Db->query($query)->results();
     }
 
-    public function getContainerByShipNum($shipment_id, $arg = "*") {
+    public function getContainerByShipNum($shipment_id) {
         $Db = Utility\Database::getInstance();
-        $query = "SELECT {$arg} 
-                FROM shipment_container 
-                WHERE containershipnumber = '{$shipment_id}' ";
+        $query = "SELECT container
+                FROM shipment
+                WHERE shipment_num = '{$shipment_id}' ";
         return $Db->query($query)->results();
     }
 
