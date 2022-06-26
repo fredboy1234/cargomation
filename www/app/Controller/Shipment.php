@@ -477,7 +477,27 @@ class Shipment extends Core\Controller {
         $shipment_json = json_decode($shipment);
         foreach ($shipment_json as $key => $value) {
             if($value->index_lvl == 'document') {
-                if($value->index_check == 'true') {
+                if($value->index != 'all') {
+                    if($value->index_check == 'true') {
+                        $selected_doc[] = $value->index;
+                    }
+                }
+            }
+        }
+        return $selected_doc;
+    }
+
+    public function allDocumentTypeFromSettings($user = "") {
+
+        $User = new Model\User;
+
+        $shipment = $User->getSubDocumentType($user)[0]->shipment;
+        $selected_doc = [];
+
+        $shipment_json = json_decode($shipment);
+        foreach ($shipment_json as $key => $value) {
+            if($value->index_lvl == 'document') {
+                if($value->index != 'all') {
                     $selected_doc[] = $value->index;
                 }
             }
@@ -797,8 +817,11 @@ class Shipment extends Core\Controller {
         $array_data = json_decode($param);
         $User = new Model\User;
         // $doc_type = array_column($this->Document->getDocumentType(), 'type');
-        // $doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type');
-        $doc_type = $this->documentTypeFromSettings($user_id);
+        // $doc_type = array_intersect($cw_doc_type, $sh_doc_type);
+        // $diff_doc = array_diff($cw_doc_type, $sh_doc_type);
+        $cw_doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type'); // CW
+        $sh_doc_type = $this->documentTypeFromSettings($user_id); // SETTINGS : true
+        $all_sh_doc_type = $this->allDocumentTypeFromSettings($user_id); // SETTINGS : all
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
       
@@ -903,39 +926,6 @@ class Shipment extends Core\Controller {
             }
             $subdata['ata_date'] = '<span class="d-none">'.($ata_date_sort=="01/01/1900"?"No Date Available":$ata_date_sort).'</span>'.($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date);
             $subdata['atd_date'] = '<span class="d-none">'.($atd_date_sort=="01/01/1900"?"No Date Available":$atd_date_sort).'</span>'.($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date);
-            // if(!empty($shipment->Containers)) {
-            //     $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
-            //     // Container Number
-            //     $container_num = array();
-            //     foreach ($test as $keye => $valuee) {
-            //         $container_num[] = explode(', ', $valuee);
-            //         $subdata['container_number'] = '
-            //         <div class="btn-group">
-            //             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            //             View
-            //             </button>
-            //             <div class="dropdown-menu">';
-            //             if(!empty($test)) {
-            //                 $last_key = array_key_last($container_num);
-            //                 foreach ($container_num as $key7 => $value7) {
-            //                     $subdata['container_number'] .= 
-            //                     '<span class="dropdown-item">'
-            //                     . 'Container Number: ' . $value7[0] . '<br>'
-            //                     . 'Container Type: ' . $value7[1] . '<br>'
-            //                     . 'Container Delivery Mode: ' . $value7[2] . '<br>'
-            //                     . '</span>';
-            //                     if($last_key !== $key7) {
-            //                         $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
-            //                     }
-            //                 }
-            //             }
-            //         $subdata['container_number'] .= '
-            //             </div>
-            //         </div>';
-            //     }
-            // } else {
-            //     $subdata['container_number'] = '<span class="text-warning">No data</span>';
-            // }
 
             $container_arr = [];
             foreach ($shipment->Container_Infos as $key => $container) {
@@ -974,7 +964,7 @@ class Shipment extends Core\Controller {
 
             // DOCUMENT LEVEL
             // Default Empty Value (DEV)
-            foreach ($doc_type as $type) {
+            foreach ($cw_doc_type as $type) {
                 $documents[strtolower($type)]['text'] = "Empty";
                 $documents[strtolower($type)]['approved'] = 0;
                 $documents[strtolower($type)]['pending'] = 0;
@@ -983,32 +973,32 @@ class Shipment extends Core\Controller {
                 $documents[strtolower($type)]['count'] = "";
             }
             if(!empty($shipment->Documents)) {
+                $document_type = [];
                 foreach ($shipment->Documents as $document_key => $document) {
-                    if(in_array($document->type, $doc_type)) {
-                        // Status Count
-                        if($document->status == "approved") {
-                            $documents[strtolower($document->type)]['approved']++;
-                        }
-                        if($document->status == "pending") {
-                            $documents[strtolower($document->type)]['pending']++;
-                        }  
-                        if($document->status == "watched") {
-                            $documents[strtolower($document->type)]['watched']++;
-                        }
-                        // Status Text and Badge
-                        if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
-                            $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
-                            $documents[strtolower($document->type)]['badge'] = "badge-success";
-                            $documents[strtolower($document->type)]['text'] = "Approved"; 
-                        } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
-                            $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
-                            $documents[strtolower($document->type)]['badge'] = "badge-warning";
-                            $documents[strtolower($document->type)]['text'] = "Pending";
-                        } else {
-                            // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
-                            // $documents[strtolower($document->type)]['badge'] = "badge-warning";
-                            // $documents[strtolower($document->type)]['text'] = "Pending";
-                        }
+                    $document_type[$document_key] = strtolower($document->type);
+                    // Status Count
+                    if($document->status == "approved") {
+                        $documents[strtolower($document->type)]['approved']++;
+                    }
+                    if($document->status == "pending") {
+                        $documents[strtolower($document->type)]['pending']++;
+                    }  
+                    if($document->status == "watched") {
+                        $documents[strtolower($document->type)]['watched']++;
+                    }
+                    // Status Text and Badge
+                    if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-success";
+                        $documents[strtolower($document->type)]['text'] = "Approved"; 
+                    } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        $documents[strtolower($document->type)]['text'] = "Pending";
+                    } else {
+                        // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        // $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        // $documents[strtolower($document->type)]['text'] = "Pending";
                     }
                 }
             }
@@ -1069,7 +1059,7 @@ class Shipment extends Core\Controller {
                     # $subdata[$key] = "Empty";
                 #}
             }
-            $subdata['all'] = (empty($shipment->Documents)) ? '<div class="doc-stats">
+            $subdata['all'] = (empty(array_intersect($all_sh_doc_type, $document_type))) ? '<div class="doc-stats">
             <span class="doc text-warning no-doc" data-id="' . $shipment->shipment_num . '">No Document</span></div>' :'<div class="doc-stats">
             <span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
 
