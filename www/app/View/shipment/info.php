@@ -55,7 +55,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                         break;
                                     case ($eta_date < $current_date):
                                         echo "Delivered" . ' <i class="fas fa-check-circle text-success"></i> '; // icon check
-                                        echo "<br>" . date_format(date_create($this->shipment_info[0]->atd),"d M Y H:i");
+                                        // echo "<br>" . date_format(date_create($this->shipment_info[0]->atd),"d M Y H:i");
                                         break;
                                     default:
                                         echo '<i class="fas fa-hourglass-half text-warning"></i> ' . "Pending"; // icon hour glass
@@ -728,9 +728,9 @@ foreach ($this->shipment_info[0] as $key => $value) {
 
 </div>
 <style>
-.small-box .inner {
+/* .small-box .inner {
     min-height: 105px !important;
-}
+} */
 .amcharts-myline path {
   stroke-linejoin: round;
   stroke-linecap: round;
