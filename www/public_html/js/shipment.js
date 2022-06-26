@@ -518,6 +518,7 @@ $(document).ready(function () {
   });
 
   var map = $('select[name="settings-dual"]').on("change", function (e) {
+    table.ajax.reload(setColor);
     setTimeout(function () {
       var comp = $("select[name='settings-dual'] option:selected").map(function () {
         return this.value;
