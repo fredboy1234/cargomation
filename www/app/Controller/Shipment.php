@@ -903,39 +903,75 @@ class Shipment extends Core\Controller {
             }
             $subdata['ata_date'] = '<span class="d-none">'.($ata_date_sort=="01/01/1900"?"No Date Available":$ata_date_sort).'</span>'.($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date);
             $subdata['atd_date'] = '<span class="d-none">'.($atd_date_sort=="01/01/1900"?"No Date Available":$atd_date_sort).'</span>'.($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date);
-            if(!empty($shipment->Containers)) {
-                $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
-                // Container Number
-                $container_num = array();
-                foreach ($test as $keye => $valuee) {
-                    $container_num[] = explode(', ', $valuee);
-                    $subdata['container_number'] = '
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        View
-                        </button>
-                        <div class="dropdown-menu">';
-                        if(!empty($test)) {
-                            $last_key = array_key_last($container_num);
-                            foreach ($container_num as $key7 => $value7) {
-                                $subdata['container_number'] .= 
-                                '<span class="dropdown-item">'
-                                . 'Container Number: ' . $value7[0] . '<br>'
-                                . 'Container Type: ' . $value7[1] . '<br>'
-                                . 'Container Delivery Mode: ' . $value7[2] . '<br>'
-                                . '</span>';
-                                if($last_key !== $key7) {
-                                    $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
-                                }
-                            }
-                        }
-                    $subdata['container_number'] .= '
-                        </div>
-                    </div>';
+            // if(!empty($shipment->Containers)) {
+            //     $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
+            //     // Container Number
+            //     $container_num = array();
+            //     foreach ($test as $keye => $valuee) {
+            //         $container_num[] = explode(', ', $valuee);
+            //         $subdata['container_number'] = '
+            //         <div class="btn-group">
+            //             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            //             View
+            //             </button>
+            //             <div class="dropdown-menu">';
+            //             if(!empty($test)) {
+            //                 $last_key = array_key_last($container_num);
+            //                 foreach ($container_num as $key7 => $value7) {
+            //                     $subdata['container_number'] .= 
+            //                     '<span class="dropdown-item">'
+            //                     . 'Container Number: ' . $value7[0] . '<br>'
+            //                     . 'Container Type: ' . $value7[1] . '<br>'
+            //                     . 'Container Delivery Mode: ' . $value7[2] . '<br>'
+            //                     . '</span>';
+            //                     if($last_key !== $key7) {
+            //                         $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+            //                     }
+            //                 }
+            //             }
+            //         $subdata['container_number'] .= '
+            //             </div>
+            //         </div>';
+            //     }
+            // } else {
+            //     $subdata['container_number'] = '<span class="text-warning">No data</span>';
+            // }
+
+            $container_arr = [];
+            foreach ($shipment->Container_Infos as $key => $container) {
+                if(!empty($container->container_number)) {
+                    $container_arr[$key]['container_number'] = $container->container_number;
+                    $container_arr[$key]['container_type'] = $container->type;
+                    $container_arr[$key]['delivery_mode'] = $container->delivery_mode;
                 }
+            }
+
+            if(!empty($container_arr)) {
+                $subdata['container_number'] = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu">';
+
+                $last_key = array_key_last($container_arr);
+                foreach ($container_arr as $key7 => $container) {
+                    $subdata['container_number'] .= 
+                    '<span class="dropdown-item">'
+                    . 'Container Number: ' . $container['container_number']. '<br>'
+                    . 'Container Type: ' . $container['container_type'] . '<br>'
+                    . 'Container Delivery Mode: ' . $container['delivery_mode'] . '<br>'
+                    . '</span>';
+                    if($last_key !== $key7) {
+                        $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+                    }
+                }
+                $subdata['container_number'] .= '
+                    </div>
+                </div>';
             } else {
                 $subdata['container_number'] = '<span class="text-warning">No data</span>';
             }
+
             // DOCUMENT LEVEL
             // Default Empty Value (DEV)
             foreach ($doc_type as $type) {
