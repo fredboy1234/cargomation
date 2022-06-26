@@ -342,7 +342,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                             <?php if($transMode == 'sea'): ?>
                             <div class="col-lg-3">
                                 <dt>Delivery Mode:</dt>
-                                <dd><?= $value->DeliveryMode; ?></dd>
+                                <dd><?= $value->no_data; ?></dd>
                             </div>
                             <?php endif; ?>
                             <div class="col-lg-3">
