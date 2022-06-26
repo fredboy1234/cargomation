@@ -316,12 +316,15 @@ foreach ($this->shipment_info[0] as $key => $value) {
                 </span>
             </div>
             <div id="container_details" class="collapse">  
-                <?php if(empty($this->container_detail)): ?>   
+                <?php $container = json_decode($this->container_detail[0]->container); ?>
+                <?php if(empty($container)): ?>   
                     <span> No Container Data </span>
                 <?php else: ?>
-                    <?php foreach ($this->container_detail as $key => $value): $value->no_data = '<span class="text-danger"> - </span>'; ?>
-                        <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->id ?>" aria-expanded="true" >
-                            <span class="d-inline-block"><?= $value->containernumber; ?>
+                    <?php foreach ($container as $key => $value): ?>
+                        <?php $value->no_data = '<span class="text-danger"> - </span>'; 
+                        if(!empty($value->ContainerNumber)): ?>
+                        <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->ContainerNumber ?>" aria-expanded="true" >
+                            <span class="d-inline-block"><?= $value->ContainerNumber; ?>
                                 <?php if(false): ?>
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <i class='fas fa-skull-crossbones' aria-hidden="true"></i>
@@ -331,30 +334,31 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
                             </span>
                         </div>
-                        <dl id="cd-<?= $value->id ?>" class="row collapse">
+                        <dl id="cd-<?= $value->ContainerNumber ?>" class="row collapse">
                             <div class="col-lg-3">
                                 <dt>Container Type:</dt>
-                                <dd><?= $value->containertype; ?></dd>
+                                <dd><?= $value->ContainerType->Code; ?></dd>
                             </div>
                             <?php if($transMode == 'sea'): ?>
                             <div class="col-lg-3">
                                 <dt>Delivery Mode:</dt>
-                                <dd><?= $value->containerdeliverymode; ?></dd>
+                                <dd><?= $value->DeliveryMode; ?></dd>
                             </div>
                             <?php endif; ?>
                             <div class="col-lg-3">
                                 <dt>Gross Wt.:</dt>
-                                <dd><?= $value->no_data; ?></dd>
+                                <dd><?= $value->GrossWeight; ?></dd>
                             </div>
                             <div class="col-lg-3">
                                 <dt>Volume:</dt>
                                 <dd><?php
-                                $volume = $this->shipment_info[0]->totalvolume;
+                                // $volume = $this->shipment_info[0]->totalvolume . "m³";
+                                $volume = $value->VolumeCapacity;
                                 // $length = floatval($value->length);
                                 // $width = floatval($value->width);
                                 // $height = floatval($value->height); 
                                 // $volume = $length * $width * $height;
-                                echo number_format($volume, 2, '.', ',') . "m³"; ?></dd>
+                                echo number_format($volume, 2, '.', ',') . $value->VolumeUnit->Description; ?></dd>
                             </div>
                             <div class="col-lg-3">
                                 <dt>Packs:</dt>
@@ -385,6 +389,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                             </div>
                             <?php endif; ?>
                         </dl>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
