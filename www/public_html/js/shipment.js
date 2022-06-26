@@ -547,10 +547,15 @@ $(document).ready(function () {
           $('body').append(loader);
         },
         success: function (res) {
+          // $('#loader-wrapper').remove();
+          // for checking only
+          hideShowResetSettings();
+        },
+        complete: function (res) {
           $('#loader-wrapper').remove();
           // for checking only
           hideShowResetSettings();
-        }
+        },
       });
 
       if (wasClicked) {
@@ -665,6 +670,10 @@ $(document).ready(function () {
           $('body').append(loader);
         },
         success: function (res) {
+          $('#loader-wrapper').remove();
+          hideShowResetSettings();
+        },
+        complete: function (res) {
           $('#loader-wrapper').remove();
           hideShowResetSettings();
         }
