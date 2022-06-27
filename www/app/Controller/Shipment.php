@@ -972,8 +972,8 @@ class Shipment extends Core\Controller {
                 $documents[strtolower($type)]['badge'] = "";
                 $documents[strtolower($type)]['count'] = "";
             }
+            $document_type = [];
             if(!empty($shipment->Documents)) {
-                $document_type = [];
                 foreach ($shipment->Documents as $document_key => $document) {
                     $document_type[$document_key] = strtolower($document->type);
                     // Status Count
