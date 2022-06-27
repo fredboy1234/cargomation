@@ -342,6 +342,7 @@ class Shipment extends Core\Controller {
             "shipment" => ["shipment_id" => $shipment_id, "type" => $type], 
             "shipment_info" => $this->Shipment->getShipmentByShipID($shipment_id), 
             "document" => $this->Document->getDocumentByShipment2($shipment_id, $type),
+            "client_doc_type" => $client_doc_type,
             "document_type" => $document_type,
             "user_settings" => $User->getUserSettings($user_id)
         ]);
@@ -464,6 +465,44 @@ class Shipment extends Core\Controller {
             } 
         }
         return json_encode($shipment_settings);
+    }
+
+    public function documentTypeFromSettings($user = "") {
+
+        $User = new Model\User;
+
+        $shipment = $User->getSubDocumentType($user)[0]->shipment;
+        $selected_doc = [];
+
+        $shipment_json = json_decode($shipment);
+        foreach ($shipment_json as $key => $value) {
+            if($value->index_lvl == 'document') {
+                if($value->index != 'all') {
+                    if($value->index_check == 'true') {
+                        $selected_doc[] = $value->index;
+                    }
+                }
+            }
+        }
+        return $selected_doc;
+    }
+
+    public function allDocumentTypeFromSettings($user = "") {
+
+        $User = new Model\User;
+
+        $shipment = $User->getSubDocumentType($user)[0]->shipment;
+        $selected_doc = [];
+
+        $shipment_json = json_decode($shipment);
+        foreach ($shipment_json as $key => $value) {
+            if($value->index_lvl == 'document') {
+                if($value->index != 'all') {
+                    $selected_doc[] = $value->index;
+                }
+            }
+        }
+        return $selected_doc;
     }
 
     public function defaultSettings_OLD($user="", $role_id=""){
@@ -778,7 +817,11 @@ class Shipment extends Core\Controller {
         $array_data = json_decode($param);
         $User = new Model\User;
         // $doc_type = array_column($this->Document->getDocumentType(), 'type');
-        $doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type');
+        // $doc_type = array_intersect($cw_doc_type, $sh_doc_type);
+        // $diff_doc = array_diff($cw_doc_type, $sh_doc_type);
+        $cw_doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type'); // CW
+        $sh_doc_type = $this->documentTypeFromSettings($user_id); // SETTINGS : true
+        $all_sh_doc_type = $this->allDocumentTypeFromSettings($user_id); // SETTINGS : all
         $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
         $documents = array();
       
@@ -883,45 +926,45 @@ class Shipment extends Core\Controller {
             }
             $subdata['ata_date'] = '<span class="d-none">'.($ata_date_sort=="01/01/1900"?"No Date Available":$ata_date_sort).'</span>'.($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date);
             $subdata['atd_date'] = '<span class="d-none">'.($atd_date_sort=="01/01/1900"?"No Date Available":$atd_date_sort).'</span>'.($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date);
-            if(!empty($shipment->Containers)) {
-                $test = explode(':', trim($shipment->Containers[0]->CONTAINER, ':'));
-                // Container Number
-                $container_num = array();
-                foreach ($test as $keye => $valuee) {
-                    $container_num[] = explode(', ', $valuee);
-                    $subdata['container_number'] = '
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        View
-                        </button>
-                        <div class="dropdown-menu">';
-                        if(!empty($test)) {
-                            $last_key = array_key_last($container_num);
-                            foreach ($container_num as $key7 => $value7) {
-                                $subdata['container_number'] .= 
-                                '<span class="dropdown-item">'
-                                . 'Container Number: ' . $value7[0] . '<br>'
-                                . 'Container Type: ' . $value7[1] . '<br>'
-                                . 'Container Delivery Mode: ' . $value7[2] . '<br>'
-                                . '</span>';
-                                if($last_key !== $key7) {
-                                    $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
-                                }
-                            }
-                        }
-                    $subdata['container_number'] .= '
-                        </div>
-                    </div>';
+
+            $container_arr = [];
+            foreach ($shipment->Container_Infos as $key => $container) {
+                if(!empty($container->container_number)) {
+                    $container_arr[$key]['container_number'] = $container->container_number;
+                    $container_arr[$key]['container_type'] = $container->type;
+                    $container_arr[$key]['delivery_mode'] = $container->delivery_mode;
                 }
+            }
+
+            if(!empty($container_arr)) {
+                $subdata['container_number'] = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu">';
+
+                $last_key = array_key_last($container_arr);
+                foreach ($container_arr as $key7 => $container) {
+                    $subdata['container_number'] .= 
+                    '<span class="dropdown-item">'
+                    . 'Container Number: ' . $container['container_number']. '<br>'
+                    . 'Container Type: ' . $container['container_type'] . '<br>'
+                    . 'Container Delivery Mode: ' . $container['delivery_mode'] . '<br>'
+                    . '</span>';
+                    if($last_key !== $key7) {
+                        $subdata['container_number'] .= '<div class="dropdown-divider"></div>';
+                    }
+                }
+                $subdata['container_number'] .= '
+                    </div>
+                </div>';
             } else {
                 $subdata['container_number'] = '<span class="text-warning">No data</span>';
             }
+
             // DOCUMENT LEVEL
-            $subdata['all'] = (empty($shipment->Documents)) ? '<div class="doc-stats">
-            <span class="doc text-warning no-doc" data-id="' . $shipment->shipment_num . '">No Document</span></div>' :'<div class="doc-stats">
-            <span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
             // Default Empty Value (DEV)
-            foreach ($doc_type as $type) {
+            foreach ($cw_doc_type as $type) {
                 $documents[strtolower($type)]['text'] = "Empty";
                 $documents[strtolower($type)]['approved'] = 0;
                 $documents[strtolower($type)]['pending'] = 0;
@@ -929,8 +972,10 @@ class Shipment extends Core\Controller {
                 $documents[strtolower($type)]['badge'] = "";
                 $documents[strtolower($type)]['count'] = "";
             }
+            $document_type = [];
             if(!empty($shipment->Documents)) {
                 foreach ($shipment->Documents as $document_key => $document) {
+                    $document_type[$document_key] = strtolower($document->type);
                     // Status Count
                     if($document->status == "approved") {
                         $documents[strtolower($document->type)]['approved']++;
@@ -1014,6 +1059,9 @@ class Shipment extends Core\Controller {
                     # $subdata[$key] = "Empty";
                 #}
             }
+            $subdata['all'] = (empty(array_intersect($all_sh_doc_type, $document_type))) ? '<div class="doc-stats">
+            <span class="doc text-warning no-doc" data-id="' . $shipment->shipment_num . '">No Document</span></div>' :'<div class="doc-stats">
+            <span class="doc badge badge-primary" data-id="' . $shipment->shipment_num . '">View All</span></div>';
 
             //remove this code if kuya has API
             // print_r($docRequest);

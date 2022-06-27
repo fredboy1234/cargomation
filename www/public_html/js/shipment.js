@@ -518,6 +518,7 @@ $(document).ready(function () {
   });
 
   var map = $('select[name="settings-dual"]').on("change", function (e) {
+    table.ajax.reload(setColor);
     setTimeout(function () {
       var comp = $("select[name='settings-dual'] option:selected").map(function () {
         return this.value;
@@ -546,10 +547,15 @@ $(document).ready(function () {
           $('body').append(loader);
         },
         success: function (res) {
+          // $('#loader-wrapper').remove();
+          // for checking only
+          hideShowResetSettings();
+        },
+        complete: function (res) {
           $('#loader-wrapper').remove();
           // for checking only
           hideShowResetSettings();
-        }
+        },
       });
 
       if (wasClicked) {
@@ -664,6 +670,10 @@ $(document).ready(function () {
           $('body').append(loader);
         },
         success: function (res) {
+          $('#loader-wrapper').remove();
+          hideShowResetSettings();
+        },
+        complete: function (res) {
           $('#loader-wrapper').remove();
           hideShowResetSettings();
         }

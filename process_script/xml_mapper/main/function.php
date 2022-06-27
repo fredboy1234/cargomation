@@ -226,6 +226,8 @@ function addDocument($value_array,$shipNumber,$ship_id){
 	
 	$sql = "INSERT INTO document {$col_field} VALUES $var";
 	$res = execQuery($sql);
+	$sql_status = "insert into document_status (document_id,status) SELECT id ,'pending' FROM document WHERE id NOT IN (SELECT document_id FROM document_status) ORDER BY id DESC";
+	$res_status = execQuery($sql_status);
 	if($res){
 	 	base64_Decoder($value_array,$filepath,$shipNumber);
 	 	unset($value_array);
