@@ -152,6 +152,9 @@ $(window).on("load", function() {
       data:{userid:uid},
       success: function (data) {
         console.log(data);
+        // if(data.status ){
+
+        // }
         JSON.parse(data.port_loading_count)
         console.log(JSON.parse(data.port_loading_count));
         //console.log(JSON.parse(data.port_loading_count));
@@ -161,9 +164,9 @@ $(window).on("load", function() {
           
           if(loading !==""){
             var mcolor ="#dc3545";
-            if(oval.mode === "Air"){
+            if(oval.mode === "Air" || oval.mode === "AIR"){
               mcolor = "#007bff";
-            }else if(oval.mode === "Sea"){
+            }else if(oval.mode === "Sea" || oval.mode === "SEA"){
               mcolor = "#28a745";
             }
             var txtcontent = '';
