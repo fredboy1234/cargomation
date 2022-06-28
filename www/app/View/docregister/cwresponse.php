@@ -6,10 +6,9 @@
     $spited = preg_split('/\.\s*?(?=[A-Z])|(\r\n|\n|\r)/', $cwresponse);
 ?>
     <?= $this->getCSS(); ?>
-    <pre>
-        
+    
     <?php 
-     print_r($arrText);
+     
     foreach($arrText as $sp){
         if (strpos($sp, 'Error - ') !== false) {
         $logs['error'][] = $sp;
