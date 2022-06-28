@@ -185,7 +185,14 @@
                                         </td>
                                             <?php foreach($matchval['container_details'] as $key=>$condetails){?>
                                                 <?php foreach($condetails as $con){?>
-                                                    <td><?=print_r($con);//$con?></td>
+                                                    <td>
+                                                        <?php if(gettype($con) === 'string'){
+                                                            echo $con;
+                                                        }else{
+                                                            print_r($con);
+                                                        }
+                                                        ?>
+                                                    </td>
                                                 <?php } ?>
                                             <?php } ?>
                                         </tr>
