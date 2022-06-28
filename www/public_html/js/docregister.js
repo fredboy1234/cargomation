@@ -307,9 +307,15 @@ $(document).on('click','#addtocw',function(){
     success:function(data)
     {
       console.log(data.status);
+      $message = '';
+      if(data.status === 200){
+        $message = 'Pushing File Failed (Please Contact Client Support)';
+      }else{
+        $message = 'Pushing File Success';
+      }
       Swal.fire(
             "",
-            "Push Success!",
+            "$message",
             );
       // if(data.status ==='200'){
       //   Swal.fire(

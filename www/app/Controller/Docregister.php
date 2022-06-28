@@ -920,6 +920,7 @@ class Docregister extends Core\Controller {
     public function pushToCargowise(){
         $user_id = $_SESSION['user'];
         $process_id = '';
+        $data = array();
 
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
@@ -941,9 +942,17 @@ class Docregister extends Core\Controller {
             $url ='https://cargomation.com:5200/redis/apinvoice/CargowiseShipmentReg'; 
             
             $result = $this->postAuth($url,$payload,$headers);
+            $decoded = json_decode($result);
+            $data['process_id'] = $_POST['process_id'];
+            $data['user_id'] =  $user_id ;
+            $data['status'] = $decoded->status;
+            $data['logs'] = $decoded->message;
+            $data['response'] =  $decoded->data;
+            $data['action_type'] = 'Push To Cargowise Button';
 
-            print_r($result);
-            return $result;
+            $this->insertLogs($data);
+
+           echo $result;
         }
          
     }
