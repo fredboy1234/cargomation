@@ -357,7 +357,7 @@ $(document).on('click','.cwresponse',function(){
     var prim_ref = $(this).attr('data-prim_ref');
     console.log(prim_ref);
     var url = "/docregister/cwresponse/" + prim_ref;
-    $("#preview-cwresponse .modal-body").append(loader);
+    $("#preview-cwresponse").append(loader);
     // load the url and show modal on success
     $("#preview-cwresponse .modal-body").load(url, function (response, status, xhr) {
       if (xhr.status == 200) {
