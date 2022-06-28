@@ -312,9 +312,13 @@ $(document).on('click','#addtocw',function(){
       $('#loader-wrapper').remove();
       var parseresponse = JSON.parse(data);
       var $message = '';
-      console.log(parseresponse);
-      if(parseresponse.status === 200){
-        $message = 'Pushing File Failed (Please Contact Client Support)';
+      console.log(parseresponse.status);
+      if(parseresponse.status != 200){
+        $log = '';
+        if(parseresponse.logs!=''){
+          $log = 'parseresponse.logs';
+        }
+        $message = 'Pushing File Failed '+ $log +' (Please Contact Client Support)';
       }else{
         $message = 'Pushing File Success';
       }
