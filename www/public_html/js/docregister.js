@@ -316,7 +316,7 @@ $(document).on('click','#addtocw',function(){
       if(parseresponse.status != 200){
         $log = '';
         if(parseresponse.logs!=''){
-          $log = 'parseresponse.logs';
+          $log = parseresponse.logs;
         }
         $message = 'Pushing File Failed '+ $log +' (Please Contact Client Support)';
       }else{
