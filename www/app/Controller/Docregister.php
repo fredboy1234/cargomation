@@ -430,6 +430,8 @@ class Docregister extends Core\Controller {
         $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
+       
+        //$jsonDecode = json_decode($this->newjson(230,181));
         $status = $jsonDecode->status;
         $message = $jsonDecode->message;
 
@@ -442,15 +444,18 @@ class Docregister extends Core\Controller {
 
         $this->insertLogs($responsedata);
         //$jsonDecode->data='{"MatchReportArray":[{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":{"Type":"ForwardingShipment","Key":"S00001586","Shipper":"DUMMY SHA","Consignee":"CARGOMATION TEST ORGANISATION","LocalClient":"CARGOMATION TEST ORGANISATION","NotifyParty":"COVESTRO PTY LTD","HouseBill":"STL22008755XX","Origin":"CNNSA","Destination":"AUSYD","Weight":"543.000","Volume":"8.700","Packs":"11","PackType":"CTN","GoodsDescription":"DESMODUR T80 TANK TRUCK UN NO. 2078","Incoterm":"FOB","ReleaseType":"EBL"},"CWLines":{"CWLine":{"ContainerNumber":"UAUA435213","PackQty":"11","PackType":"CTN","Volume":"8.700","Weight":"543.000"}}},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE","coloader":"SILA GLOBAL PTY LTD","hbl_number":"STL22008755","shipper":"COVESTRO (HONG KONG) LIMITED","port_origin":"SHANGHAI","number_original":"THREE","consignee":"COVESTRO PTY LTD","incoterm":"FREIGHT PREPAID","port_destination":"MELBOURNE","filename":"HBL.pdf","page":"1","release_type":"OBR","process_id":"49","webservice_link":"https:\/\/a2btrnservices.wisegrid.net\/eAdaptor\/  ","webservice_username":"A2B","webservice_password":"Hw7m3XhS","server_id":"TRN","enterprise_id":"A2B","company_code":"SYD test test"},"ParsedPDFLines":{"ParsedPDFLine":{"CONTAINER_NUMBER":"WSDU6001792 Test","SEAL":"784914","CONTAINER_TYPE":"20TK","CHARGEABLE_WEIGHT":"23260 KGS","VOLUME":"24CBM Test","PACKAGE_COUNT":"2"}}}}}]}';
-       
+        // echo"<pre>";
+        // print_r(json_decode($jsonDecode->data)->MatchReportArray);
+        // exit;
+        
         if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
-       
+      
        if(!isset($jsonDecode->data)) exit;
+
+        $matchArray =  json_decode($jsonDecode->data)->MatchReportArray;
        
-        $matchArray = json_decode($jsonDecode->data)->MatchReportArray;
-        
         if(!empty($matchArray)){
             foreach($matchArray as $match){
                 $jmatch = $match; 
@@ -532,8 +537,7 @@ class Docregister extends Core\Controller {
             'prim_ref'=>$prim_ref,
             'matchjson'=>$jsonDecode->data,
             'userid'=>$_SESSION['user'],
-            'status'=>$status,
-            'message'=>$message,
+          
         ]);
     }
 
@@ -907,7 +911,7 @@ class Docregister extends Core\Controller {
         
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
-        
+      
         $result = $this->postAuth($url, $payload, $headers);
         return $result;
     }
@@ -1020,5 +1024,52 @@ class Docregister extends Core\Controller {
     public function getShipCodeByUserID(){
         $Docregister = Model\DocRegister::getInstance();
         echo json_encode($Docregister->getShipCodeByUserID($_SESSION['user']));
+    }
+
+    public function autocomplete(){
+        
+        $exp1 = explode('?',$_SERVER['REQUEST_URI']);
+        if(isset($exp1[1])){
+            $expReq = $exp1[1];
+            $exp2 = explode('=',$expReq);
+            if(isset($exp2[1])){
+                $lvalue = $exp2[1];
+                $arr = array(
+                    "user_id" => (string)181,
+                    "filter"=> array(
+                            array(
+                                "columnname"=> "org_code",
+                                "type"=> "contains",
+                                "value"=> (string)$lvalue,
+                            "cond"=> "and"
+                            )
+                        )
+                );
+        
+                $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
+                $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
+                            "Content-Type: application/json"];
+         
+                $url ='https://cargomation.com:5200/redis/apinvoice/getorg_codes'; 
+        
+                $result = $this->postAuth($url,$payload,$headers);
+                
+                $returnarray = array();
+                $decoded = json_decode($result);
+                if($decoded->message === "Success"){
+                    if(!empty($decoded->data)){
+                      
+                        foreach(json_decode($decoded->data) as $ccode){
+                            $returnarray[$ccode->org_code][] = array(
+                                "code"=>$ccode->org_code,
+                                "name"=>$ccode->org_name
+                            );
+                        }
+
+                       echo json_encode($returnarray);
+                    }
+                }
+            }
+        }
     }
 }

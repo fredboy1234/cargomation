@@ -48,7 +48,7 @@
             </button>
             <div class="col-lg-12 sideparent">
             <div id="embeded">
-            <?php $pdfcount=0;?>
+            <?php $pdfcount=0; $numberofSelec =array();?>
             <?php foreach($matchData as $hbl){?>
                 <?php $pdfcount++;?>
                 <?php $pdfclass=$pdfcount==1 ? '' : 'd-none';?>
@@ -100,12 +100,12 @@
                 </li> -->
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-                <?php $cc = 0;?>
-                <?php $show = '';?>
+                <?php $cc = 0; ?>
+                <?php $show = ''; $select2count=0;?>
                 <?php foreach($matchData as $pkey=>$matchval){ ?>
                     <?php $cc++; 
-                          $tolast = array('Consignee Org Code','Shipper Org Code','Consignee','Shipper');
-                          $withOptions = array('Consignee Org Code','Shipper Org Code');
+                          $tolast = array('Consignee Org Code','Shipper Org Code','Consignee','Shipper','Carrier','Carrier Org Code');
+                          $withOptions = array('Consignee Org Code','Shipper Org Code','Carrier Org Code');
                     ?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
                     <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
@@ -122,17 +122,18 @@
                             <?php }?>
                         <?php } ?>
                         <br>
-                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
+                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){ ?>
                             
                             <?php if(in_array($keyField,$withOptions)){ 
                                  $kokey = strtolower(str_replace(" ","_",$keyField));
                                  $names = strtok($keyField, " ");
                                  $dname = isset($matchval['fieldlist'][$names]) ?  $matchval['fieldlist'][$names] : '' ;
                                  //echo $dname."<br>";
+                                 $numberofSelec[]=$kokey.'_'.$matchval['hbl_numbers'];
                             ?>
                                 <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
-                                    <label for="<?=$kokey?>_id" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                    <select id="<?=$kokey?>_id" class="<?=$kokey?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
+                                    <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                    <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
                                         <option value="<?=$listofField?>" selected><?=$listofField?></option>
                                     </select>
                                 </div>
@@ -142,7 +143,7 @@
                                         <input type="text" class="<?=$names?> form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$names))?>"  value="<?=$dname?>">
                                     </div>
                                 </div>
-                            <?php }?>
+                            <?php $select2count++; }?>
                         <?php } ?>
                         
                         <div class="d-block col-md-12 " style="overflow: hidden;">
@@ -184,7 +185,7 @@
                                         </td>
                                             <?php foreach($matchval['container_details'] as $key=>$condetails){?>
                                                 <?php foreach($condetails as $con){?>
-                                                    <td><?print_r($con);//$con?></td>
+                                                    <td><?=print_r($con);//$con?></td>
                                                 <?php } ?>
                                             <?php } ?>
                                         </tr>
@@ -249,8 +250,11 @@
  var match_arr = <?=json_encode($this->match_arr)?>;
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
+ var numberofSelec = <?=json_encode($numberofSelec)?>;
+ console.log(numberofSelec);
  //show edit modal on preview doc
-$(document).on('click','.edit-details',function(){
+ $(document).ready(function(){
+    $(document).on('click','.edit-details',function(){
     console.log(match_arr);
     var tableindex = $(this).attr('data-tindex');
     var matcharrayIndex = $(this).attr('data-dindex');
@@ -315,43 +319,61 @@ $(document).on('click','.sendToCGM',function(){
     //     $('.company_code').select2('destroy');
     // });
     $('#preview-doc').on('shown.bs.modal ', function () {
-        $('.consignee_org_code,.shipper_org_code').select2({
-            dropdownAutoWidth : true,
-            width: 'auto'
-        });
         
-        var user_id = <?=json_encode($this->userid)?>;
-        if(localStorage.getItem('userid') == null){
-            localStorage.setItem('userid',user_id);
-            setOption();
-        }
+            $.each(numberofSelec,function(okey,oval){
+                var selector1 = '.consignee_org_code_'+oval;
+                var selector2 = '.shipper_org_code_'+oval;
+               
+                $('#'+oval).select2({
+                    dropdownAutoWidth : true,
+                    width: 'auto',
+                    ajax:{
+                        url:'docregister/autocomplete',
+                        dataType: 'json',
+                        data:function(params){
+                            var query={
+                                search:params.term
+                            }
+                            return query;
+                        },
+                        delay: 250,
+                        processResults: function(data,params) {
+                            var resData = [];
+                            console.log('will i ever');
+                            console.log(data);
+                            console.log(params);
+                            $.each(data,function(okey,oval){
+                                console.log(oval);
+                                resData.push(oval);
+                            });
 
-        if(localStorage.getItem('shipmentOrg')!=null && localStorage.getItem('shipmentOrg').length==0){
-            setOption();
-        } 
-        
-        
-        if(localStorage.getItem('userid') != user_id){
-            localStorage.clear();
-        }else{
-            $.each( JSON.parse(localStorage.getItem('consigneeOrg')), function( key, value ) {
-                if(value.org_code !== '') {
-                    //console.log(value.org_code);
-                    var newOption = new Option(value.org_code, value.company_name, false, false); 
-                    $('.consignee_org_code').append(newOption).trigger('change');
-                }
+                            return {
+                                results: $.map(data, function(item) {
+                                    console.log('mama miya');
+                                    return {
+                                        text:item[0].code,
+                                        id: item[0].name
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                });
             });
-            $.each( JSON.parse(localStorage.getItem('shipmentOrg')), function( key, value ) {
-                if(value.org_code !== '') {
-                    console.log(value.org_code);
-                    var newOption = new Option(value.org_code, value.company_name, false, false);
-                    //console.log(newOption);
-                    $('.shipper_org_code').append(newOption).trigger('change');
-                }
-            });
-        }
-        
+            
+            // $('.consignee_org_code').select2({
+            //         dropdownAutoWidth : true,
+            //         width: 'auto',
+            // });
+        // $('.consignee_org_code, .shipper_org_code').select2({
+        //     dropdownAutoWidth : true,
+        //     width: 'auto'
+        // });
+        var user_id = <?=json_encode($this->userid)?>;
+        setOption();      
     });
+    
     function setOption(){
         $.ajax({
                 url: document.location.origin+"/docregister/getOrgCodeByUserID/",
@@ -362,7 +384,6 @@ $(document).on('click','.sendToCGM',function(){
                     if(value.org_code !== '') {
                         console.log(value.org_code);
                         var newOption = new Option(value.org_code, value.company_name, false, false);
-                        
                         $('.consignee_org_code').append(newOption).trigger('change');
                     }
                     });
@@ -386,19 +407,25 @@ $(document).on('click','.sendToCGM',function(){
                 }
             });
     }
-    // $(document).on('change','.shipper_org_code',function(){
-    //     var text = $(this).val();
-    //     if(text == 'null'){
-    //         text = 'Not Specified';
-    //     }
-    //     $('.Shipper').val(text);
-	// });
-    // $(document).on('change','.consignee_org_code',function(){
-    //     var text = $(this).val();
-    //     if(text == 'null'){
-    //         text = 'Not Specified';
-    //     }
-    //     $('.Consignee').val(text);
-	// });
-    
+
+    $(document).on('change','.shipper_org_code',function(){
+        var data=$(this).select2('data')[0];
+        
+        var text = data.id
+        if(text == 'null'){
+            text = 'Not Specified';
+        }
+        $('.Shipper').val(text);
+	});
+    $(document).on('change','.consignee_org_code',function(){
+        var data=$(this).select2('data')[0];
+        console.log(data);
+        var text = data.id;
+        if(text == 'null'){
+            text = 'Not Specified';
+        }
+        $('.Consignee').val(text);
+	});
+ });
+
 </script>
