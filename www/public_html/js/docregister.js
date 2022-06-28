@@ -316,16 +316,17 @@ $(document).on('click','#addtocw',function(){
       if(parseresponse.status != 200){
         $log = '';
         if(parseresponse.logs!=''){
-          $log = parseresponse.logs;
+          $log = '<span>'+parseresponse.logs+'</span>';
         }
-        $message = 'Pushing File Failed '+ $log +' (Please Contact Client Support)';
+        $message = '<span> Pushing File Failed </span><br>'+ $log +'<br><span> (Please Contact Client Support)<span>';
       }else{
         $message = 'Pushing File Success';
       }
-      Swal.fire(
-            "",
-            $message,
-            );
+      Swal.fire({
+        title: "", 
+        html: $message,  
+      });
+            
       // if(data.status ==='200'){
       //   Swal.fire(
       //     "",
