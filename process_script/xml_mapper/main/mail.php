@@ -75,23 +75,46 @@ $new_array = array();
 if(!empty($emails)){ 
     ##Loop through the emails.
     foreach($emails as $key=>$email){
-    	echo $key;
 		$overview = imap_fetch_overview($imapResource, $email);
         $overview = $overview[0]; 
 			if(strpos(htmlentities($overview->subject),'Shipment - HTML to Hub') !== false){
 					$message = imap_fetchbody($imapResource, $email, 1);
-					if($username == 'TCF@cargomation.com'){
-						$tagLT = "&lt;";
-						$tagGT = "&gt;";
-						$tagSpan = '<s span="">';
-						$tempID = 'TCFSYDSYD';
-					}
-					elseif($username == 'imageinternational@cargomation.com'){
-						$tagLT = "&lt;";
-						$tagGT = "&gt;";
-						$tagSpan = '<s span="">';
-						$tempID = 'IM0SYDSYD';
-					}  
+							if($username == 'TCF@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'TCFSYDSYD';
+							}
+							elseif($username == 'imageinternational@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'IM0SYDSYD';
+							}
+							elseif($username == 'mega.macro@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'MFPMELMEL';
+							}
+							elseif($username == 'cyclone.macro@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'CY0SYDAUS';
+							}
+							elseif($username == 'sila.macro@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'SILTRNSIL';
+							} 
+							elseif($username == 'deancargo.macro@cargomation.com'){
+								$tagLT = "&lt;";
+								$tagGT = "&gt;";
+								$tagSpan = '<s span="">';
+								$tempID = 'IM0SYDSYD';
+							}
 						 $message = trim(strval($message));
 						 $job = trim(strval(get_data($message, 'ship</span><span>'.$tagGT.''.$tagSpan.'</pre>', '<span>'.$tagLT.'</span><span>/</span><span>ship')));
 						 $shipper =  trim(strval(get_data($message, 'shipper</span><span>'.$tagGT.'</span>', '<span>'.$tagLT.'</span><span>/</span><span>shipper')));		
@@ -105,14 +128,14 @@ if(!empty($emails)){
 					$new_array[] = array("shipment"=>$job, "shipper"=>$shipper,"client"=>$client,"mbill"=>$mbill,"hbill"=>$hbill,"mcode"=>$mcode,"code"=>$code,"lcode"=>$lcode);
 		}
 		$totalMail++;
+		$imapresult=imap_mail_move($imapResource,$totalMail,'INBOX/Processed');
     }
-     
-     	$imapresult=imap_mail_move($imapResource,$totalMail,'INBOX/Saved');
+     	
 		if($imapresult==false){die(imap_last_error());}
 		imap_close($imapResource,CL_EXPUNGE);
-    
 }
-		$sql = "Select * from {$link_table} WHERE {$var_code} = '{$tempID}'";
+
+$sql = "Select * from {$link_table} WHERE {$var_code} = '{$tempID}'";
 		$execute_query = sqlsrv_query($conn, $sql);
 		while ($row = sqlsrv_fetch_array($execute_query, SQLSRV_FETCH_ASSOC)) {
 			$ship_array[]  = $row['shipment_num'];
@@ -129,7 +152,7 @@ if(!empty($emails)){
 				 $ship_insert .= "('{$json_array[$i]->shipment}','{$json_array[$i]->mbill}','{$json_array[$i]->hbill}','{$json_array[$i]->shipper}','{$client}','{$json_array[$i]->code}','{$json_array[$i]->lcode}')";
 				 }
 				 else{
-				 $ship_insert .= "('{$json_array[$i]->shipment}','{$json_array[$i]->mbill}','{$json_array[$i]->hbill}','{$json_array[$i]->shipper}','{$client}','{$json_array[$i]->code}','{$json_array[$i]->lcode}'),";		
+				 $ship_insert .= "('{$json_array[$i]->shipment}','{$json_array[$i]->mbill}','{$json_array[$i]->hbill}','{$json_array[$i]->shipper}','{$client}','{$json_array[$i]->code}','{$json_array[$i]->lcode}'),";
 				 }
 				 $ctr++;
 			 }
@@ -141,7 +164,7 @@ if(!empty($emails)){
 		if(!empty($value_query)){
 			sqlsrv_query($conn,$value_query);
 		}
-
+		
 echo 'connection: '.(microtime(true)-$start).' seconds'."\r\n"; // show results
 echo "Total Processed: ".$ctr." Total Fetched Emails:".$totalMail;
 $errors = imap_errors();
