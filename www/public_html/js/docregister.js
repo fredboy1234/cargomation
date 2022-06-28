@@ -304,10 +304,14 @@ $(document).on('click','#addtocw',function(){
     url: document.location.origin+"/docregister/pushToCargowise/",
     type: "POST",
     data:{"process_id":prim_ref},
+    beforeSend: function() {
+      $("#preview-cwresponse .modal-body").append(loader);
+    },
     success:function(data)
     {
+      $('#loader-wrapper').remove();
       console.log(data.status);
-      $message = '';
+      var $message = '';
       if(data.status === 200){
         $message = 'Pushing File Failed (Please Contact Client Support)';
       }else{
@@ -315,7 +319,7 @@ $(document).on('click','#addtocw',function(){
       }
       Swal.fire(
             "",
-            "$message",
+            $message,
             );
       // if(data.status ==='200'){
       //   Swal.fire(
