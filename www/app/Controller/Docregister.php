@@ -9,7 +9,6 @@ use App\Presenter;
 
 
 class Docregister extends Core\Controller {
-
     /**
      * Invoice Index: Renders the invoice view. NOTE: This controller can only be accessed
      * by authenticated users!
@@ -53,7 +52,7 @@ class Docregister extends Core\Controller {
         //     "log_action" => "Access doctracker",
         //     "start_date" => date("Y-m-d H:i:s"),
         // ]);
-
+       
         if($role->role_id > 2) {
             $sub_account = $User->getSubAccountInfo($user);
             $user_key = $sub_account[0]->account_id;
@@ -498,18 +497,20 @@ class Docregister extends Core\Controller {
                         
                     }
                 }
-                
-                
+        
+                $User = Model\User::getInstance($_SESSION['user']);
+                $email = $User->data()->email;
+               
                 $matchData[] = array(
                     'hbl_numbers' => $hbl_numbers,
                     'container_details' => $container_details,
                     'doc_data' => isset($parsePdfData) ? $parsePdfData : '',
-                    'filename'=> 'https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/CW_DOCREGISTER/IN/'.$filename,
+                    'filename'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$filename,
                     'fieldlist' => $fieldlist,
                     'tableheader'=>$tableheader,
                 );
             }
-           
+            
         }
         
         $encodedData = urlencode( $this->encryptData( $jsonDecode->data ) );

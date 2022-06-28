@@ -52,7 +52,7 @@
             <?php foreach($matchData as $hbl){?>
                 <?php $pdfcount++;?>
                 <?php $pdfclass=$pdfcount==1 ? '' : 'd-none';?>
-                <embed id="<?=$hbl['hbl_numbers']?>_embed" class="<?=$pdfclass?>" src="<?=$hbl['filename']?>" style="width:100%; height:500px;" frameborder="0"></embed>
+                <embed id="<?=$hbl['hbl_numbers']?>_embed" class="<?=$pdfclass?>" src="<?=$hbl['filename']?>" style="width:100%; height:750px;" frameborder="0"></embed>
                 <a class="downicon d-none"><i class="fas fa-angle-double-down"></i></a>
             <?php } ?>
                 
