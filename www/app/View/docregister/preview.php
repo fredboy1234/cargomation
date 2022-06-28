@@ -433,6 +433,15 @@ $(document).on('click','.sendToCGM',function(){
         }
         $('.Consignee').val(text);
 	});
+    $(document).on('change','.carrier_org_code',function(){
+        var data=$(this).select2('data')[0];
+        console.log(data);
+        var text = data.id;
+        if(text == 'null'){
+            text = 'Not Specified';
+        }
+        $('.Carrier').val(text);
+	});
  });
 
 </script>
