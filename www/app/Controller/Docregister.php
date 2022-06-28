@@ -943,6 +943,7 @@ class Docregister extends Core\Controller {
             
             $result = $this->postAuth($url,$payload,$headers);
             $decoded = json_decode($result);
+             
             $data['process_id'] = $_POST['process_id'];
             $data['user_id'] =  $user_id ;
             $data['status'] = $decoded->status;
@@ -952,7 +953,7 @@ class Docregister extends Core\Controller {
 
             $this->insertLogs($data);
 
-           echo $result;
+           echo json_encode($data);
         }
          
     }

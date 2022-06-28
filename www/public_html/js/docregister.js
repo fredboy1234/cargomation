@@ -310,9 +310,9 @@ $(document).on('click','#addtocw',function(){
     success:function(data)
     {
       $('#loader-wrapper').remove();
-      console.log(data.status);
+      var parseresponse = JSON.parse(data);
       var $message = '';
-      if(data.status === 200){
+      if(parseresponse.status === 200){
         $message = 'Pushing File Failed (Please Contact Client Support)';
       }else{
         $message = 'Pushing File Success';
