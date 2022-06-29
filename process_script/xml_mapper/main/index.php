@@ -56,6 +56,7 @@ if(isset($_GET['user_id'])){
 			$port_loading = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".PortOfLoading.Name")));
 			$port_discharge = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".PortOfDischarge.Name")));
 			$total_volume = node_exist(getArrayName(parseJson($xml, $path_UniversalShipment,".TotalVolume")));
+			$DeliveryCartageCompleted = node_exist(getArrayName(parseJson($xml, $path_UniversalSubShipment,".LocalProcessing.DeliveryCartageCompleted")));
 
 			if($xmlType == 'CustomsDec'){
 				$packing_line = str_replace(array("[[", "]]"), array("[", "]"), parseJson($xml, $path_RelatedPackingLineCollection,".PackingLine"));
@@ -104,7 +105,7 @@ if(isset($_GET['user_id'])){
 			    	  $containerctr =  json_decode(json_encode($get_container, JSON_UNESCAPED_SLASHES));
 			    	   foreach ($containerctr as $key => $value) {
 			    	 	if(count($containerctr) > 1){
-			    	 		if ($key === array_key_first($containerctr)) {
+			    	 		if ($key === array_key_first($containerctr)) { 
 			    	 			if(strpos($value, 'ContainerPenaltyCollection') !== false){
 			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'},';
 			    	 			 }else{
@@ -220,7 +221,7 @@ if(isset($_GET['user_id'])){
 			array_push($ship_array,$GLOBALS['user_id'],removeSingleQuote($consolNumber),removeSingleQuote($shipNumber),removeSingleQuote($master_bill),removeSingleQuote($house_bill),$transport_mode,removeSingleQuote($vessel_name),removeSingleQuote($voyage_number),removeSingleQuote($lloyds_imo),$eta,$etd);
 			array_push($ship_array,removeSingleQuote($place_delivery),removeSingleQuote($place_receipt),$consignee,$consignor,$sending_agent,$receiving_agent,removeSingleQuote($receiving_add),removeSingleQuote($sending_add),removeSingleQuote($consignee_add),removeSingleQuote($consignor_add));
 			array_push($ship_array,$triggered_date,$container_mode,removeSingleQuote($port_loading),removeSingleQuote($port_discharge),removeSingleQuote($order_number),$total_volume,$ata,$atd);
-			array_push($ship_array,removeSingleQuote($route_leg),removeSingleQuote($dataOrganizationCollection),removeSingleQuote($packing_line),removeSingleQuote($containercollection),removeSingleQuote($milestone));
+			array_push($ship_array,removeSingleQuote($route_leg),removeSingleQuote($dataOrganizationCollection),removeSingleQuote($packing_line),removeSingleQuote($containercollection),removeSingleQuote($milestone),removeSingleQuote($DeliveryCartageCompleted));
 
 			###Process Shipment to Database
 			if(ifShipmentExist($shipNumber) === false){
