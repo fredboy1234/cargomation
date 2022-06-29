@@ -304,13 +304,29 @@ $(document).on('click','#addtocw',function(){
     url: document.location.origin+"/docregister/pushToCargowise/",
     type: "POST",
     data:{"process_id":prim_ref},
+    beforeSend: function() {
+      $("#preview-cwresponse .modal-body").append(loader);
+    },
     success:function(data)
     {
-      console.log(data.status);
-      Swal.fire(
-            "",
-            "Push Success!",
-            );
+      $('#loader-wrapper').remove();
+      var parseresponse = JSON.parse(data);
+      var $message = '';
+      console.log(parseresponse.status);
+      if(parseresponse.status != 200){
+        $log = '';
+        if(parseresponse.logs!=''){
+          $log = '<span>'+parseresponse.logs+'</span>';
+        }
+        $message = '<span> Pushing File Failed </span><br>'+ $log +'<br><span> (Please Contact Client Support)<span>';
+      }else{
+        $message = 'Pushing File Success';
+      }
+      Swal.fire({
+        title: "", 
+        html: $message,  
+      });
+            
       // if(data.status ==='200'){
       //   Swal.fire(
       //     "",
@@ -357,7 +373,7 @@ $(document).on('click','.cwresponse',function(){
     var prim_ref = $(this).attr('data-prim_ref');
     console.log(prim_ref);
     var url = "/docregister/cwresponse/" + prim_ref;
-    $("#preview-cwresponse .modal-body").append(loader);
+    $("#preview-cwresponse").append(loader);
     // load the url and show modal on success
     $("#preview-cwresponse .modal-body").load(url, function (response, status, xhr) {
       if (xhr.status == 200) {

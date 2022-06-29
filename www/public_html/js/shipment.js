@@ -320,7 +320,14 @@ $(document).ready(function () {
           });
           d.data = arr;
         } else {
-          d.data = getSearch();
+          var modifier = getSearch();
+          $(document).on('click','.paginate_button',function(){
+            console.log('m test');
+            modifier = [];
+          });
+          setTimeout(function(){
+            d.data = getSearch();
+          },50);
         }
       },
       error:function(err, status){
