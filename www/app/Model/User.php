@@ -1032,7 +1032,7 @@ class User extends Core\Model {
             $value = "'N'";
         }
         $query = "UPDATE cargowise_document_type SET active = {$value} 
-        WHERE user_id = {$arr_data['account_id']}";
+        WHERE user_id = {$user_id}";
         $Db = Utility\Database::getInstance();
         $test = $Db->query($query)->error();
     }
