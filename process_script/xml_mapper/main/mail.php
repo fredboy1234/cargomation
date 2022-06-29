@@ -101,7 +101,7 @@ if(!empty($emails)){
 								$tagLT = "&lt;";
 								$tagGT = "&gt;";
 								$tagSpan = '<s span="">';
-								$tempID = 'CY0SYDAUS';
+								$tempID = 'CY0AUSSYD';
 							}
 							elseif($username == 'sila.macro@cargomation.com'){
 								$tagLT = "&lt;";
