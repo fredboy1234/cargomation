@@ -8,7 +8,7 @@ set_time_limit(0);
 ini_set('memory_limit', '-1');
 $GLOBALS['parser'] = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 $GLOBALS['curl'] = curl_init();
-$xmlType = $ata = $atd = $eta = $etd = $shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = '';
+$xmlType = $ata = $atd = $eta = $etd = $shipNumber = $consolNumber = $order_number = $sending_agent = $sending_add = $receiving_agent = $receiving_add = $state = $containercollection = $res = $DeliveryCartageCompleted = '';
 
 
 /*xml xpath declaration*/
@@ -34,7 +34,7 @@ $GLOBALS['path_GetDocument'] = "$.Data.UniversalEvent.Event.AttachedDocumentColl
 
 function addShipment($value_array,$shipNumber){
 	$var = "";
-	$col_field = "(user_id,console_id,shipment_num,master_bill,house_bill,transport_mode,vessel_name,voyage_flight_num,vesslloyds,eta,etd,place_delivery,place_receipt,consignee,consignor,sending_agent,receiving_agent,receiving_agent_addr,sending_agent_addr,consignee_addr,consignor_addr,trigger_date,container_mode,port_loading,port_discharge,order_number,totalvolume,ata,atd,route_leg,organization,packingline,container,milestone)";
+	$col_field = "(user_id,console_id,shipment_num,master_bill,house_bill,transport_mode,vessel_name,voyage_flight_num,vesslloyds,eta,etd,place_delivery,place_receipt,consignee,consignor,sending_agent,receiving_agent,receiving_agent_addr,sending_agent_addr,consignee_addr,consignor_addr,trigger_date,container_mode,port_loading,port_discharge,order_number,totalvolume,ata,atd,route_leg,organization,packingline,container,milestone,delivery_date)";
 	foreach ($value_array as $key => $value) {
 		if(!empty($value)){ $var .= "'".$value."',"; }
 		elseif($key == 26){	$var .= "".$value.",";	 }
@@ -92,7 +92,8 @@ function updateShipment($value_array,$shipNumber){
 			receiving_agent_addr='$pass_array[17]',sending_agent_addr='$pass_array[18]',consignee_addr='$pass_array[19]',
 			consignor_addr='$pass_array[20]',trigger_date='$pass_array[21]', container_mode='$pass_array[22]', port_loading='$pass_array[23]', 
 			port_discharge='$pass_array[24]', order_number='$pass_array[25]', totalvolume=$vol, ata='$pass_array[27]', atd='$pass_array[28]',
-			route_leg='$pass_array[29]', organization='$pass_array[30]',packingline='$pass_array[31]',container='$pass_array[32]',milestone='$pass_array[33]'";
+			route_leg='$pass_array[29]', organization='$pass_array[30]',packingline='$pass_array[31]',container='$pass_array[32]',milestone='$pass_array[33]',
+			delivery_date='$pass_array[34]'";
 		}
 	} 
 	 $sql = "UPDATE Shipment {$sql} WHERE shipment_num = '".$shipNumber."' AND user_id = ".$GLOBALS['user_id']."";
@@ -226,7 +227,7 @@ function addDocument($value_array,$shipNumber,$ship_id){
 	
 	$sql = "INSERT INTO document {$col_field} VALUES $var";
 	$res = execQuery($sql);
-	$sql_status = "insert into document_status (document_id,status) SELECT id ,'pending' FROM document WHERE id NOT IN (SELECT document_id FROM document_status) ORDER BY id DESC";
+	$sql_status = "INSERT INTO document_status (document_id,status) SELECT id ,'pending' FROM document WHERE id NOT IN (SELECT document_id FROM document_status) ORDER BY id DESC";
 	$res_status = execQuery($sql_status);
 	if($res){
 	 	base64_Decoder($value_array,$filepath,$shipNumber);
@@ -417,7 +418,7 @@ function getLastShipID($shipNumber,$user_id){
 }
 
 function getCgmDoc($shipNumber,$ship_id){
-	$value = "SELECT DISTINCT dbo.document.name as filename, * FROM dbo.document WHERE dbo.document.shipment_id = '".$ship_id."' AND dbo.document.shipment_num ='".$shipNumber."'";
+	$value = "SELECT DISTINCT dbo.document.shipment_id, dbo.document.shipment_num, dbo.document.type, dbo.document.path, dbo.document.name as filename FROM dbo.document WHERE dbo.document.shipment_id = '".$ship_id."' AND dbo.document.shipment_num ='".$shipNumber."'";
 	$sql =  execQuery($value);
 	$cgm_document = array();
 	$row_count = sqlsrv_num_rows($sql);
