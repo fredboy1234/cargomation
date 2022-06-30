@@ -28,8 +28,8 @@
     <?php if($imageMisc !== ''){?>
     <nav class="navbar">
     <div class="container-fluid">
-      <a class="navbar-brand text-center w-100" href="#">
-        <img src="<?=$imageMisc?>" alt=""  class="d-inline-block align-text-top  ubanner"><br>
+      <a class="navbar-brand text-center w-100 bg-white" href="#">
+      <img src="<?=$imageMisc?>" alt="" style="width:100%;max-width:1200px; height:auto;" class="d-inline-block align-text-top  ubanner"><br>
       </a>
       
     </div>
