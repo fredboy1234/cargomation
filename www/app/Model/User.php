@@ -461,8 +461,9 @@ class User extends Core\Model {
        
         if(!empty($check)){
             return $Db->query("UPDATE user_images
-                set image_type = '{$fields['image_type']}' WHERE user_id = '{$fields['user_id']}'
-            ");
+            set image_type = '{$fields['image_type']}' WHERE user_id = '{$fields['user_id']}'
+            and id = '{$img_id}'
+        ");
         }else{
             return $Db->query("INSERT
                             INTO user_images 

@@ -180,7 +180,7 @@
           $('#uploadimageModal').modal('hide');
           $('#uploaded_image').html(data);
           $("#profileModal").modal('hide');
-          //window.location.reload();
+          window.location.reload();
         }
       });
     })
