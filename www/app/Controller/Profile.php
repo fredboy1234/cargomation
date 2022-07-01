@@ -87,7 +87,12 @@ class Profile extends Core\Controller {
         // $misc_image = '/img/default-profile.png';
         // $misc_image = '/img/default-profile.png';
         foreach($user_profile->user_image as $img){
-            $misc_image[strtolower($img->image_type)] = base64_decode($img->image_src);
+            if(!$this->is_base64_encoded($img->image_src)){
+                $misc_image[strtolower($img->image_type)] = $img->image_src;
+            }else{
+                $misc_image[strtolower($img->image_type)] = base64_decode($img->image_src);
+            }
+           
         }
         
         $this->View->renderTemplate("/profile/index", [
@@ -106,6 +111,14 @@ class Profile extends Core\Controller {
             "menu" => Model\User::getUserMenu($user, $role->role_id),
             "dashtheme"=>$dashboardTheme,
         ]);
+    }
+
+    public function is_base64_encoded($data){
+        if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $data)) {
+        return TRUE;
+        } else {
+        return FALSE;
+        }
     }
 
     /**
@@ -267,15 +280,38 @@ class Profile extends Core\Controller {
         if(empty($role->role_name)) {
             Utility\Redirect::to(APP_URL . $role->role_name);
         }
+       
         if(isset($_POST)){
+            
+            if(isset($_FILES['file']) && $_FILES['file']['name'] != ''){
+                $test = explode('.', $_FILES['file']['name']);
+                $extension = end($test);    
+                $name = $_FILES['file']['name'];
+
+                $email = $User->data()->email;
+                $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/USER_IMAGES/banner/";
+
+                if (!file_exists($newFilePath)) {
+                    mkdir($newFilePath, 0777, true);
+                }
+                $location = $newFilePath.$name;
+                move_uploaded_file($_FILES['file']['tmp_name'], $location);
+                $imgsrc = 'https://cargomation.com/filemanager/'.$email.'/USER_IMAGES/banner/'.$name;
+
+            }else{
+                $imgsrc = '';
+            }
+
             $imageType = $_POST['imageType'];
-            $User->inserUserImages(array(
+            $imageID = isset($_POST['imageID']) ? $_POST['imageID'] : ''; 
+           
+            $User->inserUserImagesV2(array(
                 'user_id' => $user,
                 'image_type' => $imageType,
-                'image_src' => $_POST['image_src'],
-                'imageId'=>isset($_POST['imageID']) ? $_POST['imageID'] : '',
+                'image_src' => $imgsrc,
+                'imageId'=> $imageID,
             ),$user);
-            
+
             Utility\Redirect::to(APP_URL . "/profile");
         }
     }

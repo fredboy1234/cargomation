@@ -18,17 +18,21 @@
   <label class="btn btn-block btn-primary btn-sm" for="upload_image">
       <i class="fas fa-cloud-upload-alt"></i> Upload Photo
   </label>
-  <input type="file" class="form-control" id="upload_image"  accept="image/*" />
+  <input type="file" class="form-control" id="upload_image" name="upload_image" accept="image/*" />
 
   <div class="row">
     <?php foreach($this->user as $user){?>
-      <div class="col-sm-12">
-        <div class="card">
-          <div class="card-body set-to-profile" data-imgid="<?=$user->id?>">
-            <img src="<?=base64_decode($user->image_src)?>" class="img-responsive w-100">
-          </div>  
-        </div>   
-      </div> 
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body set-to-profile" data-imgid="<?=$user->id?>">
+              <?php if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $user->image_src)){?>
+                <img src="<?=base64_decode($user->image_src)?>" class="img-responsive w-100">
+              <?php }else{?>
+                <img src="<?=$user->image_src?>" class="img-responsive w-100">
+              <?php }?>
+              </div>  
+            </div>   
+        </div> 
       <?php } ?>               
   </div>
 </div>
@@ -68,6 +72,7 @@
     vwidth = 1200; vheight = 100;
     bwidth = 1300; bheight = 105;
   }
+
   $image_crop = $('#image_demo').croppie({
         enableExif: true,
         showZoomer: false,
@@ -89,6 +94,7 @@
     reader.onload = function (event) {
       var image = new Image();
       image.src = event.target.result;
+      console.log('x3');
       console.log(event);
     }
     var image = new Image();
@@ -101,8 +107,12 @@
     });
     $('#uploadimageModal').modal('show');
   });
+
+  var fileholder =''; 
+  var reader = new FileReader();
+  var fdata = new FormData();
+
   $('#upload_image').on('change', function(){
-    var reader = new FileReader();
     reader.onload = function (event) {
       $image_crop.croppie('bind', {
         url: event.target.result
@@ -110,11 +120,20 @@
         console.log('jQuery bind complete');
       });
     }
+
+    console.log('x1');
     console.log(this.files);
+    fileholder = this.files;
+
+    var file_data = $('#upload_image').prop('files');  
+    fdata.append('file',file_data[0]);
     reader.readAsDataURL(this.files[0]);
     $('#uploadimageModal').modal('show');
+    $('.crop_image').removeAttr("data-imgid");
   });
+
   $('.crop_image').click(function(event){
+    var imageid = $(this).attr("data-imgid");
       // var modalCID = $("#myModal").attr('data-cid');
       switch (modalCID) {
         case 'headerupload':
@@ -137,13 +156,21 @@
         imageid = 0;
       }
     $image_crop.croppie('result', {
-      type: 'canvas',
+      type: 'blob',
       size: 'viewport'
     }).then(function(response){
+      
+      fdata.append('imageType',imagetype);
+      fdata.append('imageID',imageid);
+      
       $.ajax({
         url: document.location.origin+"/profile/insertUserProfile/",
         type: "POST",
-        data:{"image_src": response,'imageType':imagetype,'imageID':imageid},
+        contentType: false,
+        cache:false,
+        processData:false,
+        data:fdata,
+        //data:{"image_src": response,'imageType':imagetype,'imageID':imageid},
         beforeSend: function() {
             // setting a timeout
             $('#uploaded_image').html("<p>Loading...</p>");
@@ -153,7 +180,7 @@
           $('#uploadimageModal').modal('hide');
           $('#uploaded_image').html(data);
           $("#profileModal").modal('hide');
-          window.location.reload();
+          //window.location.reload();
         }
       });
     })

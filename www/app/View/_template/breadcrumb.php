@@ -20,7 +20,7 @@
   <?php $imageMisc=""; if(isset($this->user->user_banner)){
     foreach($this->user->user_banner as $src_image){
       if($src_image->image_type === "Header"){
-        $imageMisc = base64_decode($src_image->image_src);
+        $imageMisc = $src_image->image_src;
       }
     }
   }?>
@@ -29,7 +29,8 @@
     <nav class="navbar">
     <div class="container-fluid">
       <a class="navbar-brand text-center w-100 bg-white" href="#">
-      <img src="<?=$imageMisc?>" alt="" style="width:100%;max-width:1200px; height:auto;" class="d-inline-block align-text-top  ubanner"><br>
+        <!-- <div style='width:100%; height:95px; background-image: url("https://cargomation.com/filemanager/a2b@a2bsolutiongroup.com/USER_IMAGES/banner/silav1.png");background-position: center;background-repeat: no-repeat;background-size: cover;'></div> -->
+        <img src="<?=$imageMisc?>" alt="" style="width:100%; height:95;" class="d-inline-block align-text-top  ubanner"><br>
       </a>
       
     </div>
