@@ -20,7 +20,12 @@
   <?php $imageMisc=""; if(isset($this->user->user_banner)){
     foreach($this->user->user_banner as $src_image){
       if($src_image->image_type === "Header"){
-        $imageMisc = $src_image->image_src;
+        if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $src_image->image_src)){
+          $imageMisc = base64_decode($src_image->image_src);
+        }else{
+          $imageMisc = $src_image->image_src;
+        }
+      
       }
     }
   }?>
