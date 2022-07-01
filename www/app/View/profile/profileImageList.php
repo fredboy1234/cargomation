@@ -15,7 +15,7 @@
   <label class="btn btn-block btn-primary btn-sm" for="upload_image">
       <i class="fas fa-cloud-upload-alt"></i> Upload Photo
   </label>
-  <input type="file" class="form-control" id="upload_image"  accept="image/*" />
+  <input type="file" class="form-control" id="upload_image" name="upload_image"  accept="image/*" />
 
   <div class="row">
     <?php foreach($this->user as $user){?>
@@ -89,7 +89,9 @@
     $('#uploadimageModal').modal('show');
   });
 
-
+  var fileholder =''; 
+  var reader = new FileReader();
+  var fdata = new FormData();
 
   $('#upload_image').on('change', function(){
     var reader = new FileReader();
@@ -100,20 +102,34 @@
         console.log('jQuery bind complete');
       });
     }
+    fileholder = this.files;
+    var file_data = $('#upload_image').prop('files');  
+    fdata.append('file',file_data[0]);
+
     reader.readAsDataURL(this.files[0]);
     $('#uploadimageModal').modal('show');
   });
     
   $('.crop_image').click(function(event){
     var imageid = $(this).attr("data-imgid");
+    if(typeof imageid ==='undefined'){
+        imageid = 0;
+      }
     $image_crop.croppie('result', {
       type: 'canvas',
       size: 'viewport'
     }).then(function(response){
+      fdata.append('imageType','profile');
+      fdata.append('imageID',imageid);
+      
       $.ajax({
         url: document.location.origin+"/profile/insertUserProfile/",
         type: "POST",
-        data:{"image_src": response,'imageType':'profile','imageID':imageid},
+        data:fdata,
+        contentType: false,
+        cache:false,
+        processData:false,
+        //data:{"image_src": response,'imageType':'profile','imageID':imageid},
         beforeSend: function() {
             // setting a timeout
             $('#uploaded_image').html("<p>Loading...</p>");
