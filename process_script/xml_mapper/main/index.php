@@ -139,7 +139,7 @@ if(isset($_GET['user_id'])){
 			    	 			 }	
 			    	 	 	
 			    	 	 }else{
-			    	 	 	$a = "false";
+			    	 	 	$a = "";
 			    	 	 }
 			    	   }
 			    	 	 $containercollection = str_replace(array("'", "'"), array("", ""),$a);
@@ -148,7 +148,7 @@ if(isset($_GET['user_id'])){
 				}
 			}
 			else{
-				$containercollection = "false";
+				$containercollection = "";
 			}
 			###End of If Packingline have container
 		    ###End of Get specific container from packingline to containercollection
