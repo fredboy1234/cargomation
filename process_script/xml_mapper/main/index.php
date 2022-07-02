@@ -145,6 +145,9 @@ if(isset($_GET['user_id'])){
 			    	}
 				}
 			}
+			else{
+				$containercollection = "false";
+			}
 			###End of If Packingline have container
 
 		    ###End of Get specific container from packingline to containercollection
