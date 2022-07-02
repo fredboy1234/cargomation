@@ -79,7 +79,9 @@ if(isset($_GET['user_id'])){
 		    	}
 			}
 
-			if($container != 'false'){
+			###If Packingline have container
+			if(!empty($container_in)){
+				if($container != 'false'){
 				 if(count($container_decode) === 1){
 		    		foreach ($container_decode as $key => $value) {
 		    			if(in_array($value['ContainerNumber'],$container_in)){
@@ -139,9 +141,12 @@ if(isset($_GET['user_id'])){
 			    	 	 }
 			    	   }
 			    	  $containercollection = str_replace(array("'", "'"), array("", ""),$a);
+				    	}
 			    	}
-		    	}
+				}
 			}
+			###End of If Packingline have container
+
 		    ###End of Get specific container from packingline to containercollection
 
 			###Get Last leg details of transport collection
