@@ -271,7 +271,7 @@ if(isset($_GET['user_id'])){
 	}
 	###Get customs brokerage , arinvoice , order
 	require_once('customs.php');
-	//require_once('arinvoice.php');
+	require_once('arinvoice.php');
 	require_once('order.php');
 	###End of Get customs brokerage , arinvoice , order
 }else{
