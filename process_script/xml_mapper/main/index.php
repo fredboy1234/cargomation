@@ -83,7 +83,8 @@ if(isset($_GET['user_id'])){
 				 if(count($container_decode) === 1){
 		    		foreach ($container_decode as $key => $value) {
 		    			if(in_array($value['ContainerNumber'],$container_in)){
-		    				$containercollection = str_replace(array("'", "'"), array("", ""),$container);
+		    				$value = str_replace(array("'", "'"), array("", ""),$container);
+		    				$containercollection = substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'}]'; 
 		    			}
 		    		}
 		    	}
@@ -103,6 +104,7 @@ if(isset($_GET['user_id'])){
 			    		}
 			    	  $a = "";
 			    	  $containerctr =  json_decode(json_encode($get_container, JSON_UNESCAPED_SLASHES));
+
 			    	   foreach ($containerctr as $key => $value) {
 			    	 	if(count($containerctr) > 1){
 			    	 		if ($key === array_key_first($containerctr)) { 
@@ -127,7 +129,7 @@ if(isset($_GET['user_id'])){
 			    	 		 }
 			    	 	 }elseif(count($containerctr) == 1){
 			    	 	 		if(strpos($value, 'ContainerPenaltyCollection') !== false){
-			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).']'; 
+			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'}]'; 
 			    	 			 }else{
 			    	 			 	$a = substr($value, 0, -1).']'; 
 			    	 			 }	
