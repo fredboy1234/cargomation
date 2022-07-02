@@ -86,7 +86,7 @@ if(isset($_GET['user_id'])){
 		    		foreach ($container_decode as $key => $value) {
 		    			if(in_array($value['ContainerNumber'],$container_in)){
 		    				$value = str_replace(array("'", "'"), array("", ""),$container);
-		    				$containercollection = substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'}]'; 
+		    				$containercollection = substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).']'; 
 		    			}
 		    		}
 		    	}
@@ -271,7 +271,7 @@ if(isset($_GET['user_id'])){
 	}
 	###Get customs brokerage , arinvoice , order
 	require_once('customs.php');
-	require_once('arinvoice.php');
+	//require_once('arinvoice.php');
 	require_once('order.php');
 	###End of Get customs brokerage , arinvoice , order
 }else{
