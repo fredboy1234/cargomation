@@ -251,14 +251,15 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  $order_date = $ORDER_DATE;
 
 		  $sql = "SELECT TOP 1 dbo.orders.order_number FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$CLIENT_ID."'";
-		  $qryOrder = sqlsrv_query($conn, $sql);
+		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 		  $row_count = sqlsrv_num_rows($qryOrder);
 	
+
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
 		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date) Values
 		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."')";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert);
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 		  }
 		  else
 		  {
@@ -266,7 +267,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  	 $sqlorderupdate="UPDATE dbo.orders
 		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date'
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate);
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
 		  }
 
