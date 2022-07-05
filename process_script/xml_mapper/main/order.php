@@ -6,7 +6,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
 		try{
-
+			$pack_array = array(); 
 			$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
@@ -46,14 +46,31 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    $ORDERSTATDES = node_exist(getArrayName($XPATH_ORDERSTATDES));
             
             /*GET PORTLOADING*/
-		    $XPATH_POL = jsonPath($universal_shipment, $pathDataSource.".PortOfLoading.Code");
+		    $XPATH_POL = jsonPath($universal_shipment, $pathDataSource.".PortOfLoading.Name");
 			$XPATH_POL = $parser->encode($XPATH_POL);
 		    $POL = node_exist(getArrayName($XPATH_POL));
 
 		     /*GET PORTDISCHARGE*/
-		    $XPATH_POD = jsonPath($universal_shipment, $pathDataSource.".PortOfDischarge.Code");
+		    $XPATH_POD = jsonPath($universal_shipment, $pathDataSource.".PortOfDischarge.Name");
 			$XPATH_POD = $parser->encode($XPATH_POD);
 		    $POD = node_exist(getArrayName($XPATH_POD));
+
+		     /*GET PACKOUTERPACK*/
+		    $XPATH_OUTERPACK = jsonPath($universal_shipment, $pathDataSource.".OuterPacks");
+			$XPATH_OUTERPACK = $parser->encode($XPATH_OUTERPACK);
+		    $OUTERPACK = node_exist(getArrayName($XPATH_OUTERPACK));
+
+		     /*GET PACKTYPECODE*/
+		    $XPATH_PACKTYPECODE = jsonPath($universal_shipment, $pathDataSource.".OuterPacksPackageType.Code");
+			$XPATH_PACKTYPECODE = $parser->encode($XPATH_PACKTYPECODE);
+		    $PACKTYPECODE = node_exist(getArrayName($XPATH_PACKTYPECODE));
+
+		      /*GET PACKTYPEDESC*/
+		    $XPATH_PACKTYPEDESC = jsonPath($universal_shipment, $pathDataSource.".OuterPacksPackageType.Description");
+			$XPATH_PACKTYPEDESC = $parser->encode($XPATH_PACKTYPEDESC);
+		    $PACKTYPEDESC = node_exist(getArrayName($XPATH_PACKTYPEDESC));
+		    $pack_array[] = array("Code"=>$PACKTYPECODE,"Description"=>$PACKTYPEDESC,"OuterPack"=>$OUTERPACK);
+		    $pack_array = json_encode($pack_array);
 
 		     /*GET TRANSPORTMODE*/
 		    $XPATH_TRANSPORTMODE = jsonPath($universal_shipment, $pathDataSource.".TransportMode.Code");
@@ -257,15 +274,15 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
-		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date) Values
-		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."')";
+		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info) Values
+		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."','".$pack_array."')";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 		  }
 		  else
 		  {
 		  	/* updates fields to existing orders*/
 		  	 $sqlorderupdate="UPDATE dbo.orders
-		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date'
+		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date',pack_info='$pack_array'
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
