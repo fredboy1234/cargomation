@@ -223,7 +223,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ADDRESSTYPE = $parser->encode($XPATH_ORDER_ADDRESSTYPE);
 		    $ORDER_ADDRESSTYPE = node_exist(getArrayName($XPATH_ORDER_ADDRESSTYPE));
 
-		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress"){
+		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress" || $ORDER_ADDRESSTYPE == "GoodsAvailableAt" || $ORDER_ADDRESSTYPE == "GoodsDeliveredTo"){
 		  	$XPATH_ORDER_ORGCODE = jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].OrganizationCode");
 			$XPATH_ORDER_ORGCODE = $parser->encode($XPATH_ORDER_ORGCODE);
 		    $XORDER_ORGCODE = node_exist(getArrayName($XPATH_ORDER_ORGCODE));
@@ -236,10 +236,18 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ORGCOMPANY = $parser->encode($XPATH_ORDER_ORGCOMPANY);
 		    $ORDER_ORGCOMPANY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCOMPANY)));
 
-		    $orgaddress_array[] = array($ORDER_ADDRESSTYPE=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY);
+		    $XPATH_ORDER_ORGPORT= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Port.Name");
+			$XPATH_ORDER_ORGPORT = $parser->encode($XPATH_ORDER_ORGPORT);
+		    $ORDER_ORGPORT = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGPORT)));
+
+		    $XPATH_ORDER_ORGCTRY= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Country.Code");
+			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
+		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));
+
+		    $orgaddress_array[] = array($ORDER_ADDRESSTYPE=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY,"Port"=>$ORDER_ORGCOMPANY,"Country"=>$ORDER_ORGCTRY);
 		    $orgaddress = json_decode(json_encode($orgaddress_array));
 
-		    }    
+		    }
 
 		  }
 
@@ -335,7 +343,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  $milestone = json_encode($milestone_array);
 		  $organization = json_encode($orgaddress_array);
 		  $container = json_encode($container_array);
-		  $order_line = json_encode($order_line);
+		  ECHO $order_line = json_encode($order_line);DIE();
 		  $keyvalue = $KEY;
 		  $order_status = $ORDERSTATUS;
 		  $order_desc = $ORDERSTATDES;
