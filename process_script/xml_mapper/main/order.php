@@ -244,7 +244,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
 		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));
 
-		    $orgaddress_array[] = array($ORDER_ADDRESSTYPE=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY,"Port"=>$ORDER_ORGPORT,"Country"=>$ORDER_ORGCTRY);
+		    $orgaddress_array[] = array("AddressType"=>$ORDER_ADDRESSTYPE,"OrgCode"=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY,"Port"=>$ORDER_ORGPORT,"Country"=>$ORDER_ORGCTRY);
 		    $orgaddress = json_decode(json_encode($orgaddress_array));
 
 		    }
