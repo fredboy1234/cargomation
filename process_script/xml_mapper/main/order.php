@@ -13,12 +13,12 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$universalshipment = json_encode($xml, JSON_PRETTY_PRINT);
 			$universal_shipment = json_decode($universalshipment, true);
 
-
 			$pathDataSource = "$.Body.UniversalShipment.Shipment";
 			$pathDataSourceContext = "$.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection";
 			$path_DataSourceOrder ="$.Body.UniversalShipment.Shipment.Order";
 			$path_DataSourceMileStone ="$.Body.UniversalShipment.Shipment.MilestoneCollection";
 			$path_DataSourceOrganizationAddress="$.Body.UniversalShipment.Shipment.OrganizationAddressCollection";
+			$path_DataSourceDateCollection ="$.Body.UniversalShipment.Shipment.DateCollection";
 			$path_DataSourceTransport="$.Body.UniversalShipment.Shipment.TransportLegCollection";
 			$path_DataSourceContainer="$.Body.UniversalShipment.Shipment.ContainerCollection";
 
@@ -133,7 +133,19 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 					$ORGADDRESSCTR = 0;
 				}
 
+			   /*GET DATECOLLECTION COUNT*/
+		    $DATECOLLECTION = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date");
+			$DATECOLLECTIONCTR = $DATECOLLECTION;
+				if ($DATECOLLECTIONCTR != false) {
+					$DATECOLLECTIONCTR = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date");
+					$DATECOLLECTIONCTR = count($DATECOLLECTIONCTR[0]);
+				}
+				else
+				{
+					$DATECOLLECTIONCTR = 0;
+				}
 
+	
 		  /*FETCH MILESTONECOLLECTION*/		
 		  $milestone_array = array();  
 		  for ($a = 0; $a <= $MILESTONECTR-1; $a++) {
@@ -196,6 +208,22 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    }    
 
 		  }
+
+		  /*FETCH DATE COLLECTION */
+		 // $orgaddress_array = array();  
+		  $ORDER_DATE = "";
+		  for ($c = 0; $c <= $DATECOLLECTIONCTR-1; $c++) {
+		  	$DATE_TYPE = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date[$c].Type");
+			$DATE_TYPE = $parser->encode($DATE_TYPE);
+		    $DTYPE = node_exist(getArrayName($DATE_TYPE));
+
+		    if($DTYPE == "OrderDate"){
+		  	$XPATH_ORDER_DATE = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date[$c].Value");
+			$XPATH_ORDER_DATE = $parser->encode($XPATH_ORDER_DATE);
+		    $ORDER_DATE = node_exist(getArrayName($XPATH_ORDER_DATE));
+		     }    
+		  }
+
 		}
 		   catch(Exception $e){
 		  		echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -220,25 +248,25 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  $keyvalue = $KEY;
 		  $order_status = $ORDERSTATUS;
 		  $order_desc = $ORDERSTATDES;
+		  $order_date = $ORDER_DATE;
 
-		  $sql = "SELECT * FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$_GET['user_id']."'";
-		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'buffered'));
+		  $sql = "SELECT TOP 1 dbo.orders.order_number FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$CLIENT_ID."'";
+		  $qryOrder = sqlsrv_query($conn, $sql);
 		  $row_count = sqlsrv_num_rows($qryOrder);
 	
-
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
-		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc) Values
-		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."')";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'buffered'));
+		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date) Values
+		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."')";
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert);
 		  }
 		  else
 		  {
 		  	/* updates fields to existing orders*/
 		  	 $sqlorderupdate="UPDATE dbo.orders
-		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc'
+		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date'
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'buffered'));
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate);
 
 		  }
 
