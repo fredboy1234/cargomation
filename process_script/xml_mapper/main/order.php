@@ -285,7 +285,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    $ORD_PRODUCTDESC= jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].Product.Name");
 			$ORD_PRODUCTDESC = $parser->encode($ORD_PRODUCTDESC);
 		    $PRODUCTDESC = node_exist(getArrayName($ORD_PRODUCTDESC));
-		    $order_line[] = array("LineNumber"=>$LINE_NUMBER,"PackageQty"=>$PKG_QTY,"OrderedQty"=>$ORD_QTY,"OrderedQtyUnitCode"=>$ORD_QTYCODE,"ProductCode"=>$PRODUCTCODE,"ProductName"=>$PRODUCTDESC);
+		     $order_line[] = array("LineNumber"=>$LINE_NUMBER,"PackageQty"=>$PKG_QTY,"OrderedQty"=>$ORD_QTY,"OrderedQtyUnitCode"=>$ORD_QTYCODE,"ProductCode"=>$PRODUCTCODE,"ProductName"=>$PRODUCTDESC,"Volume"=>$TOTALVOLUME." ".$TOTALVOLUME_UNT);
 		  	 
 		  	 }
 		  }else{
@@ -348,7 +348,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
-		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info) Values
+		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info,order_line) Values
 		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."','".$pack_array."','".$order_line."')";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 		  }
