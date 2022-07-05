@@ -221,6 +221,31 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     ?></p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <strong>Actual Departure</strong>
+                    <p><?php 
+                        if($this->shipment_info[0]->atd == '1900-01-01 00:00:00.000'){ 
+                            echo '-';
+                        } else {
+                            $date = date_create($this->shipment_info[0]->etd);
+                            echo date_format($date,"d M Y H:i"); 
+                        }
+                    ?></p>
+                </div>
+                <div class="col-lg-6">
+                    <strong>Actual Arrival</strong>
+                    <p><?php 
+                        if($this->shipment_info[0]->ata == '1900-01-01 00:00:00.000'){
+                            echo '-';
+                        } else {
+                            $date = date_create($this->shipment_info[0]->eta);
+                            echo date_format($date,"d M Y H:i"); 
+                        }
+                    ?></p>
+                </div>
+            </div>
+            <?php $json_org = json_decode($this->shipment_info[0]->organization); ?>
             <!-- COLLAPSE Consignee starts -->
             <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
                 <h5 class="d-inline-block">Consignee</h5>
@@ -229,7 +254,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                 </span>
             </div>
             <dl id="consignee" class="row collapse">
-                <?php $json_org = json_decode($this->shipment_info[0]->organization);
+                <?php
                 if(!empty($json_org[0])) {
                     foreach ($json_org[0] as $key => $value) {
                         if(isset($value->AddressType)) {
@@ -294,10 +319,26 @@ foreach ($this->shipment_info[0] as $key => $value) {
                 </span>
             </div>
             <dl id="consignor" class="row collapse">
+                <?php
+                if(!empty($json_org[0])) {
+                    foreach ($json_org[0] as $key => $value) {
+                        if(isset($value->AddressType)) {
+                            if ($value->AddressType == "ConsignorPickupDeliveryAddress") {
+                ?>
+                <div class="col-lg-12">
+                    <dt>Company Name:</dt>
+                    <dd><?= $value->CompanyName; ?></dd>
+                </div>
                 <div class="col-lg-12">
                     <dt>Address:</dt>
-                    <dd><?= $this->shipment_info[0]->consignor_addr; ?></dd>
+                    <dd><?= $value->Address1; ?></dd>
                 </div>
+                <?php if(isset($value->Address2)): ?>
+                <div class="col-lg-12">
+                    <dt>Address 2:</dt>
+                    <dd><?= $value->Address2; ?></dd>
+                </div>
+                <?php endif; ?>
                 <div class="col-lg-6">
                     <dt>Receipt Place:</dt>
                     <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
@@ -306,6 +347,11 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <dt>Port of Discharge: </dt>
                     <dd><?= $this->shipment_info[0]->port_discharge; ?></dd>
                 </div>
+                <?php       }
+                        }
+                    }
+                }
+                ?>
             </dl>
             <!-- COLLAPSE Consignor ends -->
             <!-- COLLAPSE Container Details starts -->
