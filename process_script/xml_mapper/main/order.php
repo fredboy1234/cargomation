@@ -223,7 +223,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ADDRESSTYPE = $parser->encode($XPATH_ORDER_ADDRESSTYPE);
 		    $ORDER_ADDRESSTYPE = node_exist(getArrayName($XPATH_ORDER_ADDRESSTYPE));
 
-		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress" || $ORDER_ADDRESSTYPE == "GoodsAvailableAt" || $ORDER_ADDRESSTYPE == "GoodsDeliveredTo"){
+		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress" ){
 		  	$XPATH_ORDER_ORGCODE = jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].OrganizationCode");
 			$XPATH_ORDER_ORGCODE = $parser->encode($XPATH_ORDER_ORGCODE);
 		    $XORDER_ORGCODE = node_exist(getArrayName($XPATH_ORDER_ORGCODE));
@@ -236,6 +236,11 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ORGCOMPANY = $parser->encode($XPATH_ORDER_ORGCOMPANY);
 		    $ORDER_ORGCOMPANY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCOMPANY)));
 
+		    $orgaddress_array[] = array($ORDER_ADDRESSTYPE=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY);
+		    $orgaddress = json_decode(json_encode($orgaddress_array));
+
+		    }
+		    elseif($ORDER_ADDRESSTYPE == "GoodsAvailableAt"){
 		    $XPATH_ORDER_ORGPORT= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Port.Name");
 			$XPATH_ORDER_ORGPORT = $parser->encode($XPATH_ORDER_ORGPORT);
 		    $ORDER_ORGPORT = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGPORT)));
@@ -244,11 +249,17 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
 		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));
 
-		    $orgaddress_array[] = array("AddressType"=>$ORDER_ADDRESSTYPE,"OrgCode"=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY,"Port"=>$ORDER_ORGPORT,"Country"=>$ORDER_ORGCTRY);
-		    $orgaddress = json_decode(json_encode($orgaddress_array));
+		    $GOODS_ORIGIN = $ORDER_ORGPORT.",".$ORDER_ORGCTRY;
+		    }elseif($ORDER_ADDRESSTYPE == "GoodsDeliveredTo"){
+		    $XPATH_ORDER_ORGPORT= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Port.Name");
+			$XPATH_ORDER_ORGPORT = $parser->encode($XPATH_ORDER_ORGPORT);
+		    $ORDER_ORGPORT = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGPORT)));
 
+		    $XPATH_ORDER_ORGCTRY= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Country.Code");
+			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
+		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));	
+		    $GOODS_DES = $ORDER_ORGPORT.",".$ORDER_ORGCTRY;
 		    }
-
 		  }
 		  /*FETCH DATE COLLECTION */
 		 // $orgaddress_array = array();  
@@ -329,8 +340,8 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  /* pass value fields*/
 		  try{
   		  $ordernum = $ORDERNUMBER;
-  		  //$goods_origin = $orgaddress[0]->GoodsAvailableAt;
-		  //$goods_des = $orgaddress[1]->GoodsDeliveredTo;
+  		  $goods_origin = $GOODS_ORIGIN;
+		  $goods_des = $GOODS_DES;
 		  //$buyer = $orgaddress[2]->ConsigneeDocumentaryAddress;
 		  //$seller = $orgaddress[3]->ConsignorDocumentaryAddress;
 		  $arrival = $ETA;
@@ -357,15 +368,15 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
-		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info,order_line) Values
-		  	 ($CLIENT_ID,'".$ordernum."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."','".$pack_array."','".$order_line."')";
+		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info,order_line,goods_origin,goods_destination) Values
+		  	 ($CLIENT_ID,'".$ordernum."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."','".$pack_array."','".$order_line."','".$goods_origin."','".$goods_destination."')";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 		  }
 		  else
 		  {
 		  	/* updates fields to existing orders*/
 		  	 $sqlorderupdate="UPDATE dbo.orders
-		  	SET user_id=$CLIENT_ID,order_number='$ordernum',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date',pack_info='$pack_array',order_line='$order_line'
+		  	SET user_id=$CLIENT_ID,order_number='$ordernum',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date',pack_info='$pack_array',order_line='$order_line',goods_origin='$goods_origin',goods_destination='$goods_destination'
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
 		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
