@@ -333,12 +333,6 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <dt>Address:</dt>
                     <dd><?= $value->Address1; ?></dd>
                 </div>
-                <?php if(isset($value->Address2) && !is_array($value->Address2)): ?>
-                <div class="col-lg-12">
-                    <dt>Address 2:</dt>
-                    <dd><?= $value->Address2; ?></dd>
-                </div>
-                <?php endif; ?>
                 <div class="col-lg-6">
                     <dt>Receipt Place:</dt>
                     <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
