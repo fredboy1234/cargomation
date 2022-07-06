@@ -37,6 +37,10 @@ $(document).ready(function(){
     
     $('embed').addClass('d-none');
     $('#'+idembed).removeClass('d-none');
+    
+    $('#myTabContent .tab-pane').removeClass('active show');
+    var pane = $(this).attr('href');
+    $('#'+pane).addClass('active show');
   });
 
     var table = $('#docregister').DataTable( {
@@ -89,7 +93,7 @@ $(document).ready(function(){
 
   $(document).on('click','.viewdoc',function(){
     var prim_ref = $(this).attr('data-prim_ref');
-    console.log(prim_ref);
+   
     var url = "/docregister/preview/" + prim_ref;
     preloader(url);
   });
@@ -108,6 +112,7 @@ $(document).ready(function(){
       //form_data.append('file', file_data[i]);
       data['form_data'] = form_data;
     }
+    console.log(form_data);
       //auto insert after upload separated for some reason
       $.ajax({
         xhr: function() {
@@ -195,8 +200,7 @@ $(document).ready(function(){
       success:function(data)
       {
        var d = JSON.parse(data)
-       console.log(d);
-       console.log(d.new);
+       
        $("#newcount span").text(d.new);
        $("#processcount span").text(d.processing);
        $("#completedcount span").text(d.completed);
@@ -214,7 +218,7 @@ $(document).ready(function(){
           var tickdate = oval.DateField.split("-");
           var formatdate = new Date(oval.DateField);
           var month = months[formatdate.getMonth()];
-          console.log(tickdate[2]);
+          
           tickMonth.push([okey,month+' - '+tickdate[2]]);
           chartNumbers.push([okey,parseInt(oval.countdate)]);
         });
@@ -249,16 +253,18 @@ $(document).ready(function(){
 });
 
 function preloader(url) {
- 
+  $("#loading").removeClass('d-none');
   $("#preview-doc .modal-body").append(loader);
   // load the url and show modal on success
   $("#preview-doc .modal-body").load(url, function (response, status, xhr) {
     if (xhr.status == 200) {
       $('#loader-wrapper').remove();
+      $("#loading").addClass('d-none');
       $("#preview-doc").modal("show");
     } else {
       alert("Error: " + xhr.status + ": " + xhr.statusText);
       $('#loader-wrapper').remove();
+      $("#loading").addClass('d-none');
     }
   });
 
@@ -266,12 +272,12 @@ function preloader(url) {
 }
 
 function format ( d ) {
-  console.log(d);
+  
   var invoiceData = [];
   var htmlinvoice = '';
   var process_ID = d.pid; 
   $.each(d,function(okey,oval){
-    console.log(oval);
+   
     if(okey === "docs"){
       invoiceData =  oval;
     }
@@ -305,20 +311,21 @@ $(document).on('click','#addtocw',function(){
     type: "POST",
     data:{"process_id":prim_ref},
     beforeSend: function() {
-      $("#preview-cwresponse .modal-body").append(loader);
+      $("#loading").removeClass('d-none');
     },
     success:function(data)
     {
       $('#loader-wrapper').remove();
+      $("#loading").addClass('d-none');
       var parseresponse = JSON.parse(data);
       var $message = '';
-      console.log(parseresponse.status);
+      
       if(parseresponse.status != 200){
         $log = '';
         if(parseresponse.logs!=''){
           $log = '<span>'+parseresponse.logs+'</span>';
         }
-        $message = '<span> Pushing File Failed </span><br>'+ $log +'<br><span> (Please Contact Client Support)<span>';
+        $message = '<span> Pushing File Failed </span><br>'+ $log +'<br><span> (Please review CW Response)<span>';
       }else{
         $message = 'Pushing File Success';
       }
@@ -351,7 +358,7 @@ $(document).on('click','.toarchive',function(){
     "type": "POST",
     "data":{process_id:processid},
     success:function(res){
-      console.log(res);
+      
     }
   });
 });
@@ -371,7 +378,7 @@ $('.clearall').on('click',function(){
 //show cw response
 $(document).on('click','.cwresponse',function(){
     var prim_ref = $(this).attr('data-prim_ref');
-    console.log(prim_ref);
+    
     var url = "/docregister/cwresponse/" + prim_ref;
     $("#preview-cwresponse").append(loader);
     // load the url and show modal on success

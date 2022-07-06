@@ -20,6 +20,7 @@ class Docregister extends Core\Controller {
     public function index($user = "") {
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
+        
         // If no user ID has been passed, and a user session exists, display
         // the authenticated users profile.
         if (!$user) {
@@ -28,19 +29,20 @@ class Docregister extends Core\Controller {
                 $user = Utility\Session::get($userSession);
             }
         }
+       
         // // Get an instance of the user model using the user ID passed to the
         // // controll action. 
         if (!$User = Model\User::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
-
+        
         // Get an instance of the user role
         if (!$Role = Model\Role::getInstance($user)) {
             Utility\Redirect::to(APP_URL);
         }
 
         $role = $Role->getUserRole($user);
-
+        
         if(empty($role)) {
             Utility\Redirect::to(APP_URL . $role);
         }
@@ -59,7 +61,7 @@ class Docregister extends Core\Controller {
         } else {
             $user_key = $user;
         }
-
+       
         $selectedTheme = $User->getUserSettings($user);
         
         if(isset( $selectedTheme[0]) && !empty($selectedTheme)){
@@ -426,7 +428,7 @@ class Docregister extends Core\Controller {
         $filename = '';
         $matchData = array();
         $responsedata = array();
-        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page');
+        $mustnot = array('filename','pages','webservice_link','webservice_username','webservice_password','server_id','enterprise_id','process_id','merged_file_path','page','state_code','company_code');
       
         $jsonDecode = json_decode($this->newjson($prim_ref,$_SESSION['user']));
        
@@ -442,17 +444,15 @@ class Docregister extends Core\Controller {
         $responsedata['action_type'] = 'preview documents';
 
         $this->insertLogs($responsedata);
-        //$jsonDecode->data='{"MatchReportArray":[{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":{"Type":"ForwardingShipment","Key":"S00001586","Shipper":"DUMMY SHA","Consignee":"CARGOMATION TEST ORGANISATION","LocalClient":"CARGOMATION TEST ORGANISATION","NotifyParty":"COVESTRO PTY LTD","HouseBill":"STL22008755XX","Origin":"CNNSA","Destination":"AUSYD","Weight":"543.000","Volume":"8.700","Packs":"11","PackType":"CTN","GoodsDescription":"DESMODUR T80 TANK TRUCK UN NO. 2078","Incoterm":"FOB","ReleaseType":"EBL"},"CWLines":{"CWLine":{"ContainerNumber":"UAUA435213","PackQty":"11","PackType":"CTN","Volume":"8.700","Weight":"543.000"}}},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"DESMODUR T80 TANK TRUCK UN NO. 2078 TOLUENE DIISOCYANATE CLASS 6.1, II, IMDG-CODE","coloader":"SILA GLOBAL PTY LTD","hbl_number":"STL22008755","shipper":"COVESTRO (HONG KONG) LIMITED","port_origin":"SHANGHAI","number_original":"THREE","consignee":"COVESTRO PTY LTD","incoterm":"FREIGHT PREPAID","port_destination":"MELBOURNE","filename":"HBL.pdf","page":"1","release_type":"OBR","process_id":"49","webservice_link":"https:\/\/a2btrnservices.wisegrid.net\/eAdaptor\/  ","webservice_username":"A2B","webservice_password":"Hw7m3XhS","server_id":"TRN","enterprise_id":"A2B","company_code":"SYD test test"},"ParsedPDFLines":{"ParsedPDFLine":{"CONTAINER_NUMBER":"WSDU6001792 Test","SEAL":"784914","CONTAINER_TYPE":"20TK","CHARGEABLE_WEIGHT":"23260 KGS","VOLUME":"24CBM Test","PACKAGE_COUNT":"2"}}}}}]}';
+        //$jsonDecode->data='{"MatchReportArray": [{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"ALUMINIUM SHEET/PLATE 5083-H116 AND 5083-H321 UNDER PO NO. 0033822POBR-2 AND PUR0352909 AND PUR0352908","shipper":"ALNAN ALUMINIUM INC.","volume":"61.290","gross_weight":"71,664.000","consignee":"CENTRAL NATIONAL AUSTRALIA","shipper_org_code":"ALNALUNNG","consignee_org_code":"CENNATMEL","incoterm":"FREIGHT COLLECT","marks_numbers":"0033822POBR-2 PUR0352909 PUR0352908","package_count":"45 PACKAGES","hbl_number":"ZS22D00088","coloader":"SILA GLOBAL NZ LTD","port_destination":"BRISBANE, AUSTRALIA","number_original":"THREE(3)","port_origin":"QINZHOU, CHINA","filename":"HBL COSU6886985840.pdf","page":"1","doc_type":"HBL","process_id":"239","release_type":"OBR","state_code":"VIC","webservice_link":"https://siltrnservices.wisegrid.net/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"CSNU6372582","SEAL":"M740996","CONTAINER_TYPE":"40HQ","CHARGEABLE_WEIGHT":"22657.000 KGS","VOLUME":"26.390 CBM","PACKAGE_COUNT":"13 PACKAGE"},{"CONTAINER_NUMBER":"TRHU1637482","SEAL":"M761273","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"17345.000 KGS","VOLUME":"11.870 CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"TEMU3347956","SEAL":"M138227","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15846.000 KGS","VOLUME":"11.630 CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"OOLU1319258","SEAL":"S963748","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15816.000 KGS","VOLUME":"11.400 CBM","PACKAGE_COUNT":"10 PACKAGES"}]}}}},{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"port_origin":"QINZHOU, CHINA","port_destination":"BRISBANE,","volume":"61.2900CBM","package_count":"45","goods_description":"ALUMINIUM SHEET/PLATE","shipper":"HONOUR LANE SHIPPING LIMITED ZHONGSHAN BRANCH","consignee":"SILA GLOBAL PTY LTD","consignee_org_code":"CSIINTBNE","gross_weight":"71664.000KGS","voyage_number":"026E","incoterm":"OCEAN FREIGHT COLLECT","mbl_number":"COSU6886985840","attached":"TO BE CONTINUED ON ATTACHED LIST","filename":"MBL COSU6886985840.pdf","page":["1","2"],"doc_type":"MBL","process_id":"240","state_code":"QLD","webservice_link":"https://siltrnservices.wisegrid.net/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"OOLU1319258","SEAL":"S963748","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15816000KGS","VOLUME":"11400CBM","PACKAGE_COUNT":"10 PACKAGES"},{"CONTAINER_NUMBER":"TEMU3347956","SEAL":"M138227","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15846000KGS","VOLUME":"11630CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"TRHU1637482","SEAL":"M761273","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"17345000KGS","VOLUME":"11870CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"CSNU6372582","SEAL":"M740996","CONTAINER_TYPE":"40HQ","CHARGEABLE_WEIGHT":"22657000KGS","VOLUME":"26390CBM","PACKAGE_COUNT":"13 PACKAGES"}]}}}}]}';
         // echo"<pre>";
-        // print_r(json_decode($jsonDecode->data)->MatchReportArray);
-        // exit;
         
         if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
       
        if(!isset($jsonDecode->data)) exit;
-
+        
         $matchArray =  json_decode($jsonDecode->data)->MatchReportArray;
        
         if(!empty($matchArray)){
@@ -463,6 +463,8 @@ class Docregister extends Core\Controller {
                 $parsePdfParsedPDFLines = $parsePdfData->ParsedPDFLines;
                 $hbl_numbers = isset($parsePdfDataheader->mbl_number) ? $parsePdfDataheader->mbl_number : $parsePdfDataheader->hbl_number;
                 $filename = $parsePdfDataheader->filename;
+                $fieldlist=array();
+                $container_details = array();
                 //print_r($jmatch);
 
                 foreach($parsePdfDataheader as $key=>$pdf){
@@ -500,6 +502,55 @@ class Docregister extends Core\Controller {
         
                 $User = Model\User::getInstance($_SESSION['user']);
                 $email = $User->data()->email;
+
+                $groupByCat = array(
+                    'doc_type'=>array('name'=>'Doc Type','order'=>0),
+                    'hbl_number'=>array('name'=>'Hbl Number','order'=>1),
+                    'mbl_number'=>array('name'=>'Mbl Number','order'=>2),
+                    'incoterm'=>array('name'=>'Incoterm','order'=>3),
+                    'goods_description'=>array('name'=>'Goods Description','order'=>4),
+                    'marks_numbers'=>array('name'=>'Marks Numbers','order'=>5),
+                    'release_type'=>array('name'=>'Release Type','order'=>6),
+                    'number_original'=>array('name'=>'Number Original','order'=>7),
+                    'volume'=>array('name'=>'Volume','order'=>8),
+                    'volume_uom'=>array('name'=>'Volume Uom','order'=>9),
+                    'gross_weight_uom'=>array('name'=>'Gross Weight Uom','order'=>10),
+                    'gross_weight'=>array('name'=>'Gross Weight','order'=>11),
+                    'gross_weight_uom'=>array('name'=>'Gross Weight Uom','order'=>12),
+                    'package_count'=>array('name'=>'Package Count','order'=>13),
+                    'package_count_uom'=>array('name'=>'Package Count Uom','order'=>14),
+                    'port_destination_unlocode'=>array('name'=>'Port Destination Unlocode','order'=>15),
+                    'port_destination'=>array('name'=>'Port Destination','order'=>16),
+                    'port_origin_unlocode'=>array('name'=>'Port Origin Unlocode','order'=>17),
+                    'port_origin'=>array('name'=>'Port Origin','order'=>18),
+                    'shipper_org_code'=>array('name'=>'Shipper Org Code','order'=>19),
+                    'shipper'=>array('name'=>'Shipper','order'=>20),
+                    'consignee_org_code'=>array('name'=>'Consignee Org Code','order'=>21),
+                    'consignee'=>array('name'=>'Consignee','order'=>22),
+                    'coloader_org_code'=>array('name'=>'Coloader Org Code','order'=>23),
+                    'coloader'=>array('name'=>'Coloader','order'=>24),
+                );
+                
+                $reorder = array();
+
+                if(!isset($fieldlist['Hbl Number'])){
+                    unset($groupByCat['hbl_number']);
+                }
+                if(!isset($fieldlist['Mbl Number'])){
+                    unset($groupByCat['mbl_number']);
+                }
+               
+                foreach($groupByCat as $catkey=>$catval){
+                    $kkey = str_replace("_"," ",$catval['name']);
+                    if(isset($fieldlist[$catval['name']])){
+                        $reorder[$kkey] = array('value'=>$fieldlist[$catval['name']],'order'=>$catval['order']);
+                    }else{
+                        $reorder[$kkey] = array('value'=>'','order'=>$catval['order']);
+                    }
+                }
+               
+                $sort = array_column($reorder, 'order');
+                array_multisort($sort, SORT_ASC, $reorder);
                
                 $matchData[] = array(
                     'hbl_numbers' => $hbl_numbers,
@@ -508,6 +559,7 @@ class Docregister extends Core\Controller {
                     'filename'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$filename,
                     'fieldlist' => $fieldlist,
                     'tableheader'=>$tableheader,
+                    'reorderfield'=>$reorder
                 );
             }
             
@@ -523,6 +575,7 @@ class Docregister extends Core\Controller {
         // echo hash('ripemd160', $mj);
         // echo "<br>";
         // echo password_verify('pass123', hash('ripemd160', $mj));
+     
 
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
@@ -538,7 +591,7 @@ class Docregister extends Core\Controller {
             'prim_ref'=>$prim_ref,
             'matchjson'=>$jsonDecode->data,
             'userid'=>$_SESSION['user'],
-          
+            'group_cat'=> $groupByCat
         ]);
     }
 
@@ -618,9 +671,7 @@ class Docregister extends Core\Controller {
     public function sendToAPI(){
         $toPass = array();
         if(isset($_POST)){
-             //echo"<pre>";
-            //  print_r($_POST);
-            // exit;
+           
             foreach($_POST['data'] as $key=>$val){
                 foreach($val as $vkey=>$vval){
                     $toPass[$vkey]=$vval;
@@ -710,56 +761,6 @@ class Docregister extends Core\Controller {
         $ret['prim_ref'] = $this->getLastID();
 
         echo json_encode($ret);
-
-        // exit;
-        // if($_FILES['file']['name'] != ''){
-        //     $test = explode('.', $_FILES['file']['name']);
-        //     $extension = end($test);    
-        //     $name = $_FILES['file']['name'];
-            
-        //     $User = Model\User::getInstance($_SESSION['user']);
-        //     $email = $User->data()->email;
-        //    // $user_id = $User->data()->id;
-            
-        //     $newFilePath = "E:/A2BFREIGHT_MANAGER/".$email."/CW_DOCREGISTER/IN/";
-        //     //$newFileUrl = "https://cargomation.com/filemanager/" . $email . "/CW_INVOICE/IN/";
-
-        //     if (!file_exists($newFilePath)) {
-        //         mkdir($newFilePath, 0777, true);
-        //     }
-            
-        //     $location = $newFilePath.$name;
-           
-        //     move_uploaded_file($_FILES['file']['tmp_name'], $location);
-        
-        //    // $file_server_path = realpath($newFileUrl.$name);
-        //     // $data['user_id'] = $_SESSION['user'];
-        //     // $data['filename'] = $name;
-        //     // $data['filepath'] = 'https://cargomation.com/filemanager/hub@tcfinternational.com.au/CW_APINVOICE/IN/'.$name;
-        //     // $data['uploadedby']= $email;
-        //     // $APinvoice = Model\Apinvoice::getInstance();
-            
-        //     // $APinvoice->insertMatchHeader($data);
-
-        //     //print_r($file_server_path);
-        //     $arr  = array(
-        //         'file'=> 'https://cargomation.com/filemanager/'.$email.'/CW_DOCREGISTER/IN/'.$name,
-        //         'client' => 'A2B',
-        //         'user_id' => $_SESSION['user'],
-        //         'process_id' => $this->getLastID()
-        //     );
-           
-        //     $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
-           
-        //     $url ='https://cargomation.com:8002/compare'; 
-            
-        //    $result = $this->post($url, $arr, '');
-       
-        //   $ret = array();
-        //   $ret['result'] = $result;
-        //   $ret['prim_ref'] = $this->getLastID();
-        //     echo json_encode($ret);
-        // }
     }
 
     public function uploadAndInsert(){
@@ -921,7 +922,7 @@ class Docregister extends Core\Controller {
         $user_id = $_SESSION['user'];
         $process_id = '';
         $data = array();
-
+        $_POST['process_id'] = 318;
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
             
@@ -950,8 +951,6 @@ class Docregister extends Core\Controller {
             $data['logs'] = $decoded->message;
             $data['response'] =  $decoded->data;
             $data['action_type'] = 'Push To Cargowise Button';
-
-            $this->insertLogs($data);
 
            echo json_encode($data);
         }

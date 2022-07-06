@@ -32,6 +32,20 @@ $status = array("error","success");
     content: "+";
     background-color: #31b131;
 }
+#loading {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    opacity: 0.8;  
+}
+.spinner-border{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+}
 </style>
 <!-- Main content -->
 <section class="content">
@@ -189,6 +203,11 @@ $status = array("error","success");
          </div>
       </div>
    </div>
+</div>
+<div id="loading" class="d-none">
+<div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
 </div>
 <script>
   var user_id = '< ? = $this - > user_id; ? >' ;

@@ -6,6 +6,7 @@
  $doc_data = $this->doc_data;
  $matchData = $this->matchData;
  $connumber = '';
+ $groupCat = $this->group_cat;
 ?>
 <style>
    .loaderstyle{
@@ -38,6 +39,14 @@
    .custom_sidebar{
        width: 50%;
    }
+   .has-error{
+    border-color: red;
+   }
+   .error{
+    color: red;
+    font-size: 12px;
+    position: absolute;
+   }
 </style>
 
 <div class="row">
@@ -48,7 +57,7 @@
             </button>
             <div class="col-lg-12 sideparent" style="height: 100%;">
             <div id="embeded" style="height: 100%;">
-            <?php $pdfcount=0; $numberofSelec =array();?>
+            <?php $pdfcount=0;?>
             <?php foreach($matchData as $hbl){?>
                 <?php $pdfcount++;?>
                 <?php $pdfclass=$pdfcount==1 ? '' : 'd-none';?>
@@ -80,10 +89,10 @@
                 <?php if(!empty($matchData)){?>
                     <?php $st = 0;?>
                     <?php $isact = '';?>
-                    <?php foreach($matchData as $hbl){?>
+                    <?php foreach($matchData as $tkey=>$hbl){ ?>
                         <?php $st++; $isact=$st==1 ? 'active' :'';?>
                         <li class="nav-item <?=$isact?>" role="presentation" >
-                            <a class="nav-link <?=$isact?> pdfbtn" data-embeded="<?=$hbl['hbl_numbers']?>_embed" id="<?=$hbl['hbl_numbers']?>_tab" data-toggle="tab" href="#<?=$hbl['hbl_numbers']?>_pane" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
+                            <a class="nav-link <?=$isact?> pdfbtn" data-embeded="<?=$hbl['hbl_numbers']?>_embed" id="<?=$hbl['hbl_numbers']?>_tab_<?=$tkey?>" data-toggle="tab" href="<?=$hbl['hbl_numbers']?>_pane_<?=$tkey?>" role="tab" aria-controls="<?=$hbl['hbl_numbers']?>" aria-selected="true">
                                 <?=$hbl['hbl_numbers']?>
                             </a>
                         </li>
@@ -102,54 +111,58 @@
             <div class="tab-content mt-3" id="myTabContent">
                 <?php $cc = 0; ?>
                 <?php $show = ''; $select2count=0;?>
-                <?php foreach($matchData as $pkey=>$matchval){ ?>
+                <?php foreach($matchData as $pkey=>$matchval){  ?>
                     <?php $cc++; 
-                          $tolast = array('Consignee Org Code','Shipper Org Code','Consignee','Shipper','Carrier','Carrier Org Code');
-                          $withOptions = array('Consignee Org Code','Shipper Org Code','Carrier Org Code');
+                          $tolast = array('Consignee Org Code','Shipper Org Code','Consignee','Shipper','Carrier','Carrier Org Code','Coloader Org Code','Coloader');
+                          $withOptions = array('Consignee Org Code','Shipper Org Code','Carrier Org Code','Coloader Org Code');
+                          $numberofSelec =array();
+                          $widthbr = array('Number Original','Volume Uom','Gross Weight Uom','Package Count Uom','Port Destination');
                     ?>
                     <?php $show=$cc==1 ? 'active show' : '' ;?>
-                    <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
+                    <div class="tab-pane fade <?=$show?>" id="<?=$matchval['hbl_numbers']?>_pane_<?=$pkey?>" role="tabpanel" aria-labelledby="<?=$hbl['hbl_numbers']?>_tab">
                     
                         <!--List of Fields-->
-                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){?>
-                            <?php if(!in_array($keyField,$tolast)){?>
-                                <div class="form-group row d-inline-block px-2">
+                        <form class="formsub">
+                            <?php foreach($matchval['reorderfield'] as $keyField=>$listofField){ ?>
+                                <?php if(!in_array($keyField,$tolast)){?>
+                                    <div class="form-group row d-inline-block px-2">
                                     <label for="<?=$keyField?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$keyField))?>" placeholder="col-form-label-sm" value="<?=$listofField?>">
+                                        <input type="text" class="form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$keyField))?>" placeholder="<?=$keyField?>" value="<?=$listofField['value']?>" required="required">
                                     </div>
-                                </div>
-                            <?php }?>
-                        <?php } ?>
-                        <br>
-                        <?php foreach($matchval['fieldlist'] as $keyField=>$listofField){ ?>
+                                    </div>
+                                    <?php if(in_array($keyField,$widthbr)){ echo"<br>";}?>
+                                <?php } ?> 
+                            <?php } ?>
+                            <br>
+                            <?php foreach($matchval['reorderfield'] as $keyField=>$listofField){ ?>
+                                
+                                <?php if(in_array($keyField,$withOptions)){ 
+                                    $kokey = strtolower(str_replace(" ","_",$keyField));
+                                    $names = strtok($keyField, " ");
+                                    $dname = isset($matchval['fieldlist'][$names]) ?  $matchval['fieldlist'][$names] : '' ;
+                                    //echo $dname."<br>";
+                                    $numberofSelec[]=$kokey.'_'.$matchval['hbl_numbers'];
+                                ?>
+                                    <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
+                                        <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
+                                        <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
+                                            <option value="<?=$listofField['value']?>" selected><?=$listofField['value']?></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row d-inline-block px-2 col-md-5">
+                                        <label for="<?=$names?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$names?></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="<?=$names?> form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$names))?>"  value="<?=$dname?>" required="required">
+                                        </div>
+                                    </div>
+                                <?php $select2count++; }?>
+                            <?php } ?>
                             
-                            <?php if(in_array($keyField,$withOptions)){ 
-                                 $kokey = strtolower(str_replace(" ","_",$keyField));
-                                 $names = strtok($keyField, " ");
-                                 $dname = isset($matchval['fieldlist'][$names]) ?  $matchval['fieldlist'][$names] : '' ;
-                                 //echo $dname."<br>";
-                                 $numberofSelec[]=$kokey.'_'.$matchval['hbl_numbers'];
-                            ?>
-                                <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
-                                    <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                    <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
-                                        <option value="<?=$listofField?>" selected><?=$listofField?></option>
-                                    </select>
-                                </div>
-                                <div class="form-group row d-inline-block px-2 col-md-5">
-                                    <label for="<?=$names?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$names?></label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="<?=$names?> form-control form-control-sm" id="<?=$keyField?>" name="<?=strtolower(str_replace(" ","_",$names))?>"  value="<?=$dname?>">
-                                    </div>
-                                </div>
-                            <?php $select2count++; }?>
-                        <?php } ?>
-                        
-                        <div class="d-block col-md-12 " style="overflow: hidden;">
-                        <button type="button" class="btn btn-primary sendToCGM float-right" data-key="<?=$pkey?>">Save Changes</button>
-                        </div>
-                        
+                            <div class="d-block col-md-12 " style="overflow: hidden;">
+                            <button type="submit" class="btn btn-primary sendToCGM float-right" data-key="<?=$pkey?>">Save Changes</button>
+                            </div>
+                        </form>
                         <hr>
                         <!--Table-->
                         <div class="card-body" style="overflow:scroll;">
@@ -252,86 +265,109 @@
 </div>
 <!-- /.modal -->
 <!--end of modal-->
-
 <script>
  var match_arr = <?=json_encode($this->match_arr)?>;
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
- var numberofSelec = <?=json_encode($numberofSelec)?>;
- console.log(numberofSelec);
+ 
  //show edit modal on preview doc
  $(document).ready(function(){
-    $(document).on('click','.edit-details',function(){
-    console.log(match_arr);
-    var tableindex = $(this).attr('data-tindex');
-    var matcharrayIndex = $(this).attr('data-dindex');
-    
-    $('#edit-ap').attr("tabledindex",tableindex);
-    $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
-    $('#edit-ap').attr('data-prim',prim_ref);
-    
-    var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
 
-    $("#edit-ap .modal-body").append(loader);
-    // load the url and show modal on success
-    $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
-    if (xhr.status == 200) {
-        $('#loader-wrapper').remove();
-        $("#edit-ap").modal("show");
-    } else {
-        alert("Error: " + xhr.status + ": " + xhr.statusText);
-        $('#loader-wrapper').remove();
-    }
+    $(document).on('click','.edit-details',function(){
+    
+        var tableindex = $(this).attr('data-tindex');
+        var matcharrayIndex = $(this).attr('data-dindex');
+        
+        $('#edit-ap').attr("tabledindex",tableindex);
+        $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
+        $('#edit-ap').attr('data-prim',prim_ref);
+        
+        var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+
+        $("#edit-ap .modal-body").append(loader);
+        // load the url and show modal on success
+        $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
+        if (xhr.status == 200) {
+            $('#loader-wrapper').remove();
+            $("#edit-ap").modal("show");
+        } else {
+            alert("Error: " + xhr.status + ": " + xhr.statusText);
+            $('#loader-wrapper').remove();
+        }
+        });
     });
-});
 
 //push edited to cgm response
-$(document).on('click','.sendToCGM',function(){
+// $.validator.addClassRules({
+//     notempty: {
+//         required: true,
+//     }
+// });
+$(document).on('click','.sendToCGM',function(e){
         var formData = [];
-        //var prim_ref = $("#edit-ap").attr("data-prim");
-        var tableindex =$(this).attr("tabledindex");
-        var parseindex = $(this).attr("data-key");
-        $('.form-group input').each(function(){
-            var tobj ={};
-            var tvalue = $(this).val();
-            var tname = $(this).attr("name");
-            tobj[tname] = tvalue;
-            formData.push(tobj);
-        });
-    //console.log(formData);
-        $.ajax({
-            url: document.location.origin+"/docregister/sendToAPI/",
-            type: "POST",
-            data:{
-                "data": formData, 
-                "docregister":matchjson, 
-                "prim_ref":prim_ref,
-                "tableindex":tableindex,
-                "parseindex":parseindex,
-                "type":'main',
-            },
-            success:function(data)
-            {
-             
-               $("#edit-ap .close").trigger("click");
-                Swal.fire(
-                "",
-                "Edit Success!",
-                );
-            }
-        });
+        $('form').each(function(){
+            $(this).validate({
+                highlight: function(element) {
+                    $(element).addClass('has-error');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('has-error');
+                },
+                submitHandler: function(form) {
+                    console.log(form);
+                    e.preventDefault();
+                    //form.submit();
+                    //var prim_ref = $("#edit-ap").attr("data-prim");
+                    var tableindex =$(this).attr("tabledindex");
+                    var parseindex = $(this).attr("data-key");
+                    $('.form-group input').each(function(){
+                        var tobj ={};
+                        var tvalue = $(this).val();
+                        var tname = $(this).attr("name");
+                        tobj[tname] = tvalue;
+                        formData.push(tobj);
+                    });
 
+                    $.ajax({
+                        url: document.location.origin+"/docregister/sendToAPI/",
+                        type: "POST",
+                        data:{
+                            "data": formData, 
+                            "docregister":matchjson, 
+                            "prim_ref":prim_ref,
+                            "tableindex":tableindex,
+                            "parseindex":parseindex,
+                            "type":'main',
+                        },
+                        beforeSend: function() {
+                            $("#loading").removeClass('d-none');
+                        },
+                        success:function(data)
+                        {
+                            $("#loading").addClass('d-none');
+                           //$("#edit-ap .close").trigger("click");
+                            Swal.fire(
+                            "",
+                            "Data was updated!",
+                            );
+                        }
+                    });
+                }
+            });
+        });
+        
     });
     // $('#preview-doc').on('hidden.bs.modal', function () {
     //     $('.company_code').select2('destroy');
     // });
     $('#preview-doc').on('shown.bs.modal ', function () {
-        
+        var numberofSelec = <?=json_encode($numberofSelec)?>;
+    
             $.each(numberofSelec,function(okey,oval){
                 var selector1 = '.consignee_org_code_'+oval;
                 var selector2 = '.shipper_org_code_'+oval;
                
-                $('#'+oval).select2({
+                $('.'+oval).select2({
                     dropdownAutoWidth : true,
                     width: 'auto',
                     ajax:{
@@ -346,17 +382,15 @@ $(document).on('click','.sendToCGM',function(){
                         delay: 250,
                         processResults: function(data,params) {
                             var resData = [];
-                            console.log('will i ever');
-                            console.log(data);
-                            console.log(params);
+                            
                             $.each(data,function(okey,oval){
-                                console.log(oval);
+                               
                                 resData.push(oval);
                             });
 
                             return {
                                 results: $.map(data, function(item) {
-                                    console.log('mama miya');
+                                    
                                     return {
                                         text:item[0].code,
                                         id: item[0].name
@@ -389,7 +423,7 @@ $(document).on('click','.sendToCGM',function(){
                     localStorage.setItem('consigneeOrg',data);
                     $.each( JSON.parse(data), function( key, value ) {
                     if(value.org_code !== '') {
-                        console.log(value.org_code);
+                        
                         var newOption = new Option(value.org_code, value.company_name, false, false);
                         $('.consignee_org_code').append(newOption).trigger('change');
                     }
@@ -403,11 +437,11 @@ $(document).on('click','.sendToCGM',function(){
                 {
                     localStorage.setItem('shipmentOrg',data);
                     $.each( JSON.parse(data), function( key, value ) {
-                        console.log(value);
+                       
                     if(value.org_code !== '') {
-                        console.log(value.org_code);
+                       
                         var newOption = new Option(value.org_code, value.company_name, false, false);
-                        console.log(newOption);
+                        
                         $('.shipper_org_code').append(newOption).trigger('change');
                     }
                     });
@@ -426,7 +460,7 @@ $(document).on('click','.sendToCGM',function(){
 	});
     $(document).on('change','.consignee_org_code',function(){
         var data=$(this).select2('data')[0];
-        console.log(data);
+       
         var text = data.id;
         if(text == 'null'){
             text = 'Not Specified';
@@ -435,7 +469,7 @@ $(document).on('click','.sendToCGM',function(){
 	});
     $(document).on('change','.carrier_org_code',function(){
         var data=$(this).select2('data')[0];
-        console.log(data);
+        
         var text = data.id;
         if(text == 'null'){
             text = 'Not Specified';
@@ -443,5 +477,4 @@ $(document).on('click','.sendToCGM',function(){
         $('.Carrier').val(text);
 	});
  });
-
 </script>
