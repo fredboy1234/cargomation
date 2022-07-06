@@ -126,32 +126,48 @@ class Order extends Core\Controller {
         $orderData = $Order->getFilterResults($user,$_POST['status']);
 
         foreach($orderData as $value){
+             $obj = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu"><span class="dropdown-item">';
+
+            $arr = json_decode($value->order_line);
+            if(is_array($arr) && count($arr) > 0){
+                foreach ($arr as $key => $object) {
+                    $line_number = $obj."LineNumber: ".$object->LineNumber.'<br />'.
+                    "Pkg Qty: ".$object->PackageQty.'<br />'.
+                    "Order Qty: ".$object->OrderedQty.' '.$object->OrderedQtyUnitCode.'<br />'.
+                    "Product: <b>".$object->ProductName.'</b><br />'.
+                    '</span></div></div>';
+                }
+            }else{
+                $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
+            }
             $retData['data'][] = array(
-                "order_number" => $value->order_number,
-                "ship_num" =>'',
-                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_date"=>$value->order_date,
+                "status"=>$value->status_desc,
                 "pre_advice"=>'',
                 "buyer"=>$value->buyer,
-                "supplier"=>'',
+                "supplier"=>$value->seller,
                 "transport_mode"=>$value->trans_mode,
-                "container_mode"=>'',
-                "goods_origin"=>$value->port_origin,
-                "good_destination"=>'',
+                "goods_origin"=>$value->goods_origin,
+                "good_destination"=>$value->goods_destination,
                 "load_port"=>$value->port_load,
-                "discharge_port"=>'',
-                "packs"=>'',
-                "type"=>'',
+                "discharge_port"=>$value->port_origin,
+                "packs"=>$value->outer_pack,
+                "type"=>$value->pack_code,
                 "volume"=>$value->total_volume,
                 "uv"=>'',
                 "weight" =>$value->total_weight,
                 "uw"=>$value->weight_unit,
-                "req_stock"=>'',
-                "req_work"=>'',
-                "h_bill"=>'',
-                "m_bill"=>''
+                // "req_stock"=>'',
+                // "req_work"=>'',  
+                "order_line"=>$line_number 
             );
         }
-         
+     
         echo json_encode($retData);
     }
 
@@ -161,31 +177,50 @@ class Order extends Core\Controller {
 
         $Order = Model\Order::getInstance();
         $orderData = $Order->getOrderData($user_id);
-        
+        $orderline_arr = [];
+
+
         foreach($orderData as $value){
+
+            $obj = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu"><span class="dropdown-item">';
+
+            $arr = json_decode($value->order_line);
+            if(is_array($arr) && count($arr) > 0){
+                foreach ($arr as $key => $object) {
+                    $line_number = $obj."LineNumber: ".$object->LineNumber.'<br />'.
+                    "Pkg Qty: ".$object->PackageQty.'<br />'.
+                    "Order Qty: ".$object->OrderedQty.' '.$object->OrderedQtyUnitCode.'<br />'.
+                    "Product: <b>".$object->ProductName.'</b><br />'.
+                    '</span></div></div>';
+                }
+            }else{
+                $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
+            }
             $retData['data'][] = array(
-                "order_number" => $value->order_number,
-                "ship_num" =>'',
-                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_date"=>$value->order_date,
+                "status"=>$value->status_desc,
                 "pre_advice"=>'',
                 "buyer"=>$value->buyer,
-                "supplier"=>'',
+                "supplier"=>$value->seller,
                 "transport_mode"=>$value->trans_mode,
-                "container_mode"=>'',
-                "goods_origin"=>$value->port_origin,
-                "good_destination"=>'',
+                "goods_origin"=>$value->goods_origin,
+                "good_destination"=>$value->goods_destination,
                 "load_port"=>$value->port_load,
-                "discharge_port"=>'',
-                "packs"=>'',
-                "type"=>'',
+                "discharge_port"=>$value->port_origin,
+                "packs"=>$value->outer_pack,
+                "type"=>$value->pack_code,
                 "volume"=>$value->total_volume,
                 "uv"=>'',
                 "weight" =>$value->total_weight,
                 "uw"=>$value->weight_unit,
-                "req_stock"=>'',
-                "req_work"=>'',
-                "h_bill"=>'',
-                "m_bill"=>''
+                // "req_stock"=>'',
+                // "req_work"=>'',  
+                "order_line"=>$line_number 
             );
         }
         
@@ -200,29 +235,45 @@ class Order extends Core\Controller {
         $orderData = $Order->getOrderByShipment($user_id);
         
         foreach($orderData as $value){
+           $obj = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    View
+                    </button>
+                    <div class="dropdown-menu"><span class="dropdown-item">';
+
+            $arr = json_decode($value->order_line);
+            if(is_array($arr) && count($arr) > 0){
+                foreach ($arr as $key => $object) {
+                    $line_number = $obj."LineNumber: ".$object->LineNumber.'<br />'.
+                    "Pkg Qty: ".$object->PackageQty.'<br />'.
+                    "Order Qty: ".$object->OrderedQty.' '.$object->OrderedQtyUnitCode.'<br />'.
+                    "Product: <b>".$object->ProductName.'</b><br />'.
+                    '</span></div></div>';
+                }
+            }else{
+                $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
+            }
             $retData['data'][] = array(
-                "order_number" => $value->order_number,
-                "ship_num" =>'',
-                "order_date"=>date_format(date_create($value->eta),"d/m/Y"),
+                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_date"=>$value->order_date,
+                "status"=>$value->status_desc,
                 "pre_advice"=>'',
                 "buyer"=>$value->buyer,
-                "supplier"=>'',
+                "supplier"=>$value->seller,
                 "transport_mode"=>$value->trans_mode,
-                "container_mode"=>'',
-                "goods_origin"=>$value->port_origin,
-                "good_destination"=>'',
+                "goods_origin"=>$value->goods_origin,
+                "good_destination"=>$value->goods_destination,
                 "load_port"=>$value->port_load,
-                "discharge_port"=>'',
-                "packs"=>'',
-                "type"=>'',
+                "discharge_port"=>$value->port_origin,
+                "packs"=>$value->outer_pack,
+                "type"=>$value->pack_code,
                 "volume"=>$value->total_volume,
                 "uv"=>'',
                 "weight" =>$value->total_weight,
                 "uw"=>$value->weight_unit,
-                "req_stock"=>'',
-                "req_work"=>'',
-                "h_bill"=>'',
-                "m_bill"=>''
+                // "req_stock"=>'',
+                // "req_work"=>'',  
+                "order_line"=>$line_number 
             );
         }
         

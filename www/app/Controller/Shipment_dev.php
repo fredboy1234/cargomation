@@ -1364,7 +1364,7 @@ class Shipment extends Core\Controller {
 
     public function getOrgCodeByUserID($user_id = "") {
         $User = Model\User::getInstance($user_id);
-        $test = $User->getOrgCodeByUserID($user_id, $_POST);
+        $test = $User->getOrgCodeByUserID($user_id);
         echo json_encode($test);
     }
 

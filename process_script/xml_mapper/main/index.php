@@ -78,12 +78,18 @@ if(isset($_GET['user_id'])){
 					}			
 		    	}
 			}
-
-			if($container != 'false'){
+			###If Packingline have container
+			if(!empty($container_in)){
+				if($container != 'false'){
 				 if(count($container_decode) === 1){
 		    		foreach ($container_decode as $key => $value) {
 		    			if(in_array($value['ContainerNumber'],$container_in)){
-		    				$containercollection = str_replace(array("'", "'"), array("", ""),$container);
+		    				if(strpos(strtolower(json_encode($value)),strtolower('ContainerPenaltyCollection')) !== false){ 
+		    					$value = str_replace(array("'", "'"), array("", ""),$container);
+		    				    $containercollection = substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'}]';
+		    				}else{
+		    					$containercollection = str_replace(array("'", "'"), array("", ""),$container);
+		    				}			
 		    			}
 		    		}
 		    	}
@@ -94,8 +100,7 @@ if(isset($_GET['user_id'])){
 			    			 	array_push($container_keys,$value_con);
 			    			}
 			    		}
-			    	}
-
+			    	}		    
 			    	$get_container = array();
 			    	if(count($container_keys) > 0){
 			    		foreach($container_keys as $keys){
@@ -103,43 +108,49 @@ if(isset($_GET['user_id'])){
 			    		}
 			    	  $a = "";
 			    	  $containerctr =  json_decode(json_encode($get_container, JSON_UNESCAPED_SLASHES));
+
 			    	   foreach ($containerctr as $key => $value) {
 			    	 	if(count($containerctr) > 1){
 			    	 		if ($key === array_key_first($containerctr)) { 
-			    	 			if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 			if(strpos(strtolower(json_encode($value)),strtolower('ContainerPenaltyCollection')) !== false){
 			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'},';
 			    	 			 }else{
 			    	 			 	$a .= substr($value, 0, -1).',';
 			    	 			 }
 			    	 		  }
 			    	 		  elseif ($key === array_key_last($containerctr)) {   	 		  		
-			    	 		  	if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 		  	if(strpos(strtolower(json_encode($value)),strtolower('ContainerPenaltyCollection')) !== false){
 			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 1, -1).'}]';
 			    	 			 }else{
 			    	 			 	 $a .= substr($value, 1, -1).']';
 			    	 			 }
 			    	 		  }else{
-			    	 		  	if(strpos($value, 'ContainerPenaltyCollection') !== false){
+			    	 		  	if(strpos(strtolower(json_encode($value)),strtolower('ContainerPenaltyCollection')) !== false){
 			    	 				$a .= substr(ltrim(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), '['), 0, -1).'},';
 			    	 			 }else{
 			    	 			 	$a .= ltrim(substr($value, 0, -1), '[').',';
 			    	 			 }		    	 		  		 
 			    	 		 }
 			    	 	 }elseif(count($containerctr) == 1){
-			    	 	 		if(strpos($value, 'ContainerPenaltyCollection') !== false){
-			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).']'; 
+			    	 	 		if(strpos(strtolower(json_encode($value)),strtolower('ContainerPenaltyCollection')) !== false){
+			    	 				$a .= substr(preg_replace('/"ContainerPenaltyCollection"[\s\S]+?.*/', '', $value), 0, -1).'}]'; 
 			    	 			 }else{
 			    	 			 	$a = substr($value, 0, -1).']'; 
 			    	 			 }	
 			    	 	 	
 			    	 	 }else{
-			    	 	 	$a = "false";
+			    	 	 	$a = "";
 			    	 	 }
 			    	   }
-			    	  $containercollection = str_replace(array("'", "'"), array("", ""),$a);
+			    	 	 $containercollection = str_replace(array("'", "'"), array("", ""),$a);
+				    	}
 			    	}
-		    	}
+				}
 			}
+			else{
+				$containercollection = "";
+			}
+			###End of If Packingline have container
 		    ###End of Get specific container from packingline to containercollection
 
 			###Get Last leg details of transport collection

@@ -1,5 +1,5 @@
 <?php
-//*** custom function ***//
+//*** custom function  ***//
 require_once ('json.php');
 require_once ('jsonpath-0.8.1.php');
 require_once ('connection.php');

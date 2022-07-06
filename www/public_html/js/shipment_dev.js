@@ -272,19 +272,132 @@ $(document).ready(function () {
     columnDefs: [
       {
         targets: [0],
-        visible: false,
+        visible: true,
         searchable: false
       },
+      // {
+      //   targets: [1],
+      //   render: function (data, type, row) {
+      //     return '<span>' + data + '</span>'
+      //   }
+      // },
       {
-        targets: [1],
+        targets: '_all',
         render: function (data, type, row) {
-          return '<span>' + data + '</span>'
+          var result;
+          switch (data.index) {
+            case 'shipment_num':
+              result = '<div class="btn-group">' +
+                      '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                      data['shipment_num'] +
+                      '</button>' + 
+                      '<div class="dropdown-menu">' +
+                        '<a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''+data['macro_link']+'\')" data-ship-id="'+data['shipment_id']+'"> Open Cargowise </a>' +
+                        '<div class="dropdown-divider"></div>' + 
+                        '<a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\''+data['shipment_num']+'\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>' +
+                      '</div>' + 
+                    '</div>';
+              break;
+          
+            case 'container_number':
+              if(typeof data.container_number === 'object' && data !== null){
+                if(data.container_number.length === 0) {
+                  result = '<span class="text-warning">No data</span>';
+                } else {
+                  result = '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                    'View' + 
+                    '</button>' + 
+                    '<div class="dropdown-menu">';
+                  var last_key = data.container_number.length - 1;
+                  data.container_number.forEach((element, index) => {
+                    result += 
+                    '<span class="dropdown-item">' +
+                     'Container Number: ' + element['container_number'] + '<br>' +
+                     'Container Type: ' + element['container_type'] + '<br>' +
+                     'Container Delivery Mode: ' + element['delivery_mode'] + '<br>' +
+                     '</span>';
+                    if(last_key !== index) {
+                        result += '<div class="dropdown-divider"></div>';
+                    }
+                  });
+                  result += '</div></div>';
+                }
+              }
+              break;
+
+            case 'order_number':
+              if(data.order_number === null) {
+                result = '<span class="text-warning">No data</span>';
+              } else {
+                result = '<div class="btn-group">' +
+                  '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                  'View' + 
+                  '</button>' + 
+                  '<div class="dropdown-menu">';
+                var last_key = data.order_number.length - 1;
+                data.order_number.forEach((element, index) => {
+                  result += 
+                  '<span class="dropdown-item">' +
+                    'Order Number: ' + element['OrderReference'] + '<br>' +
+                    '</span>';
+                  if(last_key !== index) {
+                      result += '<div class="dropdown-divider"></div>';
+                  }
+                });
+                result += '</div></div>';
+              }
+              break;
+            
+            case 'eta_date':
+              var result = data['date']; 
+              result += (data['diff']) ? '<span style="color:'+ data['color'] + 
+              '" class="badge navbar-badge ship-badge">'+ data['diff'] + 'd</span>' : '';
+              break;
+            
+            case 'data_string':
+              result = (data.value == '') ? '<span class="text-warning">No Data</span>' : data.value;
+              break;
+            
+            case 'all_document': 
+              var text, badge;
+              if(data.count.length === 0) {
+                text = 'No Document';
+                badge = 'text-warning no-doc';
+              } else {
+                text = 'View All';
+                badge = 'badge badge-primary';
+              }
+              result = '<div class="doc-stats">' +
+                '<span class="doc ' + badge + '" data-id="' + data['shipment_num'] + '">' + text + '</span></div>';
+              break;
+            
+            default:
+              if(data['count'] === '') {
+                result = '<span>' + data['text'] + '</span>';
+              } else {
+                result = '<div class="doc-stats" style="display: none;">' +
+                    '<span class="doc" data-type="' + data['key'] + '" data-id="' + data['shipment_num'] + '">' 
+                    +data['approved']+'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'
+                    +data['pending']+'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>'
+                    +data['watched']+'<i class="fa fa-eye text-warning" aria-hidden="true"></i>'
+                    + '</span>'
+                    +'</div>'
+                  +'<div class="doc-stats">'
+                  +    '<span class="doc badge '+data['badge']+'" data-type="'+data['key']+'" data-id="'+data['shipment_num']+'">'+data['text']+'</span>'
+                  +    '<span class="badge badge-danger navbar-badge ship-badge">'+data['count']+'</span>'
+                  +'</div>';
+              }
+              break;
+          }
+
+          return result;
         }
       },
     ],
     autoWidth: false,
     lengthChange: false,
-    colReorder: true,
+    colReorder: false,
     processing: true,
     language: {
       processing: '<center><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></center>'
@@ -320,14 +433,14 @@ $(document).ready(function () {
           });
           d.data = arr;
         } else {
-          // var modifier = getSearch();
-          // $(document).on('click','.paginate_button',function(){
-          //   console.log('m test');
-          //   modifier = [];
-          // });
-          // setTimeout(function(){
+          var modifier = getSearch();
+          $(document).on('click','.paginate_button',function(){
+            console.log('m test');
+            modifier = [];
+          });
+          setTimeout(function(){
             d.data = getSearch();
-          // },50);
+          },50);
         }
       },
       error:function(err, status){
@@ -1060,39 +1173,13 @@ function selectTrigger(index, inputType, search_type = ""){
 
     if(search_type == 'consignee' || search_type == 'consignor'){
       let items = [];
-      // $.getJSON( "/shipment/getOrgCodeByUserID/" + user_id, function( data ) {
-      //   $.each( data, function( key, value ) {
-      //     if(value.consignee !== '') {
-      //       var newOption = new Option(value.company_name, value.consignee, false, false);
-      //       $('#container_mode_'+index).append(newOption).trigger('change');
-      //     }
-      //   });
-      // });
-
-      $('#container_mode_'+index).select2({
-        ajax: { 
-        url: "/shipment/getOrgCodeByUserID/" + user_id,
-        type: "post",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-          return {
-            searchTerm: params.term // search term
-          };
-        },
-        processResults: function (response) {
-          return {
-            results: response
-          };
-          // $.each( response, function( key, value ) {
-          //   if(value.consignee !== '') {
-          //     var newOption = new Option(value.company_name, value.consignee, false, false);
-          //     $('#container_mode_'+index).append(newOption).trigger('change');
-          //   }
-          // });
-        },
-        cache: true
-        }
+      $.getJSON( "/shipment/getOrgCodeByUserID/" + user_id, function( data ) {
+        $.each( data, function( key, value ) {
+          if(value.consignee !== '') {
+            var newOption = new Option(value.consignee, value.consignee, false, false);
+            $('#container_mode_'+index).append(newOption).trigger('change');
+          }
+        });
       });
     }
 
