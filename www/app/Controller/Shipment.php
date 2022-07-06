@@ -474,7 +474,14 @@ class Shipment extends Core\Controller {
         $shipment = $User->getSubDocumentType($user)[0]->shipment;
         $selected_doc = [];
 
-        $shipment_json = json_decode($shipment);
+        if(empty($shipment)) {
+            // DEFAULT SHIPMENT COLUMN SETTTING
+            $json_setting = '/settings/sub-shipment-settings.json';
+            $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+            $shipment_json = $defaultSettings->table;
+        } else {
+            $shipment_json = json_decode($shipment);
+        }
         foreach ($shipment_json as $key => $value) {
             if($value->index_lvl == 'document') {
                 if($value->index != 'all') {
@@ -494,11 +501,19 @@ class Shipment extends Core\Controller {
         $shipment = $User->getSubDocumentType($user)[0]->shipment;
         $selected_doc = [];
 
-        $shipment_json = json_decode($shipment);
+        if(empty($shipment)) {
+            // DEFAULT SHIPMENT COLUMN SETTTING
+            $json_setting = '/settings/sub-shipment-settings.json';
+            $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
+            $shipment_json = $defaultSettings->table;
+        } else {
+            $shipment_json = json_decode($shipment);
+        }
+
         foreach ($shipment_json as $key => $value) {
             if($value->index_lvl == 'document') {
                 if($value->index != 'all') {
-                    $selected_doc[] = $value->index;
+                    $selected_doc[] = strtolower($value->index);
                 }
             }
         }
@@ -585,7 +600,7 @@ class Shipment extends Core\Controller {
         $User = Model\User::getInstance($user_id);
         $settings = $User->getUserSettings($user_id);
 
-        if(is_null($settings[0]->shipment)) {
+        if(empty($settings[0]->shipment)) {
             // DEFAULT SHIPMENT COLUMN SETTTING
             $json_setting = '/settings/sub-shipment-settings.json';
             $defaultSettings = json_decode(file_get_contents(PUBLIC_ROOT.$json_setting));
@@ -1087,6 +1102,223 @@ class Shipment extends Core\Controller {
         return $data;
     }
 
+    private function sanitizeDataOptimized($user_id, $param, $docRequest) {
+        $array_data = json_decode($param);
+        $User = new Model\User;
+        $cw_doc_type = array_column($User->getCWDOcumentType($user_id), 'doc_type'); // CW
+        $sh_doc_type = $this->documentTypeFromSettings($user_id); // SETTINGS : true
+        $all_sh_doc_type = $this->allDocumentTypeFromSettings($user_id); // SETTINGS : all
+        $data = $docsCollection = $json_data = $html = $tableData = $searchStore = array();
+        $documents = array();
+      
+        foreach($array_data as $shipment_key => $shipment) {
+            $eta_date = date_format(date_create($shipment->eta), "d/m/Y");
+            $etd_date = date_format(date_create($shipment->etd), "d/m/Y");
+            $ata_date = date_format(date_create($shipment->ata), "d/m/Y");
+            $atd_date = date_format(date_create($shipment->atd), "d/m/Y");
+            $sta_date = '';
+            $marco_link = "";
+            $etadays = "";
+            $etadaycolor = '';
+            
+            if(isset($shipment->route_leg) && !empty($shipment->route_leg)){
+                $stadecode = json_decode($shipment->route_leg);
+                if(is_array($stadecode)){  
+                    if(isset(end($stadecode)->ScheduledArrival) && !is_array(end($stadecode)->ScheduledArrival)){
+                        $sta_date = date_format(date_create(end($stadecode)->ScheduledArrival), "Y-m-d");
+                        $diff =  strtotime(date_format(date_create($shipment->eta), "Y-m-d")) - strtotime($sta_date);
+                        $etadiff = ceil($diff / 86400);
+                        if($sta_date !=="" || strpos($shipment->eta,"1900-01-01")===false){
+                            if($etadiff > 0){
+                                $etadaycolor = 'red';
+                                $etadays =' <span style="color:red;" class="badge navbar-badge ship-badge">+'.$etadiff.'d</span>';
+                            }else{
+                                if($etadiff != 0){
+                                    $etadaycolor = 'green';
+                                    $etadays =' <span style="color:green;" class="badge navbar-badge ship-badge">'.$etadiff.'d</span>';
+                                }
+                            }
+                        }else{
+                            $etadays='';
+                        }
+                    }
+                }
+            }
+
+            if(!empty($shipment->vrptShipmentlinks)) {
+                $marco_link = $shipment->vrptShipmentlinks[0]->macro_link;
+            }
+
+            $subdata = array();
+            // $subdata['real_id_shipment'] = $shipment->shipment_num; // remove?
+            $subdata['id'] = ['index' => 'data_string', 'value' => $shipment->id]; // remove?
+            $subdata['shipment_num'] = ['index' => "shipment_num",
+                                        'shipment_num' => $shipment->shipment_num,
+                                        'shipment_id' => $shipment->id,
+                                        'macro_link' => $marco_link];
+            $subdata['console_id'] = ['index' => 'data_string', 'value' => $shipment->console_id];
+            $subdata['eta_date'] = ['index' => 'eta_date',
+                                    'date' => ($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date),
+                                    'color' => $etadaycolor,
+                                    'diff' => $etadays];
+            $subdata['etd_date'] = ['index' => 'data_string',
+                                    'value' => ($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date)];
+            $subdata['vessel_name'] = ['index' => 'data_string', 'value' => $shipment->vessel_name];
+            $subdata['place_delivery'] =  ['index' => 'data_string', 'value' => $shipment->place_delivery];
+            $subdata['consignee'] = ['index' => 'data_string', 'value' => $shipment->consignee];
+            $subdata['consignor'] = ['index' => 'data_string', 'value' => $shipment->consignor];
+            // Additionals
+            $subdata['master_bill'] = ['index' => 'data_string', 'value' => $shipment->master_bill];
+            $subdata['house_bill'] = ['index' => 'data_string', 'value' => $shipment->house_bill];
+            $subdata['transport_mode'] = ['index' => 'data_string', 'value' => $shipment->transport_mode];
+            $subdata['voyage_flight_num'] = ['index' => 'data_string', 'value' => $shipment->voyage_flight_num];
+            $subdata['container_mode'] = ['index' => 'data_string', 'value' => $shipment->container_mode];
+            $subdata['port_loading'] = ['index' => 'data_string', 'value' => $shipment->port_loading];
+            $subdata['port_discharge'] = ['index' => 'data_string', 'value' => $shipment->port_discharge];
+            $subdata['order_number'] = ['index' => 'order_number', 'order_number' => json_decode($shipment->order_number)];
+            // $subdata['ata_date'] = ['index' => 'data_string', 'value' => $ata_date];
+            // $subdata['atd_date'] = ['index' => 'data_string', 'value' => $atd_date];
+            $subdata['ata_date'] = ['index' => 'data_string',
+                                    'value' => ($ata_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$ata_date)];   
+            $subdata['atd_date'] = ['index' => 'data_string',
+                                    'value' => ($atd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$atd_date)];   
+            $subdata['container_number'] = ['index' => 'container_number', 'container_number' => $shipment->Container_Infos];
+
+            // DOCUMENT LEVEL
+            // Default Empty Value (DEV)
+            foreach ($cw_doc_type as $type) {
+                $documents[strtolower($type)]['text'] = "Empty";
+                $documents[strtolower($type)]['approved'] = 0;
+                $documents[strtolower($type)]['pending'] = 0;
+                $documents[strtolower($type)]['watched'] = 0;
+                $documents[strtolower($type)]['badge'] = "";
+                $documents[strtolower($type)]['count'] = "";
+            }
+            $document_type = [];
+            if(!empty($shipment->Documents)) {
+                foreach ($shipment->Documents as $document_key => $document) {
+                    $document_type[$document_key] = strtolower($document->type);
+                    // Status Count
+                    if($document->status == "approved") {
+                        $documents[strtolower($document->type)]['approved']++;
+                    }
+                    if($document->status == "pending") {
+                        $documents[strtolower($document->type)]['pending']++;
+                    }  
+                    if($document->status == "watched") {
+                        $documents[strtolower($document->type)]['watched']++;
+                    }
+                    // Status Text and Badge
+                    if($documents[strtolower($document->type)]['pending'] < $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['approved'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-success";
+                        $documents[strtolower($document->type)]['text'] = "Approved"; 
+                    } elseif($documents[strtolower($document->type)]['pending'] > $documents[strtolower($document->type)]['approved']) {
+                        $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        $documents[strtolower($document->type)]['text'] = "Pending";
+                    } else {
+                        // $documents[strtolower($document->type)]['count'] = $documents[strtolower($document->type)]['pending'];
+                        // $documents[strtolower($document->type)]['badge'] = "badge-warning";
+                        // $documents[strtolower($document->type)]['text'] = "Pending";
+                    }
+                }
+            }
+            // DOCUMENT REQUEST
+            if(!empty($shipment->DocumentRequests)) {
+                foreach ($shipment->DocumentRequests as $requested_key => $requested) {
+                    // $requested->shipment_num // $requested->document_type // $requested->document_id 
+                    // $requested->request_type // $requested->expired_date // $requested->status
+                    // $requested->sender
+                    if(strpos($requested->document_type, ',') === false) {
+                        $documents[strtolower($requested->document_type )]['count'] = $requested->request_type;
+                        $documents[strtolower($requested->document_type )]['badge'] = "badge-info";
+                        $documents[strtolower($requested->document_type )]['text'] = "Requested"; 
+                        // If type already have a document
+                        if(!isset($documents[strtolower($requested->document_type )]['approved'])) {
+                            $documents[strtolower($requested->document_type )]['approved'] = 0;
+                        }
+                        if(!isset($documents[strtolower($requested->document_type )]['pending'])) {
+                            $documents[strtolower($requested->document_type )]['pending'] = 0;
+                        }
+                        if(!isset($documents[strtolower($requested->document_type )]['watched'])) {
+                            $documents[strtolower($requested->document_type )]['watched'] = 0;
+                        }
+                    } else {
+                        $doc_array = explode(",", $requested->document_type);
+                        foreach ($doc_array as $key => $value) {
+                            $documents[strtolower($value)]['count'] = $requested->request_type;
+                            $documents[strtolower($value)]['badge'] = "badge-info";
+                            $documents[strtolower($value)]['text'] = "Requested"; 
+                            // If type already have a document
+                            if(!isset($documents[strtolower($value)]['approved'])) {
+                                $documents[strtolower($value)]['approved'] = 0;
+                            }
+                            if(!isset($documents[strtolower($value)]['pending'])) {
+                                $documents[strtolower($value)]['pending'] = 0;
+                            }
+                            if(!isset($documents[strtolower($value)]['watched'])) {
+                                $documents[strtolower($value)]['watched'] = 0;
+                            }
+                        }
+                    }
+                }
+            }
+            $not_empty_doc = [];
+            foreach ($documents as $key => $value) {
+                $subdata[$key]['shipment_num'] = $shipment->shipment_num;
+                $subdata[$key]['count'] = $value['count'];
+                $subdata[$key]['approved'] = $value['approved'];
+                $subdata[$key]['pending'] = $value['pending'];
+                $subdata[$key]['watched'] = $value['watched'];
+                $subdata[$key]['key'] = strtoupper($key);
+                $subdata[$key]['badge'] = $value['badge'];
+                $subdata[$key]['text'] = $value['text'];
+                if($subdata[$key]['count'] != 0 || !empty($subdata[$key]['count'])) {
+                    $not_empty_doc[] = strtolower($key);
+                }
+                // $subdata[$key] = '<div class="doc-stats" style="display: none;">
+                // <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">
+                // '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                // '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
+                // '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                // </span>
+                // </div>
+                // <div class="doc-stats">
+                //     <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">'.$value['text'].'</span>
+                //     <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
+                // </div>';
+            }
+
+            $available_doc = (empty($all_sh_doc_type)) ? $cw_doc_type : $all_sh_doc_type;
+            $subdata['all'] = ['index' => 'all_document',
+                            'count' => array_intersect($available_doc, $not_empty_doc),
+                            'shipment_num' => $shipment->shipment_num];
+
+            //remove this code if kuya has API
+            // print_r($docRequest);
+            // exit;
+            if($docRequest ==='requested'){
+                if(!empty($shipment->Documents)) {
+                    $data[] = $subdata;
+                }
+            }elseif($docRequest ==='newshipments'){
+                $etdata = date("Y-m-d", strtotime($shipment->eta));
+                $now_date = date("Y-m-d");
+                if($etdata >= $now_date) {
+                    $data[] = $subdata;
+                }
+            }else{
+                $data[] = $subdata;
+            }
+
+            //uncomment this if kuya has API
+            // $data[] = $subdata;
+            
+        }
+        return $data;
+    }
+
     /**
      * Post: uses CURL to call a request to the endpoint and 
      * return mixed data response.
@@ -1132,7 +1364,7 @@ class Shipment extends Core\Controller {
 
     public function getOrgCodeByUserID($user_id = "") {
         $User = Model\User::getInstance($user_id);
-        $test = $User->getOrgCodeByUserID($user_id);
+        $test = $User->getOrgCodeByUserID($user_id, $_POST);
         echo json_encode($test);
     }
 
