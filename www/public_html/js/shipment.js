@@ -1060,13 +1060,40 @@ function selectTrigger(index, inputType, search_type = ""){
 
     if(search_type == 'consignee' || search_type == 'consignor'){
       let items = [];
-      $.getJSON( "/shipment/getOrgCodeByUserID/" + user_id, function( data ) {
-        $.each( data, function( key, value ) {
-          if(value.consignee !== '') {
-            var newOption = new Option(value.consignee, value.consignee, false, false);
-            $('#container_mode_'+index).append(newOption).trigger('change');
-          }
-        });
+      // $.getJSON( "/shipment/getOrgCodeByUserID/" + user_id, function( data ) {
+      //   $.each( data, function( key, value ) {
+      //     if(value.consignee !== '') {
+      //       var newOption = new Option(value.company_name, value.consignee, false, false);
+      //       $('#container_mode_'+index).append(newOption).trigger('change');
+      //     }
+      //   });
+      // });
+
+      $('#container_mode_'+index).select2({
+        ajax: { 
+        url: "/shipment/getOrgCodeByUserID/" + user_id,
+        type: "post",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return {
+            searchTerm: params.term // search term
+          };
+        },
+        processResults: function (response) {
+          console.log(response);
+          return {
+            results: response
+          };
+          // $.each( response, function( key, value ) {
+          //   if(value.consignee !== '') {
+          //     var newOption = new Option(value.company_name, value.consignee, false, false);
+          //     $('#container_mode_'+index).append(newOption).trigger('change');
+          //   }
+          // });
+        },
+        cache: true
+        }
       });
     }
 
