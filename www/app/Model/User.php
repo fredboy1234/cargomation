@@ -872,9 +872,9 @@ class User extends Core\Model {
     public function getOrgCodeByUserID($user_id, $search) {
         $Db = Utility\Database::getInstance();
         if(!isset($search['searchTerm'])) { 
-            $query = "SELECT TOP 50 user_id AS id, company_name AS text FROM vrptConsignee WHERE user_id = '{$user_id}'";
+            $query = "SELECT TOP 50 user_id AS id, consignee AS text FROM vrptConsignee WHERE user_id = '{$user_id}'";
         } else { 
-            $query = "SELECT TOP 50 user_id AS id, company_name AS text FROM vrptConsignee 
+            $query = "SELECT TOP 50 user_id AS id, consignee AS text FROM vrptConsignee 
             WHERE (consignee LIKE '%".$search['searchTerm']."%' 
             OR company_name LIKE '%".$search['searchTerm']."%') 
             AND user_id = '{$user_id}'";
