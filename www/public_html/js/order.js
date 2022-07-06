@@ -56,13 +56,11 @@ var table = $('#myTable1').DataTable( {
     "iDisplayLength": 8,
     "columns": [
         { "data": "order_number" },
-        { "data": "ship_num" },
         { "data": "order_date" },
-        { "data": "pre_advice" },
+        { "data": "status" },
         { "data": "buyer" },
         { "data": "supplier" },
         { "data": "transport_mode" },
-        { "data": "container_mode" },
         { "data": "goods_origin" },
         { "data": "good_destination" },
         { "data": "load_port" },
@@ -70,13 +68,11 @@ var table = $('#myTable1').DataTable( {
         { "data": "packs" },
         { "data": "type" },
         { "data": "volume" },
-        { "data": "uv" },
         { "data": "weight" },
         { "data": "uw" },
-        { "data": "req_stock" },
-        { "data": "req_work" },
-        { "data": "h_bill" },
-        { "data": "m_bill" },
+        //{ "data": "req_stock" },
+        //{ "data": "req_work" }, 
+        { "data": "order_line" },     
     ],
     "order": [[1, 'desc']],  
 });
@@ -106,13 +102,11 @@ $(".filter-order").on('click',function(){
             "iDisplayLength": 8,
             "columns": [
                 { "data": "order_number" },
-                { "data": "ship_num" },
                 { "data": "order_date" },
-                { "data": "pre_advice" },
+                { "data": "status" },
                 { "data": "buyer" },
                 { "data": "supplier" },
                 { "data": "transport_mode" },
-                { "data": "container_mode" },
                 { "data": "goods_origin" },
                 { "data": "good_destination" },
                 { "data": "load_port" },
@@ -120,13 +114,11 @@ $(".filter-order").on('click',function(){
                 { "data": "packs" },
                 { "data": "type" },
                 { "data": "volume" },
-                { "data": "uv" },
                 { "data": "weight" },
                 { "data": "uw" },
-                { "data": "req_stock" },
-                { "data": "req_work" },
-                { "data": "h_bill" },
-                { "data": "m_bill" },
+                //{ "data": "req_stock" },
+                //{ "data": "req_work" },
+                { "data": "order_line" }, 
             ],
             "order": [[1, 'desc']],  
         });
@@ -157,3 +149,7 @@ $.ajax({
         });
     }
 }); 
+
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})

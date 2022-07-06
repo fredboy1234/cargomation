@@ -1,5 +1,5 @@
 <?php
-$table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buyer","Supplier","Transport Mode","Container Mode","Goods Origin","Goods Destination","Load Port","Dischargte Port","Packs","Type","Volume","UV","Weight","UW","Req. in Stock","Req. in Works","H.Bill","M.BIll");
+$table_header=array("Order Number","Order Date","Status","Buyer","Supplier","Transport Mode","Goods Origin","Goods Destination","Loading Port","Discharge Port","No. of Packs","Type","Volume","Weight","UW","Order Line");
 ?>
 <style>
     #myTable1_length{
@@ -19,14 +19,14 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
         <div class="row"><!--start of row class-->
     
            <!--start of column filter-->
-            <div class="col-12 col-sm-12">
+            <div class="col-12 col-sm-12" style="display:none;">
             <div id="fsearch" class="card card-default collapsed-card">
             <div class="card-header">
                 <ul class="nav nav-pills float-left">
                     <li class="nav-item fsearch" data-card-widget="collapse"><a class="nav-link active" href="#vert-tabs" data-toggle="tab">Filter and Search</a></li>
                 </ul>
                 <ul class="nav nav-pills float-right">
-                    <button type="button" id="newOrder" class="btn btn-outline-info"> New Order  <i style="font-size:12px" class="fa">&#xf067;</i></button>
+                    <!--<button type="button" id="newOrder" class="btn btn-outline-info"> New Order  <i style="font-size:12px" class="fa">&#xf067;</i></button>-->
                 </ul>
 
                 <div class="card-tools colp" style="line-height: 2.49em;">
@@ -194,7 +194,7 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
               <div class="card-body">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                   <div class="tab-pane fade active show ff-pane" id="custom-tabs-sea" role="tabpanel" aria-labelledby="custom-tabs-sea-tab">
-                     <table id="myTable1" class="table table-striped table-bordered" cellspacing="0">
+                     <table id="myTable1" class="table table-bordered dt-responsive nowrap" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>
@@ -205,7 +205,7 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
 	                </table>
                   </div>
                   <div class="tab-pane fade ff-pane" id="custom-tabs-three-todispatch" role="tabpanel" aria-labelledby="custom-tabs-three-todispatch-tab">
-                    <table id="myTable2" class="table table-striped table-bordered"  cellspacing="0">
+                    <table id="myTable2" class="table table-bordered dt-responsive nowrap"  cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>
@@ -216,7 +216,7 @@ $table_header=array("Order Number","Ship/Dec No.","Order Date","Pre Advice","Buy
 	                </table>
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-dispatch" role="tabpanel" aria-labelledby="custom-tabs-three-dispatch-tab">
-                     <table id="myTable3" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                     <table id="myTable3" class="table table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                        	<?php foreach ($table_header as $key => $value) { ?>

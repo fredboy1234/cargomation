@@ -6,19 +6,20 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		usort($myarray_order, fn($a, $b) => filemtime($a) - filemtime($b));
 		foreach ($myarray_order as $filename) {
 		try{
-
+			$pack_array = array(); 
 			$parser = new __Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$myxmlfilecontent = file_get_contents($filename);
 			$xml = simplexml_load_string($myxmlfilecontent);
 			$universalshipment = json_encode($xml, JSON_PRETTY_PRINT);
 			$universal_shipment = json_decode($universalshipment, true);
 
-
 			$pathDataSource = "$.Body.UniversalShipment.Shipment";
 			$pathDataSourceContext = "$.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection";
 			$path_DataSourceOrder ="$.Body.UniversalShipment.Shipment.Order";
 			$path_DataSourceMileStone ="$.Body.UniversalShipment.Shipment.MilestoneCollection";
 			$path_DataSourceOrganizationAddress="$.Body.UniversalShipment.Shipment.OrganizationAddressCollection";
+			$path_DateSourceOderLineCollection = "$.Body.UniversalShipment.Shipment.Order.OrderLineCollection";
+			$path_DataSourceDateCollection ="$.Body.UniversalShipment.Shipment.DateCollection";
 			$path_DataSourceTransport="$.Body.UniversalShipment.Shipment.TransportLegCollection";
 			$path_DataSourceContainer="$.Body.UniversalShipment.Shipment.ContainerCollection";
 
@@ -46,14 +47,31 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    $ORDERSTATDES = node_exist(getArrayName($XPATH_ORDERSTATDES));
             
             /*GET PORTLOADING*/
-		    $XPATH_POL = jsonPath($universal_shipment, $pathDataSource.".PortOfLoading.Code");
+		    $XPATH_POL = jsonPath($universal_shipment, $pathDataSource.".PortOfLoading.Name");
 			$XPATH_POL = $parser->encode($XPATH_POL);
 		    $POL = node_exist(getArrayName($XPATH_POL));
 
 		     /*GET PORTDISCHARGE*/
-		    $XPATH_POD = jsonPath($universal_shipment, $pathDataSource.".PortOfDischarge.Code");
+		    $XPATH_POD = jsonPath($universal_shipment, $pathDataSource.".PortOfDischarge.Name");
 			$XPATH_POD = $parser->encode($XPATH_POD);
 		    $POD = node_exist(getArrayName($XPATH_POD));
+
+		     /*GET PACKOUTERPACK*/
+		    $XPATH_OUTERPACK = jsonPath($universal_shipment, $pathDataSource.".OuterPacks");
+			$XPATH_OUTERPACK = $parser->encode($XPATH_OUTERPACK);
+		    $OUTERPACK = node_exist(getArrayName($XPATH_OUTERPACK));
+
+		     /*GET PACKTYPECODE*/
+		    $XPATH_PACKTYPECODE = jsonPath($universal_shipment, $pathDataSource.".OuterPacksPackageType.Code");
+			$XPATH_PACKTYPECODE = $parser->encode($XPATH_PACKTYPECODE);
+		    $PACKTYPECODE = node_exist(getArrayName($XPATH_PACKTYPECODE));
+
+		      /*GET PACKTYPEDESC*/
+		    $XPATH_PACKTYPEDESC = jsonPath($universal_shipment, $pathDataSource.".OuterPacksPackageType.Description");
+			$XPATH_PACKTYPEDESC = $parser->encode($XPATH_PACKTYPEDESC);
+		    $PACKTYPEDESC = node_exist(getArrayName($XPATH_PACKTYPEDESC));
+		    $pack_array[] = array("Code"=>$PACKTYPECODE,"Description"=>$PACKTYPEDESC,"OuterPack"=>$OUTERPACK);
+		    $pack_array = json_encode($pack_array);
 
 		     /*GET TRANSPORTMODE*/
 		    $XPATH_TRANSPORTMODE = jsonPath($universal_shipment, $pathDataSource.".TransportMode.Code");
@@ -64,6 +82,11 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    $XPATH_TOTALVOLUME = jsonPath($universal_shipment, $pathDataSource.".TotalVolume");
 			$XPATH_TOTALVOLUME = $parser->encode($XPATH_TOTALVOLUME);
 		    $TOTALVOLUME = node_exist(getArrayName($XPATH_TOTALVOLUME));
+
+		    /*GET TOTAL VOLUME unit*/
+		    $XPATH_TOTALVOLUME_UNT = jsonPath($universal_shipment, $pathDataSource.".TotalVolumeUnit.Code");
+			$XPATH_TOTALVOLUME_UNT = $parser->encode($XPATH_TOTALVOLUME_UNT);
+		    $TOTALVOLUME_UNT = node_exist(getArrayName($XPATH_TOTALVOLUME_UNT));
 
 		     /*GET TOTALWEIGHT*/
 		    $XPATH_TOTALWEIGHT = jsonPath($universal_shipment, $pathDataSource.".TotalWeight");
@@ -133,6 +156,29 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 					$ORGADDRESSCTR = 0;
 				}
 
+			   /*GET DATECOLLECTION COUNT*/
+		    $DATECOLLECTION = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date");
+			$DATECOLLECTIONCTR = $DATECOLLECTION;
+				if ($DATECOLLECTIONCTR != false) {
+					$DATECOLLECTIONCTR = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date");
+					$DATECOLLECTIONCTR = count($DATECOLLECTIONCTR[0]);
+				}
+				else
+				{
+					$DATECOLLECTIONCTR = 0;
+				}
+
+				  /*GET ORDERLINE COUNT*/
+		    $ORDERCOLLECTION = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine");
+			$ORDERCOLLECTIONCTR = $ORDERCOLLECTION;
+				if ($ORDERCOLLECTIONCTR != false) {
+					$ORDERCOLLECTIONCTR = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine");
+					$ORDERCOLLECTIONCTR = count($ORDERCOLLECTIONCTR[0]);
+				}
+				else
+				{
+					$ORDERCOLLECTIONCTR = 0;
+				}
 
 		  /*FETCH MILESTONECOLLECTION*/		
 		  $milestone_array = array();  
@@ -177,7 +223,7 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 			$XPATH_ORDER_ADDRESSTYPE = $parser->encode($XPATH_ORDER_ADDRESSTYPE);
 		    $ORDER_ADDRESSTYPE = node_exist(getArrayName($XPATH_ORDER_ADDRESSTYPE));
 
-		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress"){
+		    if($ORDER_ADDRESSTYPE == "ConsigneeDocumentaryAddress" || $ORDER_ADDRESSTYPE == "ConsignorDocumentaryAddress" ){
 		  	$XPATH_ORDER_ORGCODE = jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].OrganizationCode");
 			$XPATH_ORDER_ORGCODE = $parser->encode($XPATH_ORDER_ORGCODE);
 		    $XORDER_ORGCODE = node_exist(getArrayName($XPATH_ORDER_ORGCODE));
@@ -193,19 +239,111 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		    $orgaddress_array[] = array($ORDER_ADDRESSTYPE=>$XORDER_ORGCODE,"Address"=>$ORDER_ORGADDRESS,"CompanyName"=>$ORDER_ORGCOMPANY);
 		    $orgaddress = json_decode(json_encode($orgaddress_array));
 
-		    }    
+		    }
+		    elseif($ORDER_ADDRESSTYPE == "GoodsAvailableAt"){
+		    $XPATH_ORDER_ORGPORT= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Port.Name");
+			$XPATH_ORDER_ORGPORT = $parser->encode($XPATH_ORDER_ORGPORT);
+		    $ORDER_ORGPORT = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGPORT)));
 
+		    $XPATH_ORDER_ORGCTRY= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Country.Code");
+			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
+		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));
+
+		    $GOODS_ORIGIN = $ORDER_ORGPORT.",".$ORDER_ORGCTRY;
+		    }elseif($ORDER_ADDRESSTYPE == "GoodsDeliveredTo"){
+		    $XPATH_ORDER_ORGPORT= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Port.Name");
+			$XPATH_ORDER_ORGPORT = $parser->encode($XPATH_ORDER_ORGPORT);
+		    $ORDER_ORGPORT = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGPORT)));
+
+		    $XPATH_ORDER_ORGCTRY= jsonPath($universal_shipment, $path_DataSourceOrganizationAddress.".OrganizationAddress[$b].Country.Code");
+			$XPATH_ORDER_ORGCTRY = $parser->encode($XPATH_ORDER_ORGCTRY);
+		    $ORDER_ORGCTRY = node_exist(str_replace("'","",getArrayName($XPATH_ORDER_ORGCTRY)));	
+		    $GOODS_DES = $ORDER_ORGPORT.",".$ORDER_ORGCTRY;
+		    }
 		  }
-		}
-		   catch(Exception $e){
-		  		echo 'Caught exception: ',  $e->getMessage(), "\n";
+		  /*FETCH DATE COLLECTION */
+		 // $orgaddress_array = array();  
+		  $ORDER_DATE = "";
+		  for ($c = 0; $c <= $DATECOLLECTIONCTR-1; $c++) {
+		  	$DATE_TYPE = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date[$c].Type");
+			$DATE_TYPE = $parser->encode($DATE_TYPE);
+		    $DTYPE = node_exist(getArrayName($DATE_TYPE));
+
+		    if($DTYPE == "OrderDate"){
+		  	$XPATH_ORDER_DATE = jsonPath($universal_shipment, $path_DataSourceDateCollection.".Date[$c].Value");
+			$XPATH_ORDER_DATE = $parser->encode($XPATH_ORDER_DATE);
+		    $ORDER_DATE = node_exist(getArrayName($XPATH_ORDER_DATE));
+		     }    
 		  }
 
+		  /*FETCH ORDERLINE COLLECTION */
+		  $order_line = array(); 
+		  if($ORDERCOLLECTIONCTR <= 5){
+		  for ($d = 0; $d <= $ORDERCOLLECTIONCTR-1; $d++) {
+		  	$LINE_NUMBER = jsonPath($universal_shipment, $path_DataSourceDateCollection.".OrderLine[$d].LineNumber");
+			$LINE_NUMBER = $parser->encode($LINE_NUMBER);
+		    $LINE_NUMBER = node_exist(getArrayName($LINE_NUMBER));  
+
+		    $PKG_QTY = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].PackageQty");
+			$PKG_QTY = $parser->encode($PKG_QTY);
+		    $PKG_QTY = node_exist(getArrayName($PKG_QTY));  
+
+		    $ORD_QTY = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].OrderedQty");
+			$ORD_QTY = $parser->encode($ORD_QTY);
+		    $ORD_QTY = node_exist(getArrayName($ORD_QTY)); 
+
+		    $ORD_QTYCODE = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].OrderedQtyUnit.Code");
+			$ORD_QTYCODE = $parser->encode($ORD_QTYCODE);
+		    $ORD_QTYCODE = node_exist(getArrayName($ORD_QTYCODE));   
+
+		    $ORD_PRODUCTCODE= jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].Product.Code");
+			$ORD_PRODUCTCODE = $parser->encode($ORD_PRODUCTCODE);
+		    $PRODUCTCODE = node_exist(getArrayName($ORD_PRODUCTCODE));
+
+		    $ORD_PRODUCTDESC= jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine[$d].Product.Name");
+			$ORD_PRODUCTDESC = $parser->encode($ORD_PRODUCTDESC);
+		    $PRODUCTDESC = node_exist(getArrayName($ORD_PRODUCTDESC));
+		     $order_line[] = array("LineNumber"=>$LINE_NUMBER,"PackageQty"=>$PKG_QTY,"OrderedQty"=>$ORD_QTY,"OrderedQtyUnitCode"=>$ORD_QTYCODE,"ProductCode"=>$PRODUCTCODE,"ProductName"=>$PRODUCTDESC,"Volume"=>$TOTALVOLUME." ".$TOTALVOLUME_UNT);
+		  	 
+		  	 }
+		  }else{
+		  	$LINE_NUMBER = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.LineNumber");
+			$LINE_NUMBER = $parser->encode($LINE_NUMBER);
+		    $LINE_NUMBER = node_exist(getArrayName($LINE_NUMBER));  
+
+		    $PKG_QTY = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.PackageQty");
+			$PKG_QTY = $parser->encode($PKG_QTY);
+		    $PKG_QTY = node_exist(getArrayName($PKG_QTY));  
+
+		    $ORD_QTY = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.OrderedQty");
+			$ORD_QTY = $parser->encode($ORD_QTY);
+		    $ORD_QTY = node_exist(getArrayName($ORD_QTY)); 
+
+		    $ORD_QTYCODE = jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.OrderedQtyUnit.Code");
+			$ORD_QTYCODE = $parser->encode($ORD_QTYCODE);
+		    $ORD_QTYCODE = node_exist(getArrayName($ORD_QTYCODE));   
+
+		    $ORD_PRODUCTCODE= jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.Product.Code");
+			$ORD_PRODUCTCODE = $parser->encode($ORD_PRODUCTCODE);
+		    $PRODUCTCODE = node_exist(getArrayName($ORD_PRODUCTCODE));  
+
+		    $ORD_PRODUCTDESC= jsonPath($universal_shipment, $path_DateSourceOderLineCollection.".OrderLine.Product.Description");
+			$ORD_PRODUCTDESC = $parser->encode($ORD_PRODUCTDESC);
+		    $PRODUCTDESC = node_exist(getArrayName($ORD_PRODUCTDESC));  
+		    $order_line[] = array("LineNumber"=>$LINE_NUMBER,"PackageQty"=>$PKG_QTY,"OrderedQty"=>$ORD_QTY,"OrderedQtyUnitCode"=>$ORD_QTYCODE,"ProductCode"=>$PRODUCTCODE,"ProductName"=>$PRODUCTDESC,"Volume"=>$TOTALVOLUME." ".$TOTALVOLUME_UNT);
+		 }
+
+	}
+	catch(Exception $e){
+	echo 'Caught exception: ',  $e->getMessage(), "\n";
+ }
 		  /* pass value fields*/
 		  try{
   		  $ordernum = $ORDERNUMBER;
-		  $buyer = $orgaddress[0]->ConsigneeDocumentaryAddress;
-		  $seller = $orgaddress[1]->ConsignorDocumentaryAddress;
+  		  $goods_origin = $GOODS_ORIGIN;
+		  $goods_des = $GOODS_DES;
+		  //$buyer = $orgaddress[2]->ConsigneeDocumentaryAddress;
+		  //$seller = $orgaddress[3]->ConsignorDocumentaryAddress;
 		  $arrival = $ETA;
 		  $departure = $ETD;
 		  $portloading = $POL;
@@ -217,31 +355,32 @@ $myarray_order = glob("E:/A2BFREIGHT_MANAGER/$user/CW_XML/CW_ORDERS/IN/*.xml");
 		  $milestone = json_encode($milestone_array);
 		  $organization = json_encode($orgaddress_array);
 		  $container = json_encode($container_array);
+		  $order_line = json_encode($order_line);
 		  $keyvalue = $KEY;
 		  $order_status = $ORDERSTATUS;
 		  $order_desc = $ORDERSTATDES;
+		  $order_date = $ORDER_DATE;
 
-		  $sql = "SELECT * FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$_GET['user_id']."'";
-		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'buffered'));
+		  $sql = "SELECT TOP 1 dbo.orders.order_number FROM dbo.orders WHERE dbo.orders.order_number = '".$ordernum."' AND dbo.orders.user_id ='".$CLIENT_ID."'";
+		  $qryOrder = sqlsrv_query($conn, $sql, array(), array( "Scrollable" => 'static'));
 		  $row_count = sqlsrv_num_rows($qryOrder);
 	
 
 		  /* insert new value fields to orders*/
 		  if($row_count<=0){
-		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,buyer,seller,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc) Values
-		  	 ($CLIENT_ID,'".$ordernum."','".$buyer."','".$seller."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."')";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'buffered'));
+		  	 $sqlorderinsert = "INSERT INTO dbo.orders (user_id,order_number,eta,etd,port_load,port_origin,trans_mode,total_volume,total_weight,weight_unit,milestone_dataset,organization_dataset,transportleg_dataset,container_dataset,data_key,status,status_desc,order_date,pack_info,order_line,goods_origin,goods_destination) Values
+		  	 ($CLIENT_ID,'".$ordernum."','".$arrival."','".$departure."','".$portloading."','".$portdischarge."','".$transmode."',".$t_volume.",".$t_weight.",'".$t_weightunit."','".$milestone."','".$organization."','transportleg','".$container."','".$keyvalue."','".$order_status."','".$order_desc."','".$order_date."','".$pack_array."','".$order_line."','".$goods_origin."','".$goods_des."')";
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderinsert, array(), array( "Scrollable" => 'static'));
 		  }
 		  else
 		  {
 		  	/* updates fields to existing orders*/
 		  	 $sqlorderupdate="UPDATE dbo.orders
-		  	SET user_id=$CLIENT_ID,order_number='$ordernum',buyer='$buyer',seller='$seller',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc'
+		  	SET user_id=$CLIENT_ID,order_number='$ordernum',eta='$arrival',etd='$departure',port_load='$portloading',port_origin='$portdischarge',trans_mode='$transmode',total_volume=$t_volume,total_weight=$t_weight,weight_unit='$t_weightunit',milestone_dataset='$milestone',organization_dataset='$organization',transportleg_dataset='transportleg',container_dataset='$organization',data_key='$keyvalue',status='$order_status',status_desc='$order_desc',order_date='$order_date',pack_info='$pack_array',order_line='$order_line',goods_origin='$goods_origin',goods_destination='$goods_destination'
 		  	WHERE order_number = '$ordernum' AND user_id = '$CLIENT_ID'";
-		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'buffered'));
+		  	$qryOrder = sqlsrv_query($conn, $sqlorderupdate, array(), array( "Scrollable" => 'static'));
 
 		  }
-
 		  	$destination_path = "E:/A2BFREIGHT_MANAGER/$client_email/CW_XML/CW_ORDERS/SUCCESS/";						
 			if(!file_exists($destination_path.$filename)){
 			rename($filename, $destination_path . pathinfo($filename, PATHINFO_BASENAME));
