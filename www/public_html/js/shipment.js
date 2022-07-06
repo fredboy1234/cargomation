@@ -320,14 +320,14 @@ $(document).ready(function () {
           });
           d.data = arr;
         } else {
-          var modifier = getSearch();
-          $(document).on('click','.paginate_button',function(){
-            console.log('m test');
-            modifier = [];
-          });
-          setTimeout(function(){
+          // var modifier = getSearch();
+          // $(document).on('click','.paginate_button',function(){
+          //   console.log('m test');
+          //   modifier = [];
+          // });
+          // setTimeout(function(){
             d.data = getSearch();
-          },50);
+          // },50);
         }
       },
       error:function(err, status){
@@ -1081,7 +1081,6 @@ function selectTrigger(index, inputType, search_type = ""){
           };
         },
         processResults: function (response) {
-          console.log(response);
           return {
             results: response
           };
