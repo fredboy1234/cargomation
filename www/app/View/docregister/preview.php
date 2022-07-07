@@ -202,7 +202,11 @@
                                                         <?php if(gettype($con) === 'string'){
                                                             echo $con;
                                                         }else{
-                                                            print_r($con);
+                                                            if(isset($con[0])){
+                                                                echo $con[0];
+                                                            }else{
+                                                                print_r($con);
+                                                            }
                                                         }
                                                         ?>
                                                     </td>
@@ -247,7 +251,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <h4 class="modal-title">Container Details</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
@@ -269,7 +273,7 @@
  var match_arr = <?=json_encode($this->match_arr)?>;
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
- 
+ console.log(match_arr);
  //show edit modal on preview doc
  $(document).ready(function(){
 
@@ -282,20 +286,23 @@
         $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
         $('#edit-ap').attr('data-prim',prim_ref);
         
-        var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+        // var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+        var url = "/docregister/edit";
 
         $("#edit-ap .modal-body").append(loader);
         $("#loading").removeClass('d-none');
         // load the url and show modal on success
-        $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
-        if (xhr.status == 200) {
-            $('#loader-wrapper').remove();
-            $("#loading").addClass('d-none');
-            $("#edit-ap").modal("show");
-        } else {
-            alert("Error: " + xhr.status + ": " + xhr.statusText);
-            $('#loader-wrapper').remove();
-        }
+        $("#edit-ap .modal-body").load(url, 
+            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr},         
+            function (response, status, xhr) {
+                if (xhr.status == 200) {
+                    $('#loader-wrapper').remove();
+                    $("#loading").addClass('d-none');
+                    $("#edit-ap").modal("show");
+                } else {
+                    alert("Error: " + xhr.status + ": " + xhr.statusText);
+                    $('#loader-wrapper').remove();
+                }
         });
     });
 
@@ -371,7 +378,7 @@ $(document).on('click','.sendToCGM',function(e){
             $.each(numberofSelec,function(okey,oval){
                 var selector1 = '.consignee_org_code_'+oval;
                 var selector2 = '.shipper_org_code_'+oval;
-               
+                console.log(oval);
                 $('.'+oval).select2({
                     dropdownAutoWidth : true,
                     width: 'auto',

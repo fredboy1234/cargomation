@@ -454,7 +454,7 @@ class Docregister extends Core\Controller {
        if(!isset($jsonDecode->data)) exit;
         
         $matchArray =  json_decode($jsonDecode->data)->MatchReportArray;
-       
+      
         if(!empty($matchArray)){
             foreach($matchArray as $match){
                 $jmatch = $match; 
@@ -634,46 +634,80 @@ class Docregister extends Core\Controller {
 
     //edit modal
     public function edit(){ 
-        echo"<pre>";
-        print_r('test');
+        
         $data =array();
         $tableData=array();
         $collectionOfTableData = array();
-        $url = explode("?",$_SERVER['REQUEST_URI']);
+        if(isset($_POST)){
         
-        if(!isset(  $url[1] ))exit;
-        $data = $url[1];
-        $urlindex = explode("&",$url[1]);
-        $indexID = $urlindex[0];
-        $indexTable = $urlindex[1];
-        $indexData = $urlindex[2];
-        $decrypted = json_decode($this->decryptData(urldecode($indexData)));
-        if(empty($decrypted))exit;
+            $indexID = $_POST['matcharrayIndex'];
+            $indexTable = $_POST['tableindex'];
+            $indexData = $_POST['match_arr'];
+            $decrypted = json_decode($this->decryptData(urldecode($indexData)));
+
+            $tableMatchReport = $decrypted->MatchReportArray;
+            $matchreportIndex = $tableMatchReport[$indexID];
+            $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
         
-        // echo"<pre>";
-        // print_r($decrypted);
-        // exit;
-        $tableMatchReport = $decrypted->MatchReportArray;
-        $matchreportIndex = $tableMatchReport[$indexID];
-        $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
-       
-        foreach($matchreportTableData as $key=>$tdata){
-            $collectionOfTableData[] = $tdata;
+            foreach($matchreportTableData as $key=>$tdata){
+                $collectionOfTableData[] = $tdata;
+            }
+           
+           
+            if(is_object($collectionOfTableData[$indexID])){
+               $tableData=$collectionOfTableData[$indexTable];
+            }else{
+                $tableData=$collectionOfTableData[$indexID][$indexTable];
+            }
+           
         }
-        $tableData=$collectionOfTableData[$indexTable];
-        
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
             "data"=>$decrypted,
             "tableData"=>$tableData
         ]);
     }
+    // public function edit(){ 
+        
+    //     $data =array();
+    //     $tableData=array();
+    //     $collectionOfTableData = array();
+    //     $url = explode("?",$_SERVER['REQUEST_URI']);
+       
+    //     if(!isset(  $url[1] ))exit;
+    //     $data = $url[1];
+    //     $urlindex = explode("&",$url[1]);
+    //     $indexID = $urlindex[0];
+    //     $indexTable = $urlindex[1];
+    //     $indexData = $urlindex[2];
+    //     $decrypted = json_decode($this->decryptData(urldecode($indexData)));
+    //     if(empty($decrypted))exit;
+        
+    //     // echo"<pre>";
+    //     // print_r($decrypted);
+    //     // exit;
+    //     $tableMatchReport = $decrypted->MatchReportArray;
+    //     $matchreportIndex = $tableMatchReport[$indexID];
+    //     $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
+       
+    //     foreach($matchreportTableData as $key=>$tdata){
+    //         $collectionOfTableData[] = $tdata;
+    //     }
+    //     $tableData=$collectionOfTableData[$indexTable];
+        
+    //     $this->View->addJS("js/docregister.js");
+    //     $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
+    //         "data"=>$decrypted,
+    //         "tableData"=>$tableData
+    //     ]);
+    // }
 
     //save data to cgm
     public function sendToAPI(){
         $toPass = array();
         $toPassHolder = array();
         if(isset($_POST)){
+            
             foreach($_POST['data'] as $key=>$val){
                 foreach($val as $vkey=>$vval){
                     $toPass[$vkey][]=$vval;
@@ -681,6 +715,11 @@ class Docregister extends Core\Controller {
             }
           
             if($_POST['type'] === 'table'){
+                foreach($_POST['data'] as $key=>$val){
+                    foreach($val as $vkey=>$vval){
+                        $toPass[$vkey]=$vval;
+                    }
+                }
                 $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
             }else{
                 $_POST['docregister'] = json_decode($_POST['docregister']);
@@ -692,7 +731,7 @@ class Docregister extends Core\Controller {
                     }
                 }
             }
-            
+          
             //$_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
             $data['cgm'] = json_encode($_POST['docregister']);
             $data['prim_ref'] = $_POST['prim_ref'];
@@ -949,7 +988,7 @@ class Docregister extends Core\Controller {
             
             $result = $this->postAuth($url,$payload,$headers);
             $decoded = json_decode($result);
-             
+           
             $data['process_id'] = $_POST['process_id'];
             $data['user_id'] =  $user_id ;
             $data['status'] = $decoded->status;
