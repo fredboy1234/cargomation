@@ -633,7 +633,9 @@ class Docregister extends Core\Controller {
     }
 
     //edit modal
-    public function edit($pass=""){
+    public function edit(){ 
+        echo"<pre>";
+        print_r('test');
         $data =array();
         $tableData=array();
         $collectionOfTableData = array();
@@ -670,21 +672,24 @@ class Docregister extends Core\Controller {
     //save data to cgm
     public function sendToAPI(){
         $toPass = array();
+        $toPassHolder = array();
         if(isset($_POST)){
-           
             foreach($_POST['data'] as $key=>$val){
                 foreach($val as $vkey=>$vval){
-                    $toPass[$vkey]=$vval;
+                    $toPass[$vkey][]=$vval;
                 }
             }
-            
+          
             if($_POST['type'] === 'table'){
                 $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
             }else{
                 $_POST['docregister'] = json_decode($_POST['docregister']);
                 //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader = $toPass;
                 foreach($toPass as $key=>$tpval){
-                    $_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpval;
+                    //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpval;
+                    foreach($tpval as $tpvalkey=>$tpvalval){
+                        $_POST['docregister']->MatchReportArray[$tpvalkey]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpvalval;
+                    }
                 }
             }
             

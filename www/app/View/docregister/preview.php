@@ -285,10 +285,12 @@
         var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
 
         $("#edit-ap .modal-body").append(loader);
+        $("#loading").removeClass('d-none');
         // load the url and show modal on success
         $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
         if (xhr.status == 200) {
             $('#loader-wrapper').remove();
+            $("#loading").addClass('d-none');
             $("#edit-ap").modal("show");
         } else {
             alert("Error: " + xhr.status + ": " + xhr.statusText);
@@ -305,7 +307,19 @@
 // });
 $(document).on('click','.sendToCGM',function(e){
         var formData = [];
-        $('form').each(function(){
+         //var prim_ref = $("#edit-ap").attr("data-prim");
+         var tableindex =$(this).attr("tabledindex");
+         var parseindex = $(this).attr("data-key");
+         var indexCount = 0;
+         $('.form-group input').each(function(){
+            var tobj ={};
+            var tvalue = $(this).val();
+            var tname = $(this).attr("name");
+            tobj[tname] = tvalue;
+            formData.push(tobj);
+        });
+        
+        var form = $('form').each(function(){
             $(this).validate({
                 highlight: function(element) {
                     $(element).addClass('has-error');
@@ -314,48 +328,39 @@ $(document).on('click','.sendToCGM',function(e){
                     $(element).removeClass('has-error');
                 },
                 submitHandler: function(form) {
-                    console.log(form);
-                    e.preventDefault();
-                    //form.submit();
-                    //var prim_ref = $("#edit-ap").attr("data-prim");
-                    var tableindex =$(this).attr("tabledindex");
-                    var parseindex = $(this).attr("data-key");
-                    $('.form-group input').each(function(){
-                        var tobj ={};
-                        var tvalue = $(this).val();
-                        var tname = $(this).attr("name");
-                        tobj[tname] = tvalue;
-                        formData.push(tobj);
-                    });
-
-                    $.ajax({
-                        url: document.location.origin+"/docregister/sendToAPI/",
-                        type: "POST",
-                        data:{
-                            "data": formData, 
-                            "docregister":matchjson, 
-                            "prim_ref":prim_ref,
-                            "tableindex":tableindex,
-                            "parseindex":parseindex,
-                            "type":'main',
-                        },
-                        beforeSend: function() {
-                            $("#loading").removeClass('d-none');
-                        },
-                        success:function(data)
-                        {
-                            $("#loading").addClass('d-none');
-                           //$("#edit-ap .close").trigger("click");
-                            Swal.fire(
-                            "",
-                            "Data was updated!",
-                            );
-                        }
-                    });
+                    console.log(formData);
+                    e.preventDefault();   
                 }
             });
         });
+        if(form.valid()){
+            $.ajax({
+                url: document.location.origin+"/docregister/sendToAPI/",
+                type: "POST",
+                data:{
+                    "data": formData, 
+                    "docregister":matchjson, 
+                    "prim_ref":prim_ref,
+                    "tableindex":tableindex,
+                    "parseindex":parseindex,
+                    "type":'main',
+                },
+                beforeSend: function() {
+                    $("#loading").removeClass('d-none');
+                },
+                success:function(data)
+                {
+                    $("#loading").addClass('d-none');
+                    //$("#edit-ap .close").trigger("click");
+                    Swal.fire(
+                    "",
+                    "Data was updated!",
+                    );
+                }
+            });
+        }
         
+    
     });
     // $('#preview-doc').on('hidden.bs.modal', function () {
     //     $('.company_code').select2('destroy');
