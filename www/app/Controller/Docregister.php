@@ -449,14 +449,16 @@ class Docregister extends Core\Controller {
         if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
+      
+    //    $jsonDecode->data='{"data":"{\"MatchReportArray\": [{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"goods_description\":\"CRAWLER SHOE BRADKEN PO YDC-514248-3\",\"shipper\":\"BRADKEN (XUZHOU) METAL EQUIPMENT MANUFACTURING CO., LTD\",\"volume\":\"36.440\",\"gross_weight\":\"77,800.000\",\"gross_weight_uom\":\"KG\",\"consignee\":\"BRADKEN RESOURCES PTY LTD\",\"shipper_org_code\":\"BRAXUZSHA\",\"consignee_org_code\":\"BRARESBAS\",\"incoterm\":\"FREIGHT COLLECT\",\"marks_numbers\":\"N\/M\",\"package_count\":\"40 PALLETS\",\"package_count_uom\":\"PLT\",\"hbl_number\":\"QD22D00602\",\"coloader\":\"SILA GLOBAL PTY LTD\",\"port_destination\":\"SYDNEY, AUSTRALIA\",\"number_original\":\"THREE(3)\",\"port_origin\":\"QINGDAO, CHINA\",\"filename\":\"HBL 799210291130.pdf\",\"page\":\"1\",\"doc_type\":\"HBL\",\"process_id\":\"315\",\"release_type\":\"OBR\",\"state_code\":\"NSW\",\"webservice_link\":\"https:\/\/siltrnservices.wisegrid.net\/eAdaptor\",\"webservice_username\":\"silbne\",\"webservice_password\":\"Sil@bne18\",\"server_id\":\"TRN\",\"enterprise_id\":\"SIL\",\"company_code\":\"SIL\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":[{\"CONTAINER_NUMBER\":\"DFSU3139668\",\"SEAL\":\"TSH1126361\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"DFSU1698137\",\"SEAL\":\"TSH1126362\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"CAAU2010774\",\"SEAL\":\"TSH1126287\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"TLLU2704155\",\"SEAL\":\"TSH1126289\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"}]}}}},{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"port_origin\":\"QINGDAO, CHINA\",\"port_destination\":\"SYDNEY\",\"volume\":\"36.44000CBM\",\"volume_uom\":\"M3\",\"package_count\":\"40 PALLETS\",\"package_count_uom\":\"PLT\",\"goods_description\":\"CRAWLER SHOE BRADKEN PO YDC-514248-3\",\"shipper\":\"HONOUR LANE SHIPPING LTD.QINGDAO BRANCH\",\"shipper_org_code\":\"HONLANCKG\",\"consignee\":\"SILA GLOBAL PTY LTD\",\"consignee_org_code\":\"CSIINTBNE\",\"carrier\":\"T.S. LINES\",\"carrier_org_code\":\"TSLINE_WW\",\"gross_weight\":\"77800.00000KGS\",\"gross_weight_uom\":\"KG\",\"voyage_number\":\"2208S\",\"incoterm\":\"FREIGHT PREPAID\",\"mbl_number\":\"799210291130\",\"filename\":\"MBL 799210291130.pdf\",\"page\":\"1\",\"doc_type\":\"MBL\",\"process_id\":\"316\",\"state_code\":\"QLD\",\"webservice_link\":\"https:\/\/siltrnservices.wisegrid.net\/eAdaptor\",\"webservice_username\":\"silbne\",\"webservice_password\":\"Sil@bne18\",\"server_id\":\"TRN\",\"enterprise_id\":\"SIL\",\"company_code\":\"SIL\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":[{\"CONTAINER_NUMBER\":\"CAAU2010774\",\"SEAL\":\"TSH1126287\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"DFSU1698137\",\"SEAL\":\"TSH1126362\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"DFSU3139668\",\"SEAL\":\"TSH1126361\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"TLLU2704155\",\"SEAL\":\"TSH1126289\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"}]}}}}]}","status":"200","message":"Success"}';
+    //    $jsonDecode->data = json_decode($jsonDecode->data)->data;
 
-       // $jsonDecode->data='{"MatchReportArray":[{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"BUCKET TOOTH&PIN BRADKEN PO YXN-519132ETC","shipper":"BRADKEN (XUZHOU) METAL EQUIPMENT MANUFACTURING CO., LTD","volume":"59.380","gross_weight":"77,940.000","gross_weight_uom":"KG","consignee":"BRADKEN RESOURCES PTY LTD","shipper_org_code":"BRAXUZSHA","consignee_org_code":"BRARESBAS","incoterm":"FREIGHT COLLECT","telex_release":"TELEX RELEASE","marks_numbers":"N\/M","package_count":"71 BOXES","package_count_uom":"PKG","hbl_number":"QD22D00557","coloader":"SILA GLOBAL PTY LTD","port_destination":"TOWNSVILLE, AUSTRALIA","number_original":"THREE(3)","port_origin":"QINGDAO, CHINA","filename":"HBL TAO22034799.pdf","page":"1","doc_type":"HBL","process_id":"319","release_type":"EBL","state_code":"NSW","webservice_link":"https:\/\/siltrnservices.wisegrid.net\/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL","volume_uom":"m3","port_destination_unlocode":"ausyd","port_origin_unlocode":"cnqin","mbl_number":"TAO22034799-01"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"DRYU2559496","SEAL":"MEL0715395","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"20312.000 KGS","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME":"14.170 CBM","VOLUME_UOM":"PKG","PACKAGE_COUNT":"18 BOXES"},{"CONTAINER_NUMBER":"PCIU1406735","SEAL":"MEL0715396","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"19792.000 KGS","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME":"13.170 CBM","VOLUME_UOM":"PKG","PACKAGE_COUNT":"14 BOXES"},{"CONTAINER_NUMBER":"PCIU1391635","SEAL":"MEL0715392","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"20783.000 KGS","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME":"18.820 CBM","VOLUME_UOM":"PKG","PACKAGE_COUNT":"20 BOXES"},{"CONTAINER_NUMBER":"PCIU1374453","SEAL":"MEL0715398","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"17053.000 KGS","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME":"13.220 CBM","VOLUME_UOM":"PKG","PACKAGE_COUNT":"19 BOXES"}]}}}},{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"port_origin":"QINGDAO,CHINA","port_destination":"TOWNSVILLE, AUSTRALIA","volume":"59.380 CBM","volume_uom":"M3","package_count":"71 BOX(S)","package_count_uom":"PKG","goods_description":"BUCKET TOOTH&PIN BRADKEN PO YXN-519132ETC","shipper":"HONOUR LANE SHIPPING LTD.QINGDAO","shipper_org_code":"HONLANCKG","consignee":"SILA GLOBAL PTY LTD","consignee_org_code":"CSIINTBNE","carrier":"Mariana Express Lines Pte Ltd","carrier_org_code":"PACASISYD","gross_weight":"77940.000 KGS","gross_weight_uom":"KG","voyage_number":"0059W","incoterm":"FREIGHT PREPAID","mbl_number":"TAO22034799","filename":"MBL TAO22034799.pdf","page":["1","2"],"doc_type":"MBL","process_id":"320","state_code":"QLD","webservice_link":"https:\/\/siltrnservices.wisegrid.net\/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL","marks_numbers":"n\/m","release_type":"obr","number_original":"3","port_destination_unlocode":"ausyd","port_origin_unlocode":"cnqin","coloader":"SILA GLOBAL PTY LTD"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"DRYU2559496","SEAL":"MEL0715395","CONTAINER_TYPE":"20DC","CHARGEABLE_WEIGHT":"20312.000","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME_UOM":"PKG","PACKAGE_COUNT":"18 BOX (S)"},{"CONTAINER_NUMBER":"PCIU1374453","SEAL":"MEL0715398","CONTAINER_TYPE":"20DC","CHARGEABLE_WEIGHT":"17053.000","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME_UOM":"PKG","PACKAGE_COUNT":"19 BOX (S)"},{"CONTAINER_NUMBER":"PCIU1391635","SEAL":"MEL0715392","CONTAINER_TYPE":"20DC","CHARGEABLE_WEIGHT":"20783.000","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME_UOM":"PKG","PACKAGE_COUNT":"20 BOX (S)"},{"CONTAINER_NUMBER":"PCIU1406735","SEAL":"MEL0715396","CONTAINER_TYPE":"20DC","CHARGEABLE_WEIGHT":"19792.000","CHARGEABLE_WEIGHT_UOM":"KG","VOLUME_UOM":"PKG","PACKAGE_COUNT":"14 BOX (S)"}]}}}}]}';
-       
       if(!isset($jsonDecode->data)) exit;
         
         $matchArray =  json_decode($jsonDecode->data)->MatchReportArray;
-      
+        
         if(!empty($matchArray)){
+
             foreach($matchArray as $match){
                 $jmatch = $match; 
                 $parsePdfData = $jmatch->HubJSONOutput->ParsedPDFData;
@@ -467,7 +469,7 @@ class Docregister extends Core\Controller {
                 $fieldlist=array();
                 $container_details = array();
                 //print_r($jmatch);
-
+                
                 foreach($parsePdfDataheader as $key=>$pdf){
                     if(!in_array($key, $mustnot)){
                         $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
@@ -530,8 +532,12 @@ class Docregister extends Core\Controller {
                     'consignee'=>array('name'=>'Consignee','order'=>22),
                     'coloader_org_code'=>array('name'=>'Coloader Org Code','order'=>23),
                     'coloader'=>array('name'=>'Coloader','order'=>24),
+                    'carrier_org_code'=>array('name'=>'Carrier Org Code','order'=>25),
+                    'carrier'=>array('name'=>'Carrier','order'=>26),
+                    'transport'=>array('name'=>'Transport','order'=>27),
+                    'container_mode'=>array('name'=>'Container Mode','order'=>28),
                 );
-                
+               
                 $reorder = array();
 
                 if(!isset($fieldlist['Hbl Number'])){
@@ -630,28 +636,44 @@ class Docregister extends Core\Controller {
         $data =array();
         $tableData=array();
         $collectionOfTableData = array();
+
+        
         if(isset($_POST)){
            
+            $prim_ref = $_POST['prim_ref'];
             $indexID = $_POST['matcharrayIndex'];
             $indexTable = $_POST['tableindex'];
             $indexData = $_POST['match_arr'];
             $decrypted = json_decode($indexData);//json_decode($this->decryptData(urldecode($indexData)));
 
+            if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
+                $decrypted  = json_decode($this->getCGMresponse($prim_ref)[0]->cgm_response);
+            }
+           
             $tableMatchReport = $decrypted->MatchReportArray;
             $matchreportIndex = $tableMatchReport[$indexID];
             $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
-        
+       
             foreach($matchreportTableData as $key=>$tdata){
                 $collectionOfTableData[] = $tdata;
             }
-           
-           
-            if(is_object($collectionOfTableData[$indexID])){
+        //    echo"<pre>";
+        //   print_r($indexTable);
+        // //  print_r(  $matchreportIndex  );
+        //  print_r($collectionOfTableData);
+        //  echo"</pre>";
+        //  exit;
+            if(isset($collectionOfTableData[0])){
+                $collectionOfTableData = $collectionOfTableData[0];
+            }
+            if(isset($collectionOfTableData[$indexTable]) && is_object($collectionOfTableData[$indexTable])){
                $tableData=$collectionOfTableData[$indexTable];
             }else{
-                $tableData=$collectionOfTableData[$indexID][$indexTable];
+                if(isset($collectionOfTableData[$indexID][$indexTable])){
+                    $tableData=$collectionOfTableData[$indexID][$indexTable];
+                }
             }
-           
+          
         }
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
@@ -699,7 +721,6 @@ class Docregister extends Core\Controller {
         $toPass = array();
         $toPassHolder = array();
         if(isset($_POST)){
-
             foreach($_POST['data'] as $key=>$val){
                 foreach($val as $vkey=>$vval){
                     $toPass[$vkey][]=$vval;
@@ -712,23 +733,30 @@ class Docregister extends Core\Controller {
                         $toPass[$vkey]=$vval;
                     }
                 } 
+               
                 if(isset($_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine'][$_POST['tableindex']])){
                     $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine'][$_POST['tableindex']]=$toPass;
                 }else{
                     $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
                 }        
             }else{
+                if(isset($this->getCGMresponse($_POST['prim_ref'])[0]) && !empty($this->getCGMresponse($_POST['prim_ref'])[0]->cgm_response)){
+                    $_POST['docregister']  = $this->getCGMresponse($_POST['prim_ref'])[0]->cgm_response;
+                }
                 $_POST['docregister'] = json_decode($_POST['docregister']);
                 //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader = $toPass;
                 foreach($toPass as $key=>$tpval){
                     //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpval;
-                    foreach($tpval as $tpvalkey=>$tpvalval){
-                        $_POST['docregister']->MatchReportArray[$tpvalkey]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpvalval;
+                    if($key !== 'undefined'){
+                        foreach($tpval as $tpvalkey=>$tpvalval){
+                                $_POST['docregister']->MatchReportArray[$tpvalkey]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpvalval;
+                        }
                     }
                 }
             }
             echo '<pre>';
             print_r($_POST['docregister']);
+            //exit;
             //$_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
             $data['cgm'] = json_encode($_POST['docregister']);
             $data['prim_ref'] = $_POST['prim_ref'];

@@ -57,6 +57,9 @@
     background: none;
     border: none;
    }
+   #preview-doc{
+    overflow: scroll;
+   }
 </style>
 
 <div class="row">
@@ -156,7 +159,7 @@
                                 ?>
                                     <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
                                         <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                        <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
+                                        <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text" name="<?=strtolower(str_replace(" ","_",$keyField))?>">
                                             <option value="<?=$listofField['value']?>" selected><?=$listofField['value']?></option>
                                         </select>
                                     </div>
@@ -284,15 +287,15 @@
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
  var match_arr_unencode =  <?=json_encode($this->match_arr_unencode)?>;
- console.log(match_arr_unencode);
+ 
  //show edit modal on preview doc
  $(document).ready(function(){
 
     $(document).on('click','.edit-details',function(){
-    
+        var match_arr_unencode =  <?=json_encode($this->match_arr_unencode)?>;
         var tableindex = $(this).attr('data-tindex');
         var matcharrayIndex = $(this).attr('data-dindex');
-        
+        console.log(JSON.parse(match_arr_unencode));
         $('#edit-ap').attr("tabledindex",tableindex);
         $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
         $('#edit-ap').attr('data-prim',prim_ref);
@@ -304,7 +307,7 @@
         $("#loading").removeClass('d-none');
         // load the url and show modal on success
         $("#edit-ap .modal-body").load(url, 
-            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr_unencode},         
+            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr_unencode,prim_ref:prim_ref},         
             function (response, status, xhr) {
                 if (xhr.status == 200) {
                     $('#loader-wrapper').remove();
@@ -340,7 +343,14 @@ $(document).on('click','.sendToCGM',function(e){
             tobj[tname] = tvalue;
             formData.push(tobj);
         });
-        
+        $('.form-group select').each(function(){
+            var tobj ={};
+            var tvalue = $(this).val();
+            var tname = $(this).attr("name");
+            tobj[tname] = tvalue;
+            formData.push(tobj);
+        });
+        console.log(formData);
         var form = $('form').each(function(){
             $(this).validate({
                 highlight: function(element) {
