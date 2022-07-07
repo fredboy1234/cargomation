@@ -47,6 +47,16 @@
     font-size: 12px;
     position: absolute;
    }
+   .close-edit{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    background: none;
+    border: none;
+   }
 </style>
 
 <div class="row">
@@ -251,7 +261,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <h4 class="modal-title">Container Details</h4>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <button type="button" class="close-edit" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
@@ -273,7 +283,8 @@
  var match_arr = <?=json_encode($this->match_arr)?>;
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
- console.log(match_arr);
+ var match_arr_unencode =  <?=json_encode($this->match_arr_unencode)?>;
+ console.log(match_arr_unencode);
  //show edit modal on preview doc
  $(document).ready(function(){
 
@@ -293,7 +304,7 @@
         $("#loading").removeClass('d-none');
         // load the url and show modal on success
         $("#edit-ap .modal-body").load(url, 
-            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr},         
+            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr_unencode},         
             function (response, status, xhr) {
                 if (xhr.status == 200) {
                     $('#loader-wrapper').remove();
@@ -304,6 +315,10 @@
                     $('#loader-wrapper').remove();
                 }
         });
+    });
+
+    $(document).on('click','.close-edit',function(){
+        $('#edit-ap').modal('hide');
     });
 
 //push edited to cgm response
