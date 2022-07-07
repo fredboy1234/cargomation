@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 $curl = curl_init();
 if(isset($_GET['val'])){
-	$value = str_replace('#','',str_replace(' ', '', strval($_GET['val'])));
+	$value = str_replace(' ', '', strval($_GET['val']));
 	curl_setopt_array($curl, array(
 		  CURLOPT_URL =>'https://maps.googleapis.com/maps/api/geocode/json?address={'.$value.'}&key=AIzaSyD18geTt29i8C2oPSu-rd5pFg-VqhHefwA',
 		  CURLOPT_RETURNTRANSFER => true,
