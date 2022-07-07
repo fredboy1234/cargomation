@@ -159,9 +159,7 @@
                                 ?>
                                     <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
                                         <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                        <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text" name="<?=strtolower(str_replace(" ","_",$keyField))?>">
-                                            <option value="<?=$listofField['value']?>" selected><?=$listofField['value']?></option>
-                                        </select>
+                                        <input id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text" name="<?=strtolower(str_replace(" ","_",$keyField))?>" value="<?=$listofField['value']?>" >
                                     </div>
                                     <div class="form-group row d-inline-block px-2 col-md-5">
                                         <label for="<?=$names?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$names?></label>
@@ -399,57 +397,49 @@ $(document).on('click','.sendToCGM',function(e){
     // });
     $('#preview-doc').on('shown.bs.modal ', function () {
         var numberofSelec = <?=json_encode($numberofSelec)?>;
-    
-            $.each(numberofSelec,function(okey,oval){
-                var selector1 = '.consignee_org_code_'+oval;
-                var selector2 = '.shipper_org_code_'+oval;
-                console.log(oval);
-                $('.'+oval).select2({
-                    dropdownAutoWidth : true,
-                    width: 'auto',
-                    ajax:{
-                        url:'docregister/autocomplete',
-                        dataType: 'json',
-                        data:function(params){
-                            var query={
-                                search:params.term
-                            }
-                            return query;
-                        },
-                        delay: 250,
-                        processResults: function(data,params) {
-                            var resData = [];
-                            
-                            $.each(data,function(okey,oval){
-                               
-                                resData.push(oval);
-                            });
+        // setTimeout(function(){
+        //     $.each(numberofSelec,function(okey,oval){
+        //         var selector1 = '.consignee_org_code_'+oval;
+        //         var selector2 = '.shipper_org_code_'+oval;
+        //         console.log(oval);
+        //         $('.'+oval).select2({
+        //                 dropdownAutoWidth : true,
+        //                 width: 'auto',
+        //                 ajax:{
+        //                     url:'docregister/autocomplete',
+        //                     dataType: 'json',
+        //                     data:function(params){
+        //                         var query={
+        //                             search:params.term
+        //                         }
+        //                         return query;
+        //                     },
+        //                     delay: 250,
+        //                     processResults: function(data,params) {
+        //                         var resData = [];
+                                
+        //                         $.each(data,function(okey,oval){
+                                
+        //                             resData.push(oval);
+        //                         });
 
-                            return {
-                                results: $.map(data, function(item) {
-                                    
-                                    return {
-                                        text:item[0].code,
-                                        id: item[0].name
-                                    }
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                });
-            });
-            
-            // $('.consignee_org_code').select2({
-            //         dropdownAutoWidth : true,
-            //         width: 'auto',
-            // });
-        // $('.consignee_org_code, .shipper_org_code').select2({
-        //     dropdownAutoWidth : true,
-        //     width: 'auto'
-        // });
+        //                         return {
+        //                             results: $.map(data, function(item) {
+                                        
+        //                                 return {
+        //                                     text:item[0].code,
+        //                                     id: item[0].name
+        //                                 }
+        //                             })
+        //                         };
+        //                     },
+        //                     cache: true
+        //                 }
+        //             });   
+        //     });
+        // },1500);
         var user_id = <?=json_encode($this->userid)?>;
-        setOption();      
+        //setOption();      
     });
     
     function setOption(){
@@ -486,32 +476,32 @@ $(document).on('click','.sendToCGM',function(e){
             });
     }
 
-    $(document).on('change','.shipper_org_code',function(){
-        var data=$(this).select2('data')[0];
+    // $(document).on('change','.shipper_org_code',function(){
+    //     var data=$(this).select2('data')[0];
         
-        var text = data.id
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Shipper').val(text);
-	});
-    $(document).on('change','.consignee_org_code',function(){
-        var data=$(this).select2('data')[0];
+    //     var text = data.id
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Shipper').val(text);
+	// });
+    // $(document).on('change','.consignee_org_code',function(){
+    //     var data=$(this).select2('data')[0];
        
-        var text = data.id;
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Consignee').val(text);
-	});
-    $(document).on('change','.carrier_org_code',function(){
-        var data=$(this).select2('data')[0];
+    //     var text = data.id;
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Consignee').val(text);
+	// });
+    // $(document).on('change','.carrier_org_code',function(){
+    //     var data=$(this).select2('data')[0];
         
-        var text = data.id;
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Carrier').val(text);
-	});
+    //     var text = data.id;
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Carrier').val(text);
+	// });
  });
 </script>
