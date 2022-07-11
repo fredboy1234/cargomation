@@ -101,3 +101,7 @@ td.stats .doc-stats:first-child > span {
 .no-doc {
     cursor: pointer;
 }
+.stats, .empty {
+    display: inline-block;
+    font-size: 85%;
+}
