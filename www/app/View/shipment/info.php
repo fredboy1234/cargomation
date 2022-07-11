@@ -225,12 +225,12 @@ foreach ($this->shipment_info[0] as $key => $value) {
                 <div class="col-lg-6">
                     <strong>Actual Departure</strong>
                     <p><?php 
-                        if($this->shipment_info[0]->atd == '1900-01-01 00:00:00.000'){ 
+                        if($this->shipment_info[0]->atd == '1900-01-01 00:00:00.000'):
                             echo '-';
-                        } else {
+                        else: 
                             $date = date_create($this->shipment_info[0]->etd);
                             echo date_format($date,"d M Y H:i"); 
-                        }
+                        endif;
                     ?></p>
                 </div>
                 <div class="col-lg-6">
@@ -333,6 +333,12 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <dt>Address:</dt>
                     <dd><?= $value->Address1; ?></dd>
                 </div>
+                <?php if(isset($value->Address2)): ?>
+                <div class="col-lg-12">
+                    <dt>Address 2:</dt>
+                    <dd><?= $value->Address2; ?></dd>
+                </div>
+                <?php endif; ?>
                 <div class="col-lg-6">
                     <dt>Receipt Place:</dt>
                     <dd><?= $this->shipment_info[0]->place_receipt; ?></dd>
