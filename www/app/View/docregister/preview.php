@@ -47,6 +47,19 @@
     font-size: 12px;
     position: absolute;
    }
+   .close-edit{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    background: none;
+    border: none;
+   }
+   #preview-doc{
+    overflow: scroll;
+   }
 </style>
 
 <div class="row">
@@ -146,9 +159,7 @@
                                 ?>
                                     <div class="form-group row d-inline-block px-2 col-md-6" style="vertical-align: bottom;">
                                         <label for="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$keyField?></label>
-                                        <select id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text">
-                                            <option value="<?=$listofField['value']?>" selected><?=$listofField['value']?></option>
-                                        </select>
+                                        <input id="<?=$kokey.'_'.$matchval['hbl_numbers']?>" class="<?=$kokey?> <?=$kokey.'_'.$matchval['hbl_numbers']?> js-example-basic-single form-control form-control-sm col-sm-12" type="text" name="<?=strtolower(str_replace(" ","_",$keyField))?>" value="<?=$listofField['value']?>" >
                                     </div>
                                     <div class="form-group row d-inline-block px-2 col-md-5">
                                         <label for="<?=$names?>" class="col-sm-12 col-form-label col-form-label-sm"><?=$names?></label>
@@ -202,7 +213,11 @@
                                                         <?php if(gettype($con) === 'string'){
                                                             echo $con;
                                                         }else{
-                                                            print_r($con);
+                                                            if(isset($con[0])){
+                                                                echo $con[0];
+                                                            }else{
+                                                                print_r($con);
+                                                            }
                                                         }
                                                         ?>
                                                     </td>
@@ -247,7 +262,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <h4 class="modal-title">Container Details</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close-edit" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
@@ -269,34 +284,42 @@
  var match_arr = <?=json_encode($this->match_arr)?>;
  var prim_ref =<?=json_encode($this->prim_ref)?>;
  var matchjson = <?=json_encode($this->matchjson)?>;
+ var match_arr_unencode =  <?=json_encode($this->match_arr_unencode)?>;
  
  //show edit modal on preview doc
  $(document).ready(function(){
 
     $(document).on('click','.edit-details',function(){
-    
+        var match_arr_unencode =  <?=json_encode($this->match_arr_unencode)?>;
         var tableindex = $(this).attr('data-tindex');
         var matcharrayIndex = $(this).attr('data-dindex');
-        
+        console.log(JSON.parse(match_arr_unencode));
         $('#edit-ap').attr("tabledindex",tableindex);
         $('#edit-ap').attr("matcharrayIndex",matcharrayIndex);
         $('#edit-ap').attr('data-prim',prim_ref);
         
-        var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+        // var url = "/docregister/edit?"+matcharrayIndex+'&'+tableindex+'&'+match_arr;
+        var url = "/docregister/edit";
 
         $("#edit-ap .modal-body").append(loader);
         $("#loading").removeClass('d-none');
         // load the url and show modal on success
-        $("#edit-ap .modal-body").load(url, function (response, status, xhr) {
-        if (xhr.status == 200) {
-            $('#loader-wrapper').remove();
-            $("#loading").addClass('d-none');
-            $("#edit-ap").modal("show");
-        } else {
-            alert("Error: " + xhr.status + ": " + xhr.statusText);
-            $('#loader-wrapper').remove();
-        }
+        $("#edit-ap .modal-body").load(url, 
+            {tableindex:tableindex,matcharrayIndex:matcharrayIndex,prim_ref:prim_ref,match_arr:match_arr_unencode,prim_ref:prim_ref},         
+            function (response, status, xhr) {
+                if (xhr.status == 200) {
+                    $('#loader-wrapper').remove();
+                    $("#loading").addClass('d-none');
+                    $("#edit-ap").modal("show");
+                } else {
+                    alert("Error: " + xhr.status + ": " + xhr.statusText);
+                    $('#loader-wrapper').remove();
+                }
         });
+    });
+
+    $(document).on('click','.close-edit',function(){
+        $('#edit-ap').modal('hide');
     });
 
 //push edited to cgm response
@@ -318,7 +341,14 @@ $(document).on('click','.sendToCGM',function(e){
             tobj[tname] = tvalue;
             formData.push(tobj);
         });
-        
+        $('.form-group select').each(function(){
+            var tobj ={};
+            var tvalue = $(this).val();
+            var tname = $(this).attr("name");
+            tobj[tname] = tvalue;
+            formData.push(tobj);
+        });
+        console.log(formData);
         var form = $('form').each(function(){
             $(this).validate({
                 highlight: function(element) {
@@ -367,57 +397,49 @@ $(document).on('click','.sendToCGM',function(e){
     // });
     $('#preview-doc').on('shown.bs.modal ', function () {
         var numberofSelec = <?=json_encode($numberofSelec)?>;
-    
-            $.each(numberofSelec,function(okey,oval){
-                var selector1 = '.consignee_org_code_'+oval;
-                var selector2 = '.shipper_org_code_'+oval;
-               
-                $('.'+oval).select2({
-                    dropdownAutoWidth : true,
-                    width: 'auto',
-                    ajax:{
-                        url:'docregister/autocomplete',
-                        dataType: 'json',
-                        data:function(params){
-                            var query={
-                                search:params.term
-                            }
-                            return query;
-                        },
-                        delay: 250,
-                        processResults: function(data,params) {
-                            var resData = [];
-                            
-                            $.each(data,function(okey,oval){
-                               
-                                resData.push(oval);
-                            });
+        // setTimeout(function(){
+        //     $.each(numberofSelec,function(okey,oval){
+        //         var selector1 = '.consignee_org_code_'+oval;
+        //         var selector2 = '.shipper_org_code_'+oval;
+        //         console.log(oval);
+        //         $('.'+oval).select2({
+        //                 dropdownAutoWidth : true,
+        //                 width: 'auto',
+        //                 ajax:{
+        //                     url:'docregister/autocomplete',
+        //                     dataType: 'json',
+        //                     data:function(params){
+        //                         var query={
+        //                             search:params.term
+        //                         }
+        //                         return query;
+        //                     },
+        //                     delay: 250,
+        //                     processResults: function(data,params) {
+        //                         var resData = [];
+                                
+        //                         $.each(data,function(okey,oval){
+                                
+        //                             resData.push(oval);
+        //                         });
 
-                            return {
-                                results: $.map(data, function(item) {
-                                    
-                                    return {
-                                        text:item[0].code,
-                                        id: item[0].name
-                                    }
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                });
-            });
-            
-            // $('.consignee_org_code').select2({
-            //         dropdownAutoWidth : true,
-            //         width: 'auto',
-            // });
-        // $('.consignee_org_code, .shipper_org_code').select2({
-        //     dropdownAutoWidth : true,
-        //     width: 'auto'
-        // });
+        //                         return {
+        //                             results: $.map(data, function(item) {
+                                        
+        //                                 return {
+        //                                     text:item[0].code,
+        //                                     id: item[0].name
+        //                                 }
+        //                             })
+        //                         };
+        //                     },
+        //                     cache: true
+        //                 }
+        //             });   
+        //     });
+        // },1500);
         var user_id = <?=json_encode($this->userid)?>;
-        setOption();      
+        //setOption();      
     });
     
     function setOption(){
@@ -454,32 +476,32 @@ $(document).on('click','.sendToCGM',function(e){
             });
     }
 
-    $(document).on('change','.shipper_org_code',function(){
-        var data=$(this).select2('data')[0];
+    // $(document).on('change','.shipper_org_code',function(){
+    //     var data=$(this).select2('data')[0];
         
-        var text = data.id
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Shipper').val(text);
-	});
-    $(document).on('change','.consignee_org_code',function(){
-        var data=$(this).select2('data')[0];
+    //     var text = data.id
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Shipper').val(text);
+	// });
+    // $(document).on('change','.consignee_org_code',function(){
+    //     var data=$(this).select2('data')[0];
        
-        var text = data.id;
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Consignee').val(text);
-	});
-    $(document).on('change','.carrier_org_code',function(){
-        var data=$(this).select2('data')[0];
+    //     var text = data.id;
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Consignee').val(text);
+	// });
+    // $(document).on('change','.carrier_org_code',function(){
+    //     var data=$(this).select2('data')[0];
         
-        var text = data.id;
-        if(text == 'null'){
-            text = 'Not Specified';
-        }
-        $('.Carrier').val(text);
-	});
+    //     var text = data.id;
+    //     if(text == 'null'){
+    //         text = 'Not Specified';
+    //     }
+    //     $('.Carrier').val(text);
+	// });
  });
 </script>

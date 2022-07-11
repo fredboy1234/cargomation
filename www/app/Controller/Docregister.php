@@ -444,18 +444,21 @@ class Docregister extends Core\Controller {
         $responsedata['action_type'] = 'preview documents';
 
         $this->insertLogs($responsedata);
-        //$jsonDecode->data='{"MatchReportArray": [{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"goods_description":"ALUMINIUM SHEET/PLATE 5083-H116 AND 5083-H321 UNDER PO NO. 0033822POBR-2 AND PUR0352909 AND PUR0352908","shipper":"ALNAN ALUMINIUM INC.","volume":"61.290","gross_weight":"71,664.000","consignee":"CENTRAL NATIONAL AUSTRALIA","shipper_org_code":"ALNALUNNG","consignee_org_code":"CENNATMEL","incoterm":"FREIGHT COLLECT","marks_numbers":"0033822POBR-2 PUR0352909 PUR0352908","package_count":"45 PACKAGES","hbl_number":"ZS22D00088","coloader":"SILA GLOBAL NZ LTD","port_destination":"BRISBANE, AUSTRALIA","number_original":"THREE(3)","port_origin":"QINZHOU, CHINA","filename":"HBL COSU6886985840.pdf","page":"1","doc_type":"HBL","process_id":"239","release_type":"OBR","state_code":"VIC","webservice_link":"https://siltrnservices.wisegrid.net/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"CSNU6372582","SEAL":"M740996","CONTAINER_TYPE":"40HQ","CHARGEABLE_WEIGHT":"22657.000 KGS","VOLUME":"26.390 CBM","PACKAGE_COUNT":"13 PACKAGE"},{"CONTAINER_NUMBER":"TRHU1637482","SEAL":"M761273","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"17345.000 KGS","VOLUME":"11.870 CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"TEMU3347956","SEAL":"M138227","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15846.000 KGS","VOLUME":"11.630 CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"OOLU1319258","SEAL":"S963748","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15816.000 KGS","VOLUME":"11.400 CBM","PACKAGE_COUNT":"10 PACKAGES"}]}}}},{"HubJSONOutput":{"CargoWiseMatchedData":{"CWHeader":null,"CWLines":null},"ParsedPDFData":{"ParsedPDFHeader":{"port_origin":"QINZHOU, CHINA","port_destination":"BRISBANE,","volume":"61.2900CBM","package_count":"45","goods_description":"ALUMINIUM SHEET/PLATE","shipper":"HONOUR LANE SHIPPING LIMITED ZHONGSHAN BRANCH","consignee":"SILA GLOBAL PTY LTD","consignee_org_code":"CSIINTBNE","gross_weight":"71664.000KGS","voyage_number":"026E","incoterm":"OCEAN FREIGHT COLLECT","mbl_number":"COSU6886985840","attached":"TO BE CONTINUED ON ATTACHED LIST","filename":"MBL COSU6886985840.pdf","page":["1","2"],"doc_type":"MBL","process_id":"240","state_code":"QLD","webservice_link":"https://siltrnservices.wisegrid.net/eAdaptor","webservice_username":"silbne","webservice_password":"Sil@bne18","server_id":"TRN","enterprise_id":"SIL","company_code":"SIL"},"ParsedPDFLines":{"ParsedPDFLine":[{"CONTAINER_NUMBER":"OOLU1319258","SEAL":"S963748","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15816000KGS","VOLUME":"11400CBM","PACKAGE_COUNT":"10 PACKAGES"},{"CONTAINER_NUMBER":"TEMU3347956","SEAL":"M138227","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"15846000KGS","VOLUME":"11630CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"TRHU1637482","SEAL":"M761273","CONTAINER_TYPE":"20GP","CHARGEABLE_WEIGHT":"17345000KGS","VOLUME":"11870CBM","PACKAGE_COUNT":"11 PACKAGES"},{"CONTAINER_NUMBER":"CSNU6372582","SEAL":"M740996","CONTAINER_TYPE":"40HQ","CHARGEABLE_WEIGHT":"22657000KGS","VOLUME":"26390CBM","PACKAGE_COUNT":"13 PACKAGES"}]}}}}]}';
         // echo"<pre>";
         
         if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
             $jsonDecode->data = $this->getCGMresponse($prim_ref)[0]->cgm_response;
         }
       
-       if(!isset($jsonDecode->data)) exit;
+        // $jsonDecode->data='{"data":"{\"MatchReportArray\": [{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"goods_description\":\"CRAWLER SHOE BRADKEN PO YDC-514248-3\",\"shipper\":\"BRADKEN (XUZHOU) METAL EQUIPMENT MANUFACTURING CO., LTD\",\"volume\":\"36.440\",\"gross_weight\":\"77,800.000\",\"gross_weight_uom\":\"KG\",\"consignee\":\"BRADKEN RESOURCES PTY LTD\",\"shipper_org_code\":\"BRAXUZSHA\",\"consignee_org_code\":\"BRARESBAS\",\"incoterm\":\"FREIGHT COLLECT\",\"marks_numbers\":\"N\/M\",\"package_count\":\"40 PALLETS\",\"package_count_uom\":\"PLT\",\"hbl_number\":\"QD22D00602\",\"coloader\":\"SILA GLOBAL PTY LTD\",\"port_destination\":\"SYDNEY, AUSTRALIA\",\"number_original\":\"THREE(3)\",\"port_origin\":\"QINGDAO, CHINA\",\"filename\":\"HBL 799210291130.pdf\",\"page\":\"1\",\"doc_type\":\"HBL\",\"process_id\":\"315\",\"release_type\":\"OBR\",\"state_code\":\"NSW\",\"webservice_link\":\"https:\/\/siltrnservices.wisegrid.net\/eAdaptor\",\"webservice_username\":\"silbne\",\"webservice_password\":\"Sil@bne18\",\"server_id\":\"TRN\",\"enterprise_id\":\"SIL\",\"company_code\":\"SIL\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":[{\"CONTAINER_NUMBER\":\"DFSU3139668\",\"SEAL\":\"TSH1126361\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"DFSU1698137\",\"SEAL\":\"TSH1126362\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"CAAU2010774\",\"SEAL\":\"TSH1126287\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"},{\"CONTAINER_NUMBER\":\"TLLU2704155\",\"SEAL\":\"TSH1126289\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT\":\"19450.000 KGS\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME\":\"9.110 CBM\",\"VOLUME_UOM\":\"PLT\",\"PACKAGE_COUNT\":\"10 PALLETS\"}]}}}},{\"HubJSONOutput\":{\"CargoWiseMatchedData\":{\"CWHeader\":null,\"CWLines\":null},\"ParsedPDFData\":{\"ParsedPDFHeader\":{\"port_origin\":\"QINGDAO, CHINA\",\"port_destination\":\"SYDNEY\",\"volume\":\"36.44000CBM\",\"volume_uom\":\"M3\",\"package_count\":\"40 PALLETS\",\"package_count_uom\":\"PLT\",\"goods_description\":\"CRAWLER SHOE BRADKEN PO YDC-514248-3\",\"shipper\":\"HONOUR LANE SHIPPING LTD.QINGDAO BRANCH\",\"shipper_org_code\":\"HONLANCKG\",\"consignee\":\"SILA GLOBAL PTY LTD\",\"consignee_org_code\":\"CSIINTBNE\",\"carrier\":\"T.S. LINES\",\"carrier_org_code\":\"TSLINE_WW\",\"gross_weight\":\"77800.00000KGS\",\"gross_weight_uom\":\"KG\",\"voyage_number\":\"2208S\",\"incoterm\":\"FREIGHT PREPAID\",\"mbl_number\":\"799210291130\",\"filename\":\"MBL 799210291130.pdf\",\"page\":\"1\",\"doc_type\":\"MBL\",\"process_id\":\"316\",\"state_code\":\"QLD\",\"webservice_link\":\"https:\/\/siltrnservices.wisegrid.net\/eAdaptor\",\"webservice_username\":\"silbne\",\"webservice_password\":\"Sil@bne18\",\"server_id\":\"TRN\",\"enterprise_id\":\"SIL\",\"company_code\":\"SIL\"},\"ParsedPDFLines\":{\"ParsedPDFLine\":[{\"CONTAINER_NUMBER\":\"CAAU2010774\",\"SEAL\":\"TSH1126287\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"DFSU1698137\",\"SEAL\":\"TSH1126362\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"DFSU3139668\",\"SEAL\":\"TSH1126361\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"},{\"CONTAINER_NUMBER\":\"TLLU2704155\",\"SEAL\":\"TSH1126289\",\"CONTAINER_TYPE\":\"20GP\",\"CHARGEABLE_WEIGHT_UOM\":\"KG\",\"VOLUME_UOM\":\"PKG\"}]}}}}]}","status":"200","message":"Success"}';
+        // $jsonDecode->data = json_decode($jsonDecode->data)->data;
+
+      if(!isset($jsonDecode->data)) exit;
         
         $matchArray =  json_decode($jsonDecode->data)->MatchReportArray;
        
         if(!empty($matchArray)){
+
             foreach($matchArray as $match){
                 $jmatch = $match; 
                 $parsePdfData = $jmatch->HubJSONOutput->ParsedPDFData;
@@ -466,7 +469,7 @@ class Docregister extends Core\Controller {
                 $fieldlist=array();
                 $container_details = array();
                 //print_r($jmatch);
-
+                
                 foreach($parsePdfDataheader as $key=>$pdf){
                     if(!in_array($key, $mustnot)){
                         $fieldlist[ucwords(str_replace("_"," ",$key))] = $pdf;
@@ -529,8 +532,14 @@ class Docregister extends Core\Controller {
                     'consignee'=>array('name'=>'Consignee','order'=>22),
                     'coloader_org_code'=>array('name'=>'Coloader Org Code','order'=>23),
                     'coloader'=>array('name'=>'Coloader','order'=>24),
-                );
-                
+                    'carrier_org_code'=>array('name'=>'Carrier Org Code','order'=>25),
+                    'carrier'=>array('name'=>'Carrier','order'=>26),
+                    'transport'=>array('name'=>'Transport','order'=>27),
+                    'container_mode'=>array('name'=>'Container Mode','order'=>28),
+                    'voyage_number'=>array('name'=>'Voyage Number','order'=>29),
+                    'vessel'=>array('name'=>'Vessel','order'=>30),
+                ); 
+               
                 $reorder = array();
 
                 if(!isset($fieldlist['Hbl Number'])){
@@ -566,17 +575,7 @@ class Docregister extends Core\Controller {
         }
         
         $encodedData = urlencode( $this->encryptData( $jsonDecode->data ) );
-        
-       // echo urlencode($this->encryptData($mj));
-       // echo "<br><br><br><pre>";
-
-        //print_r(json_decode($this->decryptData(urldecode($cp))));
-        // $options['salt'] = 'a2b!@#$';
-        // echo hash('ripemd160', $mj);
-        // echo "<br>";
-        // echo password_verify('pass123', hash('ripemd160', $mj));
-     
-
+       
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/preview", [
             'hbl_numbers' => $hbl_numbers,
@@ -588,6 +587,7 @@ class Docregister extends Core\Controller {
             'matchData' =>$matchData,
             'process_id'=>$prim_ref,
             'match_arr'=> $encodedData,
+            'match_arr_unencode' => $jsonDecode->data,
             'prim_ref'=>$prim_ref,
             'matchjson'=>$jsonDecode->data,
             'userid'=>$_SESSION['user'],
@@ -634,40 +634,89 @@ class Docregister extends Core\Controller {
 
     //edit modal
     public function edit(){ 
-        echo"<pre>";
-        print_r('test');
+        
         $data =array();
         $tableData=array();
         $collectionOfTableData = array();
-        $url = explode("?",$_SERVER['REQUEST_URI']);
+
         
-        if(!isset(  $url[1] ))exit;
-        $data = $url[1];
-        $urlindex = explode("&",$url[1]);
-        $indexID = $urlindex[0];
-        $indexTable = $urlindex[1];
-        $indexData = $urlindex[2];
-        $decrypted = json_decode($this->decryptData(urldecode($indexData)));
-        if(empty($decrypted))exit;
-        
-        // echo"<pre>";
-        // print_r($decrypted);
-        // exit;
-        $tableMatchReport = $decrypted->MatchReportArray;
-        $matchreportIndex = $tableMatchReport[$indexID];
-        $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
+        if(isset($_POST)){
+           
+            $prim_ref = $_POST['prim_ref'];
+            $indexID = $_POST['matcharrayIndex'];
+            $indexTable = $_POST['tableindex'];
+            $indexData = $_POST['match_arr'];
+            $decrypted = json_decode($indexData);//json_decode($this->decryptData(urldecode($indexData)));
+
+            if(isset($this->getCGMresponse($prim_ref)[0]) && !empty($this->getCGMresponse($prim_ref)[0]->cgm_response)){
+                $decrypted  = json_decode($this->getCGMresponse($prim_ref)[0]->cgm_response);
+            }
+           
+            $tableMatchReport = $decrypted->MatchReportArray;
+            $matchreportIndex = $tableMatchReport[$indexID];
+            $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
        
-        foreach($matchreportTableData as $key=>$tdata){
-            $collectionOfTableData[] = $tdata;
+            foreach($matchreportTableData as $key=>$tdata){
+                $collectionOfTableData[] = $tdata;
+            }
+        //    echo"<pre>";
+        //   print_r($indexTable);
+        // //  print_r(  $matchreportIndex  );
+        //  print_r($collectionOfTableData);
+        //  echo"</pre>";
+        //  exit;
+            if(isset($collectionOfTableData[0])){
+                $collectionOfTableData = $collectionOfTableData[0];
+            }
+            if(isset($collectionOfTableData[$indexTable]) && is_object($collectionOfTableData[$indexTable])){
+               $tableData=$collectionOfTableData[$indexTable];
+            }else{
+                if(isset($collectionOfTableData[$indexID][$indexTable])){
+                    $tableData=$collectionOfTableData[$indexID][$indexTable];
+                }
+            }
+          
         }
-        $tableData=$collectionOfTableData[$indexTable];
-        
         $this->View->addJS("js/docregister.js");
         $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
             "data"=>$decrypted,
             "tableData"=>$tableData
         ]);
     }
+    // public function edit(){ 
+        
+    //     $data =array();
+    //     $tableData=array();
+    //     $collectionOfTableData = array();
+    //     $url = explode("?",$_SERVER['REQUEST_URI']);
+       
+    //     if(!isset(  $url[1] ))exit;
+    //     $data = $url[1];
+    //     $urlindex = explode("&",$url[1]);
+    //     $indexID = $urlindex[0];
+    //     $indexTable = $urlindex[1];
+    //     $indexData = $urlindex[2];
+    //     $decrypted = json_decode($this->decryptData(urldecode($indexData)));
+    //     if(empty($decrypted))exit;
+        
+    //     // echo"<pre>";
+    //     // print_r($decrypted);
+    //     // exit;
+    //     $tableMatchReport = $decrypted->MatchReportArray;
+    //     $matchreportIndex = $tableMatchReport[$indexID];
+    //     $matchreportTableData = $matchreportIndex->HubJSONOutput->ParsedPDFData->ParsedPDFLines;
+       
+    //     foreach($matchreportTableData as $key=>$tdata){
+    //         $collectionOfTableData[] = $tdata;
+    //     }
+    //     $tableData=$collectionOfTableData[$indexTable];
+        
+    //     $this->View->addJS("js/docregister.js");
+    //     $this->View->renderWithoutHeaderAndFooter("/docregister/edit", [
+    //         "data"=>$decrypted,
+    //         "tableData"=>$tableData
+    //     ]);
+    // }
 
     //save data to cgm
     public function sendToAPI(){
@@ -679,26 +728,43 @@ class Docregister extends Core\Controller {
                     $toPass[$vkey][]=$vval;
                 }
             }
-          
+         
             if($_POST['type'] === 'table'){
-                $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
+                foreach($_POST['data'] as $key=>$val){
+                    foreach($val as $vkey=>$vval){
+                        $toPass[$vkey]=$vval;
+                    }
+                } 
+               
+                if(isset($_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine'][$_POST['tableindex']])){
+                    $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine'][$_POST['tableindex']]=$toPass;
+                }else{
+                    $_POST['docregister']['MatchReportArray'][$_POST['parseindex']]['HubJSONOutput']['ParsedPDFData']['ParsedPDFLines']['ParsedPDFLine']=$toPass;
+                }        
             }else{
+                if(isset($this->getCGMresponse($_POST['prim_ref'])[0]) && !empty($this->getCGMresponse($_POST['prim_ref'])[0]->cgm_response)){
+                    $_POST['docregister']  = $this->getCGMresponse($_POST['prim_ref'])[0]->cgm_response;
+                }
                 $_POST['docregister'] = json_decode($_POST['docregister']);
                 //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader = $toPass;
                 foreach($toPass as $key=>$tpval){
                     //$_POST['docregister']->MatchReportArray[$_POST['parseindex']]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpval;
-                    foreach($tpval as $tpvalkey=>$tpvalval){
-                        $_POST['docregister']->MatchReportArray[$tpvalkey]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpvalval;
+                    if($key !== 'undefined'){
+                        foreach($tpval as $tpvalkey=>$tpvalval){
+                                $_POST['docregister']->MatchReportArray[$tpvalkey]->HubJSONOutput->ParsedPDFData->ParsedPDFHeader->$key=$tpvalval;
+                        }
                     }
                 }
             }
-            
+            echo '<pre>';
+            print_r($_POST['docregister']);
+            //exit;
             //$_POST['apinvoice']['HubJSONOutput']['ParsedPDFData']['ParsedPDFChargeLines']['ChargeLine'][$_POST['index']] = $toPass;
             $data['cgm'] = json_encode($_POST['docregister']);
             $data['prim_ref'] = $_POST['prim_ref'];
             
-            $APinvoice = Model\DocRegister::getInstance();
-            $APinvoice->addToCGM_Response($data);
+           $APinvoice = Model\DocRegister::getInstance();
+           $APinvoice->addToCGM_Response($data);
         }
     }
 
@@ -927,7 +993,6 @@ class Docregister extends Core\Controller {
         $user_id = $_SESSION['user'];
         $process_id = '';
         $data = array();
-        $_POST['process_id'] = 318;
         if(isset($_POST)){
             $match_response = json_decode($this->newjson($_POST['process_id'],$user_id));//$this->getCMByprim_ref($_POST['prim_ref'])[0]->id;
             
@@ -949,7 +1014,7 @@ class Docregister extends Core\Controller {
             
             $result = $this->postAuth($url,$payload,$headers);
             $decoded = json_decode($result);
-             
+           
             $data['process_id'] = $_POST['process_id'];
             $data['user_id'] =  $user_id ;
             $data['status'] = $decoded->status;
