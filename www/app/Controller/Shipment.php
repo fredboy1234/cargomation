@@ -745,8 +745,7 @@ class Shipment extends Core\Controller {
                     $days, $hours, $minutes, $seconds . " ago");
     }
 
-    public function shipmentData($user_id = "") {
-       
+    public function shipmentData($user_id = "") {       
         if(!isset($_POST['draw'])) {
             die('Unauthorized Access');
         }
@@ -764,20 +763,6 @@ class Shipment extends Core\Controller {
             unset($_POST['data']);
             $requested = 'newshipments';
         }
-        
-        // Check that the user is authenticated.
-        //Utility\Auth::checkAuthenticated();
-        //if (!$user_id) {
-        //    $userSession = Utility\Config::get("SESSION_USER");
-        //    if (Utility\Session::exists($userSession)) {
-        //        $user_id = Utility\Session::get($userSession);
-        //    }
-        //}
-        // Get an instance of the user model using the user ID passed to the
-        // controll action. 
-        //if (!$User = Model\User::getInstance($user_id)) {
-        //    Utility\Redirect::to(APP_URL);
-        //}
         $User = new Model\User;
         $url = 'https://cargomation.com:5200/redis/getshipmentview';
         $arr = [
@@ -786,8 +771,6 @@ class Shipment extends Core\Controller {
             "length" => (is_numeric($_POST['length']) ? (int)$_POST['length'] : 0),
             "start" => (is_numeric($_POST['start']) ? (int)$_POST['start'] : 0),
         ];
-        
-       
         if(isset($_POST['order'][0]['column']) && $_POST['order'][0]['dir'] != "") {
             foreach ($_POST['order'] as $key => $value) {
                 // change shipment_id to shipment_num
@@ -799,15 +782,18 @@ class Shipment extends Core\Controller {
             }
         }
         if(isset($_POST['search']['value']) && !empty($_POST['search']['value'])) {
-            $arr["filter"] = array((object)["columnname" => "shipment_num",
-                                            "type" => "contains",
-                                            "value" => $_POST['search']['value'],
-                                            "cond" => ""]);
-        }
-        if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
-            $arr["filter"] = $_POST['data'];
+            // $arr["filter"] = array((object)["columnname" => "shipment_num",
+            //                                 "type" => "contains",
+            //                                 "value" => $_POST['search']['value'],
+            //                                 "cond" => ""]);
+            $arr['filter'] = json_decode($_POST['search']['value'], true);
             $User->putRecentSearch($user_id, $arr["filter"]);
         }
+        // if(!empty($_POST['data'][0]['columnname']) && !empty($_POST['data'][0]['value'])) {
+        //     // $arr["filter"] = $_POST['data'];
+        //     $arr['filter'] = $_POST['search']['value'];
+        //     $User->putRecentSearch($user_id, $arr["filter"]);
+        // }
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
                     "Content-Type: application/json"];
@@ -901,17 +887,17 @@ class Shipment extends Core\Controller {
             $subdata['eta_date'] = '<span class="d-none">'.($eta_date_sort=="01/01/1900"?"No Date Available":$eta_date_sort).'</span>'.($eta_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$eta_date).$etadays;
             $subdata['etd_date'] = '<span class="d-none">'.($etd_date_sort=="01/01/1900"?"No Date Available":$etd_date_sort).'</span>'.($etd_date=='01/01/1900'?'<span class="text-warning">No Date Available</span>':$etd_date);
             $subdata['vessel_name'] = (empty($shipment->vessel_name)) ? '<span class="text-warning">No Data</span>' : $shipment->vessel_name;
-            $subdata['place_delivery'] = $shipment->place_delivery;
-            $subdata['consignee'] = $shipment->consignee;
-            $subdata['consignor'] = $shipment->consignor;
+            $subdata['place_delivery'] = (empty($shipment->place_delivery)) ? '<span class="text-warning">No Data</span>' : $shipment->place_delivery;
+            $subdata['consignee'] = (empty($shipment->consignee)) ? '<span class="text-warning">No Data</span>' : $shipment->consignee;
+            $subdata['consignor'] = (empty($shipment->consignor)) ? '<span class="text-warning">No Data</span>' : $shipment->consignor;
             // Additionals
-            $subdata['master_bill'] = $shipment->master_bill;
-            $subdata['house_bill'] = $shipment->house_bill;
-            $subdata['transport_mode'] = $shipment->transport_mode;
-            $subdata['voyage_flight_num'] = $shipment->voyage_flight_num;
-            $subdata['container_mode'] = $shipment->container_mode;
-            $subdata['port_loading'] = $shipment->port_loading;
-            $subdata['port_discharge'] = $shipment->port_discharge;
+            $subdata['master_bill'] = (empty($shipment->master_bill)) ? '<span class="text-warning">No Data</span>' : $shipment->master_bill;
+            $subdata['house_bill'] = (empty($shipment->house_bill)) ? '<span class="text-warning">No Data</span>' : $shipment->house_bill;
+            $subdata['transport_mode'] = (empty($shipment->transport_mode)) ? '<span class="text-warning">No Data</span>' : $shipment->transport_mode;
+            $subdata['voyage_flight_num'] = (empty($shipment->voyage_flight_num)) ? '<span class="text-warning">No Data</span>' : $shipment->voyage_flight_num;
+            $subdata['container_mode'] = (empty($shipment->container_mode)) ? '<span class="text-warning">No Data</span>' : $shipment->container_mode;
+            $subdata['port_loading'] = (empty($shipment->port_loading)) ? '<span class="text-warning">No Data</span>' : $shipment->port_loading;
+            $subdata['port_discharge'] = (empty($shipment->port_discharge)) ? '<span class="text-warning">No Data</span>' : $shipment->port_discharge;
             // $subdata['order_number'] = $shipment->order_number;
             $order_number = json_decode($shipment->order_number); 
             if(!empty($order_number)){
@@ -1059,16 +1045,18 @@ class Shipment extends Core\Controller {
             }
             foreach ($documents as $key => $value) {
                 #if(!empty($value['count'])) {
-                    $subdata[$key] = '<div class="doc-stats" style="display: none;">
-                    <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">
-                    '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                    '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
-                    '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
-                    </span>
-                    </div>
-                    <div class="doc-stats">
-                        <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">'.$value['text'].'</span>
-                        <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
+                    $subdata[$key] = '<div class="'. ((!empty($value['count'])) ? 'stats' : "empty") . '">
+                        <div class="doc-stats" style="display: none;">
+                            <span class="doc" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">
+                            '.$value['approved'].'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                            '.$value['pending'].'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i> 
+                            '.$value['watched'].'<i class="fa fa-eye text-warning" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class="doc-stats">
+                            <span class="doc badge '.$value['badge'].'" data-type="'.strtoupper($key).'" data-id="'.$shipment->shipment_num.'">'.$value['text'].'</span>
+                            <span class="badge badge-danger navbar-badge ship-badge">'.$value['count'].'</span>
+                        </div>
                     </div>';
                 #} else {
                     # $subdata[$key] = "Empty";
