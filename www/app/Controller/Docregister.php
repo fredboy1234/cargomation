@@ -538,7 +538,7 @@ class Docregister extends Core\Controller {
                     'container_mode'=>array('name'=>'Container Mode','order'=>28),
                     'voyage_number'=>array('name'=>'Voyage Number','order'=>29),
                     'vessel'=>array('name'=>'Vessel','order'=>30),
-                );
+                ); 
                
                 $reorder = array();
 
