@@ -333,7 +333,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <dt>Address:</dt>
                     <dd><?= $value->Address1; ?></dd>
                 </div>
-                <?php if(isset($value->Address2)): ?>
+                <?php if(!empty($value->Address2)): ?>
                 <div class="col-lg-12">
                     <dt>Address 2:</dt>
                     <dd><?= $value->Address2; ?></dd>
