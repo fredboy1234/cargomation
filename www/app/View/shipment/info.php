@@ -875,6 +875,7 @@ var promises = [];
 var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
 var combineRoute = [];
 var pointObject = [];
+var uidHolder = '';
 var transImage = "<?= $transImage ?>";
 var transmode = "<?=$transMode?>";
 var tooltipHTML = `<center><strong>{vessel}</strong></center>
