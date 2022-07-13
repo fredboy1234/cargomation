@@ -875,6 +875,7 @@ var promises = [];
 var route = JSON.parse(<?= json_encode($this->shipment_info[0]->route_leg) ?>);
 var combineRoute = [];
 var pointObject = [];
+var uidHolder = '';
 var transImage = "<?= $transImage ?>";
 var transmode = "<?=$transMode?>";
 var tooltipHTML = `<center><strong>{vessel}</strong></center>
@@ -959,7 +960,7 @@ $(document).ready(function() {
                     var latitude = countryLoc[cCode].latitude//data[0].lat
                     var longitude = countryLoc[cCode].longitude//data[0].lng;
 
-
+                    uidHolder =  <?= json_encode($this->shipment_info[0]->user_id) ?>;
                     pointObject.push({
                         "latitude": parseFloat(latitude),
                         "longitude":parseFloat( longitude),
@@ -980,7 +981,12 @@ $(document).ready(function() {
         if(transmode === "sea"){
             $.getScript("/js/shipment/sea.map.js", function() {}); 
         }else{ 
-            $.getScript("/js/shipment/air.map.js", function() {}); 
+            var uiarray = ['207'];
+            if(jQuery.inArray(uidHolder, uiarray) !== -1){
+                $.getScript("/js/shipment/sea.map.js", function() {}); 
+            }else{
+                $.getScript("/js/shipment/air.map.js", function() {}); 
+            }
         }
     }).fail(function() {
         console.log("fail");
