@@ -333,7 +333,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <dt>Address:</dt>
                     <dd><?= $value->Address1; ?></dd>
                 </div>
-                <?php if(!empty($value->Address2)): ?>
+                <?php if(isset($value->Address2)): ?>
                 <div class="col-lg-12">
                     <dt>Address 2:</dt>
                     <dd><?= $value->Address2; ?></dd>
@@ -388,7 +388,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                             <?php if($transMode == 'sea'): ?>
                             <div class="col-lg-3">
                                 <dt>Delivery Mode:</dt>
-                                <dd><?= $value->no_data; ?></dd>
+                                <dd><?= $value->DeliveryMode; ?></dd>
                             </div>
                             <?php endif; ?>
                             <div class="col-lg-3">
@@ -404,34 +404,35 @@ foreach ($this->shipment_info[0] as $key => $value) {
                                 // $width = floatval($value->width);
                                 // $height = floatval($value->height); 
                                 // $volume = $length * $width * $height;
-                                echo number_format($volume, 2, '.', ',') . $value->VolumeUnit->Description; ?></dd>
+                                $unit = (strpos($value->VolumeUnit->Description, 'Metres')) ? "m³" :  " ";
+                                echo number_format($volume, 2, '.', ',') . ' ' . $unit; ?></dd>
                             </div>
-                            <div class="col-lg-3">
-                                <dt>Packs:</dt>
-                                <dd><?= $value->no_data; ?></dd>
-                            </div>
-                            <?php if($transMode == 'sea'): ?>
-                            <div class="col-lg-3">
-                                <dt>Gate In: </dt>
-                                <dd><?= $value->no_data; ?></dd>
-                            </div>
-                            <div class="col-lg-3">
-                                <dt>FCL Available: </dt>
-                                <dd><?= $value->no_data; ?></dd>
-                            </div>
-                            <div class="col-lg-3">
-                                <dt>FCL Loaded In: </dt>
-                                <dd><?= $value->no_data; ?></dd>
-                            </div>
-                            <?php endif; ?>
                             <div class="col-lg-3">
                                 <dt>Storage Date:</dt>
-                                <dd><?= $value->no_data; ?></dd>
+                                <dd><?= (!empty($value->FCLStorageCommences)) ? $value->FCLStorageCommences : $value->no_data; ?></dd>
                             </div>
                             <?php if($transMode == 'sea'): ?>
                             <div class="col-lg-3">
                                 <dt>Empty Req. By:</dt>
-                                <dd><?= $value->no_data; ?></dd>
+                                <dd><?= (!empty($value->value->EmptyRequired)) ? $value->value->EmptyRequired : $value->no_data; ?></dd>
+                            </div>
+                            <div class="col-lg-6">
+                            </div>
+                            <div class="col-lg-6">
+                                <dt>Gate In (Export): </dt>
+                                <dd><?= date_format(date_create($value->FCLWharfGateIn),"d M Y H:i:s"); ?></dd>
+                            </div>
+                            <div class="col-lg-6">
+                                <dt>Gate Out (Import): </dt>
+                                <dd><?= date_format(date_create($value->FCLWharfGateOut),"d M Y H:i:s"); ?></dd>
+                            </div>
+                            <div class="col-lg-6">
+                                <dt>FCL Available: </dt>
+                                <dd><?= date_format(date_create($value->FCLAvailable),"d M Y H:i:s"); ?></dd>
+                            </div>
+                            <div class="col-lg-6">
+                                <dt>FCL Loaded In: </dt>
+                                <dd><?= date_format(date_create($value->FCLUnloadFromVessel),"d M Y H:i:s"); ?></dd>
                             </div>
                             <?php endif; ?>
                         </dl>
