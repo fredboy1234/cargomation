@@ -11,6 +11,106 @@ $table_header=array("Order Number","Order Date","Status","Buyer","Supplier","Tra
    #myTable2,#myTable1{
        width: 100% !important;
    }
+
+.timeline {
+    width:950px;
+    height: 20px;
+    list-style: none;
+    text-align: justify;
+    margin: 130px auto;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0)), color-stop(45%, rgba(255,255,255,0)), color-stop(51%, rgba(191,128,11,1)), color-stop(57%, rgba(255,255,255,0)), color-stop(100%, rgba(255,255,255,0)));
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 45%, #3778be 51%, rgba(255,255,255,0) 57%, rgba(255,255,255,0) 100%);
+}
+
+.timeline:after {display: inline-block; content: ""; width: 100%;}
+.timeline:before {background-color:rgba(0%, 0%, 100%, 0);}
+
+.timeline li {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #F2BB13;
+    text-align: center;
+    line-height: 1.2;
+    position: relative;
+    border-radius: 50%;
+}
+
+.timeline li:before {
+    display: inline-block;
+    content: attr(data-year);
+    font-size: 15px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+}
+
+.timeline li:nth-child(odd):before {
+    top: -40px;
+    width: 150px;
+}
+
+.timeline li:nth-child(odd):after {
+    bottom: 0;
+    margin-bottom: -10px;
+    transform: translate(-50%, 100%);
+    text-align: left;
+    width: 111px;
+}
+
+.timeline li:nth-child(even):before {
+    top: -40px;
+    width: 150px;
+}
+
+.timeline li:nth-child(even):after {
+    bottom: 0;
+    margin-bottom: -10px;
+    transform: translate(-50%, 100%);
+    text-align: left;
+    width: 111px;
+}
+
+.timeline li:after {
+    display: inline-block;
+    content: attr(data-text);
+    font-size: 13px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-dialog {
+  width: 100%;
+  padding: 0;
+}
+
+.modal-content {
+  border-radius: 0;
+}
+#myTable1_processing{
+    display: none !important;
+}
+.fa-li {
+  left: -5px;
+  position: absolute;
+  text-align: center;
+  line-height: inherit;
+  top: 0.1em;
+  color: white;
+}
+table.dataTable > thead .sorting::after, table.dataTable > thead .sorting_asc::after, table.dataTable > thead .sorting_desc::after, table.dataTable > thead .sorting_asc_disabled::after, table.dataTable > thead .sorting_desc_disabled::after {
+  right: 0.5em;
+  content: "⌄";
+  font-size: 12pt;
+}
+
+table.dataTable > thead .sorting::before, table.dataTable > thead .sorting_asc::before, table.dataTable > thead .sorting_desc::before, table.dataTable > thead .sorting_asc_disabled::before, table.dataTable > thead .sorting_desc_disabled::before {
+  right: 0.50em;
+  content: "⌃";
+  font-size: 12pt;
+}
 </style>
 <!-- Main content -->
 <section class="content">
@@ -232,9 +332,41 @@ $table_header=array("Order Number","Order Date","Status","Buyer","Supplier","Tra
             </div>
           </div>
           <!--end of order table-->
-
         </div><!--end of row class-->
     </div>
+
+        <div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <form role="form" method="POST" action="php/add_category.php">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Order Milestones</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                   
+                    <section>
+                        <div class="rt-container">
+                        <div class="col-rt-12">
+                        <div class="Scriptcontent">
+                        <ul class="timeline"></ul>
+                        </div>
+                        </div>
+                        </div>
+                    </section>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
 </section>
 </div>
 <script>  
