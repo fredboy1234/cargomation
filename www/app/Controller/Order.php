@@ -188,13 +188,16 @@ class Order extends Core\Controller {
 
             $var_mile = $var_mile_ocf.$var_mile_exw.$var_mile_gin.$var_mile_dep.$var_mile_arv.$var_mile_dca.$var_mile_dcf;
 
-            $ord = '<div class="input-group">
-                    <div class="input-group-prepend">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
-                    <div class="dropdown-menu" style="z-index:3">
-                    <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
-                    </div>
-                    </div>';
+            // $ord = '<div class="input-group">
+            //         <div class="input-group-prepend">
+            //         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
+            //         <div class="dropdown-menu" style="">
+            //         <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
+            //         </div>
+            //         </div>';
+            $ord ='<div class="tooltip_custom">'.$value->order_number.'
+                    <span class="tooltiptext" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</span>
+                    </div>'; 
             $retData['data'][] = array(
                 "order_number" => '<b>'.$ord.'</b>',
                 "order_date"=>$value->order_date,
@@ -294,13 +297,16 @@ class Order extends Core\Controller {
 
             $var_mile = $var_mile_ocf.$var_mile_exw.$var_mile_gin.$var_mile_dep.$var_mile_arv.$var_mile_dca.$var_mile_dcf;
 
-            $ord = '<div class="input-group">
-                    <div class="input-group-prepend">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
-                    <div class="dropdown-menu" style="">
-                    <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
-                    </div>
-                    </div>';
+            // $ord = '<div class="input-group">
+            //         <div class="input-group-prepend">
+            //         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
+            //         <div class="dropdown-menu" style="">
+            //         <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
+            //         </div>
+            //         </div>';
+            $ord ='<div class="tooltip_custom">'.$value->order_number.'
+                    <span class="tooltiptext" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</span>
+                    </div>';        
             $retData['data'][] = array(
                 "order_number" => '<b>'.$ord.'</b>',
                 "order_date"=>$value->order_date,
