@@ -128,7 +128,7 @@ table.dataTable > thead .sorting::before, table.dataTable > thead .sorting_asc::
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
-  margin-left:2px;
+  margin-left:1px;
   margin-top:-10px;
 }
 .tooltip_custom:hover .tooltiptext {
