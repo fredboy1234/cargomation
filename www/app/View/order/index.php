@@ -111,6 +111,29 @@ table.dataTable > thead .sorting::before, table.dataTable > thead .sorting_asc::
   content: "⌃";
   font-size: 12pt;
 }
+.tooltip_custom {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+.tooltip_custom .tooltiptext {
+  cursor: pointer;
+  visibility: hidden;
+  width: 150px;
+  background-color: #3778be ;
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  margin-left:2px;
+  margin-top:-10px;
+}
+.tooltip_custom:hover .tooltiptext {
+  visibility: visible;
+}
 </style>
 <!-- Main content -->
 <section class="content">
