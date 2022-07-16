@@ -375,124 +375,125 @@ function initDataTable() {
         visible: false,
         searchable: false
       },
-      {
-        targets: [1],
-        render: function (data, type, row) {
-          return '<span>' + data + '</span>'
-        }
-      },
       // {
-      //   targets: '_all',
+      //   targets: [1],
       //   render: function (data, type, row) {
-      //     var result;
-      //     switch (data.index) {
-      //       case 'shipment_num':
-      //         result = '<div class="btn-group">' +
-      //                 '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-      //                 data['shipment_num'] +
-      //                 '</button>' + 
-      //                 '<div class="dropdown-menu">' +
-      //                   '<a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''+data['macro_link']+'\')" data-ship-id="'+data['shipment_id']+'"> Open Cargowise </a>' +
-      //                   '<div class="dropdown-divider"></div>' + 
-      //                   '<a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\''+data['shipment_num']+'\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>' +
-      //                 '</div>' + 
-      //               '</div>';
-      //         break;
-          
-      //       case 'container_number':
-      //         if(typeof data.container_number === 'object' && data !== null){
-      //           if(data.container_number.length === 0) {
-      //             result = '<span class="text-warning">No data</span>';
-      //           } else {
-      //             result = '<div class="btn-group">' +
-      //               '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-      //               'View' + 
-      //               '</button>' + 
-      //               '<div class="dropdown-menu">';
-      //             var last_key = data.container_number.length - 1;
-      //             data.container_number.forEach((element, index) => {
-      //               result += 
-      //               '<span class="dropdown-item">' +
-      //                'Container Number: ' + element['container_number'] + '<br>' +
-      //                'Container Type: ' + element['container_type'] + '<br>' +
-      //                'Container Delivery Mode: ' + element['delivery_mode'] + '<br>' +
-      //                '</span>';
-      //               if(last_key !== index) {
-      //                   result += '<div class="dropdown-divider"></div>';
-      //               }
-      //             });
-      //             result += '</div></div>';
-      //           }
-      //         }
-      //         break;
-        
-      //       case 'order_number':
-      //         if(data.order_number === null) {
-      //           result = '<span class="text-warning">No data</span>';
-      //         } else {
-      //           result = '<div class="btn-group">' +
-      //             '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-      //             'View' + 
-      //             '</button>' + 
-      //             '<div class="dropdown-menu">';
-      //           var last_key = data.order_number.length - 1;
-      //           data.order_number.forEach((element, index) => {
-      //             result += 
-      //             '<span class="dropdown-item">' +
-      //               'Order Number: ' + element['OrderReference'] + '<br>' +
-      //               '</span>';
-      //             if(last_key !== index) {
-      //                 result += '<div class="dropdown-divider"></div>';
-      //             }
-      //           });
-      //           result += '</div></div>';
-      //         }
-      //         break;
-            
-      //       case 'eta_date':
-      //         var result = data['date']; 
-      //         result += (data['diff']) ? '<span style="color:'+ data['color'] + 
-      //         '" class="badge navbar-badge ship-badge">'+ data['diff'] + 'd</span>' : '';
-      //         break;
-            
-      //       case 'data_string':
-      //         result = (data.value == '') ? '<span class="text-warning">No Data</span>' : data.value;
-      //         break;
-            
-      //       case 'all_document': 
-      //         var text, badge;
-      //         if(data.count.length === 0) {
-      //           text = 'No Document';
-      //           badge = 'text-warning no-doc';
-      //         } else {
-      //           text = 'View All';
-      //           badge = 'badge badge-primary';
-      //         }
-      //         result = '<div class="doc-stats">' +
-      //           '<span class="doc ' + badge + '" data-id="' + data['shipment_num'] + '">' + text + '</span></div>';
-      //         break;
-            
-      //       default:
-      //         if(data['count'] === '') {
-      //           result = '<span>' + data['text'] + '</span>';
-      //         } else {
-      //           result = '<div class="doc-stats" style="display: none;">' +
-      //               '<span class="doc" data-type="' + data['key'] + '" data-id="' + data['shipment_num'] + '">' 
-      //               +data['approved']+'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'
-      //               +data['pending']+'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>'
-      //               +data['watched']+'<i class="fa fa-eye text-warning" aria-hidden="true"></i>'
-      //               + '</span>'
-      //               +'</div>'
-      //             +'<div class="doc-stats">'
-      //             +    '<span class="doc badge '+data['badge']+'" data-type="'+data['key']+'" data-id="'+data['shipment_num']+'">'+data['text']+'</span>'
-      //             +    '<span class="badge badge-danger navbar-badge ship-badge">'+data['count']+'</span>'
-      //             +'</div>';
-      //         }
-      //         break;
-      //     }
-      //     return result;
+      //     return '<span>' + data + '</span>'
       //   }
       // },
+      {
+        targets: '_all',
+        render: function (data, type, row) {
+          var result;
+          switch (data.index) {
+            case 'shipment_num':
+              result = '<div class="btn-group">' +
+                      '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                      data['shipment_num'] +
+                      '</button>' + 
+                      '<div class="dropdown-menu">' +
+                        '<a class="dropdown-item macro" href="javascript:void(0);" onclick="macroLink(\''+data['macro_link']+'\')" data-ship-id="'+data['shipment_id']+'"> Open Cargowise </a>' +
+                        '<div class="dropdown-divider"></div>' + 
+                        '<a class="dropdown-item" href="javascript:void(0);" onclick="showInfo(\''+data['shipment_num']+'\')">Information <i class="fa fa-info-circle text-primary" aria-hidden="true"></i></a>' +
+                      '</div>' + 
+                    '</div>';
+              break;
+          
+            case 'container_number':
+              if(typeof data.container_number === 'object' && data !== null){
+                if(data.container_number.length === 0) {
+                  result = '<span class="text-warning">No data</span>';
+                } else {
+                  result = '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                    'View' + 
+                    '</button>' + 
+                    '<div class="dropdown-menu">';
+                  var last_key = data.container_number.length - 1;
+                  data.container_number.forEach((element, index) => {
+                    result += 
+                    '<span class="dropdown-item">' +
+                     'Container Number: ' + element['container_number'] + '<br>' +
+                     'Container Type: ' + element['container_type'] + '<br>' +
+                     'Container Delivery Mode: ' + element['delivery_mode'] + '<br>' +
+                     '</span>';
+                    if(last_key !== index) {
+                        result += '<div class="dropdown-divider"></div>';
+                    }
+                  });
+                  result += '</div></div>';
+                }
+              }
+              break;
+        
+            case 'order_number':
+              if(data.order_number === null) {
+                result = '<span class="text-warning">No data</span>';
+              } else {
+                result = '<div class="btn-group">' +
+                  '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                  'View' + 
+                  '</button>' + 
+                  '<div class="dropdown-menu">';
+                var last_key = data.order_number.length - 1;
+                data.order_number.forEach((element, index) => {
+                  result += 
+                  '<span class="dropdown-item">' +
+                    'Order Number: ' + element['OrderReference'] + '<br>' +
+                    '</span>';
+                  if(last_key !== index) {
+                      result += '<div class="dropdown-divider"></div>';
+                  }
+                });
+                result += '</div></div>';
+              }
+              break;
+            
+            case 'eta_date':
+              var result = data['date']; 
+              // result += (data['diff']) ? '<span style="color:'+ data['color'] + 
+              // '" class="badge navbar-badge ship-badge">'+ data['diff'] + '</span>' : '';
+              result += data['diff'];
+              break;
+            
+            case 'data_string':
+              result = (data.value == '') ? '<span class="text-warning">No Data</span>' : data.value;
+              break;
+            
+            case 'all_document': 
+              var text, badge;
+              if(data.count.length === 0) {
+                text = 'No Document';
+                badge = 'text-warning no-doc';
+              } else {
+                text = 'View All';
+                badge = 'badge badge-primary';
+              }
+              result = '<div class="doc-stats">' +
+                '<span class="doc ' + badge + '" data-id="' + data['shipment_num'] + '">' + text + '</span></div>';
+              break;
+            
+            default:
+              if(data['count'] === '') {
+                result = '<span>' + data['text'] + '</span>';
+              } else {
+                result = '<div class="doc-stats" style="display: none;">' +
+                    '<span class="doc" data-type="' + data['key'] + '" data-id="' + data['shipment_num'] + '">' 
+                    +data['approved']+'<i class="fa fa-arrow-up text-success" aria-hidden="true"></i>'
+                    +data['pending']+'<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>'
+                    +data['watched']+'<i class="fa fa-eye text-warning" aria-hidden="true"></i>'
+                    + '</span>'
+                    +'</div>'
+                  +'<div class="doc-stats">'
+                  +    '<span class="doc badge '+data['badge']+'" data-type="'+data['key']+'" data-id="'+data['shipment_num']+'">'+data['text']+'</span>'
+                  +    '<span class="badge badge-danger navbar-badge ship-badge">'+data['count']+'</span>'
+                  +'</div>';
+              }
+              break;
+          }
+          return result;
+        }
+      },
     ],
     autoWidth: false,
     lengthChange: false,
@@ -1439,3 +1440,23 @@ function byLevel() {
 function renderColumn(data) {
 
 }
+$('#shipmentModal').on('shown.bs.modal ', function () {
+ 
+ var divcol = $('.modal-body .small-box').css('backgroundColor');
+ 
+ var colarray = ['#c90076','#cc0000','#990000'];
+ if(jQuery.inArray(hexc(divcol), colarray) !== -1){
+   $('#shipmentModal .modal-body .small-box').css('color', '#fff');
+   $('#shipmentModal .modal-body .nav-link').css('color',divcol);
+ }
+ 
+  function hexc(colorval) {
+      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      delete(parts[0]);
+      for (var i = 1; i <= 3; ++i) {
+          parts[i] = parseInt(parts[i]).toString(16);
+          if (parts[i].length == 1) parts[i] = '0' + parts[i];
+      }
+     return '#' + parts.join('');
+  }
+});

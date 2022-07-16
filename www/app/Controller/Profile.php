@@ -452,7 +452,7 @@ class Profile extends Core\Controller {
                 .nav-pills .nav-link.active, .nav-pills .show>.nav-link,
                 .btn-primary.dropdown-toggle,.badge-primary,
                 #searchFilter,#loadRecent,#loadSaved,.card-title button{background-color:{$setColor[1]} !important;}
-                #resetSearch,#deleteSearch,#savefilter,#clearFilter{background-color:{$setColor[1]} !important;}
+                #resetSearch,#deleteSearch,#savefilter,#clearFilter,.col-con{background-color:{$setColor[1]} !important;}
                 ";
             //$data = $_POST;
             $User->updateUserSettings('colorScheme', $data, $user);

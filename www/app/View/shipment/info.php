@@ -22,6 +22,9 @@ foreach ($this->shipment_info[0] as $key => $value) {
     }
 }
 ?>
+<style>
+    .col-con{ background-color:#3778be ;color:#FFFFFF;}
+</style>
 <div class="row">
     <div class="col-lg-3">
          <h1 class="p-3 mt-2 shipment-num" data-toggle="tooltip" data-placement="bottom" title="<?= $this->shipment_info[0]->shipment_num; ?>"> <?= $this->shipment_info[0]->shipment_num; ?></h1>    
@@ -247,7 +250,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
             </div>
             <?php $json_org = json_decode($this->shipment_info[0]->organization); ?>
             <!-- COLLAPSE Consignee starts -->
-            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignee" aria-expanded="true">
+            <div class="collapse-control w-100 p-2 mb-2 col-con"  data-toggle="collapse" data-target="#consignee" aria-expanded="true">
                 <h5 class="d-inline-block">Consignee</h5>
                 <span class="float-right mt-2"><?= $this->shipment_info[0]->consignee; ?>
                     <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
@@ -312,7 +315,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
             </dl>
             <!-- COLLAPSE Consignee ends -->
             <!-- COLLAPSE Consignor starts -->
-            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
+            <div class="collapse-control w-100 p-2 mb-2 col-con"  data-toggle="collapse" data-target="#consignor" aria-expanded="true" >
                 <h5 class="d-inline-block">Consignor</h5>
                 <span class="float-right mt-2"><?= $this->shipment_info[0]->consignor; ?>
                 <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
@@ -355,7 +358,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
             </dl>
             <!-- COLLAPSE Consignor ends -->
             <!-- COLLAPSE Container Details starts -->
-            <div class="collapse-control w-100 p-2 mb-2" style="background-color:#3778be !important;color:#FFFFFF !important;" data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
+            <div class="collapse-control w-100 p-2 mb-2 col-con"  data-toggle="collapse" data-target="#container_details" aria-expanded="true" >
                 <h5 class="d-inline-block">Container Details</h5>
                 <span class="float-right mt-2"><?= $this->shipment_info[0]->shipment_num; ?>
                     <i class="chevron fa fa-chevron-down p-1" aria-hidden="true"></i>
@@ -369,7 +372,7 @@ foreach ($this->shipment_info[0] as $key => $value) {
                     <?php foreach ($container as $key => $value): ?>
                         <?php $value->no_data = '<span class="text-danger"> - </span>'; 
                         if(!empty($value->ContainerNumber)): ?>
-                        <div class="collapse-control w-100 p-2 mb-2" style="background-color: #cdcdcd;" data-toggle="collapse" data-target="#cd-<?= $value->ContainerNumber ?>" aria-expanded="true" >
+                        <div class="collapse-control w-100 p-2 mb-2 col-con"  data-toggle="collapse" data-target="#cd-<?= $value->ContainerNumber ?>" aria-expanded="true" >
                             <span class="d-inline-block"><?= $value->ContainerNumber; ?>
                                 <?php if(false): ?>
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
