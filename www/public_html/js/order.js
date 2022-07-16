@@ -45,8 +45,13 @@ $(document).on('shown.bs.tab', 'a[data-toggle="pill"]', function (e)
 //     $($.fn.dataTable.tables(true)).DataTable().responsive.recalc();
 // }
 
+ $(document).on("click", "#modalCategory", function () {
+     //$('#idHolder').html('<section><div class="rt-container"><div class="col-rt-12"><div class="Scriptcontent"> <ul class="timeline"><li data-year="2017" data-text="Lorem ipsum dolor sit amet, consectetur."></li><li data-year="2018" data-text="Lorem ipsum dolor sit amet, consectetur."></li></ul></div></div></div></section>');
+});
+
 var table = $('#myTable1').DataTable( {
-    // "serverSide": true,
+    "bServerSide": false,
+    "bProcessing": true,
     "autoWidth": false,
     "ajax": document.location.origin+"/order/orderData/",
     "ordering": true,
@@ -72,7 +77,7 @@ var table = $('#myTable1').DataTable( {
         { "data": "uw" },
         //{ "data": "req_stock" },
         //{ "data": "req_work" }, 
-        { "data": "order_line" },     
+        { "data": "order_line" },  
     ],
     "order": [[1, 'desc']],  
 });
@@ -86,6 +91,8 @@ $(".filter-order").on('click',function(){
         $('#myTable2').DataTable().clear();
         $('#myTable2').dataTable().fnDestroy();
         var filterTable = $('#myTable2').DataTable( {
+            "bServerSide": false,
+            "bProcessing": true,
             "autoWidth": false,
             "scrollX": true,
             "scrollY":        "250px",
@@ -100,7 +107,7 @@ $(".filter-order").on('click',function(){
             "responsive:":true,
             "sPaginationType":"full_numbers",
             "iDisplayLength": 8,
-            "columns": [
+            "columns": [ 
                 { "data": "order_number" },
                 { "data": "order_date" },
                 { "data": "status" },
@@ -153,3 +160,8 @@ $.ajax({
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+
+function getData(data){
+   var result = data.replaceAll("~", "\n");
+   $('.timeline').html(result);
+}

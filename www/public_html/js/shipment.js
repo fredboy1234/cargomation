@@ -372,7 +372,7 @@ function initDataTable() {
     columnDefs: [
       {
         targets: [0],
-        visible: false,
+        visible: true,
         searchable: false
       },
       // {
@@ -1442,21 +1442,21 @@ function renderColumn(data) {
 }
 $('#shipmentModal').on('shown.bs.modal ', function () {
  
- var divcol = $('.modal-body .small-box').css('backgroundColor');
- 
- var colarray = ['#c90076','#cc0000','#990000'];
- if(jQuery.inArray(hexc(divcol), colarray) !== -1){
-   $('#shipmentModal .modal-body .small-box').css('color', '#fff');
-   $('#shipmentModal .modal-body .nav-link').css('color',divcol);
- }
- 
-  function hexc(colorval) {
-      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-      delete(parts[0]);
-      for (var i = 1; i <= 3; ++i) {
-          parts[i] = parseInt(parts[i]).toString(16);
-          if (parts[i].length == 1) parts[i] = '0' + parts[i];
-      }
-     return '#' + parts.join('');
+  var divcol = $('.modal-body .small-box').css('backgroundColor');
+  
+  var colarray = ['#c90076','#cc0000','#990000'];
+  if(jQuery.inArray(hexc(divcol), colarray) !== -1){
+    $('#shipmentModal .modal-body .small-box').css('color', '#fff');
+    $('#shipmentModal .modal-body .nav-link, #shipmentModal #accordion div, #shipmentModal #accordion button').css('color',divcol);
   }
-});
+  
+   function hexc(colorval) {
+       var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+       delete(parts[0]);
+       for (var i = 1; i <= 3; ++i) {
+           parts[i] = parseInt(parts[i]).toString(16);
+           if (parts[i].length == 1) parts[i] = '0' + parts[i];
+       }
+      return '#' + parts.join('');
+   }
+ });

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Core;
@@ -22,6 +21,7 @@ class Order extends Core\Controller {
      * @since 1.0
      */
     public function index($user = "") {
+        ob_start('ob_gzhandler');
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         // If no user ID has been passed, and a user session exists, display
@@ -126,7 +126,8 @@ class Order extends Core\Controller {
         $orderData = $Order->getFilterResults($user,$_POST['status']);
 
         foreach($orderData as $value){
-             $obj = '<div class="btn-group">
+
+            $obj = '<div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     View
                     </button>
@@ -144,8 +145,61 @@ class Order extends Core\Controller {
             }else{
                 $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
             }
+           $var_mile = $var_mile_ocf = $var_mile_exw = $var_mile_gin = $var_mile_dep = $var_mile_arv = $var_mile_cav = $var_mile_dca = $var_mile_dcf = '';
+           $arr1 = json_decode($value->milestone);
+
+             foreach ($arr1 as $key => $object) {
+                 if(strval($object->EventCode) === 'OCF'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_ocf = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'EXW'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_exw = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'GIN'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_gin = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DEP'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dep = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'ARV'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_arv = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DCA'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dca = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DCF'){
+                   if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dcf = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+            }
+
+            $var_mile = $var_mile_ocf.$var_mile_exw.$var_mile_gin.$var_mile_dep.$var_mile_arv.$var_mile_dca.$var_mile_dcf;
+
+            // $ord = '<div class="input-group">
+            //         <div class="input-group-prepend">
+            //         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
+            //         <div class="dropdown-menu" style="">
+            //         <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
+            //         </div>
+            //         </div>';
+            $ord ='<div class="tooltip_custom">'.$value->order_number.'
+                    <span class="tooltiptext" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</span>
+                    </div>'; 
             $retData['data'][] = array(
-                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_number" => '<b>'.$ord.'</b>',
                 "order_date"=>$value->order_date,
                 "status"=>$value->status_desc,
                 "pre_advice"=>'',
@@ -164,7 +218,7 @@ class Order extends Core\Controller {
                 "uw"=>$value->weight_unit,
                 // "req_stock"=>'',
                 // "req_work"=>'',  
-                "order_line"=>$line_number 
+                "order_line"=>$line_number
             );
         }
      
@@ -200,8 +254,61 @@ class Order extends Core\Controller {
             }else{
                 $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
             }
+           $var_mile = $var_mile_ocf = $var_mile_exw = $var_mile_gin = $var_mile_dep = $var_mile_arv = $var_mile_cav = $var_mile_dca = $var_mile_dcf = '';
+           $arr1 = json_decode($value->milestone);
+
+             foreach ($arr1 as $key => $object) {
+                 if(strval($object->EventCode) === 'OCF'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_ocf = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'EXW'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_exw = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'GIN'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_gin = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DEP'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dep = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'ARV'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_arv = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DCA'){
+                    if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dca = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+                elseif(strval($object->EventCode) === 'DCF'){
+                   if(!empty(strval($object->ActualDate))){$color_val = 'background:#28a745';$ata = date('Y-m-d', strtotime($object->ActualDate));}else{$color_val="background:#6c757d";$ata ='No Date';}
+                    if(!empty(strval($object->EstimatedDate))){$est = date('Y-m-d', strtotime($object->EstimatedDate));}else{$est ='No Date';}
+                    $var_mile_dcf = "<li style=\'{$color_val}\' data-year=\'{$object->Description}\' data-text=\'Estimated: ~{$est}~Actual: ~{$ata}  \'><span class=\'fa-li\'><i class=\'nav-icon fas fa-check\'></i></span></li>~";
+                }
+            }
+
+            $var_mile = $var_mile_ocf.$var_mile_exw.$var_mile_gin.$var_mile_dep.$var_mile_arv.$var_mile_dca.$var_mile_dcf;
+
+            // $ord = '<div class="input-group">
+            //         <div class="input-group-prepend">
+            //         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.$value->order_number.'</button>
+            //         <div class="dropdown-menu" style="">
+            //         <a href="javascript:void(0);" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</a>
+            //         </div>
+            //         </div>';
+            $ord ='<div class="tooltip_custom">'.$value->order_number.'
+                    <span class="tooltiptext" onclick="getData(\'' . $var_mile . '\')" class="dropdown-item milestone" data-toggle="modal" data-target="#modalCategory">View Milestones</span>
+                    </div>';        
             $retData['data'][] = array(
-                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_number" => '<b>'.$ord.'</b>',
                 "order_date"=>$value->order_date,
                 "status"=>$value->status_desc,
                 "pre_advice"=>'',
@@ -220,10 +327,11 @@ class Order extends Core\Controller {
                 "uw"=>$value->weight_unit,
                 // "req_stock"=>'',
                 // "req_work"=>'',  
-                "order_line"=>$line_number 
+                "order_line"=>$line_number
             );
         }
-        
+
+
         echo json_encode($retData);
     }
 
@@ -235,26 +343,9 @@ class Order extends Core\Controller {
         $orderData = $Order->getOrderByShipment($user_id);
         
         foreach($orderData as $value){
-           $obj = '<div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    View
-                    </button>
-                    <div class="dropdown-menu"><span class="dropdown-item">';
 
-            $arr = json_decode($value->order_line);
-            if(is_array($arr) && count($arr) > 0){
-                foreach ($arr as $key => $object) {
-                    $line_number = $obj."LineNumber: ".$object->LineNumber.'<br />'.
-                    "Pkg Qty: ".$object->PackageQty.'<br />'.
-                    "Order Qty: ".$object->OrderedQty.' '.$object->OrderedQtyUnitCode.'<br />'.
-                    "Product: <b>".$object->ProductName.'</b><br />'.
-                    '</span></div></div>';
-                }
-            }else{
-                $line_number = $obj.'<span class="text-warning">No data</span></span></div></div>';
-            }
             $retData['data'][] = array(
-                "order_number" => '<b>'.$value->order_number.'</b>',
+                "order_number" => '<b>'.$object->LineNumber.'</b>',
                 "order_date"=>$value->order_date,
                 "status"=>$value->status_desc,
                 "pre_advice"=>'',
@@ -273,7 +364,7 @@ class Order extends Core\Controller {
                 "uw"=>$value->weight_unit,
                 // "req_stock"=>'',
                 // "req_work"=>'',  
-                "order_line"=>$line_number 
+                "order_line"=>$line_number
             );
         }
         
