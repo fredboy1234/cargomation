@@ -153,12 +153,12 @@ class Dashboard extends Core\Controller {
         
         foreach($mapcount as $mc){
             
-            if($mc->mode === "Sea"){
+            if(strtolower($mc->mode) === "sea"){
                 if(!isset($loading['sea'][$mc->port_loading])){
                     array_push($loadingCol,$mc);
                 }
                 $loading['sea'][$mc->port_loading]=$mc;
-            }else if($mc->mode === "Air"){
+            }else if(strtolower($mc->mode) === "air"){
                 if(!isset($loading['air'][$mc->port_loading])){
                     array_push($loadingCol,$mc);
                 }
