@@ -50,14 +50,14 @@ function isActive($url) {
       <?php if (isset($this->data)): ?>
       <div class="m1 user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?=$this->image_profile?>" class="img-circle elevation-2" alt="User Image" onerror="this.onerror=null;this.src='/img/default-profile.png';">
         </div>
         <div class="info">
           <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
         </div>
       </div>
       <div class="m2 main-menu-header text-center force-hide">
-						<img class="img-radius img-responsive" src="<?=$this->image_profile?>" alt="User-Profile-Image">
+						<img class="img-radius img-responsive" src="<?=$this->image_profile?>" alt="User-Profile-Image" onerror="this.onerror=null;this.src='/img/default-profile.png';">
 						<div class="user-details text-center">
               <a href="/profile" class="d-block"><?= $this->escapeHTML($this->data->name); ?></a>
 						</div>
