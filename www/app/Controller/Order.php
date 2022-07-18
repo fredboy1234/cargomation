@@ -21,7 +21,6 @@ class Order extends Core\Controller {
      * @since 1.0
      */
     public function index($user = "") {
-        ob_start('ob_gzhandler');
         // Check that the user is authenticated.
         Utility\Auth::checkAuthenticated();
         // If no user ID has been passed, and a user session exists, display
@@ -53,8 +52,11 @@ class Order extends Core\Controller {
         if($role->role_id > 2) {
             $sub_account = $User->getSubAccountInfo($user);
             $user_key = $sub_account[0]->account_id;
+            $_SESSION['org'] = $sub_account[0]->organization_code;
+            $_SESSION['ac_id'] = $sub_account[0]->account_id;
         } else {
             $user_key = $user;
+            $_SESSION['org'] = 'main';
         }
 
         $selectedTheme = $User->getUserSettings($user);
@@ -102,7 +104,7 @@ class Order extends Core\Controller {
         $user = $_SESSION['user'];
         $statsCount = array();
         $Order = Model\Order::getInstance();
-        $orderData = $Order->getOrderData($user);
+        $orderData = $Order->getOrderData($user,$_SESSION['org']);
         $filterButton = $Order->getFilterButton($user);
         
         foreach( $filterButton as $val){
@@ -230,7 +232,7 @@ class Order extends Core\Controller {
         $retData = array();
 
         $Order = Model\Order::getInstance();
-        $orderData = $Order->getOrderData($user_id);
+        $orderData = $Order->getOrderData($user_id,$_SESSION['org']);
         $orderline_arr = [];
 
 
