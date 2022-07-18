@@ -294,7 +294,7 @@ class Dashboard extends Core\Controller {
     public function getMapCount($userID){
        $url = 'https://cargomation.com:5200/redis/getmapshipment';
        $arr = [
-            "user_id" =>$userID,
+            "user_id" =>(string)$userID,
         ];
         $payload = json_encode($arr, JSON_UNESCAPED_SLASHES);
         $headers = ["Authorization: Basic YWRtaW46dVx9TVs2enpBVUB3OFlMeA==",
