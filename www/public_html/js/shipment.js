@@ -65,7 +65,6 @@ $(document).ready(function () {
         'warning'
       )
     } else {
-        console.log(getSearch);
       $('.table').DataTable().search( getSearch() ).draw();
     }
   });
@@ -362,6 +361,7 @@ function initDataTable() {
     }
     tableColumnData.push({ data: $index, sortable: $sort, visible: $visible});
   });
+  var query_string = window.location.search.substring(1);
   
   $('.table').DataTable({
     searching: true,
@@ -452,7 +452,7 @@ function initDataTable() {
             case 'eta_date':
               var result = data['date']; 
               // result += (data['diff']) ? '<span style="color:'+ data['color'] + 
-              // '" class="badge navbar-badge ship-badge">'+ data['diff'] + '</span>' : '';
+              // '" class="badge navbar-badge ship-badge">'+ data['diff'] + 'd</span>' : '';
               result += data['diff'];
               break;
             
@@ -513,6 +513,26 @@ function initDataTable() {
         for (let i = 0; i < d.columns.length; i++) {
           if (!d.columns[i].orderable) {
             delete d.columns[i];
+          }
+        }
+        if(query_string) {
+          var arr = [];
+          var parsed_qs = parse_query_string(query_string);
+          if (typeof parsed_qs['value'] !== "undefined") {
+            var search = parsed_qs['search'];
+            var type = parsed_qs['type'];
+            var value = parsed_qs['value'];
+            var cond = "";
+            if(typeof parsed_qs['value'] !== "undefined") {
+              cond = parsed_qs['con'];
+            }
+            arr.push({
+              "columnname": search,
+              "type": type,
+              "value": value.toUpperCase(),
+              "cond": cond
+            });
+            d.search['value'] = JSON.stringify(arr);
           }
         }
         // d.data = param;
@@ -664,50 +684,42 @@ function initColumnFilter() {
 // GET SEARCH FILTER
 function getSearch() {
   var arr = [];
-  if (typeof parsed_qs['value'] !== "undefined") {
-    var search = parsed_qs['search'];
-    var type = parsed_qs['type'];
-    var value = parsed_qs['value'];
-    var cond = "";
-    if(typeof parsed_qs['value'] !== "undefined") {
-      cond = parsed_qs['con'];
-    }
-    arr.push({
-      "columnname": search,
-      "type": type,
-      "value": value.toUpperCase(),
-      "cond": cond
-    });
-  } else {
-    $(".form_field_outer_row").each(function(){
-      var search = $(this).find("[name*='search']").val(); //*= means like
+  $(".form_field_outer_row").each(function(){
+    var search = $(this).find("[name*='search']").val(); //*= means like
+    var type = $(this).find("[name*='type']").val(); 
       var type = $(this).find("[name*='type']").val(); 
+    var type = $(this).find("[name*='type']").val(); 
+    var value = $(this).find("[name*='value']").val(); 
       var value = $(this).find("[name*='value']").val(); 
-      var cond = $(this).find("[name*='cond']").val();
-      if($(this).find("[name*='cond']").hasClass('exclude')) {
-        cond = "";
-      } 
-      //convert date to mm/dd/yyyy for api request format
-      if(search === "ETA" || search === "ETD"){
-        var dateString = value;
-        var dateParts = dateString.split("-");
-        var datePartsChild1 = dateParts[0].split("/");
-        var datePartsChild2 = dateParts[1].split("/");
+    var value = $(this).find("[name*='value']").val(); 
+    var cond = $(this).find("[name*='cond']").val();
+    if($(this).find("[name*='cond']").hasClass('exclude')) {
+      cond = "";
+    } 
+    //convert date to mm/dd/yyyy for api request format
+    if(search === "ETA" || search === "ETD"){
+      var dateString = value;
+      var dateParts = dateString.split("-");
+      var datePartsChild1 = dateParts[0].split("/");
+      var datePartsChild2 = dateParts[1].split("/");
+        var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
           var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+        var dateObject1 = new Date(+datePartsChild1[2], datePartsChild1[1] - 1, +datePartsChild1[0]); 
+        var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
           var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
-          value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
-          type = type;
-      }
-      if(typeof value !== null || value.length > 0){
-        arr.push({
-            "columnname": search,
-            "type": type,
-            "value": value.toUpperCase(),
-            "cond": cond
-        });
-      }
-    });
-  }
+        var dateObject2 = new Date(+datePartsChild2[2], datePartsChild2[1] - 1, +datePartsChild2[0]); 
+        value = moment(dateObject1.toString()).format('MM/DD/YYYY') + ' - '+moment(dateObject2.toString()).format('MM/DD/YYYY');
+        type = type;
+    }
+    if(typeof value !== null || value.length > 0){
+      arr.push({
+          "columnname": search,
+          "type": type,
+          "value": value.toUpperCase(),
+          "cond": cond
+      });
+    }
+  });
   return JSON.stringify(arr);
 }
 // SHOW LOADER
@@ -924,7 +936,7 @@ function loadRecentSave() {
       if(recent_obj) {
         recent_obj.sort(function(a,b){
           return new Date(b.created_date) - new Date(a.created_date);
-        });
+        }).reverse();
         for (const key in recent_obj) {
           if (Object.hasOwnProperty.call(recent_obj, key)) {
             const recent = recent_obj[key].search_query;
