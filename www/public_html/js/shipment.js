@@ -9,7 +9,6 @@ var mini_loader = '<div id="loader-wrapper" class="d-flex justify-content-center
 '</div>' +
 '</div>';
 var query_string = window.location.search.substring(1);
-var parsed_qs = parse_query_string(query_string);
 
 $(document).ready(function () {
   initDataTable();
@@ -18,11 +17,18 @@ $(document).ready(function () {
   invokeFilter("", 1);
   loadRecentSave();
   loadDefault();
-  
-  // IF REQUEST PARAM IS TRUE
-  if (parsed_qs['request'] === 'true') {
-    var url = "shipment/document/" + parsed_qs['shipment_num'] + "/" + parsed_qs['type'];
-    preloader(url); 
+  // IF URL HAS A PARAM STRING
+  if(query_string) {
+      var parsed_qs = parseQueryString(query_string);
+      if (parsed_qs['request'] === 'true') {
+        // IF REQUEST PARAM IS TRUE
+        var url = "shipment/document/" + parsed_qs['shipment_num'] + "/" + parsed_qs['type'];
+        preloader(url); 
+      } else {
+        // IF SEARCH PARAM IS DEFINED
+        var search_string = parseSearchQuery(parsed_qs);
+        $('.table').DataTable().search(search_string).draw();
+      }
   }
   $('[data-toggle="tooltip"]').tooltip();
   // Doing some magic! 
@@ -515,26 +521,6 @@ function initDataTable() {
             delete d.columns[i];
           }
         }
-        if(query_string) {
-          var arr = [];
-          var parsed_qs = parse_query_string(query_string);
-          if (typeof parsed_qs['value'] !== "undefined") {
-            var search = parsed_qs['search'];
-            var type = parsed_qs['type'];
-            var value = parsed_qs['value'];
-            var cond = "";
-            if(typeof parsed_qs['value'] !== "undefined") {
-              cond = parsed_qs['con'];
-            }
-            arr.push({
-              "columnname": search,
-              "type": type,
-              "value": value.toUpperCase(),
-              "cond": cond
-            });
-            d.search['value'] = JSON.stringify(arr);
-          }
-        }
         // d.data = param;
       },
       error:function(err, status){
@@ -722,6 +708,26 @@ function getSearch() {
   });
   return JSON.stringify(arr);
 }
+// PARSE SEARCH QUERY
+function parseSearchQuery(parsed_qs) {
+  var arr = [];
+  if (typeof parsed_qs['value'] !== "undefined") {
+    var search = parsed_qs['search'];
+    var type = parsed_qs['type'];
+    var value = parsed_qs['value'];
+    var cond = "";
+    if(typeof parsed_qs['value'] !== "undefined") {
+      cond = parsed_qs['con'];
+    }
+    arr.push({
+      "columnname": search,
+      "type": type,
+      "value": value.toUpperCase(),
+      "cond": cond
+    });
+  }
+  return JSON.stringify(arr);
+}
 // SHOW LOADER
 function preloader(url) {
   $("#myModal .modal-body").append(loader);
@@ -738,7 +744,7 @@ function preloader(url) {
   $('button#request').toggle();
 }
 // PARSE QUERY STRING
-function parse_query_string(query) {
+function parseQueryString(query) {
   var vars = query.split("&");
   var query_string = {};
   for (var i = 0; i < vars.length; i++) {
