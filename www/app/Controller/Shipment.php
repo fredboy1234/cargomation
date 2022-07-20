@@ -808,7 +808,7 @@ class Shipment extends Core\Controller {
             "draw"            => $json_data->draw,  
             "recordsTotal"    => $json_data->recordsTotal,  
             "recordsFiltered" => $json_data->recordsTotal,
-            "data"            => $this->sanitizeDataOptimized($user_id, $json_data->data, $requested)
+            "data"            => $this->sanitizeData($user_id, $json_data->data, $requested)
         );
         echo json_encode($array_data);
     }
