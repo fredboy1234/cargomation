@@ -207,7 +207,7 @@ else
                 $file_loc = "C:/inetpub/wwwroot/process_script/xml_mapper/batch_file/$username.bat";
                 $batch = fopen("C:/inetpub/wwwroot/process_script/xml_mapper/batch_file/$username.bat", "w");
                 $filebatch = fopen($file_loc, "a");
-                fwrite($filebatch, 'powershell.exe -noprofile -command "Invoke-WebRequest -Uri https://cargomation.com/xml_map/?user_id=' . $user_id . '"');
+                fwrite($filebatch, 'powershell.exe -noprofile -command "Invoke-WebRequest -Uri https://cargomation.com/xml_map/?user_id=' . $user_id . '; taskkill /PID $PID /f"');
                 fclose($filebatch);
                 fclose($batch);
             }
